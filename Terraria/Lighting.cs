@@ -1,3223 +1,3465 @@
+﻿// Decompiled with JetBrains decompiler
+// Type: Terraria.Lighting
+// Assembly: Terraria, Version=1.3.4.4, Culture=neutral, PublicKeyToken=null
+// MVID: DEE50102-BCC2-472F-987B-153E892583F1
+// Assembly location: E:\Steam\SteamApps\common\Terraria\Terraria.exe
+
 using Microsoft.Xna.Framework;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Threading;
 using Terraria.DataStructures;
+using Terraria.GameContent;
+using Terraria.Graphics;
+using Terraria.ID;
+using Terraria.Utilities;
+
 namespace Terraria
 {
-	public class Lighting
-	{
-		private class LightingSwipeData
-		{
-			public int outerLoopStart;
-			public int outerLoopEnd;
-			public int innerLoop1Start;
-			public int innerLoop1End;
-			public int innerLoop2Start;
-			public int innerLoop2End;
-			public Random rand;
-			public Action<Lighting.LightingSwipeData> function;
-			public Lighting.LightingState[][] jaggedArray;
-			public LightingSwipeData()
-			{
-				this.innerLoop1Start = 0;
-				this.outerLoopStart = 0;
-				this.innerLoop1End = 0;
-				this.outerLoopEnd = 0;
-				this.innerLoop2Start = 0;
-				this.innerLoop2End = 0;
-				this.function = null;
-				this.rand = new Random();
-			}
-			public void CopyFrom(Lighting.LightingSwipeData from)
-			{
-				this.innerLoop1Start = from.innerLoop1Start;
-				this.outerLoopStart = from.outerLoopStart;
-				this.innerLoop1End = from.innerLoop1End;
-				this.outerLoopEnd = from.outerLoopEnd;
-				this.innerLoop2Start = from.innerLoop2Start;
-				this.innerLoop2End = from.innerLoop2End;
-				this.function = from.function;
-				this.jaggedArray = from.jaggedArray;
-			}
-		}
-		private class LightingState
-		{
-			public float r;
-			public float r2;
-			public float g;
-			public float g2;
-			public float b;
-			public float b2;
-			public bool stopLight;
-			public bool wetLight;
-			public bool honeyLight;
-		}
-		private struct ColorTriplet
-		{
-			public float r;
-			public float g;
-			public float b;
-			public ColorTriplet(float R, float G, float B)
-			{
-				this.r = R;
-				this.g = G;
-				this.b = B;
-			}
-			public ColorTriplet(float averageColor)
-			{
-				this.b = averageColor;
-				this.g = averageColor;
-				this.r = averageColor;
-			}
-		}
-		public static int maxRenderCount = 4;
-		public static float brightness = 1f;
-		public static float defBrightness = 1f;
-		public static int lightMode = 0;
-		public static bool RGB = true;
-		private static float oldSkyColor = 0f;
-		private static float skyColor = 0f;
-		private static int lightCounter = 0;
-		public static int offScreenTiles = 45;
-		public static int offScreenTiles2 = 35;
-		private static int firstTileX;
-		private static int lastTileX;
-		private static int firstTileY;
-		private static int lastTileY;
-		public static int LightingThreads = 0;
-		private static Lighting.LightingState[][] states;
-		private static Lighting.LightingState[][] axisFlipStates;
-		private static Lighting.LightingSwipeData swipe;
-		private static Lighting.LightingSwipeData[] threadSwipes;
-		private static CountdownEvent countdown;
-		public static int scrX;
-		public static int scrY;
-		public static int minX;
-		public static int maxX;
-		public static int minY;
-		public static int maxY;
-		private static int maxTempLights = 2000;
-		private static Dictionary<Point16, Lighting.ColorTriplet> tempLights;
-		private static int firstToLightX;
-		private static int firstToLightY;
-		private static int lastToLightX;
-		private static int lastToLightY;
-		private static float negLight = 0.04f;
-		private static float negLight2 = 0.16f;
-		private static float wetLightR = 0.16f;
-		private static float wetLightG = 0.16f;
-		private static float wetLightB = 0.16f;
-		private static float honeyLightR = 0.16f;
-		private static float honeyLightG = 0.16f;
-		private static float honeyLightB = 0.16f;
-		private static float blueWave = 1f;
-		private static int blueDir = 1;
-		private static int minX7;
-		private static int maxX7;
-		private static int minY7;
-		private static int maxY7;
-		private static int firstTileX7;
-		private static int lastTileX7;
-		private static int lastTileY7;
-		private static int firstTileY7;
-		private static int firstToLightX7;
-		private static int lastToLightX7;
-		private static int firstToLightY7;
-		private static int lastToLightY7;
-		private static int firstToLightX27;
-		private static int lastToLightX27;
-		private static int firstToLightY27;
-		private static int lastToLightY27;
-		public static void Initialize(bool resize = false)
-		{
-			if (!resize)
-			{
-				Lighting.tempLights = new Dictionary<Point16, Lighting.ColorTriplet>();
-				Lighting.swipe = new Lighting.LightingSwipeData();
-				Lighting.countdown = new CountdownEvent(0);
-				Lighting.threadSwipes = new Lighting.LightingSwipeData[Environment.ProcessorCount];
-				for (int i = 0; i < Lighting.threadSwipes.Length; i++)
-				{
-					Lighting.threadSwipes[i] = new Lighting.LightingSwipeData();
-				}
-			}
-			int num = Main.screenWidth / 16 + Lighting.offScreenTiles * 2 + 10;
-			int num2 = Main.screenHeight / 16 + Lighting.offScreenTiles * 2 + 10;
-			if (Lighting.states == null || Lighting.states.Length < num || Lighting.states[0].Length < num2)
-			{
-				Lighting.states = new Lighting.LightingState[num][];
-				Lighting.axisFlipStates = new Lighting.LightingState[num2][];
-				for (int j = 0; j < num2; j++)
-				{
-					Lighting.axisFlipStates[j] = new Lighting.LightingState[num];
-				}
-				for (int k = 0; k < num; k++)
-				{
-					Lighting.LightingState[] array = new Lighting.LightingState[num2];
-					for (int l = 0; l < num2; l++)
-					{
-						Lighting.LightingState lightingState = new Lighting.LightingState();
-						array[l] = lightingState;
-						Lighting.axisFlipStates[l][k] = lightingState;
-					}
-					Lighting.states[k] = array;
-				}
-			}
-		}
-		public static void LightTiles(int firstX, int lastX, int firstY, int lastY)
-		{
-			Main.render = true;
-			Lighting.oldSkyColor = Lighting.skyColor;
-			float num = (float)Main.tileColor.R / 255f;
-			float num2 = (float)Main.tileColor.G / 255f;
-			float num3 = (float)Main.tileColor.B / 255f;
-			Lighting.skyColor = (num + num2 + num3) / 3f;
-			if (Lighting.lightMode < 2)
-			{
-				Lighting.brightness = 1.2f;
-				Lighting.offScreenTiles2 = 34;
-				Lighting.offScreenTiles = 40;
-			}
-			else
-			{
-				Lighting.brightness = 1f;
-				Lighting.offScreenTiles2 = 18;
-				Lighting.offScreenTiles = 23;
-			}
-			if (Main.player[Main.myPlayer].blind)
-			{
-				Lighting.brightness = 1f;
-			}
-			Lighting.defBrightness = Lighting.brightness;
-			Lighting.firstTileX = firstX;
-			Lighting.lastTileX = lastX;
-			Lighting.firstTileY = firstY;
-			Lighting.lastTileY = lastY;
-			Lighting.firstToLightX = Lighting.firstTileX - Lighting.offScreenTiles;
-			Lighting.firstToLightY = Lighting.firstTileY - Lighting.offScreenTiles;
-			Lighting.lastToLightX = Lighting.lastTileX + Lighting.offScreenTiles;
-			Lighting.lastToLightY = Lighting.lastTileY + Lighting.offScreenTiles;
-			if (Lighting.firstToLightX < 0)
-			{
-				Lighting.firstToLightX = 0;
-			}
-			if (Lighting.lastToLightX >= Main.maxTilesX)
-			{
-				Lighting.lastToLightX = Main.maxTilesX - 1;
-			}
-			if (Lighting.firstToLightY < 0)
-			{
-				Lighting.firstToLightY = 0;
-			}
-			if (Lighting.lastToLightY >= Main.maxTilesY)
-			{
-				Lighting.lastToLightY = Main.maxTilesY - 1;
-			}
-			Lighting.lightCounter++;
-			Main.renderCount++;
-			int num4 = Main.screenWidth / 16 + Lighting.offScreenTiles * 2;
-			int num5 = Main.screenHeight / 16 + Lighting.offScreenTiles * 2;
-			Vector2 vector = Main.screenLastPosition;
-			if (Main.renderCount < 3)
-			{
-				Lighting.doColors();
-			}
-			if (Main.renderCount == 2)
-			{
-				vector = Main.screenPosition;
-				int num6 = (int)(Main.screenPosition.X / 16f) - Lighting.scrX;
-				int num7 = (int)(Main.screenPosition.Y / 16f) - Lighting.scrY;
-				if (num6 > 16)
-				{
-					num6 = 0;
-				}
-				if (num7 > 16)
-				{
-					num7 = 0;
-				}
-				int num8 = 0;
-				int num9 = num4;
-				int num10 = 0;
-				int num11 = num5;
-				if (num6 < 0)
-				{
-					num8 -= num6;
-				}
-				else
-				{
-					num9 -= num6;
-				}
-				if (num7 < 0)
-				{
-					num10 -= num7;
-				}
-				else
-				{
-					num11 -= num7;
-				}
-				if (Lighting.RGB)
-				{
-					for (int i = num8; i < num4; i++)
-					{
-						Lighting.LightingState[] array = Lighting.states[i];
-						Lighting.LightingState[] array2 = Lighting.states[i + num6];
-						for (int j = num10; j < num11; j++)
-						{
-							Lighting.LightingState lightingState = array[j];
-							Lighting.LightingState lightingState2 = array2[j + num7];
-							lightingState.r = lightingState2.r2;
-							lightingState.g = lightingState2.g2;
-							lightingState.b = lightingState2.b2;
-						}
-					}
-				}
-				else
-				{
-					for (int k = num8; k < num9; k++)
-					{
-						Lighting.LightingState[] array3 = Lighting.states[k];
-						Lighting.LightingState[] array4 = Lighting.states[k + num6];
-						for (int l = num10; l < num11; l++)
-						{
-							Lighting.LightingState lightingState3 = array3[l];
-							Lighting.LightingState lightingState4 = array4[l + num7];
-							lightingState3.r = lightingState4.r2;
-							lightingState3.g = lightingState4.r2;
-							lightingState3.b = lightingState4.r2;
-						}
-					}
-				}
-			}
-			else
-			{
-				if (!Main.renderNow)
-				{
-					int num12 = (int)(Main.screenPosition.X / 16f) - (int)(vector.X / 16f);
-					if (num12 > 5 || num12 < -5)
-					{
-						num12 = 0;
-					}
-					int num13;
-					int num14;
-					int num15;
-					if (num12 < 0)
-					{
-						num13 = -1;
-						num12 *= -1;
-						num14 = num4;
-						num15 = num12;
-					}
-					else
-					{
-						num13 = 1;
-						num14 = 0;
-						num15 = num4 - num12;
-					}
-					int num16 = (int)(Main.screenPosition.Y / 16f) - (int)(vector.Y / 16f);
-					if (num16 > 5 || num16 < -5)
-					{
-						num16 = 0;
-					}
-					int num17;
-					int num18;
-					int num19;
-					if (num16 < 0)
-					{
-						num17 = -1;
-						num16 *= -1;
-						num18 = num5;
-						num19 = num16;
-					}
-					else
-					{
-						num17 = 1;
-						num18 = 0;
-						num19 = num5 - num16;
-					}
-					if (num12 != 0 || num16 != 0)
-					{
-						for (int num20 = num14; num20 != num15; num20 += num13)
-						{
-							Lighting.LightingState[] array5 = Lighting.states[num20];
-							Lighting.LightingState[] array6 = Lighting.states[num20 + num12 * num13];
-							for (int num21 = num18; num21 != num19; num21 += num17)
-							{
-								Lighting.LightingState lightingState5 = array5[num21];
-								Lighting.LightingState lightingState6 = array6[num21 + num16 * num17];
-								lightingState5.r = lightingState6.r;
-								lightingState5.g = lightingState6.g;
-								lightingState5.b = lightingState6.b;
-							}
-						}
-					}
-					if (Netplay.clientSock.statusMax > 0)
-					{
-						Main.mapTime = 1;
-					}
-					if (Main.mapTime == 0 && Main.mapEnabled && Main.renderCount == 3)
-					{
-						try
-						{
-							Main.mapTime = Main.mapTimeMax;
-							Main.updateMap = true;
-							Main.mapMinX = Lighting.firstToLightX + Lighting.offScreenTiles;
-							Main.mapMaxX = Lighting.lastToLightX - Lighting.offScreenTiles;
-							Main.mapMinY = Lighting.firstToLightY + Lighting.offScreenTiles;
-							Main.mapMaxY = Lighting.lastToLightY - Lighting.offScreenTiles;
-							for (int m = Main.mapMinX; m < Main.mapMaxX; m++)
-							{
-								Lighting.LightingState[] array7 = Lighting.states[m - Lighting.firstTileX + Lighting.offScreenTiles];
-								for (int n = Main.mapMinY; n < Main.mapMaxY; n++)
-								{
-									Lighting.LightingState lightingState7 = array7[n - Lighting.firstTileY + Lighting.offScreenTiles];
-									Tile tile = Main.tile[m, n];
-									Map map = Main.map[m, n];
-									if (map == null)
-									{
-										map = new Map();
-										Main.map[m, n] = map;
-									}
-									float num22 = 0f;
-									if (lightingState7.r > num22)
-									{
-										num22 = lightingState7.r;
-									}
-									if (lightingState7.g > num22)
-									{
-										num22 = lightingState7.g;
-									}
-									if (lightingState7.b > num22)
-									{
-										num22 = lightingState7.b;
-									}
-									if (Lighting.lightMode < 2)
-									{
-										num22 *= 1.5f;
-									}
-									num22 *= 255f;
-									if (num22 > 255f)
-									{
-										num22 = 255f;
-									}
-									if ((double)n < Main.worldSurface && !tile.active() && tile.wall == 0 && tile.liquid == 0)
-									{
-										num22 = 22f;
-									}
-									if (num22 > 18f || map.light > 0)
-									{
-										if (num22 < 22f)
-										{
-											num22 = 22f;
-										}
-										map.setTile(m, n, (byte)num22);
-									}
-								}
-							}
-						}
-						catch
-						{
-						}
-					}
-					if (Lighting.oldSkyColor != Lighting.skyColor)
-					{
-						int num23 = Lighting.firstToLightX;
-						int num24 = Lighting.firstToLightY;
-						int num25 = Lighting.lastToLightX;
-						int num26;
-						if ((double)Lighting.lastToLightY >= Main.worldSurface)
-						{
-							num26 = (int)Main.worldSurface - 1;
-						}
-						else
-						{
-							num26 = Lighting.lastToLightY;
-						}
-						if ((double)num24 < Main.worldSurface)
-						{
-							for (int num27 = num23; num27 < num25; num27++)
-							{
-								Lighting.LightingState[] array8 = Lighting.states[num27 - Lighting.firstToLightX];
-								for (int num28 = num24; num28 < num26; num28++)
-								{
-									Lighting.LightingState lightingState8 = array8[num28 - Lighting.firstToLightY];
-									Tile tile2 = Main.tile[num27, num28];
-									if (tile2 == null)
-									{
-										tile2 = new Tile();
-										Main.tile[num27, num28] = tile2;
-									}
-									if ((!tile2.active() || !Main.tileNoSunLight[(int)tile2.type]) && lightingState8.r < Lighting.skyColor && tile2.liquid < 200 && (Main.wallLight[(int)tile2.wall] || tile2.wall == 73))
-									{
-										lightingState8.r = num;
-										if (lightingState8.g < Lighting.skyColor)
-										{
-											lightingState8.g = num2;
-										}
-										if (lightingState8.b < Lighting.skyColor)
-										{
-											lightingState8.b = num3;
-										}
-									}
-								}
-							}
-						}
-					}
-				}
-				else
-				{
-					Lighting.lightCounter = 0;
-				}
-			}
-			if (Main.renderCount > Lighting.maxRenderCount)
-			{
-				Lighting.PreRenderPhase();
-			}
-		}
-		public static void PreRenderPhase()
-		{
-			float num = (float)Main.tileColor.R / 255f;
-			float num2 = (float)Main.tileColor.G / 255f;
-			float num3 = (float)Main.tileColor.B / 255f;
-			Stopwatch stopwatch = new Stopwatch();
-			stopwatch.Start();
-			int num4 = 0;
-			int num5 = Main.screenWidth / 16 + Lighting.offScreenTiles * 2 + 10;
-			int num6 = 0;
-			int num7 = Main.screenHeight / 16 + Lighting.offScreenTiles * 2 + 10;
-			Lighting.minX = num5;
-			Lighting.maxX = num4;
-			Lighting.minY = num7;
-			Lighting.maxY = num6;
-			if (Lighting.lightMode == 0 || Lighting.lightMode == 3)
-			{
-				Lighting.RGB = true;
-			}
-			else
-			{
-				Lighting.RGB = false;
-			}
-			for (int i = num4; i < num5; i++)
-			{
-				Lighting.LightingState[] array = Lighting.states[i];
-				for (int j = num6; j < num7; j++)
-				{
-					Lighting.LightingState lightingState = array[j];
-					lightingState.r2 = 0f;
-					lightingState.g2 = 0f;
-					lightingState.b2 = 0f;
-					lightingState.stopLight = false;
-					lightingState.wetLight = false;
-					lightingState.honeyLight = false;
-				}
-			}
-			if (Main.wof >= 0 && Main.player[Main.myPlayer].gross)
-			{
-				try
-				{
-					int num8 = (int)Main.screenPosition.Y / 16 - 10;
-					int num9 = (int)(Main.screenPosition.Y + (float)Main.screenHeight) / 16 + 10;
-					int num10 = (int)Main.npc[Main.wof].position.X / 16;
-					if (Main.npc[Main.wof].direction > 0)
-					{
-						num10 -= 3;
-					}
-					else
-					{
-						num10 += 2;
-					}
-					int num11 = num10 + 8;
-					float num12 = 0.5f * Main.demonTorch + 1f * (1f - Main.demonTorch);
-					float num13 = 0.3f;
-					float num14 = 1f * Main.demonTorch + 0.5f * (1f - Main.demonTorch);
-					num12 *= 0.2f;
-					num13 *= 0.1f;
-					num14 *= 0.3f;
-					for (int k = num10; k <= num11; k++)
-					{
-						Lighting.LightingState[] array2 = Lighting.states[k - num10];
-						for (int l = num8; l <= num9; l++)
-						{
-							Lighting.LightingState lightingState2 = array2[l - Lighting.firstToLightY];
-							if (lightingState2.r2 < num12)
-							{
-								lightingState2.r2 = num12;
-							}
-							if (lightingState2.g2 < num13)
-							{
-								lightingState2.g2 = num13;
-							}
-							if (lightingState2.b2 < num14)
-							{
-								lightingState2.b2 = num14;
-							}
-						}
-					}
-				}
-				catch
-				{
-				}
-			}
-			Main.sandTiles = 0;
-			Main.evilTiles = 0;
-			Main.bloodTiles = 0;
-			Main.shroomTiles = 0;
-			Main.snowTiles = 0;
-			Main.holyTiles = 0;
-			Main.meteorTiles = 0;
-			Main.jungleTiles = 0;
-			Main.dungeonTiles = 0;
-			Main.campfire = false;
-			Main.heartLantern = false;
-			Main.musicBox = -1;
-			Main.waterCandles = 0;
-			int[] tileCounts = WorldGen.tileCounts;
-			num4 = Lighting.firstToLightX;
-			num5 = Lighting.lastToLightX;
-			num6 = Lighting.firstToLightY;
-			num7 = Lighting.lastToLightY;
-			int num15 = (num5 - num4 - Main.zoneX) / 2;
-			int num16 = (num7 - num6 - Main.zoneY) / 2;
-			Main.fountainColor = -1;
-			for (int m = num4; m < num5; m++)
-			{
-				Lighting.LightingState[] array3 = Lighting.states[m - Lighting.firstToLightX];
-				for (int n = num6; n < num7; n++)
-				{
-					Lighting.LightingState lightingState3 = array3[n - Lighting.firstToLightY];
-					Tile tile = Main.tile[m, n];
-					if (tile == null)
-					{
-						tile = new Tile();
-						Main.tile[m, n] = tile;
-					}
-					float num17 = 0f;
-					float num18 = 0f;
-					float num19 = 0f;
-					if ((double)n < Main.worldSurface)
-					{
-						if ((!tile.active() || !Main.tileNoSunLight[(int)tile.type]) && lightingState3.r2 < Lighting.skyColor && (Main.wallLight[(int)tile.wall] || tile.wall == 73) && tile.liquid < 200 && (!tile.halfBrick() || Main.tile[m, n - 1].liquid < 200))
-						{
-							num17 = num;
-							num18 = num2;
-							num19 = num3;
-						}
-						if ((!tile.active() || tile.halfBrick() || !Main.tileNoSunLight[(int)tile.type]) && tile.wall >= 88 && tile.wall <= 93 && tile.liquid < 255)
-						{
-							num17 = num;
-							num18 = num2;
-							num19 = num3;
-							switch (tile.wall)
-							{
-							case 88:
-								num17 *= 0.9f;
-								num18 *= 0.15f;
-								num19 *= 0.9f;
-								break;
-							case 89:
-								num17 *= 0.9f;
-								num18 *= 0.9f;
-								num19 *= 0.15f;
-								break;
-							case 90:
-								num17 *= 0.15f;
-								num18 *= 0.15f;
-								num19 *= 0.9f;
-								break;
-							case 91:
-								num17 *= 0.15f;
-								num18 *= 0.9f;
-								num19 *= 0.15f;
-								break;
-							case 92:
-								num17 *= 0.9f;
-								num18 *= 0.15f;
-								num19 *= 0.15f;
-								break;
-							case 93:
-							{
-								float num20 = 0.2f;
-								float num21 = 0.7f - num20;
-								num17 *= num21 + (float)Main.DiscoR / 255f * num20;
-								num18 *= num21 + (float)Main.DiscoG / 255f * num20;
-								num19 *= num21 + (float)Main.DiscoB / 255f * num20;
-								break;
-							}
-							}
-						}
-						if (!Lighting.RGB)
-						{
-							float num22 = (num17 + num18 + num19) / 3f;
-							num18 = (num17 = (num19 = num22));
-						}
-						if (lightingState3.r2 < num17)
-						{
-							lightingState3.r2 = num17;
-						}
-						if (lightingState3.g2 < num18)
-						{
-							lightingState3.g2 = num18;
-						}
-						if (lightingState3.b2 < num19)
-						{
-							lightingState3.b2 = num19;
-						}
-					}
-					byte wall = tile.wall;
-					if (wall <= 44)
-					{
-						if (wall != 33)
-						{
-							if (wall == 44)
-							{
-								if (!tile.active() || !Main.tileBlockLight[(int)tile.type])
-								{
-									num17 = (float)Main.DiscoR / 255f * 0.15f;
-									num18 = (float)Main.DiscoG / 255f * 0.15f;
-									num19 = (float)Main.DiscoB / 255f * 0.15f;
-								}
-							}
-						}
-						else
-						{
-							if (!tile.active() || !Main.tileBlockLight[(int)tile.type])
-							{
-								num17 = 0.0899999961f;
-								num18 = 0.0525000021f;
-								num19 = 0.24f;
-							}
-						}
-					}
-					else
-					{
-						if (wall != 137)
-						{
-							switch (wall)
-							{
-							case 153:
-								num17 = 0.6f;
-								num18 = 0.3f;
-								break;
-							case 154:
-								num17 = 0.6f;
-								num19 = 0.6f;
-								break;
-							case 155:
-								num17 = 0.6f;
-								num18 = 0.6f;
-								num19 = 0.6f;
-								break;
-							case 156:
-								num18 = 0.6f;
-								break;
-							default:
-								switch (wall)
-								{
-								case 164:
-									num17 = 0.6f;
-									break;
-								case 165:
-									num19 = 0.6f;
-									break;
-								case 166:
-									num17 = 0.6f;
-									num18 = 0.6f;
-									break;
-								}
-								break;
-							}
-						}
-						else
-						{
-							if (!tile.active() || !Main.tileBlockLight[(int)tile.type])
-							{
-								float num23 = 0.4f;
-								num23 += (float)(270 - (int)Main.mouseTextColor) / 1500f;
-								num23 += (float)Main.rand.Next(0, 50) * 0.0005f;
-								num17 = 1f * num23;
-								num18 = 0.5f * num23;
-								num19 = 0.1f * num23;
-							}
-						}
-					}
-					if (tile.active())
-					{
-						if (m > num4 + num15 && m < num5 - num15 && n > num6 + num16 && n < num7 - num16)
-						{
-							tileCounts[(int)tile.type]++;
-							if (tile.type == 42 && tile.frameY >= 324 && tile.frameY <= 358)
-							{
-								Main.heartLantern = true;
-							}
-						}
-						ushort type = tile.type;
-						if (type != 139)
-						{
-							if (type == 207)
-							{
-								if (tile.frameY >= 72)
-								{
-									switch (tile.frameX / 36)
-									{
-									case 0:
-										Main.fountainColor = 0;
-										break;
-									case 1:
-										Main.fountainColor = 6;
-										break;
-									case 2:
-										Main.fountainColor = 3;
-										break;
-									case 3:
-										Main.fountainColor = 5;
-										break;
-									case 4:
-										Main.fountainColor = 2;
-										break;
-									case 5:
-										Main.fountainColor = 10;
-										break;
-									case 6:
-										Main.fountainColor = 4;
-										break;
-									case 7:
-										Main.fountainColor = 9;
-										break;
-									default:
-										Main.fountainColor = -1;
-										break;
-									}
-								}
-							}
-						}
-						else
-						{
-							if (tile.frameX >= 36)
-							{
-								Main.musicBox = (int)(tile.frameY / 36);
-							}
-						}
-						if (Main.tileBlockLight[(int)tile.type] && (Lighting.lightMode >= 2 || (tile.type != 131 && !tile.inActive() && tile.slope() == 0)))
-						{
-							lightingState3.stopLight = true;
-						}
-						if (Main.tileLighted[(int)tile.type])
-						{
-							type = tile.type;
-							if (type <= 129)
-							{
-								if (type <= 42)
-								{
-									if (type <= 22)
-									{
-										if (type != 4)
-										{
-											if (type == 17)
-											{
-												goto IL_1A07;
-											}
-											if (type != 22)
-											{
-												goto IL_22D7;
-											}
-											goto IL_1A55;
-										}
-										else
-										{
-											if (tile.frameX >= 66)
-											{
-												goto IL_22D7;
-											}
-											switch (tile.frameY / 22)
-											{
-											case 0:
-												num17 = 1f;
-												num18 = 0.95f;
-												num19 = 0.8f;
-												goto IL_22D7;
-											case 1:
-												num17 = 0f;
-												num18 = 0.1f;
-												num19 = 1.3f;
-												goto IL_22D7;
-											case 2:
-												num17 = 1f;
-												num18 = 0.1f;
-												num19 = 0.1f;
-												goto IL_22D7;
-											case 3:
-												num17 = 0f;
-												num18 = 1f;
-												num19 = 0.1f;
-												goto IL_22D7;
-											case 4:
-												num17 = 0.9f;
-												num18 = 0f;
-												num19 = 0.9f;
-												goto IL_22D7;
-											case 5:
-												num17 = 1.3f;
-												num18 = 1.3f;
-												num19 = 1.3f;
-												goto IL_22D7;
-											case 6:
-												num17 = 0.9f;
-												num18 = 0.9f;
-												num19 = 0f;
-												goto IL_22D7;
-											case 7:
-												num17 = 0.5f * Main.demonTorch + 1f * (1f - Main.demonTorch);
-												num18 = 0.3f;
-												num19 = 1f * Main.demonTorch + 0.5f * (1f - Main.demonTorch);
-												goto IL_22D7;
-											case 8:
-												num17 = 0.85f;
-												num18 = 1f;
-												num19 = 0.7f;
-												goto IL_22D7;
-											case 9:
-												num17 = 0.7f;
-												num18 = 0.85f;
-												num19 = 1f;
-												goto IL_22D7;
-											case 10:
-												num17 = 1f;
-												num18 = 0.5f;
-												num19 = 0f;
-												goto IL_22D7;
-											case 11:
-												num17 = 1.25f;
-												num18 = 1.25f;
-												num19 = 0.8f;
-												goto IL_22D7;
-											case 12:
-												num17 = 0.75f;
-												num18 = 1.28249991f;
-												num19 = 1.2f;
-												goto IL_22D7;
-											default:
-												num17 = 1f;
-												num18 = 0.95f;
-												num19 = 0.8f;
-												goto IL_22D7;
-											}
-										}
-									}
-									else
-									{
-										if (type != 26)
-										{
-											switch (type)
-											{
-											case 31:
-												break;
-											case 32:
-											case 36:
-												goto IL_22D7;
-											case 33:
-											{
-												if (tile.frameX != 0)
-												{
-													goto IL_22D7;
-												}
-												int num24 = (int)(tile.frameY / 22);
-												switch (num24)
-												{
-												case 0:
-													num17 = 1f;
-													num18 = 0.95f;
-													num19 = 0.65f;
-													goto IL_22D7;
-												case 1:
-													num17 = 0.55f;
-													num18 = 0.85f;
-													num19 = 0.35f;
-													goto IL_22D7;
-												case 2:
-													num17 = 0.65f;
-													num18 = 0.95f;
-													num19 = 0.5f;
-													goto IL_22D7;
-												case 3:
-													num17 = 0.2f;
-													num18 = 0.75f;
-													num19 = 1f;
-													goto IL_22D7;
-												default:
-													if (num24 != 14)
-													{
-														switch (num24)
-														{
-														case 19:
-															num17 = 0.37f;
-															num18 = 0.8f;
-															num19 = 1f;
-															goto IL_22D7;
-														case 20:
-															num17 = 0f;
-															num18 = 0.9f;
-															num19 = 1f;
-															goto IL_22D7;
-														case 21:
-															num17 = 0.25f;
-															num18 = 0.7f;
-															num19 = 1f;
-															goto IL_22D7;
-														case 25:
-															num17 = 0.5f * Main.demonTorch + 1f * (1f - Main.demonTorch);
-															num18 = 0.3f;
-															num19 = 1f * Main.demonTorch + 0.5f * (1f - Main.demonTorch);
-															goto IL_22D7;
-														}
-														num17 = 1f;
-														num18 = 0.95f;
-														num19 = 0.65f;
-														goto IL_22D7;
-													}
-													num17 = 1f;
-													num18 = 1f;
-													num19 = 0.6f;
-													goto IL_22D7;
-												}
-												break;
-											}
-											case 34:
-												if (tile.frameX < 54)
-												{
-													switch (tile.frameY / 54)
-													{
-													case 7:
-														num17 = 0.95f;
-														num18 = 0.95f;
-														num19 = 0.5f;
-														goto IL_22D7;
-													case 8:
-														num17 = 0.85f;
-														num18 = 0.6f;
-														num19 = 1f;
-														goto IL_22D7;
-													case 9:
-														num17 = 1f;
-														num18 = 0.6f;
-														num19 = 0.6f;
-														goto IL_22D7;
-													case 11:
-													case 17:
-														num17 = 0.75f;
-														num18 = 0.9f;
-														num19 = 1f;
-														goto IL_22D7;
-													case 15:
-														num17 = 1f;
-														num18 = 1f;
-														num19 = 0.7f;
-														goto IL_22D7;
-													case 18:
-														num17 = 1f;
-														num18 = 1f;
-														num19 = 0.6f;
-														goto IL_22D7;
-													case 24:
-														num17 = 0.37f;
-														num18 = 0.8f;
-														num19 = 1f;
-														goto IL_22D7;
-													case 25:
-														num17 = 0f;
-														num18 = 0.9f;
-														num19 = 1f;
-														goto IL_22D7;
-													case 26:
-														num17 = 0.25f;
-														num18 = 0.7f;
-														num19 = 1f;
-														goto IL_22D7;
-													case 27:
-														num17 = 0.55f;
-														num18 = 0.85f;
-														num19 = 0.35f;
-														goto IL_22D7;
-													case 28:
-														num17 = 0.65f;
-														num18 = 0.95f;
-														num19 = 0.5f;
-														goto IL_22D7;
-													case 29:
-														num17 = 0.2f;
-														num18 = 0.75f;
-														num19 = 1f;
-														goto IL_22D7;
-													case 32:
-														num17 = 0.5f * Main.demonTorch + 1f * (1f - Main.demonTorch);
-														num18 = 0.3f;
-														num19 = 1f * Main.demonTorch + 0.5f * (1f - Main.demonTorch);
-														goto IL_22D7;
-													}
-													num17 = 1f;
-													num18 = 0.95f;
-													num19 = 0.8f;
-													goto IL_22D7;
-												}
-												goto IL_22D7;
-											case 35:
-												if (tile.frameX < 36)
-												{
-													num17 = 0.75f;
-													num18 = 0.6f;
-													num19 = 0.3f;
-													goto IL_22D7;
-												}
-												goto IL_22D7;
-											case 37:
-												num17 = 0.56f;
-												num18 = 0.43f;
-												num19 = 0.15f;
-												goto IL_22D7;
-											default:
-											{
-												if (type != 42)
-												{
-													goto IL_22D7;
-												}
-												if (tile.frameX != 0)
-												{
-													goto IL_22D7;
-												}
-												int num25 = (int)(tile.frameY / 36);
-												int num24 = num25;
-												switch (num24)
-												{
-												case 0:
-													num17 = 0.7f;
-													num18 = 0.65f;
-													num19 = 0.55f;
-													goto IL_22D7;
-												case 1:
-													num17 = 0.9f;
-													num18 = 0.75f;
-													num19 = 0.6f;
-													goto IL_22D7;
-												case 2:
-													num17 = 0.8f;
-													num18 = 0.6f;
-													num19 = 0.6f;
-													goto IL_22D7;
-												case 3:
-													num17 = 0.65f;
-													num18 = 0.5f;
-													num19 = 0.2f;
-													goto IL_22D7;
-												case 4:
-													num17 = 0.5f;
-													num18 = 0.7f;
-													num19 = 0.4f;
-													goto IL_22D7;
-												case 5:
-													num17 = 0.9f;
-													num18 = 0.4f;
-													num19 = 0.2f;
-													goto IL_22D7;
-												case 6:
-													num17 = 0.7f;
-													num18 = 0.75f;
-													num19 = 0.3f;
-													goto IL_22D7;
-												case 7:
-												{
-													float num26 = Main.demonTorch * 0.2f;
-													num17 = 0.9f - num26;
-													num18 = 0.9f - num26;
-													num19 = 0.7f + num26;
-													goto IL_22D7;
-												}
-												case 8:
-													num17 = 0.75f;
-													num18 = 0.6f;
-													num19 = 0.3f;
-													goto IL_22D7;
-												case 9:
-													num17 = 1f;
-													num18 = 0.3f;
-													num19 = 0.5f;
-													num19 += Main.demonTorch * 0.2f;
-													num17 -= Main.demonTorch * 0.1f;
-													num18 -= Main.demonTorch * 0.2f;
-													goto IL_22D7;
-												default:
-													switch (num24)
-													{
-													case 28:
-														num17 = 0.37f;
-														num18 = 0.8f;
-														num19 = 1f;
-														goto IL_22D7;
-													case 29:
-														num17 = 0f;
-														num18 = 0.9f;
-														num19 = 1f;
-														goto IL_22D7;
-													case 30:
-														num17 = 0.25f;
-														num18 = 0.7f;
-														num19 = 1f;
-														goto IL_22D7;
-													case 32:
-														num17 = 0.5f * Main.demonTorch + 1f * (1f - Main.demonTorch);
-														num18 = 0.3f;
-														num19 = 1f * Main.demonTorch + 0.5f * (1f - Main.demonTorch);
-														goto IL_22D7;
-													}
-													num17 = 1f;
-													num18 = 1f;
-													num19 = 1f;
-													goto IL_22D7;
-												}
-												break;
-											}
-											}
-										}
-										if ((tile.type == 31 && tile.frameX >= 36) || (tile.type == 26 && tile.frameX >= 54))
-										{
-											float num27 = (float)Main.rand.Next(-5, 6) * 0.0025f;
-											num17 = 0.5f + num27 * 2f;
-											num18 = 0.2f + num27;
-											num19 = 0.1f;
-											goto IL_22D7;
-										}
-										float num28 = (float)Main.rand.Next(-5, 6) * 0.0025f;
-										num17 = 0.31f + num28;
-										num18 = 0.1f;
-										num19 = 0.44f + num28 * 2f;
-										goto IL_22D7;
-									}
-								}
-								else
-								{
-									if (type <= 72)
-									{
-										if (type == 49)
-										{
-											num17 = 0f;
-											num18 = 0.35f;
-											num19 = 0.8f;
-											goto IL_22D7;
-										}
-										if (type != 61)
-										{
-											switch (type)
-											{
-											case 70:
-											case 71:
-											case 72:
-												goto IL_1E6B;
-											default:
-												goto IL_22D7;
-											}
-										}
-										else
-										{
-											if (tile.frameX == 144)
-											{
-												float num29 = 1f + (float)(270 - (int)Main.mouseTextColor) / 400f;
-												float num30 = 0.8f - (float)(270 - (int)Main.mouseTextColor) / 400f;
-												num17 = 0.42f * num30;
-												num18 = 0.81f * num29;
-												num19 = 0.52f * num30;
-												goto IL_22D7;
-											}
-											goto IL_22D7;
-										}
-									}
-									else
-									{
-										if (type <= 84)
-										{
-											if (type == 77)
-											{
-												num17 = 0.75f;
-												num18 = 0.45f;
-												num19 = 0.25f;
-												goto IL_22D7;
-											}
-											switch (type)
-											{
-											case 83:
-												if (tile.frameX == 18 && !Main.dayTime)
-												{
-													num17 = 0.1f;
-													num18 = 0.4f;
-													num19 = 0.6f;
-													goto IL_22D7;
-												}
-												goto IL_22D7;
-											case 84:
-											{
-												int num31 = (int)(tile.frameX / 18);
-												if (num31 == 2)
-												{
-													float num32 = (float)(270 - (int)Main.mouseTextColor) / 800f;
-													if (num32 > 1f)
-													{
-														num32 = 1f;
-													}
-													else
-													{
-														if (num32 < 0f)
-														{
-															num32 = 0f;
-														}
-													}
-													num17 = num32 * 0.7f;
-													num18 = num32;
-													num19 = num32 * 0.1f;
-													goto IL_22D7;
-												}
-												if (num31 == 5)
-												{
-													float num32 = 0.9f;
-													num17 = num32;
-													num18 = num32 * 0.8f;
-													num19 = num32 * 0.2f;
-													goto IL_22D7;
-												}
-												if (num31 == 6)
-												{
-													float num32 = 0.08f;
-													num18 = num32 * 0.8f;
-													num19 = num32;
-													goto IL_22D7;
-												}
-												goto IL_22D7;
-											}
-											default:
-												goto IL_22D7;
-											}
-										}
-										else
-										{
-											switch (type)
-											{
-											case 92:
-												if (tile.frameY <= 18 && tile.frameX == 0)
-												{
-													num17 = 1f;
-													num18 = 1f;
-													num19 = 1f;
-													goto IL_22D7;
-												}
-												goto IL_22D7;
-											case 93:
-												if (tile.frameX == 0)
-												{
-													switch (tile.frameY / 54)
-													{
-													case 1:
-														num17 = 0.95f;
-														num18 = 0.95f;
-														num19 = 0.5f;
-														goto IL_22D7;
-													case 2:
-														num17 = 0.85f;
-														num18 = 0.6f;
-														num19 = 1f;
-														goto IL_22D7;
-													case 3:
-														num17 = 0.75f;
-														num18 = 1f;
-														num19 = 0.6f;
-														goto IL_22D7;
-													case 4:
-													case 5:
-														num17 = 0.75f;
-														num18 = 0.9f;
-														num19 = 1f;
-														goto IL_22D7;
-													case 9:
-														num17 = 1f;
-														num18 = 1f;
-														num19 = 0.7f;
-														goto IL_22D7;
-													case 13:
-														num17 = 1f;
-														num18 = 1f;
-														num19 = 0.6f;
-														goto IL_22D7;
-													case 19:
-														num17 = 0.37f;
-														num18 = 0.8f;
-														num19 = 1f;
-														goto IL_22D7;
-													case 20:
-														num17 = 0f;
-														num18 = 0.9f;
-														num19 = 1f;
-														goto IL_22D7;
-													case 21:
-														num17 = 0.25f;
-														num18 = 0.7f;
-														num19 = 1f;
-														goto IL_22D7;
-													case 23:
-														num17 = 0.5f * Main.demonTorch + 1f * (1f - Main.demonTorch);
-														num18 = 0.3f;
-														num19 = 1f * Main.demonTorch + 0.5f * (1f - Main.demonTorch);
-														goto IL_22D7;
-													case 24:
-														num17 = 0.35f;
-														num18 = 0.5f;
-														num19 = 0.3f;
-														goto IL_22D7;
-													case 25:
-														num17 = 0.34f;
-														num18 = 0.4f;
-														num19 = 0.31f;
-														goto IL_22D7;
-													case 26:
-														num17 = 0.25f;
-														num18 = 0.32f;
-														num19 = 0.5f;
-														goto IL_22D7;
-													}
-													num17 = 1f;
-													num18 = 0.97f;
-													num19 = 0.85f;
-													goto IL_22D7;
-												}
-												goto IL_22D7;
-											case 94:
-											case 97:
-											case 99:
-												goto IL_22D7;
-											case 95:
-												if (tile.frameX < 36)
-												{
-													num17 = 1f;
-													num18 = 0.95f;
-													num19 = 0.8f;
-													goto IL_22D7;
-												}
-												goto IL_22D7;
-											case 96:
-												if (tile.frameX >= 36)
-												{
-													num17 = 0.5f;
-												}
-												num18 = 0.35f;
-												num19 = 0.1f;
-												goto IL_22D7;
-											case 98:
-												if (tile.frameY == 0)
-												{
-													num17 = 1f;
-												}
-												num18 = 0.97f;
-												num19 = 0.85f;
-												goto IL_22D7;
-											case 100:
-												break;
-											default:
-												switch (type)
-												{
-												case 125:
-												{
-													float num33 = (float)Main.rand.Next(28, 42) * 0.01f;
-													num33 += (float)(270 - (int)Main.mouseTextColor) / 800f;
-													num18 = (lightingState3.g2 = 0.3f * num33);
-													num19 = (lightingState3.b2 = 0.6f * num33);
-													goto IL_22D7;
-												}
-												case 126:
-													if (tile.frameX < 36)
-													{
-														num17 = (float)Main.DiscoR / 255f;
-														num18 = (float)Main.DiscoG / 255f;
-														num19 = (float)Main.DiscoB / 255f;
-														goto IL_22D7;
-													}
-													goto IL_22D7;
-												case 127:
-												case 128:
-													goto IL_22D7;
-												case 129:
-													switch (tile.frameX / 18 % 3)
-													{
-													case 0:
-														num17 = 0f;
-														num18 = 0.05f;
-														num19 = 0.25f;
-														goto IL_22D7;
-													case 1:
-														num17 = 0.2f;
-														num18 = 0f;
-														num19 = 0.15f;
-														goto IL_22D7;
-													case 2:
-														num17 = 0.1f;
-														num18 = 0f;
-														num19 = 0.2f;
-														goto IL_22D7;
-													default:
-														goto IL_22D7;
-													}
-													break;
-												default:
-													goto IL_22D7;
-												}
-												break;
-											}
-										}
-									}
-								}
-							}
-							else
-							{
-								if (type <= 204)
-								{
-									if (type <= 149)
-									{
-										if (type == 133)
-										{
-											goto IL_1A07;
-										}
-										if (type == 140)
-										{
-											goto IL_1A55;
-										}
-										if (type != 149)
-										{
-											goto IL_22D7;
-										}
-										if (tile.frameX <= 36)
-										{
-											switch (tile.frameX / 18)
-											{
-											case 0:
-												num17 = 0.1f;
-												num18 = 0.2f;
-												num19 = 0.5f;
-												break;
-											case 1:
-												num17 = 0.5f;
-												num18 = 0.1f;
-												num19 = 0.1f;
-												break;
-											case 2:
-												num17 = 0.2f;
-												num18 = 0.5f;
-												num19 = 0.1f;
-												break;
-											}
-											num17 *= (float)Main.rand.Next(970, 1031) * 0.001f;
-											num18 *= (float)Main.rand.Next(970, 1031) * 0.001f;
-											num19 *= (float)Main.rand.Next(970, 1031) * 0.001f;
-											goto IL_22D7;
-										}
-										goto IL_22D7;
-									}
-									else
-									{
-										if (type <= 174)
-										{
-											if (type == 160)
-											{
-												num17 = (float)Main.DiscoR / 255f * 0.25f;
-												num18 = (float)Main.DiscoG / 255f * 0.25f;
-												num19 = (float)Main.DiscoB / 255f * 0.25f;
-												goto IL_22D7;
-											}
-											switch (type)
-											{
-											case 171:
-											{
-												int num34 = m;
-												int num35 = n;
-												if (tile.frameX < 10)
-												{
-													num34 -= (int)tile.frameX;
-													num35 -= (int)tile.frameY;
-												}
-												switch ((Main.tile[num34, num35].frameY & 15360) >> 10)
-												{
-												case 1:
-													num17 = 0.1f;
-													num18 = 0.1f;
-													num19 = 0.1f;
-													break;
-												case 2:
-													num17 = 0.2f;
-													break;
-												case 3:
-													num18 = 0.2f;
-													break;
-												case 4:
-													num19 = 0.2f;
-													break;
-												case 5:
-													num17 = 0.125f;
-													num18 = 0.125f;
-													break;
-												case 6:
-													num17 = 0.2f;
-													num18 = 0.1f;
-													break;
-												case 7:
-													num17 = 0.125f;
-													num18 = 0.125f;
-													break;
-												case 8:
-													num17 = 0.08f;
-													num18 = 0.175f;
-													break;
-												case 9:
-													num18 = 0.125f;
-													num19 = 0.125f;
-													break;
-												case 10:
-													num17 = 0.125f;
-													num19 = 0.125f;
-													break;
-												case 11:
-													num17 = 0.1f;
-													num18 = 0.1f;
-													num19 = 0.2f;
-													break;
-												default:
-													num18 = (num17 = (num19 = 0f));
-													break;
-												}
-												num17 *= 0.5f;
-												num18 *= 0.5f;
-												num19 *= 0.5f;
-												goto IL_22D7;
-											}
-											case 172:
-												goto IL_22D7;
-											case 173:
-												break;
-											case 174:
-												if (tile.frameX == 0)
-												{
-													num17 = 1f;
-													num18 = 0.95f;
-													num19 = 0.65f;
-													goto IL_22D7;
-												}
-												goto IL_22D7;
-											default:
-												goto IL_22D7;
-											}
-										}
-										else
-										{
-											if (type == 190)
-											{
-												goto IL_1E6B;
-											}
-											if (type != 204)
-											{
-												goto IL_22D7;
-											}
-											num17 = 0.35f;
-											goto IL_22D7;
-										}
-									}
-								}
-								else
-								{
-									if (type <= 271)
-									{
-										if (type == 215)
-										{
-											float num36 = (float)Main.rand.Next(28, 42) * 0.005f;
-											num36 += (float)(270 - (int)Main.mouseTextColor) / 700f;
-											num17 = 0.9f + num36;
-											num18 = 0.3f + num36;
-											num19 = 0.1f + num36;
-											goto IL_22D7;
-										}
-										switch (type)
-										{
-										case 235:
-											if ((double)lightingState3.r2 < 0.6)
-											{
-												lightingState3.r2 = 0.6f;
-											}
-											if ((double)lightingState3.g2 < 0.6)
-											{
-												lightingState3.g2 = 0.6f;
-												goto IL_22D7;
-											}
-											goto IL_22D7;
-										case 236:
-											goto IL_22D7;
-										case 237:
-											num17 = 0.1f;
-											num18 = 0.1f;
-											goto IL_22D7;
-										case 238:
-											if ((double)lightingState3.r2 < 0.5)
-											{
-												lightingState3.r2 = 0.5f;
-											}
-											if ((double)lightingState3.b2 < 0.5)
-											{
-												lightingState3.b2 = 0.5f;
-												goto IL_22D7;
-											}
-											goto IL_22D7;
-										default:
-											switch (type)
-											{
-											case 262:
-												num17 = 0.75f;
-												num19 = 0.75f;
-												goto IL_22D7;
-											case 263:
-												num17 = 0.75f;
-												num18 = 0.75f;
-												goto IL_22D7;
-											case 264:
-												num19 = 0.75f;
-												goto IL_22D7;
-											case 265:
-												num18 = 0.75f;
-												goto IL_22D7;
-											case 266:
-												num17 = 0.75f;
-												goto IL_22D7;
-											case 267:
-												num17 = 0.75f;
-												num18 = 0.75f;
-												num19 = 0.75f;
-												goto IL_22D7;
-											case 268:
-												num17 = 0.75f;
-												num18 = 0.375f;
-												goto IL_22D7;
-											case 269:
-												goto IL_22D7;
-											case 270:
-												num17 = 0.73f;
-												num18 = 1f;
-												num19 = 0.41f;
-												goto IL_22D7;
-											case 271:
-												num17 = 0.45f;
-												num18 = 0.95f;
-												num19 = 1f;
-												goto IL_22D7;
-											default:
-												goto IL_22D7;
-											}
-											break;
-										}
-									}
-									else
-									{
-										if (type <= 318)
-										{
-											if (type == 286)
-											{
-												num17 = 1f;
-												num18 = 0.2f;
-												num19 = 0.7f;
-												goto IL_22D7;
-											}
-											switch (type)
-											{
-											case 316:
-											case 317:
-											case 318:
-											{
-												int num37 = m - (int)(tile.frameX / 18);
-												int num38 = n - (int)(tile.frameY / 18);
-												int num39 = num37 / 2 * (num38 / 3);
-												num39 %= Main.cageFrames;
-												bool flag = Main.jellyfishCageMode[(int)(tile.type - 316), num39] == 2;
-												if (tile.type == 316)
-												{
-													if (flag)
-													{
-														num17 = 0.2f;
-														num18 = 0.3f;
-														num19 = 0.8f;
-													}
-													else
-													{
-														num17 = 0.1f;
-														num18 = 0.2f;
-														num19 = 0.5f;
-													}
-												}
-												if (tile.type == 317)
-												{
-													if (flag)
-													{
-														num17 = 0.2f;
-														num18 = 0.7f;
-														num19 = 0.3f;
-													}
-													else
-													{
-														num17 = 0.05f;
-														num18 = 0.45f;
-														num19 = 0.1f;
-													}
-												}
-												if (tile.type != 318)
-												{
-													goto IL_22D7;
-												}
-												if (flag)
-												{
-													num17 = 0.7f;
-													num18 = 0.2f;
-													num19 = 0.5f;
-													goto IL_22D7;
-												}
-												num17 = 0.4f;
-												num18 = 0.1f;
-												num19 = 0.25f;
-												goto IL_22D7;
-											}
-											default:
-												goto IL_22D7;
-											}
-										}
-										else
-										{
-											if (type == 327)
-											{
-												float num40 = 0.5f;
-												num40 += (float)(270 - (int)Main.mouseTextColor) / 1500f;
-												num40 += (float)Main.rand.Next(0, 50) * 0.0005f;
-												num17 = 1f * num40;
-												num18 = 0.5f * num40;
-												num19 = 0.1f * num40;
-												goto IL_22D7;
-											}
-											if (type == 336)
-											{
-												num17 = 0.85f;
-												num18 = 0.5f;
-												num19 = 0.3f;
-												goto IL_22D7;
-											}
-											goto IL_22D7;
-										}
-									}
-								}
-							}
-							if (tile.frameX < 36)
-							{
-								switch (tile.frameY / 36)
-								{
-								case 1:
-									num17 = 0.95f;
-									num18 = 0.95f;
-									num19 = 0.5f;
-									goto IL_22D7;
-								case 3:
-									num17 = 1f;
-									num18 = 0.6f;
-									num19 = 0.6f;
-									goto IL_22D7;
-								case 6:
-								case 9:
-									num17 = 0.75f;
-									num18 = 0.9f;
-									num19 = 1f;
-									goto IL_22D7;
-								case 11:
-									num17 = 1f;
-									num18 = 1f;
-									num19 = 0.7f;
-									goto IL_22D7;
-								case 13:
-									num17 = 1f;
-									num18 = 1f;
-									num19 = 0.6f;
-									goto IL_22D7;
-								case 19:
-									num17 = 0.37f;
-									num18 = 0.8f;
-									num19 = 1f;
-									goto IL_22D7;
-								case 20:
-									num17 = 0f;
-									num18 = 0.9f;
-									num19 = 1f;
-									goto IL_22D7;
-								case 21:
-									num17 = 0.25f;
-									num18 = 0.7f;
-									num19 = 1f;
-									goto IL_22D7;
-								case 22:
-									num17 = 0.35f;
-									num18 = 0.5f;
-									num19 = 0.3f;
-									goto IL_22D7;
-								case 23:
-									num17 = 0.34f;
-									num18 = 0.4f;
-									num19 = 0.31f;
-									goto IL_22D7;
-								case 24:
-									num17 = 0.25f;
-									num18 = 0.32f;
-									num19 = 0.5f;
-									goto IL_22D7;
-								case 25:
-									num17 = 0.5f * Main.demonTorch + 1f * (1f - Main.demonTorch);
-									num18 = 0.3f;
-									num19 = 1f * Main.demonTorch + 0.5f * (1f - Main.demonTorch);
-									goto IL_22D7;
-								}
-								num17 = 1f;
-								num18 = 0.95f;
-								num19 = 0.65f;
-								goto IL_22D7;
-							}
-							goto IL_22D7;
-							IL_1A07:
-							num17 = 0.83f;
-							num18 = 0.6f;
-							num19 = 0.5f;
-							goto IL_22D7;
-							IL_1A55:
-							num17 = 0.12f;
-							num18 = 0.07f;
-							num19 = 0.32f;
-							goto IL_22D7;
-							IL_1E6B:
-							float num41 = (float)Main.rand.Next(28, 42) * 0.005f;
-							num41 += (float)(270 - (int)Main.mouseTextColor) / 1000f;
-							num17 = 0.1f;
-							num18 = 0.2f + num41 / 2f;
-							num19 = 0.7f + num41;
-						}
-					}
-					IL_22D7:
-					if (Lighting.RGB)
-					{
-						if (lightingState3.r2 < num17)
-						{
-							lightingState3.r2 = num17;
-						}
-						if (lightingState3.g2 < num18)
-						{
-							lightingState3.g2 = num18;
-						}
-						if (lightingState3.b2 < num19)
-						{
-							lightingState3.b2 = num19;
-						}
-					}
-					else
-					{
-						float num42 = (num17 + num18 + num19) / 3f;
-						if (lightingState3.r2 < num42)
-						{
-							lightingState3.r2 = num42;
-						}
-					}
-					if (tile.lava() && tile.liquid > 0)
-					{
-						if (Lighting.RGB)
-						{
-							float num43 = (float)(tile.liquid / 255) * 0.41f + 0.14f;
-							num43 = 0.55f;
-							num43 += (float)(270 - (int)Main.mouseTextColor) / 900f;
-							if (lightingState3.r2 < num43)
-							{
-								lightingState3.r2 = num43;
-							}
-							if (lightingState3.g2 < num43)
-							{
-								lightingState3.g2 = num43 * 0.6f;
-							}
-							if (lightingState3.b2 < num43)
-							{
-								lightingState3.b2 = num43 * 0.2f;
-							}
-						}
-						else
-						{
-							float num44 = (float)(tile.liquid / 255) * 0.38f + 0.08f;
-							num44 += (float)(270 - (int)Main.mouseTextColor) / 2000f;
-							if (lightingState3.r2 < num44)
-							{
-								lightingState3.r2 = num44;
-							}
-						}
-					}
-					else
-					{
-						if (tile.liquid > 128)
-						{
-							lightingState3.wetLight = true;
-							if (tile.honey())
-							{
-								lightingState3.honeyLight = true;
-							}
-						}
-					}
-					if (lightingState3.r2 > 0f || (Lighting.RGB && (lightingState3.g2 > 0f || lightingState3.b2 > 0f)))
-					{
-						int num45 = m - Lighting.firstToLightX;
-						int num46 = n - Lighting.firstToLightY;
-						if (Lighting.minX > num45)
-						{
-							Lighting.minX = num45;
-						}
-						if (Lighting.maxX < num45 + 1)
-						{
-							Lighting.maxX = num45 + 1;
-						}
-						if (Lighting.minY > num46)
-						{
-							Lighting.minY = num46;
-						}
-						if (Lighting.maxY < num46 + 1)
-						{
-							Lighting.maxY = num46 + 1;
-						}
-					}
-				}
-			}
-			foreach (KeyValuePair<Point16, Lighting.ColorTriplet> current in Lighting.tempLights)
-			{
-				int num47 = (int)current.Key.x - Lighting.firstTileX + Lighting.offScreenTiles;
-				int num48 = (int)current.Key.y - Lighting.firstTileY + Lighting.offScreenTiles;
-				if (num47 >= 0 && num47 < Main.screenWidth / 16 + Lighting.offScreenTiles * 2 + 10 && num48 >= 0 && num48 < Main.screenHeight / 16 + Lighting.offScreenTiles * 2 + 10)
-				{
-					Lighting.LightingState lightingState4 = Lighting.states[num47][num48];
-					if (lightingState4.r2 < current.Value.r)
-					{
-						lightingState4.r2 = current.Value.r;
-					}
-					if (lightingState4.g2 < current.Value.g)
-					{
-						lightingState4.g2 = current.Value.g;
-					}
-					if (lightingState4.b2 < current.Value.b)
-					{
-						lightingState4.b2 = current.Value.b;
-					}
-					if (num47 < Lighting.minX)
-					{
-						Lighting.minX = num47;
-					}
-					if (num47 > Lighting.maxX)
-					{
-						Lighting.maxX = num47;
-					}
-					if (num48 < Lighting.minY)
-					{
-						Lighting.minY = num48;
-					}
-					if (num48 > Lighting.maxY)
-					{
-						Lighting.maxY = num48;
-					}
-				}
-			}
-			Lighting.tempLights.Clear();
-			if (tileCounts[215] > 0)
-			{
-				Main.campfire = true;
-			}
-			Main.holyTiles = tileCounts[109] + tileCounts[110] + tileCounts[113] + tileCounts[117] + tileCounts[116] + tileCounts[164];
-			Main.evilTiles = tileCounts[23] + tileCounts[24] + tileCounts[25] + tileCounts[32] + tileCounts[112] + tileCounts[163] - 5 * tileCounts[27];
-			Main.bloodTiles = tileCounts[199] + tileCounts[203] + tileCounts[200] + tileCounts[234] - 5 * tileCounts[27];
-			Main.snowTiles = tileCounts[147] + tileCounts[148] + tileCounts[161] + tileCounts[162] + tileCounts[164] + tileCounts[163] + tileCounts[200];
-			Main.jungleTiles = tileCounts[60] + tileCounts[61] + tileCounts[62] + tileCounts[74] + tileCounts[226];
-			Main.shroomTiles = tileCounts[70] + tileCounts[71] + tileCounts[72];
-			Main.meteorTiles = tileCounts[37];
-			Main.dungeonTiles = tileCounts[41] + tileCounts[43] + tileCounts[44];
-			Main.sandTiles = tileCounts[53] + tileCounts[112] + tileCounts[116] + tileCounts[234];
-			Main.waterCandles = tileCounts[49];
-			Array.Clear(tileCounts, 0, tileCounts.Length);
-			if (Main.holyTiles < 0)
-			{
-				Main.holyTiles = 0;
-			}
-			if (Main.evilTiles < 0)
-			{
-				Main.evilTiles = 0;
-			}
-			if (Main.bloodTiles < 0)
-			{
-				Main.bloodTiles = 0;
-			}
-			int holyTiles = Main.holyTiles;
-			Main.holyTiles -= Main.evilTiles;
-			Main.holyTiles -= Main.bloodTiles;
-			Main.evilTiles -= holyTiles;
-			Main.bloodTiles -= holyTiles;
-			if (Main.holyTiles < 0)
-			{
-				Main.holyTiles = 0;
-			}
-			if (Main.evilTiles < 0)
-			{
-				Main.evilTiles = 0;
-			}
-			if (Main.bloodTiles < 0)
-			{
-				Main.bloodTiles = 0;
-			}
-			Lighting.minX += Lighting.firstToLightX;
-			Lighting.maxX += Lighting.firstToLightX;
-			Lighting.minY += Lighting.firstToLightY;
-			Lighting.maxY += Lighting.firstToLightY;
-			Lighting.minX7 = Lighting.minX;
-			Lighting.maxX7 = Lighting.maxX;
-			Lighting.minY7 = Lighting.minY;
-			Lighting.maxY7 = Lighting.maxY;
-			Lighting.firstTileX7 = Lighting.firstTileX;
-			Lighting.lastTileX7 = Lighting.lastTileX;
-			Lighting.lastTileY7 = Lighting.lastTileY;
-			Lighting.firstTileY7 = Lighting.firstTileY;
-			Lighting.firstToLightX7 = Lighting.firstToLightX;
-			Lighting.lastToLightX7 = Lighting.lastToLightX;
-			Lighting.firstToLightY7 = Lighting.firstToLightY;
-			Lighting.lastToLightY7 = Lighting.lastToLightY;
-			Lighting.firstToLightX27 = Lighting.firstTileX - Lighting.offScreenTiles2;
-			Lighting.firstToLightY27 = Lighting.firstTileY - Lighting.offScreenTiles2;
-			Lighting.lastToLightX27 = Lighting.lastTileX + Lighting.offScreenTiles2;
-			Lighting.lastToLightY27 = Lighting.lastTileY + Lighting.offScreenTiles2;
-			if (Lighting.firstToLightX27 < 0)
-			{
-				Lighting.firstToLightX27 = 0;
-			}
-			if (Lighting.lastToLightX27 >= Main.maxTilesX)
-			{
-				Lighting.lastToLightX27 = Main.maxTilesX - 1;
-			}
-			if (Lighting.firstToLightY27 < 0)
-			{
-				Lighting.firstToLightY27 = 0;
-			}
-			if (Lighting.lastToLightY27 >= Main.maxTilesY)
-			{
-				Lighting.lastToLightY27 = Main.maxTilesY - 1;
-			}
-			Lighting.scrX = (int)Main.screenPosition.X / 16;
-			Lighting.scrY = (int)Main.screenPosition.Y / 16;
-			Main.renderCount = 0;
-			TimeLogger.LightingTime(0, stopwatch.Elapsed.TotalMilliseconds);
-			Lighting.doColors();
-		}
-		public static void doColors()
-		{
-			if (Lighting.lightMode < 2)
-			{
-				Lighting.blueWave += (float)Lighting.blueDir * 0.0001f;
-				if (Lighting.blueWave > 1f)
-				{
-					Lighting.blueWave = 1f;
-					Lighting.blueDir = -1;
-				}
-				else
-				{
-					if (Lighting.blueWave < 0.97f)
-					{
-						Lighting.blueWave = 0.97f;
-						Lighting.blueDir = 1;
-					}
-				}
-				if (Lighting.RGB)
-				{
-					Lighting.negLight = 0.91f;
-					Lighting.negLight2 = 0.56f;
-					Lighting.honeyLightG = 0.7f * Lighting.negLight * Lighting.blueWave;
-					Lighting.honeyLightR = 0.75f * Lighting.negLight * Lighting.blueWave;
-					Lighting.honeyLightB = 0.6f * Lighting.negLight * Lighting.blueWave;
-					switch (Main.waterStyle)
-					{
-					case 0:
-					case 1:
-					case 7:
-					case 8:
-						Lighting.wetLightG = 0.96f * Lighting.negLight * Lighting.blueWave;
-						Lighting.wetLightR = 0.88f * Lighting.negLight * Lighting.blueWave;
-						Lighting.wetLightB = 1.015f * Lighting.negLight * Lighting.blueWave;
-						break;
-					case 2:
-						Lighting.wetLightG = 0.85f * Lighting.negLight * Lighting.blueWave;
-						Lighting.wetLightR = 0.94f * Lighting.negLight * Lighting.blueWave;
-						Lighting.wetLightB = 1.01f * Lighting.negLight * Lighting.blueWave;
-						break;
-					case 3:
-						Lighting.wetLightG = 0.95f * Lighting.negLight * Lighting.blueWave;
-						Lighting.wetLightR = 0.84f * Lighting.negLight * Lighting.blueWave;
-						Lighting.wetLightB = 1.015f * Lighting.negLight * Lighting.blueWave;
-						break;
-					case 4:
-						Lighting.wetLightG = 0.86f * Lighting.negLight * Lighting.blueWave;
-						Lighting.wetLightR = 0.9f * Lighting.negLight * Lighting.blueWave;
-						Lighting.wetLightB = 1.01f * Lighting.negLight * Lighting.blueWave;
-						break;
-					case 5:
-						Lighting.wetLightG = 0.99f * Lighting.negLight * Lighting.blueWave;
-						Lighting.wetLightR = 0.84f * Lighting.negLight * Lighting.blueWave;
-						Lighting.wetLightB = 1.01f * Lighting.negLight * Lighting.blueWave;
-						break;
-					case 6:
-						Lighting.wetLightG = 0.98f * Lighting.negLight * Lighting.blueWave;
-						Lighting.wetLightR = 0.95f * Lighting.negLight * Lighting.blueWave;
-						Lighting.wetLightB = 0.85f * Lighting.negLight * Lighting.blueWave;
-						break;
-					case 9:
-						Lighting.wetLightG = 0.88f * Lighting.negLight * Lighting.blueWave;
-						Lighting.wetLightR = 1f * Lighting.negLight * Lighting.blueWave;
-						Lighting.wetLightB = 0.84f * Lighting.negLight * Lighting.blueWave;
-						break;
-					case 10:
-						Lighting.wetLightG = 1f * Lighting.negLight * Lighting.blueWave;
-						Lighting.wetLightR = 0.83f * Lighting.negLight * Lighting.blueWave;
-						Lighting.wetLightB = 1f * Lighting.negLight * Lighting.blueWave;
-						break;
-					default:
-						Lighting.wetLightG = 0f;
-						Lighting.wetLightR = 0f;
-						Lighting.wetLightB = 0f;
-						break;
-					}
-				}
-				else
-				{
-					Lighting.negLight = 0.9f;
-					Lighting.negLight2 = 0.54f;
-					Lighting.wetLightR = 0.95f * Lighting.negLight * Lighting.blueWave;
-				}
-				if (Main.player[Main.myPlayer].nightVision)
-				{
-					Lighting.negLight *= 1.03f;
-					Lighting.negLight2 *= 1.03f;
-				}
-				if (Main.player[Main.myPlayer].blind)
-				{
-					Lighting.negLight *= 0.95f;
-					Lighting.negLight2 *= 0.95f;
-				}
-				if (Main.player[Main.myPlayer].blackout)
-				{
-					Lighting.negLight *= 0.85f;
-					Lighting.negLight2 *= 0.85f;
-				}
-			}
-			else
-			{
-				Lighting.negLight = 0.04f;
-				Lighting.negLight2 = 0.16f;
-				if (Main.player[Main.myPlayer].nightVision)
-				{
-					Lighting.negLight -= 0.013f;
-					Lighting.negLight2 -= 0.04f;
-				}
-				if (Main.player[Main.myPlayer].blind)
-				{
-					Lighting.negLight += 0.03f;
-					Lighting.negLight2 += 0.06f;
-				}
-				if (Main.player[Main.myPlayer].blackout)
-				{
-					Lighting.negLight += 0.09f;
-					Lighting.negLight2 += 0.18f;
-				}
-				Lighting.wetLightR = Lighting.negLight * 1.2f;
-				Lighting.wetLightG = Lighting.negLight * 1.1f;
-			}
-			int num;
-			int num2;
-			switch (Main.renderCount)
-			{
-			case 0:
-				num = 0;
-				num2 = 1;
-				break;
-			case 1:
-				num = 1;
-				num2 = 3;
-				break;
-			case 2:
-				num = 3;
-				num2 = 4;
-				break;
-			default:
-				num = 0;
-				num2 = 0;
-				break;
-			}
-			if (Lighting.LightingThreads < 0)
-			{
-				Lighting.LightingThreads = 0;
-			}
-			if (Lighting.LightingThreads >= Environment.ProcessorCount)
-			{
-				Lighting.LightingThreads = Environment.ProcessorCount - 1;
-			}
-			int num3 = Lighting.LightingThreads;
-			if (num3 > 0)
-			{
-				num3++;
-			}
-			Stopwatch stopwatch = new Stopwatch();
-			for (int i = num; i < num2; i++)
-			{
-				stopwatch.Restart();
-				switch (i)
-				{
-				case 0:
-					Lighting.swipe.innerLoop1Start = Lighting.minY7 - Lighting.firstToLightY7;
-					Lighting.swipe.innerLoop1End = Lighting.lastToLightY27 + Lighting.maxRenderCount - Lighting.firstToLightY7;
-					Lighting.swipe.innerLoop2Start = Lighting.maxY7 - Lighting.firstToLightY;
-					Lighting.swipe.innerLoop2End = Lighting.firstTileY7 - Lighting.maxRenderCount - Lighting.firstToLightY7;
-					Lighting.swipe.outerLoopStart = Lighting.minX7 - Lighting.firstToLightX7;
-					Lighting.swipe.outerLoopEnd = Lighting.maxX7 - Lighting.firstToLightX7;
-					Lighting.swipe.jaggedArray = Lighting.states;
-					break;
-				case 1:
-					Lighting.swipe.innerLoop1Start = Lighting.minX7 - Lighting.firstToLightX7;
-					Lighting.swipe.innerLoop1End = Lighting.lastTileX7 + Lighting.maxRenderCount - Lighting.firstToLightX7;
-					Lighting.swipe.innerLoop2Start = Lighting.maxX7 - Lighting.firstToLightX7;
-					Lighting.swipe.innerLoop2End = Lighting.firstTileX7 - Lighting.maxRenderCount - Lighting.firstToLightX7;
-					Lighting.swipe.outerLoopStart = Lighting.firstToLightY7 - Lighting.firstToLightY7;
-					Lighting.swipe.outerLoopEnd = Lighting.lastToLightY7 - Lighting.firstToLightY7;
-					Lighting.swipe.jaggedArray = Lighting.axisFlipStates;
-					break;
-				case 2:
-					Lighting.swipe.innerLoop1Start = Lighting.firstToLightY27 - Lighting.firstToLightY7;
-					Lighting.swipe.innerLoop1End = Lighting.lastTileY7 + Lighting.maxRenderCount - Lighting.firstToLightY7;
-					Lighting.swipe.innerLoop2Start = Lighting.lastToLightY27 - Lighting.firstToLightY;
-					Lighting.swipe.innerLoop2End = Lighting.firstTileY7 - Lighting.maxRenderCount - Lighting.firstToLightY7;
-					Lighting.swipe.outerLoopStart = Lighting.firstToLightX27 - Lighting.firstToLightX7;
-					Lighting.swipe.outerLoopEnd = Lighting.lastToLightX27 - Lighting.firstToLightX7;
-					Lighting.swipe.jaggedArray = Lighting.states;
-					break;
-				case 3:
-					Lighting.swipe.innerLoop1Start = Lighting.firstToLightX27 - Lighting.firstToLightX7;
-					Lighting.swipe.innerLoop1End = Lighting.lastTileX7 + Lighting.maxRenderCount - Lighting.firstToLightX7;
-					Lighting.swipe.innerLoop2Start = Lighting.lastToLightX27 - Lighting.firstToLightX7;
-					Lighting.swipe.innerLoop2End = Lighting.firstTileX7 - Lighting.maxRenderCount - Lighting.firstToLightX7;
-					Lighting.swipe.outerLoopStart = Lighting.firstToLightY27 - Lighting.firstToLightY7;
-					Lighting.swipe.outerLoopEnd = Lighting.lastToLightY27 - Lighting.firstToLightY7;
-					Lighting.swipe.jaggedArray = Lighting.axisFlipStates;
-					break;
-				}
-				if (Lighting.swipe.innerLoop1Start > Lighting.swipe.innerLoop1End)
-				{
-					Lighting.swipe.innerLoop1Start = Lighting.swipe.innerLoop1End;
-				}
-				if (Lighting.swipe.innerLoop2Start < Lighting.swipe.innerLoop2End)
-				{
-					Lighting.swipe.innerLoop2Start = Lighting.swipe.innerLoop2End;
-				}
-				if (Lighting.swipe.outerLoopStart > Lighting.swipe.outerLoopEnd)
-				{
-					Lighting.swipe.outerLoopStart = Lighting.swipe.outerLoopEnd;
-				}
-				switch (Lighting.lightMode)
-				{
-				case 0:
-					Lighting.swipe.function = new Action<Lighting.LightingSwipeData>(Lighting.doColors_Mode0_Swipe);
-					break;
-				case 1:
-					Lighting.swipe.function = new Action<Lighting.LightingSwipeData>(Lighting.doColors_Mode1_Swipe);
-					break;
-				case 2:
-					Lighting.swipe.function = new Action<Lighting.LightingSwipeData>(Lighting.doColors_Mode2_Swipe);
-					break;
-				case 3:
-					Lighting.swipe.function = new Action<Lighting.LightingSwipeData>(Lighting.doColors_Mode3_Swipe);
-					break;
-				default:
-					Lighting.swipe.function = null;
-					break;
-				}
-				if (num3 == 0)
-				{
-					Lighting.swipe.function(Lighting.swipe);
-				}
-				else
-				{
-					int num4 = Lighting.swipe.outerLoopEnd - Lighting.swipe.outerLoopStart;
-					int num5 = num4 / num3;
-					int num6 = num4 % num3;
-					int num7 = Lighting.swipe.outerLoopStart;
-					Lighting.countdown.Reset(num3);
-					for (int j = 0; j < num3; j++)
-					{
-						Lighting.LightingSwipeData lightingSwipeData = Lighting.threadSwipes[j];
-						lightingSwipeData.CopyFrom(Lighting.swipe);
-						lightingSwipeData.outerLoopStart = num7;
-						num7 += num5;
-						if (num6 > 0)
-						{
-							num7++;
-							num6--;
-						}
-						lightingSwipeData.outerLoopEnd = num7;
-						ThreadPool.QueueUserWorkItem(new WaitCallback(Lighting.callback_LightingSwipe), lightingSwipeData);
-					}
-					Lighting.countdown.Wait();
-				}
-				TimeLogger.LightingTime(i + 1, stopwatch.Elapsed.TotalMilliseconds);
-			}
-		}
-		private static void callback_LightingSwipe(object obj)
-		{
-			Lighting.LightingSwipeData lightingSwipeData = obj as Lighting.LightingSwipeData;
-			try
-			{
-				lightingSwipeData.function(lightingSwipeData);
-			}
-			catch
-			{
-			}
-			Lighting.countdown.Signal();
-		}
-		private static void doColors_Mode0_Swipe(Lighting.LightingSwipeData swipeData)
-		{
-			try
-			{
-				bool flag = true;
-				while (true)
-				{
-					int num;
-					int num2;
-					int num3;
-					if (flag)
-					{
-						num = 1;
-						num2 = swipeData.innerLoop1Start;
-						num3 = swipeData.innerLoop1End;
-					}
-					else
-					{
-						num = -1;
-						num2 = swipeData.innerLoop2Start;
-						num3 = swipeData.innerLoop2End;
-					}
-					int outerLoopStart = swipeData.outerLoopStart;
-					int outerLoopEnd = swipeData.outerLoopEnd;
-					for (int i = outerLoopStart; i < outerLoopEnd; i++)
-					{
-						Lighting.LightingState[] array = swipeData.jaggedArray[i];
-						float num4 = 0f;
-						float num5 = 0f;
-						float num6 = 0f;
-						int num7 = num2;
-						while (num7 != num3)
-						{
-							Lighting.LightingState lightingState = array[num7];
-							Lighting.LightingState lightingState2 = array[num7 + num];
-							bool flag3;
-							bool flag2 = flag3 = false;
-							if (lightingState.r2 > num4)
-							{
-								num4 = lightingState.r2;
-							}
-							else
-							{
-								if ((double)num4 <= 0.0185)
-								{
-									flag3 = true;
-								}
-								else
-								{
-									if (lightingState.r2 < num4)
-									{
-										lightingState.r2 = num4;
-									}
-								}
-							}
-							if (!flag3 && lightingState2.r2 <= num4)
-							{
-								if (lightingState.stopLight)
-								{
-									num4 *= Lighting.negLight2;
-								}
-								else
-								{
-									if (lightingState.wetLight)
-									{
-										if (lightingState.honeyLight)
-										{
-											num4 *= Lighting.honeyLightR * (float)swipeData.rand.Next(98, 100) * 0.01f;
-										}
-										else
-										{
-											num4 *= Lighting.wetLightR * (float)swipeData.rand.Next(98, 100) * 0.01f;
-										}
-									}
-									else
-									{
-										num4 *= Lighting.negLight;
-									}
-								}
-							}
-							if (lightingState.g2 > num5)
-							{
-								num5 = lightingState.g2;
-							}
-							else
-							{
-								if ((double)num5 <= 0.0185)
-								{
-									flag2 = true;
-								}
-								else
-								{
-									lightingState.g2 = num5;
-								}
-							}
-							if (!flag2 && lightingState2.g2 <= num5)
-							{
-								if (lightingState.stopLight)
-								{
-									num5 *= Lighting.negLight2;
-								}
-								else
-								{
-									if (lightingState.wetLight)
-									{
-										if (lightingState.honeyLight)
-										{
-											num5 *= Lighting.honeyLightG * (float)swipeData.rand.Next(97, 100) * 0.01f;
-										}
-										else
-										{
-											num5 *= Lighting.wetLightG * (float)swipeData.rand.Next(97, 100) * 0.01f;
-										}
-									}
-									else
-									{
-										num5 *= Lighting.negLight;
-									}
-								}
-							}
-							if (lightingState.b2 > num6)
-							{
-								num6 = lightingState.b2;
-								goto IL_22F;
-							}
-							if ((double)num6 > 0.0185)
-							{
-								lightingState.b2 = num6;
-								goto IL_22F;
-							}
-							IL_2B1:
-							num7 += num;
-							continue;
-							IL_22F:
-							if (lightingState2.b2 >= num6)
-							{
-								goto IL_2B1;
-							}
-							if (lightingState.stopLight)
-							{
-								num6 *= Lighting.negLight2;
-								goto IL_2B1;
-							}
-							if (!lightingState.wetLight)
-							{
-								num6 *= Lighting.negLight;
-								goto IL_2B1;
-							}
-							if (lightingState.honeyLight)
-							{
-								num6 *= Lighting.honeyLightB * (float)swipeData.rand.Next(97, 100) * 0.01f;
-								goto IL_2B1;
-							}
-							num6 *= Lighting.wetLightB * (float)swipeData.rand.Next(97, 100) * 0.01f;
-							goto IL_2B1;
-						}
-					}
-					if (!flag)
-					{
-						break;
-					}
-					flag = false;
-				}
-			}
-			catch
-			{
-			}
-		}
-		private static void doColors_Mode1_Swipe(Lighting.LightingSwipeData swipeData)
-		{
-			try
-			{
-				bool flag = true;
-				while (true)
-				{
-					int num;
-					int num2;
-					int num3;
-					if (flag)
-					{
-						num = 1;
-						num2 = swipeData.innerLoop1Start;
-						num3 = swipeData.innerLoop1End;
-					}
-					else
-					{
-						num = -1;
-						num2 = swipeData.innerLoop2Start;
-						num3 = swipeData.innerLoop2End;
-					}
-					int outerLoopStart = swipeData.outerLoopStart;
-					int outerLoopEnd = swipeData.outerLoopEnd;
-					for (int i = outerLoopStart; i < outerLoopEnd; i++)
-					{
-						Lighting.LightingState[] array = swipeData.jaggedArray[i];
-						float num4 = 0f;
-						int num5 = num2;
-						while (num5 != num3)
-						{
-							Lighting.LightingState lightingState = array[num5];
-							if (lightingState.r2 > num4)
-							{
-								num4 = lightingState.r2;
-								goto IL_9C;
-							}
-							if ((double)num4 > 0.0185)
-							{
-								if (lightingState.r2 < num4)
-								{
-									lightingState.r2 = num4;
-									goto IL_9C;
-								}
-								goto IL_9C;
-							}
-							IL_123:
-							num5 += num;
-							continue;
-							IL_9C:
-							if (array[num5 + num].r2 > num4)
-							{
-								goto IL_123;
-							}
-							if (lightingState.stopLight)
-							{
-								num4 *= Lighting.negLight2;
-								goto IL_123;
-							}
-							if (!lightingState.wetLight)
-							{
-								num4 *= Lighting.negLight;
-								goto IL_123;
-							}
-							if (lightingState.honeyLight)
-							{
-								num4 *= Lighting.honeyLightR * (float)swipeData.rand.Next(98, 100) * 0.01f;
-								goto IL_123;
-							}
-							num4 *= Lighting.wetLightR * (float)swipeData.rand.Next(98, 100) * 0.01f;
-							goto IL_123;
-						}
-					}
-					if (!flag)
-					{
-						break;
-					}
-					flag = false;
-				}
-			}
-			catch
-			{
-			}
-		}
-		private static void doColors_Mode2_Swipe(Lighting.LightingSwipeData swipeData)
-		{
-			try
-			{
-				bool flag = true;
-				while (true)
-				{
-					int num;
-					int num2;
-					int num3;
-					if (flag)
-					{
-						num = 1;
-						num2 = swipeData.innerLoop1Start;
-						num3 = swipeData.innerLoop1End;
-					}
-					else
-					{
-						num = -1;
-						num2 = swipeData.innerLoop2Start;
-						num3 = swipeData.innerLoop2End;
-					}
-					int outerLoopStart = swipeData.outerLoopStart;
-					int outerLoopEnd = swipeData.outerLoopEnd;
-					for (int i = outerLoopStart; i < outerLoopEnd; i++)
-					{
-						Lighting.LightingState[] array = swipeData.jaggedArray[i];
-						float num4 = 0f;
-						int num5 = num2;
-						while (num5 != num3)
-						{
-							Lighting.LightingState lightingState = array[num5];
-							if (lightingState.r2 > num4)
-							{
-								num4 = lightingState.r2;
-								goto IL_86;
-							}
-							if (num4 > 0f)
-							{
-								lightingState.r2 = num4;
-								goto IL_86;
-							}
-							IL_BA:
-							num5 += num;
-							continue;
-							IL_86:
-							if (lightingState.stopLight)
-							{
-								num4 -= Lighting.negLight2;
-								goto IL_BA;
-							}
-							if (lightingState.wetLight)
-							{
-								num4 -= Lighting.wetLightR;
-								goto IL_BA;
-							}
-							num4 -= Lighting.negLight;
-							goto IL_BA;
-						}
-					}
-					if (!flag)
-					{
-						break;
-					}
-					flag = false;
-				}
-			}
-			catch
-			{
-			}
-		}
-		private static void doColors_Mode3_Swipe(Lighting.LightingSwipeData swipeData)
-		{
-			try
-			{
-				bool flag = true;
-				while (true)
-				{
-					int num;
-					int num2;
-					int num3;
-					if (flag)
-					{
-						num = 1;
-						num2 = swipeData.innerLoop1Start;
-						num3 = swipeData.innerLoop1End;
-					}
-					else
-					{
-						num = -1;
-						num2 = swipeData.innerLoop2Start;
-						num3 = swipeData.innerLoop2End;
-					}
-					int outerLoopStart = swipeData.outerLoopStart;
-					int outerLoopEnd = swipeData.outerLoopEnd;
-					for (int i = outerLoopStart; i < outerLoopEnd; i++)
-					{
-						Lighting.LightingState[] array = swipeData.jaggedArray[i];
-						float num4 = 0f;
-						float num5 = 0f;
-						float num6 = 0f;
-						int num7 = num2;
-						while (num7 != num3)
-						{
-							Lighting.LightingState lightingState = array[num7];
-							bool flag3;
-							bool flag2 = flag3 = false;
-							if (lightingState.r2 > num4)
-							{
-								num4 = lightingState.r2;
-							}
-							else
-							{
-								if (num4 <= 0f)
-								{
-									flag3 = true;
-								}
-								else
-								{
-									lightingState.r2 = num4;
-								}
-							}
-							if (!flag3)
-							{
-								if (lightingState.stopLight)
-								{
-									num4 -= Lighting.negLight2;
-								}
-								else
-								{
-									if (lightingState.wetLight)
-									{
-										num4 -= Lighting.wetLightR;
-									}
-									else
-									{
-										num4 -= Lighting.negLight;
-									}
-								}
-							}
-							if (lightingState.g2 > num5)
-							{
-								num5 = lightingState.g2;
-							}
-							else
-							{
-								if (num5 <= 0f)
-								{
-									flag2 = true;
-								}
-								else
-								{
-									lightingState.g2 = num5;
-								}
-							}
-							if (!flag2)
-							{
-								if (lightingState.stopLight)
-								{
-									num5 -= Lighting.negLight2;
-								}
-								else
-								{
-									if (lightingState.wetLight)
-									{
-										num5 -= Lighting.wetLightG;
-									}
-									else
-									{
-										num5 -= Lighting.negLight;
-									}
-								}
-							}
-							if (lightingState.b2 > num6)
-							{
-								num6 = lightingState.b2;
-								goto IL_167;
-							}
-							if (num6 > 0f)
-							{
-								lightingState.b2 = num6;
-								goto IL_167;
-							}
-							IL_186:
-							num7 += num;
-							continue;
-							IL_167:
-							if (lightingState.stopLight)
-							{
-								num6 -= Lighting.negLight2;
-								goto IL_186;
-							}
-							num6 -= Lighting.negLight;
-							goto IL_186;
-						}
-					}
-					if (!flag)
-					{
-						break;
-					}
-					flag = false;
-				}
-			}
-			catch
-			{
-			}
-		}
-		public static void addLight(int i, int j, float R, float G, float B)
-		{
-			if (Main.netMode == 2)
-			{
-				return;
-			}
-			if (i - Lighting.firstTileX + Lighting.offScreenTiles >= 0 && i - Lighting.firstTileX + Lighting.offScreenTiles < Main.screenWidth / 16 + Lighting.offScreenTiles * 2 + 10 && j - Lighting.firstTileY + Lighting.offScreenTiles >= 0 && j - Lighting.firstTileY + Lighting.offScreenTiles < Main.screenHeight / 16 + Lighting.offScreenTiles * 2 + 10)
-			{
-				if (Lighting.tempLights.Count == Lighting.maxTempLights)
-				{
-					return;
-				}
-				Point16 key = new Point16(i, j);
-				Lighting.ColorTriplet value;
-				if (Lighting.tempLights.TryGetValue(key, out value))
-				{
-					if (Lighting.RGB)
-					{
-						if (value.r < R)
-						{
-							value.r = R;
-						}
-						if (value.g < G)
-						{
-							value.g = G;
-						}
-						if (value.b < B)
-						{
-							value.b = B;
-						}
-						Lighting.tempLights[key] = value;
-						return;
-					}
-					float num = (R + G + B) / 3f;
-					if (value.r < num)
-					{
-						Lighting.tempLights[key] = new Lighting.ColorTriplet(num);
-						return;
-					}
-				}
-				else
-				{
-					if (Lighting.RGB)
-					{
-						value = new Lighting.ColorTriplet(R, G, B);
-					}
-					else
-					{
-						value = new Lighting.ColorTriplet((R + G + B) / 3f);
-					}
-					Lighting.tempLights.Add(key, value);
-				}
-			}
-		}
-		public static void NextLightMode()
-		{
-			Lighting.lightCounter += 100;
-			Lighting.lightMode++;
-			if (Lighting.lightMode >= 4)
-			{
-				Lighting.lightMode = 0;
-			}
-			if (Lighting.lightMode == 2 || Lighting.lightMode == 0)
-			{
-				Main.renderCount = 0;
-				Main.renderNow = true;
-				Lighting.BlackOut();
-			}
-		}
-		public static void BlackOut()
-		{
-			int num = Main.screenWidth / 16 + Lighting.offScreenTiles * 2;
-			int num2 = Main.screenHeight / 16 + Lighting.offScreenTiles * 2;
-			for (int i = 0; i < num; i++)
-			{
-				Lighting.LightingState[] array = Lighting.states[i];
-				for (int j = 0; j < num2; j++)
-				{
-					Lighting.LightingState lightingState = array[j];
-					lightingState.r = 0f;
-					lightingState.g = 0f;
-					lightingState.b = 0f;
-				}
-			}
-		}
-		public static Color GetColor(int x, int y, Color oldColor)
-		{
-			int num = x - Lighting.firstTileX + Lighting.offScreenTiles;
-			int num2 = y - Lighting.firstTileY + Lighting.offScreenTiles;
-			if (Main.gameMenu)
-			{
-				return oldColor;
-			}
-			if (num < 0 || num2 < 0 || num >= Main.screenWidth / 16 + Lighting.offScreenTiles * 2 + 10 || num2 >= Main.screenHeight / 16 + Lighting.offScreenTiles * 2 + 10)
-			{
-				return Color.Black;
-			}
-			Color white = Color.White;
-			Lighting.LightingState lightingState = Lighting.states[num][num2];
-			int num3 = (int)((float)oldColor.R * lightingState.r * Lighting.brightness);
-			int num4 = (int)((float)oldColor.G * lightingState.g * Lighting.brightness);
-			int num5 = (int)((float)oldColor.B * lightingState.b * Lighting.brightness);
-			if (num3 > 255)
-			{
-				num3 = 255;
-			}
-			if (num4 > 255)
-			{
-				num4 = 255;
-			}
-			if (num5 > 255)
-			{
-				num5 = 255;
-			}
-			white.R = (byte)num3;
-			white.G = (byte)num4;
-			white.B = (byte)num5;
-			return white;
-		}
-		public static Color GetColor(int x, int y)
-		{
-			int num = x - Lighting.firstTileX + Lighting.offScreenTiles;
-			int num2 = y - Lighting.firstTileY + Lighting.offScreenTiles;
-			if (num < 0 || num2 < 0 || num >= Main.screenWidth / 16 + Lighting.offScreenTiles * 2 + 10 || num2 >= Main.screenHeight / 16 + Lighting.offScreenTiles * 2)
-			{
-				return Color.Black;
-			}
-			Lighting.LightingState lightingState = Lighting.states[num][num2];
-			int num3 = (int)(255f * lightingState.r * Lighting.brightness);
-			int num4 = (int)(255f * lightingState.g * Lighting.brightness);
-			int num5 = (int)(255f * lightingState.b * Lighting.brightness);
-			if (num3 > 255)
-			{
-				num3 = 255;
-			}
-			if (num4 > 255)
-			{
-				num4 = 255;
-			}
-			if (num5 > 255)
-			{
-				num5 = 255;
-			}
-			Color result = new Color((int)((byte)num3), (int)((byte)num4), (int)((byte)num5), 255);
-			return result;
-		}
-		public static void GetColor9Slice(int centerX, int centerY, ref Color[] slices)
-		{
-			int num = centerX - Lighting.firstTileX + Lighting.offScreenTiles;
-			int num2 = centerY - Lighting.firstTileY + Lighting.offScreenTiles;
-			if (num <= 0 || num2 <= 0 || num >= Main.screenWidth / 16 + Lighting.offScreenTiles * 2 + 10 - 1 || num2 >= Main.screenHeight / 16 + Lighting.offScreenTiles * 2 - 1)
-			{
-				for (int i = 0; i < 9; i++)
-				{
-					slices[i] = Color.Black;
-				}
-				return;
-			}
-			int num3 = 0;
-			for (int j = num - 1; j <= num + 1; j++)
-			{
-				Lighting.LightingState[] array = Lighting.states[j];
-				for (int k = num2 - 1; k <= num2 + 1; k++)
-				{
-					Lighting.LightingState lightingState = array[k];
-					int num4 = (int)(255f * lightingState.r * Lighting.brightness);
-					int num5 = (int)(255f * lightingState.g * Lighting.brightness);
-					int num6 = (int)(255f * lightingState.b * Lighting.brightness);
-					if (num4 > 255)
-					{
-						num4 = 255;
-					}
-					if (num5 > 255)
-					{
-						num5 = 255;
-					}
-					if (num6 > 255)
-					{
-						num6 = 255;
-					}
-					slices[num3] = new Color((int)((byte)num4), (int)((byte)num5), (int)((byte)num6), 255);
-					num3 += 3;
-				}
-				num3 -= 8;
-			}
-		}
-		public static void GetColor4Slice(int centerX, int centerY, ref Color[] slices)
-		{
-			int i = centerX - Lighting.firstTileX + Lighting.offScreenTiles;
-			int num = centerY - Lighting.firstTileY + Lighting.offScreenTiles;
-			if (i <= 0 || num <= 0 || i >= Main.screenWidth / 16 + Lighting.offScreenTiles * 2 + 10 - 1 || num >= Main.screenHeight / 16 + Lighting.offScreenTiles * 2 - 1)
-			{
-				for (i = 0; i < 4; i++)
-				{
-					slices[i] = Color.Black;
-				}
-				return;
-			}
-			Lighting.LightingState lightingState = Lighting.states[i][num - 1];
-			Lighting.LightingState lightingState2 = Lighting.states[i][num + 1];
-			Lighting.LightingState lightingState3 = Lighting.states[i - 1][num];
-			Lighting.LightingState lightingState4 = Lighting.states[i + 1][num];
-			float num2 = lightingState.r + lightingState.g + lightingState.b;
-			float num3 = lightingState2.r + lightingState2.g + lightingState2.b;
-			float num4 = lightingState4.r + lightingState4.g + lightingState4.b;
-			float num5 = lightingState3.r + lightingState3.g + lightingState3.b;
-			if (num2 >= num5)
-			{
-				int num6 = (int)(255f * lightingState3.r * Lighting.brightness);
-				int num7 = (int)(255f * lightingState3.g * Lighting.brightness);
-				int num8 = (int)(255f * lightingState3.b * Lighting.brightness);
-				if (num6 > 255)
-				{
-					num6 = 255;
-				}
-				if (num7 > 255)
-				{
-					num7 = 255;
-				}
-				if (num8 > 255)
-				{
-					num8 = 255;
-				}
-				slices[0] = new Color((int)((byte)num6), (int)((byte)num7), (int)((byte)num8), 255);
-			}
-			else
-			{
-				int num9 = (int)(255f * lightingState.r * Lighting.brightness);
-				int num10 = (int)(255f * lightingState.g * Lighting.brightness);
-				int num11 = (int)(255f * lightingState.b * Lighting.brightness);
-				if (num9 > 255)
-				{
-					num9 = 255;
-				}
-				if (num10 > 255)
-				{
-					num10 = 255;
-				}
-				if (num11 > 255)
-				{
-					num11 = 255;
-				}
-				slices[0] = new Color((int)((byte)num9), (int)((byte)num10), (int)((byte)num11), 255);
-			}
-			if (num2 >= num4)
-			{
-				int num12 = (int)(255f * lightingState4.r * Lighting.brightness);
-				int num13 = (int)(255f * lightingState4.g * Lighting.brightness);
-				int num14 = (int)(255f * lightingState4.b * Lighting.brightness);
-				if (num12 > 255)
-				{
-					num12 = 255;
-				}
-				if (num13 > 255)
-				{
-					num13 = 255;
-				}
-				if (num14 > 255)
-				{
-					num14 = 255;
-				}
-				slices[1] = new Color((int)((byte)num12), (int)((byte)num13), (int)((byte)num14), 255);
-			}
-			else
-			{
-				int num15 = (int)(255f * lightingState.r * Lighting.brightness);
-				int num16 = (int)(255f * lightingState.g * Lighting.brightness);
-				int num17 = (int)(255f * lightingState.b * Lighting.brightness);
-				if (num15 > 255)
-				{
-					num15 = 255;
-				}
-				if (num16 > 255)
-				{
-					num16 = 255;
-				}
-				if (num17 > 255)
-				{
-					num17 = 255;
-				}
-				slices[1] = new Color((int)((byte)num15), (int)((byte)num16), (int)((byte)num17), 255);
-			}
-			if (num3 >= num5)
-			{
-				int num18 = (int)(255f * lightingState3.r * Lighting.brightness);
-				int num19 = (int)(255f * lightingState3.g * Lighting.brightness);
-				int num20 = (int)(255f * lightingState3.b * Lighting.brightness);
-				if (num18 > 255)
-				{
-					num18 = 255;
-				}
-				if (num19 > 255)
-				{
-					num19 = 255;
-				}
-				if (num20 > 255)
-				{
-					num20 = 255;
-				}
-				slices[2] = new Color((int)((byte)num18), (int)((byte)num19), (int)((byte)num20), 255);
-			}
-			else
-			{
-				int num21 = (int)(255f * lightingState2.r * Lighting.brightness);
-				int num22 = (int)(255f * lightingState2.g * Lighting.brightness);
-				int num23 = (int)(255f * lightingState2.b * Lighting.brightness);
-				if (num21 > 255)
-				{
-					num21 = 255;
-				}
-				if (num22 > 255)
-				{
-					num22 = 255;
-				}
-				if (num23 > 255)
-				{
-					num23 = 255;
-				}
-				slices[2] = new Color((int)((byte)num21), (int)((byte)num22), (int)((byte)num23), 255);
-			}
-			if (num3 >= num4)
-			{
-				int num24 = (int)(255f * lightingState4.r * Lighting.brightness);
-				int num25 = (int)(255f * lightingState4.g * Lighting.brightness);
-				int num26 = (int)(255f * lightingState4.b * Lighting.brightness);
-				if (num24 > 255)
-				{
-					num24 = 255;
-				}
-				if (num25 > 255)
-				{
-					num25 = 255;
-				}
-				if (num26 > 255)
-				{
-					num26 = 255;
-				}
-				slices[3] = new Color((int)((byte)num24), (int)((byte)num25), (int)((byte)num26), 255);
-				return;
-			}
-			int num27 = (int)(255f * lightingState2.r * Lighting.brightness);
-			int num28 = (int)(255f * lightingState2.g * Lighting.brightness);
-			int num29 = (int)(255f * lightingState2.b * Lighting.brightness);
-			if (num27 > 255)
-			{
-				num27 = 255;
-			}
-			if (num28 > 255)
-			{
-				num28 = 255;
-			}
-			if (num29 > 255)
-			{
-				num29 = 255;
-			}
-			slices[3] = new Color((int)((byte)num27), (int)((byte)num28), (int)((byte)num29), 255);
-		}
-		public static Color GetBlackness(int x, int y)
-		{
-			int num = x - Lighting.firstTileX + Lighting.offScreenTiles;
-			int num2 = y - Lighting.firstTileY + Lighting.offScreenTiles;
-			if (num < 0 || num2 < 0 || num >= Main.screenWidth / 16 + Lighting.offScreenTiles * 2 + 10 || num2 >= Main.screenHeight / 16 + Lighting.offScreenTiles * 2 + 10)
-			{
-				return Color.Black;
-			}
-			Color result = new Color(0, 0, 0, (int)((byte)(255f - 255f * Lighting.states[num][num2].r)));
-			return result;
-		}
-		public static float Brightness(int x, int y)
-		{
-			int num = x - Lighting.firstTileX + Lighting.offScreenTiles;
-			int num2 = y - Lighting.firstTileY + Lighting.offScreenTiles;
-			if (num < 0 || num2 < 0 || num >= Main.screenWidth / 16 + Lighting.offScreenTiles * 2 + 10 || num2 >= Main.screenHeight / 16 + Lighting.offScreenTiles * 2 + 10)
-			{
-				return 0f;
-			}
-			Lighting.LightingState lightingState = Lighting.states[num][num2];
-			return (lightingState.r + lightingState.g + lightingState.b) / 3f;
-		}
-	}
+  public class Lighting
+  {
+    public static int maxRenderCount = 4;
+    public static float brightness = 1f;
+    public static float defBrightness = 1f;
+    public static int lightMode = 0;
+    public static bool RGB = true;
+    private static float oldSkyColor = 0.0f;
+    private static float skyColor = 0.0f;
+    private static int lightCounter = 0;
+    public static int offScreenTiles = 45;
+    public static int offScreenTiles2 = 35;
+    public static int LightingThreads = 0;
+    private static int maxTempLights = 2000;
+    private static float negLight = 0.04f;
+    private static float negLight2 = 0.16f;
+    private static float wetLightR = 0.16f;
+    private static float wetLightG = 0.16f;
+    private static float wetLightB = 0.16f;
+    private static float honeyLightR = 0.16f;
+    private static float honeyLightG = 0.16f;
+    private static float honeyLightB = 0.16f;
+    private static float blueWave = 1f;
+    private static int blueDir = 1;
+    private static int firstTileX;
+    private static int lastTileX;
+    private static int firstTileY;
+    private static int lastTileY;
+    private static Lighting.LightingState[][] states;
+    private static Lighting.LightingState[][] axisFlipStates;
+    private static Lighting.LightingSwipeData swipe;
+    private static Lighting.LightingSwipeData[] threadSwipes;
+    private static CountdownEvent countdown;
+    public static int scrX;
+    public static int scrY;
+    public static int minX;
+    public static int maxX;
+    public static int minY;
+    public static int maxY;
+    private static Dictionary<Point16, Lighting.ColorTriplet> tempLights;
+    private static int firstToLightX;
+    private static int firstToLightY;
+    private static int lastToLightX;
+    private static int lastToLightY;
+    private static int minX7;
+    private static int maxX7;
+    private static int minY7;
+    private static int maxY7;
+    private static int firstTileX7;
+    private static int lastTileX7;
+    private static int lastTileY7;
+    private static int firstTileY7;
+    private static int firstToLightX7;
+    private static int lastToLightX7;
+    private static int firstToLightY7;
+    private static int lastToLightY7;
+    private static int firstToLightX27;
+    private static int lastToLightX27;
+    private static int firstToLightY27;
+    private static int lastToLightY27;
+
+    public static void Initialize(bool resize = false)
+    {
+      if (!resize)
+      {
+        Lighting.tempLights = new Dictionary<Point16, Lighting.ColorTriplet>();
+        Lighting.swipe = new Lighting.LightingSwipeData();
+        Lighting.countdown = new CountdownEvent(0);
+        Lighting.threadSwipes = new Lighting.LightingSwipeData[Environment.ProcessorCount];
+        for (int index = 0; index < Lighting.threadSwipes.Length; ++index)
+          Lighting.threadSwipes[index] = new Lighting.LightingSwipeData();
+      }
+      int length1 = Main.screenWidth / 16 + Lighting.offScreenTiles * 2 + 10;
+      int length2 = Main.screenHeight / 16 + Lighting.offScreenTiles * 2 + 10;
+      if (Lighting.states != null && Lighting.states.Length >= length1 && Lighting.states[0].Length >= length2)
+        return;
+      Lighting.states = new Lighting.LightingState[length1][];
+      Lighting.axisFlipStates = new Lighting.LightingState[length2][];
+      for (int index = 0; index < length2; ++index)
+        Lighting.axisFlipStates[index] = new Lighting.LightingState[length1];
+      for (int index1 = 0; index1 < length1; ++index1)
+      {
+        Lighting.LightingState[] lightingStateArray = new Lighting.LightingState[length2];
+        for (int index2 = 0; index2 < length2; ++index2)
+        {
+          Lighting.LightingState lightingState = new Lighting.LightingState();
+          lightingStateArray[index2] = lightingState;
+          Lighting.axisFlipStates[index2][index1] = lightingState;
+        }
+        Lighting.states[index1] = lightingStateArray;
+      }
+    }
+
+    public static void LightTiles(int firstX, int lastX, int firstY, int lastY)
+    {
+      Main.render = true;
+      Lighting.oldSkyColor = Lighting.skyColor;
+      float num1 = (float) Main.tileColor.R / (float) byte.MaxValue;
+      float num2 = (float) Main.tileColor.G / (float) byte.MaxValue;
+      float num3 = (float) Main.tileColor.B / (float) byte.MaxValue;
+      Lighting.skyColor = (float) (((double) num1 + (double) num2 + (double) num3) / 3.0);
+      if (Lighting.lightMode < 2)
+      {
+        Lighting.brightness = 1.2f;
+        Lighting.offScreenTiles2 = 34;
+        Lighting.offScreenTiles = 40;
+      }
+      else
+      {
+        Lighting.brightness = 1f;
+        Lighting.offScreenTiles2 = 18;
+        Lighting.offScreenTiles = 23;
+      }
+      if (Main.player[Main.myPlayer].blind)
+        Lighting.brightness = 1f;
+      Lighting.defBrightness = Lighting.brightness;
+      Lighting.firstTileX = firstX;
+      Lighting.lastTileX = lastX;
+      Lighting.firstTileY = firstY;
+      Lighting.lastTileY = lastY;
+      Lighting.firstToLightX = Lighting.firstTileX - Lighting.offScreenTiles;
+      Lighting.firstToLightY = Lighting.firstTileY - Lighting.offScreenTiles;
+      Lighting.lastToLightX = Lighting.lastTileX + Lighting.offScreenTiles;
+      Lighting.lastToLightY = Lighting.lastTileY + Lighting.offScreenTiles;
+      if (Lighting.firstToLightX < 0)
+        Lighting.firstToLightX = 0;
+      if (Lighting.lastToLightX >= Main.maxTilesX)
+        Lighting.lastToLightX = Main.maxTilesX - 1;
+      if (Lighting.firstToLightY < 0)
+        Lighting.firstToLightY = 0;
+      if (Lighting.lastToLightY >= Main.maxTilesY)
+        Lighting.lastToLightY = Main.maxTilesY - 1;
+      ++Lighting.lightCounter;
+      ++Main.renderCount;
+      int num4 = Main.screenWidth / 16 + Lighting.offScreenTiles * 2;
+      int num5 = Main.screenHeight / 16 + Lighting.offScreenTiles * 2;
+      Vector2 screenLastPosition = Main.screenLastPosition;
+      if (Main.renderCount < 3)
+        Lighting.doColors();
+      if (Main.renderCount == 2)
+      {
+        Vector2 screenPosition = Main.screenPosition;
+        int num6 = (int) ((double) Main.screenPosition.X / 16.0) - Lighting.scrX;
+        int num7 = (int) ((double) Main.screenPosition.Y / 16.0) - Lighting.scrY;
+        if (num6 > 16)
+          num6 = 0;
+        if (num7 > 16)
+          num7 = 0;
+        int num8 = 0;
+        int num9 = num4;
+        int num10 = 0;
+        int num11 = num5;
+        if (num6 < 0)
+          num8 -= num6;
+        else
+          num9 -= num6;
+        if (num7 < 0)
+          num10 -= num7;
+        else
+          num11 -= num7;
+        if (Lighting.RGB)
+        {
+          int num12 = num4;
+          if (Lighting.states.Length <= num12 + num6)
+            num12 = Lighting.states.Length - num6 - 1;
+          for (int index1 = num8; index1 < num12; ++index1)
+          {
+            Lighting.LightingState[] state1 = Lighting.states[index1];
+            Lighting.LightingState[] state2 = Lighting.states[index1 + num6];
+            int num13 = num11;
+            if (state2.Length <= num13 + num6)
+              num13 = state2.Length - num7 - 1;
+            for (int index2 = num10; index2 < num13; ++index2)
+            {
+              Lighting.LightingState lightingState1 = state1[index2];
+              Lighting.LightingState lightingState2 = state2[index2 + num7];
+              lightingState1.r = lightingState2.r2;
+              lightingState1.g = lightingState2.g2;
+              lightingState1.b = lightingState2.b2;
+            }
+          }
+        }
+        else
+        {
+          int num12 = num9;
+          if (Lighting.states.Length <= num12 + num6)
+            num12 = Lighting.states.Length - num6 - 1;
+          for (int index1 = num8; index1 < num12; ++index1)
+          {
+            Lighting.LightingState[] state1 = Lighting.states[index1];
+            Lighting.LightingState[] state2 = Lighting.states[index1 + num6];
+            int num13 = num11;
+            if (state2.Length <= num13 + num6)
+              num13 = state2.Length - num7 - 1;
+            for (int index2 = num10; index2 < num13; ++index2)
+            {
+              Lighting.LightingState lightingState1 = state1[index2];
+              Lighting.LightingState lightingState2 = state2[index2 + num7];
+              lightingState1.r = lightingState2.r2;
+              lightingState1.g = lightingState2.r2;
+              lightingState1.b = lightingState2.r2;
+            }
+          }
+        }
+      }
+      else if (!Main.renderNow)
+      {
+        int num6 = (int) ((double) Main.screenPosition.X / 16.0) - (int) ((double) screenLastPosition.X / 16.0);
+        if (num6 > 5 || num6 < -5)
+          num6 = 0;
+        int num7;
+        int num8;
+        int num9;
+        if (num6 < 0)
+        {
+          num7 = -1;
+          num6 *= -1;
+          num8 = num4;
+          num9 = num6;
+        }
+        else
+        {
+          num7 = 1;
+          num8 = 0;
+          num9 = num4 - num6;
+        }
+        int num10 = (int) ((double) Main.screenPosition.Y / 16.0) - (int) ((double) screenLastPosition.Y / 16.0);
+        if (num10 > 5 || num10 < -5)
+          num10 = 0;
+        int num11;
+        int num12;
+        int num13;
+        if (num10 < 0)
+        {
+          num11 = -1;
+          num10 *= -1;
+          num12 = num5;
+          num13 = num10;
+        }
+        else
+        {
+          num11 = 1;
+          num12 = 0;
+          num13 = num5 - num10;
+        }
+        if (num6 != 0 || num10 != 0)
+        {
+          int index1 = num8;
+          while (index1 != num9)
+          {
+            Lighting.LightingState[] state1 = Lighting.states[index1];
+            Lighting.LightingState[] state2 = Lighting.states[index1 + num6 * num7];
+            int index2 = num12;
+            while (index2 != num13)
+            {
+              Lighting.LightingState lightingState1 = state1[index2];
+              Lighting.LightingState lightingState2 = state2[index2 + num10 * num11];
+              lightingState1.r = lightingState2.r;
+              lightingState1.g = lightingState2.g;
+              lightingState1.b = lightingState2.b;
+              index2 += num11;
+            }
+            index1 += num7;
+          }
+        }
+        if (Netplay.Connection.StatusMax > 0)
+          Main.mapTime = 1;
+        if (Main.mapTime == 0 && Main.mapEnabled)
+        {
+          if (Main.renderCount == 3)
+          {
+            try
+            {
+              Main.mapTime = Main.mapTimeMax;
+              Main.updateMap = true;
+              Main.mapMinX = Lighting.firstToLightX + Lighting.offScreenTiles;
+              Main.mapMaxX = Lighting.lastToLightX - Lighting.offScreenTiles;
+              Main.mapMinY = Lighting.firstToLightY + Lighting.offScreenTiles;
+              Main.mapMaxY = Lighting.lastToLightY - Lighting.offScreenTiles;
+              for (int mapMinX = Main.mapMinX; mapMinX < Main.mapMaxX; ++mapMinX)
+              {
+                Lighting.LightingState[] state = Lighting.states[mapMinX - Lighting.firstTileX + Lighting.offScreenTiles];
+                for (int mapMinY = Main.mapMinY; mapMinY < Main.mapMaxY; ++mapMinY)
+                {
+                  Lighting.LightingState lightingState = state[mapMinY - Lighting.firstTileY + Lighting.offScreenTiles];
+                  Tile tile = Main.tile[mapMinX, mapMinY];
+                  float num14 = 0.0f;
+                  if ((double) lightingState.r > (double) num14)
+                    num14 = lightingState.r;
+                  if ((double) lightingState.g > (double) num14)
+                    num14 = lightingState.g;
+                  if ((double) lightingState.b > (double) num14)
+                    num14 = lightingState.b;
+                  if (Lighting.lightMode < 2)
+                    num14 *= 1.5f;
+                  byte light = (byte) Math.Min((float) byte.MaxValue, num14 * (float) byte.MaxValue);
+                  if ((double) mapMinY < Main.worldSurface && !tile.active() && ((int) tile.wall == 0 && (int) tile.liquid == 0))
+                    light = (byte) 22;
+                  if ((int) light > 18 || (int) Main.Map[mapMinX, mapMinY].Light > 0)
+                  {
+                    if ((int) light < 22)
+                      light = (byte) 22;
+                    Main.Map.UpdateLighting(mapMinX, mapMinY, light);
+                  }
+                }
+              }
+            }
+            catch
+            {
+            }
+          }
+        }
+        if ((double) Lighting.oldSkyColor != (double) Lighting.skyColor)
+        {
+          int firstToLightX = Lighting.firstToLightX;
+          int firstToLightY = Lighting.firstToLightY;
+          int lastToLightX = Lighting.lastToLightX;
+          int num14 = (double) Lighting.lastToLightY < Main.worldSurface ? Lighting.lastToLightY : (int) Main.worldSurface - 1;
+          if ((double) firstToLightY < Main.worldSurface)
+          {
+            for (int index1 = firstToLightX; index1 < lastToLightX; ++index1)
+            {
+              Lighting.LightingState[] state = Lighting.states[index1 - Lighting.firstToLightX];
+              for (int index2 = firstToLightY; index2 < num14; ++index2)
+              {
+                Lighting.LightingState lightingState = state[index2 - Lighting.firstToLightY];
+                Tile tile = Main.tile[index1, index2];
+                if (tile == null)
+                {
+                  tile = new Tile();
+                  Main.tile[index1, index2] = tile;
+                }
+                if ((!tile.active() || !Main.tileNoSunLight[(int) tile.type]) && ((double) lightingState.r < (double) Lighting.skyColor && (int) tile.liquid < 200) && (Main.wallLight[(int) tile.wall] || (int) tile.wall == 73))
+                {
+                  lightingState.r = num1;
+                  if ((double) lightingState.g < (double) Lighting.skyColor)
+                    lightingState.g = num2;
+                  if ((double) lightingState.b < (double) Lighting.skyColor)
+                    lightingState.b = num3;
+                }
+              }
+            }
+          }
+        }
+      }
+      else
+        Lighting.lightCounter = 0;
+      if (Main.renderCount <= Lighting.maxRenderCount)
+        return;
+      Lighting.PreRenderPhase();
+    }
+
+    public static void PreRenderPhase()
+    {
+      float num1 = (float) Main.tileColor.R / (float) byte.MaxValue;
+      float num2 = (float) Main.tileColor.G / (float) byte.MaxValue;
+      float num3 = (float) Main.tileColor.B / (float) byte.MaxValue;
+      Stopwatch stopwatch = new Stopwatch();
+      stopwatch.Start();
+      int num4 = 0;
+      int num5 = Main.screenWidth / 16 + Lighting.offScreenTiles * 2 + 10;
+      int num6 = 0;
+      int num7 = Main.screenHeight / 16 + Lighting.offScreenTiles * 2 + 10;
+      Lighting.minX = num5;
+      Lighting.maxX = num4;
+      Lighting.minY = num7;
+      Lighting.maxY = num6;
+      Lighting.RGB = Lighting.lightMode == 0 || Lighting.lightMode == 3;
+      for (int index1 = num4; index1 < num5; ++index1)
+      {
+        Lighting.LightingState[] state = Lighting.states[index1];
+        for (int index2 = num6; index2 < num7; ++index2)
+        {
+          Lighting.LightingState lightingState = state[index2];
+          lightingState.r2 = 0.0f;
+          lightingState.g2 = 0.0f;
+          lightingState.b2 = 0.0f;
+          lightingState.stopLight = false;
+          lightingState.wetLight = false;
+          lightingState.honeyLight = false;
+        }
+      }
+      if (Main.wof >= 0)
+      {
+        if (Main.player[Main.myPlayer].gross)
+        {
+          try
+          {
+            int num8 = (int) Main.screenPosition.Y / 16 - 10;
+            int num9 = (int) ((double) Main.screenPosition.Y + (double) Main.screenHeight) / 16 + 10;
+            int num10 = (int) Main.npc[Main.wof].position.X / 16;
+            int num11 = Main.npc[Main.wof].direction <= 0 ? num10 + 2 : num10 - 3;
+            int num12 = num11 + 8;
+            float num13 = (float) (0.5 * (double) Main.demonTorch + 1.0 * (1.0 - (double) Main.demonTorch));
+            float num14 = 0.3f;
+            float num15 = (float) (1.0 * (double) Main.demonTorch + 0.5 * (1.0 - (double) Main.demonTorch));
+            float num16 = num13 * 0.2f;
+            float num17 = num14 * 0.1f;
+            float num18 = num15 * 0.3f;
+            for (int index1 = num11; index1 <= num12; ++index1)
+            {
+              Lighting.LightingState[] state = Lighting.states[index1 - num11];
+              for (int index2 = num8; index2 <= num9; ++index2)
+              {
+                Lighting.LightingState lightingState = state[index2 - Lighting.firstToLightY];
+                if ((double) lightingState.r2 < (double) num16)
+                  lightingState.r2 = num16;
+                if ((double) lightingState.g2 < (double) num17)
+                  lightingState.g2 = num17;
+                if ((double) lightingState.b2 < (double) num18)
+                  lightingState.b2 = num18;
+              }
+            }
+          }
+          catch
+          {
+          }
+        }
+      }
+      Main.sandTiles = 0;
+      Main.evilTiles = 0;
+      Main.bloodTiles = 0;
+      Main.shroomTiles = 0;
+      Main.snowTiles = 0;
+      Main.holyTiles = 0;
+      Main.meteorTiles = 0;
+      Main.jungleTiles = 0;
+      Main.dungeonTiles = 0;
+      Main.campfire = false;
+      Main.sunflower = false;
+      Main.starInBottle = false;
+      Main.heartLantern = false;
+      Main.campfire = false;
+      Main.clock = false;
+      Main.musicBox = -1;
+      Main.waterCandles = 0;
+      for (int index = 0; index < Main.player[Main.myPlayer].NPCBannerBuff.Length; ++index)
+        Main.player[Main.myPlayer].NPCBannerBuff[index] = false;
+      Main.player[Main.myPlayer].hasBanner = false;
+      int[] screenTileCounts = Main.screenTileCounts;
+      Array.Clear((Array) screenTileCounts, 0, screenTileCounts.Length);
+      int firstToLightX = Lighting.firstToLightX;
+      int lastToLightX = Lighting.lastToLightX;
+      int firstToLightY = Lighting.firstToLightY;
+      int lastToLightY = Lighting.lastToLightY;
+      int num19 = (lastToLightX - firstToLightX - Main.zoneX) / 2;
+      int num20 = (lastToLightY - firstToLightY - Main.zoneY) / 2;
+      Main.fountainColor = -1;
+      Main.monolithType = -1;
+      for (int index1 = firstToLightX; index1 < lastToLightX; ++index1)
+      {
+        Lighting.LightingState[] state = Lighting.states[index1 - Lighting.firstToLightX];
+        for (int index2 = firstToLightY; index2 < lastToLightY; ++index2)
+        {
+          Lighting.LightingState lightingState = state[index2 - Lighting.firstToLightY];
+          Tile tile = Main.tile[index1, index2];
+          if (tile == null)
+          {
+            tile = new Tile();
+            Main.tile[index1, index2] = tile;
+          }
+          float num8 = 0.0f;
+          float num9 = 0.0f;
+          float num10 = 0.0f;
+          if ((double) index2 < Main.worldSurface)
+          {
+            if ((!tile.active() || !Main.tileNoSunLight[(int) tile.type] || ((int) tile.slope() != 0 || tile.halfBrick()) && ((int) Main.tile[index1, index2 - 1].liquid == 0 && (int) Main.tile[index1, index2 + 1].liquid == 0) && ((int) Main.tile[index1 - 1, index2].liquid == 0 && (int) Main.tile[index1 + 1, index2].liquid == 0)) && ((double) lightingState.r2 < (double) Lighting.skyColor && (Main.wallLight[(int) tile.wall] || (int) tile.wall == 73 || (int) tile.wall == 227) && ((int) tile.liquid < 200 && (!tile.halfBrick() || (int) Main.tile[index1, index2 - 1].liquid < 200))))
+            {
+              num8 = num1;
+              num9 = num2;
+              num10 = num3;
+            }
+            if ((!tile.active() || tile.halfBrick() || !Main.tileNoSunLight[(int) tile.type]) && ((int) tile.wall >= 88 && (int) tile.wall <= 93 && (int) tile.liquid < (int) byte.MaxValue))
+            {
+              num8 = num1;
+              num9 = num2;
+              num10 = num3;
+              switch (tile.wall)
+              {
+                case 88:
+                  num8 *= 0.9f;
+                  num9 *= 0.15f;
+                  num10 *= 0.9f;
+                  break;
+                case 89:
+                  num8 *= 0.9f;
+                  num9 *= 0.9f;
+                  num10 *= 0.15f;
+                  break;
+                case 90:
+                  num8 *= 0.15f;
+                  num9 *= 0.15f;
+                  num10 *= 0.9f;
+                  break;
+                case 91:
+                  num8 *= 0.15f;
+                  num9 *= 0.9f;
+                  num10 *= 0.15f;
+                  break;
+                case 92:
+                  num8 *= 0.9f;
+                  num9 *= 0.15f;
+                  num10 *= 0.15f;
+                  break;
+                case 93:
+                  float num11 = 0.2f;
+                  float num12 = 0.7f - num11;
+                  num8 *= num12 + (float) Main.DiscoR / (float) byte.MaxValue * num11;
+                  num9 *= num12 + (float) Main.DiscoG / (float) byte.MaxValue * num11;
+                  num10 *= num12 + (float) Main.DiscoB / (float) byte.MaxValue * num11;
+                  break;
+              }
+            }
+            if (!Lighting.RGB)
+            {
+              double num11;
+              num10 = (float) (num11 = ((double) num8 + (double) num9 + (double) num10) / 3.0);
+              num9 = (float) num11;
+              num8 = (float) num11;
+            }
+            if ((double) lightingState.r2 < (double) num8)
+              lightingState.r2 = num8;
+            if ((double) lightingState.g2 < (double) num9)
+              lightingState.g2 = num9;
+            if ((double) lightingState.b2 < (double) num10)
+              lightingState.b2 = num10;
+          }
+          float num13 = (float) (0.550000011920929 + Math.Sin((double) Main.GlobalTime * 2.0) * 0.0799999982118607);
+          if (index2 > Main.maxTilesY - 200)
+          {
+            if ((!tile.active() || !Main.tileNoSunLight[(int) tile.type] || ((int) tile.slope() != 0 || tile.halfBrick()) && ((int) Main.tile[index1, index2 - 1].liquid == 0 && (int) Main.tile[index1, index2 + 1].liquid == 0) && ((int) Main.tile[index1 - 1, index2].liquid == 0 && (int) Main.tile[index1 + 1, index2].liquid == 0)) && ((double) lightingState.r2 < (double) num13 && (Main.wallLight[(int) tile.wall] || (int) tile.wall == 73 || (int) tile.wall == 227) && ((int) tile.liquid < 200 && (!tile.halfBrick() || (int) Main.tile[index1, index2 - 1].liquid < 200))))
+            {
+              num8 = num13;
+              num9 = num13 * 0.6f;
+              num10 = num13 * 0.2f;
+            }
+            if ((!tile.active() || tile.halfBrick() || !Main.tileNoSunLight[(int) tile.type]) && ((int) tile.wall >= 88 && (int) tile.wall <= 93 && (int) tile.liquid < (int) byte.MaxValue))
+            {
+              num8 = num13;
+              num9 = num13 * 0.6f;
+              num10 = num13 * 0.2f;
+              switch (tile.wall)
+              {
+                case 88:
+                  num8 *= 0.9f;
+                  num9 *= 0.15f;
+                  num10 *= 0.9f;
+                  break;
+                case 89:
+                  num8 *= 0.9f;
+                  num9 *= 0.9f;
+                  num10 *= 0.15f;
+                  break;
+                case 90:
+                  num8 *= 0.15f;
+                  num9 *= 0.15f;
+                  num10 *= 0.9f;
+                  break;
+                case 91:
+                  num8 *= 0.15f;
+                  num9 *= 0.9f;
+                  num10 *= 0.15f;
+                  break;
+                case 92:
+                  num8 *= 0.9f;
+                  num9 *= 0.15f;
+                  num10 *= 0.15f;
+                  break;
+                case 93:
+                  float num11 = 0.2f;
+                  float num12 = 0.7f - num11;
+                  num8 *= num12 + (float) Main.DiscoR / (float) byte.MaxValue * num11;
+                  num9 *= num12 + (float) Main.DiscoG / (float) byte.MaxValue * num11;
+                  num10 *= num12 + (float) Main.DiscoB / (float) byte.MaxValue * num11;
+                  break;
+              }
+            }
+            if (!Lighting.RGB)
+            {
+              double num11;
+              num10 = (float) (num11 = ((double) num8 + (double) num9 + (double) num10) / 3.0);
+              num9 = (float) num11;
+              num8 = (float) num11;
+            }
+            if ((double) lightingState.r2 < (double) num8)
+              lightingState.r2 = num8;
+            if ((double) lightingState.g2 < (double) num9)
+              lightingState.g2 = num9;
+            if ((double) lightingState.b2 < (double) num10)
+              lightingState.b2 = num10;
+          }
+          byte wall = tile.wall;
+          if ((uint) wall <= 137U)
+          {
+            if ((int) wall != 33)
+            {
+              if ((int) wall != 44)
+              {
+                if ((int) wall == 137 && (!tile.active() || !Main.tileBlockLight[(int) tile.type]))
+                {
+                  float num11 = 0.4f + (float) (270 - (int) Main.mouseTextColor) / 1500f + (float) Main.rand.Next(0, 50) * 0.0005f;
+                  num8 = 1f * num11;
+                  num9 = 0.5f * num11;
+                  num10 = 0.1f * num11;
+                }
+              }
+              else if (!tile.active() || !Main.tileBlockLight[(int) tile.type])
+              {
+                num8 = (float) ((double) Main.DiscoR / (double) byte.MaxValue * 0.150000005960464);
+                num9 = (float) ((double) Main.DiscoG / (double) byte.MaxValue * 0.150000005960464);
+                num10 = (float) ((double) Main.DiscoB / (double) byte.MaxValue * 0.150000005960464);
+              }
+            }
+            else if (!tile.active() || !Main.tileBlockLight[(int) tile.type])
+            {
+              num8 = 0.09f;
+              num9 = 0.0525f;
+              num10 = 0.24f;
+            }
+          }
+          else if ((uint) wall <= 166U)
+          {
+            switch (wall)
+            {
+              case 153:
+                num8 = 0.6f;
+                num9 = 0.3f;
+                break;
+              case 154:
+                num8 = 0.6f;
+                num10 = 0.6f;
+                break;
+              case 155:
+                num8 = 0.6f;
+                num9 = 0.6f;
+                num10 = 0.6f;
+                break;
+              case 156:
+                num9 = 0.6f;
+                break;
+              case 164:
+                num8 = 0.6f;
+                break;
+              case 165:
+                num10 = 0.6f;
+                break;
+              case 166:
+                num8 = 0.6f;
+                num9 = 0.6f;
+                break;
+            }
+          }
+          else
+          {
+            switch (wall)
+            {
+              case 174:
+                if (!tile.active() || !Main.tileBlockLight[(int) tile.type])
+                {
+                  num8 = 0.2975f;
+                  break;
+                }
+                break;
+              case 175:
+                if (!tile.active() || !Main.tileBlockLight[(int) tile.type])
+                {
+                  num8 = 0.075f;
+                  num9 = 0.15f;
+                  num10 = 0.4f;
+                  break;
+                }
+                break;
+              case 176:
+                if (!tile.active() || !Main.tileBlockLight[(int) tile.type])
+                {
+                  num8 = 0.1f;
+                  num9 = 0.1f;
+                  num10 = 0.1f;
+                  break;
+                }
+                break;
+              case 182:
+                if (!tile.active() || !Main.tileBlockLight[(int) tile.type])
+                {
+                  num8 = 0.24f;
+                  num9 = 0.12f;
+                  num10 = 0.09f;
+                  break;
+                }
+                break;
+            }
+          }
+          if (tile.active())
+          {
+            if (index1 > firstToLightX + num19 && index1 < lastToLightX - num19 && (index2 > firstToLightY + num20 && index2 < lastToLightY - num20))
+            {
+              ++screenTileCounts[(int) tile.type];
+              if ((int) tile.type == 215 && (int) tile.frameY < 36)
+                Main.campfire = true;
+              if ((int) tile.type == 405)
+                Main.campfire = true;
+              if ((int) tile.type == 42 && (int) tile.frameY >= 324 && (int) tile.frameY <= 358)
+                Main.heartLantern = true;
+              if ((int) tile.type == 42 && (int) tile.frameY >= 252 && (int) tile.frameY <= 286)
+                Main.starInBottle = true;
+              if ((int) tile.type == 91 && ((int) tile.frameX >= 396 || (int) tile.frameY >= 54))
+              {
+                int banner = (int) tile.frameX / 18 - 21;
+                int frameY = (int) tile.frameY;
+                while (frameY >= 54)
+                {
+                  banner = banner + 90 + 21;
+                  frameY -= 54;
+                }
+                int index3 = Item.BannerToItem(banner);
+                if (ItemID.Sets.BannerStrength[index3].Enabled)
+                {
+                  Main.player[Main.myPlayer].NPCBannerBuff[banner] = true;
+                  Main.player[Main.myPlayer].hasBanner = true;
+                }
+              }
+            }
+            switch (tile.type)
+            {
+              case 139:
+                if ((int) tile.frameX >= 36)
+                {
+                  Main.musicBox = (int) tile.frameY / 36;
+                  break;
+                }
+                break;
+              case 207:
+                if ((int) tile.frameY >= 72)
+                {
+                  switch ((int) tile.frameX / 36)
+                  {
+                    case 0:
+                      Main.fountainColor = 0;
+                      break;
+                    case 1:
+                      Main.fountainColor = 6;
+                      break;
+                    case 2:
+                      Main.fountainColor = 3;
+                      break;
+                    case 3:
+                      Main.fountainColor = 5;
+                      break;
+                    case 4:
+                      Main.fountainColor = 2;
+                      break;
+                    case 5:
+                      Main.fountainColor = 10;
+                      break;
+                    case 6:
+                      Main.fountainColor = 4;
+                      break;
+                    case 7:
+                      Main.fountainColor = 9;
+                      break;
+                    default:
+                      Main.fountainColor = -1;
+                      break;
+                  }
+                }
+                else
+                  break;
+              case 410:
+                if ((int) tile.frameY >= 56)
+                {
+                  Main.monolithType = (int) tile.frameX / 36;
+                  break;
+                }
+                break;
+            }
+            if (Main.tileBlockLight[(int) tile.type] && (Lighting.lightMode >= 2 || (int) tile.type != 131 && !tile.inActive() && (int) tile.slope() == 0))
+              lightingState.stopLight = true;
+            if ((int) tile.type == 104)
+              Main.clock = true;
+            if (Main.tileLighted[(int) tile.type])
+            {
+              ushort type = tile.type;
+              if ((uint) type <= 184U)
+              {
+                if ((uint) type <= 77U)
+                {
+                  if ((uint) type <= 37U)
+                  {
+                    if ((uint) type <= 17U)
+                    {
+                      if ((int) type != 4)
+                      {
+                        if ((int) type == 17)
+                          goto label_344;
+                        else
+                          goto label_419;
+                      }
+                      else if ((int) tile.frameX < 66)
+                      {
+                        switch ((int) tile.frameY / 22)
+                        {
+                          case 0:
+                            num8 = 1f;
+                            num9 = 0.95f;
+                            num10 = 0.8f;
+                            goto label_419;
+                          case 1:
+                            num8 = 0.0f;
+                            num9 = 0.1f;
+                            num10 = 1.3f;
+                            goto label_419;
+                          case 2:
+                            num8 = 1f;
+                            num9 = 0.1f;
+                            num10 = 0.1f;
+                            goto label_419;
+                          case 3:
+                            num8 = 0.0f;
+                            num9 = 1f;
+                            num10 = 0.1f;
+                            goto label_419;
+                          case 4:
+                            num8 = 0.9f;
+                            num9 = 0.0f;
+                            num10 = 0.9f;
+                            goto label_419;
+                          case 5:
+                            num8 = 1.3f;
+                            num9 = 1.3f;
+                            num10 = 1.3f;
+                            goto label_419;
+                          case 6:
+                            num8 = 0.9f;
+                            num9 = 0.9f;
+                            num10 = 0.0f;
+                            goto label_419;
+                          case 7:
+                            num8 = (float) (0.5 * (double) Main.demonTorch + 1.0 * (1.0 - (double) Main.demonTorch));
+                            num9 = 0.3f;
+                            num10 = (float) (1.0 * (double) Main.demonTorch + 0.5 * (1.0 - (double) Main.demonTorch));
+                            goto label_419;
+                          case 8:
+                            num8 = 0.85f;
+                            num9 = 1f;
+                            num10 = 0.7f;
+                            goto label_419;
+                          case 9:
+                            num8 = 0.7f;
+                            num9 = 0.85f;
+                            num10 = 1f;
+                            goto label_419;
+                          case 10:
+                            num8 = 1f;
+                            num9 = 0.5f;
+                            num10 = 0.0f;
+                            goto label_419;
+                          case 11:
+                            num8 = 1.25f;
+                            num9 = 1.25f;
+                            num10 = 0.8f;
+                            goto label_419;
+                          case 12:
+                            num8 = 0.75f;
+                            num9 = 1.2825f;
+                            num10 = 1.2f;
+                            goto label_419;
+                          case 13:
+                            num8 = 0.95f;
+                            num9 = 0.65f;
+                            num10 = 1.3f;
+                            goto label_419;
+                          case 14:
+                            num8 = (float) Main.DiscoR / (float) byte.MaxValue;
+                            num9 = (float) Main.DiscoG / (float) byte.MaxValue;
+                            num10 = (float) Main.DiscoB / (float) byte.MaxValue;
+                            goto label_419;
+                          case 15:
+                            num8 = 1f;
+                            num9 = 0.0f;
+                            num10 = 1f;
+                            goto label_419;
+                          default:
+                            num8 = 1f;
+                            num9 = 0.95f;
+                            num10 = 0.8f;
+                            goto label_419;
+                        }
+                      }
+                      else
+                        goto label_419;
+                    }
+                    else
+                    {
+                      switch (type)
+                      {
+                        case 22:
+                          break;
+                        case 26:
+                        case 31:
+                          if ((int) tile.type == 31 && (int) tile.frameX >= 36 || (int) tile.type == 26 && (int) tile.frameX >= 54)
+                          {
+                            float num11 = (float) Main.rand.Next(-5, 6) * (1f / 400f);
+                            num8 = (float) (0.5 + (double) num11 * 2.0);
+                            num9 = 0.2f + num11;
+                            num10 = 0.1f;
+                            goto label_419;
+                          }
+                          else
+                          {
+                            float num11 = (float) Main.rand.Next(-5, 6) * (1f / 400f);
+                            num8 = 0.31f + num11;
+                            num9 = 0.1f;
+                            num10 = (float) (0.439999997615814 + (double) num11 * 2.0);
+                            goto label_419;
+                          }
+                        case 27:
+                          if ((int) tile.frameY < 36)
+                          {
+                            num8 = 0.3f;
+                            num9 = 0.27f;
+                            goto label_419;
+                          }
+                          else
+                            goto label_419;
+                        case 33:
+                          if ((int) tile.frameX == 0)
+                          {
+                            switch ((int) tile.frameY / 22)
+                            {
+                              case 19:
+                                num8 = 0.37f;
+                                num9 = 0.8f;
+                                num10 = 1f;
+                                goto label_419;
+                              case 20:
+                                num8 = 0.0f;
+                                num9 = 0.9f;
+                                num10 = 1f;
+                                goto label_419;
+                              case 21:
+                                num8 = 0.25f;
+                                num9 = 0.7f;
+                                num10 = 1f;
+                                goto label_419;
+                              case 25:
+                                num8 = (float) (0.5 * (double) Main.demonTorch + 1.0 * (1.0 - (double) Main.demonTorch));
+                                num9 = 0.3f;
+                                num10 = (float) (1.0 * (double) Main.demonTorch + 0.5 * (1.0 - (double) Main.demonTorch));
+                                goto label_419;
+                              case 28:
+                                num8 = 0.9f;
+                                num9 = 0.75f;
+                                num10 = 1f;
+                                goto label_419;
+                              case 0:
+                                num8 = 1f;
+                                num9 = 0.95f;
+                                num10 = 0.65f;
+                                goto label_419;
+                              case 1:
+                                num8 = 0.55f;
+                                num9 = 0.85f;
+                                num10 = 0.35f;
+                                goto label_419;
+                              case 2:
+                                num8 = 0.65f;
+                                num9 = 0.95f;
+                                num10 = 0.5f;
+                                goto label_419;
+                              case 3:
+                                num8 = 0.2f;
+                                num9 = 0.75f;
+                                num10 = 1f;
+                                goto label_419;
+                              case 14:
+                                num8 = 1f;
+                                num9 = 1f;
+                                num10 = 0.6f;
+                                goto label_419;
+                              default:
+                                num8 = 1f;
+                                num9 = 0.95f;
+                                num10 = 0.65f;
+                                goto label_419;
+                            }
+                          }
+                          else
+                            goto label_419;
+                        case 34:
+                          if ((int) tile.frameX < 54)
+                          {
+                            switch ((int) tile.frameY / 54)
+                            {
+                              case 7:
+                                num8 = 0.95f;
+                                num9 = 0.95f;
+                                num10 = 0.5f;
+                                goto label_419;
+                              case 8:
+                                num8 = 0.85f;
+                                num9 = 0.6f;
+                                num10 = 1f;
+                                goto label_419;
+                              case 9:
+                                num8 = 1f;
+                                num9 = 0.6f;
+                                num10 = 0.6f;
+                                goto label_419;
+                              case 11:
+                              case 17:
+                                num8 = 0.75f;
+                                num9 = 0.9f;
+                                num10 = 1f;
+                                goto label_419;
+                              case 15:
+                                num8 = 1f;
+                                num9 = 1f;
+                                num10 = 0.7f;
+                                goto label_419;
+                              case 18:
+                                num8 = 1f;
+                                num9 = 1f;
+                                num10 = 0.6f;
+                                goto label_419;
+                              case 24:
+                                num8 = 0.37f;
+                                num9 = 0.8f;
+                                num10 = 1f;
+                                goto label_419;
+                              case 25:
+                                num8 = 0.0f;
+                                num9 = 0.9f;
+                                num10 = 1f;
+                                goto label_419;
+                              case 26:
+                                num8 = 0.25f;
+                                num9 = 0.7f;
+                                num10 = 1f;
+                                goto label_419;
+                              case 27:
+                                num8 = 0.55f;
+                                num9 = 0.85f;
+                                num10 = 0.35f;
+                                goto label_419;
+                              case 28:
+                                num8 = 0.65f;
+                                num9 = 0.95f;
+                                num10 = 0.5f;
+                                goto label_419;
+                              case 29:
+                                num8 = 0.2f;
+                                num9 = 0.75f;
+                                num10 = 1f;
+                                goto label_419;
+                              case 32:
+                                num8 = (float) (0.5 * (double) Main.demonTorch + 1.0 * (1.0 - (double) Main.demonTorch));
+                                num9 = 0.3f;
+                                num10 = (float) (1.0 * (double) Main.demonTorch + 0.5 * (1.0 - (double) Main.demonTorch));
+                                goto label_419;
+                              case 35:
+                                num8 = 0.9f;
+                                num9 = 0.75f;
+                                num10 = 1f;
+                                goto label_419;
+                              default:
+                                num8 = 1f;
+                                num9 = 0.95f;
+                                num10 = 0.8f;
+                                goto label_419;
+                            }
+                          }
+                          else
+                            goto label_419;
+                        case 35:
+                          if ((int) tile.frameX < 36)
+                          {
+                            num8 = 0.75f;
+                            num9 = 0.6f;
+                            num10 = 0.3f;
+                            goto label_419;
+                          }
+                          else
+                            goto label_419;
+                        case 37:
+                          num8 = 0.56f;
+                          num9 = 0.43f;
+                          num10 = 0.15f;
+                          goto label_419;
+                        default:
+                          goto label_419;
+                      }
+                    }
+                  }
+                  else if ((uint) type <= 49U)
+                  {
+                    if ((int) type != 42)
+                    {
+                      if ((int) type == 49)
+                      {
+                        num8 = 0.0f;
+                        num9 = 0.35f;
+                        num10 = 0.8f;
+                        goto label_419;
+                      }
+                      else
+                        goto label_419;
+                    }
+                    else if ((int) tile.frameX == 0)
+                    {
+                      switch ((int) tile.frameY / 36)
+                      {
+                        case 0:
+                          num8 = 0.7f;
+                          num9 = 0.65f;
+                          num10 = 0.55f;
+                          goto label_419;
+                        case 1:
+                          num8 = 0.9f;
+                          num9 = 0.75f;
+                          num10 = 0.6f;
+                          goto label_419;
+                        case 2:
+                          num8 = 0.8f;
+                          num9 = 0.6f;
+                          num10 = 0.6f;
+                          goto label_419;
+                        case 3:
+                          num8 = 0.65f;
+                          num9 = 0.5f;
+                          num10 = 0.2f;
+                          goto label_419;
+                        case 4:
+                          num8 = 0.5f;
+                          num9 = 0.7f;
+                          num10 = 0.4f;
+                          goto label_419;
+                        case 5:
+                          num8 = 0.9f;
+                          num9 = 0.4f;
+                          num10 = 0.2f;
+                          goto label_419;
+                        case 6:
+                          num8 = 0.7f;
+                          num9 = 0.75f;
+                          num10 = 0.3f;
+                          goto label_419;
+                        case 7:
+                          float num12 = Main.demonTorch * 0.2f;
+                          num8 = 0.9f - num12;
+                          num9 = 0.9f - num12;
+                          num10 = 0.7f + num12;
+                          goto label_419;
+                        case 8:
+                          num8 = 0.75f;
+                          num9 = 0.6f;
+                          num10 = 0.3f;
+                          goto label_419;
+                        case 9:
+                          float num14 = 1f;
+                          float num15 = 0.3f;
+                          num10 = 0.5f + Main.demonTorch * 0.2f;
+                          num8 = num14 - Main.demonTorch * 0.1f;
+                          num9 = num15 - Main.demonTorch * 0.2f;
+                          goto label_419;
+                        case 28:
+                          num8 = 0.37f;
+                          num9 = 0.8f;
+                          num10 = 1f;
+                          goto label_419;
+                        case 29:
+                          num8 = 0.0f;
+                          num9 = 0.9f;
+                          num10 = 1f;
+                          goto label_419;
+                        case 30:
+                          num8 = 0.25f;
+                          num9 = 0.7f;
+                          num10 = 1f;
+                          goto label_419;
+                        case 32:
+                          num8 = (float) (0.5 * (double) Main.demonTorch + 1.0 * (1.0 - (double) Main.demonTorch));
+                          num9 = 0.3f;
+                          num10 = (float) (1.0 * (double) Main.demonTorch + 0.5 * (1.0 - (double) Main.demonTorch));
+                          goto label_419;
+                        case 35:
+                          num8 = 0.7f;
+                          num9 = 0.6f;
+                          num10 = 0.9f;
+                          goto label_419;
+                        default:
+                          num8 = 1f;
+                          num9 = 1f;
+                          num10 = 1f;
+                          goto label_419;
+                      }
+                    }
+                    else
+                      goto label_419;
+                  }
+                  else
+                  {
+                    switch (type)
+                    {
+                      case 61:
+                        if ((int) tile.frameX == 144)
+                        {
+                          float num11 = (float) (1.0 + (double) (270 - (int) Main.mouseTextColor) / 400.0);
+                          float num16 = (float) (0.800000011920929 - (double) (270 - (int) Main.mouseTextColor) / 400.0);
+                          num8 = 0.42f * num16;
+                          num9 = 0.81f * num11;
+                          num10 = 0.52f * num16;
+                          goto label_419;
+                        }
+                        else
+                          goto label_419;
+                      case 70:
+                      case 71:
+                      case 72:
+                        goto label_384;
+                      case 77:
+                        num8 = 0.75f;
+                        num9 = 0.45f;
+                        num10 = 0.25f;
+                        goto label_419;
+                      default:
+                        goto label_419;
+                    }
+                  }
+                }
+                else
+                {
+                  if ((uint) type <= 133U)
+                  {
+                    if ((uint) type <= 100U)
+                    {
+                      switch (type)
+                      {
+                        case 83:
+                          if ((int) tile.frameX == 18 && !Main.dayTime)
+                          {
+                            num8 = 0.1f;
+                            num9 = 0.4f;
+                            num10 = 0.6f;
+                          }
+                          if ((int) tile.frameX == 90 && !Main.raining && Main.time > 40500.0)
+                          {
+                            num8 = 0.9f;
+                            num9 = 0.72f;
+                            num10 = 0.18f;
+                            goto label_419;
+                          }
+                          else
+                            goto label_419;
+                        case 84:
+                          int num11 = (int) tile.frameX / 18;
+                          if (num11 == 2)
+                          {
+                            float num16 = (float) (270 - (int) Main.mouseTextColor) / 800f;
+                            if ((double) num16 > 1.0)
+                              num16 = 1f;
+                            else if ((double) num16 < 0.0)
+                              num16 = 0.0f;
+                            num8 = num16 * 0.7f;
+                            num9 = num16;
+                            num10 = num16 * 0.1f;
+                            goto label_419;
+                          }
+                          else if (num11 == 5)
+                          {
+                            float num16 = 0.9f;
+                            num8 = num16;
+                            num9 = num16 * 0.8f;
+                            num10 = num16 * 0.2f;
+                            goto label_419;
+                          }
+                          else if (num11 == 6)
+                          {
+                            float num16 = 0.08f;
+                            num9 = num16 * 0.8f;
+                            num10 = num16;
+                            goto label_419;
+                          }
+                          else
+                            goto label_419;
+                        case 92:
+                          if ((int) tile.frameY <= 18 && (int) tile.frameX == 0)
+                          {
+                            num8 = 1f;
+                            num9 = 1f;
+                            num10 = 1f;
+                            goto label_419;
+                          }
+                          else
+                            goto label_419;
+                        case 93:
+                          if ((int) tile.frameX == 0)
+                          {
+                            switch ((int) tile.frameY / 54)
+                            {
+                              case 1:
+                                num8 = 0.95f;
+                                num9 = 0.95f;
+                                num10 = 0.5f;
+                                goto label_419;
+                              case 2:
+                                num8 = 0.85f;
+                                num9 = 0.6f;
+                                num10 = 1f;
+                                goto label_419;
+                              case 3:
+                                num8 = 0.75f;
+                                num9 = 1f;
+                                num10 = 0.6f;
+                                goto label_419;
+                              case 4:
+                              case 5:
+                                num8 = 0.75f;
+                                num9 = 0.9f;
+                                num10 = 1f;
+                                goto label_419;
+                              case 9:
+                                num8 = 1f;
+                                num9 = 1f;
+                                num10 = 0.7f;
+                                goto label_419;
+                              case 13:
+                                num8 = 1f;
+                                num9 = 1f;
+                                num10 = 0.6f;
+                                goto label_419;
+                              case 19:
+                                num8 = 0.37f;
+                                num9 = 0.8f;
+                                num10 = 1f;
+                                goto label_419;
+                              case 20:
+                                num8 = 0.0f;
+                                num9 = 0.9f;
+                                num10 = 1f;
+                                goto label_419;
+                              case 21:
+                                num8 = 0.25f;
+                                num9 = 0.7f;
+                                num10 = 1f;
+                                goto label_419;
+                              case 23:
+                                num8 = (float) (0.5 * (double) Main.demonTorch + 1.0 * (1.0 - (double) Main.demonTorch));
+                                num9 = 0.3f;
+                                num10 = (float) (1.0 * (double) Main.demonTorch + 0.5 * (1.0 - (double) Main.demonTorch));
+                                goto label_419;
+                              case 24:
+                                num8 = 0.35f;
+                                num9 = 0.5f;
+                                num10 = 0.3f;
+                                goto label_419;
+                              case 25:
+                                num8 = 0.34f;
+                                num9 = 0.4f;
+                                num10 = 0.31f;
+                                goto label_419;
+                              case 26:
+                                num8 = 0.25f;
+                                num9 = 0.32f;
+                                num10 = 0.5f;
+                                goto label_419;
+                              case 29:
+                                num8 = 0.9f;
+                                num9 = 0.75f;
+                                num10 = 1f;
+                                goto label_419;
+                              default:
+                                num8 = 1f;
+                                num9 = 0.97f;
+                                num10 = 0.85f;
+                                goto label_419;
+                            }
+                          }
+                          else
+                            goto label_419;
+                        case 95:
+                          if ((int) tile.frameX < 36)
+                          {
+                            num8 = 1f;
+                            num9 = 0.95f;
+                            num10 = 0.8f;
+                            goto label_419;
+                          }
+                          else
+                            goto label_419;
+                        case 96:
+                          if ((int) tile.frameX >= 36)
+                          {
+                            num8 = 0.5f;
+                            num9 = 0.35f;
+                            num10 = 0.1f;
+                            goto label_419;
+                          }
+                          else
+                            goto label_419;
+                        case 98:
+                          if ((int) tile.frameY == 0)
+                          {
+                            num8 = 1f;
+                            num9 = 0.97f;
+                            num10 = 0.85f;
+                            goto label_419;
+                          }
+                          else
+                            goto label_419;
+                        case 100:
+                          break;
+                        default:
+                          goto label_419;
+                      }
+                    }
+                    else
+                    {
+                      switch (type)
+                      {
+                        case 125:
+                          float num17 = (float) Main.rand.Next(28, 42) * 0.01f + (float) (270 - (int) Main.mouseTextColor) / 800f;
+                          num9 = lightingState.g2 = 0.3f * num17;
+                          num10 = lightingState.b2 = 0.6f * num17;
+                          goto label_419;
+                        case 126:
+                          if ((int) tile.frameX < 36)
+                          {
+                            num8 = (float) Main.DiscoR / (float) byte.MaxValue;
+                            num9 = (float) Main.DiscoG / (float) byte.MaxValue;
+                            num10 = (float) Main.DiscoB / (float) byte.MaxValue;
+                            goto label_419;
+                          }
+                          else
+                            goto label_419;
+                        case 129:
+                          switch ((int) tile.frameX / 18 % 3)
+                          {
+                            case 0:
+                              num8 = 0.0f;
+                              num9 = 0.05f;
+                              num10 = 0.25f;
+                              goto label_419;
+                            case 1:
+                              num8 = 0.2f;
+                              num9 = 0.0f;
+                              num10 = 0.15f;
+                              goto label_419;
+                            case 2:
+                              num8 = 0.1f;
+                              num9 = 0.0f;
+                              num10 = 0.2f;
+                              goto label_419;
+                            default:
+                              goto label_419;
+                          }
+                        case 133:
+                          goto label_344;
+                        default:
+                          goto label_419;
+                      }
+                    }
+                  }
+                  else if ((uint) type <= 149U)
+                  {
+                    if ((int) type != 140)
+                    {
+                      if ((int) type == 149 && (int) tile.frameX <= 36)
+                      {
+                        switch ((int) tile.frameX / 18)
+                        {
+                          case 0:
+                            num8 = 0.1f;
+                            num9 = 0.2f;
+                            num10 = 0.5f;
+                            break;
+                          case 1:
+                            num8 = 0.5f;
+                            num9 = 0.1f;
+                            num10 = 0.1f;
+                            break;
+                          case 2:
+                            num8 = 0.2f;
+                            num9 = 0.5f;
+                            num10 = 0.1f;
+                            break;
+                        }
+                        num8 *= (float) Main.rand.Next(970, 1031) * (1f / 1000f);
+                        num9 *= (float) Main.rand.Next(970, 1031) * (1f / 1000f);
+                        num10 *= (float) Main.rand.Next(970, 1031) * (1f / 1000f);
+                        goto label_419;
+                      }
+                      else
+                        goto label_419;
+                    }
+                    else
+                      goto label_347;
+                  }
+                  else
+                  {
+                    switch (type)
+                    {
+                      case 160:
+                        num8 = (float) ((double) Main.DiscoR / (double) byte.MaxValue * 0.25);
+                        num9 = (float) ((double) Main.DiscoG / (double) byte.MaxValue * 0.25);
+                        num10 = (float) ((double) Main.DiscoB / (double) byte.MaxValue * 0.25);
+                        goto label_419;
+                      case 171:
+                        int index3 = index1;
+                        int index4 = index2;
+                        if ((int) tile.frameX < 10)
+                        {
+                          index3 -= (int) tile.frameX;
+                          index4 -= (int) tile.frameY;
+                        }
+                        switch (((int) Main.tile[index3, index4].frameY & 15360) >> 10)
+                        {
+                          case 1:
+                            num8 = 0.1f;
+                            num9 = 0.1f;
+                            num10 = 0.1f;
+                            break;
+                          case 2:
+                            num8 = 0.2f;
+                            break;
+                          case 3:
+                            num9 = 0.2f;
+                            break;
+                          case 4:
+                            num10 = 0.2f;
+                            break;
+                          case 5:
+                            num8 = 0.125f;
+                            num9 = 0.125f;
+                            break;
+                          case 6:
+                            num8 = 0.2f;
+                            num9 = 0.1f;
+                            break;
+                          case 7:
+                            num8 = 0.125f;
+                            num9 = 0.125f;
+                            break;
+                          case 8:
+                            num8 = 0.08f;
+                            num9 = 0.175f;
+                            break;
+                          case 9:
+                            num9 = 0.125f;
+                            num10 = 0.125f;
+                            break;
+                          case 10:
+                            num8 = 0.125f;
+                            num10 = 0.125f;
+                            break;
+                          case 11:
+                            num8 = 0.1f;
+                            num9 = 0.1f;
+                            num10 = 0.2f;
+                            break;
+                          default:
+                            double num18;
+                            num10 = (float) (num18 = 0.0);
+                            num9 = (float) num18;
+                            num8 = (float) num18;
+                            break;
+                        }
+                        num8 *= 0.5f;
+                        num9 *= 0.5f;
+                        num10 *= 0.5f;
+                        goto label_419;
+                      case 173:
+                        break;
+                      case 174:
+                        if ((int) tile.frameX == 0)
+                        {
+                          num8 = 1f;
+                          num9 = 0.95f;
+                          num10 = 0.65f;
+                          goto label_419;
+                        }
+                        else
+                          goto label_419;
+                      case 184:
+                        if ((int) tile.frameX == 110)
+                        {
+                          num8 = 0.25f;
+                          num9 = 0.1f;
+                          num10 = 0.0f;
+                          goto label_419;
+                        }
+                        else
+                          goto label_419;
+                      default:
+                        goto label_419;
+                    }
+                  }
+                  if ((int) tile.frameX < 36)
+                  {
+                    switch ((int) tile.frameY / 36)
+                    {
+                      case 1:
+                        num8 = 0.95f;
+                        num9 = 0.95f;
+                        num10 = 0.5f;
+                        goto label_419;
+                      case 3:
+                        num8 = 1f;
+                        num9 = 0.6f;
+                        num10 = 0.6f;
+                        goto label_419;
+                      case 6:
+                      case 9:
+                        num8 = 0.75f;
+                        num9 = 0.9f;
+                        num10 = 1f;
+                        goto label_419;
+                      case 11:
+                        num8 = 1f;
+                        num9 = 1f;
+                        num10 = 0.7f;
+                        goto label_419;
+                      case 13:
+                        num8 = 1f;
+                        num9 = 1f;
+                        num10 = 0.6f;
+                        goto label_419;
+                      case 19:
+                        num8 = 0.37f;
+                        num9 = 0.8f;
+                        num10 = 1f;
+                        goto label_419;
+                      case 20:
+                        num8 = 0.0f;
+                        num9 = 0.9f;
+                        num10 = 1f;
+                        goto label_419;
+                      case 21:
+                        num8 = 0.25f;
+                        num9 = 0.7f;
+                        num10 = 1f;
+                        goto label_419;
+                      case 22:
+                        num8 = 0.35f;
+                        num9 = 0.5f;
+                        num10 = 0.3f;
+                        goto label_419;
+                      case 23:
+                        num8 = 0.34f;
+                        num9 = 0.4f;
+                        num10 = 0.31f;
+                        goto label_419;
+                      case 24:
+                        num8 = 0.25f;
+                        num9 = 0.32f;
+                        num10 = 0.5f;
+                        goto label_419;
+                      case 25:
+                        num8 = (float) (0.5 * (double) Main.demonTorch + 1.0 * (1.0 - (double) Main.demonTorch));
+                        num9 = 0.3f;
+                        num10 = (float) (1.0 * (double) Main.demonTorch + 0.5 * (1.0 - (double) Main.demonTorch));
+                        goto label_419;
+                      case 29:
+                        num8 = 0.9f;
+                        num9 = 0.75f;
+                        num10 = 1f;
+                        goto label_419;
+                      default:
+                        num8 = 1f;
+                        num9 = 0.95f;
+                        num10 = 0.65f;
+                        goto label_419;
+                    }
+                  }
+                  else
+                    goto label_419;
+                }
+label_347:
+                num8 = 0.12f;
+                num9 = 0.07f;
+                num10 = 0.32f;
+                goto label_419;
+              }
+              else
+              {
+                if ((uint) type <= 318U)
+                {
+                  if ((uint) type <= 215U)
+                  {
+                    if ((uint) type <= 204U)
+                    {
+                      if ((int) type != 190)
+                      {
+                        if ((int) type != 204)
+                          goto label_419;
+                      }
+                      else
+                        goto label_384;
+                    }
+                    else if ((int) type != 209)
+                    {
+                      if ((int) type == 215 && (int) tile.frameY < 36)
+                      {
+                        float num11 = (float) Main.rand.Next(28, 42) * 0.005f + (float) (270 - (int) Main.mouseTextColor) / 700f;
+                        float num12;
+                        float num14;
+                        float num15;
+                        switch ((int) tile.frameX / 54)
+                        {
+                          case 1:
+                            num12 = 0.7f;
+                            num14 = 1f;
+                            num15 = 0.5f;
+                            break;
+                          case 2:
+                            num12 = (float) (0.5 * (double) Main.demonTorch + 1.0 * (1.0 - (double) Main.demonTorch));
+                            num14 = 0.3f;
+                            num15 = (float) (1.0 * (double) Main.demonTorch + 0.5 * (1.0 - (double) Main.demonTorch));
+                            break;
+                          case 3:
+                            num12 = 0.45f;
+                            num14 = 0.75f;
+                            num15 = 1f;
+                            break;
+                          case 4:
+                            num12 = 1.15f;
+                            num14 = 1.15f;
+                            num15 = 0.5f;
+                            break;
+                          case 5:
+                            num12 = (float) Main.DiscoR / (float) byte.MaxValue;
+                            num14 = (float) Main.DiscoG / (float) byte.MaxValue;
+                            num15 = (float) Main.DiscoB / (float) byte.MaxValue;
+                            break;
+                          case 6:
+                            num12 = 0.75f;
+                            num14 = 1.2825f;
+                            num15 = 1.2f;
+                            break;
+                          case 7:
+                            num12 = 0.95f;
+                            num14 = 0.65f;
+                            num15 = 1.3f;
+                            break;
+                          default:
+                            num12 = 0.9f;
+                            num14 = 0.3f;
+                            num15 = 0.1f;
+                            break;
+                        }
+                        num8 = num12 + num11;
+                        num9 = num14 + num11;
+                        num10 = num15 + num11;
+                        goto label_419;
+                      }
+                      else
+                        goto label_419;
+                    }
+                    else if ((int) tile.frameX == 234 || (int) tile.frameX == 252)
+                    {
+                      Vector3 vector3 = PortalHelper.GetPortalColor(Main.myPlayer, 0).ToVector3() * 0.65f;
+                      num8 = vector3.X;
+                      num9 = vector3.Y;
+                      num10 = vector3.Z;
+                      goto label_419;
+                    }
+                    else if ((int) tile.frameX == 306 || (int) tile.frameX == 324)
+                    {
+                      Vector3 vector3 = PortalHelper.GetPortalColor(Main.myPlayer, 1).ToVector3() * 0.65f;
+                      num8 = vector3.X;
+                      num9 = vector3.Y;
+                      num10 = vector3.Z;
+                      goto label_419;
+                    }
+                    else
+                      goto label_419;
+                  }
+                  else if ((uint) type <= 271U)
+                  {
+                    switch (type)
+                    {
+                      case 235:
+                        if ((double) lightingState.r2 < 0.6)
+                          lightingState.r2 = 0.6f;
+                        if ((double) lightingState.g2 < 0.6)
+                        {
+                          lightingState.g2 = 0.6f;
+                          goto label_419;
+                        }
+                        else
+                          goto label_419;
+                      case 237:
+                        num8 = 0.1f;
+                        num9 = 0.1f;
+                        goto label_419;
+                      case 238:
+                        if ((double) lightingState.r2 < 0.5)
+                          lightingState.r2 = 0.5f;
+                        if ((double) lightingState.b2 < 0.5)
+                        {
+                          lightingState.b2 = 0.5f;
+                          goto label_419;
+                        }
+                        else
+                          goto label_419;
+                      case 262:
+                        num8 = 0.75f;
+                        num10 = 0.75f;
+                        goto label_419;
+                      case 263:
+                        num8 = 0.75f;
+                        num9 = 0.75f;
+                        goto label_419;
+                      case 264:
+                        num10 = 0.75f;
+                        goto label_419;
+                      case 265:
+                        num9 = 0.75f;
+                        goto label_419;
+                      case 266:
+                        num8 = 0.75f;
+                        goto label_419;
+                      case 267:
+                        num8 = 0.75f;
+                        num9 = 0.75f;
+                        num10 = 0.75f;
+                        goto label_419;
+                      case 268:
+                        num8 = 0.75f;
+                        num9 = 0.375f;
+                        goto label_419;
+                      case 270:
+                        num8 = 0.73f;
+                        num9 = 1f;
+                        num10 = 0.41f;
+                        goto label_419;
+                      case 271:
+                        num8 = 0.45f;
+                        num9 = 0.95f;
+                        num10 = 1f;
+                        goto label_419;
+                      default:
+                        goto label_419;
+                    }
+                  }
+                  else
+                  {
+                    switch (type)
+                    {
+                      case 286:
+                        num8 = 0.1f;
+                        num9 = 0.2f;
+                        num10 = 0.7f;
+                        goto label_419;
+                      case 302:
+                        goto label_344;
+                      case 316:
+                      case 317:
+                      case 318:
+                        int index3 = (index1 - (int) tile.frameX / 18) / 2 * ((index2 - (int) tile.frameY / 18) / 3) % Main.cageFrames;
+                        bool flag1 = (int) Main.jellyfishCageMode[(int) tile.type - 316, index3] == 2;
+                        if ((int) tile.type == 316)
+                        {
+                          if (flag1)
+                          {
+                            num8 = 0.2f;
+                            num9 = 0.3f;
+                            num10 = 0.8f;
+                          }
+                          else
+                          {
+                            num8 = 0.1f;
+                            num9 = 0.2f;
+                            num10 = 0.5f;
+                          }
+                        }
+                        if ((int) tile.type == 317)
+                        {
+                          if (flag1)
+                          {
+                            num8 = 0.2f;
+                            num9 = 0.7f;
+                            num10 = 0.3f;
+                          }
+                          else
+                          {
+                            num8 = 0.05f;
+                            num9 = 0.45f;
+                            num10 = 0.1f;
+                          }
+                        }
+                        if ((int) tile.type == 318)
+                        {
+                          if (flag1)
+                          {
+                            num8 = 0.7f;
+                            num9 = 0.2f;
+                            num10 = 0.5f;
+                            goto label_419;
+                          }
+                          else
+                          {
+                            num8 = 0.4f;
+                            num9 = 0.1f;
+                            num10 = 0.25f;
+                            goto label_419;
+                          }
+                        }
+                        else
+                          goto label_419;
+                      default:
+                        goto label_419;
+                    }
+                  }
+                }
+                else if ((uint) type <= 381U)
+                {
+                  if ((uint) type <= 350U)
+                  {
+                    switch (type)
+                    {
+                      case 327:
+                        float num16 = 0.5f + (float) (270 - (int) Main.mouseTextColor) / 1500f + (float) Main.rand.Next(0, 50) * 0.0005f;
+                        num8 = 1f * num16;
+                        num9 = 0.5f * num16;
+                        num10 = 0.1f * num16;
+                        goto label_419;
+                      case 336:
+                        num8 = 0.85f;
+                        num9 = 0.5f;
+                        num10 = 0.3f;
+                        goto label_419;
+                      case 340:
+                        num8 = 0.45f;
+                        num9 = 1f;
+                        num10 = 0.45f;
+                        goto label_419;
+                      case 341:
+                        num8 = (float) (0.400000005960464 * (double) Main.demonTorch + 0.600000023841858 * (1.0 - (double) Main.demonTorch));
+                        num9 = 0.35f;
+                        num10 = (float) (1.0 * (double) Main.demonTorch + 0.600000023841858 * (1.0 - (double) Main.demonTorch));
+                        goto label_419;
+                      case 342:
+                        num8 = 0.5f;
+                        num9 = 0.5f;
+                        num10 = 1.1f;
+                        goto label_419;
+                      case 343:
+                        num8 = 0.85f;
+                        num9 = 0.85f;
+                        num10 = 0.3f;
+                        goto label_419;
+                      case 344:
+                        num8 = 0.6f;
+                        num9 = 1.026f;
+                        num10 = 0.96f;
+                        goto label_419;
+                      case 347:
+                        break;
+                      case 348:
+                      case 349:
+                        goto label_384;
+                      case 350:
+                        double num17 = Main.time * 0.08;
+                        float num18 = (float) (-Math.Cos((int) (num17 / 6.283) % 3 == 1 ? num17 : 0.0) * 0.1 + 0.1);
+                        num8 = num18;
+                        num9 = num18;
+                        num10 = num18;
+                        goto label_419;
+                      default:
+                        goto label_419;
+                    }
+                  }
+                  else
+                  {
+                    switch (type)
+                    {
+                      case 370:
+                        num8 = 0.32f;
+                        num9 = 0.16f;
+                        num10 = 0.12f;
+                        goto label_419;
+                      case 372:
+                        if ((int) tile.frameX == 0)
+                        {
+                          num8 = 0.9f;
+                          num9 = 0.1f;
+                          num10 = 0.75f;
+                          goto label_419;
+                        }
+                        else
+                          goto label_419;
+                      case 381:
+                        num8 = 0.25f;
+                        num9 = 0.1f;
+                        num10 = 0.0f;
+                        goto label_419;
+                      default:
+                        goto label_419;
+                    }
+                  }
+                }
+                else if ((uint) type <= 405U)
+                {
+                  switch (type)
+                  {
+                    case 390:
+                      num8 = 0.4f;
+                      num9 = 0.2f;
+                      num10 = 0.1f;
+                      goto label_419;
+                    case 391:
+                      num8 = 0.3f;
+                      num9 = 0.1f;
+                      num10 = 0.25f;
+                      goto label_419;
+                    case 405:
+                      if ((int) tile.frameX < 54)
+                      {
+                        float num11 = (float) Main.rand.Next(28, 42) * 0.005f + (float) (270 - (int) Main.mouseTextColor) / 700f;
+                        float num12;
+                        float num14;
+                        float num15;
+                        switch ((int) tile.frameX / 54)
+                        {
+                          case 1:
+                            num12 = 0.7f;
+                            num14 = 1f;
+                            num15 = 0.5f;
+                            break;
+                          case 2:
+                            num12 = (float) (0.5 * (double) Main.demonTorch + 1.0 * (1.0 - (double) Main.demonTorch));
+                            num14 = 0.3f;
+                            num15 = (float) (1.0 * (double) Main.demonTorch + 0.5 * (1.0 - (double) Main.demonTorch));
+                            break;
+                          case 3:
+                            num12 = 0.45f;
+                            num14 = 0.75f;
+                            num15 = 1f;
+                            break;
+                          case 4:
+                            num12 = 1.15f;
+                            num14 = 1.15f;
+                            num15 = 0.5f;
+                            break;
+                          case 5:
+                            num12 = (float) Main.DiscoR / (float) byte.MaxValue;
+                            num14 = (float) Main.DiscoG / (float) byte.MaxValue;
+                            num15 = (float) Main.DiscoB / (float) byte.MaxValue;
+                            break;
+                          default:
+                            num12 = 0.9f;
+                            num14 = 0.3f;
+                            num15 = 0.1f;
+                            break;
+                        }
+                        num8 = num12 + num11;
+                        num9 = num14 + num11;
+                        num10 = num15 + num11;
+                        goto label_419;
+                      }
+                      else
+                        goto label_419;
+                    default:
+                      goto label_419;
+                  }
+                }
+                else
+                {
+                  switch (type)
+                  {
+                    case 415:
+                      num8 = 0.7f;
+                      num9 = 0.5f;
+                      num10 = 0.1f;
+                      goto label_419;
+                    case 416:
+                      num8 = 0.0f;
+                      num9 = 0.6f;
+                      num10 = 0.7f;
+                      goto label_419;
+                    case 417:
+                      num8 = 0.6f;
+                      num9 = 0.2f;
+                      num10 = 0.6f;
+                      goto label_419;
+                    case 418:
+                      num8 = 0.6f;
+                      num9 = 0.6f;
+                      num10 = 0.9f;
+                      goto label_419;
+                    case 429:
+                      int num21 = (int) tile.frameX / 18;
+                      bool flag2 = num21 % 2 >= 1;
+                      bool flag3 = num21 % 4 >= 2;
+                      bool flag4 = num21 % 8 >= 4;
+                      bool flag5 = num21 % 16 >= 8;
+                      if (flag2)
+                        num8 += 0.5f;
+                      if (flag3)
+                        num9 += 0.5f;
+                      if (flag4)
+                        num10 += 0.5f;
+                      if (flag5)
+                      {
+                        num8 += 0.2f;
+                        num9 += 0.2f;
+                        goto label_419;
+                      }
+                      else
+                        goto label_419;
+                    case 463:
+                      num8 = 0.2f;
+                      num9 = 0.4f;
+                      num10 = 0.8f;
+                      goto label_419;
+                    default:
+                      goto label_419;
+                  }
+                }
+                num8 = 0.35f;
+                goto label_419;
+              }
+label_344:
+              num8 = 0.83f;
+              num9 = 0.6f;
+              num10 = 0.5f;
+              goto label_419;
+label_384:
+              if ((int) tile.type != 349 || (int) tile.frameX >= 36)
+              {
+                float num11 = (float) Main.rand.Next(28, 42) * 0.005f + (float) (270 - (int) Main.mouseTextColor) / 1000f;
+                num8 = 0.1f;
+                num9 = (float) (0.200000002980232 + (double) num11 / 2.0);
+                num10 = 0.7f + num11;
+              }
+            }
+          }
+label_419:
+          if (Lighting.RGB)
+          {
+            if ((double) lightingState.r2 < (double) num8)
+              lightingState.r2 = num8;
+            if ((double) lightingState.g2 < (double) num9)
+              lightingState.g2 = num9;
+            if ((double) lightingState.b2 < (double) num10)
+              lightingState.b2 = num10;
+          }
+          else
+          {
+            float num11 = (float) (((double) num8 + (double) num9 + (double) num10) / 3.0);
+            if ((double) lightingState.r2 < (double) num11)
+              lightingState.r2 = num11;
+          }
+          if (tile.lava() && (int) tile.liquid > 0)
+          {
+            if (Lighting.RGB)
+            {
+              float num11 = (float) ((double) ((int) tile.liquid / (int) byte.MaxValue) * 0.409999996423721 + 0.140000000596046);
+              float num12 = 0.55f + (float) (270 - (int) Main.mouseTextColor) / 900f;
+              if ((double) lightingState.r2 < (double) num12)
+                lightingState.r2 = num12;
+              if ((double) lightingState.g2 < (double) num12)
+                lightingState.g2 = num12 * 0.6f;
+              if ((double) lightingState.b2 < (double) num12)
+                lightingState.b2 = num12 * 0.2f;
+            }
+            else
+            {
+              float num11 = (float) ((double) ((int) tile.liquid / (int) byte.MaxValue) * 0.379999995231628 + 0.0799999982118607) + (float) (270 - (int) Main.mouseTextColor) / 2000f;
+              if ((double) lightingState.r2 < (double) num11)
+                lightingState.r2 = num11;
+            }
+          }
+          else if ((int) tile.liquid > 128)
+          {
+            lightingState.wetLight = true;
+            if (tile.honey())
+              lightingState.honeyLight = true;
+          }
+          if ((double) lightingState.r2 > 0.0 || Lighting.RGB && ((double) lightingState.g2 > 0.0 || (double) lightingState.b2 > 0.0))
+          {
+            int num11 = index1 - Lighting.firstToLightX;
+            int num12 = index2 - Lighting.firstToLightY;
+            if (Lighting.minX > num11)
+              Lighting.minX = num11;
+            if (Lighting.maxX < num11 + 1)
+              Lighting.maxX = num11 + 1;
+            if (Lighting.minY > num12)
+              Lighting.minY = num12;
+            if (Lighting.maxY < num12 + 1)
+              Lighting.maxY = num12 + 1;
+          }
+        }
+      }
+      foreach (KeyValuePair<Point16, Lighting.ColorTriplet> tempLight in Lighting.tempLights)
+      {
+        int index1 = (int) tempLight.Key.X - Lighting.firstTileX + Lighting.offScreenTiles;
+        int index2 = (int) tempLight.Key.Y - Lighting.firstTileY + Lighting.offScreenTiles;
+        if (index1 >= 0 && index1 < Main.screenWidth / 16 + Lighting.offScreenTiles * 2 + 10 && (index2 >= 0 && index2 < Main.screenHeight / 16 + Lighting.offScreenTiles * 2 + 10))
+        {
+          Lighting.LightingState lightingState = Lighting.states[index1][index2];
+          if ((double) lightingState.r2 < (double) tempLight.Value.r)
+            lightingState.r2 = tempLight.Value.r;
+          if ((double) lightingState.g2 < (double) tempLight.Value.g)
+            lightingState.g2 = tempLight.Value.g;
+          if ((double) lightingState.b2 < (double) tempLight.Value.b)
+            lightingState.b2 = tempLight.Value.b;
+          if (index1 < Lighting.minX)
+            Lighting.minX = index1;
+          if (index1 > Lighting.maxX)
+            Lighting.maxX = index1;
+          if (index2 < Lighting.minY)
+            Lighting.minY = index2;
+          if (index2 > Lighting.maxY)
+            Lighting.maxY = index2;
+        }
+      }
+      if (!Main.gamePaused)
+        Lighting.tempLights.Clear();
+      if (screenTileCounts[27] > 0)
+        Main.sunflower = true;
+      Main.holyTiles = screenTileCounts[109] + screenTileCounts[110] + screenTileCounts[113] + screenTileCounts[117] + screenTileCounts[116] + screenTileCounts[164] + screenTileCounts[403] + screenTileCounts[402];
+      Main.evilTiles = screenTileCounts[23] + screenTileCounts[24] + screenTileCounts[25] + screenTileCounts[32] + screenTileCounts[112] + screenTileCounts[163] + screenTileCounts[400] + screenTileCounts[398] + -5 * screenTileCounts[27];
+      Main.bloodTiles = screenTileCounts[199] + screenTileCounts[203] + screenTileCounts[200] + screenTileCounts[401] + screenTileCounts[399] + screenTileCounts[234] + screenTileCounts[352] - 5 * screenTileCounts[27];
+      Main.snowTiles = screenTileCounts[147] + screenTileCounts[148] + screenTileCounts[161] + screenTileCounts[162] + screenTileCounts[164] + screenTileCounts[163] + screenTileCounts[200];
+      Main.jungleTiles = screenTileCounts[60] + screenTileCounts[61] + screenTileCounts[62] + screenTileCounts[74] + screenTileCounts[226];
+      Main.shroomTiles = screenTileCounts[70] + screenTileCounts[71] + screenTileCounts[72];
+      Main.meteorTiles = screenTileCounts[37];
+      Main.dungeonTiles = screenTileCounts[41] + screenTileCounts[43] + screenTileCounts[44];
+      Main.sandTiles = screenTileCounts[53] + screenTileCounts[112] + screenTileCounts[116] + screenTileCounts[234] + screenTileCounts[397] + screenTileCounts[398] + screenTileCounts[402] + screenTileCounts[399] + screenTileCounts[396] + screenTileCounts[400] + screenTileCounts[403] + screenTileCounts[401];
+      Main.waterCandles = screenTileCounts[49];
+      Main.peaceCandles = screenTileCounts[372];
+      Main.partyMonoliths = screenTileCounts[455];
+      if (Main.player[Main.myPlayer].accOreFinder)
+      {
+        Main.player[Main.myPlayer].bestOre = -1;
+        for (int index = 0; index < 467; ++index)
+        {
+          if (screenTileCounts[index] > 0 && (int) Main.tileValue[index] > 0 && (Main.player[Main.myPlayer].bestOre < 0 || (int) Main.tileValue[index] > (int) Main.tileValue[Main.player[Main.myPlayer].bestOre]))
+            Main.player[Main.myPlayer].bestOre = index;
+        }
+      }
+      if (Main.holyTiles < 0)
+        Main.holyTiles = 0;
+      if (Main.evilTiles < 0)
+        Main.evilTiles = 0;
+      if (Main.bloodTiles < 0)
+        Main.bloodTiles = 0;
+      int holyTiles = Main.holyTiles;
+      Main.holyTiles -= Main.evilTiles;
+      Main.holyTiles -= Main.bloodTiles;
+      Main.evilTiles -= holyTiles;
+      Main.bloodTiles -= holyTiles;
+      if (Main.holyTiles < 0)
+        Main.holyTiles = 0;
+      if (Main.evilTiles < 0)
+        Main.evilTiles = 0;
+      if (Main.bloodTiles < 0)
+        Main.bloodTiles = 0;
+      Lighting.minX += Lighting.firstToLightX;
+      Lighting.maxX += Lighting.firstToLightX;
+      Lighting.minY += Lighting.firstToLightY;
+      Lighting.maxY += Lighting.firstToLightY;
+      Lighting.minX7 = Lighting.minX;
+      Lighting.maxX7 = Lighting.maxX;
+      Lighting.minY7 = Lighting.minY;
+      Lighting.maxY7 = Lighting.maxY;
+      Lighting.firstTileX7 = Lighting.firstTileX;
+      Lighting.lastTileX7 = Lighting.lastTileX;
+      Lighting.lastTileY7 = Lighting.lastTileY;
+      Lighting.firstTileY7 = Lighting.firstTileY;
+      Lighting.firstToLightX7 = Lighting.firstToLightX;
+      Lighting.lastToLightX7 = Lighting.lastToLightX;
+      Lighting.firstToLightY7 = Lighting.firstToLightY;
+      Lighting.lastToLightY7 = Lighting.lastToLightY;
+      Lighting.firstToLightX27 = Lighting.firstTileX - Lighting.offScreenTiles2;
+      Lighting.firstToLightY27 = Lighting.firstTileY - Lighting.offScreenTiles2;
+      Lighting.lastToLightX27 = Lighting.lastTileX + Lighting.offScreenTiles2;
+      Lighting.lastToLightY27 = Lighting.lastTileY + Lighting.offScreenTiles2;
+      if (Lighting.firstToLightX27 < 0)
+        Lighting.firstToLightX27 = 0;
+      if (Lighting.lastToLightX27 >= Main.maxTilesX)
+        Lighting.lastToLightX27 = Main.maxTilesX - 1;
+      if (Lighting.firstToLightY27 < 0)
+        Lighting.firstToLightY27 = 0;
+      if (Lighting.lastToLightY27 >= Main.maxTilesY)
+        Lighting.lastToLightY27 = Main.maxTilesY - 1;
+      Lighting.scrX = (int) Main.screenPosition.X / 16;
+      Lighting.scrY = (int) Main.screenPosition.Y / 16;
+      Main.renderCount = 0;
+      TimeLogger.LightingTime(0, stopwatch.Elapsed.TotalMilliseconds);
+      Lighting.doColors();
+    }
+
+    public static void doColors()
+    {
+      if (Lighting.lightMode < 2)
+      {
+        Lighting.blueWave += (float) Lighting.blueDir * 0.0001f;
+        if ((double) Lighting.blueWave > 1.0)
+        {
+          Lighting.blueWave = 1f;
+          Lighting.blueDir = -1;
+        }
+        else if ((double) Lighting.blueWave < 0.970000028610229)
+        {
+          Lighting.blueWave = 0.97f;
+          Lighting.blueDir = 1;
+        }
+        if (Lighting.RGB)
+        {
+          Lighting.negLight = 0.91f;
+          Lighting.negLight2 = 0.56f;
+          Lighting.honeyLightG = 0.7f * Lighting.negLight * Lighting.blueWave;
+          Lighting.honeyLightR = 0.75f * Lighting.negLight * Lighting.blueWave;
+          Lighting.honeyLightB = 0.6f * Lighting.negLight * Lighting.blueWave;
+          switch (Main.waterStyle)
+          {
+            case 0:
+            case 1:
+            case 7:
+            case 8:
+              Lighting.wetLightG = 0.96f * Lighting.negLight * Lighting.blueWave;
+              Lighting.wetLightR = 0.88f * Lighting.negLight * Lighting.blueWave;
+              Lighting.wetLightB = 1.015f * Lighting.negLight * Lighting.blueWave;
+              break;
+            case 2:
+              Lighting.wetLightG = 0.85f * Lighting.negLight * Lighting.blueWave;
+              Lighting.wetLightR = 0.94f * Lighting.negLight * Lighting.blueWave;
+              Lighting.wetLightB = 1.01f * Lighting.negLight * Lighting.blueWave;
+              break;
+            case 3:
+              Lighting.wetLightG = 0.95f * Lighting.negLight * Lighting.blueWave;
+              Lighting.wetLightR = 0.84f * Lighting.negLight * Lighting.blueWave;
+              Lighting.wetLightB = 1.015f * Lighting.negLight * Lighting.blueWave;
+              break;
+            case 4:
+              Lighting.wetLightG = 0.86f * Lighting.negLight * Lighting.blueWave;
+              Lighting.wetLightR = 0.9f * Lighting.negLight * Lighting.blueWave;
+              Lighting.wetLightB = 1.01f * Lighting.negLight * Lighting.blueWave;
+              break;
+            case 5:
+              Lighting.wetLightG = 0.99f * Lighting.negLight * Lighting.blueWave;
+              Lighting.wetLightR = 0.84f * Lighting.negLight * Lighting.blueWave;
+              Lighting.wetLightB = 1.01f * Lighting.negLight * Lighting.blueWave;
+              break;
+            case 6:
+              Lighting.wetLightG = 0.98f * Lighting.negLight * Lighting.blueWave;
+              Lighting.wetLightR = 0.95f * Lighting.negLight * Lighting.blueWave;
+              Lighting.wetLightB = 0.85f * Lighting.negLight * Lighting.blueWave;
+              break;
+            case 9:
+              Lighting.wetLightG = 0.88f * Lighting.negLight * Lighting.blueWave;
+              Lighting.wetLightR = 1f * Lighting.negLight * Lighting.blueWave;
+              Lighting.wetLightB = 0.84f * Lighting.negLight * Lighting.blueWave;
+              break;
+            case 10:
+              Lighting.wetLightG = 1f * Lighting.negLight * Lighting.blueWave;
+              Lighting.wetLightR = 0.83f * Lighting.negLight * Lighting.blueWave;
+              Lighting.wetLightB = 1f * Lighting.negLight * Lighting.blueWave;
+              break;
+            default:
+              Lighting.wetLightG = 0.0f;
+              Lighting.wetLightR = 0.0f;
+              Lighting.wetLightB = 0.0f;
+              break;
+          }
+        }
+        else
+        {
+          Lighting.negLight = 0.9f;
+          Lighting.negLight2 = 0.54f;
+          Lighting.wetLightR = 0.95f * Lighting.negLight * Lighting.blueWave;
+        }
+        if (Main.player[Main.myPlayer].nightVision)
+        {
+          Lighting.negLight *= 1.03f;
+          Lighting.negLight2 *= 1.03f;
+        }
+        if (Main.player[Main.myPlayer].blind)
+        {
+          Lighting.negLight *= 0.95f;
+          Lighting.negLight2 *= 0.95f;
+        }
+        if (Main.player[Main.myPlayer].blackout)
+        {
+          Lighting.negLight *= 0.85f;
+          Lighting.negLight2 *= 0.85f;
+        }
+        if (Main.player[Main.myPlayer].headcovered)
+        {
+          Lighting.negLight *= 0.85f;
+          Lighting.negLight2 *= 0.85f;
+        }
+      }
+      else
+      {
+        Lighting.negLight = 0.04f;
+        Lighting.negLight2 = 0.16f;
+        if (Main.player[Main.myPlayer].nightVision)
+        {
+          Lighting.negLight -= 0.013f;
+          Lighting.negLight2 -= 0.04f;
+        }
+        if (Main.player[Main.myPlayer].blind)
+        {
+          Lighting.negLight += 0.03f;
+          Lighting.negLight2 += 0.06f;
+        }
+        if (Main.player[Main.myPlayer].blackout)
+        {
+          Lighting.negLight += 0.09f;
+          Lighting.negLight2 += 0.18f;
+        }
+        if (Main.player[Main.myPlayer].headcovered)
+        {
+          Lighting.negLight += 0.09f;
+          Lighting.negLight2 += 0.18f;
+        }
+        Lighting.wetLightR = Lighting.negLight * 1.2f;
+        Lighting.wetLightG = Lighting.negLight * 1.1f;
+      }
+      int num1;
+      int num2;
+      switch (Main.renderCount)
+      {
+        case 0:
+          num1 = 0;
+          num2 = 1;
+          break;
+        case 1:
+          num1 = 1;
+          num2 = 3;
+          break;
+        case 2:
+          num1 = 3;
+          num2 = 4;
+          break;
+        default:
+          num1 = 0;
+          num2 = 0;
+          break;
+      }
+      if (Lighting.LightingThreads < 0)
+        Lighting.LightingThreads = 0;
+      if (Lighting.LightingThreads >= Environment.ProcessorCount)
+        Lighting.LightingThreads = Environment.ProcessorCount - 1;
+      int lightingThreads = Lighting.LightingThreads;
+      if (lightingThreads > 0)
+        ++lightingThreads;
+      Stopwatch stopwatch = new Stopwatch();
+      for (int index1 = num1; index1 < num2; ++index1)
+      {
+        stopwatch.Restart();
+        switch (index1)
+        {
+          case 0:
+            Lighting.swipe.innerLoop1Start = Lighting.minY7 - Lighting.firstToLightY7;
+            Lighting.swipe.innerLoop1End = Lighting.lastToLightY27 + Lighting.maxRenderCount - Lighting.firstToLightY7;
+            Lighting.swipe.innerLoop2Start = Lighting.maxY7 - Lighting.firstToLightY;
+            Lighting.swipe.innerLoop2End = Lighting.firstTileY7 - Lighting.maxRenderCount - Lighting.firstToLightY7;
+            Lighting.swipe.outerLoopStart = Lighting.minX7 - Lighting.firstToLightX7;
+            Lighting.swipe.outerLoopEnd = Lighting.maxX7 - Lighting.firstToLightX7;
+            Lighting.swipe.jaggedArray = Lighting.states;
+            break;
+          case 1:
+            Lighting.swipe.innerLoop1Start = Lighting.minX7 - Lighting.firstToLightX7;
+            Lighting.swipe.innerLoop1End = Lighting.lastTileX7 + Lighting.maxRenderCount - Lighting.firstToLightX7;
+            Lighting.swipe.innerLoop2Start = Lighting.maxX7 - Lighting.firstToLightX7;
+            Lighting.swipe.innerLoop2End = Lighting.firstTileX7 - Lighting.maxRenderCount - Lighting.firstToLightX7;
+            Lighting.swipe.outerLoopStart = Lighting.firstToLightY7 - Lighting.firstToLightY7;
+            Lighting.swipe.outerLoopEnd = Lighting.lastToLightY7 - Lighting.firstToLightY7;
+            Lighting.swipe.jaggedArray = Lighting.axisFlipStates;
+            break;
+          case 2:
+            Lighting.swipe.innerLoop1Start = Lighting.firstToLightY27 - Lighting.firstToLightY7;
+            Lighting.swipe.innerLoop1End = Lighting.lastTileY7 + Lighting.maxRenderCount - Lighting.firstToLightY7;
+            Lighting.swipe.innerLoop2Start = Lighting.lastToLightY27 - Lighting.firstToLightY;
+            Lighting.swipe.innerLoop2End = Lighting.firstTileY7 - Lighting.maxRenderCount - Lighting.firstToLightY7;
+            Lighting.swipe.outerLoopStart = Lighting.firstToLightX27 - Lighting.firstToLightX7;
+            Lighting.swipe.outerLoopEnd = Lighting.lastToLightX27 - Lighting.firstToLightX7;
+            Lighting.swipe.jaggedArray = Lighting.states;
+            break;
+          case 3:
+            Lighting.swipe.innerLoop1Start = Lighting.firstToLightX27 - Lighting.firstToLightX7;
+            Lighting.swipe.innerLoop1End = Lighting.lastTileX7 + Lighting.maxRenderCount - Lighting.firstToLightX7;
+            Lighting.swipe.innerLoop2Start = Lighting.lastToLightX27 - Lighting.firstToLightX7;
+            Lighting.swipe.innerLoop2End = Lighting.firstTileX7 - Lighting.maxRenderCount - Lighting.firstToLightX7;
+            Lighting.swipe.outerLoopStart = Lighting.firstToLightY27 - Lighting.firstToLightY7;
+            Lighting.swipe.outerLoopEnd = Lighting.lastToLightY27 - Lighting.firstToLightY7;
+            Lighting.swipe.jaggedArray = Lighting.axisFlipStates;
+            break;
+        }
+        if (Lighting.swipe.innerLoop1Start > Lighting.swipe.innerLoop1End)
+          Lighting.swipe.innerLoop1Start = Lighting.swipe.innerLoop1End;
+        if (Lighting.swipe.innerLoop2Start < Lighting.swipe.innerLoop2End)
+          Lighting.swipe.innerLoop2Start = Lighting.swipe.innerLoop2End;
+        if (Lighting.swipe.outerLoopStart > Lighting.swipe.outerLoopEnd)
+          Lighting.swipe.outerLoopStart = Lighting.swipe.outerLoopEnd;
+        switch (Lighting.lightMode)
+        {
+          case 0:
+            Lighting.swipe.function = new Action<Lighting.LightingSwipeData>(Lighting.doColors_Mode0_Swipe);
+            break;
+          case 1:
+            Lighting.swipe.function = new Action<Lighting.LightingSwipeData>(Lighting.doColors_Mode1_Swipe);
+            break;
+          case 2:
+            Lighting.swipe.function = new Action<Lighting.LightingSwipeData>(Lighting.doColors_Mode2_Swipe);
+            break;
+          case 3:
+            Lighting.swipe.function = new Action<Lighting.LightingSwipeData>(Lighting.doColors_Mode3_Swipe);
+            break;
+          default:
+            Lighting.swipe.function = (Action<Lighting.LightingSwipeData>) null;
+            break;
+        }
+        if (lightingThreads == 0)
+        {
+          Lighting.swipe.function(Lighting.swipe);
+        }
+        else
+        {
+          int num3 = Lighting.swipe.outerLoopEnd - Lighting.swipe.outerLoopStart;
+          int num4 = num3 / lightingThreads;
+          int num5 = num3 % lightingThreads;
+          int outerLoopStart = Lighting.swipe.outerLoopStart;
+          Lighting.countdown.Reset(lightingThreads);
+          for (int index2 = 0; index2 < lightingThreads; ++index2)
+          {
+            Lighting.LightingSwipeData threadSwipe = Lighting.threadSwipes[index2];
+            threadSwipe.CopyFrom(Lighting.swipe);
+            threadSwipe.outerLoopStart = outerLoopStart;
+            outerLoopStart += num4;
+            if (num5 > 0)
+            {
+              ++outerLoopStart;
+              --num5;
+            }
+            threadSwipe.outerLoopEnd = outerLoopStart;
+            ThreadPool.QueueUserWorkItem(new WaitCallback(Lighting.callback_LightingSwipe), (object) threadSwipe);
+          }
+          Lighting.countdown.Wait();
+        }
+        TimeLogger.LightingTime(index1 + 1, stopwatch.Elapsed.TotalMilliseconds);
+      }
+    }
+
+    private static void callback_LightingSwipe(object obj)
+    {
+      Lighting.LightingSwipeData lightingSwipeData = obj as Lighting.LightingSwipeData;
+      try
+      {
+        lightingSwipeData.function(lightingSwipeData);
+      }
+      catch
+      {
+      }
+      Lighting.countdown.Signal();
+    }
+
+    private static void doColors_Mode0_Swipe(Lighting.LightingSwipeData swipeData)
+    {
+      try
+      {
+        bool flag1 = true;
+        while (true)
+        {
+          int num1;
+          int num2;
+          int num3;
+          if (flag1)
+          {
+            num1 = 1;
+            num2 = swipeData.innerLoop1Start;
+            num3 = swipeData.innerLoop1End;
+          }
+          else
+          {
+            num1 = -1;
+            num2 = swipeData.innerLoop2Start;
+            num3 = swipeData.innerLoop2End;
+          }
+          int outerLoopStart = swipeData.outerLoopStart;
+          int outerLoopEnd = swipeData.outerLoopEnd;
+          for (int index1 = Utils.Clamp<int>(outerLoopStart, 0, swipeData.jaggedArray.Length - 1); index1 < outerLoopEnd; ++index1)
+          {
+            Lighting.LightingState[] jagged = swipeData.jaggedArray[index1];
+            float num4 = 0.0f;
+            float num5 = 0.0f;
+            float num6 = 0.0f;
+            int index2 = Utils.Clamp<int>(num2, 0, jagged.Length - 1);
+            while (index2 != num3)
+            {
+              Lighting.LightingState lightingState1 = jagged[index2];
+              Lighting.LightingState lightingState2 = jagged[index2 + num1];
+              bool flag2;
+              bool flag3 = flag2 = false;
+              if ((double) lightingState1.r2 > (double) num4)
+                num4 = lightingState1.r2;
+              else if ((double) num4 <= 0.0185)
+                flag3 = true;
+              else if ((double) lightingState1.r2 < (double) num4)
+                lightingState1.r2 = num4;
+              if (!flag3 && (double) lightingState2.r2 <= (double) num4)
+              {
+                if (lightingState1.stopLight)
+                  num4 *= Lighting.negLight2;
+                else if (lightingState1.wetLight)
+                {
+                  if (lightingState1.honeyLight)
+                    num4 *= (float) ((double) Lighting.honeyLightR * (double) swipeData.rand.Next(98, 100) * 0.00999999977648258);
+                  else
+                    num4 *= (float) ((double) Lighting.wetLightR * (double) swipeData.rand.Next(98, 100) * 0.00999999977648258);
+                }
+                else
+                  num4 *= Lighting.negLight;
+              }
+              if ((double) lightingState1.g2 > (double) num5)
+                num5 = lightingState1.g2;
+              else if ((double) num5 <= 0.0185)
+                flag2 = true;
+              else
+                lightingState1.g2 = num5;
+              if (!flag2 && (double) lightingState2.g2 <= (double) num5)
+              {
+                if (lightingState1.stopLight)
+                  num5 *= Lighting.negLight2;
+                else if (lightingState1.wetLight)
+                {
+                  if (lightingState1.honeyLight)
+                    num5 *= (float) ((double) Lighting.honeyLightG * (double) swipeData.rand.Next(97, 100) * 0.00999999977648258);
+                  else
+                    num5 *= (float) ((double) Lighting.wetLightG * (double) swipeData.rand.Next(97, 100) * 0.00999999977648258);
+                }
+                else
+                  num5 *= Lighting.negLight;
+              }
+              if ((double) lightingState1.b2 > (double) num6)
+                num6 = lightingState1.b2;
+              else if ((double) num6 > 0.0185)
+                lightingState1.b2 = num6;
+              else
+                goto label_45;
+              if ((double) lightingState2.b2 < (double) num6)
+              {
+                if (lightingState1.stopLight)
+                  num6 *= Lighting.negLight2;
+                else if (lightingState1.wetLight)
+                {
+                  if (lightingState1.honeyLight)
+                    num6 *= (float) ((double) Lighting.honeyLightB * (double) swipeData.rand.Next(97, 100) * 0.00999999977648258);
+                  else
+                    num6 *= (float) ((double) Lighting.wetLightB * (double) swipeData.rand.Next(97, 100) * 0.00999999977648258);
+                }
+                else
+                  num6 *= Lighting.negLight;
+              }
+label_45:
+              index2 += num1;
+            }
+          }
+          if (flag1)
+            flag1 = false;
+          else
+            break;
+        }
+      }
+      catch
+      {
+      }
+    }
+
+    private static void doColors_Mode1_Swipe(Lighting.LightingSwipeData swipeData)
+    {
+      try
+      {
+        bool flag = true;
+        while (true)
+        {
+          int num1;
+          int num2;
+          int num3;
+          if (flag)
+          {
+            num1 = 1;
+            num2 = swipeData.innerLoop1Start;
+            num3 = swipeData.innerLoop1End;
+          }
+          else
+          {
+            num1 = -1;
+            num2 = swipeData.innerLoop2Start;
+            num3 = swipeData.innerLoop2End;
+          }
+          int outerLoopStart = swipeData.outerLoopStart;
+          int outerLoopEnd = swipeData.outerLoopEnd;
+          for (int index1 = outerLoopStart; index1 < outerLoopEnd; ++index1)
+          {
+            Lighting.LightingState[] jagged = swipeData.jaggedArray[index1];
+            float num4 = 0.0f;
+            int index2 = num2;
+            while (index2 != num3)
+            {
+              Lighting.LightingState lightingState = jagged[index2];
+              if ((double) lightingState.r2 > (double) num4)
+                num4 = lightingState.r2;
+              else if ((double) num4 > 0.0185)
+              {
+                if ((double) lightingState.r2 < (double) num4)
+                  lightingState.r2 = num4;
+              }
+              else
+                goto label_19;
+              if ((double) jagged[index2 + num1].r2 <= (double) num4)
+              {
+                if (lightingState.stopLight)
+                  num4 *= Lighting.negLight2;
+                else if (lightingState.wetLight)
+                {
+                  if (lightingState.honeyLight)
+                    num4 *= (float) ((double) Lighting.honeyLightR * (double) swipeData.rand.Next(98, 100) * 0.00999999977648258);
+                  else
+                    num4 *= (float) ((double) Lighting.wetLightR * (double) swipeData.rand.Next(98, 100) * 0.00999999977648258);
+                }
+                else
+                  num4 *= Lighting.negLight;
+              }
+label_19:
+              index2 += num1;
+            }
+          }
+          if (flag)
+            flag = false;
+          else
+            break;
+        }
+      }
+      catch
+      {
+      }
+    }
+
+    private static void doColors_Mode2_Swipe(Lighting.LightingSwipeData swipeData)
+    {
+      try
+      {
+        bool flag = true;
+        while (true)
+        {
+          int num1;
+          int num2;
+          int num3;
+          if (flag)
+          {
+            num1 = 1;
+            num2 = swipeData.innerLoop1Start;
+            num3 = swipeData.innerLoop1End;
+          }
+          else
+          {
+            num1 = -1;
+            num2 = swipeData.innerLoop2Start;
+            num3 = swipeData.innerLoop2End;
+          }
+          int outerLoopStart = swipeData.outerLoopStart;
+          int outerLoopEnd = swipeData.outerLoopEnd;
+          for (int index1 = outerLoopStart; index1 < outerLoopEnd; ++index1)
+          {
+            Lighting.LightingState[] jagged = swipeData.jaggedArray[index1];
+            float num4 = 0.0f;
+            int index2 = num2;
+            while (index2 != num3)
+            {
+              Lighting.LightingState lightingState = jagged[index2];
+              if ((double) lightingState.r2 > (double) num4)
+                num4 = lightingState.r2;
+              else if ((double) num4 > 0.0)
+                lightingState.r2 = num4;
+              else
+                goto label_15;
+              if (lightingState.stopLight)
+                num4 -= Lighting.negLight2;
+              else if (lightingState.wetLight)
+                num4 -= Lighting.wetLightR;
+              else
+                num4 -= Lighting.negLight;
+label_15:
+              index2 += num1;
+            }
+          }
+          if (flag)
+            flag = false;
+          else
+            break;
+        }
+      }
+      catch
+      {
+      }
+    }
+
+    private static void doColors_Mode3_Swipe(Lighting.LightingSwipeData swipeData)
+    {
+      try
+      {
+        bool flag1 = true;
+        while (true)
+        {
+          int num1;
+          int num2;
+          int num3;
+          if (flag1)
+          {
+            num1 = 1;
+            num2 = swipeData.innerLoop1Start;
+            num3 = swipeData.innerLoop1End;
+          }
+          else
+          {
+            num1 = -1;
+            num2 = swipeData.innerLoop2Start;
+            num3 = swipeData.innerLoop2End;
+          }
+          int outerLoopStart = swipeData.outerLoopStart;
+          int outerLoopEnd = swipeData.outerLoopEnd;
+          for (int index1 = outerLoopStart; index1 < outerLoopEnd; ++index1)
+          {
+            Lighting.LightingState[] jagged = swipeData.jaggedArray[index1];
+            float num4 = 0.0f;
+            float num5 = 0.0f;
+            float num6 = 0.0f;
+            int index2 = num2;
+            while (index2 != num3)
+            {
+              Lighting.LightingState lightingState = jagged[index2];
+              bool flag2;
+              bool flag3 = flag2 = false;
+              if ((double) lightingState.r2 > (double) num4)
+                num4 = lightingState.r2;
+              else if ((double) num4 <= 0.0)
+                flag3 = true;
+              else
+                lightingState.r2 = num4;
+              if (!flag3)
+              {
+                if (lightingState.stopLight)
+                  num4 -= Lighting.negLight2;
+                else if (lightingState.wetLight)
+                  num4 -= Lighting.wetLightR;
+                else
+                  num4 -= Lighting.negLight;
+              }
+              if ((double) lightingState.g2 > (double) num5)
+                num5 = lightingState.g2;
+              else if ((double) num5 <= 0.0)
+                flag2 = true;
+              else
+                lightingState.g2 = num5;
+              if (!flag2)
+              {
+                if (lightingState.stopLight)
+                  num5 -= Lighting.negLight2;
+                else if (lightingState.wetLight)
+                  num5 -= Lighting.wetLightG;
+                else
+                  num5 -= Lighting.negLight;
+              }
+              if ((double) lightingState.b2 > (double) num6)
+                num6 = lightingState.b2;
+              else if ((double) num6 > 0.0)
+                lightingState.b2 = num6;
+              else
+                goto label_35;
+              if (lightingState.stopLight)
+                num6 -= Lighting.negLight2;
+              else
+                num6 -= Lighting.negLight;
+label_35:
+              index2 += num1;
+            }
+          }
+          if (flag1)
+            flag1 = false;
+          else
+            break;
+        }
+      }
+      catch
+      {
+      }
+    }
+
+    public static void AddLight(Vector2 position, Vector3 rgb)
+    {
+      Lighting.AddLight((int) ((double) position.X / 16.0), (int) ((double) position.Y / 16.0), rgb.X, rgb.Y, rgb.Z);
+    }
+
+    public static void AddLight(Vector2 position, float R, float G, float B)
+    {
+      Lighting.AddLight((int) ((double) position.X / 16.0), (int) ((double) position.Y / 16.0), R, G, B);
+    }
+
+    public static void AddLight(int i, int j, float R, float G, float B)
+    {
+      if (Main.gamePaused || Main.netMode == 2 || (i - Lighting.firstTileX + Lighting.offScreenTiles < 0 || i - Lighting.firstTileX + Lighting.offScreenTiles >= Main.screenWidth / 16 + Lighting.offScreenTiles * 2 + 10) || (j - Lighting.firstTileY + Lighting.offScreenTiles < 0 || j - Lighting.firstTileY + Lighting.offScreenTiles >= Main.screenHeight / 16 + Lighting.offScreenTiles * 2 + 10 || Lighting.tempLights.Count == Lighting.maxTempLights))
+        return;
+      Point16 key = new Point16(i, j);
+      Lighting.ColorTriplet colorTriplet;
+      if (Lighting.tempLights.TryGetValue(key, out colorTriplet))
+      {
+        if (Lighting.RGB)
+        {
+          if ((double) colorTriplet.r < (double) R)
+            colorTriplet.r = R;
+          if ((double) colorTriplet.g < (double) G)
+            colorTriplet.g = G;
+          if ((double) colorTriplet.b < (double) B)
+            colorTriplet.b = B;
+          Lighting.tempLights[key] = colorTriplet;
+        }
+        else
+        {
+          float averageColor = (float) (((double) R + (double) G + (double) B) / 3.0);
+          if ((double) colorTriplet.r >= (double) averageColor)
+            return;
+          Lighting.tempLights[key] = new Lighting.ColorTriplet(averageColor);
+        }
+      }
+      else
+      {
+        colorTriplet = !Lighting.RGB ? new Lighting.ColorTriplet((float) (((double) R + (double) G + (double) B) / 3.0)) : new Lighting.ColorTriplet(R, G, B);
+        Lighting.tempLights.Add(key, colorTriplet);
+      }
+    }
+
+    public static void NextLightMode()
+    {
+      Lighting.lightCounter += 100;
+      ++Lighting.lightMode;
+      if (Lighting.lightMode >= 4)
+        Lighting.lightMode = 0;
+      if (Lighting.lightMode != 2 && Lighting.lightMode != 0)
+        return;
+      Main.renderCount = 0;
+      Main.renderNow = true;
+      Lighting.BlackOut();
+    }
+
+    public static void BlackOut()
+    {
+      int num1 = Main.screenWidth / 16 + Lighting.offScreenTiles * 2;
+      int num2 = Main.screenHeight / 16 + Lighting.offScreenTiles * 2;
+      for (int index1 = 0; index1 < num1; ++index1)
+      {
+        Lighting.LightingState[] state = Lighting.states[index1];
+        for (int index2 = 0; index2 < num2; ++index2)
+        {
+          Lighting.LightingState lightingState = state[index2];
+          lightingState.r = 0.0f;
+          lightingState.g = 0.0f;
+          lightingState.b = 0.0f;
+        }
+      }
+    }
+
+    public static Color GetColor(int x, int y, Color oldColor)
+    {
+      int index1 = x - Lighting.firstTileX + Lighting.offScreenTiles;
+      int index2 = y - Lighting.firstTileY + Lighting.offScreenTiles;
+      if (Main.gameMenu)
+        return oldColor;
+      if (index1 < 0 || index2 < 0 || (index1 >= Main.screenWidth / 16 + Lighting.offScreenTiles * 2 + 10 || index2 >= Main.screenHeight / 16 + Lighting.offScreenTiles * 2 + 10))
+        return Color.Black;
+      Color white = Color.White;
+      Lighting.LightingState lightingState = Lighting.states[index1][index2];
+      int num1 = (int) ((double) oldColor.R * (double) lightingState.r * (double) Lighting.brightness);
+      int num2 = (int) ((double) oldColor.G * (double) lightingState.g * (double) Lighting.brightness);
+      int num3 = (int) ((double) oldColor.B * (double) lightingState.b * (double) Lighting.brightness);
+      if (num1 > (int) byte.MaxValue)
+        num1 = (int) byte.MaxValue;
+      if (num2 > (int) byte.MaxValue)
+        num2 = (int) byte.MaxValue;
+      if (num3 > (int) byte.MaxValue)
+        num3 = (int) byte.MaxValue;
+      white.R = (byte) num1;
+      white.G = (byte) num2;
+      white.B = (byte) num3;
+      return white;
+    }
+
+    public static Color GetColor(int x, int y)
+    {
+      int index1 = x - Lighting.firstTileX + Lighting.offScreenTiles;
+      int index2 = y - Lighting.firstTileY + Lighting.offScreenTiles;
+      if (Main.gameMenu)
+        return Color.White;
+      if (index1 < 0 || index2 < 0 || (index1 >= Main.screenWidth / 16 + Lighting.offScreenTiles * 2 + 10 || index2 >= Main.screenHeight / 16 + Lighting.offScreenTiles * 2))
+        return Color.Black;
+      Lighting.LightingState lightingState = Lighting.states[index1][index2];
+      int num1 = (int) ((double) byte.MaxValue * (double) lightingState.r * (double) Lighting.brightness);
+      int num2 = (int) ((double) byte.MaxValue * (double) lightingState.g * (double) Lighting.brightness);
+      int num3 = (int) ((double) byte.MaxValue * (double) lightingState.b * (double) Lighting.brightness);
+      if (num1 > (int) byte.MaxValue)
+        num1 = (int) byte.MaxValue;
+      if (num2 > (int) byte.MaxValue)
+        num2 = (int) byte.MaxValue;
+      if (num3 > (int) byte.MaxValue)
+        num3 = (int) byte.MaxValue;
+      return new Color((int) (byte) num1, (int) (byte) num2, (int) (byte) num3, (int) byte.MaxValue);
+    }
+
+    public static void GetColor9Slice(int centerX, int centerY, ref Color[] slices)
+    {
+      int num1 = centerX - Lighting.firstTileX + Lighting.offScreenTiles;
+      int num2 = centerY - Lighting.firstTileY + Lighting.offScreenTiles;
+      if (num1 <= 0 || num2 <= 0 || (num1 >= Main.screenWidth / 16 + Lighting.offScreenTiles * 2 + 10 - 1 || num2 >= Main.screenHeight / 16 + Lighting.offScreenTiles * 2 - 1))
+      {
+        for (int index = 0; index < 9; ++index)
+          slices[index] = Color.Black;
+      }
+      else
+      {
+        int index1 = 0;
+        for (int index2 = num1 - 1; index2 <= num1 + 1; ++index2)
+        {
+          Lighting.LightingState[] state = Lighting.states[index2];
+          for (int index3 = num2 - 1; index3 <= num2 + 1; ++index3)
+          {
+            Lighting.LightingState lightingState = state[index3];
+            int num3 = (int) ((double) byte.MaxValue * (double) lightingState.r * (double) Lighting.brightness);
+            int num4 = (int) ((double) byte.MaxValue * (double) lightingState.g * (double) Lighting.brightness);
+            int num5 = (int) ((double) byte.MaxValue * (double) lightingState.b * (double) Lighting.brightness);
+            if (num3 > (int) byte.MaxValue)
+              num3 = (int) byte.MaxValue;
+            if (num4 > (int) byte.MaxValue)
+              num4 = (int) byte.MaxValue;
+            if (num5 > (int) byte.MaxValue)
+              num5 = (int) byte.MaxValue;
+            slices[index1] = new Color((int) (byte) num3, (int) (byte) num4, (int) (byte) num5, (int) byte.MaxValue);
+            index1 += 3;
+          }
+          index1 -= 8;
+        }
+      }
+    }
+
+    public static Vector3 GetSubLight(Vector2 position)
+    {
+      Vector2 vector2_1 = position / 16f - new Vector2(0.5f, 0.5f);
+      Vector2 vector2_2 = new Vector2(vector2_1.X % 1f, vector2_1.Y % 1f);
+      int index1 = (int) vector2_1.X - Lighting.firstTileX + Lighting.offScreenTiles;
+      int index2 = (int) vector2_1.Y - Lighting.firstTileY + Lighting.offScreenTiles;
+      if (index1 <= 0 || index2 <= 0 || (index1 >= Main.screenWidth / 16 + Lighting.offScreenTiles * 2 + 10 - 1 || index2 >= Main.screenHeight / 16 + Lighting.offScreenTiles * 2 - 1))
+        return Vector3.One;
+      Vector3 vector3_1 = Lighting.states[index1][index2].ToVector3();
+      Vector3 vector3_2 = Lighting.states[index1 + 1][index2].ToVector3();
+      Vector3 vector3_3 = Lighting.states[index1][index2 + 1].ToVector3();
+      Vector3 vector3_4 = Lighting.states[index1 + 1][index2 + 1].ToVector3();
+      return Vector3.Lerp(Vector3.Lerp(vector3_1, vector3_2, vector2_2.X), Vector3.Lerp(vector3_3, vector3_4, vector2_2.X), vector2_2.Y);
+    }
+
+    public static void GetColor4Slice_New(int centerX, int centerY, out VertexColors vertices, float scale = 1f)
+    {
+      int index1 = centerX - Lighting.firstTileX + Lighting.offScreenTiles;
+      int index2 = centerY - Lighting.firstTileY + Lighting.offScreenTiles;
+      if (index1 <= 0 || index2 <= 0 || (index1 >= Main.screenWidth / 16 + Lighting.offScreenTiles * 2 + 10 - 1 || index2 >= Main.screenHeight / 16 + Lighting.offScreenTiles * 2 - 1))
+      {
+        vertices.BottomLeftColor = Color.Black;
+        vertices.BottomRightColor = Color.Black;
+        vertices.TopLeftColor = Color.Black;
+        vertices.TopRightColor = Color.Black;
+      }
+      else
+      {
+        Lighting.LightingState lightingState1 = Lighting.states[index1][index2];
+        Lighting.LightingState lightingState2 = Lighting.states[index1][index2 - 1];
+        Lighting.LightingState lightingState3 = Lighting.states[index1][index2 + 1];
+        Lighting.LightingState lightingState4 = Lighting.states[index1 - 1][index2];
+        Lighting.LightingState lightingState5 = Lighting.states[index1 + 1][index2];
+        Lighting.LightingState lightingState6 = Lighting.states[index1 - 1][index2 - 1];
+        Lighting.LightingState lightingState7 = Lighting.states[index1 + 1][index2 - 1];
+        Lighting.LightingState lightingState8 = Lighting.states[index1 - 1][index2 + 1];
+        Lighting.LightingState lightingState9 = Lighting.states[index1 + 1][index2 + 1];
+        float num1 = (float) ((double) Lighting.brightness * (double) scale * (double) byte.MaxValue * 0.25);
+        float num2 = (lightingState2.r + lightingState6.r + lightingState4.r + lightingState1.r) * num1;
+        float num3 = (lightingState2.g + lightingState6.g + lightingState4.g + lightingState1.g) * num1;
+        float num4 = (lightingState2.b + lightingState6.b + lightingState4.b + lightingState1.b) * num1;
+        if ((double) num2 > (double) byte.MaxValue)
+          num2 = (float) byte.MaxValue;
+        if ((double) num3 > (double) byte.MaxValue)
+          num3 = (float) byte.MaxValue;
+        if ((double) num4 > (double) byte.MaxValue)
+          num4 = (float) byte.MaxValue;
+        vertices.TopLeftColor = new Color((int) (byte) num2, (int) (byte) num3, (int) (byte) num4, (int) byte.MaxValue);
+        float num5 = (lightingState2.r + lightingState7.r + lightingState5.r + lightingState1.r) * num1;
+        float num6 = (lightingState2.g + lightingState7.g + lightingState5.g + lightingState1.g) * num1;
+        float num7 = (lightingState2.b + lightingState7.b + lightingState5.b + lightingState1.b) * num1;
+        if ((double) num5 > (double) byte.MaxValue)
+          num5 = (float) byte.MaxValue;
+        if ((double) num6 > (double) byte.MaxValue)
+          num6 = (float) byte.MaxValue;
+        if ((double) num7 > (double) byte.MaxValue)
+          num7 = (float) byte.MaxValue;
+        vertices.TopRightColor = new Color((int) (byte) num5, (int) (byte) num6, (int) (byte) num7, (int) byte.MaxValue);
+        float num8 = (lightingState3.r + lightingState8.r + lightingState4.r + lightingState1.r) * num1;
+        float num9 = (lightingState3.g + lightingState8.g + lightingState4.g + lightingState1.g) * num1;
+        float num10 = (lightingState3.b + lightingState8.b + lightingState4.b + lightingState1.b) * num1;
+        if ((double) num8 > (double) byte.MaxValue)
+          num8 = (float) byte.MaxValue;
+        if ((double) num9 > (double) byte.MaxValue)
+          num9 = (float) byte.MaxValue;
+        if ((double) num10 > (double) byte.MaxValue)
+          num10 = (float) byte.MaxValue;
+        vertices.BottomLeftColor = new Color((int) (byte) num8, (int) (byte) num9, (int) (byte) num10, (int) byte.MaxValue);
+        float num11 = (lightingState3.r + lightingState9.r + lightingState5.r + lightingState1.r) * num1;
+        float num12 = (lightingState3.g + lightingState9.g + lightingState5.g + lightingState1.g) * num1;
+        float num13 = (lightingState3.b + lightingState9.b + lightingState5.b + lightingState1.b) * num1;
+        if ((double) num11 > (double) byte.MaxValue)
+          num11 = (float) byte.MaxValue;
+        if ((double) num12 > (double) byte.MaxValue)
+          num12 = (float) byte.MaxValue;
+        if ((double) num13 > (double) byte.MaxValue)
+          num13 = (float) byte.MaxValue;
+        vertices.BottomRightColor = new Color((int) (byte) num11, (int) (byte) num12, (int) (byte) num13, (int) byte.MaxValue);
+      }
+    }
+
+    public static void GetColor4Slice_New(int centerX, int centerY, out VertexColors vertices, Color centerColor, float scale = 1f)
+    {
+      int index1 = centerX - Lighting.firstTileX + Lighting.offScreenTiles;
+      int index2 = centerY - Lighting.firstTileY + Lighting.offScreenTiles;
+      if (index1 <= 0 || index2 <= 0 || (index1 >= Main.screenWidth / 16 + Lighting.offScreenTiles * 2 + 10 - 1 || index2 >= Main.screenHeight / 16 + Lighting.offScreenTiles * 2 - 1))
+      {
+        vertices.BottomLeftColor = Color.Black;
+        vertices.BottomRightColor = Color.Black;
+        vertices.TopLeftColor = Color.Black;
+        vertices.TopRightColor = Color.Black;
+      }
+      else
+      {
+        float num1 = (float) centerColor.R / (float) byte.MaxValue;
+        float num2 = (float) centerColor.G / (float) byte.MaxValue;
+        float num3 = (float) centerColor.B / (float) byte.MaxValue;
+        Lighting.LightingState lightingState1 = Lighting.states[index1][index2 - 1];
+        Lighting.LightingState lightingState2 = Lighting.states[index1][index2 + 1];
+        Lighting.LightingState lightingState3 = Lighting.states[index1 - 1][index2];
+        Lighting.LightingState lightingState4 = Lighting.states[index1 + 1][index2];
+        Lighting.LightingState lightingState5 = Lighting.states[index1 - 1][index2 - 1];
+        Lighting.LightingState lightingState6 = Lighting.states[index1 + 1][index2 - 1];
+        Lighting.LightingState lightingState7 = Lighting.states[index1 - 1][index2 + 1];
+        Lighting.LightingState lightingState8 = Lighting.states[index1 + 1][index2 + 1];
+        float num4 = (float) ((double) Lighting.brightness * (double) scale * (double) byte.MaxValue * 0.25);
+        float num5 = (lightingState1.r + lightingState5.r + lightingState3.r + num1) * num4;
+        float num6 = (lightingState1.g + lightingState5.g + lightingState3.g + num2) * num4;
+        float num7 = (lightingState1.b + lightingState5.b + lightingState3.b + num3) * num4;
+        if ((double) num5 > (double) byte.MaxValue)
+          num5 = (float) byte.MaxValue;
+        if ((double) num6 > (double) byte.MaxValue)
+          num6 = (float) byte.MaxValue;
+        if ((double) num7 > (double) byte.MaxValue)
+          num7 = (float) byte.MaxValue;
+        vertices.TopLeftColor = new Color((int) (byte) num5, (int) (byte) num6, (int) (byte) num7, (int) byte.MaxValue);
+        float num8 = (lightingState1.r + lightingState6.r + lightingState4.r + num1) * num4;
+        float num9 = (lightingState1.g + lightingState6.g + lightingState4.g + num2) * num4;
+        float num10 = (lightingState1.b + lightingState6.b + lightingState4.b + num3) * num4;
+        if ((double) num8 > (double) byte.MaxValue)
+          num8 = (float) byte.MaxValue;
+        if ((double) num9 > (double) byte.MaxValue)
+          num9 = (float) byte.MaxValue;
+        if ((double) num10 > (double) byte.MaxValue)
+          num10 = (float) byte.MaxValue;
+        vertices.TopRightColor = new Color((int) (byte) num8, (int) (byte) num9, (int) (byte) num10, (int) byte.MaxValue);
+        float num11 = (lightingState2.r + lightingState7.r + lightingState3.r + num1) * num4;
+        float num12 = (lightingState2.g + lightingState7.g + lightingState3.g + num2) * num4;
+        float num13 = (lightingState2.b + lightingState7.b + lightingState3.b + num3) * num4;
+        if ((double) num11 > (double) byte.MaxValue)
+          num11 = (float) byte.MaxValue;
+        if ((double) num12 > (double) byte.MaxValue)
+          num12 = (float) byte.MaxValue;
+        if ((double) num13 > (double) byte.MaxValue)
+          num13 = (float) byte.MaxValue;
+        vertices.BottomLeftColor = new Color((int) (byte) num11, (int) (byte) num12, (int) (byte) num13, (int) byte.MaxValue);
+        float num14 = (lightingState2.r + lightingState8.r + lightingState4.r + num1) * num4;
+        float num15 = (lightingState2.g + lightingState8.g + lightingState4.g + num2) * num4;
+        float num16 = (lightingState2.b + lightingState8.b + lightingState4.b + num3) * num4;
+        if ((double) num14 > (double) byte.MaxValue)
+          num14 = (float) byte.MaxValue;
+        if ((double) num15 > (double) byte.MaxValue)
+          num15 = (float) byte.MaxValue;
+        if ((double) num16 > (double) byte.MaxValue)
+          num16 = (float) byte.MaxValue;
+        vertices.BottomRightColor = new Color((int) (byte) num14, (int) (byte) num15, (int) (byte) num16, (int) byte.MaxValue);
+      }
+    }
+
+    public static void GetColor4Slice(int centerX, int centerY, ref Color[] slices)
+    {
+      int index1 = centerX - Lighting.firstTileX + Lighting.offScreenTiles;
+      int index2 = centerY - Lighting.firstTileY + Lighting.offScreenTiles;
+      if (index1 <= 0 || index2 <= 0 || (index1 >= Main.screenWidth / 16 + Lighting.offScreenTiles * 2 + 10 - 1 || index2 >= Main.screenHeight / 16 + Lighting.offScreenTiles * 2 - 1))
+      {
+        for (int index3 = 0; index3 < 4; ++index3)
+          slices[index3] = Color.Black;
+      }
+      else
+      {
+        Lighting.LightingState lightingState1 = Lighting.states[index1][index2 - 1];
+        Lighting.LightingState lightingState2 = Lighting.states[index1][index2 + 1];
+        Lighting.LightingState lightingState3 = Lighting.states[index1 - 1][index2];
+        Lighting.LightingState lightingState4 = Lighting.states[index1 + 1][index2];
+        float num1 = lightingState1.r + lightingState1.g + lightingState1.b;
+        float num2 = lightingState2.r + lightingState2.g + lightingState2.b;
+        float num3 = lightingState4.r + lightingState4.g + lightingState4.b;
+        float num4 = lightingState3.r + lightingState3.g + lightingState3.b;
+        if ((double) num1 >= (double) num4)
+        {
+          int num5 = (int) ((double) byte.MaxValue * (double) lightingState3.r * (double) Lighting.brightness);
+          int num6 = (int) ((double) byte.MaxValue * (double) lightingState3.g * (double) Lighting.brightness);
+          int num7 = (int) ((double) byte.MaxValue * (double) lightingState3.b * (double) Lighting.brightness);
+          if (num5 > (int) byte.MaxValue)
+            num5 = (int) byte.MaxValue;
+          if (num6 > (int) byte.MaxValue)
+            num6 = (int) byte.MaxValue;
+          if (num7 > (int) byte.MaxValue)
+            num7 = (int) byte.MaxValue;
+          slices[0] = new Color((int) (byte) num5, (int) (byte) num6, (int) (byte) num7, (int) byte.MaxValue);
+        }
+        else
+        {
+          int num5 = (int) ((double) byte.MaxValue * (double) lightingState1.r * (double) Lighting.brightness);
+          int num6 = (int) ((double) byte.MaxValue * (double) lightingState1.g * (double) Lighting.brightness);
+          int num7 = (int) ((double) byte.MaxValue * (double) lightingState1.b * (double) Lighting.brightness);
+          if (num5 > (int) byte.MaxValue)
+            num5 = (int) byte.MaxValue;
+          if (num6 > (int) byte.MaxValue)
+            num6 = (int) byte.MaxValue;
+          if (num7 > (int) byte.MaxValue)
+            num7 = (int) byte.MaxValue;
+          slices[0] = new Color((int) (byte) num5, (int) (byte) num6, (int) (byte) num7, (int) byte.MaxValue);
+        }
+        if ((double) num1 >= (double) num3)
+        {
+          int num5 = (int) ((double) byte.MaxValue * (double) lightingState4.r * (double) Lighting.brightness);
+          int num6 = (int) ((double) byte.MaxValue * (double) lightingState4.g * (double) Lighting.brightness);
+          int num7 = (int) ((double) byte.MaxValue * (double) lightingState4.b * (double) Lighting.brightness);
+          if (num5 > (int) byte.MaxValue)
+            num5 = (int) byte.MaxValue;
+          if (num6 > (int) byte.MaxValue)
+            num6 = (int) byte.MaxValue;
+          if (num7 > (int) byte.MaxValue)
+            num7 = (int) byte.MaxValue;
+          slices[1] = new Color((int) (byte) num5, (int) (byte) num6, (int) (byte) num7, (int) byte.MaxValue);
+        }
+        else
+        {
+          int num5 = (int) ((double) byte.MaxValue * (double) lightingState1.r * (double) Lighting.brightness);
+          int num6 = (int) ((double) byte.MaxValue * (double) lightingState1.g * (double) Lighting.brightness);
+          int num7 = (int) ((double) byte.MaxValue * (double) lightingState1.b * (double) Lighting.brightness);
+          if (num5 > (int) byte.MaxValue)
+            num5 = (int) byte.MaxValue;
+          if (num6 > (int) byte.MaxValue)
+            num6 = (int) byte.MaxValue;
+          if (num7 > (int) byte.MaxValue)
+            num7 = (int) byte.MaxValue;
+          slices[1] = new Color((int) (byte) num5, (int) (byte) num6, (int) (byte) num7, (int) byte.MaxValue);
+        }
+        if ((double) num2 >= (double) num4)
+        {
+          int num5 = (int) ((double) byte.MaxValue * (double) lightingState3.r * (double) Lighting.brightness);
+          int num6 = (int) ((double) byte.MaxValue * (double) lightingState3.g * (double) Lighting.brightness);
+          int num7 = (int) ((double) byte.MaxValue * (double) lightingState3.b * (double) Lighting.brightness);
+          if (num5 > (int) byte.MaxValue)
+            num5 = (int) byte.MaxValue;
+          if (num6 > (int) byte.MaxValue)
+            num6 = (int) byte.MaxValue;
+          if (num7 > (int) byte.MaxValue)
+            num7 = (int) byte.MaxValue;
+          slices[2] = new Color((int) (byte) num5, (int) (byte) num6, (int) (byte) num7, (int) byte.MaxValue);
+        }
+        else
+        {
+          int num5 = (int) ((double) byte.MaxValue * (double) lightingState2.r * (double) Lighting.brightness);
+          int num6 = (int) ((double) byte.MaxValue * (double) lightingState2.g * (double) Lighting.brightness);
+          int num7 = (int) ((double) byte.MaxValue * (double) lightingState2.b * (double) Lighting.brightness);
+          if (num5 > (int) byte.MaxValue)
+            num5 = (int) byte.MaxValue;
+          if (num6 > (int) byte.MaxValue)
+            num6 = (int) byte.MaxValue;
+          if (num7 > (int) byte.MaxValue)
+            num7 = (int) byte.MaxValue;
+          slices[2] = new Color((int) (byte) num5, (int) (byte) num6, (int) (byte) num7, (int) byte.MaxValue);
+        }
+        if ((double) num2 >= (double) num3)
+        {
+          int num5 = (int) ((double) byte.MaxValue * (double) lightingState4.r * (double) Lighting.brightness);
+          int num6 = (int) ((double) byte.MaxValue * (double) lightingState4.g * (double) Lighting.brightness);
+          int num7 = (int) ((double) byte.MaxValue * (double) lightingState4.b * (double) Lighting.brightness);
+          if (num5 > (int) byte.MaxValue)
+            num5 = (int) byte.MaxValue;
+          if (num6 > (int) byte.MaxValue)
+            num6 = (int) byte.MaxValue;
+          if (num7 > (int) byte.MaxValue)
+            num7 = (int) byte.MaxValue;
+          slices[3] = new Color((int) (byte) num5, (int) (byte) num6, (int) (byte) num7, (int) byte.MaxValue);
+        }
+        else
+        {
+          int num5 = (int) ((double) byte.MaxValue * (double) lightingState2.r * (double) Lighting.brightness);
+          int num6 = (int) ((double) byte.MaxValue * (double) lightingState2.g * (double) Lighting.brightness);
+          int num7 = (int) ((double) byte.MaxValue * (double) lightingState2.b * (double) Lighting.brightness);
+          if (num5 > (int) byte.MaxValue)
+            num5 = (int) byte.MaxValue;
+          if (num6 > (int) byte.MaxValue)
+            num6 = (int) byte.MaxValue;
+          if (num7 > (int) byte.MaxValue)
+            num7 = (int) byte.MaxValue;
+          slices[3] = new Color((int) (byte) num5, (int) (byte) num6, (int) (byte) num7, (int) byte.MaxValue);
+        }
+      }
+    }
+
+    public static Color GetBlackness(int x, int y)
+    {
+      int index1 = x - Lighting.firstTileX + Lighting.offScreenTiles;
+      int index2 = y - Lighting.firstTileY + Lighting.offScreenTiles;
+      if (index1 < 0 || index2 < 0 || (index1 >= Main.screenWidth / 16 + Lighting.offScreenTiles * 2 + 10 || index2 >= Main.screenHeight / 16 + Lighting.offScreenTiles * 2 + 10))
+        return Color.Black;
+      return new Color(0, 0, 0, (int) (byte) ((double) byte.MaxValue - (double) byte.MaxValue * (double) Lighting.states[index1][index2].r));
+    }
+
+    public static float Brightness(int x, int y)
+    {
+      int index1 = x - Lighting.firstTileX + Lighting.offScreenTiles;
+      int index2 = y - Lighting.firstTileY + Lighting.offScreenTiles;
+      if (index1 < 0 || index2 < 0 || (index1 >= Main.screenWidth / 16 + Lighting.offScreenTiles * 2 + 10 || index2 >= Main.screenHeight / 16 + Lighting.offScreenTiles * 2 + 10))
+        return 0.0f;
+      Lighting.LightingState lightingState = Lighting.states[index1][index2];
+      return (float) ((double) Lighting.brightness * ((double) lightingState.r + (double) lightingState.g + (double) lightingState.b) / 3.0);
+    }
+
+    public static float BrightnessAverage(int x, int y, int width, int height)
+    {
+      int num1 = x - Lighting.firstTileX + Lighting.offScreenTiles;
+      int num2 = y - Lighting.firstTileY + Lighting.offScreenTiles;
+      int num3 = num1 + width;
+      int num4 = num2 + height;
+      if (num1 < 0)
+        num1 = 0;
+      if (num2 < 0)
+        num2 = 0;
+      if (num3 >= Main.screenWidth / 16 + Lighting.offScreenTiles * 2 + 10)
+        num3 = Main.screenWidth / 16 + Lighting.offScreenTiles * 2 + 10;
+      if (num4 >= Main.screenHeight / 16 + Lighting.offScreenTiles * 2 + 10)
+        num4 = Main.screenHeight / 16 + Lighting.offScreenTiles * 2 + 10;
+      float num5 = 0.0f;
+      float num6 = 0.0f;
+      for (int index1 = num1; index1 < num3; ++index1)
+      {
+        for (int index2 = num2; index2 < num4; ++index2)
+        {
+          ++num5;
+          Lighting.LightingState lightingState = Lighting.states[index1][index2];
+          num6 += (float) (((double) lightingState.r + (double) lightingState.g + (double) lightingState.b) / 3.0);
+        }
+      }
+      if ((double) num5 == 0.0)
+        return 0.0f;
+      return num6 / num5;
+    }
+
+    private class LightingSwipeData
+    {
+      public int outerLoopStart;
+      public int outerLoopEnd;
+      public int innerLoop1Start;
+      public int innerLoop1End;
+      public int innerLoop2Start;
+      public int innerLoop2End;
+      public UnifiedRandom rand;
+      public Action<Lighting.LightingSwipeData> function;
+      public Lighting.LightingState[][] jaggedArray;
+
+      public LightingSwipeData()
+      {
+        this.innerLoop1Start = 0;
+        this.outerLoopStart = 0;
+        this.innerLoop1End = 0;
+        this.outerLoopEnd = 0;
+        this.innerLoop2Start = 0;
+        this.innerLoop2End = 0;
+        this.function = (Action<Lighting.LightingSwipeData>) null;
+        this.rand = new UnifiedRandom();
+      }
+
+      public void CopyFrom(Lighting.LightingSwipeData from)
+      {
+        this.innerLoop1Start = from.innerLoop1Start;
+        this.outerLoopStart = from.outerLoopStart;
+        this.innerLoop1End = from.innerLoop1End;
+        this.outerLoopEnd = from.outerLoopEnd;
+        this.innerLoop2Start = from.innerLoop2Start;
+        this.innerLoop2End = from.innerLoop2End;
+        this.function = from.function;
+        this.jaggedArray = from.jaggedArray;
+      }
+    }
+
+    private class LightingState
+    {
+      public float r;
+      public float r2;
+      public float g;
+      public float g2;
+      public float b;
+      public float b2;
+      public bool stopLight;
+      public bool wetLight;
+      public bool honeyLight;
+
+      public Vector3 ToVector3()
+      {
+        return new Vector3(this.r, this.g, this.b);
+      }
+    }
+
+    private struct ColorTriplet
+    {
+      public float r;
+      public float g;
+      public float b;
+
+      public ColorTriplet(float R, float G, float B)
+      {
+        this.r = R;
+        this.g = G;
+        this.b = B;
+      }
+
+      public ColorTriplet(float averageColor)
+      {
+        this.r = this.g = this.b = averageColor;
+      }
+    }
+  }
 }

@@ -1,178 +1,167 @@
+﻿// Decompiled with JetBrains decompiler
+// Type: Terraria.CombatText
+// Assembly: Terraria, Version=1.3.4.4, Culture=neutral, PublicKeyToken=null
+// MVID: DEE50102-BCC2-472F-987B-153E892583F1
+// Assembly location: E:\Steam\SteamApps\common\Terraria\Terraria.exe
+
 using Microsoft.Xna.Framework;
-using System;
+
 namespace Terraria
 {
-	public class CombatText
-	{
-		public Vector2 position;
-		public Vector2 velocity;
-		public float alpha;
-		public int alphaDir = 1;
-		public string text;
-		public float scale = 1f;
-		public float rotation;
-		public Color color;
-		public bool active;
-		public int lifeTime;
-		public bool crit;
-		public bool dot;
-		public static void NewText(Rectangle location, Color color, string text, bool Crit = false, bool dot = false)
-		{
-			if (Main.netMode == 2)
-			{
-				return;
-			}
-			int i = 0;
-			while (i < 100)
-			{
-				if (!Main.combatText[i].active)
-				{
-					int num = 0;
-					if (Crit)
-					{
-						num = 1;
-					}
-					Vector2 vector = Main.fontCombatText[num].MeasureString(text);
-					Main.combatText[i].alpha = 1f;
-					Main.combatText[i].alphaDir = -1;
-					Main.combatText[i].active = true;
-					Main.combatText[i].scale = 0f;
-					Main.combatText[i].rotation = 0f;
-					Main.combatText[i].position.X = (float)location.X + (float)location.Width * 0.5f - vector.X * 0.5f;
-					Main.combatText[i].position.Y = (float)location.Y + (float)location.Height * 0.25f - vector.Y * 0.5f;
-					CombatText expr_FB_cp_0 = Main.combatText[i];
-					expr_FB_cp_0.position.X = expr_FB_cp_0.position.X + (float)Main.rand.Next(-(int)((double)location.Width * 0.5), (int)((double)location.Width * 0.5) + 1);
-					CombatText expr_147_cp_0 = Main.combatText[i];
-					expr_147_cp_0.position.Y = expr_147_cp_0.position.Y + (float)Main.rand.Next(-(int)((double)location.Height * 0.5), (int)((double)location.Height * 0.5) + 1);
-					Main.combatText[i].color = color;
-					Main.combatText[i].text = text;
-					Main.combatText[i].velocity.Y = -7f;
-					if (Main.player[Main.myPlayer].gravDir == -1f)
-					{
-						CombatText expr_1DA_cp_0 = Main.combatText[i];
-						expr_1DA_cp_0.velocity.Y = expr_1DA_cp_0.velocity.Y * -1f;
-						Main.combatText[i].position.Y = (float)location.Y + (float)location.Height * 0.75f + vector.Y * 0.5f;
-					}
-					Main.combatText[i].lifeTime = 60;
-					Main.combatText[i].crit = Crit;
-					Main.combatText[i].dot = dot;
-					if (Crit)
-					{
-						Main.combatText[i].text = text;
-						Main.combatText[i].color = new Color(255, 100, 30, 255);
-						Main.combatText[i].lifeTime *= 2;
-						CombatText expr_29C_cp_0 = Main.combatText[i];
-						expr_29C_cp_0.velocity.Y = expr_29C_cp_0.velocity.Y * 2f;
-						Main.combatText[i].velocity.X = (float)Main.rand.Next(-25, 26) * 0.05f;
-						Main.combatText[i].rotation = (float)(Main.combatText[i].lifeTime / 2) * 0.002f;
-						if (Main.combatText[i].velocity.X < 0f)
-						{
-							Main.combatText[i].rotation *= -1f;
-						}
-					}
-					if (dot)
-					{
-						Main.combatText[i].velocity.Y = -4f;
-						Main.combatText[i].lifeTime = 40;
-						return;
-					}
-					break;
-				}
-				else
-				{
-					i++;
-				}
-			}
-		}
-		public void Update()
-		{
-			if (this.active)
-			{
-				this.alpha += (float)this.alphaDir * 0.05f;
-				if ((double)this.alpha <= 0.6)
-				{
-					this.alphaDir = 1;
-				}
-				if (this.alpha >= 1f)
-				{
-					this.alpha = 1f;
-					this.alphaDir = -1;
-				}
-				if (this.dot)
-				{
-					this.velocity.Y = this.velocity.Y + 0.15f;
-				}
-				else
-				{
-					this.velocity.Y = this.velocity.Y * 0.92f;
-					if (this.crit)
-					{
-						this.velocity.Y = this.velocity.Y * 0.92f;
-					}
-				}
-				this.velocity.X = this.velocity.X * 0.93f;
-				this.position += this.velocity;
-				this.lifeTime--;
-				if (this.lifeTime <= 0)
-				{
-					this.scale -= 0.1f;
-					if ((double)this.scale < 0.1)
-					{
-						this.active = false;
-					}
-					this.lifeTime = 0;
-					if (this.crit)
-					{
-						this.alphaDir = -1;
-						this.scale += 0.07f;
-						return;
-					}
-				}
-				else
-				{
-					if (this.crit)
-					{
-						if (this.velocity.X < 0f)
-						{
-							this.rotation += 0.001f;
-						}
-						else
-						{
-							this.rotation -= 0.001f;
-						}
-					}
-					if (this.dot)
-					{
-						this.scale += 0.5f;
-						if ((double)this.scale > 0.8)
-						{
-							this.scale = 0.8f;
-							return;
-						}
-					}
-					else
-					{
-						if (this.scale < 1f)
-						{
-							this.scale += 0.1f;
-						}
-						if (this.scale > 1f)
-						{
-							this.scale = 1f;
-						}
-					}
-				}
-			}
-		}
-		public static void UpdateCombatText()
-		{
-			for (int i = 0; i < 100; i++)
-			{
-				if (Main.combatText[i].active)
-				{
-					Main.combatText[i].Update();
-				}
-			}
-		}
-	}
+  public class CombatText
+  {
+    public static readonly Color DamagedFriendly = new Color((int) byte.MaxValue, 80, 90, (int) byte.MaxValue);
+    public static readonly Color DamagedFriendlyCrit = new Color((int) byte.MaxValue, 100, 30, (int) byte.MaxValue);
+    public static readonly Color DamagedHostile = new Color((int) byte.MaxValue, 160, 80, (int) byte.MaxValue);
+    public static readonly Color DamagedHostileCrit = new Color((int) byte.MaxValue, 100, 30, (int) byte.MaxValue);
+    public static readonly Color OthersDamagedHostile = CombatText.DamagedHostile * 0.4f;
+    public static readonly Color OthersDamagedHostileCrit = CombatText.DamagedHostileCrit * 0.4f;
+    public static readonly Color HealLife = new Color(100, (int) byte.MaxValue, 100, (int) byte.MaxValue);
+    public static readonly Color HealMana = new Color(100, 100, (int) byte.MaxValue, (int) byte.MaxValue);
+    public static readonly Color LifeRegen = new Color((int) byte.MaxValue, 60, 70, (int) byte.MaxValue);
+    public static readonly Color LifeRegenNegative = new Color((int) byte.MaxValue, 140, 40, (int) byte.MaxValue);
+    public int alphaDir = 1;
+    public float scale = 1f;
+    public Vector2 position;
+    public Vector2 velocity;
+    public float alpha;
+    public string text;
+    public float rotation;
+    public Color color;
+    public bool active;
+    public int lifeTime;
+    public bool crit;
+    public bool dot;
+
+    public static int NewText(Rectangle location, Color color, string text, bool dramatic = false, bool dot = false)
+    {
+      if (Main.netMode == 2)
+        return 100;
+      for (int index1 = 0; index1 < 100; ++index1)
+      {
+        if (!Main.combatText[index1].active)
+        {
+          int index2 = 0;
+          if (dramatic)
+            index2 = 1;
+          Vector2 vector2 = Main.fontCombatText[index2].MeasureString(text);
+          Main.combatText[index1].alpha = 1f;
+          Main.combatText[index1].alphaDir = -1;
+          Main.combatText[index1].active = true;
+          Main.combatText[index1].scale = 0.0f;
+          Main.combatText[index1].rotation = 0.0f;
+          Main.combatText[index1].position.X = (float) ((double) location.X + (double) location.Width * 0.5 - (double) vector2.X * 0.5);
+          Main.combatText[index1].position.Y = (float) ((double) location.Y + (double) location.Height * 0.25 - (double) vector2.Y * 0.5);
+          Main.combatText[index1].position.X += (float) Main.rand.Next(-(int) ((double) location.Width * 0.5), (int) ((double) location.Width * 0.5) + 1);
+          Main.combatText[index1].position.Y += (float) Main.rand.Next(-(int) ((double) location.Height * 0.5), (int) ((double) location.Height * 0.5) + 1);
+          Main.combatText[index1].color = color;
+          Main.combatText[index1].text = text;
+          Main.combatText[index1].velocity.Y = -7f;
+          if ((double) Main.player[Main.myPlayer].gravDir == -1.0)
+          {
+            Main.combatText[index1].velocity.Y *= -1f;
+            Main.combatText[index1].position.Y = (float) ((double) location.Y + (double) location.Height * 0.75 + (double) vector2.Y * 0.5);
+          }
+          Main.combatText[index1].lifeTime = 60;
+          Main.combatText[index1].crit = dramatic;
+          Main.combatText[index1].dot = dot;
+          if (dramatic)
+          {
+            Main.combatText[index1].text = text;
+            Main.combatText[index1].lifeTime *= 2;
+            Main.combatText[index1].velocity.Y *= 2f;
+            Main.combatText[index1].velocity.X = (float) Main.rand.Next(-25, 26) * 0.05f;
+            Main.combatText[index1].rotation = (float) (Main.combatText[index1].lifeTime / 2) * (1f / 500f);
+            if ((double) Main.combatText[index1].velocity.X < 0.0)
+              Main.combatText[index1].rotation *= -1f;
+          }
+          if (dot)
+          {
+            Main.combatText[index1].velocity.Y = -4f;
+            Main.combatText[index1].lifeTime = 40;
+          }
+          return index1;
+        }
+      }
+      return 100;
+    }
+
+    public static void clearAll()
+    {
+      for (int index = 0; index < 100; ++index)
+        Main.combatText[index].active = false;
+    }
+
+    public void Update()
+    {
+      if (!this.active)
+        return;
+      this.alpha += (float) this.alphaDir * 0.05f;
+      if ((double) this.alpha <= 0.6)
+        this.alphaDir = 1;
+      if ((double) this.alpha >= 1.0)
+      {
+        this.alpha = 1f;
+        this.alphaDir = -1;
+      }
+      if (this.dot)
+      {
+        this.velocity.Y += 0.15f;
+      }
+      else
+      {
+        this.velocity.Y *= 0.92f;
+        if (this.crit)
+          this.velocity.Y *= 0.92f;
+      }
+      this.velocity.X *= 0.93f;
+      this.position += this.velocity;
+      --this.lifeTime;
+      if (this.lifeTime <= 0)
+      {
+        this.scale -= 0.1f;
+        if ((double) this.scale < 0.1)
+          this.active = false;
+        this.lifeTime = 0;
+        if (!this.crit)
+          return;
+        this.alphaDir = -1;
+        this.scale += 0.07f;
+      }
+      else
+      {
+        if (this.crit)
+        {
+          if ((double) this.velocity.X < 0.0)
+            this.rotation += 1f / 1000f;
+          else
+            this.rotation -= 1f / 1000f;
+        }
+        if (this.dot)
+        {
+          this.scale += 0.5f;
+          if ((double) this.scale <= 0.8)
+            return;
+          this.scale = 0.8f;
+        }
+        else
+        {
+          if ((double) this.scale < 1.0)
+            this.scale += 0.1f;
+          if ((double) this.scale <= 1.0)
+            return;
+          this.scale = 1f;
+        }
+      }
+    }
+
+    public static void UpdateCombatText()
+    {
+      for (int index = 0; index < 100; ++index)
+      {
+        if (Main.combatText[index].active)
+          Main.combatText[index].Update();
+      }
+    }
+  }
 }
