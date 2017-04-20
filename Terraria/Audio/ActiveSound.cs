@@ -1,8 +1,8 @@
 ﻿// Decompiled with JetBrains decompiler
 // Type: Terraria.Audio.ActiveSound
-// Assembly: Terraria, Version=1.3.4.4, Culture=neutral, PublicKeyToken=null
-// MVID: DEE50102-BCC2-472F-987B-153E892583F1
-// Assembly location: E:\Steam\SteamApps\common\Terraria\Terraria.exe
+// Assembly: Terraria, Version=1.3.5.1, Culture=neutral, PublicKeyToken=null
+// MVID: DF0400F4-EE47-4864-BE80-932EDB02D8A6
+// Assembly location: F:\Steam\steamapps\common\Terraria\Terraria.exe
 
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Audio;
@@ -37,7 +37,7 @@ namespace Terraria.Audio
     {
       get
       {
-        return this.Sound.State == SoundState.Playing;
+        return this.Sound.get_State() == 0;
       }
     }
 
@@ -52,7 +52,7 @@ namespace Terraria.Audio
 
     public ActiveSound(SoundStyle style)
     {
-      this.Position = Vector2.Zero;
+      this.Position = Vector2.get_Zero();
       this.Volume = 1f;
       this.IsGlobal = true;
       this._style = style;
@@ -62,7 +62,9 @@ namespace Terraria.Audio
     private void Play()
     {
       SoundEffectInstance instance = this._style.GetRandomSound().CreateInstance();
-      instance.Pitch += this._style.GetRandomPitch();
+      SoundEffectInstance soundEffectInstance = instance;
+      double num = (double) soundEffectInstance.get_Pitch() + (double) this._style.GetRandomPitch();
+      soundEffectInstance.set_Pitch((float) num);
       Main.PlaySoundInstance(instance);
       this._sound = instance;
       this.Update();
@@ -77,14 +79,14 @@ namespace Terraria.Audio
 
     public void Pause()
     {
-      if (this._sound == null || this._sound.State != SoundState.Playing)
+      if (this._sound == null || this._sound.get_State() != null)
         return;
       this._sound.Pause();
     }
 
     public void Resume()
     {
-      if (this._sound == null || this._sound.State != SoundState.Paused)
+      if (this._sound == null || this._sound.get_State() != 1)
         return;
       this._sound.Resume();
     }
@@ -93,11 +95,11 @@ namespace Terraria.Audio
     {
       if (this._sound == null)
         return;
-      Vector2 vector2 = Main.screenPosition + new Vector2((float) (Main.screenWidth / 2), (float) (Main.screenHeight / 2));
+      Vector2 vector2 = Vector2.op_Addition(Main.screenPosition, new Vector2((float) (Main.screenWidth / 2), (float) (Main.screenHeight / 2)));
       float num1 = 1f;
       if (!this.IsGlobal)
       {
-        this.Sound.Pan = MathHelper.Clamp((float) (((double) this.Position.X - (double) vector2.X) / ((double) Main.screenWidth * 0.5)), -1f, 1f);
+        this.Sound.set_Pan(MathHelper.Clamp((float) ((this.Position.X - vector2.X) / ((double) Main.screenWidth * 0.5)), -1f, 1f));
         num1 = (float) (1.0 - (double) Vector2.Distance(this.Position, vector2) / ((double) Main.screenWidth * 1.5));
       }
       float num2 = num1 * (this._style.Volume * this.Volume);
@@ -113,7 +115,7 @@ namespace Terraria.Audio
           num2 *= Main.musicVolume;
           break;
       }
-      this.Sound.Volume = MathHelper.Clamp(num2, 0.0f, 1f);
+      this.Sound.set_Volume(MathHelper.Clamp(num2, 0.0f, 1f));
     }
   }
 }

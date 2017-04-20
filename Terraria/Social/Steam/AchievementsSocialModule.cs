@@ -1,17 +1,20 @@
 ﻿// Decompiled with JetBrains decompiler
 // Type: Terraria.Social.Steam.AchievementsSocialModule
-// Assembly: Terraria, Version=1.3.4.4, Culture=neutral, PublicKeyToken=null
-// MVID: DEE50102-BCC2-472F-987B-153E892583F1
-// Assembly location: E:\Steam\SteamApps\common\Terraria\Terraria.exe
+// Assembly: Terraria, Version=1.3.5.1, Culture=neutral, PublicKeyToken=null
+// MVID: DF0400F4-EE47-4864-BE80-932EDB02D8A6
+// Assembly location: F:\Steam\steamapps\common\Terraria\Terraria.exe
 
 using Steamworks;
 using System;
+using System.Collections.Generic;
 using System.Threading;
 
 namespace Terraria.Social.Steam
 {
   public class AchievementsSocialModule : Terraria.Social.Base.AchievementsSocialModule
   {
+    private Dictionary<string, int> _intStatCache = new Dictionary<string, int>();
+    private Dictionary<string, float> _floatStatCache = new Dictionary<string, float>();
     private const string FILE_NAME = "/achievements-steam.dat";
     private Callback<UserStatsReceived_t> _userStatsReceived;
     private bool _areStatsReceived;
@@ -55,22 +58,48 @@ namespace Terraria.Social.Steam
       return "/achievements-steam.dat";
     }
 
-    public override void UpdateIntStat(string name, int value)
+    private int GetIntStat(string name)
     {
       int num;
-      SteamUserStats.GetStat(name, ref num);
-      if (num >= value)
+      if (this._intStatCache.TryGetValue(name, out num) || !SteamUserStats.GetStat(name, ref num))
+        return num;
+      this._intStatCache.Add(name, num);
+      return num;
+    }
+
+    private float GetFloatStat(string name)
+    {
+      float num;
+      if (this._floatStatCache.TryGetValue(name, out num) || !SteamUserStats.GetStat(name, ref num))
+        return num;
+      this._floatStatCache.Add(name, num);
+      return num;
+    }
+
+    private bool SetFloatStat(string name, float value)
+    {
+      this._floatStatCache[name] = value;
+      return SteamUserStats.SetStat(name, value);
+    }
+
+    public override void UpdateIntStat(string name, int value)
+    {
+      if (this.GetIntStat(name) >= value)
         return;
-      SteamUserStats.SetStat(name, value);
+      this.SetIntStat(name, value);
+    }
+
+    private bool SetIntStat(string name, int value)
+    {
+      this._intStatCache[name] = value;
+      return SteamUserStats.SetStat(name, value);
     }
 
     public override void UpdateFloatStat(string name, float value)
     {
-      float num;
-      SteamUserStats.GetStat(name, ref num);
-      if ((double) num >= (double) value)
+      if ((double) this.GetFloatStat(name) >= (double) value)
         return;
-      SteamUserStats.SetStat(name, value);
+      this.SetFloatStat(name, value);
     }
 
     public override void StoreStats()

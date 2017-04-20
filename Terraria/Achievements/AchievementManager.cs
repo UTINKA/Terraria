@@ -1,8 +1,8 @@
 ﻿// Decompiled with JetBrains decompiler
 // Type: Terraria.Achievements.AchievementManager
-// Assembly: Terraria, Version=1.3.4.4, Culture=neutral, PublicKeyToken=null
-// MVID: DEE50102-BCC2-472F-987B-153E892583F1
-// Assembly location: E:\Steam\SteamApps\common\Terraria\Terraria.exe
+// Assembly: Terraria, Version=1.3.5.1, Culture=neutral, PublicKeyToken=null
+// MVID: DF0400F4-EE47-4864-BE80-932EDB02D8A6
+// Assembly location: F:\Steam\steamapps\common\Terraria\Terraria.exe
 
 using Newtonsoft.Json;
 using Newtonsoft.Json.Bson;
@@ -59,21 +59,21 @@ namespace Terraria.Achievements
           SocialAPI.Achievements.StoreStats();
         try
         {
-          using (MemoryStream resource_2 = new MemoryStream())
+          using (MemoryStream memoryStream = new MemoryStream())
           {
-            using (CryptoStream resource_1 = new CryptoStream((Stream) resource_2, new RijndaelManaged().CreateEncryptor(this._cryptoKey, this._cryptoKey), CryptoStreamMode.Write))
+            using (CryptoStream cryptoStream = new CryptoStream((Stream) memoryStream, new RijndaelManaged().CreateEncryptor(this._cryptoKey, this._cryptoKey), CryptoStreamMode.Write))
             {
-              using (BsonWriter resource_0 = new BsonWriter((Stream) resource_1))
+              using (BsonWriter bsonWriter = new BsonWriter((Stream) cryptoStream))
               {
-                JsonSerializer.Create(this._serializerSettings).Serialize((JsonWriter) resource_0, (object) this._achievements);
-                ((JsonWriter) resource_0).Flush();
-                resource_1.FlushFinalBlock();
-                FileUtilities.WriteAllBytes(path, resource_2.ToArray(), cloud);
+                JsonSerializer.Create(this._serializerSettings).Serialize((JsonWriter) bsonWriter, (object) this._achievements);
+                ((JsonWriter) bsonWriter).Flush();
+                cryptoStream.FlushFinalBlock();
+                FileUtilities.WriteAllBytes(path, memoryStream.ToArray(), cloud);
               }
             }
           }
         }
-        catch (Exception exception_0)
+        catch (Exception ex)
         {
         }
       }
@@ -96,39 +96,39 @@ namespace Terraria.Achievements
       {
         if (!FileUtilities.Exists(path, cloud))
           return;
-        byte[] local_1 = FileUtilities.ReadAllBytes(path, cloud);
-        Dictionary<string, AchievementManager.StoredAchievement> local_2 = (Dictionary<string, AchievementManager.StoredAchievement>) null;
+        byte[] buffer = FileUtilities.ReadAllBytes(path, cloud);
+        Dictionary<string, AchievementManager.StoredAchievement> dictionary = (Dictionary<string, AchievementManager.StoredAchievement>) null;
         try
         {
-          using (MemoryStream resource_2 = new MemoryStream(local_1))
+          using (MemoryStream memoryStream = new MemoryStream(buffer))
           {
-            using (CryptoStream resource_1 = new CryptoStream((Stream) resource_2, new RijndaelManaged().CreateDecryptor(this._cryptoKey, this._cryptoKey), CryptoStreamMode.Read))
+            using (CryptoStream cryptoStream = new CryptoStream((Stream) memoryStream, new RijndaelManaged().CreateDecryptor(this._cryptoKey, this._cryptoKey), CryptoStreamMode.Read))
             {
-              using (BsonReader resource_0 = new BsonReader((Stream) resource_1))
-                local_2 = (Dictionary<string, AchievementManager.StoredAchievement>) JsonSerializer.Create(this._serializerSettings).Deserialize<Dictionary<string, AchievementManager.StoredAchievement>>((JsonReader) resource_0);
+              using (BsonReader bsonReader = new BsonReader((Stream) cryptoStream))
+                dictionary = (Dictionary<string, AchievementManager.StoredAchievement>) JsonSerializer.Create(this._serializerSettings).Deserialize<Dictionary<string, AchievementManager.StoredAchievement>>((JsonReader) bsonReader);
             }
           }
         }
-        catch (Exception exception_0)
+        catch (Exception ex)
         {
           FileUtilities.Delete(path, cloud);
           return;
         }
-        if (local_2 == null)
+        if (dictionary == null)
           return;
-        foreach (KeyValuePair<string, AchievementManager.StoredAchievement> item_0 in local_2)
+        foreach (KeyValuePair<string, AchievementManager.StoredAchievement> keyValuePair in dictionary)
         {
-          if (this._achievements.ContainsKey(item_0.Key))
-            this._achievements[item_0.Key].Load(item_0.Value.Conditions);
+          if (this._achievements.ContainsKey(keyValuePair.Key))
+            this._achievements[keyValuePair.Key].Load(keyValuePair.Value.Conditions);
         }
         if (SocialAPI.Achievements != null)
         {
-          foreach (KeyValuePair<string, Achievement> item_1 in this._achievements)
+          foreach (KeyValuePair<string, Achievement> achievement in this._achievements)
           {
-            if (item_1.Value.IsCompleted && !SocialAPI.Achievements.IsAchievementCompleted(item_1.Key))
+            if (achievement.Value.IsCompleted && !SocialAPI.Achievements.IsAchievementCompleted(achievement.Key))
             {
               flag = true;
-              item_1.Value.ClearProgress();
+              achievement.Value.ClearProgress();
             }
           }
         }

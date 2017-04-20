@@ -1,14 +1,15 @@
 ﻿// Decompiled with JetBrains decompiler
 // Type: Terraria.Chest
-// Assembly: Terraria, Version=1.3.4.4, Culture=neutral, PublicKeyToken=null
-// MVID: DEE50102-BCC2-472F-987B-153E892583F1
-// Assembly location: E:\Steam\SteamApps\common\Terraria\Terraria.exe
+// Assembly: Terraria, Version=1.3.5.1, Culture=neutral, PublicKeyToken=null
+// MVID: DF0400F4-EE47-4864-BE80-932EDB02D8A6
+// Assembly location: F:\Steam\steamapps\common\Terraria\Terraria.exe
 
 using Microsoft.Xna.Framework;
 using Terraria.DataStructures;
 using Terraria.GameContent.Achievements;
 using Terraria.GameContent.Events;
 using Terraria.ID;
+using Terraria.Localization;
 using Terraria.ObjectData;
 
 namespace Terraria
@@ -17,10 +18,13 @@ namespace Terraria
   {
     public static int[] chestTypeToIcon = new int[52];
     public static int[] chestItemSpawn = new int[52];
-    public static int[] dresserTypeToIcon = new int[28];
-    public static int[] dresserItemSpawn = new int[28];
+    public static int[] chestTypeToIcon2 = new int[2];
+    public static int[] chestItemSpawn2 = new int[2];
+    public static int[] dresserTypeToIcon = new int[32];
+    public static int[] dresserItemSpawn = new int[32];
     public const int maxChestTypes = 52;
-    public const int maxDresserTypes = 28;
+    public const int maxChestTypes2 = 2;
+    public const int maxDresserTypes = 32;
     public const int maxItems = 40;
     public const int MaxNameLength = 20;
     public Item[] item;
@@ -51,68 +55,74 @@ namespace Terraria
 
     public static void Initialize()
     {
-      Chest.chestTypeToIcon[0] = Chest.chestItemSpawn[0] = 48;
-      Chest.chestTypeToIcon[1] = Chest.chestItemSpawn[1] = 306;
-      Chest.chestTypeToIcon[2] = 327;
-      Chest.chestItemSpawn[2] = 306;
-      Chest.chestTypeToIcon[3] = Chest.chestItemSpawn[3] = 328;
-      Chest.chestTypeToIcon[4] = 329;
-      Chest.chestItemSpawn[4] = 328;
-      Chest.chestTypeToIcon[5] = Chest.chestItemSpawn[5] = 343;
-      Chest.chestTypeToIcon[6] = Chest.chestItemSpawn[6] = 348;
-      Chest.chestTypeToIcon[7] = Chest.chestItemSpawn[7] = 625;
-      Chest.chestTypeToIcon[8] = Chest.chestItemSpawn[8] = 626;
-      Chest.chestTypeToIcon[9] = Chest.chestItemSpawn[9] = 627;
-      Chest.chestTypeToIcon[10] = Chest.chestItemSpawn[10] = 680;
-      Chest.chestTypeToIcon[11] = Chest.chestItemSpawn[11] = 681;
-      Chest.chestTypeToIcon[12] = Chest.chestItemSpawn[12] = 831;
-      Chest.chestTypeToIcon[13] = Chest.chestItemSpawn[13] = 838;
-      Chest.chestTypeToIcon[14] = Chest.chestItemSpawn[14] = 914;
-      Chest.chestTypeToIcon[15] = Chest.chestItemSpawn[15] = 952;
-      Chest.chestTypeToIcon[16] = Chest.chestItemSpawn[16] = 1142;
-      Chest.chestTypeToIcon[17] = Chest.chestItemSpawn[17] = 1298;
-      Chest.chestTypeToIcon[18] = Chest.chestItemSpawn[18] = 1528;
-      Chest.chestTypeToIcon[19] = Chest.chestItemSpawn[19] = 1529;
-      Chest.chestTypeToIcon[20] = Chest.chestItemSpawn[20] = 1530;
-      Chest.chestTypeToIcon[21] = Chest.chestItemSpawn[21] = 1531;
-      Chest.chestTypeToIcon[22] = Chest.chestItemSpawn[22] = 1532;
-      Chest.chestTypeToIcon[23] = 1533;
-      Chest.chestItemSpawn[23] = 1528;
-      Chest.chestTypeToIcon[24] = 1534;
-      Chest.chestItemSpawn[24] = 1529;
-      Chest.chestTypeToIcon[25] = 1535;
-      Chest.chestItemSpawn[25] = 1530;
-      Chest.chestTypeToIcon[26] = 1536;
-      Chest.chestItemSpawn[26] = 1531;
-      Chest.chestTypeToIcon[27] = 1537;
-      Chest.chestItemSpawn[27] = 1532;
-      Chest.chestTypeToIcon[28] = Chest.chestItemSpawn[28] = 2230;
-      Chest.chestTypeToIcon[29] = Chest.chestItemSpawn[29] = 2249;
-      Chest.chestTypeToIcon[30] = Chest.chestItemSpawn[30] = 2250;
-      Chest.chestTypeToIcon[31] = Chest.chestItemSpawn[31] = 2526;
-      Chest.chestTypeToIcon[32] = Chest.chestItemSpawn[32] = 2544;
-      Chest.chestTypeToIcon[33] = Chest.chestItemSpawn[33] = 2559;
-      Chest.chestTypeToIcon[34] = Chest.chestItemSpawn[34] = 2574;
-      Chest.chestTypeToIcon[35] = Chest.chestItemSpawn[35] = 2612;
-      Chest.chestTypeToIcon[36] = 327;
-      Chest.chestItemSpawn[36] = 2612;
-      Chest.chestTypeToIcon[37] = Chest.chestItemSpawn[37] = 2613;
-      Chest.chestTypeToIcon[38] = 327;
-      Chest.chestItemSpawn[38] = 2613;
-      Chest.chestTypeToIcon[39] = Chest.chestItemSpawn[39] = 2614;
-      Chest.chestTypeToIcon[40] = 327;
-      Chest.chestItemSpawn[40] = 2614;
-      Chest.chestTypeToIcon[41] = Chest.chestItemSpawn[41] = 2615;
-      Chest.chestTypeToIcon[42] = Chest.chestItemSpawn[42] = 2616;
-      Chest.chestTypeToIcon[43] = Chest.chestItemSpawn[43] = 2617;
-      Chest.chestTypeToIcon[44] = Chest.chestItemSpawn[44] = 2618;
-      Chest.chestTypeToIcon[45] = Chest.chestItemSpawn[45] = 2619;
-      Chest.chestTypeToIcon[46] = Chest.chestItemSpawn[46] = 2620;
-      Chest.chestTypeToIcon[47] = Chest.chestItemSpawn[47] = 2748;
-      Chest.chestTypeToIcon[48] = Chest.chestItemSpawn[48] = 2814;
-      Chest.chestTypeToIcon[49] = Chest.chestItemSpawn[49] = 3180;
-      Chest.chestTypeToIcon[50] = Chest.chestItemSpawn[50] = 3125;
-      Chest.chestTypeToIcon[51] = Chest.chestItemSpawn[51] = 3181;
+      int[] chestItemSpawn = Chest.chestItemSpawn;
+      int[] chestTypeToIcon = Chest.chestTypeToIcon;
+      chestTypeToIcon[0] = chestItemSpawn[0] = 48;
+      chestTypeToIcon[1] = chestItemSpawn[1] = 306;
+      chestTypeToIcon[2] = 327;
+      chestItemSpawn[2] = 306;
+      chestTypeToIcon[3] = chestItemSpawn[3] = 328;
+      chestTypeToIcon[4] = 329;
+      chestItemSpawn[4] = 328;
+      chestTypeToIcon[5] = chestItemSpawn[5] = 343;
+      chestTypeToIcon[6] = chestItemSpawn[6] = 348;
+      chestTypeToIcon[7] = chestItemSpawn[7] = 625;
+      chestTypeToIcon[8] = chestItemSpawn[8] = 626;
+      chestTypeToIcon[9] = chestItemSpawn[9] = 627;
+      chestTypeToIcon[10] = chestItemSpawn[10] = 680;
+      chestTypeToIcon[11] = chestItemSpawn[11] = 681;
+      chestTypeToIcon[12] = chestItemSpawn[12] = 831;
+      chestTypeToIcon[13] = chestItemSpawn[13] = 838;
+      chestTypeToIcon[14] = chestItemSpawn[14] = 914;
+      chestTypeToIcon[15] = chestItemSpawn[15] = 952;
+      chestTypeToIcon[16] = chestItemSpawn[16] = 1142;
+      chestTypeToIcon[17] = chestItemSpawn[17] = 1298;
+      chestTypeToIcon[18] = chestItemSpawn[18] = 1528;
+      chestTypeToIcon[19] = chestItemSpawn[19] = 1529;
+      chestTypeToIcon[20] = chestItemSpawn[20] = 1530;
+      chestTypeToIcon[21] = chestItemSpawn[21] = 1531;
+      chestTypeToIcon[22] = chestItemSpawn[22] = 1532;
+      chestTypeToIcon[23] = 1533;
+      chestItemSpawn[23] = 1528;
+      chestTypeToIcon[24] = 1534;
+      chestItemSpawn[24] = 1529;
+      chestTypeToIcon[25] = 1535;
+      chestItemSpawn[25] = 1530;
+      chestTypeToIcon[26] = 1536;
+      chestItemSpawn[26] = 1531;
+      chestTypeToIcon[27] = 1537;
+      chestItemSpawn[27] = 1532;
+      chestTypeToIcon[28] = chestItemSpawn[28] = 2230;
+      chestTypeToIcon[29] = chestItemSpawn[29] = 2249;
+      chestTypeToIcon[30] = chestItemSpawn[30] = 2250;
+      chestTypeToIcon[31] = chestItemSpawn[31] = 2526;
+      chestTypeToIcon[32] = chestItemSpawn[32] = 2544;
+      chestTypeToIcon[33] = chestItemSpawn[33] = 2559;
+      chestTypeToIcon[34] = chestItemSpawn[34] = 2574;
+      chestTypeToIcon[35] = chestItemSpawn[35] = 2612;
+      chestTypeToIcon[36] = 327;
+      chestItemSpawn[36] = 2612;
+      chestTypeToIcon[37] = chestItemSpawn[37] = 2613;
+      chestTypeToIcon[38] = 327;
+      chestItemSpawn[38] = 2613;
+      chestTypeToIcon[39] = chestItemSpawn[39] = 2614;
+      chestTypeToIcon[40] = 327;
+      chestItemSpawn[40] = 2614;
+      chestTypeToIcon[41] = chestItemSpawn[41] = 2615;
+      chestTypeToIcon[42] = chestItemSpawn[42] = 2616;
+      chestTypeToIcon[43] = chestItemSpawn[43] = 2617;
+      chestTypeToIcon[44] = chestItemSpawn[44] = 2618;
+      chestTypeToIcon[45] = chestItemSpawn[45] = 2619;
+      chestTypeToIcon[46] = chestItemSpawn[46] = 2620;
+      chestTypeToIcon[47] = chestItemSpawn[47] = 2748;
+      chestTypeToIcon[48] = chestItemSpawn[48] = 2814;
+      chestTypeToIcon[49] = chestItemSpawn[49] = 3180;
+      chestTypeToIcon[50] = chestItemSpawn[50] = 3125;
+      chestTypeToIcon[51] = chestItemSpawn[51] = 3181;
+      int[] chestItemSpawn2 = Chest.chestItemSpawn2;
+      int[] chestTypeToIcon2 = Chest.chestTypeToIcon2;
+      chestTypeToIcon2[0] = chestItemSpawn2[0] = 3884;
+      chestTypeToIcon2[1] = chestItemSpawn2[1] = 3885;
       Chest.dresserTypeToIcon[0] = Chest.dresserItemSpawn[0] = 334;
       Chest.dresserTypeToIcon[1] = Chest.dresserItemSpawn[1] = 647;
       Chest.dresserTypeToIcon[2] = Chest.dresserItemSpawn[2] = 648;
@@ -141,6 +151,10 @@ namespace Terraria
       Chest.dresserTypeToIcon[25] = Chest.dresserItemSpawn[25] = 3132;
       Chest.dresserTypeToIcon[26] = Chest.dresserItemSpawn[26] = 3134;
       Chest.dresserTypeToIcon[27] = Chest.dresserItemSpawn[27] = 3133;
+      Chest.dresserTypeToIcon[28] = Chest.dresserItemSpawn[28] = 3911;
+      Chest.dresserTypeToIcon[29] = Chest.dresserItemSpawn[29] = 3912;
+      Chest.dresserTypeToIcon[30] = Chest.dresserItemSpawn[30] = 3913;
+      Chest.dresserTypeToIcon[31] = Chest.dresserItemSpawn[31] = 3914;
     }
 
     private static bool IsPlayerInChest(int i)
@@ -161,7 +175,7 @@ namespace Terraria
     public static void ServerPlaceItem(int plr, int slot)
     {
       Main.player[plr].inventory[slot] = Chest.PutItemInNearbyChest(Main.player[plr].inventory[slot], Main.player[plr].Center);
-      NetMessage.SendData(5, -1, -1, "", plr, (float) slot, (float) Main.player[plr].inventory[slot].prefix, 0.0f, 0, 0, 0);
+      NetMessage.SendData(5, -1, -1, (NetworkText) null, plr, (float) slot, (float) Main.player[plr].inventory[slot].prefix, 0.0f, 0, 0, 0);
     }
 
     public static Item PutItemInNearbyChest(Item item, Vector2 position)
@@ -172,42 +186,50 @@ namespace Terraria
       {
         bool flag1 = false;
         bool flag2 = false;
-        if (Main.chest[i] != null && !Chest.IsPlayerInChest(i) && !Chest.isLocked(Main.chest[i].x, Main.chest[i].y) && (double) (new Vector2((float) (Main.chest[i].x * 16 + 16), (float) (Main.chest[i].y * 16 + 16)) - position).Length() < 200.0)
+        if (Main.chest[i] != null && !Chest.IsPlayerInChest(i) && !Chest.isLocked(Main.chest[i].x, Main.chest[i].y))
         {
-          for (int index = 0; index < Main.chest[i].item.Length; ++index)
-          {
-            if (Main.chest[i].item[index].type > 0 && Main.chest[i].item[index].stack > 0)
-            {
-              if (item.IsTheSameAs(Main.chest[i].item[index]))
-              {
-                flag1 = true;
-                int num = Main.chest[i].item[index].maxStack - Main.chest[i].item[index].stack;
-                if (num > 0)
-                {
-                  if (num > item.stack)
-                    num = item.stack;
-                  item.stack -= num;
-                  Main.chest[i].item[index].stack += num;
-                  if (item.stack <= 0)
-                  {
-                    item.SetDefaults(0, false);
-                    return item;
-                  }
-                }
-              }
-            }
-            else
-              flag2 = true;
-          }
-          if (flag1 && flag2 && item.stack > 0)
+          Vector2 vector2_1;
+          // ISSUE: explicit reference operation
+          ((Vector2) @vector2_1).\u002Ector((float) (Main.chest[i].x * 16 + 16), (float) (Main.chest[i].y * 16 + 16));
+          Vector2 vector2_2 = Vector2.op_Subtraction(vector2_1, position);
+          // ISSUE: explicit reference operation
+          if ((double) ((Vector2) @vector2_2).Length() < 200.0)
           {
             for (int index = 0; index < Main.chest[i].item.Length; ++index)
             {
-              if (Main.chest[i].item[index].type == 0 || Main.chest[i].item[index].stack == 0)
+              if (Main.chest[i].item[index].type > 0 && Main.chest[i].item[index].stack > 0)
               {
-                Main.chest[i].item[index] = item.Clone();
-                item.SetDefaults(0, false);
-                return item;
+                if (item.IsTheSameAs(Main.chest[i].item[index]))
+                {
+                  flag1 = true;
+                  int num = Main.chest[i].item[index].maxStack - Main.chest[i].item[index].stack;
+                  if (num > 0)
+                  {
+                    if (num > item.stack)
+                      num = item.stack;
+                    item.stack -= num;
+                    Main.chest[i].item[index].stack += num;
+                    if (item.stack <= 0)
+                    {
+                      item.SetDefaults(0, false);
+                      return item;
+                    }
+                  }
+                }
+              }
+              else
+                flag2 = true;
+            }
+            if (flag1 && flag2 && item.stack > 0)
+            {
+              for (int index = 0; index < Main.chest[i].item.Length; ++index)
+              {
+                if (Main.chest[i].item[index].type == 0 || Main.chest[i].item[index].stack == 0)
+                {
+                  Main.chest[i].item[index] = item.Clone();
+                  item.SetDefaults(0, false);
+                  return item;
+                }
               }
             }
           }
@@ -265,7 +287,7 @@ namespace Terraria
         {
           Main.tile[index1, index2].frameX -= num;
           for (int index3 = 0; index3 < 4; ++index3)
-            Dust.NewDust(new Vector2((float) (index1 * 16), (float) (index2 * 16)), 16, 16, Type, 0.0f, 0.0f, 0, new Color(), 1f);
+            Dust.NewDust(new Vector2((float) (index1 * 16), (float) (index2 * 16)), 16, 16, Type, 0.0f, 0.0f, 0, (Color) null, 1f);
         }
       }
       return true;
@@ -289,6 +311,16 @@ namespace Terraria
       for (int index = 0; index < 1000; ++index)
       {
         if (Main.chest[index] != null && Main.chest[index].x == X && Main.chest[index].y == Y)
+          return index;
+      }
+      return -1;
+    }
+
+    public static int FindChestByGuessing(int X, int Y)
+    {
+      for (int index = 0; index < 1000; ++index)
+      {
+        if (Main.chest[index] != null && Main.chest[index].x >= X && (Main.chest[index].x < X + 2 && Main.chest[index].y >= Y) && Main.chest[index].y < Y + 2)
           return index;
       }
       return -1;
@@ -318,7 +350,7 @@ namespace Terraria
         for (int j = y - 8; j < y + 8; ++j)
         {
           Tile tileSafely = Framing.GetTileSafely(i, j);
-          if (tileSafely.active() && (int) tileSafely.type == 21)
+          if (tileSafely.active() && TileID.Sets.BasicChest[(int) tileSafely.type])
             return true;
         }
       }
@@ -342,9 +374,11 @@ namespace Terraria
         Main.chest[emptyChest] = chest;
       }
       else if (type == 21)
-        NetMessage.SendData(34, -1, -1, "", 0, (float) x, (float) y, (float) style, 0, 0, 0);
+        NetMessage.SendData(34, -1, -1, (NetworkText) null, 0, (float) x, (float) y, (float) style, 0, 0, 0);
+      else if (type == 467)
+        NetMessage.SendData(34, -1, -1, (NetworkText) null, 4, (float) x, (float) y, (float) style, 0, 0, 0);
       else
-        NetMessage.SendData(34, -1, -1, "", 2, (float) x, (float) y, (float) style, 0, 0, 0);
+        NetMessage.SendData(34, -1, -1, (NetworkText) null, 2, (float) x, (float) y, (float) style, 0, 0, 0);
       return emptyChest;
     }
 
@@ -728,29 +762,29 @@ namespace Terraria
       int index1 = 0;
       if (type == 1)
       {
-        this.item[index1].SetDefaults("Mining Helmet");
+        this.item[index1].SetDefaults(88, false);
         int index2 = index1 + 1;
-        this.item[index2].SetDefaults("Piggy Bank");
+        this.item[index2].SetDefaults(87, false);
         int index3 = index2 + 1;
-        this.item[index3].SetDefaults("Iron Anvil");
+        this.item[index3].SetDefaults(35, false);
         int index4 = index3 + 1;
         this.item[index4].SetDefaults(1991, false);
         int index5 = index4 + 1;
-        this.item[index5].SetDefaults("Copper Pickaxe");
+        this.item[index5].SetDefaults(3509, false);
         int index6 = index5 + 1;
-        this.item[index6].SetDefaults("Copper Axe");
+        this.item[index6].SetDefaults(3506, false);
         int index7 = index6 + 1;
-        this.item[index7].SetDefaults("Torch");
+        this.item[index7].SetDefaults(8, false);
         int index8 = index7 + 1;
-        this.item[index8].SetDefaults("Lesser Healing Potion");
+        this.item[index8].SetDefaults(28, false);
         int index9 = index8 + 1;
-        this.item[index9].SetDefaults("Lesser Mana Potion");
+        this.item[index9].SetDefaults(110, false);
         int index10 = index9 + 1;
-        this.item[index10].SetDefaults("Wooden Arrow");
+        this.item[index10].SetDefaults(40, false);
         int index11 = index10 + 1;
-        this.item[index11].SetDefaults("Shuriken");
+        this.item[index11].SetDefaults(42, false);
         int index12 = index11 + 1;
-        this.item[index12].SetDefaults("Rope");
+        this.item[index12].SetDefaults(965, false);
         int index13 = index12 + 1;
         if (Main.player[Main.myPlayer].ZoneSnow)
         {
@@ -759,17 +793,17 @@ namespace Terraria
         }
         if (Main.bloodMoon)
         {
-          this.item[index13].SetDefaults("Throwing Knife");
+          this.item[index13].SetDefaults(279, false);
           ++index13;
         }
         if (!Main.dayTime)
         {
-          this.item[index13].SetDefaults("Glowstick");
+          this.item[index13].SetDefaults(282, false);
           ++index13;
         }
         if (NPC.downedBoss3)
         {
-          this.item[index13].SetDefaults("Safe");
+          this.item[index13].SetDefaults(346, false);
           ++index13;
         }
         if (Main.hardMode)
@@ -821,11 +855,11 @@ namespace Terraria
       }
       else if (type == 2)
       {
-        this.item[index1].SetDefaults("Musket Ball");
+        this.item[index1].SetDefaults(97, false);
         int index2 = index1 + 1;
         if (Main.bloodMoon || Main.hardMode)
         {
-          this.item[index2].SetDefaults("Silver Bullet");
+          this.item[index2].SetDefaults(278, false);
           ++index2;
         }
         if (NPC.downedBoss2 && !Main.dayTime || Main.hardMode)
@@ -833,9 +867,9 @@ namespace Terraria
           this.item[index2].SetDefaults(47, false);
           ++index2;
         }
-        this.item[index2].SetDefaults("Flintlock Pistol");
+        this.item[index2].SetDefaults(95, false);
         int index3 = index2 + 1;
-        this.item[index3].SetDefaults("Minishark");
+        this.item[index3].SetDefaults(98, false);
         index1 = index3 + 1;
         if (!Main.dayTime)
         {
@@ -909,14 +943,14 @@ namespace Terraria
         }
         else
         {
-          this.item[index1].SetDefaults("Purification Powder");
+          this.item[index1].SetDefaults(66, false);
           int index3 = index1 + 1;
-          this.item[index3].SetDefaults("Grass Seeds");
+          this.item[index3].SetDefaults(62, false);
           int index4 = index3 + 1;
-          this.item[index4].SetDefaults("Sunflower");
+          this.item[index4].SetDefaults(63, false);
           index2 = index4 + 1;
         }
-        this.item[index2].SetDefaults("Acorn");
+        this.item[index2].SetDefaults(27, false);
         int index5 = index2 + 1;
         this.item[index5].SetDefaults(114, false);
         int index6 = index5 + 1;
@@ -991,15 +1025,15 @@ namespace Terraria
       }
       else if (type == 4)
       {
-        this.item[index1].SetDefaults("Grenade");
+        this.item[index1].SetDefaults(168, false);
         int index2 = index1 + 1;
-        this.item[index2].SetDefaults("Bomb");
+        this.item[index2].SetDefaults(166, false);
         int index3 = index2 + 1;
-        this.item[index3].SetDefaults("Dynamite");
+        this.item[index3].SetDefaults(167, false);
         index1 = index3 + 1;
         if (Main.hardMode)
         {
-          this.item[index1].SetDefaults("Hellfire Arrow");
+          this.item[index1].SetDefaults(265, false);
           ++index1;
         }
         if (Main.hardMode && NPC.downedPlantBoss && NPC.downedPirates)
@@ -1791,12 +1825,12 @@ namespace Terraria
           this.item[index1].SetDefaults(1493, false);
           ++index1;
         }
-        if ((double) Main.player[Main.myPlayer].position.Y / 16.0 < Main.worldSurface * 0.349999994039536)
+        if (Main.player[Main.myPlayer].position.Y / 16.0 < Main.worldSurface * 0.349999994039536)
         {
           this.item[index1].SetDefaults(1485, false);
           ++index1;
         }
-        if ((double) Main.player[Main.myPlayer].position.Y / 16.0 < Main.worldSurface * 0.349999994039536 && Main.hardMode)
+        if (Main.player[Main.myPlayer].position.Y / 16.0 < Main.worldSurface * 0.349999994039536 && Main.hardMode)
         {
           this.item[index1].SetDefaults(1494, false);
           ++index1;
@@ -1910,8 +1944,8 @@ namespace Terraria
         int index6 = index5 + 1;
         this.item[index6].SetDefaults(2434, false);
         index1 = index6 + 1;
-        int num = (int) (((double) Main.screenPosition.X + (double) (Main.screenWidth / 2)) / 16.0);
-        if ((double) Main.screenPosition.Y / 16.0 < Main.worldSurface + 10.0 && (num < 380 || num > Main.maxTilesX - 380))
+        int num = (int) ((Main.screenPosition.X + (double) (Main.screenWidth / 2)) / 16.0);
+        if (Main.screenPosition.Y / 16.0 < Main.worldSurface + 10.0 && (num < 380 || num > Main.maxTilesX - 380))
         {
           this.item[index1].SetDefaults(1180, false);
           ++index1;

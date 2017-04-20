@@ -1,8 +1,8 @@
 ﻿// Decompiled with JetBrains decompiler
 // Type: Terraria.IO.Preferences
-// Assembly: Terraria, Version=1.3.4.4, Culture=neutral, PublicKeyToken=null
-// MVID: DEE50102-BCC2-472F-987B-153E892583F1
-// Assembly location: E:\Steam\SteamApps\common\Terraria\Terraria.exe
+// Assembly: Terraria, Version=1.3.5.1, Culture=neutral, PublicKeyToken=null
+// MVID: DF0400F4-EE47-4864-BE80-932EDB02D8A6
+// Assembly location: F:\Steam\steamapps\common\Terraria\Terraria.exe
 
 using Newtonsoft.Json;
 using Newtonsoft.Json.Bson;
@@ -65,10 +65,10 @@ namespace Terraria.IO
           }
           else
           {
-            using (FileStream resource_1 = File.OpenRead(this._path))
+            using (FileStream fileStream = File.OpenRead(this._path))
             {
-              using (BsonReader resource_0 = new BsonReader((Stream) resource_1))
-                this._data = (Dictionary<string, object>) JsonSerializer.Create(this._serializerSettings).Deserialize<Dictionary<string, object>>((JsonReader) resource_0);
+              using (BsonReader bsonReader = new BsonReader((Stream) fileStream))
+                this._data = (Dictionary<string, object>) JsonSerializer.Create(this._serializerSettings).Deserialize<Dictionary<string, object>>((JsonReader) bsonReader);
             }
           }
           if (this._data == null)
@@ -77,7 +77,7 @@ namespace Terraria.IO
             this.OnLoad(this);
           return true;
         }
-        catch (Exception exception_0)
+        catch (Exception ex)
         {
           return false;
         }
@@ -99,28 +99,28 @@ namespace Terraria.IO
             File.SetAttributes(this._path, FileAttributes.Normal);
           if (!this.UseBson)
           {
-            string local_0 = JsonConvert.SerializeObject((object) this._data, this._serializerSettings);
+            string text = JsonConvert.SerializeObject((object) this._data, this._serializerSettings);
             if (this.OnProcessText != null)
-              this.OnProcessText(ref local_0);
-            File.WriteAllText(this._path, local_0);
+              this.OnProcessText(ref text);
+            File.WriteAllText(this._path, text);
             File.SetAttributes(this._path, FileAttributes.Normal);
           }
           else
           {
-            using (FileStream resource_1 = File.Create(this._path))
+            using (FileStream fileStream = File.Create(this._path))
             {
-              using (BsonWriter resource_0 = new BsonWriter((Stream) resource_1))
+              using (BsonWriter bsonWriter = new BsonWriter((Stream) fileStream))
               {
                 File.SetAttributes(this._path, FileAttributes.Normal);
-                JsonSerializer.Create(this._serializerSettings).Serialize((JsonWriter) resource_0, (object) this._data);
+                JsonSerializer.Create(this._serializerSettings).Serialize((JsonWriter) bsonWriter, (object) this._data);
               }
             }
           }
         }
-        catch (Exception exception_0)
+        catch (Exception ex)
         {
           Console.WriteLine(Language.GetTextValue("Error.UnableToWritePreferences", (object) this._path));
-          Console.WriteLine(exception_0.ToString());
+          Console.WriteLine(ex.ToString());
           Monitor.Exit(this._lock);
           return false;
         }
@@ -144,20 +144,26 @@ namespace Terraria.IO
       }
     }
 
+    public bool Contains(string name)
+    {
+      lock (this._lock)
+        return this._data.ContainsKey(name);
+    }
+
     public T Get<T>(string name, T defaultValue)
     {
       lock (this._lock)
       {
         try
         {
-          object local_0;
-          if (!this._data.TryGetValue(name, out local_0))
+          object obj;
+          if (!this._data.TryGetValue(name, out obj))
             return defaultValue;
-          if (local_0 is T)
-            return (T) local_0;
-          if (local_0 is JObject)
-            return JsonConvert.DeserializeObject<T>(((object) (JObject) local_0).ToString());
-          return (T) Convert.ChangeType(local_0, typeof (T));
+          if (obj is T)
+            return (T) obj;
+          if (obj is JObject)
+            return JsonConvert.DeserializeObject<T>(((object) (JObject) obj).ToString());
+          return (T) Convert.ChangeType(obj, typeof (T));
         }
         catch
         {

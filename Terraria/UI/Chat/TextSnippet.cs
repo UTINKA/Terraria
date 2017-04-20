@@ -1,17 +1,18 @@
 ﻿// Decompiled with JetBrains decompiler
 // Type: Terraria.UI.Chat.TextSnippet
-// Assembly: Terraria, Version=1.3.4.4, Culture=neutral, PublicKeyToken=null
-// MVID: DEE50102-BCC2-472F-987B-153E892583F1
-// Assembly location: E:\Steam\SteamApps\common\Terraria\Terraria.exe
+// Assembly: Terraria, Version=1.3.5.1, Culture=neutral, PublicKeyToken=null
+// MVID: DF0400F4-EE47-4864-BE80-932EDB02D8A6
+// Assembly location: F:\Steam\steamapps\common\Terraria\Terraria.exe
 
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using ReLogic.Graphics;
 
 namespace Terraria.UI.Chat
 {
   public class TextSnippet
   {
-    public Color Color = Color.White;
+    public Color Color = Color.get_White();
     public float Scale = 1f;
     public string Text;
     public string TextOriginal;
@@ -51,7 +52,7 @@ namespace Terraria.UI.Chat
 
     public virtual bool UniqueDraw(bool justCheckingString, out Vector2 size, SpriteBatch spriteBatch, Vector2 position = null, Color color = null, float scale = 1f)
     {
-      size = Vector2.Zero;
+      size = Vector2.get_Zero();
       return false;
     }
 
@@ -62,9 +63,9 @@ namespace Terraria.UI.Chat
       return textSnippet;
     }
 
-    public virtual float GetStringLength(SpriteFont font)
+    public virtual float GetStringLength(DynamicSpriteFont font)
     {
-      return font.MeasureString(this.Text).X * this.Scale;
+      return (float) font.MeasureString(this.Text).X * this.Scale;
     }
   }
 }

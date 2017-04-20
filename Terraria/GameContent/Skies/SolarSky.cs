@@ -1,8 +1,8 @@
 ﻿// Decompiled with JetBrains decompiler
 // Type: Terraria.GameContent.Skies.SolarSky
-// Assembly: Terraria, Version=1.3.4.4, Culture=neutral, PublicKeyToken=null
-// MVID: DEE50102-BCC2-472F-987B-153E892583F1
-// Assembly location: E:\Steam\SteamApps\common\Terraria\Terraria.exe
+// Assembly: Terraria, Version=1.3.5.1, Culture=neutral, PublicKeyToken=null
+// MVID: DF0400F4-EE47-4864-BE80-932EDB02D8A6
+// Assembly location: F:\Steam\steamapps\common\Terraria\Terraria.exe
 
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -33,33 +33,48 @@ namespace Terraria.GameContent.Skies
     public override void Update(GameTime gameTime)
     {
       this._fadeOpacity = !this._isActive ? Math.Max(0.0f, this._fadeOpacity - 0.01f) : Math.Min(1f, 0.01f + this._fadeOpacity);
-      float num = 1200f;
+      float num1 = 1200f;
       for (int index = 0; index < this._meteors.Length; ++index)
       {
-        this._meteors[index].Position.X -= num * (float) gameTime.ElapsedGameTime.TotalSeconds;
-        this._meteors[index].Position.Y += num * (float) gameTime.ElapsedGameTime.TotalSeconds;
+        // ISSUE: explicit reference operation
+        // ISSUE: variable of a reference type
+        Vector2& local1 = @this._meteors[index].Position;
+        // ISSUE: explicit reference operation
+        double num2 = (^local1).X - (double) num1 * gameTime.get_ElapsedGameTime().TotalSeconds;
+        // ISSUE: explicit reference operation
+        (^local1).X = (__Null) num2;
+        // ISSUE: explicit reference operation
+        // ISSUE: variable of a reference type
+        Vector2& local2 = @this._meteors[index].Position;
+        // ISSUE: explicit reference operation
+        double num3 = (^local2).Y + (double) num1 * gameTime.get_ElapsedGameTime().TotalSeconds;
+        // ISSUE: explicit reference operation
+        (^local2).Y = (__Null) num3;
         if ((double) this._meteors[index].Position.Y > Main.worldSurface * 16.0)
         {
-          this._meteors[index].Position.X = this._meteors[index].StartX;
-          this._meteors[index].Position.Y = -10000f;
+          this._meteors[index].Position.X = (__Null) (double) this._meteors[index].StartX;
+          this._meteors[index].Position.Y = (__Null) -10000.0;
         }
       }
     }
 
     public override Color OnTileColor(Color inColor)
     {
-      return new Color(Vector4.Lerp(inColor.ToVector4(), Vector4.One, this._fadeOpacity * 0.5f));
+      // ISSUE: explicit reference operation
+      return new Color(Vector4.Lerp(((Color) @inColor).ToVector4(), Vector4.get_One(), this._fadeOpacity * 0.5f));
     }
 
     public override void Draw(SpriteBatch spriteBatch, float minDepth, float maxDepth)
     {
       if ((double) maxDepth >= 3.40282346638529E+38 && (double) minDepth < 3.40282346638529E+38)
       {
-        spriteBatch.Draw(Main.blackTileTexture, new Rectangle(0, 0, Main.screenWidth, Main.screenHeight), Color.Black * this._fadeOpacity);
-        spriteBatch.Draw(this._bgTexture, new Rectangle(0, Math.Max(0, (int) ((Main.worldSurface * 16.0 - (double) Main.screenPosition.Y - 2400.0) * 0.100000001490116)), Main.screenWidth, Main.screenHeight), Color.White * Math.Min(1f, (float) (((double) Main.screenPosition.Y - 800.0) / 1000.0) * this._fadeOpacity));
-        Vector2 vector2_1 = new Vector2((float) (Main.screenWidth >> 1), (float) (Main.screenHeight >> 1));
-        Vector2 vector2_2 = 0.01f * (new Vector2((float) Main.maxTilesX * 8f, (float) Main.worldSurface / 2f) - Main.screenPosition);
-        spriteBatch.Draw(this._planetTexture, vector2_1 + new Vector2(-200f, -200f) + vector2_2, new Rectangle?(), Color.White * 0.9f * this._fadeOpacity, 0.0f, new Vector2((float) (this._planetTexture.Width >> 1), (float) (this._planetTexture.Height >> 1)), 1f, SpriteEffects.None, 1f);
+        spriteBatch.Draw(Main.blackTileTexture, new Rectangle(0, 0, Main.screenWidth, Main.screenHeight), Color.op_Multiply(Color.get_Black(), this._fadeOpacity));
+        spriteBatch.Draw(this._bgTexture, new Rectangle(0, Math.Max(0, (int) ((Main.worldSurface * 16.0 - (double) Main.screenPosition.Y - 2400.0) * 0.100000001490116)), Main.screenWidth, Main.screenHeight), Color.op_Multiply(Color.get_White(), Math.Min(1f, (float) ((Main.screenPosition.Y - 800.0) / 1000.0) * this._fadeOpacity)));
+        Vector2 vector2_1;
+        // ISSUE: explicit reference operation
+        ((Vector2) @vector2_1).\u002Ector((float) (Main.screenWidth >> 1), (float) (Main.screenHeight >> 1));
+        Vector2 vector2_2 = Vector2.op_Multiply(0.01f, Vector2.op_Subtraction(new Vector2((float) Main.maxTilesX * 8f, (float) Main.worldSurface / 2f), Main.screenPosition));
+        spriteBatch.Draw(this._planetTexture, Vector2.op_Addition(Vector2.op_Addition(vector2_1, new Vector2(-200f, -200f)), vector2_2), new Rectangle?(), Color.op_Multiply(Color.op_Multiply(Color.get_White(), 0.9f), this._fadeOpacity), 0.0f, new Vector2((float) (this._planetTexture.get_Width() >> 1), (float) (this._planetTexture.get_Height() >> 1)), 1f, (SpriteEffects) 0, 1f);
       }
       int num1 = -1;
       int num2 = 0;
@@ -75,17 +90,22 @@ namespace Terraria.GameContent.Skies
       }
       if (num1 == -1)
         return;
-      float num3 = Math.Min(1f, (float) (((double) Main.screenPosition.Y - 1000.0) / 1000.0));
-      Vector2 vector2_3 = Main.screenPosition + new Vector2((float) (Main.screenWidth >> 1), (float) (Main.screenHeight >> 1));
-      Rectangle rectangle = new Rectangle(-1000, -1000, 4000, 4000);
+      float num3 = Math.Min(1f, (float) ((Main.screenPosition.Y - 1000.0) / 1000.0));
+      Vector2 vector2_3 = Vector2.op_Addition(Main.screenPosition, new Vector2((float) (Main.screenWidth >> 1), (float) (Main.screenHeight >> 1)));
+      Rectangle rectangle;
+      // ISSUE: explicit reference operation
+      ((Rectangle) @rectangle).\u002Ector(-1000, -1000, 4000, 4000);
       for (int index = num1; index < num2; ++index)
       {
-        Vector2 vector2_1 = new Vector2(1f / this._meteors[index].Depth, 0.9f / this._meteors[index].Depth);
-        Vector2 position = (this._meteors[index].Position - vector2_3) * vector2_1 + vector2_3 - Main.screenPosition;
+        Vector2 vector2_1;
+        // ISSUE: explicit reference operation
+        ((Vector2) @vector2_1).\u002Ector(1f / this._meteors[index].Depth, 0.9f / this._meteors[index].Depth);
+        Vector2 vector2_2 = Vector2.op_Subtraction(Vector2.op_Addition(Vector2.op_Multiply(Vector2.op_Subtraction(this._meteors[index].Position, vector2_3), vector2_1), vector2_3), Main.screenPosition);
         int num4 = this._meteors[index].FrameCounter / 3;
         this._meteors[index].FrameCounter = (this._meteors[index].FrameCounter + 1) % 12;
-        if (rectangle.Contains((int) position.X, (int) position.Y))
-          spriteBatch.Draw(this._meteorTexture, position, new Rectangle?(new Rectangle(0, num4 * (this._meteorTexture.Height / 4), this._meteorTexture.Width, this._meteorTexture.Height / 4)), Color.White * num3 * this._fadeOpacity, 0.0f, Vector2.Zero, vector2_1.X * 5f * this._meteors[index].Scale, SpriteEffects.None, 0.0f);
+        // ISSUE: explicit reference operation
+        if (((Rectangle) @rectangle).Contains((int) vector2_2.X, (int) vector2_2.Y))
+          spriteBatch.Draw(this._meteorTexture, vector2_2, new Rectangle?(new Rectangle(0, num4 * (this._meteorTexture.get_Height() / 4), this._meteorTexture.get_Width(), this._meteorTexture.get_Height() / 4)), Color.op_Multiply(Color.op_Multiply(Color.get_White(), num3), this._fadeOpacity), 0.0f, Vector2.get_Zero(), (float) (vector2_1.X * 5.0) * this._meteors[index].Scale, (SpriteEffects) 0, 0.0f);
       }
     }
 
@@ -102,12 +122,12 @@ namespace Terraria.GameContent.Skies
       for (int index = 0; index < this._meteors.Length; ++index)
       {
         float num = (float) index / (float) this._meteors.Length;
-        this._meteors[index].Position.X = (float) ((double) num * ((double) Main.maxTilesX * 16.0) + (double) this._random.NextFloat() * 40.0 - 20.0);
-        this._meteors[index].Position.Y = (float) ((double) this._random.NextFloat() * -(Main.worldSurface * 16.0 + 10000.0) - 10000.0);
+        this._meteors[index].Position.X = (__Null) ((double) num * ((double) Main.maxTilesX * 16.0) + (double) this._random.NextFloat() * 40.0 - 20.0);
+        this._meteors[index].Position.Y = (__Null) ((double) this._random.NextFloat() * -(Main.worldSurface * 16.0 + 10000.0) - 10000.0);
         this._meteors[index].Depth = this._random.Next(3) == 0 ? (float) ((double) this._random.NextFloat() * 5.0 + 4.80000019073486) : (float) ((double) this._random.NextFloat() * 3.0 + 1.79999995231628);
         this._meteors[index].FrameCounter = this._random.Next(12);
         this._meteors[index].Scale = (float) ((double) this._random.NextFloat() * 0.5 + 1.0);
-        this._meteors[index].StartX = this._meteors[index].Position.X;
+        this._meteors[index].StartX = (float) this._meteors[index].Position.X;
       }
       Array.Sort<SolarSky.Meteor>(this._meteors, new Comparison<SolarSky.Meteor>(this.SortMethod));
     }

@@ -1,8 +1,8 @@
 ﻿// Decompiled with JetBrains decompiler
 // Type: Terraria.GameContent.Generation.ActionGrass
-// Assembly: Terraria, Version=1.3.4.4, Culture=neutral, PublicKeyToken=null
-// MVID: DEE50102-BCC2-472F-987B-153E892583F1
-// Assembly location: E:\Steam\SteamApps\common\Terraria\Terraria.exe
+// Assembly: Terraria, Version=1.3.5.1, Culture=neutral, PublicKeyToken=null
+// MVID: DF0400F4-EE47-4864-BE80-932EDB02D8A6
+// Assembly location: F:\Steam\steamapps\common\Terraria\Terraria.exe
 
 using Microsoft.Xna.Framework;
 using Terraria.World.Generation;
@@ -19,7 +19,7 @@ namespace Terraria.GameContent.Generation
       {
         (ushort) 3,
         (ushort) 73
-      }), 1 != 0, 0 != 0, -1, 0);
+      }), true, false, -1, 0);
       return this.UnitApply(origin, x, y, args);
     }
   }

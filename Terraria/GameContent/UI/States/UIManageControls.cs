@@ -1,8 +1,8 @@
 ﻿// Decompiled with JetBrains decompiler
 // Type: Terraria.GameContent.UI.States.UIManageControls
-// Assembly: Terraria, Version=1.3.4.4, Culture=neutral, PublicKeyToken=null
-// MVID: DEE50102-BCC2-472F-987B-153E892583F1
-// Assembly location: E:\Steam\SteamApps\common\Terraria\Terraria.exe
+// Assembly: Terraria, Version=1.3.5.1, Culture=neutral, PublicKeyToken=null
+// MVID: DF0400F4-EE47-4864-BE80-932EDB02D8A6
+// Assembly location: F:\Steam\steamapps\common\Terraria\Terraria.exe
 
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -93,7 +93,7 @@ namespace Terraria.GameContent.UI.States
       UIPanel uiPanel = new UIPanel();
       uiPanel.Width.Set(0.0f, 1f);
       uiPanel.Height.Set(-110f, 1f);
-      uiPanel.BackgroundColor = new Color(33, 43, 79) * 0.8f;
+      uiPanel.BackgroundColor = Color.op_Multiply(new Color(33, 43, 79), 0.8f);
       element.Append((UIElement) uiPanel);
       this._buttonKeyboard = new UIImageFramed(this._KeyboardGamepadTexture, this._KeyboardGamepadTexture.Frame(2, 2, 0, 0));
       this._buttonKeyboard.VAlign = 0.0f;
@@ -118,14 +118,14 @@ namespace Terraria.GameContent.UI.States
       this._buttonBorder1.HAlign = 0.0f;
       this._buttonBorder1.Left.Set(0.0f, 0.0f);
       this._buttonBorder1.Top.Set(8f, 0.0f);
-      this._buttonBorder1.Color = Color.Silver;
+      this._buttonBorder1.Color = Color.get_Silver();
       uiPanel.Append((UIElement) this._buttonBorder1);
       this._buttonBorder2 = new UIImageFramed(this._keyboardGamepadBorderTexture, this._keyboardGamepadBorderTexture.Frame(1, 1, 0, 0));
       this._buttonBorder2.VAlign = 0.0f;
       this._buttonBorder2.HAlign = 0.0f;
       this._buttonBorder2.Left.Set(76f, 0.0f);
       this._buttonBorder2.Top.Set(8f, 0.0f);
-      this._buttonBorder2.Color = Color.Transparent;
+      this._buttonBorder2.Color = Color.get_Transparent();
       uiPanel.Append((UIElement) this._buttonBorder2);
       this._buttonVs1 = new UIImageFramed(this._GameplayVsUITexture, this._GameplayVsUITexture.Frame(2, 2, 0, 0));
       this._buttonVs1.VAlign = 0.0f;
@@ -150,16 +150,16 @@ namespace Terraria.GameContent.UI.States
       this._buttonBorderVs1.HAlign = 0.0f;
       this._buttonBorderVs1.Left.Set(172f, 0.0f);
       this._buttonBorderVs1.Top.Set(8f, 0.0f);
-      this._buttonBorderVs1.Color = Color.Silver;
+      this._buttonBorderVs1.Color = Color.get_Silver();
       uiPanel.Append((UIElement) this._buttonBorderVs1);
       this._buttonBorderVs2 = new UIImageFramed(this._GameplayVsUIBorderTexture, this._GameplayVsUIBorderTexture.Frame(1, 1, 0, 0));
       this._buttonBorderVs2.VAlign = 0.0f;
       this._buttonBorderVs2.HAlign = 0.0f;
       this._buttonBorderVs2.Left.Set(212f, 0.0f);
       this._buttonBorderVs2.Top.Set(8f, 0.0f);
-      this._buttonBorderVs2.Color = Color.Transparent;
+      this._buttonBorderVs2.Color = Color.get_Transparent();
       uiPanel.Append((UIElement) this._buttonBorderVs2);
-      this._buttonProfile = new UIKeybindingSimpleListItem((Func<string>) (() => PlayerInput.CurrentProfile.Name), new Color(73, 94, 171, (int) byte.MaxValue) * 0.9f);
+      this._buttonProfile = new UIKeybindingSimpleListItem((Func<string>) (() => PlayerInput.CurrentProfile.Name), Color.op_Multiply(new Color(73, 94, 171, (int) byte.MaxValue), 0.9f));
       this._buttonProfile.VAlign = 0.0f;
       this._buttonProfile.HAlign = 1f;
       this._buttonProfile.Width.Set(180f, 0.0f);
@@ -227,6 +227,8 @@ namespace Terraria.GameContent.UI.States
         "QuickBuff",
         "Throw",
         "Inventory",
+        "ViewZoomIn",
+        "ViewZoomOut",
         "sp9"
       };
       List<string> bindings2 = new List<string>()
@@ -332,7 +334,7 @@ namespace Terraria.GameContent.UI.States
       uiPanel.Width.Set(0.0f, 1f);
       uiPanel.Height.Set(-16f, 1f);
       uiPanel.VAlign = 1f;
-      uiPanel.BackgroundColor = new Color(33, 43, 79) * 0.8f;
+      uiPanel.BackgroundColor = Color.op_Multiply(new Color(33, 43, 79), 0.8f);
       uiSortableElement.Append((UIElement) uiPanel);
       UIList parent = new UIList();
       parent.OverflowHidden = false;
@@ -345,28 +347,28 @@ namespace Terraria.GameContent.UI.States
       switch (elementIndex)
       {
         case 0:
-          uiPanel.BackgroundColor = Color.Lerp(uiPanel.BackgroundColor, Color.Green, 0.18f);
+          uiPanel.BackgroundColor = Color.Lerp(uiPanel.BackgroundColor, Color.get_Green(), 0.18f);
           break;
         case 1:
-          uiPanel.BackgroundColor = Color.Lerp(uiPanel.BackgroundColor, Color.Goldenrod, 0.18f);
+          uiPanel.BackgroundColor = Color.Lerp(uiPanel.BackgroundColor, Color.get_Goldenrod(), 0.18f);
           break;
         case 2:
-          uiPanel.BackgroundColor = Color.Lerp(uiPanel.BackgroundColor, Color.HotPink, 0.18f);
+          uiPanel.BackgroundColor = Color.Lerp(uiPanel.BackgroundColor, Color.get_HotPink(), 0.18f);
           break;
         case 3:
-          uiPanel.BackgroundColor = Color.Lerp(uiPanel.BackgroundColor, Color.Indigo, 0.18f);
+          uiPanel.BackgroundColor = Color.Lerp(uiPanel.BackgroundColor, Color.get_Indigo(), 0.18f);
           break;
         case 4:
-          uiPanel.BackgroundColor = Color.Lerp(uiPanel.BackgroundColor, Color.Turquoise, 0.18f);
+          uiPanel.BackgroundColor = Color.Lerp(uiPanel.BackgroundColor, Color.get_Turquoise(), 0.18f);
           break;
       }
       this.CreateElementGroup(parent, bindings, currentInputMode, uiPanel.BackgroundColor);
       uiPanel.BackgroundColor = uiPanel.BackgroundColor.MultiplyRGBA(new Color(111, 111, 111));
-      string text = "";
+      LocalizedText text = LocalizedText.Empty;
       switch (elementIndex)
       {
         case 0:
-          text = Lang.menu[currentInputMode == InputMode.Keyboard || currentInputMode == InputMode.XBoxGamepad ? 164 : 243];
+          text = currentInputMode == InputMode.Keyboard || currentInputMode == InputMode.XBoxGamepad ? Lang.menu[164] : Lang.menu[243];
           break;
         case 1:
           text = Lang.menu[165];
@@ -381,10 +383,11 @@ namespace Terraria.GameContent.UI.States
           text = Lang.menu[198];
           break;
       }
-      UITextPanel<string> uiTextPanel = new UITextPanel<string>(text, 0.7f, false);
-      uiTextPanel.VAlign = 0.0f;
-      uiTextPanel.HAlign = 0.5f;
-      uiSortableElement.Append((UIElement) uiTextPanel);
+      UITextPanel<LocalizedText> uiTextPanel1 = new UITextPanel<LocalizedText>(text, 0.7f, false);
+      uiTextPanel1.VAlign = 0.0f;
+      uiTextPanel1.HAlign = 0.5f;
+      UITextPanel<LocalizedText> uiTextPanel2 = uiTextPanel1;
+      uiSortableElement.Append((UIElement) uiTextPanel2);
       uiSortableElement.Recalculate();
       float totalHeight = parent.GetTotalHeight();
       uiSortableElement.Width.Set(0.0f, 1f);
@@ -445,37 +448,37 @@ namespace Terraria.GameContent.UI.States
       switch (bind)
       {
         case "sp1":
-          UIElement uiElement1 = (UIElement) new UIKeybindingToggleListItem((Func<string>) (() => Lang.menu[196]), (Func<bool>) (() =>
+          UIElement uiElement1 = (UIElement) new UIKeybindingToggleListItem((Func<string>) (() => Lang.menu[196].Value), (Func<bool>) (() =>
           {
-            if (PlayerInput.CurrentProfile.InputModes[InputMode.XBoxGamepad].KeyStatus["DpadSnap1"].Contains(Buttons.DPadUp.ToString()) && PlayerInput.CurrentProfile.InputModes[InputMode.XBoxGamepad].KeyStatus["DpadSnap2"].Contains(Buttons.DPadRight.ToString()) && (PlayerInput.CurrentProfile.InputModes[InputMode.XBoxGamepad].KeyStatus["DpadSnap3"].Contains(Buttons.DPadDown.ToString()) && PlayerInput.CurrentProfile.InputModes[InputMode.XBoxGamepad].KeyStatus["DpadSnap4"].Contains(Buttons.DPadLeft.ToString())) && (PlayerInput.CurrentProfile.InputModes[InputMode.XBoxGamepadUI].KeyStatus["DpadSnap1"].Contains(Buttons.DPadUp.ToString()) && PlayerInput.CurrentProfile.InputModes[InputMode.XBoxGamepadUI].KeyStatus["DpadSnap2"].Contains(Buttons.DPadRight.ToString()) && PlayerInput.CurrentProfile.InputModes[InputMode.XBoxGamepadUI].KeyStatus["DpadSnap3"].Contains(Buttons.DPadDown.ToString())))
-              return PlayerInput.CurrentProfile.InputModes[InputMode.XBoxGamepadUI].KeyStatus["DpadSnap4"].Contains(Buttons.DPadLeft.ToString());
+            if (PlayerInput.CurrentProfile.InputModes[InputMode.XBoxGamepad].KeyStatus["DpadSnap1"].Contains(((object) (Buttons) 1).ToString()) && PlayerInput.CurrentProfile.InputModes[InputMode.XBoxGamepad].KeyStatus["DpadSnap2"].Contains(((object) (Buttons) 8).ToString()) && (PlayerInput.CurrentProfile.InputModes[InputMode.XBoxGamepad].KeyStatus["DpadSnap3"].Contains(((object) (Buttons) 2).ToString()) && PlayerInput.CurrentProfile.InputModes[InputMode.XBoxGamepad].KeyStatus["DpadSnap4"].Contains(((object) (Buttons) 4).ToString())) && (PlayerInput.CurrentProfile.InputModes[InputMode.XBoxGamepadUI].KeyStatus["DpadSnap1"].Contains(((object) (Buttons) 1).ToString()) && PlayerInput.CurrentProfile.InputModes[InputMode.XBoxGamepadUI].KeyStatus["DpadSnap2"].Contains(((object) (Buttons) 8).ToString()) && PlayerInput.CurrentProfile.InputModes[InputMode.XBoxGamepadUI].KeyStatus["DpadSnap3"].Contains(((object) (Buttons) 2).ToString())))
+              return PlayerInput.CurrentProfile.InputModes[InputMode.XBoxGamepadUI].KeyStatus["DpadSnap4"].Contains(((object) (Buttons) 4).ToString());
             return false;
           }), color);
           uiElement1.OnClick += new UIElement.MouseEvent(this.SnapButtonClick);
           return uiElement1;
         case "sp2":
-          UIElement uiElement2 = (UIElement) new UIKeybindingToggleListItem((Func<string>) (() => Lang.menu[197]), (Func<bool>) (() =>
+          UIElement uiElement2 = (UIElement) new UIKeybindingToggleListItem((Func<string>) (() => Lang.menu[197].Value), (Func<bool>) (() =>
           {
-            if (PlayerInput.CurrentProfile.InputModes[InputMode.XBoxGamepad].KeyStatus["DpadRadial1"].Contains(Buttons.DPadUp.ToString()) && PlayerInput.CurrentProfile.InputModes[InputMode.XBoxGamepad].KeyStatus["DpadRadial2"].Contains(Buttons.DPadRight.ToString()) && (PlayerInput.CurrentProfile.InputModes[InputMode.XBoxGamepad].KeyStatus["DpadRadial3"].Contains(Buttons.DPadDown.ToString()) && PlayerInput.CurrentProfile.InputModes[InputMode.XBoxGamepad].KeyStatus["DpadRadial4"].Contains(Buttons.DPadLeft.ToString())) && (PlayerInput.CurrentProfile.InputModes[InputMode.XBoxGamepadUI].KeyStatus["DpadRadial1"].Contains(Buttons.DPadUp.ToString()) && PlayerInput.CurrentProfile.InputModes[InputMode.XBoxGamepadUI].KeyStatus["DpadRadial2"].Contains(Buttons.DPadRight.ToString()) && PlayerInput.CurrentProfile.InputModes[InputMode.XBoxGamepadUI].KeyStatus["DpadRadial3"].Contains(Buttons.DPadDown.ToString())))
-              return PlayerInput.CurrentProfile.InputModes[InputMode.XBoxGamepadUI].KeyStatus["DpadRadial4"].Contains(Buttons.DPadLeft.ToString());
+            if (PlayerInput.CurrentProfile.InputModes[InputMode.XBoxGamepad].KeyStatus["DpadRadial1"].Contains(((object) (Buttons) 1).ToString()) && PlayerInput.CurrentProfile.InputModes[InputMode.XBoxGamepad].KeyStatus["DpadRadial2"].Contains(((object) (Buttons) 8).ToString()) && (PlayerInput.CurrentProfile.InputModes[InputMode.XBoxGamepad].KeyStatus["DpadRadial3"].Contains(((object) (Buttons) 2).ToString()) && PlayerInput.CurrentProfile.InputModes[InputMode.XBoxGamepad].KeyStatus["DpadRadial4"].Contains(((object) (Buttons) 4).ToString())) && (PlayerInput.CurrentProfile.InputModes[InputMode.XBoxGamepadUI].KeyStatus["DpadRadial1"].Contains(((object) (Buttons) 1).ToString()) && PlayerInput.CurrentProfile.InputModes[InputMode.XBoxGamepadUI].KeyStatus["DpadRadial2"].Contains(((object) (Buttons) 8).ToString()) && PlayerInput.CurrentProfile.InputModes[InputMode.XBoxGamepadUI].KeyStatus["DpadRadial3"].Contains(((object) (Buttons) 2).ToString())))
+              return PlayerInput.CurrentProfile.InputModes[InputMode.XBoxGamepadUI].KeyStatus["DpadRadial4"].Contains(((object) (Buttons) 4).ToString());
             return false;
           }), color);
           uiElement2.OnClick += new UIElement.MouseEvent(this.RadialButtonClick);
           return uiElement2;
         case "sp3":
-          return (UIElement) new UIKeybindingSliderItem((Func<string>) (() => Lang.menu[199] + " (" + PlayerInput.CurrentProfile.TriggersDeadzone.ToString("P1") + ")"), (Func<float>) (() => PlayerInput.CurrentProfile.TriggersDeadzone), (Action<float>) (f => PlayerInput.CurrentProfile.TriggersDeadzone = f), (Action) (() => PlayerInput.CurrentProfile.TriggersDeadzone = UILinksInitializer.HandleSlider(PlayerInput.CurrentProfile.TriggersDeadzone, 0.0f, 0.95f, PlayerInput.CurrentProfile.InterfaceDeadzoneX, 0.35f)), 1000, color);
+          return (UIElement) new UIKeybindingSliderItem((Func<string>) (() => Lang.menu[199].Value + " (" + PlayerInput.CurrentProfile.TriggersDeadzone.ToString("P1") + ")"), (Func<float>) (() => PlayerInput.CurrentProfile.TriggersDeadzone), (Action<float>) (f => PlayerInput.CurrentProfile.TriggersDeadzone = f), (Action) (() => PlayerInput.CurrentProfile.TriggersDeadzone = UILinksInitializer.HandleSlider(PlayerInput.CurrentProfile.TriggersDeadzone, 0.0f, 0.95f, PlayerInput.CurrentProfile.InterfaceDeadzoneX, 0.35f)), 1000, color);
         case "sp4":
-          return (UIElement) new UIKeybindingSliderItem((Func<string>) (() => Lang.menu[200] + " (" + PlayerInput.CurrentProfile.InterfaceDeadzoneX.ToString("P1") + ")"), (Func<float>) (() => PlayerInput.CurrentProfile.InterfaceDeadzoneX), (Action<float>) (f => PlayerInput.CurrentProfile.InterfaceDeadzoneX = f), (Action) (() => PlayerInput.CurrentProfile.InterfaceDeadzoneX = UILinksInitializer.HandleSlider(PlayerInput.CurrentProfile.InterfaceDeadzoneX, 0.0f, 0.95f, 0.35f, 0.35f)), 1001, color);
+          return (UIElement) new UIKeybindingSliderItem((Func<string>) (() => Lang.menu[200].Value + " (" + PlayerInput.CurrentProfile.InterfaceDeadzoneX.ToString("P1") + ")"), (Func<float>) (() => PlayerInput.CurrentProfile.InterfaceDeadzoneX), (Action<float>) (f => PlayerInput.CurrentProfile.InterfaceDeadzoneX = f), (Action) (() => PlayerInput.CurrentProfile.InterfaceDeadzoneX = UILinksInitializer.HandleSlider(PlayerInput.CurrentProfile.InterfaceDeadzoneX, 0.0f, 0.95f, 0.35f, 0.35f)), 1001, color);
         case "sp5":
-          return (UIElement) new UIKeybindingSliderItem((Func<string>) (() => Lang.menu[201] + " (" + PlayerInput.CurrentProfile.LeftThumbstickDeadzoneX.ToString("P1") + ")"), (Func<float>) (() => PlayerInput.CurrentProfile.LeftThumbstickDeadzoneX), (Action<float>) (f => PlayerInput.CurrentProfile.LeftThumbstickDeadzoneX = f), (Action) (() => PlayerInput.CurrentProfile.LeftThumbstickDeadzoneX = UILinksInitializer.HandleSlider(PlayerInput.CurrentProfile.LeftThumbstickDeadzoneX, 0.0f, 0.95f, PlayerInput.CurrentProfile.InterfaceDeadzoneX, 0.35f)), 1002, color);
+          return (UIElement) new UIKeybindingSliderItem((Func<string>) (() => Lang.menu[201].Value + " (" + PlayerInput.CurrentProfile.LeftThumbstickDeadzoneX.ToString("P1") + ")"), (Func<float>) (() => PlayerInput.CurrentProfile.LeftThumbstickDeadzoneX), (Action<float>) (f => PlayerInput.CurrentProfile.LeftThumbstickDeadzoneX = f), (Action) (() => PlayerInput.CurrentProfile.LeftThumbstickDeadzoneX = UILinksInitializer.HandleSlider(PlayerInput.CurrentProfile.LeftThumbstickDeadzoneX, 0.0f, 0.95f, PlayerInput.CurrentProfile.InterfaceDeadzoneX, 0.35f)), 1002, color);
         case "sp6":
-          return (UIElement) new UIKeybindingSliderItem((Func<string>) (() => Lang.menu[202] + " (" + PlayerInput.CurrentProfile.LeftThumbstickDeadzoneY.ToString("P1") + ")"), (Func<float>) (() => PlayerInput.CurrentProfile.LeftThumbstickDeadzoneY), (Action<float>) (f => PlayerInput.CurrentProfile.LeftThumbstickDeadzoneY = f), (Action) (() => PlayerInput.CurrentProfile.LeftThumbstickDeadzoneY = UILinksInitializer.HandleSlider(PlayerInput.CurrentProfile.LeftThumbstickDeadzoneY, 0.0f, 0.95f, PlayerInput.CurrentProfile.InterfaceDeadzoneX, 0.35f)), 1003, color);
+          return (UIElement) new UIKeybindingSliderItem((Func<string>) (() => Lang.menu[202].Value + " (" + PlayerInput.CurrentProfile.LeftThumbstickDeadzoneY.ToString("P1") + ")"), (Func<float>) (() => PlayerInput.CurrentProfile.LeftThumbstickDeadzoneY), (Action<float>) (f => PlayerInput.CurrentProfile.LeftThumbstickDeadzoneY = f), (Action) (() => PlayerInput.CurrentProfile.LeftThumbstickDeadzoneY = UILinksInitializer.HandleSlider(PlayerInput.CurrentProfile.LeftThumbstickDeadzoneY, 0.0f, 0.95f, PlayerInput.CurrentProfile.InterfaceDeadzoneX, 0.35f)), 1003, color);
         case "sp7":
-          return (UIElement) new UIKeybindingSliderItem((Func<string>) (() => Lang.menu[203] + " (" + PlayerInput.CurrentProfile.RightThumbstickDeadzoneX.ToString("P1") + ")"), (Func<float>) (() => PlayerInput.CurrentProfile.RightThumbstickDeadzoneX), (Action<float>) (f => PlayerInput.CurrentProfile.RightThumbstickDeadzoneX = f), (Action) (() => PlayerInput.CurrentProfile.RightThumbstickDeadzoneX = UILinksInitializer.HandleSlider(PlayerInput.CurrentProfile.RightThumbstickDeadzoneX, 0.0f, 0.95f, PlayerInput.CurrentProfile.InterfaceDeadzoneX, 0.35f)), 1004, color);
+          return (UIElement) new UIKeybindingSliderItem((Func<string>) (() => Lang.menu[203].Value + " (" + PlayerInput.CurrentProfile.RightThumbstickDeadzoneX.ToString("P1") + ")"), (Func<float>) (() => PlayerInput.CurrentProfile.RightThumbstickDeadzoneX), (Action<float>) (f => PlayerInput.CurrentProfile.RightThumbstickDeadzoneX = f), (Action) (() => PlayerInput.CurrentProfile.RightThumbstickDeadzoneX = UILinksInitializer.HandleSlider(PlayerInput.CurrentProfile.RightThumbstickDeadzoneX, 0.0f, 0.95f, PlayerInput.CurrentProfile.InterfaceDeadzoneX, 0.35f)), 1004, color);
         case "sp8":
-          return (UIElement) new UIKeybindingSliderItem((Func<string>) (() => Lang.menu[204] + " (" + PlayerInput.CurrentProfile.RightThumbstickDeadzoneY.ToString("P1") + ")"), (Func<float>) (() => PlayerInput.CurrentProfile.RightThumbstickDeadzoneY), (Action<float>) (f => PlayerInput.CurrentProfile.RightThumbstickDeadzoneY = f), (Action) (() => PlayerInput.CurrentProfile.RightThumbstickDeadzoneY = UILinksInitializer.HandleSlider(PlayerInput.CurrentProfile.RightThumbstickDeadzoneY, 0.0f, 0.95f, PlayerInput.CurrentProfile.InterfaceDeadzoneX, 0.35f)), 1005, color);
+          return (UIElement) new UIKeybindingSliderItem((Func<string>) (() => Lang.menu[204].Value + " (" + PlayerInput.CurrentProfile.RightThumbstickDeadzoneY.ToString("P1") + ")"), (Func<float>) (() => PlayerInput.CurrentProfile.RightThumbstickDeadzoneY), (Action<float>) (f => PlayerInput.CurrentProfile.RightThumbstickDeadzoneY = f), (Action) (() => PlayerInput.CurrentProfile.RightThumbstickDeadzoneY = UILinksInitializer.HandleSlider(PlayerInput.CurrentProfile.RightThumbstickDeadzoneY, 0.0f, 0.95f, PlayerInput.CurrentProfile.InterfaceDeadzoneX, 0.35f)), 1005, color);
         case "sp9":
-          UIElement uiElement3 = (UIElement) new UIKeybindingSimpleListItem((Func<string>) (() => Lang.menu[86]), color);
+          UIElement uiElement3 = (UIElement) new UIKeybindingSimpleListItem((Func<string>) (() => Lang.menu[86].Value), color);
           uiElement3.OnClick += (UIElement.MouseEvent) ((evt, listeningElement) =>
           {
             string copyableProfileName = UIManageControls.GetCopyableProfileName();
@@ -483,7 +486,7 @@ namespace Terraria.GameContent.UI.States
           });
           return uiElement3;
         case "sp10":
-          UIElement uiElement4 = (UIElement) new UIKeybindingSimpleListItem((Func<string>) (() => Lang.menu[86]), color);
+          UIElement uiElement4 = (UIElement) new UIKeybindingSimpleListItem((Func<string>) (() => Lang.menu[86].Value), color);
           uiElement4.OnClick += (UIElement.MouseEvent) ((evt, listeningElement) =>
           {
             string copyableProfileName = UIManageControls.GetCopyableProfileName();
@@ -491,7 +494,7 @@ namespace Terraria.GameContent.UI.States
           });
           return uiElement4;
         case "sp11":
-          UIElement uiElement5 = (UIElement) new UIKeybindingSimpleListItem((Func<string>) (() => Lang.menu[86]), color);
+          UIElement uiElement5 = (UIElement) new UIKeybindingSimpleListItem((Func<string>) (() => Lang.menu[86].Value), color);
           uiElement5.OnClick += (UIElement.MouseEvent) ((evt, listeningElement) =>
           {
             string copyableProfileName = UIManageControls.GetCopyableProfileName();
@@ -499,7 +502,7 @@ namespace Terraria.GameContent.UI.States
           });
           return uiElement5;
         case "sp12":
-          UIElement uiElement6 = (UIElement) new UIKeybindingSimpleListItem((Func<string>) (() => Lang.menu[86]), color);
+          UIElement uiElement6 = (UIElement) new UIKeybindingSimpleListItem((Func<string>) (() => Lang.menu[86].Value), color);
           uiElement6.OnClick += (UIElement.MouseEvent) ((evt, listeningElement) =>
           {
             string copyableProfileName = UIManageControls.GetCopyableProfileName();
@@ -507,7 +510,7 @@ namespace Terraria.GameContent.UI.States
           });
           return uiElement6;
         case "sp13":
-          UIElement uiElement7 = (UIElement) new UIKeybindingSimpleListItem((Func<string>) (() => Lang.menu[86]), color);
+          UIElement uiElement7 = (UIElement) new UIKeybindingSimpleListItem((Func<string>) (() => Lang.menu[86].Value), color);
           uiElement7.OnClick += (UIElement.MouseEvent) ((evt, listeningElement) =>
           {
             string copyableProfileName = UIManageControls.GetCopyableProfileName();
@@ -515,7 +518,7 @@ namespace Terraria.GameContent.UI.States
           });
           return uiElement7;
         case "sp14":
-          UIElement uiElement8 = (UIElement) new UIKeybindingToggleListItem((Func<string>) (() => Lang.menu[205]), (Func<bool>) (() => PlayerInput.CurrentProfile.LeftThumbstickInvertX), color);
+          UIElement uiElement8 = (UIElement) new UIKeybindingToggleListItem((Func<string>) (() => Lang.menu[205].Value), (Func<bool>) (() => PlayerInput.CurrentProfile.LeftThumbstickInvertX), color);
           uiElement8.OnClick += (UIElement.MouseEvent) ((evt, listeningElement) =>
           {
             if (!PlayerInput.CurrentProfile.AllowEditting)
@@ -524,7 +527,7 @@ namespace Terraria.GameContent.UI.States
           });
           return uiElement8;
         case "sp15":
-          UIElement uiElement9 = (UIElement) new UIKeybindingToggleListItem((Func<string>) (() => Lang.menu[206]), (Func<bool>) (() => PlayerInput.CurrentProfile.LeftThumbstickInvertY), color);
+          UIElement uiElement9 = (UIElement) new UIKeybindingToggleListItem((Func<string>) (() => Lang.menu[206].Value), (Func<bool>) (() => PlayerInput.CurrentProfile.LeftThumbstickInvertY), color);
           uiElement9.OnClick += (UIElement.MouseEvent) ((evt, listeningElement) =>
           {
             if (!PlayerInput.CurrentProfile.AllowEditting)
@@ -533,7 +536,7 @@ namespace Terraria.GameContent.UI.States
           });
           return uiElement9;
         case "sp16":
-          UIElement uiElement10 = (UIElement) new UIKeybindingToggleListItem((Func<string>) (() => Lang.menu[207]), (Func<bool>) (() => PlayerInput.CurrentProfile.RightThumbstickInvertX), color);
+          UIElement uiElement10 = (UIElement) new UIKeybindingToggleListItem((Func<string>) (() => Lang.menu[207].Value), (Func<bool>) (() => PlayerInput.CurrentProfile.RightThumbstickInvertX), color);
           uiElement10.OnClick += (UIElement.MouseEvent) ((evt, listeningElement) =>
           {
             if (!PlayerInput.CurrentProfile.AllowEditting)
@@ -542,7 +545,7 @@ namespace Terraria.GameContent.UI.States
           });
           return uiElement10;
         case "sp17":
-          UIElement uiElement11 = (UIElement) new UIKeybindingToggleListItem((Func<string>) (() => Lang.menu[208]), (Func<bool>) (() => PlayerInput.CurrentProfile.RightThumbstickInvertY), color);
+          UIElement uiElement11 = (UIElement) new UIKeybindingToggleListItem((Func<string>) (() => Lang.menu[208].Value), (Func<bool>) (() => PlayerInput.CurrentProfile.RightThumbstickInvertY), color);
           uiElement11.OnClick += (UIElement.MouseEvent) ((evt, listeningElement) =>
           {
             if (!PlayerInput.CurrentProfile.AllowEditting)
@@ -555,8 +558,8 @@ namespace Terraria.GameContent.UI.States
           {
             int holdTimeRequired = PlayerInput.CurrentProfile.HotbarRadialHoldTimeRequired;
             if (holdTimeRequired == -1)
-              return Lang.menu[228];
-            return Lang.menu[227] + " (" + ((float) holdTimeRequired / 60f).ToString("F2") + "s)";
+              return Lang.menu[228].Value;
+            return Lang.menu[227].Value + " (" + ((float) holdTimeRequired / 60f).ToString("F2") + "s)";
           }), (Func<float>) (() =>
           {
             if (PlayerInput.CurrentProfile.HotbarRadialHoldTimeRequired == -1)
@@ -579,7 +582,7 @@ namespace Terraria.GameContent.UI.States
           return (UIElement) new UIKeybindingSliderItem((Func<string>) (() =>
           {
             int inventoryMoveCd = PlayerInput.CurrentProfile.InventoryMoveCD;
-            return Lang.menu[252] + " (" + ((float) inventoryMoveCd / 60f).ToString("F2") + "s)";
+            return Lang.menu[252].Value + " (" + ((float) inventoryMoveCd / 60f).ToString("F2") + "s)";
           }), (Func<float>) (() => Utils.InverseLerp(4f, 12f, (float) PlayerInput.CurrentProfile.InventoryMoveCD, true)), (Action<float>) (f => PlayerInput.CurrentProfile.InventoryMoveCD = (int) Math.Round((double) MathHelper.Lerp(4f, 12f, f))), (Action) (() =>
           {
             if (UILinkPointNavigator.Shortcuts.INV_MOVE_OPTION_CD > 0)
@@ -640,7 +643,7 @@ namespace Terraria.GameContent.UI.States
       if (!PlayerInput.CurrentProfile.AllowEditting)
         return;
       Main.PlaySound(12, -1, -1, 1, 1f, 0.0f);
-      if (PlayerInput.CurrentProfile.InputModes[InputMode.XBoxGamepad].KeyStatus["DpadSnap1"].Contains(Buttons.DPadUp.ToString()) && PlayerInput.CurrentProfile.InputModes[InputMode.XBoxGamepad].KeyStatus["DpadSnap2"].Contains(Buttons.DPadRight.ToString()) && (PlayerInput.CurrentProfile.InputModes[InputMode.XBoxGamepad].KeyStatus["DpadSnap3"].Contains(Buttons.DPadDown.ToString()) && PlayerInput.CurrentProfile.InputModes[InputMode.XBoxGamepad].KeyStatus["DpadSnap4"].Contains(Buttons.DPadLeft.ToString())) && (PlayerInput.CurrentProfile.InputModes[InputMode.XBoxGamepadUI].KeyStatus["DpadSnap1"].Contains(Buttons.DPadUp.ToString()) && PlayerInput.CurrentProfile.InputModes[InputMode.XBoxGamepadUI].KeyStatus["DpadSnap2"].Contains(Buttons.DPadRight.ToString()) && (PlayerInput.CurrentProfile.InputModes[InputMode.XBoxGamepadUI].KeyStatus["DpadSnap3"].Contains(Buttons.DPadDown.ToString()) && PlayerInput.CurrentProfile.InputModes[InputMode.XBoxGamepadUI].KeyStatus["DpadSnap4"].Contains(Buttons.DPadLeft.ToString()))))
+      if (PlayerInput.CurrentProfile.InputModes[InputMode.XBoxGamepad].KeyStatus["DpadSnap1"].Contains(((object) (Buttons) 1).ToString()) && PlayerInput.CurrentProfile.InputModes[InputMode.XBoxGamepad].KeyStatus["DpadSnap2"].Contains(((object) (Buttons) 8).ToString()) && (PlayerInput.CurrentProfile.InputModes[InputMode.XBoxGamepad].KeyStatus["DpadSnap3"].Contains(((object) (Buttons) 2).ToString()) && PlayerInput.CurrentProfile.InputModes[InputMode.XBoxGamepad].KeyStatus["DpadSnap4"].Contains(((object) (Buttons) 4).ToString())) && (PlayerInput.CurrentProfile.InputModes[InputMode.XBoxGamepadUI].KeyStatus["DpadSnap1"].Contains(((object) (Buttons) 1).ToString()) && PlayerInput.CurrentProfile.InputModes[InputMode.XBoxGamepadUI].KeyStatus["DpadSnap2"].Contains(((object) (Buttons) 8).ToString()) && (PlayerInput.CurrentProfile.InputModes[InputMode.XBoxGamepadUI].KeyStatus["DpadSnap3"].Contains(((object) (Buttons) 2).ToString()) && PlayerInput.CurrentProfile.InputModes[InputMode.XBoxGamepadUI].KeyStatus["DpadSnap4"].Contains(((object) (Buttons) 4).ToString()))))
       {
         PlayerInput.CurrentProfile.InputModes[InputMode.XBoxGamepad].KeyStatus["DpadSnap1"].Clear();
         PlayerInput.CurrentProfile.InputModes[InputMode.XBoxGamepad].KeyStatus["DpadSnap2"].Clear();
@@ -663,35 +666,35 @@ namespace Terraria.GameContent.UI.States
         PlayerInput.CurrentProfile.InputModes[InputMode.XBoxGamepadUI].KeyStatus["DpadRadial4"].Clear();
         PlayerInput.CurrentProfile.InputModes[InputMode.XBoxGamepad].KeyStatus["DpadSnap1"] = new List<string>()
         {
-          Buttons.DPadUp.ToString()
+          ((object) (Buttons) 1).ToString()
         };
         PlayerInput.CurrentProfile.InputModes[InputMode.XBoxGamepad].KeyStatus["DpadSnap2"] = new List<string>()
         {
-          Buttons.DPadRight.ToString()
+          ((object) (Buttons) 8).ToString()
         };
         PlayerInput.CurrentProfile.InputModes[InputMode.XBoxGamepad].KeyStatus["DpadSnap3"] = new List<string>()
         {
-          Buttons.DPadDown.ToString()
+          ((object) (Buttons) 2).ToString()
         };
         PlayerInput.CurrentProfile.InputModes[InputMode.XBoxGamepad].KeyStatus["DpadSnap4"] = new List<string>()
         {
-          Buttons.DPadLeft.ToString()
+          ((object) (Buttons) 4).ToString()
         };
         PlayerInput.CurrentProfile.InputModes[InputMode.XBoxGamepadUI].KeyStatus["DpadSnap1"] = new List<string>()
         {
-          Buttons.DPadUp.ToString()
+          ((object) (Buttons) 1).ToString()
         };
         PlayerInput.CurrentProfile.InputModes[InputMode.XBoxGamepadUI].KeyStatus["DpadSnap2"] = new List<string>()
         {
-          Buttons.DPadRight.ToString()
+          ((object) (Buttons) 8).ToString()
         };
         PlayerInput.CurrentProfile.InputModes[InputMode.XBoxGamepadUI].KeyStatus["DpadSnap3"] = new List<string>()
         {
-          Buttons.DPadDown.ToString()
+          ((object) (Buttons) 2).ToString()
         };
         PlayerInput.CurrentProfile.InputModes[InputMode.XBoxGamepadUI].KeyStatus["DpadSnap4"] = new List<string>()
         {
-          Buttons.DPadLeft.ToString()
+          ((object) (Buttons) 4).ToString()
         };
       }
     }
@@ -701,7 +704,7 @@ namespace Terraria.GameContent.UI.States
       if (!PlayerInput.CurrentProfile.AllowEditting)
         return;
       Main.PlaySound(12, -1, -1, 1, 1f, 0.0f);
-      if (PlayerInput.CurrentProfile.InputModes[InputMode.XBoxGamepad].KeyStatus["DpadRadial1"].Contains(Buttons.DPadUp.ToString()) && PlayerInput.CurrentProfile.InputModes[InputMode.XBoxGamepad].KeyStatus["DpadRadial2"].Contains(Buttons.DPadRight.ToString()) && (PlayerInput.CurrentProfile.InputModes[InputMode.XBoxGamepad].KeyStatus["DpadRadial3"].Contains(Buttons.DPadDown.ToString()) && PlayerInput.CurrentProfile.InputModes[InputMode.XBoxGamepad].KeyStatus["DpadRadial4"].Contains(Buttons.DPadLeft.ToString())) && (PlayerInput.CurrentProfile.InputModes[InputMode.XBoxGamepadUI].KeyStatus["DpadRadial1"].Contains(Buttons.DPadUp.ToString()) && PlayerInput.CurrentProfile.InputModes[InputMode.XBoxGamepadUI].KeyStatus["DpadRadial2"].Contains(Buttons.DPadRight.ToString()) && (PlayerInput.CurrentProfile.InputModes[InputMode.XBoxGamepadUI].KeyStatus["DpadRadial3"].Contains(Buttons.DPadDown.ToString()) && PlayerInput.CurrentProfile.InputModes[InputMode.XBoxGamepadUI].KeyStatus["DpadRadial4"].Contains(Buttons.DPadLeft.ToString()))))
+      if (PlayerInput.CurrentProfile.InputModes[InputMode.XBoxGamepad].KeyStatus["DpadRadial1"].Contains(((object) (Buttons) 1).ToString()) && PlayerInput.CurrentProfile.InputModes[InputMode.XBoxGamepad].KeyStatus["DpadRadial2"].Contains(((object) (Buttons) 8).ToString()) && (PlayerInput.CurrentProfile.InputModes[InputMode.XBoxGamepad].KeyStatus["DpadRadial3"].Contains(((object) (Buttons) 2).ToString()) && PlayerInput.CurrentProfile.InputModes[InputMode.XBoxGamepad].KeyStatus["DpadRadial4"].Contains(((object) (Buttons) 4).ToString())) && (PlayerInput.CurrentProfile.InputModes[InputMode.XBoxGamepadUI].KeyStatus["DpadRadial1"].Contains(((object) (Buttons) 1).ToString()) && PlayerInput.CurrentProfile.InputModes[InputMode.XBoxGamepadUI].KeyStatus["DpadRadial2"].Contains(((object) (Buttons) 8).ToString()) && (PlayerInput.CurrentProfile.InputModes[InputMode.XBoxGamepadUI].KeyStatus["DpadRadial3"].Contains(((object) (Buttons) 2).ToString()) && PlayerInput.CurrentProfile.InputModes[InputMode.XBoxGamepadUI].KeyStatus["DpadRadial4"].Contains(((object) (Buttons) 4).ToString()))))
       {
         PlayerInput.CurrentProfile.InputModes[InputMode.XBoxGamepad].KeyStatus["DpadRadial1"].Clear();
         PlayerInput.CurrentProfile.InputModes[InputMode.XBoxGamepad].KeyStatus["DpadRadial2"].Clear();
@@ -724,35 +727,35 @@ namespace Terraria.GameContent.UI.States
         PlayerInput.CurrentProfile.InputModes[InputMode.XBoxGamepadUI].KeyStatus["DpadSnap4"].Clear();
         PlayerInput.CurrentProfile.InputModes[InputMode.XBoxGamepad].KeyStatus["DpadRadial1"] = new List<string>()
         {
-          Buttons.DPadUp.ToString()
+          ((object) (Buttons) 1).ToString()
         };
         PlayerInput.CurrentProfile.InputModes[InputMode.XBoxGamepad].KeyStatus["DpadRadial2"] = new List<string>()
         {
-          Buttons.DPadRight.ToString()
+          ((object) (Buttons) 8).ToString()
         };
         PlayerInput.CurrentProfile.InputModes[InputMode.XBoxGamepad].KeyStatus["DpadRadial3"] = new List<string>()
         {
-          Buttons.DPadDown.ToString()
+          ((object) (Buttons) 2).ToString()
         };
         PlayerInput.CurrentProfile.InputModes[InputMode.XBoxGamepad].KeyStatus["DpadRadial4"] = new List<string>()
         {
-          Buttons.DPadLeft.ToString()
+          ((object) (Buttons) 4).ToString()
         };
         PlayerInput.CurrentProfile.InputModes[InputMode.XBoxGamepadUI].KeyStatus["DpadRadial1"] = new List<string>()
         {
-          Buttons.DPadUp.ToString()
+          ((object) (Buttons) 1).ToString()
         };
         PlayerInput.CurrentProfile.InputModes[InputMode.XBoxGamepadUI].KeyStatus["DpadRadial2"] = new List<string>()
         {
-          Buttons.DPadRight.ToString()
+          ((object) (Buttons) 8).ToString()
         };
         PlayerInput.CurrentProfile.InputModes[InputMode.XBoxGamepadUI].KeyStatus["DpadRadial3"] = new List<string>()
         {
-          Buttons.DPadDown.ToString()
+          ((object) (Buttons) 2).ToString()
         };
         PlayerInput.CurrentProfile.InputModes[InputMode.XBoxGamepadUI].KeyStatus["DpadRadial4"] = new List<string>()
         {
-          Buttons.DPadLeft.ToString()
+          ((object) (Buttons) 4).ToString()
         };
       }
     }
@@ -775,26 +778,26 @@ namespace Terraria.GameContent.UI.States
 
     private void ManageBorderKeyboardOn(UIMouseEvent evt, UIElement listeningElement)
     {
-      this._buttonBorder2.Color = !this.OnKeyboard ? Color.Silver : Color.Black;
+      this._buttonBorder2.Color = !this.OnKeyboard ? Color.get_Silver() : Color.get_Black();
       this._buttonBorder1.Color = Main.OurFavoriteColor;
     }
 
     private void ManageBorderKeyboardOff(UIMouseEvent evt, UIElement listeningElement)
     {
-      this._buttonBorder2.Color = !this.OnKeyboard ? Color.Silver : Color.Black;
-      this._buttonBorder1.Color = this.OnKeyboard ? Color.Silver : Color.Black;
+      this._buttonBorder2.Color = !this.OnKeyboard ? Color.get_Silver() : Color.get_Black();
+      this._buttonBorder1.Color = this.OnKeyboard ? Color.get_Silver() : Color.get_Black();
     }
 
     private void ManageBorderGamepadOn(UIMouseEvent evt, UIElement listeningElement)
     {
-      this._buttonBorder1.Color = this.OnKeyboard ? Color.Silver : Color.Black;
+      this._buttonBorder1.Color = this.OnKeyboard ? Color.get_Silver() : Color.get_Black();
       this._buttonBorder2.Color = Main.OurFavoriteColor;
     }
 
     private void ManageBorderGamepadOff(UIMouseEvent evt, UIElement listeningElement)
     {
-      this._buttonBorder1.Color = this.OnKeyboard ? Color.Silver : Color.Black;
-      this._buttonBorder2.Color = !this.OnKeyboard ? Color.Silver : Color.Black;
+      this._buttonBorder1.Color = this.OnKeyboard ? Color.get_Silver() : Color.get_Black();
+      this._buttonBorder2.Color = !this.OnKeyboard ? Color.get_Silver() : Color.get_Black();
     }
 
     private void VsGameplayButtonClick(UIMouseEvent evt, UIElement listeningElement)
@@ -815,26 +818,26 @@ namespace Terraria.GameContent.UI.States
 
     private void ManageBorderGameplayOn(UIMouseEvent evt, UIElement listeningElement)
     {
-      this._buttonBorderVs2.Color = !this.OnGameplay ? Color.Silver : Color.Black;
+      this._buttonBorderVs2.Color = !this.OnGameplay ? Color.get_Silver() : Color.get_Black();
       this._buttonBorderVs1.Color = Main.OurFavoriteColor;
     }
 
     private void ManageBorderGameplayOff(UIMouseEvent evt, UIElement listeningElement)
     {
-      this._buttonBorderVs2.Color = !this.OnGameplay ? Color.Silver : Color.Black;
-      this._buttonBorderVs1.Color = this.OnGameplay ? Color.Silver : Color.Black;
+      this._buttonBorderVs2.Color = !this.OnGameplay ? Color.get_Silver() : Color.get_Black();
+      this._buttonBorderVs1.Color = this.OnGameplay ? Color.get_Silver() : Color.get_Black();
     }
 
     private void ManageBorderMenuOn(UIMouseEvent evt, UIElement listeningElement)
     {
-      this._buttonBorderVs1.Color = this.OnGameplay ? Color.Silver : Color.Black;
+      this._buttonBorderVs1.Color = this.OnGameplay ? Color.get_Silver() : Color.get_Black();
       this._buttonBorderVs2.Color = Main.OurFavoriteColor;
     }
 
     private void ManageBorderMenuOff(UIMouseEvent evt, UIElement listeningElement)
     {
-      this._buttonBorderVs1.Color = this.OnGameplay ? Color.Silver : Color.Black;
-      this._buttonBorderVs2.Color = !this.OnGameplay ? Color.Silver : Color.Black;
+      this._buttonBorderVs1.Color = this.OnGameplay ? Color.get_Silver() : Color.get_Black();
+      this._buttonBorderVs2.Color = !this.OnGameplay ? Color.get_Silver() : Color.get_Black();
     }
 
     private void profileButtonClick(UIMouseEvent evt, UIElement listeningElement)
@@ -855,7 +858,7 @@ namespace Terraria.GameContent.UI.States
 
     private void FadedMouseOut(UIMouseEvent evt, UIElement listeningElement)
     {
-      ((UIPanel) evt.Target).BackgroundColor = new Color(63, 82, 151) * 0.7f;
+      ((UIPanel) evt.Target).BackgroundColor = Color.op_Multiply(new Color(63, 82, 151), 0.7f);
     }
 
     private void GoBackClick(UIMouseEvent evt, UIElement listeningElement)
@@ -873,98 +876,124 @@ namespace Terraria.GameContent.UI.States
     private void SetupGamepadPoints(SpriteBatch spriteBatch)
     {
       UILinkPointNavigator.Shortcuts.BackButtonCommand = 4;
-      int ID1 = 3000;
-      UILinkPointNavigator.SetPosition(ID1, this._buttonBack.GetInnerDimensions().ToRectangle().Center.ToVector2());
-      UILinkPointNavigator.SetPosition(ID1 + 1, this._buttonKeyboard.GetInnerDimensions().ToRectangle().Center.ToVector2());
-      UILinkPointNavigator.SetPosition(ID1 + 2, this._buttonGamepad.GetInnerDimensions().ToRectangle().Center.ToVector2());
-      UILinkPointNavigator.SetPosition(ID1 + 3, this._buttonProfile.GetInnerDimensions().ToRectangle().Center.ToVector2());
-      UILinkPointNavigator.SetPosition(ID1 + 4, this._buttonVs1.GetInnerDimensions().ToRectangle().Center.ToVector2());
-      UILinkPointNavigator.SetPosition(ID1 + 5, this._buttonVs2.GetInnerDimensions().ToRectangle().Center.ToVector2());
-      int index1 = ID1;
-      UILinkPoint point1 = UILinkPointNavigator.Points[index1];
+      int index1 = 3000;
+      int ID1 = index1;
+      Rectangle rectangle1 = this._buttonBack.GetInnerDimensions().ToRectangle();
+      // ISSUE: explicit reference operation
+      Vector2 vector2_1 = ((Rectangle) @rectangle1).get_Center().ToVector2();
+      UILinkPointNavigator.SetPosition(ID1, vector2_1);
+      int ID2 = index1 + 1;
+      Rectangle rectangle2 = this._buttonKeyboard.GetInnerDimensions().ToRectangle();
+      // ISSUE: explicit reference operation
+      Vector2 vector2_2 = ((Rectangle) @rectangle2).get_Center().ToVector2();
+      UILinkPointNavigator.SetPosition(ID2, vector2_2);
+      int ID3 = index1 + 2;
+      Rectangle rectangle3 = this._buttonGamepad.GetInnerDimensions().ToRectangle();
+      // ISSUE: explicit reference operation
+      Vector2 vector2_3 = ((Rectangle) @rectangle3).get_Center().ToVector2();
+      UILinkPointNavigator.SetPosition(ID3, vector2_3);
+      int ID4 = index1 + 3;
+      Rectangle rectangle4 = this._buttonProfile.GetInnerDimensions().ToRectangle();
+      // ISSUE: explicit reference operation
+      Vector2 vector2_4 = ((Rectangle) @rectangle4).get_Center().ToVector2();
+      UILinkPointNavigator.SetPosition(ID4, vector2_4);
+      int ID5 = index1 + 4;
+      Rectangle rectangle5 = this._buttonVs1.GetInnerDimensions().ToRectangle();
+      // ISSUE: explicit reference operation
+      Vector2 vector2_5 = ((Rectangle) @rectangle5).get_Center().ToVector2();
+      UILinkPointNavigator.SetPosition(ID5, vector2_5);
+      int ID6 = index1 + 5;
+      Rectangle rectangle6 = this._buttonVs2.GetInnerDimensions().ToRectangle();
+      // ISSUE: explicit reference operation
+      Vector2 vector2_6 = ((Rectangle) @rectangle6).get_Center().ToVector2();
+      UILinkPointNavigator.SetPosition(ID6, vector2_6);
+      int index2 = index1;
+      UILinkPoint point1 = UILinkPointNavigator.Points[index2];
       point1.Unlink();
-      point1.Up = ID1 + 6;
-      int index2 = ID1 + 1;
-      UILinkPoint point2 = UILinkPointNavigator.Points[index2];
+      point1.Up = index1 + 6;
+      int index3 = index1 + 1;
+      UILinkPoint point2 = UILinkPointNavigator.Points[index3];
       point2.Unlink();
-      point2.Right = ID1 + 2;
-      point2.Down = ID1 + 6;
-      int index3 = ID1 + 2;
-      UILinkPoint point3 = UILinkPointNavigator.Points[index3];
+      point2.Right = index1 + 2;
+      point2.Down = index1 + 6;
+      int index4 = index1 + 2;
+      UILinkPoint point3 = UILinkPointNavigator.Points[index4];
       point3.Unlink();
-      point3.Left = ID1 + 1;
-      point3.Right = ID1 + 4;
-      point3.Down = ID1 + 6;
-      int index4 = ID1 + 4;
-      UILinkPoint point4 = UILinkPointNavigator.Points[index4];
+      point3.Left = index1 + 1;
+      point3.Right = index1 + 4;
+      point3.Down = index1 + 6;
+      int index5 = index1 + 4;
+      UILinkPoint point4 = UILinkPointNavigator.Points[index5];
       point4.Unlink();
-      point4.Left = ID1 + 2;
-      point4.Right = ID1 + 5;
-      point4.Down = ID1 + 6;
-      int index5 = ID1 + 5;
-      UILinkPoint point5 = UILinkPointNavigator.Points[index5];
+      point4.Left = index1 + 2;
+      point4.Right = index1 + 5;
+      point4.Down = index1 + 6;
+      int index6 = index1 + 5;
+      UILinkPoint point5 = UILinkPointNavigator.Points[index6];
       point5.Unlink();
-      point5.Left = ID1 + 4;
-      point5.Right = ID1 + 3;
-      point5.Down = ID1 + 6;
-      int index6 = ID1 + 3;
-      UILinkPoint point6 = UILinkPointNavigator.Points[index6];
+      point5.Left = index1 + 4;
+      point5.Right = index1 + 3;
+      point5.Down = index1 + 6;
+      int index7 = index1 + 3;
+      UILinkPoint point6 = UILinkPointNavigator.Points[index7];
       point6.Unlink();
-      point6.Left = ID1 + 5;
-      point6.Down = ID1 + 6;
+      point6.Left = index1 + 5;
+      point6.Down = index1 + 6;
+      float num = 1f / Main.UIScale;
       Rectangle clippingRectangle = this._uilist.GetClippingRectangle(spriteBatch);
-      Vector2 minimum = clippingRectangle.TopLeft();
-      Vector2 maximum = clippingRectangle.BottomRight();
+      Vector2 minimum = Vector2.op_Multiply(clippingRectangle.TopLeft(), num);
+      Vector2 maximum = Vector2.op_Multiply(clippingRectangle.BottomRight(), num);
       List<SnapPoint> snapPoints = this._uilist.GetSnapPoints();
-      for (int index7 = 0; index7 < snapPoints.Count; ++index7)
+      for (int index8 = 0; index8 < snapPoints.Count; ++index8)
       {
-        if (!snapPoints[index7].Position.Between(minimum, maximum))
+        if (!snapPoints[index8].Position.Between(minimum, maximum))
         {
-          snapPoints.Remove(snapPoints[index7]);
-          --index7;
+          Vector2 position = snapPoints[index8].Position;
+          snapPoints.Remove(snapPoints[index8]);
+          --index8;
         }
       }
       snapPoints.Sort((Comparison<SnapPoint>) ((x, y) => x.ID.CompareTo(y.ID)));
-      for (int index7 = 0; index7 < snapPoints.Count; ++index7)
+      for (int index8 = 0; index8 < snapPoints.Count; ++index8)
       {
-        int ID2 = ID1 + 6 + index7;
-        if (snapPoints[index7].Name == "Thin")
+        int ID7 = index1 + 6 + index8;
+        if (snapPoints[index8].Name == "Thin")
         {
-          UILinkPoint point7 = UILinkPointNavigator.Points[ID2];
+          UILinkPoint point7 = UILinkPointNavigator.Points[ID7];
           point7.Unlink();
-          UILinkPointNavigator.SetPosition(ID2, snapPoints[index7].Position);
-          point7.Right = ID2 + 1;
-          point7.Down = index7 < snapPoints.Count - 2 ? ID2 + 2 : ID1;
-          point7.Up = index7 < 2 ? ID1 + 1 : (snapPoints[index7 - 1].Name == "Wide" ? ID2 - 1 : ID2 - 2);
-          UILinkPointNavigator.Points[ID1].Up = ID2;
-          UILinkPointNavigator.Shortcuts.FANCYUI_HIGHEST_INDEX = ID2;
-          ++index7;
-          if (index7 < snapPoints.Count)
+          UILinkPointNavigator.SetPosition(ID7, snapPoints[index8].Position);
+          point7.Right = ID7 + 1;
+          point7.Down = index8 < snapPoints.Count - 2 ? ID7 + 2 : index1;
+          point7.Up = index8 < 2 ? index1 + 1 : (snapPoints[index8 - 1].Name == "Wide" ? ID7 - 1 : ID7 - 2);
+          UILinkPointNavigator.Points[index1].Up = ID7;
+          UILinkPointNavigator.Shortcuts.FANCYUI_HIGHEST_INDEX = ID7;
+          ++index8;
+          if (index8 < snapPoints.Count)
           {
-            int ID3 = ID1 + 6 + index7;
-            UILinkPoint point8 = UILinkPointNavigator.Points[ID3];
+            int ID8 = index1 + 6 + index8;
+            UILinkPoint point8 = UILinkPointNavigator.Points[ID8];
             point8.Unlink();
-            UILinkPointNavigator.SetPosition(ID3, snapPoints[index7].Position);
-            point8.Left = ID3 - 1;
-            point8.Down = index7 < snapPoints.Count - 1 ? (snapPoints[index7 + 1].Name == "Wide" ? ID3 + 1 : ID3 + 2) : ID1;
-            point8.Up = index7 < 2 ? ID1 + 1 : ID3 - 2;
-            UILinkPointNavigator.Shortcuts.FANCYUI_HIGHEST_INDEX = ID3;
+            UILinkPointNavigator.SetPosition(ID8, snapPoints[index8].Position);
+            point8.Left = ID8 - 1;
+            point8.Down = index8 < snapPoints.Count - 1 ? (snapPoints[index8 + 1].Name == "Wide" ? ID8 + 1 : ID8 + 2) : index1;
+            point8.Up = index8 < 2 ? index1 + 1 : ID8 - 2;
+            UILinkPointNavigator.Shortcuts.FANCYUI_HIGHEST_INDEX = ID8;
           }
         }
         else
         {
-          UILinkPoint point7 = UILinkPointNavigator.Points[ID2];
+          UILinkPoint point7 = UILinkPointNavigator.Points[ID7];
           point7.Unlink();
-          UILinkPointNavigator.SetPosition(ID2, snapPoints[index7].Position);
-          point7.Down = index7 < snapPoints.Count - 1 ? ID2 + 1 : ID1;
-          point7.Up = index7 < 1 ? ID1 + 1 : (snapPoints[index7 - 1].Name == "Wide" ? ID2 - 1 : ID2 - 2);
-          UILinkPointNavigator.Shortcuts.FANCYUI_HIGHEST_INDEX = ID2;
-          UILinkPointNavigator.Points[ID1].Up = ID2;
+          UILinkPointNavigator.SetPosition(ID7, snapPoints[index8].Position);
+          point7.Down = index8 < snapPoints.Count - 1 ? ID7 + 1 : index1;
+          point7.Up = index8 < 1 ? index1 + 1 : (snapPoints[index8 - 1].Name == "Wide" ? ID7 - 1 : ID7 - 2);
+          UILinkPointNavigator.Shortcuts.FANCYUI_HIGHEST_INDEX = ID7;
+          UILinkPointNavigator.Points[index1].Up = ID7;
         }
       }
       if (UIManageControls.ForceMoveTo == -1)
         return;
-      UILinkPointNavigator.ChangePoint((int) MathHelper.Clamp((float) UIManageControls.ForceMoveTo, (float) ID1, (float) UILinkPointNavigator.Shortcuts.FANCYUI_HIGHEST_INDEX));
+      UILinkPointNavigator.ChangePoint((int) MathHelper.Clamp((float) UIManageControls.ForceMoveTo, (float) index1, (float) UILinkPointNavigator.Shortcuts.FANCYUI_HIGHEST_INDEX));
       UIManageControls.ForceMoveTo = -1;
     }
   }

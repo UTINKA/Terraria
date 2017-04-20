@@ -1,12 +1,13 @@
 ﻿// Decompiled with JetBrains decompiler
 // Type: Terraria.DeprecatedClassLeftInForLoading
-// Assembly: Terraria, Version=1.3.4.4, Culture=neutral, PublicKeyToken=null
-// MVID: DEE50102-BCC2-472F-987B-153E892583F1
-// Assembly location: E:\Steam\SteamApps\common\Terraria\Terraria.exe
+// Assembly: Terraria, Version=1.3.5.1, Culture=neutral, PublicKeyToken=null
+// MVID: DF0400F4-EE47-4864-BE80-932EDB02D8A6
+// Assembly location: F:\Steam\steamapps\common\Terraria\Terraria.exe
 
 using Microsoft.Xna.Framework;
 using System.Collections.Generic;
 using Terraria.ID;
+using Terraria.Localization;
 
 namespace Terraria
 {
@@ -30,10 +31,13 @@ namespace Terraria
     {
       Dictionary<int, Rectangle> dictionary = new Dictionary<int, Rectangle>();
       bool flag1 = false;
-      Rectangle rectangle = new Rectangle(0, 0, 32, 48);
-      rectangle.Inflate(1600, 1600);
-      int x = rectangle.X;
-      int y = rectangle.Y;
+      Rectangle rectangle1;
+      // ISSUE: explicit reference operation
+      ((Rectangle) @rectangle1).\u002Ector(0, 0, 32, 48);
+      // ISSUE: explicit reference operation
+      ((Rectangle) @rectangle1).Inflate(1600, 1600);
+      int x = (int) rectangle1.X;
+      int y = (int) rectangle1.Y;
       for (int index1 = 0; index1 < 1000; ++index1)
       {
         if (DeprecatedClassLeftInForLoading.dummies[index1] != null)
@@ -55,15 +59,20 @@ namespace Terraria
               }
               flag1 = true;
             }
-            rectangle.X = (int) DeprecatedClassLeftInForLoading.dummies[index1].x * 16 + x;
-            rectangle.Y = (int) DeprecatedClassLeftInForLoading.dummies[index1].y * 16 + y;
+            rectangle1.X = (__Null) ((int) DeprecatedClassLeftInForLoading.dummies[index1].x * 16 + x);
+            rectangle1.Y = (__Null) ((int) DeprecatedClassLeftInForLoading.dummies[index1].y * 16 + y);
             bool flag2 = false;
-            foreach (KeyValuePair<int, Rectangle> keyValuePair in dictionary)
+            using (Dictionary<int, Rectangle>.Enumerator enumerator = dictionary.GetEnumerator())
             {
-              if (keyValuePair.Value.Intersects(rectangle))
+              while (enumerator.MoveNext())
               {
-                flag2 = true;
-                break;
+                Rectangle rectangle2 = enumerator.Current.Value;
+                // ISSUE: explicit reference operation
+                if (((Rectangle) @rectangle2).Intersects(rectangle1))
+                {
+                  flag2 = true;
+                  break;
+                }
               }
             }
             if (flag2)
@@ -115,7 +124,7 @@ namespace Terraria
       if (Main.netMode != 1)
         return DeprecatedClassLeftInForLoading.Place(x - 1, y - 2);
       NetMessage.SendTileSquare(Main.myPlayer, x - 1, y - 1, 3, TileChangeType.None);
-      NetMessage.SendData(87, -1, -1, "", x - 1, (float) (y - 2), 0.0f, 0.0f, 0, 0, 0);
+      NetMessage.SendData(87, -1, -1, (NetworkText) null, x - 1, (float) (y - 2), 0.0f, 0.0f, 0, 0, 0);
       return -1;
     }
 
@@ -128,7 +137,7 @@ namespace Terraria
       this.npc = index;
       if (Main.netMode == 1)
         return;
-      NetMessage.SendData(86, -1, -1, "", this.whoAmI, (float) this.x, (float) this.y, 0.0f, 0, 0, 0);
+      NetMessage.SendData(86, -1, -1, (NetworkText) null, this.whoAmI, (float) this.x, (float) this.y, 0.0f, 0, 0, 0);
     }
 
     public void Deactivate()
@@ -138,7 +147,7 @@ namespace Terraria
       this.npc = -1;
       if (Main.netMode == 1)
         return;
-      NetMessage.SendData(86, -1, -1, "", this.whoAmI, (float) this.x, (float) this.y, 0.0f, 0, 0, 0);
+      NetMessage.SendData(86, -1, -1, (NetworkText) null, this.whoAmI, (float) this.x, (float) this.y, 0.0f, 0, 0, 0);
     }
 
     public override string ToString()

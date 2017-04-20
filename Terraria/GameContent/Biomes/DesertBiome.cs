@@ -1,8 +1,8 @@
 ﻿// Decompiled with JetBrains decompiler
 // Type: Terraria.GameContent.Biomes.DesertBiome
-// Assembly: Terraria, Version=1.3.4.4, Culture=neutral, PublicKeyToken=null
-// MVID: DEE50102-BCC2-472F-987B-153E892583F1
-// Assembly location: E:\Steam\SteamApps\common\Terraria\Terraria.exe
+// Assembly: Terraria, Version=1.3.5.1, Culture=neutral, PublicKeyToken=null
+// MVID: DF0400F4-EE47-4864-BE80-932EDB02D8A6
+// Assembly location: F:\Steam\steamapps\common\Terraria\Terraria.exe
 
 using Microsoft.Xna.Framework;
 using System;
@@ -15,8 +15,8 @@ namespace Terraria.GameContent.Biomes
   {
     private void PlaceSand(DesertBiome.ClusterGroup clusters, Point start, Vector2 scale)
     {
-      int num1 = (int) ((double) scale.X * (double) clusters.Width);
-      int num2 = (int) ((double) scale.Y * (double) clusters.Height);
+      int num1 = (int) (scale.X * (double) clusters.Width);
+      int num2 = (int) (scale.Y * (double) clusters.Height);
       int num3 = 5;
       int val1 = start.Y + (num2 >> 1);
       float num4 = 0.0f;
@@ -41,22 +41,31 @@ namespace Terraria.GameContent.Biomes
         if (index1 % 3 == 0)
           num6 = Utils.Clamp<int>(num6 + GenBase._random.Next(-1, 2), -10, 10);
         float num8 = (float) Math.Sqrt(1.0 - (double) num7 * (double) num7 * (double) num7 * (double) num7);
-        int min = val1 - (int) ((double) num8 * (double) ((float) val1 - num5)) + num6;
-        int val2 = val1 - (int) ((double) ((float) val1 - num5) * ((double) num8 - 0.150000005960464 / Math.Sqrt(Math.Max(0.01, (double) Math.Abs(8f * num7) - 0.1)) + 0.25));
-        int num9 = Math.Min(val1, val2);
-        int num10 = (int) (70.0 - (double) Utils.SmoothStep(0.5f, 0.8f, Math.Abs(num7)) * 70.0);
-        if (min - (int) numArray[index1 + num3] < num10)
+        int val2_1 = val1 - (int) ((double) num8 * (double) ((float) val1 - num5)) + num6;
+        int val2_2 = val1 - (int) ((double) ((float) val1 - num5) * ((double) num8 - 0.150000005960464 / Math.Sqrt(Math.Max(0.01, (double) Math.Abs(8f * num7) - 0.1)) + 0.25));
+        int num9 = Math.Min(val1, val2_2);
+        if ((double) Math.Abs(num7) < 0.800000011920929)
         {
-          for (int index2 = 0; index2 < num10; ++index2)
+          float num10 = Utils.SmoothStep(0.5f, 0.8f, Math.Abs(num7));
+          float num11 = num10 * num10 * num10;
+          int num12 = Math.Min(10 + (int) ((double) num5 - (double) num11 * 20.0) + num6, val2_1);
+          int num13 = 50;
+          for (int index2 = num13; (double) index2 < (double) num5; ++index2)
           {
             int index3 = index1 + start.X;
-            int index4 = index2 + min - 70;
+            if (GenBase._tiles[index3, index2].active() && ((int) GenBase._tiles[index3, index2].type == 189 || (int) GenBase._tiles[index3, index2].type == 196))
+              num13 = index2 + 5;
+          }
+          for (int index2 = num13; index2 < num12; ++index2)
+          {
+            int index3 = index1 + start.X;
+            int index4 = index2;
             GenBase._tiles[index3, index4].active(false);
             GenBase._tiles[index3, index4].wall = (byte) 0;
           }
-          numArray[index1 + num3] = (short) Utils.Clamp<int>(num10 + min - 70, min, (int) numArray[index1 + num3]);
+          numArray[index1 + num3] = (short) num12;
         }
-        for (int index2 = val1 - 1; index2 >= min; --index2)
+        for (int index2 = val1 - 1; index2 >= val2_1; --index2)
         {
           int i = index1 + start.X;
           int j = index2;
@@ -65,14 +74,14 @@ namespace Terraria.GameContent.Biomes
           Tile tile2 = GenBase._tiles[i, j + 1];
           Tile tile3 = GenBase._tiles[i, j + 2];
           tile1.type = !WorldGen.SolidTile(tile2) || !WorldGen.SolidTile(tile3) ? (ushort) 397 : (ushort) 53;
-          if (index2 > min + 5)
+          if (index2 > val2_1 + 5)
             tile1.wall = (byte) 187;
           tile1.active(true);
           if ((int) tile1.wall != 187)
             tile1.wall = (byte) 0;
           if (index2 < num9)
           {
-            if (index2 > min + 5)
+            if (index2 > val2_1 + 5)
               tile1.wall = (byte) 187;
             tile1.active(false);
           }
@@ -83,10 +92,14 @@ namespace Terraria.GameContent.Biomes
 
     private void PlaceClusters(DesertBiome.ClusterGroup clusters, Point start, Vector2 scale)
     {
-      int num1 = (int) ((double) scale.X * (double) clusters.Width);
-      int num2 = (int) ((double) scale.Y * (double) clusters.Height);
-      Vector2 vector2_1 = new Vector2((float) num1, (float) num2);
-      Vector2 vector2_2 = new Vector2((float) clusters.Width, (float) clusters.Height);
+      int num1 = (int) (scale.X * (double) clusters.Width);
+      int num2 = (int) (scale.Y * (double) clusters.Height);
+      Vector2 vector2_1;
+      // ISSUE: explicit reference operation
+      ((Vector2) @vector2_1).\u002Ector((float) num1, (float) num2);
+      Vector2 vector2_2;
+      // ISSUE: explicit reference operation
+      ((Vector2) @vector2_2).\u002Ector((float) clusters.Width, (float) clusters.Height);
       for (int index1 = -20; index1 < num1 + 20; ++index1)
       {
         for (int index2 = -20; index2 < num2 + 20; ++index2)
@@ -96,12 +109,14 @@ namespace Terraria.GameContent.Biomes
           float num5 = 0.0f;
           int x = index1 + start.X;
           int y = index2 + start.Y;
-          Vector2 vector2_3 = new Vector2((float) index1, (float) index2) / vector2_1 * vector2_2;
-          float num6 = (new Vector2((float) index1, (float) index2) / vector2_1 * 2f - Vector2.One).Length();
+          Vector2 vector2_3 = Vector2.op_Multiply(Vector2.op_Division(new Vector2((float) index1, (float) index2), vector2_1), vector2_2);
+          Vector2 vector2_4 = Vector2.op_Subtraction(Vector2.op_Multiply(Vector2.op_Division(new Vector2((float) index1, (float) index2), vector2_1), 2f), Vector2.get_One());
+          // ISSUE: explicit reference operation
+          float num6 = ((Vector2) @vector2_4).Length();
           for (int index3 = 0; index3 < clusters.Count; ++index3)
           {
             DesertBiome.Cluster cluster = clusters[index3];
-            if ((double) Math.Abs(cluster[0].Position.X - vector2_3.X) <= 10.0 && (double) Math.Abs(cluster[0].Position.Y - vector2_3.Y) <= 10.0)
+            if ((double) Math.Abs((float) (cluster[0].Position.X - vector2_3.X)) <= 10.0 && (double) Math.Abs((float) (cluster[0].Position.Y - vector2_3.Y)) <= 10.0)
             {
               float num7 = 0.0f;
               foreach (DesertBiome.Hub hub in (List<DesertBiome.Hub>) cluster)
@@ -174,8 +189,8 @@ namespace Terraria.GameContent.Biomes
 
     private void AddTileVariance(DesertBiome.ClusterGroup clusters, Point start, Vector2 scale)
     {
-      int num1 = (int) ((double) scale.X * (double) clusters.Width);
-      int num2 = (int) ((double) scale.Y * (double) clusters.Height);
+      int num1 = (int) (scale.X * (double) clusters.Width);
+      int num2 = (int) (scale.Y * (double) clusters.Height);
       for (int index1 = -20; index1 < num1 + 20; ++index1)
       {
         for (int index2 = -20; index2 < num2 + 20; ++index2)
@@ -228,12 +243,18 @@ namespace Terraria.GameContent.Biomes
     private bool FindStart(Point origin, Vector2 scale, int xHubCount, int yHubCount, out Point start)
     {
       start = new Point(0, 0);
-      int width = (int) ((double) scale.X * (double) xHubCount);
-      int height = (int) ((double) scale.Y * (double) yHubCount);
-      origin.X -= width >> 1;
-      int y = 220;
+      int num1 = (int) (scale.X * (double) xHubCount);
+      int num2 = (int) (scale.Y * (double) yHubCount);
+      // ISSUE: explicit reference operation
+      // ISSUE: variable of a reference type
+      Point& local = @origin;
+      // ISSUE: explicit reference operation
+      int num3 = (^local).X - (num1 >> 1);
+      // ISSUE: explicit reference operation
+      (^local).X = (__Null) num3;
+      int num4 = 220;
 label_10:
-      for (int index = -20; index < width + 20; ++index)
+      for (int index = -20; index < num1 + 20; ++index)
       {
         for (int j = 220; j < Main.maxTilesY; ++j)
         {
@@ -245,9 +266,9 @@ label_10:
               case 60:
                 return false;
               default:
-                if (j > y)
+                if (j > num4)
                 {
-                  y = j;
+                  num4 = j;
                   goto label_10;
                 }
                 else
@@ -256,8 +277,8 @@ label_10:
           }
         }
       }
-      WorldGen.UndergroundDesertLocation = new Microsoft.Xna.Framework.Rectangle(origin.X, y, width, height);
-      start = new Point(origin.X, y);
+      WorldGen.UndergroundDesertLocation = new Rectangle((int) origin.X, num4, num1, num2);
+      start = new Point((int) origin.X, num4);
       return true;
     }
 
@@ -266,7 +287,9 @@ label_10:
       float num1 = (float) Main.maxTilesX / 4200f;
       int num2 = (int) (80.0 * (double) num1);
       int num3 = (int) (((double) GenBase._random.NextFloat() + 1.0) * 80.0 * (double) num1);
-      Vector2 scale = new Vector2(4f, 2f);
+      Vector2 scale;
+      // ISSUE: explicit reference operation
+      ((Vector2) @scale).\u002Ector(4f, 2f);
       Point start;
       if (!this.FindStart(origin, scale, num2, num3, out start))
         return false;
@@ -275,8 +298,8 @@ label_10:
       this.PlaceSand(clusters, start, scale);
       this.PlaceClusters(clusters, start, scale);
       this.AddTileVariance(clusters, start, scale);
-      int num4 = (int) ((double) scale.X * (double) clusters.Width);
-      int num5 = (int) ((double) scale.Y * (double) clusters.Height);
+      int num4 = (int) (scale.X * (double) clusters.Width);
+      int num5 = (int) (scale.Y * (double) clusters.Height);
       for (int index1 = -20; index1 < num4 + 20; ++index1)
       {
         for (int index2 = -20; index2 < num5 + 20; ++index2)
@@ -339,8 +362,14 @@ label_10:
         if (clusterIndex == -1 || clusterIndex == index)
           return;
         int num = WorldGen.genRand.Next(2) == 0 ? -1 : index;
-        foreach (Point point in pointClusters[clusterIndex])
-          clusterIndexMap[point.X, point.Y] = num;
+        using (List<Point>.Enumerator enumerator = pointClusters[clusterIndex].GetEnumerator())
+        {
+          while (enumerator.MoveNext())
+          {
+            Point current = enumerator.Current;
+            clusterIndexMap[(int) current.X, (int) current.Y] = num;
+          }
+        }
       }
 
       public void Generate(int width, int height)
@@ -349,26 +378,28 @@ label_10:
         this.Height = height;
         this.Clear();
         bool[,] hubMap = new bool[width, height];
-        int num1 = (width >> 1) - 1;
-        int y1 = (height >> 1) - 1;
-        int num2 = (num1 + 1) * (num1 + 1);
-        Point point1 = new Point(num1, y1);
-        for (int index1 = point1.Y - y1; index1 <= point1.Y + y1; ++index1)
+        int val1 = (width >> 1) - 1;
+        int num1 = (height >> 1) - 1;
+        int num2 = (val1 + 1) * (val1 + 1);
+        Point point;
+        // ISSUE: explicit reference operation
+        ((Point) @point).\u002Ector(val1, num1);
+        for (int index1 = point.Y - num1; index1 <= point.Y + num1; ++index1)
         {
-          float num3 = (float) num1 / (float) y1 * (float) (index1 - point1.Y);
-          int num4 = Math.Min(num1, (int) Math.Sqrt((double) num2 - (double) num3 * (double) num3));
-          for (int index2 = point1.X - num4; index2 <= point1.X + num4; ++index2)
+          float num3 = (float) val1 / (float) num1 * (float) (index1 - point.Y);
+          int num4 = Math.Min(val1, (int) Math.Sqrt((double) num2 - (double) num3 * (double) num3));
+          for (int index2 = point.X - num4; index2 <= point.X + num4; ++index2)
             hubMap[index2, index1] = WorldGen.genRand.Next(2) == 0;
         }
         List<List<Point>> pointClusters = new List<List<Point>>();
         for (int x = 0; x < hubMap.GetLength(0); ++x)
         {
-          for (int y2 = 0; y2 < hubMap.GetLength(1); ++y2)
+          for (int y = 0; y < hubMap.GetLength(1); ++y)
           {
-            if (hubMap[x, y2] && WorldGen.genRand.Next(2) == 0)
+            if (hubMap[x, y] && WorldGen.genRand.Next(2) == 0)
             {
               List<Point> pointCluster = new List<Point>();
-              this.SearchForCluster(hubMap, pointCluster, x, y2, 2);
+              this.SearchForCluster(hubMap, pointCluster, x, y, 2);
               if (pointCluster.Count > 2)
                 pointClusters.Add(pointCluster);
             }
@@ -382,54 +413,81 @@ label_10:
         }
         for (int index = 0; index < pointClusters.Count; ++index)
         {
-          foreach (Point point2 in pointClusters[index])
-            clusterIndexMap[point2.X, point2.Y] = index;
+          using (List<Point>.Enumerator enumerator = pointClusters[index].GetEnumerator())
+          {
+            while (enumerator.MoveNext())
+            {
+              Point current = enumerator.Current;
+              clusterIndexMap[(int) current.X, (int) current.Y] = index;
+            }
+          }
         }
         for (int index1 = 0; index1 < pointClusters.Count; ++index1)
         {
-          foreach (Point point2 in pointClusters[index1])
+          using (List<Point>.Enumerator enumerator = pointClusters[index1].GetEnumerator())
           {
-            int x = point2.X;
-            int y2 = point2.Y;
-            if (clusterIndexMap[x, y2] != -1)
+            while (enumerator.MoveNext())
             {
-              int index2 = clusterIndexMap[x, y2];
-              if (x > 0)
-                this.AttemptClaim(x - 1, y2, clusterIndexMap, pointClusters, index2);
-              if (x < clusterIndexMap.GetLength(0) - 1)
-                this.AttemptClaim(x + 1, y2, clusterIndexMap, pointClusters, index2);
-              if (y2 > 0)
-                this.AttemptClaim(x, y2 - 1, clusterIndexMap, pointClusters, index2);
-              if (y2 < clusterIndexMap.GetLength(1) - 1)
-                this.AttemptClaim(x, y2 + 1, clusterIndexMap, pointClusters, index2);
+              Point current = enumerator.Current;
+              int x = (int) current.X;
+              int y = (int) current.Y;
+              if (clusterIndexMap[x, y] != -1)
+              {
+                int index2 = clusterIndexMap[x, y];
+                if (x > 0)
+                  this.AttemptClaim(x - 1, y, clusterIndexMap, pointClusters, index2);
+                if (x < clusterIndexMap.GetLength(0) - 1)
+                  this.AttemptClaim(x + 1, y, clusterIndexMap, pointClusters, index2);
+                if (y > 0)
+                  this.AttemptClaim(x, y - 1, clusterIndexMap, pointClusters, index2);
+                if (y < clusterIndexMap.GetLength(1) - 1)
+                  this.AttemptClaim(x, y + 1, clusterIndexMap, pointClusters, index2);
+              }
+              else
+                break;
             }
-            else
-              break;
           }
         }
-        foreach (List<Point> pointList in pointClusters)
-          pointList.Clear();
-        for (int x = 0; x < clusterIndexMap.GetLength(0); ++x)
+        using (List<List<Point>>.Enumerator enumerator = pointClusters.GetEnumerator())
         {
-          for (int y2 = 0; y2 < clusterIndexMap.GetLength(1); ++y2)
+          while (enumerator.MoveNext())
+            enumerator.Current.Clear();
+        }
+        for (int index1 = 0; index1 < clusterIndexMap.GetLength(0); ++index1)
+        {
+          for (int index2 = 0; index2 < clusterIndexMap.GetLength(1); ++index2)
           {
-            if (clusterIndexMap[x, y2] != -1)
-              pointClusters[clusterIndexMap[x, y2]].Add(new Point(x, y2));
+            if (clusterIndexMap[index1, index2] != -1)
+              pointClusters[clusterIndexMap[index1, index2]].Add(new Point(index1, index2));
           }
         }
-        foreach (List<Point> pointList in pointClusters)
+        using (List<List<Point>>.Enumerator enumerator = pointClusters.GetEnumerator())
         {
-          if (pointList.Count < 4)
-            pointList.Clear();
-        }
-        foreach (List<Point> pointList in pointClusters)
-        {
-          DesertBiome.Cluster cluster = new DesertBiome.Cluster();
-          if (pointList.Count > 0)
+          while (enumerator.MoveNext())
           {
-            foreach (Point point2 in pointList)
-              cluster.Add(new DesertBiome.Hub((float) point2.X + (float) (((double) WorldGen.genRand.NextFloat() - 0.5) * 0.5), (float) point2.Y + (float) (((double) WorldGen.genRand.NextFloat() - 0.5) * 0.5)));
-            this.Add(cluster);
+            List<Point> current = enumerator.Current;
+            if (current.Count < 4)
+              current.Clear();
+          }
+        }
+        using (List<List<Point>>.Enumerator enumerator1 = pointClusters.GetEnumerator())
+        {
+          while (enumerator1.MoveNext())
+          {
+            List<Point> current1 = enumerator1.Current;
+            DesertBiome.Cluster cluster = new DesertBiome.Cluster();
+            if (current1.Count > 0)
+            {
+              using (List<Point>.Enumerator enumerator2 = current1.GetEnumerator())
+              {
+                while (enumerator2.MoveNext())
+                {
+                  Point current2 = enumerator2.Current;
+                  cluster.Add(new DesertBiome.Hub((float) current2.X + (float) (((double) WorldGen.genRand.NextFloat() - 0.5) * 0.5), (float) current2.Y + (float) (((double) WorldGen.genRand.NextFloat() - 0.5) * 0.5)));
+                }
+              }
+              this.Add(cluster);
+            }
           }
         }
       }

@@ -1,8 +1,8 @@
 ﻿// Decompiled with JetBrains decompiler
 // Type: Terraria.Social.Steam.SteamP2PReader
-// Assembly: Terraria, Version=1.3.4.4, Culture=neutral, PublicKeyToken=null
-// MVID: DEE50102-BCC2-472F-987B-153E892583F1
-// Assembly location: E:\Steam\SteamApps\common\Terraria\Terraria.exe
+// Assembly: Terraria, Version=1.3.5.1, Culture=neutral, PublicKeyToken=null
+// MVID: DF0400F4-EE47-4864-BE80-932EDB02D8A6
+// Assembly location: F:\Steam\steamapps\common\Terraria\Terraria.exe
 
 using Steamworks;
 using System;
@@ -37,8 +37,8 @@ namespace Terraria.Social.Steam
       {
         if (!this._pendingReadBuffers.ContainsKey(id))
           return false;
-        Queue<SteamP2PReader.ReadResult> local_0 = this._pendingReadBuffers[id];
-        return local_0.Count != 0 && (int) local_0.Peek().Size != 0;
+        Queue<SteamP2PReader.ReadResult> pendingReadBuffer = this._pendingReadBuffers[id];
+        return pendingReadBuffer.Count != 0 && (int) pendingReadBuffer.Peek().Size != 0;
       }
     }
 
@@ -59,25 +59,25 @@ namespace Terraria.Social.Steam
       {
         while (this._deletionQueue.Count > 0)
           this._pendingReadBuffers.Remove(this._deletionQueue.Dequeue());
-        uint local_0;
-        while (this.IsPacketAvailable(out local_0))
+        uint size1;
+        while (this.IsPacketAvailable(out size1))
         {
-          byte[] local_1 = this._bufferPool.Count != 0 ? this._bufferPool.Dequeue() : new byte[(IntPtr) Math.Max(local_0, 4096U)];
-          uint local_3;
-          CSteamID local_2;
-          bool local_4;
+          byte[] data = this._bufferPool.Count != 0 ? this._bufferPool.Dequeue() : new byte[(IntPtr) Math.Max(size1, 4096U)];
+          uint size2;
+          CSteamID index;
+          bool flag;
           lock (this.SteamLock)
-            local_4 = SteamNetworking.ReadP2PPacket(local_1, (uint) local_1.Length, ref local_3, ref local_2, this._channel);
-          if (local_4)
+            flag = SteamNetworking.ReadP2PPacket(data, (uint) data.Length, ref size2, ref index, this._channel);
+          if (flag)
           {
-            if (this._readEvent == null || this._readEvent(local_1, (int) local_3, local_2))
+            if (this._readEvent == null || this._readEvent(data, (int) size2, index))
             {
-              if (!this._pendingReadBuffers.ContainsKey(local_2))
-                this._pendingReadBuffers[local_2] = new Queue<SteamP2PReader.ReadResult>();
-              this._pendingReadBuffers[local_2].Enqueue(new SteamP2PReader.ReadResult(local_1, local_3));
+              if (!this._pendingReadBuffers.ContainsKey(index))
+                this._pendingReadBuffers[index] = new Queue<SteamP2PReader.ReadResult>();
+              this._pendingReadBuffers[index].Enqueue(new SteamP2PReader.ReadResult(data, size2));
             }
             else
-              this._bufferPool.Enqueue(local_1);
+              this._bufferPool.Enqueue(data);
           }
         }
       }
@@ -85,27 +85,27 @@ namespace Terraria.Social.Steam
 
     public int Receive(CSteamID user, byte[] buffer, int bufferOffset, int bufferSize)
     {
-      uint num = 0;
+      uint num1 = 0;
       lock (this._pendingReadBuffers)
       {
         if (!this._pendingReadBuffers.ContainsKey(user))
           return 0;
-        Queue<SteamP2PReader.ReadResult> local_1 = this._pendingReadBuffers[user];
-        while (local_1.Count > 0)
+        Queue<SteamP2PReader.ReadResult> pendingReadBuffer = this._pendingReadBuffers[user];
+        while (pendingReadBuffer.Count > 0)
         {
-          SteamP2PReader.ReadResult local_2 = local_1.Peek();
-          uint local_3 = Math.Min((uint) bufferSize - num, local_2.Size - local_2.Offset);
-          if ((int) local_3 == 0)
-            return (int) num;
-          Array.Copy((Array) local_2.Data, (long) local_2.Offset, (Array) buffer, (long) bufferOffset + (long) num, (long) local_3);
-          if ((int) local_3 == (int) local_2.Size - (int) local_2.Offset)
-            this._bufferPool.Enqueue(local_1.Dequeue().Data);
+          SteamP2PReader.ReadResult readResult = pendingReadBuffer.Peek();
+          uint num2 = Math.Min((uint) bufferSize - num1, readResult.Size - readResult.Offset);
+          if ((int) num2 == 0)
+            return (int) num1;
+          Array.Copy((Array) readResult.Data, (long) readResult.Offset, (Array) buffer, (long) bufferOffset + (long) num1, (long) num2);
+          if ((int) num2 == (int) readResult.Size - (int) readResult.Offset)
+            this._bufferPool.Enqueue(pendingReadBuffer.Dequeue().Data);
           else
-            local_2.Offset += local_3;
-          num += local_3;
+            readResult.Offset += num2;
+          num1 += num2;
         }
       }
-      return (int) num;
+      return (int) num1;
     }
 
     public class ReadResult

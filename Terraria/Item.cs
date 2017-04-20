@@ -1,8 +1,8 @@
 ﻿// Decompiled with JetBrains decompiler
 // Type: Terraria.Item
-// Assembly: Terraria, Version=1.3.4.4, Culture=neutral, PublicKeyToken=null
-// MVID: DEE50102-BCC2-472F-987B-153E892583F1
-// Assembly location: E:\Steam\SteamApps\common\Terraria\Terraria.exe
+// Assembly: Terraria, Version=1.3.5.1, Culture=neutral, PublicKeyToken=null
+// MVID: DF0400F4-EE47-4864-BE80-932EDB02D8A6
+// Assembly location: F:\Steam\steamapps\common\Terraria\Terraria.exe
 
 using Microsoft.Xna.Framework;
 using System;
@@ -10,6 +10,7 @@ using Terraria.Audio;
 using Terraria.GameContent.Events;
 using Terraria.Graphics.Shaders;
 using Terraria.ID;
+using Terraria.Localization;
 using Terraria.UI;
 using Terraria.Utilities;
 
@@ -20,11 +21,11 @@ namespace Terraria
     public static int[] itemCaches = ItemID.Sets.Factory.CreateIntSet(-1);
     public static int potionDelay = 3600;
     public static int restorationDelay = 3000;
-    public static int[] headType = new int[214];
-    public static int[] bodyType = new int[208];
-    public static int[] legType = new int[157];
-    public static bool[] staff = new bool[3884];
-    public static bool[] claw = new bool[3884];
+    public static int[] headType = new int[216];
+    public static int[] bodyType = new int[210];
+    public static int[] legType = new int[161];
+    public static bool[] staff = new bool[3930];
+    public static bool[] claw = new bool[3930];
     public static int coinGrabRange = 350;
     public static int manaGrabRange = 300;
     public static int lifeGrabRange = 250;
@@ -60,7 +61,7 @@ namespace Terraria
     public const int silver = 100;
     public const int gold = 10000;
     public const int platinum = 1000000;
-    public const int maxPrefixes = 84;
+    private string _nameOverride;
     public bool questItem;
     public bool flame;
     public bool mech;
@@ -107,8 +108,7 @@ namespace Terraria
     public LegacySoundStyle UseSound;
     public int defense;
     public int stringColor;
-    public string toolTip;
-    public string toolTip2;
+    public ItemTooltip ToolTip;
     public int rare;
     public int shoot;
     public float shootSpeed;
@@ -142,6 +142,25 @@ namespace Terraria
     public bool sentry;
     public int reuseDelay;
     public bool newAndShiny;
+
+    public string Name
+    {
+      get
+      {
+        return this._nameOverride ?? Lang.GetItemNameValue(this.type);
+      }
+    }
+
+    public string HoverName
+    {
+      get
+      {
+        string str = this.AffixName();
+        if (this.stack > 1)
+          str = str + " (" + (object) this.stack + ")";
+        return str;
+      }
+    }
 
     public bool IsAir
     {
@@ -180,7 +199,7 @@ namespace Terraria
 
     public override string ToString()
     {
-      return string.Format("{{Name: \"{0}\" NetID: {1} Stack: {2}", (object) this.name, (object) this.netID, (object) this.stack);
+      return string.Format("{{Name: \"{0}\" NetID: {1} Stack: {2}", (object) this.Name, (object) this.netID, (object) this.stack);
     }
 
     public bool Prefix(int pre)
@@ -881,51 +900,19 @@ namespace Terraria
 
     public string AffixName()
     {
-      if (Lang.lang <= 1)
-      {
-        if (Lang.prefix[(int) this.prefix] != "")
-          return Lang.prefix[(int) this.prefix] + " " + this.name;
-        return this.name;
-      }
-      if (Lang.prefix[(int) this.prefix] != "")
-        return this.name + " (" + Lang.prefix[(int) this.prefix] + ")";
-      return this.name;
+      if ((int) this.prefix < 0 || (int) this.prefix >= Lang.prefix.Length)
+        return this.Name;
+      string str = Lang.prefix[(int) this.prefix].Value;
+      if (str == "")
+        return this.Name;
+      if (str.StartsWith("("))
+        return this.Name + " " + str;
+      return str + " " + this.Name;
     }
 
-    public void CheckTip()
+    public void RebuildTooltip()
     {
-      this.toolTip = Lang.toolTip(this.netID, false);
-      this.toolTip2 = Lang.toolTip2(this.netID, false);
-    }
-
-    public void SetDefaults(string ItemName)
-    {
-      this.name = "";
-      bool flag = false;
-      if (ItemName != "")
-      {
-        for (int Type = 0; Type < 3884; ++Type)
-        {
-          if (Main.itemName[Type] == ItemName)
-          {
-            this.SetDefaults(Type, false);
-            this.checkMat();
-            return;
-          }
-        }
-        this.name = "";
-        this.stack = 0;
-        this.type = 0;
-      }
-      if (this.type == 0)
-        return;
-      if (flag)
-        this.material = false;
-      else
-        this.checkMat();
-      this.name = ItemName;
-      this.name = Lang.itemName(this.netID, false);
-      this.CheckTip();
+      this.ToolTip = Lang.GetTooltip(this.netID);
     }
 
     public Rectangle getRect()
@@ -973,106 +960,106 @@ namespace Terraria
       if (type < 0)
       {
         if (type == -1)
-          this.SetDefaults("Gold Pickaxe");
+          this.SetDefaults(3521, false);
         else if (type == -2)
-          this.SetDefaults("Gold Broadsword");
+          this.SetDefaults(3520, false);
         else if (type == -3)
-          this.SetDefaults("Gold Shortsword");
+          this.SetDefaults(3519, false);
         else if (type == -4)
-          this.SetDefaults("Gold Axe");
+          this.SetDefaults(3518, false);
         else if (type == -5)
-          this.SetDefaults("Gold Hammer");
+          this.SetDefaults(3517, false);
         else if (type == -6)
-          this.SetDefaults("Gold Bow");
+          this.SetDefaults(3516, false);
         else if (type == -7)
-          this.SetDefaults("Silver Pickaxe");
+          this.SetDefaults(3515, false);
         else if (type == -8)
-          this.SetDefaults("Silver Broadsword");
+          this.SetDefaults(3514, false);
         else if (type == -9)
-          this.SetDefaults("Silver Shortsword");
+          this.SetDefaults(3513, false);
         else if (type == -10)
-          this.SetDefaults("Silver Axe");
+          this.SetDefaults(3512, false);
         else if (type == -11)
-          this.SetDefaults("Silver Hammer");
+          this.SetDefaults(3511, false);
         else if (type == -12)
-          this.SetDefaults("Silver Bow");
+          this.SetDefaults(3510, false);
         else if (type == -13)
-          this.SetDefaults("Copper Pickaxe");
+          this.SetDefaults(3509, false);
         else if (type == -14)
-          this.SetDefaults("Copper Broadsword");
+          this.SetDefaults(3508, false);
         else if (type == -15)
-          this.SetDefaults("Copper Shortsword");
+          this.SetDefaults(3507, false);
         else if (type == -16)
-          this.SetDefaults("Copper Axe");
+          this.SetDefaults(3506, false);
         else if (type == -17)
-          this.SetDefaults("Copper Hammer");
+          this.SetDefaults(3505, false);
         else if (type == -18)
-          this.SetDefaults("Copper Bow");
+          this.SetDefaults(3504, false);
         else if (type == -19)
-          this.SetDefaults("Blue Phasesaber");
+          this.SetDefaults(3764, false);
         else if (type == -20)
-          this.SetDefaults("Red Phasesaber");
+          this.SetDefaults(3765, false);
         else if (type == -21)
-          this.SetDefaults("Green Phasesaber");
+          this.SetDefaults(3766, false);
         else if (type == -22)
-          this.SetDefaults("Purple Phasesaber");
+          this.SetDefaults(3767, false);
         else if (type == -23)
-          this.SetDefaults("White Phasesaber");
+          this.SetDefaults(3768, false);
         else if (type == -24)
-          this.SetDefaults("Yellow Phasesaber");
+          this.SetDefaults(3769, false);
         else if (type == -25)
-          this.SetDefaults("Tin Pickaxe");
+          this.SetDefaults(3503, false);
         else if (type == -26)
-          this.SetDefaults("Tin Broadsword");
+          this.SetDefaults(3502, false);
         else if (type == -27)
-          this.SetDefaults("Tin Shortsword");
+          this.SetDefaults(3501, false);
         else if (type == -28)
-          this.SetDefaults("Tin Axe");
+          this.SetDefaults(3500, false);
         else if (type == -29)
-          this.SetDefaults("Tin Hammer");
+          this.SetDefaults(3499, false);
         else if (type == -30)
-          this.SetDefaults("Tin Bow");
+          this.SetDefaults(3498, false);
         else if (type == -31)
-          this.SetDefaults("Lead Pickaxe");
+          this.SetDefaults(3497, false);
         else if (type == -32)
-          this.SetDefaults("Lead Broadsword");
+          this.SetDefaults(3496, false);
         else if (type == -33)
-          this.SetDefaults("Lead Shortsword");
+          this.SetDefaults(3495, false);
         else if (type == -34)
-          this.SetDefaults("Lead Axe");
+          this.SetDefaults(3494, false);
         else if (type == -35)
-          this.SetDefaults("Lead Hammer");
+          this.SetDefaults(3493, false);
         else if (type == -36)
-          this.SetDefaults("Lead Bow");
+          this.SetDefaults(3492, false);
         else if (type == -37)
-          this.SetDefaults("Tungsten Pickaxe");
+          this.SetDefaults(3491, false);
         else if (type == -38)
-          this.SetDefaults("Tungsten Broadsword");
+          this.SetDefaults(3490, false);
         else if (type == -39)
-          this.SetDefaults("Tungsten Shortsword");
+          this.SetDefaults(3489, false);
         else if (type == -40)
-          this.SetDefaults("Tungsten Axe");
+          this.SetDefaults(3488, false);
         else if (type == -41)
-          this.SetDefaults("Tungsten Hammer");
+          this.SetDefaults(3487, false);
         else if (type == -42)
-          this.SetDefaults("Tungsten Bow");
+          this.SetDefaults(3486, false);
         else if (type == -43)
-          this.SetDefaults("Platinum Pickaxe");
+          this.SetDefaults(3485, false);
         else if (type == -44)
-          this.SetDefaults("Platinum Broadsword");
+          this.SetDefaults(3484, false);
         else if (type == -45)
-          this.SetDefaults("Platinum Shortsword");
+          this.SetDefaults(3483, false);
         else if (type == -46)
-          this.SetDefaults("Platinum Axe");
+          this.SetDefaults(3482, false);
         else if (type == -47)
         {
-          this.SetDefaults("Platinum Hammer");
+          this.SetDefaults(3481, false);
         }
         else
         {
           if (type != -48)
             return;
-          this.SetDefaults("Platinum Bow");
+          this.SetDefaults(3480, false);
         }
       }
       else
@@ -2284,7 +2271,6 @@ namespace Terraria
     {
       if (type == 1)
       {
-        this.name = "Iron Pickaxe";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 20;
@@ -2301,7 +2287,6 @@ namespace Terraria
       }
       else if (type == 2)
       {
-        this.name = "Dirt Block";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -2315,7 +2300,6 @@ namespace Terraria
       }
       else if (type == 3)
       {
-        this.name = "Stone Block";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -2329,7 +2313,6 @@ namespace Terraria
       }
       else if (type == 4)
       {
-        this.name = "Iron Broadsword";
         this.useStyle = 1;
         this.useTurn = false;
         this.useAnimation = 21;
@@ -2345,7 +2328,6 @@ namespace Terraria
       }
       else if (type == 5)
       {
-        this.name = "Mushroom";
         this.useStyle = 2;
         this.UseSound = SoundID.Item2;
         this.useTurn = false;
@@ -2361,7 +2343,6 @@ namespace Terraria
       }
       else if (type == 6)
       {
-        this.name = "Iron Shortsword";
         this.useStyle = 3;
         this.useTurn = false;
         this.useAnimation = 12;
@@ -2378,7 +2359,6 @@ namespace Terraria
       }
       else if (type == 7)
       {
-        this.name = "Iron Hammer";
         this.autoReuse = true;
         this.useStyle = 1;
         this.useTurn = true;
@@ -2398,7 +2378,6 @@ namespace Terraria
       {
         this.flame = true;
         this.noWet = true;
-        this.name = "Torch";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -2410,12 +2389,10 @@ namespace Terraria
         this.createTile = 4;
         this.width = 10;
         this.height = 12;
-        this.toolTip = "Provides light";
         this.value = 50;
       }
       else if (type == 9)
       {
-        this.name = "Wood";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -2429,7 +2406,6 @@ namespace Terraria
       }
       else if (type == 10)
       {
-        this.name = "Iron Axe";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 27;
@@ -2447,7 +2423,6 @@ namespace Terraria
       }
       else if (type == 11)
       {
-        this.name = "Iron Ore";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -2462,7 +2437,6 @@ namespace Terraria
       }
       else if (type == 12)
       {
-        this.name = "Copper Ore";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -2477,7 +2451,6 @@ namespace Terraria
       }
       else if (type == 13)
       {
-        this.name = "Gold Ore";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -2492,7 +2465,6 @@ namespace Terraria
       }
       else if (type == 14)
       {
-        this.name = "Silver Ore";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -2507,48 +2479,39 @@ namespace Terraria
       }
       else if (type == 15)
       {
-        this.name = "Copper Watch";
         this.width = 24;
         this.height = 28;
         this.accessory = true;
-        this.toolTip = "Tells the time";
         this.value = 1000;
         this.waistSlot = (sbyte) 2;
       }
       else if (type == 16)
       {
-        this.name = "Silver Watch";
         this.width = 24;
         this.height = 28;
         this.accessory = true;
-        this.toolTip = "Tells the time";
         this.value = 5000;
         this.waistSlot = (sbyte) 7;
       }
       else if (type == 17)
       {
-        this.name = "Gold Watch";
         this.width = 24;
         this.height = 28;
         this.accessory = true;
         this.rare = 1;
-        this.toolTip = "Tells the time";
         this.value = 10000;
         this.waistSlot = (sbyte) 3;
       }
       else if (type == 18)
       {
-        this.name = "Depth Meter";
         this.width = 24;
         this.height = 18;
         this.accessory = true;
         this.rare = 1;
-        this.toolTip = "Shows depth";
         this.value = Item.sellPrice(0, 0, 25, 0);
       }
       else if (type == 19)
       {
-        this.name = "Gold Bar";
         this.width = 20;
         this.height = 20;
         this.maxStack = 99;
@@ -2564,7 +2527,6 @@ namespace Terraria
       }
       else if (type == 20)
       {
-        this.name = "Copper Bar";
         this.width = 20;
         this.height = 20;
         this.maxStack = 99;
@@ -2580,7 +2542,6 @@ namespace Terraria
       }
       else if (type == 21)
       {
-        this.name = "Silver Bar";
         this.width = 20;
         this.height = 20;
         this.maxStack = 99;
@@ -2596,7 +2557,6 @@ namespace Terraria
       }
       else if (type == 22)
       {
-        this.name = "Iron Bar";
         this.color = new Color(160, 145, 130, 110);
         this.width = 20;
         this.height = 20;
@@ -2613,20 +2573,17 @@ namespace Terraria
       }
       else if (type == 23)
       {
-        this.name = "Gel";
         this.width = 10;
         this.height = 12;
         this.maxStack = 999;
         this.alpha = 175;
         this.ammo = AmmoID.Gel;
         this.color = new Color(0, 80, (int) byte.MaxValue, 100);
-        this.toolTip = "'Both tasty and flammable'";
         this.value = 5;
         this.consumable = true;
       }
       else if (type == 24)
       {
-        this.name = "Wooden Sword";
         this.useStyle = 1;
         this.useTurn = false;
         this.useAnimation = 25;
@@ -2641,7 +2598,6 @@ namespace Terraria
       }
       else if (type == 25)
       {
-        this.name = "Wooden Door";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -2655,7 +2611,6 @@ namespace Terraria
       }
       else if (type == 26)
       {
-        this.name = "Stone Wall";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -2669,7 +2624,6 @@ namespace Terraria
       }
       else if (type == 27)
       {
-        this.name = "Acorn";
         this.useTurn = true;
         this.useStyle = 1;
         this.useAnimation = 15;
@@ -2683,7 +2637,6 @@ namespace Terraria
       }
       else if (type == 28)
       {
-        this.name = "Lesser Healing Potion";
         this.UseSound = SoundID.Item3;
         this.healLife = 50;
         this.useStyle = 2;
@@ -2699,7 +2652,6 @@ namespace Terraria
       }
       else if (type == 29)
       {
-        this.name = "Life Crystal";
         this.maxStack = 99;
         this.consumable = true;
         this.width = 18;
@@ -2708,13 +2660,11 @@ namespace Terraria
         this.useTime = 30;
         this.UseSound = SoundID.Item4;
         this.useAnimation = 30;
-        this.toolTip = "Permanently increases maximum life by 20";
         this.rare = 2;
         this.value = 75000;
       }
       else if (type == 30)
       {
-        this.name = "Dirt Wall";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -2728,7 +2678,6 @@ namespace Terraria
       }
       else if (type == 31)
       {
-        this.name = "Bottle";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -2743,7 +2692,6 @@ namespace Terraria
       }
       else if (type == 32)
       {
-        this.name = "Wooden Table";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -2758,7 +2706,6 @@ namespace Terraria
       }
       else if (type == 33)
       {
-        this.name = "Furnace";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -2770,11 +2717,9 @@ namespace Terraria
         this.width = 26;
         this.height = 24;
         this.value = 300;
-        this.toolTip = "Used for smelting ore";
       }
       else if (type == 34)
       {
-        this.name = "Wooden Chair";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -2789,7 +2734,6 @@ namespace Terraria
       }
       else if (type == 35)
       {
-        this.name = "Iron Anvil";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -2801,11 +2745,9 @@ namespace Terraria
         this.width = 28;
         this.height = 14;
         this.value = 5000;
-        this.toolTip = "Used to craft items from metal bars";
       }
       else if (type == 36)
       {
-        this.name = "Work Bench";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -2817,11 +2759,9 @@ namespace Terraria
         this.width = 28;
         this.height = 14;
         this.value = 150;
-        this.toolTip = "Used for basic crafting";
       }
       else if (type == 37)
       {
-        this.name = "Goggles";
         this.width = 28;
         this.height = 12;
         this.defense = 1;
@@ -2830,7 +2770,6 @@ namespace Terraria
       }
       else if (type == 38)
       {
-        this.name = "Lens";
         this.width = 12;
         this.height = 20;
         this.maxStack = 99;
@@ -2841,7 +2780,6 @@ namespace Terraria
         this.useStyle = 5;
         this.useAnimation = 30;
         this.useTime = 30;
-        this.name = "Wooden Bow";
         this.width = 12;
         this.height = 28;
         this.shoot = 1;
@@ -2855,7 +2793,6 @@ namespace Terraria
       }
       else if (type == 40)
       {
-        this.name = "Wooden Arrow";
         this.shootSpeed = 3f;
         this.shoot = 1;
         this.damage = 5;
@@ -2870,7 +2807,6 @@ namespace Terraria
       }
       else if (type == 41)
       {
-        this.name = "Flaming Arrow";
         this.shootSpeed = 3.5f;
         this.shoot = 2;
         this.damage = 7;
@@ -2886,7 +2822,6 @@ namespace Terraria
       else if (type == 42)
       {
         this.useStyle = 1;
-        this.name = "Shuriken";
         this.shootSpeed = 9f;
         this.shoot = 3;
         this.damage = 10;
@@ -2905,21 +2840,18 @@ namespace Terraria
       else if (type == 43)
       {
         this.useStyle = 4;
-        this.name = "Suspicious Looking Eye";
         this.width = 22;
         this.height = 14;
         this.consumable = true;
         this.useAnimation = 45;
         this.useTime = 45;
         this.maxStack = 20;
-        this.toolTip = "Summons the Eye of Cthulhu";
       }
       else if (type == 44)
       {
         this.useStyle = 5;
         this.useAnimation = 25;
         this.useTime = 25;
-        this.name = "Demon Bow";
         this.width = 12;
         this.height = 28;
         this.shoot = 1;
@@ -2936,7 +2868,6 @@ namespace Terraria
       }
       else if (type == 45)
       {
-        this.name = "War Axe of the Night";
         this.autoReuse = true;
         this.useStyle = 1;
         this.useAnimation = 30;
@@ -2954,7 +2885,6 @@ namespace Terraria
       }
       else if (type == 46)
       {
-        this.name = "Light's Bane";
         this.useStyle = 1;
         this.useAnimation = 20;
         this.knockBack = 5f;
@@ -2969,7 +2899,6 @@ namespace Terraria
       }
       else if (type == 47)
       {
-        this.name = "Unholy Arrow";
         this.shootSpeed = 3.4f;
         this.shoot = 4;
         this.damage = 12;
@@ -2986,7 +2915,6 @@ namespace Terraria
       }
       else if (type == 48)
       {
-        this.name = "Chest";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -3001,19 +2929,16 @@ namespace Terraria
       }
       else if (type == 49)
       {
-        this.name = "Band of Regeneration";
         this.width = 22;
         this.height = 22;
         this.accessory = true;
         this.lifeRegen = 1;
         this.rare = 1;
-        this.toolTip = "Slowly regenerates life";
         this.value = 50000;
         this.handOnSlot = (sbyte) 2;
       }
       else if (type == 50)
       {
-        this.name = "Magic Mirror";
         this.useTurn = true;
         this.width = 20;
         this.height = 20;
@@ -3021,13 +2946,11 @@ namespace Terraria
         this.useTime = 90;
         this.UseSound = SoundID.Item6;
         this.useAnimation = 90;
-        this.toolTip = "Gaze in the mirror to return home";
         this.rare = 1;
         this.value = 50000;
       }
       else if (type == 51)
       {
-        this.name = "Jester's Arrow";
         this.shootSpeed = 0.5f;
         this.shoot = 5;
         this.damage = 10;
@@ -3044,7 +2967,6 @@ namespace Terraria
       else if (type == 52)
       {
         type = 52;
-        this.name = "Angel Statue";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -3060,23 +2982,19 @@ namespace Terraria
       }
       else if (type == 53)
       {
-        this.name = "Cloud in a Bottle";
         this.width = 16;
         this.height = 24;
         this.accessory = true;
         this.rare = 1;
-        this.toolTip = "Allows the holder to double jump";
         this.value = 50000;
         this.waistSlot = (sbyte) 1;
       }
       else if (type == 54)
       {
-        this.name = "Hermes Boots";
         this.width = 28;
         this.height = 24;
         this.accessory = true;
         this.rare = 1;
-        this.toolTip = "The wearer can run super fast";
         this.value = 50000;
         this.shoeSlot = (sbyte) 6;
       }
@@ -3084,7 +3002,6 @@ namespace Terraria
       {
         this.noMelee = true;
         this.useStyle = 1;
-        this.name = "Enchanted Boomerang";
         this.shootSpeed = 10f;
         this.shoot = 6;
         this.damage = 13;
@@ -3101,7 +3018,6 @@ namespace Terraria
       }
       else if (type == 56)
       {
-        this.name = "Demonite Ore";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -3113,17 +3029,14 @@ namespace Terraria
         this.width = 12;
         this.height = 12;
         this.rare = 1;
-        this.toolTip = "'Pulsing with dark energy'";
         this.value = 4000;
       }
       else if (type == 57)
       {
-        this.name = "Demonite Bar";
         this.width = 20;
         this.height = 20;
         this.maxStack = 99;
         this.rare = 1;
-        this.toolTip = "'Pulsing with dark energy'";
         this.value = 16000;
         this.useStyle = 1;
         this.useTurn = true;
@@ -3136,13 +3049,11 @@ namespace Terraria
       }
       else if (type == 58)
       {
-        this.name = "Heart";
         this.width = 12;
         this.height = 12;
       }
       else if (type == 59)
       {
-        this.name = "Corrupt Seeds";
         this.useTurn = true;
         this.useStyle = 1;
         this.useAnimation = 15;
@@ -3157,7 +3068,6 @@ namespace Terraria
       }
       else if (type == 60)
       {
-        this.name = "Vile Mushroom";
         this.width = 16;
         this.height = 18;
         this.maxStack = 99;
@@ -3165,7 +3075,6 @@ namespace Terraria
       }
       else if (type == 61)
       {
-        this.name = "Ebonstone Block";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -3179,7 +3088,6 @@ namespace Terraria
       }
       else if (type == 62)
       {
-        this.name = "Grass Seeds";
         this.useTurn = true;
         this.useStyle = 1;
         this.useAnimation = 15;
@@ -3194,7 +3102,6 @@ namespace Terraria
       }
       else if (type == 63)
       {
-        this.name = "Sunflower";
         this.useTurn = true;
         this.useStyle = 1;
         this.useAnimation = 15;
@@ -3211,7 +3118,6 @@ namespace Terraria
         this.mana = 10;
         this.damage = 10;
         this.useStyle = 1;
-        this.name = "Vilethorn";
         this.shootSpeed = 32f;
         this.shoot = 7;
         this.width = 26;
@@ -3222,7 +3128,6 @@ namespace Terraria
         this.rare = 1;
         this.noMelee = true;
         this.knockBack = 1f;
-        this.toolTip = "Summons a vile thorn";
         this.value = 10000;
         this.magic = true;
       }
@@ -3234,7 +3139,6 @@ namespace Terraria
         this.damage = 22;
         this.useStyle = 1;
         this.scale = 1.25f;
-        this.name = "Starfury";
         this.shootSpeed = 20f;
         this.shoot = 9;
         this.width = 14;
@@ -3243,15 +3147,12 @@ namespace Terraria
         this.useAnimation = 20;
         this.useTime = 40;
         this.rare = 2;
-        this.toolTip = "Causes stars to rain from the sky";
-        this.toolTip2 = "'Forged with the fury of heaven'";
         this.value = 50000;
         this.melee = true;
       }
       else if (type == 66)
       {
         this.useStyle = 1;
-        this.name = "Purification Powder";
         this.shootSpeed = 4f;
         this.shoot = 10;
         this.width = 16;
@@ -3262,14 +3163,12 @@ namespace Terraria
         this.useAnimation = 15;
         this.useTime = 15;
         this.noMelee = true;
-        this.toolTip = "Cleanses the corruption";
         this.value = 75;
       }
       else if (type == 67)
       {
         this.damage = 0;
         this.useStyle = 1;
-        this.name = "Vile Powder";
         this.shootSpeed = 4f;
         this.shoot = 11;
         this.width = 16;
@@ -3281,20 +3180,16 @@ namespace Terraria
         this.useTime = 15;
         this.noMelee = true;
         this.value = 100;
-        this.toolTip = "Removes the Hallow";
       }
       else if (type == 68)
       {
-        this.name = "Rotten Chunk";
         this.width = 18;
         this.height = 20;
         this.maxStack = 99;
-        this.toolTip = "'Looks tasty!'";
         this.value = 10;
       }
       else if (type == 69)
       {
-        this.name = "Worm Tooth";
         this.width = 8;
         this.height = 20;
         this.maxStack = 99;
@@ -3306,15 +3201,12 @@ namespace Terraria
         this.consumable = true;
         this.useAnimation = 45;
         this.useTime = 45;
-        this.name = "Worm Food";
         this.width = 28;
         this.height = 28;
         this.maxStack = 20;
-        this.toolTip = "Summons the Eater of Worlds";
       }
       else if (type == 71)
       {
-        this.name = "Copper Coin";
         this.width = 10;
         this.height = 10;
         this.maxStack = 100;
@@ -3336,7 +3228,6 @@ namespace Terraria
       }
       else if (type == 72)
       {
-        this.name = "Silver Coin";
         this.width = 10;
         this.height = 12;
         this.maxStack = 100;
@@ -3358,7 +3249,6 @@ namespace Terraria
       }
       else if (type == 73)
       {
-        this.name = "Gold Coin";
         this.width = 10;
         this.height = 14;
         this.maxStack = 100;
@@ -3380,7 +3270,6 @@ namespace Terraria
       }
       else if (type == 74)
       {
-        this.name = "Platinum Coin";
         this.width = 12;
         this.height = 14;
         this.maxStack = 999;
@@ -3402,13 +3291,11 @@ namespace Terraria
       }
       else if (type == 75)
       {
-        this.name = "Fallen Star";
         this.width = 18;
         this.height = 20;
         this.maxStack = 99;
         this.alpha = 75;
         this.ammo = AmmoID.FallenStar;
-        this.toolTip = "Disappears after the sunrise";
         this.value = Item.sellPrice(0, 0, 5, 0);
         this.useStyle = 4;
         this.UseSound = SoundID.Item4;
@@ -3420,7 +3307,6 @@ namespace Terraria
       }
       else if (type == 76)
       {
-        this.name = "Copper Greaves";
         this.width = 18;
         this.height = 18;
         this.defense = 1;
@@ -3429,7 +3315,6 @@ namespace Terraria
       }
       else if (type == 77)
       {
-        this.name = "Iron Greaves";
         this.width = 18;
         this.height = 18;
         this.defense = 2;
@@ -3438,7 +3323,6 @@ namespace Terraria
       }
       else if (type == 78)
       {
-        this.name = "Silver Greaves";
         this.width = 18;
         this.height = 18;
         this.defense = 3;
@@ -3447,7 +3331,6 @@ namespace Terraria
       }
       else if (type == 79)
       {
-        this.name = "Gold Greaves";
         this.width = 18;
         this.height = 18;
         this.defense = 4;
@@ -3456,7 +3339,6 @@ namespace Terraria
       }
       else if (type == 80)
       {
-        this.name = "Copper Chainmail";
         this.width = 18;
         this.height = 18;
         this.defense = 2;
@@ -3465,7 +3347,6 @@ namespace Terraria
       }
       else if (type == 81)
       {
-        this.name = "Iron Chainmail";
         this.width = 18;
         this.height = 18;
         this.defense = 3;
@@ -3474,7 +3355,6 @@ namespace Terraria
       }
       else if (type == 82)
       {
-        this.name = "Silver Chainmail";
         this.width = 18;
         this.height = 18;
         this.defense = 4;
@@ -3483,7 +3363,6 @@ namespace Terraria
       }
       else if (type == 83)
       {
-        this.name = "Gold Chainmail";
         this.width = 18;
         this.height = 18;
         this.defense = 5;
@@ -3496,7 +3375,6 @@ namespace Terraria
         this.damage = 0;
         this.knockBack = 7f;
         this.useStyle = 5;
-        this.name = "Grappling Hook";
         this.shootSpeed = 11.5f;
         this.shoot = 13;
         this.width = 18;
@@ -3507,11 +3385,9 @@ namespace Terraria
         this.rare = 1;
         this.noMelee = true;
         this.value = 20000;
-        this.toolTip = "'Get over here!'";
       }
       else if (type == 85)
       {
-        this.name = "Chain";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -3524,11 +3400,9 @@ namespace Terraria
         this.height = 12;
         this.value = 200;
         this.tileBoost += 3;
-        this.toolTip = "Can be climbed on";
       }
       else if (type == 86)
       {
-        this.name = "Shadow Scale";
         this.width = 14;
         this.height = 18;
         this.maxStack = 99;
@@ -3537,7 +3411,6 @@ namespace Terraria
       }
       else if (type == 87)
       {
-        this.name = "Piggy Bank";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -3552,18 +3425,15 @@ namespace Terraria
       }
       else if (type == 88)
       {
-        this.name = "Mining Helmet";
         this.width = 22;
         this.height = 16;
         this.defense = 1;
         this.headSlot = 11;
         this.rare = 1;
         this.value = Item.buyPrice(0, 4, 0, 0);
-        this.toolTip = "Provides light when worn";
       }
       else if (type == 89)
       {
-        this.name = "Copper Helmet";
         this.width = 18;
         this.height = 18;
         this.defense = 1;
@@ -3572,7 +3442,6 @@ namespace Terraria
       }
       else if (type == 90)
       {
-        this.name = "Iron Helmet";
         this.width = 18;
         this.height = 18;
         this.defense = 2;
@@ -3581,7 +3450,6 @@ namespace Terraria
       }
       else if (type == 91)
       {
-        this.name = "Silver Helmet";
         this.width = 18;
         this.height = 18;
         this.defense = 3;
@@ -3590,7 +3458,6 @@ namespace Terraria
       }
       else if (type == 92)
       {
-        this.name = "Gold Helmet";
         this.width = 18;
         this.height = 18;
         this.defense = 4;
@@ -3599,7 +3466,6 @@ namespace Terraria
       }
       else if (type == 93)
       {
-        this.name = "Wood Wall";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -3613,7 +3479,6 @@ namespace Terraria
       }
       else if (type == 94)
       {
-        this.name = "Wood Platform";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -3630,7 +3495,6 @@ namespace Terraria
         this.useStyle = 5;
         this.useAnimation = 16;
         this.useTime = 16;
-        this.name = "Flintlock Pistol";
         this.width = 24;
         this.height = 28;
         this.shoot = 14;
@@ -3650,7 +3514,6 @@ namespace Terraria
         this.autoReuse = true;
         this.useAnimation = 36;
         this.useTime = 36;
-        this.name = "Musket";
         this.width = 44;
         this.height = 14;
         this.shoot = 10;
@@ -3667,7 +3530,6 @@ namespace Terraria
       }
       else if (type == 97)
       {
-        this.name = "Musket Ball";
         this.shootSpeed = 4f;
         this.shoot = 14;
         this.damage = 7;
@@ -3686,7 +3548,6 @@ namespace Terraria
         this.autoReuse = true;
         this.useAnimation = 8;
         this.useTime = 8;
-        this.name = "Minishark";
         this.width = 50;
         this.height = 18;
         this.shoot = 10;
@@ -3697,8 +3558,6 @@ namespace Terraria
         this.noMelee = true;
         this.value = 350000;
         this.rare = 2;
-        this.toolTip = "33% chance to not consume ammo";
-        this.toolTip2 = "'Half shark, half gun, completely awesome.'";
         this.ranged = true;
       }
       else if (type == 99)
@@ -3706,7 +3565,6 @@ namespace Terraria
         this.useStyle = 5;
         this.useAnimation = 28;
         this.useTime = 28;
-        this.name = "Iron Bow";
         this.width = 12;
         this.height = 28;
         this.shoot = 1;
@@ -3720,40 +3578,33 @@ namespace Terraria
       }
       else if (type == 100)
       {
-        this.name = "Shadow Greaves";
         this.width = 18;
         this.height = 18;
         this.defense = 6;
         this.legSlot = 5;
         this.rare = 1;
         this.value = 22500;
-        this.toolTip = "7% increased melee speed";
       }
       else if (type == 101)
       {
-        this.name = "Shadow Scalemail";
         this.width = 18;
         this.height = 18;
         this.defense = 7;
         this.bodySlot = 5;
         this.rare = 1;
         this.value = 30000;
-        this.toolTip = "7% increased melee speed";
       }
       else if (type == 102)
       {
-        this.name = "Shadow Helmet";
         this.width = 18;
         this.height = 18;
         this.defense = 6;
         this.headSlot = 5;
         this.rare = 1;
         this.value = 37500;
-        this.toolTip = "7% increased melee speed";
       }
       else if (type == 103)
       {
-        this.name = "Nightmare Pickaxe";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 20;
@@ -3768,12 +3619,10 @@ namespace Terraria
         this.rare = 1;
         this.value = 18000;
         this.scale = 1.15f;
-        this.toolTip = "Able to mine Hellstone";
         this.melee = true;
       }
       else if (type == 104)
       {
-        this.name = "The Breaker";
         this.autoReuse = true;
         this.useStyle = 1;
         this.useAnimation = 45;
@@ -3793,7 +3642,6 @@ namespace Terraria
       {
         this.flame = true;
         this.noWet = true;
-        this.name = "Candle";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -3808,7 +3656,6 @@ namespace Terraria
       }
       else if (type == 106)
       {
-        this.name = "Copper Chandelier";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -3823,7 +3670,6 @@ namespace Terraria
       }
       else if (type == 107)
       {
-        this.name = "Silver Chandelier";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -3839,7 +3685,6 @@ namespace Terraria
       }
       else if (type == 108)
       {
-        this.name = "Gold Chandelier";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -3855,7 +3700,6 @@ namespace Terraria
       }
       else if (type == 109)
       {
-        this.name = "Mana Crystal";
         this.maxStack = 99;
         this.consumable = true;
         this.width = 18;
@@ -3864,12 +3708,10 @@ namespace Terraria
         this.useTime = 30;
         this.UseSound = SoundID.Item29;
         this.useAnimation = 30;
-        this.toolTip = "Permanently increases maximum mana by 20";
         this.rare = 2;
       }
       else if (type == 110)
       {
-        this.name = "Lesser Mana Potion";
         this.UseSound = SoundID.Item3;
         this.healMana = 50;
         this.useStyle = 2;
@@ -3884,12 +3726,10 @@ namespace Terraria
       }
       else if (type == 111)
       {
-        this.name = "Band of Starpower";
         this.width = 22;
         this.height = 22;
         this.accessory = true;
         this.rare = 1;
-        this.toolTip = "Increases maximum mana by 20";
         this.value = 50000;
         this.handOnSlot = (sbyte) 3;
       }
@@ -3898,7 +3738,6 @@ namespace Terraria
         this.mana = 15;
         this.damage = 48;
         this.useStyle = 1;
-        this.name = "Flower of Fire";
         this.shootSpeed = 6f;
         this.shoot = 15;
         this.width = 26;
@@ -3909,7 +3748,6 @@ namespace Terraria
         this.rare = 3;
         this.noMelee = true;
         this.knockBack = 5.5f;
-        this.toolTip = "Throws balls of fire";
         this.value = 10000;
         this.magic = true;
       }
@@ -3919,7 +3757,6 @@ namespace Terraria
         this.channel = true;
         this.damage = 27;
         this.useStyle = 1;
-        this.name = "Magic Missile";
         this.shootSpeed = 6f;
         this.shoot = 16;
         this.width = 26;
@@ -3930,7 +3767,6 @@ namespace Terraria
         this.rare = 2;
         this.noMelee = true;
         this.knockBack = 7.5f;
-        this.toolTip = "Casts a controllable missile";
         this.value = 10000;
         this.magic = true;
       }
@@ -3939,7 +3775,6 @@ namespace Terraria
         this.channel = true;
         this.knockBack = 5f;
         this.useStyle = 1;
-        this.name = "Dirt Rod";
         this.shoot = 17;
         this.width = 26;
         this.height = 28;
@@ -3948,7 +3783,6 @@ namespace Terraria
         this.useTime = 20;
         this.rare = 1;
         this.noMelee = true;
-        this.toolTip = "Magically moves dirt";
         this.value = Item.buyPrice(0, 5, 0, 0);
       }
       else if (type == 115)
@@ -3956,7 +3790,6 @@ namespace Terraria
         this.channel = true;
         this.damage = 0;
         this.useStyle = 4;
-        this.name = "Shadow Orb";
         this.shoot = 18;
         this.width = 24;
         this.height = 24;
@@ -3965,13 +3798,11 @@ namespace Terraria
         this.useTime = 20;
         this.rare = 1;
         this.noMelee = true;
-        this.toolTip = "Creates a magical shadow orb";
         this.value = 10000;
         this.buffType = 19;
       }
       else if (type == 116)
       {
-        this.name = "Meteorite";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -3986,12 +3817,10 @@ namespace Terraria
       }
       else if (type == 117)
       {
-        this.name = "Meteorite Bar";
         this.width = 20;
         this.height = 20;
         this.maxStack = 99;
         this.rare = 1;
-        this.toolTip = "'Warm to the touch'";
         this.value = 7000;
         this.useStyle = 1;
         this.useTurn = true;
@@ -4004,18 +3833,15 @@ namespace Terraria
       }
       else if (type == 118)
       {
-        this.name = "Hook";
         this.maxStack = 99;
         this.width = 18;
         this.height = 18;
         this.value = 1000;
-        this.toolTip = "Sometimes dropped by Skeletons and Piranha";
       }
       else if (type == 119)
       {
         this.noMelee = true;
         this.useStyle = 1;
-        this.name = "Flamarang";
         this.shootSpeed = 11f;
         this.shoot = 19;
         this.damage = 32;
@@ -4035,7 +3861,6 @@ namespace Terraria
         this.useStyle = 5;
         this.useAnimation = 22;
         this.useTime = 22;
-        this.name = "Molten Fury";
         this.width = 14;
         this.height = 32;
         this.shoot = 1;
@@ -4049,12 +3874,10 @@ namespace Terraria
         this.noMelee = true;
         this.scale = 1.1f;
         this.value = 27000;
-        this.toolTip = "Lights wooden arrows ablaze";
         this.ranged = true;
       }
       else if (type == 121)
       {
-        this.name = "Fiery Greatsword";
         this.useStyle = 1;
         this.useAnimation = 34;
         this.knockBack = 6.5f;
@@ -4065,12 +3888,10 @@ namespace Terraria
         this.UseSound = SoundID.Item1;
         this.rare = 3;
         this.value = 27000;
-        this.toolTip = "'It's made out of fire!'";
         this.melee = true;
       }
       if (type == 122)
       {
-        this.name = "Molten Pickaxe";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 23;
@@ -4089,40 +3910,33 @@ namespace Terraria
       }
       else if (type == 123)
       {
-        this.name = "Meteor Helmet";
         this.width = 18;
         this.height = 18;
         this.defense = 5;
         this.headSlot = 6;
         this.rare = 1;
         this.value = 45000;
-        this.toolTip = "7% increased magic damage";
       }
       else if (type == 124)
       {
-        this.name = "Meteor Suit";
         this.width = 18;
         this.height = 18;
         this.defense = 6;
         this.bodySlot = 6;
         this.rare = 1;
         this.value = 30000;
-        this.toolTip = "7% increased magic damage";
       }
       else if (type == 125)
       {
-        this.name = "Meteor Leggings";
         this.width = 18;
         this.height = 18;
         this.defense = 5;
         this.legSlot = 6;
         this.rare = 1;
         this.value = 30000;
-        this.toolTip = "7% increased magic damage";
       }
       else if (type == 126)
       {
-        this.name = "Bottled Water";
         this.UseSound = SoundID.Item3;
         this.healLife = 20;
         this.useStyle = 2;
@@ -4142,7 +3956,6 @@ namespace Terraria
         this.useStyle = 5;
         this.useAnimation = 17;
         this.useTime = 17;
-        this.name = "Space Gun";
         this.width = 24;
         this.height = 28;
         this.shoot = 20;
@@ -4159,18 +3972,15 @@ namespace Terraria
       }
       else if (type == 128)
       {
-        this.name = "Rocket Boots";
         this.width = 28;
         this.height = 24;
         this.accessory = true;
         this.rare = 3;
-        this.toolTip = "Allows flight";
         this.value = 50000;
         this.shoeSlot = (sbyte) 12;
       }
       else if (type == 129)
       {
-        this.name = "Gray Brick";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -4184,7 +3994,6 @@ namespace Terraria
       }
       else if (type == 130)
       {
-        this.name = "Gray Brick Wall";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -4198,7 +4007,6 @@ namespace Terraria
       }
       else if (type == 131)
       {
-        this.name = "Red Brick";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -4212,7 +4020,6 @@ namespace Terraria
       }
       else if (type == 132)
       {
-        this.name = "Red Brick Wall";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -4226,7 +4033,6 @@ namespace Terraria
       }
       else if (type == 133)
       {
-        this.name = "Clay Block";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -4240,7 +4046,6 @@ namespace Terraria
       }
       else if (type == 134)
       {
-        this.name = "Blue Brick";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -4254,7 +4059,6 @@ namespace Terraria
       }
       else if (type == 135)
       {
-        this.name = "Blue Brick Wall";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -4268,7 +4072,6 @@ namespace Terraria
       }
       else if (type == 136)
       {
-        this.name = "Chain Lantern";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -4282,7 +4085,6 @@ namespace Terraria
       }
       else if (type == 137)
       {
-        this.name = "Green Brick";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -4296,7 +4098,6 @@ namespace Terraria
       }
       else if (type == 138)
       {
-        this.name = "Green Brick Wall";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -4310,7 +4111,6 @@ namespace Terraria
       }
       else if (type == 139)
       {
-        this.name = "Pink Brick";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -4324,7 +4124,6 @@ namespace Terraria
       }
       else if (type == 140)
       {
-        this.name = "Pink Brick Wall";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -4338,7 +4137,6 @@ namespace Terraria
       }
       else if (type == 141)
       {
-        this.name = "Gold Brick";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -4352,7 +4150,6 @@ namespace Terraria
       }
       else if (type == 142)
       {
-        this.name = "Gold Brick Wall";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -4366,7 +4163,6 @@ namespace Terraria
       }
       else if (type == 143)
       {
-        this.name = "Silver Brick";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -4380,7 +4176,6 @@ namespace Terraria
       }
       else if (type == 144)
       {
-        this.name = "Silver Brick Wall";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -4394,7 +4189,6 @@ namespace Terraria
       }
       else if (type == 145)
       {
-        this.name = "Copper Brick";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -4408,7 +4202,6 @@ namespace Terraria
       }
       else if (type == 146)
       {
-        this.name = "Copper Brick Wall";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -4422,7 +4215,6 @@ namespace Terraria
       }
       else if (type == 147)
       {
-        this.name = "Spike";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -4438,7 +4230,6 @@ namespace Terraria
       {
         this.flame = true;
         this.noWet = true;
-        this.name = "Water Candle";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -4450,12 +4241,10 @@ namespace Terraria
         this.width = 8;
         this.height = 18;
         this.holdStyle = 1;
-        this.toolTip = "Holding this may attract unwanted attention";
         this.rare = 1;
       }
       else if (type == 149)
       {
-        this.name = "Book";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -4466,12 +4255,10 @@ namespace Terraria
         this.createTile = 50;
         this.width = 24;
         this.height = 28;
-        this.toolTip = "'It contains strange symbols'";
         this.value = Item.sellPrice(0, 0, 0, 75);
       }
       else if (type == 150)
       {
-        this.name = "Cobweb";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -4486,40 +4273,33 @@ namespace Terraria
       }
       else if (type == 151)
       {
-        this.name = "Necro Helmet";
         this.width = 18;
         this.height = 18;
         this.defense = 5;
         this.headSlot = 7;
         this.rare = 2;
         this.value = 45000;
-        this.toolTip = "4% increased ranged damage.";
       }
       else if (type == 152)
       {
-        this.name = "Necro Breastplate";
         this.width = 18;
         this.height = 18;
         this.defense = 6;
         this.bodySlot = 7;
         this.rare = 2;
         this.value = 30000;
-        this.toolTip = "4% increased ranged damage.";
       }
       else if (type == 153)
       {
-        this.name = "Necro Greaves";
         this.width = 18;
         this.height = 18;
         this.defense = 5;
         this.legSlot = 7;
         this.rare = 2;
         this.value = 30000;
-        this.toolTip = "4% increased ranged damage.";
       }
       else if (type == 154)
       {
-        this.name = "Bone";
         this.maxStack = 999;
         this.consumable = true;
         this.width = 12;
@@ -4543,7 +4323,6 @@ namespace Terraria
       {
         this.autoReuse = true;
         this.useTurn = true;
-        this.name = "Muramasa";
         this.useStyle = 1;
         this.useAnimation = 18;
         this.width = 40;
@@ -4558,21 +4337,18 @@ namespace Terraria
       }
       else if (type == 156)
       {
-        this.name = "Cobalt Shield";
         this.width = 24;
         this.height = 28;
         this.rare = 2;
         this.value = 27000;
         this.accessory = true;
         this.defense = 1;
-        this.toolTip = "Grants immunity to knockback";
         this.shieldSlot = (sbyte) 1;
       }
       else if (type == 157)
       {
         this.mana = 6;
         this.autoReuse = true;
-        this.name = "Aqua Scepter";
         this.useStyle = 5;
         this.useAnimation = 16;
         this.useTime = 8;
@@ -4587,35 +4363,29 @@ namespace Terraria
         this.noMelee = true;
         this.rare = 2;
         this.value = 27000;
-        this.toolTip = "Sprays out a shower of water";
         this.magic = true;
       }
       else if (type == 158)
       {
-        this.name = "Lucky Horseshoe";
         this.width = 20;
         this.height = 22;
         this.rare = 1;
         this.value = 27000;
         this.accessory = true;
-        this.toolTip = "Negates fall damage";
       }
       else if (type == 159)
       {
-        this.name = "Shiny Red Balloon";
         this.width = 14;
         this.height = 28;
         this.rare = 1;
         this.value = 27000;
         this.accessory = true;
-        this.toolTip = "Increases jump height";
         this.balloonSlot = (sbyte) 8;
       }
       else if (type == 160)
       {
         this.autoReuse = true;
         this.noMelee = true;
-        this.name = "Harpoon";
         this.useStyle = 5;
         this.useAnimation = 30;
         this.useTime = 30;
@@ -4634,7 +4404,6 @@ namespace Terraria
       else if (type == 161)
       {
         this.useStyle = 1;
-        this.name = "Spiky Ball";
         this.shootSpeed = 5f;
         this.shoot = 24;
         this.knockBack = 1f;
@@ -4653,7 +4422,6 @@ namespace Terraria
       }
       else if (type == 162)
       {
-        this.name = "Ball O' Hurt";
         this.useStyle = 5;
         this.useAnimation = 45;
         this.useTime = 45;
@@ -4674,7 +4442,6 @@ namespace Terraria
       }
       else if (type == 163)
       {
-        this.name = "Blue Moon";
         this.noMelee = true;
         this.useStyle = 5;
         this.useAnimation = 45;
@@ -4699,7 +4466,6 @@ namespace Terraria
         this.useStyle = 5;
         this.useAnimation = 12;
         this.useTime = 12;
-        this.name = "Handgun";
         this.width = 24;
         this.height = 24;
         this.shoot = 14;
@@ -4720,7 +4486,6 @@ namespace Terraria
         this.rare = 2;
         this.mana = 10;
         this.UseSound = SoundID.Item21;
-        this.name = "Water Bolt";
         this.noMelee = true;
         this.useStyle = 5;
         this.damage = 19;
@@ -4732,14 +4497,12 @@ namespace Terraria
         this.scale = 0.9f;
         this.shootSpeed = 4.5f;
         this.knockBack = 5f;
-        this.toolTip = "Casts a slow moving bolt of water";
         this.magic = true;
         this.value = 50000;
       }
       else if (type == 166)
       {
         this.useStyle = 1;
-        this.name = "Bomb";
         this.shootSpeed = 5f;
         this.shoot = 28;
         this.width = 20;
@@ -4753,12 +4516,10 @@ namespace Terraria
         this.noMelee = true;
         this.value = Item.buyPrice(0, 0, 3, 0);
         this.damage = 0;
-        this.toolTip = "A small explosion that will destroy some tiles";
       }
       else if (type == 167)
       {
         this.useStyle = 1;
-        this.name = "Dynamite";
         this.shootSpeed = 4f;
         this.shoot = 29;
         this.width = 8;
@@ -4772,12 +4533,10 @@ namespace Terraria
         this.noMelee = true;
         this.value = Item.buyPrice(0, 0, 20, 0);
         this.rare = 1;
-        this.toolTip = "A large explosion that will destroy most tiles";
       }
       else if (type == 168)
       {
         this.useStyle = 5;
-        this.name = "Grenade";
         this.shootSpeed = 5.5f;
         this.shoot = 30;
         this.width = 20;
@@ -4792,12 +4551,10 @@ namespace Terraria
         this.value = 75;
         this.damage = 60;
         this.knockBack = 8f;
-        this.toolTip = "A small explosion that will not destroy tiles";
         this.thrown = true;
       }
       else if (type == 169)
       {
-        this.name = "Sand Block";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -4812,7 +4569,6 @@ namespace Terraria
       }
       else if (type == 170)
       {
-        this.name = "Glass";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -4826,7 +4582,6 @@ namespace Terraria
       }
       else if (type == 171)
       {
-        this.name = "Sign";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -4840,7 +4595,6 @@ namespace Terraria
       }
       else if (type == 172)
       {
-        this.name = "Ash Block";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -4854,7 +4608,6 @@ namespace Terraria
       }
       else if (type == 173)
       {
-        this.name = "Obsidian";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -4868,7 +4621,6 @@ namespace Terraria
       }
       else if (type == 174)
       {
-        this.name = "Hellstone";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -4883,12 +4635,10 @@ namespace Terraria
       }
       else if (type == 175)
       {
-        this.name = "Hellstone Bar";
         this.width = 20;
         this.height = 20;
         this.maxStack = 99;
         this.rare = 2;
-        this.toolTip = "'Hot to the touch'";
         this.value = 20000;
         this.useStyle = 1;
         this.useTurn = true;
@@ -4901,7 +4651,6 @@ namespace Terraria
       }
       else if (type == 176)
       {
-        this.name = "Mud Block";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -4915,7 +4664,6 @@ namespace Terraria
       }
       else if (type == 181)
       {
-        this.name = "Amethyst";
         this.createTile = 178;
         this.placeStyle = 0;
         this.useStyle = 1;
@@ -4932,7 +4680,6 @@ namespace Terraria
       }
       else if (type == 180)
       {
-        this.name = "Topaz";
         this.createTile = 178;
         this.placeStyle = 1;
         this.useStyle = 1;
@@ -4949,7 +4696,6 @@ namespace Terraria
       }
       else if (type == 177)
       {
-        this.name = "Sapphire";
         this.createTile = 178;
         this.placeStyle = 2;
         this.useStyle = 1;
@@ -4966,7 +4712,6 @@ namespace Terraria
       }
       else if (type == 179)
       {
-        this.name = "Emerald";
         this.createTile = 178;
         this.placeStyle = 3;
         this.useStyle = 1;
@@ -4983,7 +4728,6 @@ namespace Terraria
       }
       else if (type == 178)
       {
-        this.name = "Ruby";
         this.createTile = 178;
         this.placeStyle = 4;
         this.useStyle = 1;
@@ -5000,7 +4744,6 @@ namespace Terraria
       }
       else if (type == 182)
       {
-        this.name = "Diamond";
         this.createTile = 178;
         this.placeStyle = 5;
         this.useStyle = 1;
@@ -5017,7 +4760,6 @@ namespace Terraria
       }
       else if (type == 183)
       {
-        this.name = "Glowing Mushroom";
         this.width = 16;
         this.height = 18;
         this.value = 50;
@@ -5032,7 +4774,6 @@ namespace Terraria
       }
       else if (type == 184)
       {
-        this.name = "Star";
         this.width = 12;
         this.height = 12;
       }
@@ -5042,7 +4783,6 @@ namespace Terraria
         this.damage = 0;
         this.knockBack = 7f;
         this.useStyle = 5;
-        this.name = "Ivy Whip";
         this.shootSpeed = 13f;
         this.shoot = 32;
         this.width = 18;
@@ -5056,28 +4796,23 @@ namespace Terraria
       }
       else if (type == 186)
       {
-        this.name = "Breathing Reed";
         this.width = 44;
         this.height = 44;
         this.rare = 1;
         this.value = 10000;
         this.holdStyle = 2;
-        this.toolTip = "'Because not drowning is kinda nice'";
       }
       else if (type == 187)
       {
-        this.name = "Flipper";
         this.width = 28;
         this.height = 28;
         this.rare = 1;
         this.value = 10000;
         this.accessory = true;
-        this.toolTip = "Grants the ability to swim";
         this.shoeSlot = (sbyte) 1;
       }
       else if (type == 188)
       {
-        this.name = "Healing Potion";
         this.UseSound = SoundID.Item3;
         this.healLife = 100;
         this.useStyle = 2;
@@ -5094,7 +4829,6 @@ namespace Terraria
       }
       else if (type == 189)
       {
-        this.name = "Mana Potion";
         this.UseSound = SoundID.Item3;
         this.healMana = 100;
         this.useStyle = 2;
@@ -5110,7 +4844,6 @@ namespace Terraria
       }
       else if (type == 190)
       {
-        this.name = "Blade of Grass";
         this.useStyle = 1;
         this.useAnimation = 30;
         this.knockBack = 3f;
@@ -5127,7 +4860,6 @@ namespace Terraria
       {
         this.noMelee = true;
         this.useStyle = 1;
-        this.name = "Thorn Chakram";
         this.shootSpeed = 11f;
         this.shoot = 33;
         this.damage = 25;
@@ -5144,7 +4876,6 @@ namespace Terraria
       }
       else if (type == 192)
       {
-        this.name = "Obsidian Brick";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -5158,19 +4889,16 @@ namespace Terraria
       }
       else if (type == 193)
       {
-        this.name = "Obsidian Skull";
         this.width = 20;
         this.height = 22;
         this.rare = 2;
         this.value = 27000;
         this.accessory = true;
         this.defense = 1;
-        this.toolTip = "Grants immunity to fire blocks";
       }
       else if (type == 194)
       {
         this.autoReuse = true;
-        this.name = "Mushroom Grass Seeds";
         this.useTurn = true;
         this.useStyle = 1;
         this.useAnimation = 15;
@@ -5185,7 +4913,6 @@ namespace Terraria
       else if (type == 195)
       {
         this.autoReuse = true;
-        this.name = "Jungle Grass Seeds";
         this.useTurn = true;
         this.useStyle = 1;
         this.useAnimation = 15;
@@ -5199,7 +4926,6 @@ namespace Terraria
       }
       else if (type == 196)
       {
-        this.name = "Wooden Hammer";
         this.autoReuse = true;
         this.useStyle = 1;
         this.useTurn = true;
@@ -5222,7 +4948,6 @@ namespace Terraria
         this.useStyle = 5;
         this.useAnimation = 12;
         this.useTime = 12;
-        this.name = "Star Cannon";
         this.width = 50;
         this.height = 18;
         this.shoot = 12;
@@ -5233,12 +4958,10 @@ namespace Terraria
         this.noMelee = true;
         this.value = 500000;
         this.rare = 2;
-        this.toolTip = "Shoots fallen stars";
         this.ranged = true;
       }
       else if (type == 198)
       {
-        this.name = "Blue Phaseblade";
         this.useStyle = 1;
         this.useAnimation = 25;
         this.knockBack = 3f;
@@ -5253,7 +4976,6 @@ namespace Terraria
       }
       else if (type == 199)
       {
-        this.name = "Red Phaseblade";
         this.useStyle = 1;
         this.useAnimation = 25;
         this.knockBack = 3f;
@@ -5268,7 +4990,6 @@ namespace Terraria
       }
       else if (type == 200)
       {
-        this.name = "Green Phaseblade";
         this.useStyle = 1;
         this.useAnimation = 25;
         this.knockBack = 3f;
@@ -5283,7 +5004,6 @@ namespace Terraria
       }
       else if (type == 201)
       {
-        this.name = "Purple Phaseblade";
         this.useStyle = 1;
         this.useAnimation = 25;
         this.knockBack = 3f;
@@ -5298,7 +5018,6 @@ namespace Terraria
       }
       else if (type == 202)
       {
-        this.name = "White Phaseblade";
         this.useStyle = 1;
         this.useAnimation = 25;
         this.knockBack = 3f;
@@ -5313,7 +5032,6 @@ namespace Terraria
       }
       else if (type == 203)
       {
-        this.name = "Yellow Phaseblade";
         this.useStyle = 1;
         this.useAnimation = 25;
         this.knockBack = 3f;
@@ -5328,7 +5046,6 @@ namespace Terraria
       }
       else if (type == 204)
       {
-        this.name = "Meteor Hamaxe";
         this.useTurn = true;
         this.autoReuse = true;
         this.useStyle = 1;
@@ -5348,7 +5065,6 @@ namespace Terraria
       }
       else if (type == 205)
       {
-        this.name = "Empty Bucket";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -5362,7 +5078,6 @@ namespace Terraria
       }
       else if (type == 206)
       {
-        this.name = "Water Bucket";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -5374,7 +5089,6 @@ namespace Terraria
       }
       else if (type == 207)
       {
-        this.name = "Lava Bucket";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -5386,17 +5100,14 @@ namespace Terraria
       }
       else if (type == 208)
       {
-        this.name = "Jungle Rose";
         this.width = 20;
         this.height = 20;
         this.value = 100;
         this.headSlot = 23;
-        this.toolTip = "'It's pretty, oh so pretty'";
         this.vanity = true;
       }
       else if (type == 209)
       {
-        this.name = "Stinger";
         this.width = 16;
         this.height = 18;
         this.maxStack = 99;
@@ -5404,7 +5115,6 @@ namespace Terraria
       }
       else if (type == 210)
       {
-        this.name = "Vine";
         this.width = 14;
         this.height = 20;
         this.maxStack = 99;
@@ -5412,29 +5122,24 @@ namespace Terraria
       }
       else if (type == 211)
       {
-        this.name = "Feral Claws";
         this.width = 20;
         this.height = 20;
         this.accessory = true;
         this.rare = 3;
-        this.toolTip = "12% increased melee speed";
         this.value = 50000;
         this.handOnSlot = (sbyte) 5;
         this.handOffSlot = (sbyte) 9;
       }
       else if (type == 212)
       {
-        this.name = "Anklet of the Wind";
         this.width = 20;
         this.height = 20;
         this.accessory = true;
         this.rare = 3;
-        this.toolTip = "10% increased movement speed";
         this.value = 50000;
       }
       else if (type == 213)
       {
-        this.name = "Staff of Regrowth";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 25;
@@ -5448,12 +5153,10 @@ namespace Terraria
         this.knockBack = 3f;
         this.rare = 3;
         this.value = 2000;
-        this.toolTip = "Creates grass on dirt";
         this.melee = true;
       }
       else if (type == 214)
       {
-        this.name = "Hellstone Brick";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -5467,7 +5170,6 @@ namespace Terraria
       }
       else if (type == 215)
       {
-        this.name = "Whoopie Cushion";
         this.width = 18;
         this.height = 18;
         this.useTurn = true;
@@ -5477,12 +5179,10 @@ namespace Terraria
         this.useStyle = 10;
         this.UseSound = SoundID.Item16;
         this.rare = 2;
-        this.toolTip = "'May annoy others'";
         this.value = 100;
       }
       else if (type == 216)
       {
-        this.name = "Shackle";
         this.width = 20;
         this.height = 20;
         this.rare = 1;
@@ -5494,7 +5194,6 @@ namespace Terraria
       }
       else if (type == 217)
       {
-        this.name = "Molten Hamaxe";
         this.useTurn = true;
         this.autoReuse = true;
         this.useStyle = 1;
@@ -5518,7 +5217,6 @@ namespace Terraria
         this.channel = true;
         this.damage = 40;
         this.useStyle = 1;
-        this.name = "Flamelash";
         this.shootSpeed = 6f;
         this.shoot = 34;
         this.width = 26;
@@ -5529,7 +5227,6 @@ namespace Terraria
         this.rare = 3;
         this.noMelee = true;
         this.knockBack = 6.5f;
-        this.toolTip = "Summons a controllable ball of fire";
         this.value = 10000;
         this.magic = true;
       }
@@ -5539,7 +5236,6 @@ namespace Terraria
         this.useStyle = 5;
         this.useAnimation = 11;
         this.useTime = 11;
-        this.name = "Phoenix Blaster";
         this.width = 24;
         this.height = 22;
         this.shoot = 14;
@@ -5556,7 +5252,6 @@ namespace Terraria
       }
       else if (type == 220)
       {
-        this.name = "Sunfury";
         this.noMelee = true;
         this.useStyle = 5;
         this.useAnimation = 45;
@@ -5578,7 +5273,6 @@ namespace Terraria
       }
       else if (type == 221)
       {
-        this.name = "Hellforge";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -5593,7 +5287,6 @@ namespace Terraria
       }
       else if (type == 222)
       {
-        this.name = "Clay Pot";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -5605,22 +5298,18 @@ namespace Terraria
         this.width = 14;
         this.height = 14;
         this.value = 100;
-        this.toolTip = "Grows plants";
       }
       else if (type == 223)
       {
-        this.name = "Nature's Gift";
         this.width = 20;
         this.height = 22;
         this.rare = 3;
         this.value = 27000;
         this.accessory = true;
-        this.toolTip = "6% reduced mana usage";
         this.faceSlot = (sbyte) 1;
       }
       else if (type == 224)
       {
-        this.name = "Bed";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -5634,7 +5323,6 @@ namespace Terraria
       }
       else if (type == 225)
       {
-        this.name = "Silk";
         this.maxStack = 999;
         this.width = 22;
         this.height = 22;
@@ -5643,7 +5331,6 @@ namespace Terraria
       else if (type == 226 || type == 227)
       {
         type = 227;
-        this.name = "Restoration Potion";
         this.UseSound = SoundID.Item3;
         this.healMana = 80;
         this.healLife = 80;
@@ -5661,43 +5348,33 @@ namespace Terraria
       }
       else if (type == 228)
       {
-        this.name = "Jungle Hat";
         this.width = 18;
         this.height = 18;
         this.defense = 5;
         this.headSlot = 8;
         this.rare = 3;
         this.value = 45000;
-        this.toolTip = "Increases maximum mana by 40";
-        this.toolTip2 = "4% increased magic critical strike chance";
       }
       else if (type == 229)
       {
-        this.name = "Jungle Shirt";
         this.width = 18;
         this.height = 18;
         this.defense = 6;
         this.bodySlot = 8;
         this.rare = 3;
         this.value = 30000;
-        this.toolTip = "Increases maximum mana by 20";
-        this.toolTip2 = "4% increased magic critical strike chance";
       }
       else if (type == 230)
       {
-        this.name = "Jungle Pants";
         this.width = 18;
         this.height = 18;
         this.defense = 6;
         this.legSlot = 8;
         this.rare = 3;
         this.value = 30000;
-        this.toolTip = "Increases maximum mana by 20";
-        this.toolTip2 = "4% increased magic critical strike chance";
       }
       else if (type == 231)
       {
-        this.name = "Molten Helmet";
         this.width = 18;
         this.height = 18;
         this.defense = 8;
@@ -5707,7 +5384,6 @@ namespace Terraria
       }
       else if (type == 232)
       {
-        this.name = "Molten Breastplate";
         this.width = 18;
         this.height = 18;
         this.defense = 9;
@@ -5717,7 +5393,6 @@ namespace Terraria
       }
       else if (type == 233)
       {
-        this.name = "Molten Greaves";
         this.width = 18;
         this.height = 18;
         this.defense = 8;
@@ -5727,7 +5402,6 @@ namespace Terraria
       }
       else if (type == 234)
       {
-        this.name = "Meteor Shot";
         this.shootSpeed = 3f;
         this.shoot = 36;
         this.damage = 9;
@@ -5744,7 +5418,6 @@ namespace Terraria
       else if (type == 235)
       {
         this.useStyle = 1;
-        this.name = "Sticky Bomb";
         this.shootSpeed = 5f;
         this.shoot = 37;
         this.width = 20;
@@ -5758,11 +5431,9 @@ namespace Terraria
         this.noMelee = true;
         this.value = 500;
         this.damage = 0;
-        this.toolTip = "'Tossing may be difficult.'";
       }
       else if (type == 236)
       {
-        this.name = "Black Lens";
         this.width = 12;
         this.height = 20;
         this.maxStack = 99;
@@ -5770,29 +5441,24 @@ namespace Terraria
       }
       else if (type == 237)
       {
-        this.name = "Sunglasses";
         this.width = 28;
         this.height = 12;
         this.headSlot = 12;
         this.rare = 2;
         this.value = 10000;
-        this.toolTip = "'Makes you look cool!'";
         this.vanity = true;
       }
       else if (type == 238)
       {
-        this.name = "Wizard Hat";
         this.width = 28;
         this.height = 20;
         this.headSlot = 14;
         this.rare = 2;
         this.value = 10000;
         this.defense = 2;
-        this.toolTip = "15% increased magic damage";
       }
       else if (type == 239)
       {
-        this.name = "Top Hat";
         this.width = 18;
         this.height = 18;
         this.headSlot = 15;
@@ -5801,7 +5467,6 @@ namespace Terraria
       }
       else if (type == 240)
       {
-        this.name = "Tuxedo Shirt";
         this.width = 18;
         this.height = 18;
         this.bodySlot = 10;
@@ -5810,7 +5475,6 @@ namespace Terraria
       }
       else if (type == 241)
       {
-        this.name = "Tuxedo Pants";
         this.width = 18;
         this.height = 18;
         this.legSlot = 10;
@@ -5819,7 +5483,6 @@ namespace Terraria
       }
       else if (type == 242)
       {
-        this.name = "Summer Hat";
         this.width = 18;
         this.height = 18;
         this.headSlot = 16;
@@ -5828,7 +5491,6 @@ namespace Terraria
       }
       else if (type == 243)
       {
-        this.name = "Bunny Hood";
         this.width = 18;
         this.height = 18;
         this.headSlot = 17;
@@ -5837,7 +5499,6 @@ namespace Terraria
       }
       else if (type == 244)
       {
-        this.name = "Plumber's Hat";
         this.width = 18;
         this.height = 12;
         this.headSlot = 18;
@@ -5846,7 +5507,6 @@ namespace Terraria
       }
       else if (type == 245)
       {
-        this.name = "Plumber's Shirt";
         this.width = 18;
         this.height = 18;
         this.bodySlot = 11;
@@ -5855,7 +5515,6 @@ namespace Terraria
       }
       else if (type == 246)
       {
-        this.name = "Plumber's Pants";
         this.width = 18;
         this.height = 18;
         this.legSlot = 11;
@@ -5864,7 +5523,6 @@ namespace Terraria
       }
       else if (type == 247)
       {
-        this.name = "Hero's Hat";
         this.width = 18;
         this.height = 12;
         this.headSlot = 19;
@@ -5873,7 +5531,6 @@ namespace Terraria
       }
       else if (type == 248)
       {
-        this.name = "Hero's Shirt";
         this.width = 18;
         this.height = 18;
         this.bodySlot = 12;
@@ -5882,7 +5539,6 @@ namespace Terraria
       }
       else if (type == 249)
       {
-        this.name = "Hero's Pants";
         this.width = 18;
         this.height = 18;
         this.legSlot = 12;
@@ -5891,7 +5547,6 @@ namespace Terraria
       }
       else if (type == 250)
       {
-        this.name = "Fish Bowl";
         this.width = 18;
         this.height = 18;
         this.headSlot = 20;
@@ -5910,7 +5565,6 @@ namespace Terraria
       }
       else if (type == 251)
       {
-        this.name = "Archaeologist's Hat";
         this.width = 18;
         this.height = 12;
         this.headSlot = 21;
@@ -5919,7 +5573,6 @@ namespace Terraria
       }
       else if (type == 252)
       {
-        this.name = "Archaeologist's Jacket";
         this.width = 18;
         this.height = 18;
         this.bodySlot = 13;
@@ -5928,7 +5581,6 @@ namespace Terraria
       }
       else if (type == 253)
       {
-        this.name = "Archaeologist's Pants";
         this.width = 18;
         this.height = 18;
         this.legSlot = 13;
@@ -5937,7 +5589,6 @@ namespace Terraria
       }
       else if (type == 254)
       {
-        this.name = "Black Thread";
         this.maxStack = 99;
         this.width = 12;
         this.height = 20;
@@ -5945,7 +5596,6 @@ namespace Terraria
       }
       else if (type == (int) byte.MaxValue)
       {
-        this.name = "Green Thread";
         this.maxStack = 99;
         this.width = 12;
         this.height = 20;
@@ -5953,40 +5603,33 @@ namespace Terraria
       }
       else if (type == 256)
       {
-        this.name = "Ninja Hood";
         this.width = 18;
         this.height = 12;
         this.headSlot = 22;
         this.value = 10000;
         this.defense = 2;
         this.rare = 1;
-        this.toolTip = "20% increased throwing velocity";
       }
       else if (type == 257)
       {
-        this.name = "Ninja Shirt";
         this.width = 18;
         this.height = 18;
         this.bodySlot = 14;
         this.value = 5000;
         this.defense = 4;
         this.rare = 1;
-        this.toolTip = "15% increased throwing damage";
       }
       else if (type == 258)
       {
-        this.name = "Ninja Pants";
         this.width = 18;
         this.height = 18;
         this.legSlot = 14;
         this.value = 5000;
         this.defense = 3;
         this.rare = 1;
-        this.toolTip = "10% increased throwing critical strike chance";
       }
       else if (type == 259)
       {
-        this.name = "Leather";
         this.width = 18;
         this.height = 20;
         this.maxStack = 99;
@@ -5994,7 +5637,6 @@ namespace Terraria
       }
       else if (type == 260)
       {
-        this.name = "Red Hat";
         this.width = 18;
         this.height = 14;
         this.headSlot = 24;
@@ -6003,7 +5645,6 @@ namespace Terraria
       }
       else if (type == 261)
       {
-        this.name = "Goldfish";
         this.useStyle = 1;
         this.autoReuse = true;
         this.useTurn = true;
@@ -6018,7 +5659,6 @@ namespace Terraria
       }
       else if (type == 262)
       {
-        this.name = "Robe";
         this.width = 18;
         this.height = 14;
         this.bodySlot = 15;
@@ -6027,7 +5667,6 @@ namespace Terraria
       }
       else if (type == 263)
       {
-        this.name = "Robot Hat";
         this.width = 18;
         this.height = 18;
         this.headSlot = 25;
@@ -6036,7 +5675,6 @@ namespace Terraria
       }
       else if (type == 264)
       {
-        this.name = "Gold Crown";
         this.width = 18;
         this.height = 18;
         this.headSlot = 26;
@@ -6045,7 +5683,6 @@ namespace Terraria
       }
       else if (type == 265)
       {
-        this.name = "Hellfire Arrow";
         this.shootSpeed = 6.5f;
         this.shoot = 41;
         this.damage = 13;
@@ -6065,7 +5702,6 @@ namespace Terraria
         this.useAnimation = 16;
         this.useTime = 16;
         this.autoReuse = true;
-        this.name = "Sandgun";
         this.width = 40;
         this.height = 20;
         this.shoot = 42;
@@ -6077,32 +5713,26 @@ namespace Terraria
         this.knockBack = 5f;
         this.value = 10000;
         this.rare = 2;
-        this.toolTip = "'This is a good idea!'";
         this.ranged = true;
       }
       else if (type == 267)
       {
         this.accessory = true;
-        this.name = "Guide Voodoo Doll";
         this.width = 14;
         this.height = 26;
         this.value = 1000;
-        this.toolTip = "'You are a terrible person.'";
       }
       else if (type == 268)
       {
         this.headSlot = 27;
         this.defense = 2;
-        this.name = "Diving Helmet";
         this.width = 20;
         this.height = 20;
         this.value = 1000;
         this.rare = 2;
-        this.toolTip = "Greatly extends underwater breathing";
       }
       else if (type == 269)
       {
-        this.name = "Familiar Shirt";
         this.bodySlot = 0;
         this.width = 20;
         this.height = 20;
@@ -6112,7 +5742,6 @@ namespace Terraria
       }
       else if (type == 270)
       {
-        this.name = "Familiar Pants";
         this.legSlot = 0;
         this.width = 20;
         this.height = 20;
@@ -6122,7 +5751,6 @@ namespace Terraria
       }
       else if (type == 271)
       {
-        this.name = "Familiar Wig";
         this.headSlot = 0;
         this.width = 20;
         this.height = 20;
@@ -6135,7 +5763,6 @@ namespace Terraria
         this.mana = 14;
         this.damage = 35;
         this.useStyle = 5;
-        this.name = "Demon Scythe";
         this.shootSpeed = 0.2f;
         this.shoot = 45;
         this.width = 26;
@@ -6147,13 +5774,11 @@ namespace Terraria
         this.noMelee = true;
         this.knockBack = 5f;
         this.scale = 0.9f;
-        this.toolTip = "Casts a demon scythe";
         this.value = 10000;
         this.magic = true;
       }
       else if (type == 273)
       {
-        this.name = "Night's Edge";
         this.useStyle = 1;
         this.useAnimation = 27;
         this.useTime = 27;
@@ -6169,7 +5794,6 @@ namespace Terraria
       }
       else if (type == 274)
       {
-        this.name = "Dark Lance";
         this.useStyle = 5;
         this.useAnimation = 22;
         this.useTime = 22;
@@ -6189,7 +5813,6 @@ namespace Terraria
       }
       else if (type == 275)
       {
-        this.name = "Coral";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -6204,7 +5827,6 @@ namespace Terraria
       }
       else if (type == 276)
       {
-        this.name = "Cactus";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -6219,7 +5841,6 @@ namespace Terraria
       }
       else if (type == 277)
       {
-        this.name = "Trident";
         this.useStyle = 5;
         this.useAnimation = 31;
         this.useTime = 31;
@@ -6239,7 +5860,6 @@ namespace Terraria
       }
       else if (type == 278)
       {
-        this.name = "Silver Bullet";
         this.shootSpeed = 4.5f;
         this.shoot = 14;
         this.damage = 9;
@@ -6255,7 +5875,6 @@ namespace Terraria
       else if (type == 279)
       {
         this.useStyle = 1;
-        this.name = "Throwing Knife";
         this.shootSpeed = 10f;
         this.shoot = 48;
         this.damage = 12;
@@ -6274,7 +5893,6 @@ namespace Terraria
       }
       else if (type == 280)
       {
-        this.name = "Spear";
         this.useStyle = 5;
         this.useAnimation = 31;
         this.useTime = 31;
@@ -6297,7 +5915,6 @@ namespace Terraria
         this.autoReuse = true;
         this.useAnimation = 45;
         this.useTime = 45;
-        this.name = "Blowpipe";
         this.width = 38;
         this.height = 6;
         this.shoot = 10;
@@ -6308,14 +5925,12 @@ namespace Terraria
         this.noMelee = true;
         this.value = 10000;
         this.knockBack = 3.5f;
-        this.toolTip = "Allows the collection of seeds for ammo";
         this.ranged = true;
       }
       else if (type == 282)
       {
         this.color = new Color((int) byte.MaxValue, (int) byte.MaxValue, (int) byte.MaxValue, 0);
         this.useStyle = 1;
-        this.name = "Glowstick";
         this.shootSpeed = 6f;
         this.shoot = 50;
         this.width = 12;
@@ -6328,17 +5943,14 @@ namespace Terraria
         this.noMelee = true;
         this.value = 10;
         this.holdStyle = 1;
-        this.toolTip = "Works when wet";
       }
       else if (type == 283)
       {
-        this.name = "Seed";
         this.shoot = 51;
         this.width = 8;
         this.height = 8;
         this.maxStack = 999;
         this.ammo = AmmoID.Dart;
-        this.toolTip = "For use with Blowpipe";
         this.damage = 3;
         this.ranged = true;
         this.consumable = true;
@@ -6347,7 +5959,6 @@ namespace Terraria
       {
         this.noMelee = true;
         this.useStyle = 1;
-        this.name = "Wooden Boomerang";
         this.shootSpeed = 6.5f;
         this.shoot = 52;
         this.damage = 8;
@@ -6363,18 +5974,15 @@ namespace Terraria
       }
       else if (type == 285)
       {
-        this.name = "Aglet";
         this.width = 24;
         this.height = 8;
         this.accessory = true;
-        this.toolTip = "5% increased movement speed";
         this.value = 5000;
       }
       else if (type == 286)
       {
         this.color = new Color((int) byte.MaxValue, (int) byte.MaxValue, (int) byte.MaxValue, 0);
         this.useStyle = 1;
-        this.name = "Sticky Glowstick";
         this.shootSpeed = 6f;
         this.shoot = 53;
         this.width = 12;
@@ -6392,7 +6000,6 @@ namespace Terraria
       {
         this.crit = 4;
         this.useStyle = 1;
-        this.name = "Poisoned Knife";
         this.shootSpeed = 12f;
         this.shoot = 54;
         this.damage = 14;
@@ -6412,7 +6019,6 @@ namespace Terraria
       }
       else if (type == 288)
       {
-        this.name = "Obsidian Skin Potion";
         this.UseSound = SoundID.Item3;
         this.useStyle = 2;
         this.useTurn = true;
@@ -6424,13 +6030,11 @@ namespace Terraria
         this.height = 24;
         this.buffType = 1;
         this.buffTime = 14400;
-        this.toolTip = "Provides immunity to lava";
         this.value = 1000;
         this.rare = 1;
       }
       else if (type == 289)
       {
-        this.name = "Regeneration Potion";
         this.UseSound = SoundID.Item3;
         this.useStyle = 2;
         this.useTurn = true;
@@ -6442,13 +6046,11 @@ namespace Terraria
         this.height = 24;
         this.buffType = 2;
         this.buffTime = 18000;
-        this.toolTip = "Provides life regeneration";
         this.value = 1000;
         this.rare = 1;
       }
       else if (type == 290)
       {
-        this.name = "Swiftness Potion";
         this.UseSound = SoundID.Item3;
         this.useStyle = 2;
         this.useTurn = true;
@@ -6460,13 +6062,11 @@ namespace Terraria
         this.height = 24;
         this.buffType = 3;
         this.buffTime = 14400;
-        this.toolTip = "25% increased movement speed";
         this.value = 1000;
         this.rare = 1;
       }
       else if (type == 291)
       {
-        this.name = "Gills Potion";
         this.UseSound = SoundID.Item3;
         this.useStyle = 2;
         this.useTurn = true;
@@ -6478,13 +6078,11 @@ namespace Terraria
         this.height = 24;
         this.buffType = 4;
         this.buffTime = 7200;
-        this.toolTip = "Breathe water instead of air";
         this.value = 1000;
         this.rare = 1;
       }
       else if (type == 292)
       {
-        this.name = "Ironskin Potion";
         this.UseSound = SoundID.Item3;
         this.useStyle = 2;
         this.useTurn = true;
@@ -6496,13 +6094,11 @@ namespace Terraria
         this.height = 24;
         this.buffType = 5;
         this.buffTime = 18000;
-        this.toolTip = "Increase defense by 8";
         this.value = 1000;
         this.rare = 1;
       }
       else if (type == 293)
       {
-        this.name = "Mana Regeneration Potion";
         this.UseSound = SoundID.Item3;
         this.useStyle = 2;
         this.useTurn = true;
@@ -6514,13 +6110,11 @@ namespace Terraria
         this.height = 24;
         this.buffType = 6;
         this.buffTime = 25200;
-        this.toolTip = "Increased mana regeneration";
         this.value = 1000;
         this.rare = 1;
       }
       else if (type == 294)
       {
-        this.name = "Magic Power Potion";
         this.UseSound = SoundID.Item3;
         this.useStyle = 2;
         this.useTurn = true;
@@ -6532,13 +6126,11 @@ namespace Terraria
         this.height = 24;
         this.buffType = 7;
         this.buffTime = 7200;
-        this.toolTip = "20% increased magic damage";
         this.value = 1000;
         this.rare = 1;
       }
       else if (type == 295)
       {
-        this.name = "Featherfall Potion";
         this.UseSound = SoundID.Item3;
         this.useStyle = 2;
         this.useTurn = true;
@@ -6550,13 +6142,11 @@ namespace Terraria
         this.height = 24;
         this.buffType = 8;
         this.buffTime = 18000;
-        this.toolTip = "Slows falling speed";
         this.value = 1000;
         this.rare = 1;
       }
       else if (type == 296)
       {
-        this.name = "Spelunker Potion";
         this.UseSound = SoundID.Item3;
         this.useStyle = 2;
         this.useTurn = true;
@@ -6568,13 +6158,11 @@ namespace Terraria
         this.height = 24;
         this.buffType = 9;
         this.buffTime = 18000;
-        this.toolTip = "Shows the location of treasure and ore";
         this.value = 1000;
         this.rare = 1;
       }
       else if (type == 297)
       {
-        this.name = "Invisibility Potion";
         this.UseSound = SoundID.Item3;
         this.useStyle = 2;
         this.useTurn = true;
@@ -6586,13 +6174,11 @@ namespace Terraria
         this.height = 24;
         this.buffType = 10;
         this.buffTime = 7200;
-        this.toolTip = "Grants invisibility";
         this.value = 1000;
         this.rare = 1;
       }
       else if (type == 298)
       {
-        this.name = "Shine Potion";
         this.UseSound = SoundID.Item3;
         this.useStyle = 2;
         this.useTurn = true;
@@ -6604,13 +6190,11 @@ namespace Terraria
         this.height = 24;
         this.buffType = 11;
         this.buffTime = 18000;
-        this.toolTip = "Emits an aura of light";
         this.value = 1000;
         this.rare = 1;
       }
       else if (type == 299)
       {
-        this.name = "Night Owl Potion";
         this.UseSound = SoundID.Item3;
         this.useStyle = 2;
         this.useTurn = true;
@@ -6622,13 +6206,11 @@ namespace Terraria
         this.height = 24;
         this.buffType = 12;
         this.buffTime = 14400;
-        this.toolTip = "Increases night vision";
         this.value = 1000;
         this.rare = 1;
       }
       else if (type == 300)
       {
-        this.name = "Battle Potion";
         this.UseSound = SoundID.Item3;
         this.useStyle = 2;
         this.useTurn = true;
@@ -6640,13 +6222,11 @@ namespace Terraria
         this.height = 24;
         this.buffType = 13;
         this.buffTime = 25200;
-        this.toolTip = "Increases enemy spawn rate";
         this.value = 1000;
         this.rare = 1;
       }
       else if (type == 301)
       {
-        this.name = "Thorns Potion";
         this.UseSound = SoundID.Item3;
         this.useStyle = 2;
         this.useTurn = true;
@@ -6658,13 +6238,11 @@ namespace Terraria
         this.height = 24;
         this.buffType = 14;
         this.buffTime = 7200;
-        this.toolTip = "Attackers also take damage";
         this.value = 1000;
         this.rare = 1;
       }
       else if (type == 302)
       {
-        this.name = "Water Walking Potion";
         this.UseSound = SoundID.Item3;
         this.useStyle = 2;
         this.useTurn = true;
@@ -6676,13 +6254,11 @@ namespace Terraria
         this.height = 24;
         this.buffType = 15;
         this.buffTime = 18000;
-        this.toolTip = "Allows the ability to walk on water";
         this.value = 1000;
         this.rare = 1;
       }
       else if (type == 303)
       {
-        this.name = "Archery Potion";
         this.UseSound = SoundID.Item3;
         this.useStyle = 2;
         this.useTurn = true;
@@ -6694,13 +6270,11 @@ namespace Terraria
         this.height = 24;
         this.buffType = 16;
         this.buffTime = 14400;
-        this.toolTip = "20% increased arrow speed and damage";
         this.value = 1000;
         this.rare = 1;
       }
       else if (type == 304)
       {
-        this.name = "Hunter Potion";
         this.UseSound = SoundID.Item3;
         this.useStyle = 2;
         this.useTurn = true;
@@ -6712,13 +6286,11 @@ namespace Terraria
         this.height = 24;
         this.buffType = 17;
         this.buffTime = 18000;
-        this.toolTip = "Shows the location of enemies";
         this.value = 1000;
         this.rare = 1;
       }
       else if (type == 305)
       {
-        this.name = "Gravitation Potion";
         this.UseSound = SoundID.Item3;
         this.useStyle = 2;
         this.useTurn = true;
@@ -6730,13 +6302,11 @@ namespace Terraria
         this.height = 24;
         this.buffType = 18;
         this.buffTime = 10800;
-        this.toolTip = "Allows the control of gravity";
         this.value = 1000;
         this.rare = 1;
       }
       else if (type == 306)
       {
-        this.name = "Gold Chest";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -6753,7 +6323,6 @@ namespace Terraria
       else if (type == 307)
       {
         this.autoReuse = true;
-        this.name = "Daybloom Seeds";
         this.useTurn = true;
         this.useStyle = 1;
         this.useAnimation = 15;
@@ -6769,7 +6338,6 @@ namespace Terraria
       else if (type == 308)
       {
         this.autoReuse = true;
-        this.name = "Moonglow Seeds";
         this.useTurn = true;
         this.useStyle = 1;
         this.useAnimation = 15;
@@ -6785,7 +6353,6 @@ namespace Terraria
       else if (type == 309)
       {
         this.autoReuse = true;
-        this.name = "Blinkroot Seeds";
         this.useTurn = true;
         this.useStyle = 1;
         this.useAnimation = 15;
@@ -6801,7 +6368,6 @@ namespace Terraria
       else if (type == 310)
       {
         this.autoReuse = true;
-        this.name = "Deathweed Seeds";
         this.useTurn = true;
         this.useStyle = 1;
         this.useAnimation = 15;
@@ -6817,7 +6383,6 @@ namespace Terraria
       else if (type == 311)
       {
         this.autoReuse = true;
-        this.name = "Waterleaf Seeds";
         this.useTurn = true;
         this.useStyle = 1;
         this.useAnimation = 15;
@@ -6833,7 +6398,6 @@ namespace Terraria
       else if (type == 312)
       {
         this.autoReuse = true;
-        this.name = "Fireblossom Seeds";
         this.useTurn = true;
         this.useStyle = 1;
         this.useAnimation = 15;
@@ -6848,7 +6412,6 @@ namespace Terraria
       }
       else if (type == 313)
       {
-        this.name = "Daybloom";
         this.maxStack = 99;
         this.width = 12;
         this.height = 14;
@@ -6856,7 +6419,6 @@ namespace Terraria
       }
       else if (type == 314)
       {
-        this.name = "Moonglow";
         this.maxStack = 99;
         this.width = 12;
         this.height = 14;
@@ -6864,7 +6426,6 @@ namespace Terraria
       }
       else if (type == 315)
       {
-        this.name = "Blinkroot";
         this.maxStack = 99;
         this.width = 12;
         this.height = 14;
@@ -6872,7 +6433,6 @@ namespace Terraria
       }
       else if (type == 316)
       {
-        this.name = "Deathweed";
         this.maxStack = 99;
         this.width = 12;
         this.height = 14;
@@ -6880,7 +6440,6 @@ namespace Terraria
       }
       else if (type == 317)
       {
-        this.name = "Waterleaf";
         this.maxStack = 99;
         this.width = 12;
         this.height = 14;
@@ -6888,7 +6447,6 @@ namespace Terraria
       }
       else if (type == 318)
       {
-        this.name = "Fireblossom";
         this.maxStack = 99;
         this.width = 12;
         this.height = 14;
@@ -6896,7 +6454,6 @@ namespace Terraria
       }
       else if (type == 319)
       {
-        this.name = "Shark Fin";
         this.maxStack = 99;
         this.width = 16;
         this.height = 14;
@@ -6905,7 +6462,6 @@ namespace Terraria
       }
       else if (type == 320)
       {
-        this.name = "Feather";
         this.maxStack = 99;
         this.width = 16;
         this.height = 14;
@@ -6913,7 +6469,6 @@ namespace Terraria
       }
       else if (type == 321)
       {
-        this.name = "Tombstone";
         this.useTurn = true;
         this.useStyle = 1;
         this.useAnimation = 15;
@@ -6926,7 +6481,6 @@ namespace Terraria
       }
       else if (type == 322)
       {
-        this.name = "Mime Mask";
         this.headSlot = 28;
         this.width = 20;
         this.height = 20;
@@ -6934,7 +6488,6 @@ namespace Terraria
       }
       else if (type == 323)
       {
-        this.name = "Antlion Mandible";
         this.width = 10;
         this.height = 20;
         this.maxStack = 99;
@@ -6942,16 +6495,13 @@ namespace Terraria
       }
       else if (type == 324)
       {
-        this.name = "Illegal Gun Parts";
         this.width = 10;
         this.height = 20;
         this.maxStack = 99;
         this.value = 200000;
-        this.toolTip = "'Banned in most places'";
       }
       else if (type == 325)
       {
-        this.name = "The Doctor's Shirt";
         this.width = 18;
         this.height = 18;
         this.bodySlot = 16;
@@ -6960,7 +6510,6 @@ namespace Terraria
       }
       else if (type == 326)
       {
-        this.name = "The Doctor's Pants";
         this.width = 18;
         this.height = 18;
         this.legSlot = 15;
@@ -6969,15 +6518,12 @@ namespace Terraria
       }
       else if (type == 327)
       {
-        this.name = "Golden Key";
         this.width = 14;
         this.height = 20;
         this.maxStack = 99;
-        this.toolTip = "Opens one Gold Chest";
       }
       else if (type == 328)
       {
-        this.name = "Shadow Chest";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -6993,16 +6539,13 @@ namespace Terraria
       }
       else if (type == 329)
       {
-        this.name = "Shadow Key";
         this.width = 14;
         this.height = 20;
         this.maxStack = 1;
-        this.toolTip = "Opens all Shadow Chests";
         this.value = 75000;
       }
       else if (type == 330)
       {
-        this.name = "Obsidian Brick Wall";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -7016,7 +6559,6 @@ namespace Terraria
       }
       else if (type == 331)
       {
-        this.name = "Jungle Spores";
         this.width = 18;
         this.height = 16;
         this.maxStack = 99;
@@ -7024,7 +6566,6 @@ namespace Terraria
       }
       else if (type == 332)
       {
-        this.name = "Loom";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -7036,11 +6577,9 @@ namespace Terraria
         this.width = 20;
         this.height = 20;
         this.value = 300;
-        this.toolTip = "Used for crafting cloth";
       }
       else if (type == 333)
       {
-        this.name = "Piano";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -7055,7 +6594,6 @@ namespace Terraria
       }
       else if (type == 334)
       {
-        this.name = "Dresser";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -7070,7 +6608,6 @@ namespace Terraria
       }
       else if (type == 335)
       {
-        this.name = "Bench";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -7085,7 +6622,6 @@ namespace Terraria
       }
       else if (type == 336)
       {
-        this.name = "Bathtub";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -7100,7 +6636,6 @@ namespace Terraria
       }
       else if (type == 337)
       {
-        this.name = "Red Banner";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -7116,7 +6651,6 @@ namespace Terraria
       }
       else if (type == 338)
       {
-        this.name = "Green Banner";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -7132,7 +6666,6 @@ namespace Terraria
       }
       else if (type == 339)
       {
-        this.name = "Blue Banner";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -7148,7 +6681,6 @@ namespace Terraria
       }
       else if (type == 340)
       {
-        this.name = "Yellow Banner";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -7164,7 +6696,6 @@ namespace Terraria
       }
       else if (type == 341)
       {
-        this.name = "Lamp Post";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -7179,7 +6710,6 @@ namespace Terraria
       }
       else if (type == 342)
       {
-        this.name = "Tiki Torch";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -7194,7 +6724,6 @@ namespace Terraria
       }
       else if (type == 343)
       {
-        this.name = "Barrel";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -7210,7 +6739,6 @@ namespace Terraria
       }
       else if (type == 344)
       {
-        this.name = "Chinese Lantern";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -7225,7 +6753,6 @@ namespace Terraria
       }
       else if (type == 345)
       {
-        this.name = "Cooking Pot";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -7240,7 +6767,6 @@ namespace Terraria
       }
       else if (type == 346)
       {
-        this.name = "Safe";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -7255,7 +6781,6 @@ namespace Terraria
       }
       else if (type == 347)
       {
-        this.name = "Skull Lantern";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -7270,7 +6795,6 @@ namespace Terraria
       }
       else if (type == 348)
       {
-        this.name = "Trash Can";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -7286,7 +6810,6 @@ namespace Terraria
       }
       else if (type == 349)
       {
-        this.name = "Candelabra";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -7301,7 +6824,6 @@ namespace Terraria
       }
       else if (type == 350)
       {
-        this.name = "Pink Vase";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -7317,7 +6839,6 @@ namespace Terraria
       }
       else if (type == 351)
       {
-        this.name = "Mug";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -7333,7 +6854,6 @@ namespace Terraria
       }
       else if (type == 352)
       {
-        this.name = "Keg";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -7345,11 +6865,9 @@ namespace Terraria
         this.width = 24;
         this.height = 24;
         this.value = 600;
-        this.toolTip = "Used for brewing ale";
       }
       else if (type == 353)
       {
-        this.name = "Ale";
         this.UseSound = SoundID.Item3;
         this.useStyle = 2;
         this.useTurn = true;
@@ -7368,7 +6886,6 @@ namespace Terraria
       }
       else if (type == 354)
       {
-        this.name = "Bookcase";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -7383,7 +6900,6 @@ namespace Terraria
       }
       else if (type == 355)
       {
-        this.name = "Throne";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -7398,7 +6914,6 @@ namespace Terraria
       }
       else if (type == 356)
       {
-        this.name = "Bowl";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -7413,7 +6928,6 @@ namespace Terraria
       }
       else if (type == 357)
       {
-        this.name = "Bowl of Soup";
         this.UseSound = SoundID.Item3;
         this.useStyle = 2;
         this.useTurn = true;
@@ -7426,12 +6940,10 @@ namespace Terraria
         this.buffType = 26;
         this.buffTime = 108000;
         this.rare = 1;
-        this.toolTip = "Minor improvements to all stats";
         this.value = 1000;
       }
       else if (type == 358)
       {
-        this.name = "Toilet";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -7447,7 +6959,6 @@ namespace Terraria
       }
       else if (type == 359)
       {
-        this.name = "Grandfather Clock";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -7462,7 +6973,6 @@ namespace Terraria
       }
       else if (type == 360)
       {
-        this.name = "Armor Statue";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -7481,15 +6991,12 @@ namespace Terraria
         this.consumable = true;
         this.useAnimation = 45;
         this.useTime = 45;
-        this.name = "Goblin Battle Standard";
         this.width = 28;
         this.height = 28;
-        this.toolTip = "Summons a Goblin Army";
         this.maxStack = 20;
       }
       else if (type == 362)
       {
-        this.name = "Tattered Cloth";
         this.maxStack = 99;
         this.width = 24;
         this.height = 24;
@@ -7497,7 +7004,6 @@ namespace Terraria
       }
       else if (type == 363)
       {
-        this.name = "Sawmill";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -7509,11 +7015,9 @@ namespace Terraria
         this.width = 20;
         this.height = 20;
         this.value = 300;
-        this.toolTip = "Used for advanced wood crafting";
       }
       else if (type == 364)
       {
-        this.name = "Cobalt Ore";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -7529,7 +7033,6 @@ namespace Terraria
       }
       else if (type == 365)
       {
-        this.name = "Mythril Ore";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -7545,7 +7048,6 @@ namespace Terraria
       }
       else if (type == 366)
       {
-        this.name = "Adamantite Ore";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -7561,7 +7063,6 @@ namespace Terraria
       }
       else if (type == 367)
       {
-        this.name = "Pwnhammer";
         this.useTurn = true;
         this.autoReuse = true;
         this.useStyle = 1;
@@ -7577,12 +7078,10 @@ namespace Terraria
         this.rare = 4;
         this.value = 39000;
         this.melee = true;
-        this.toolTip = "Strong enough to destroy Demon Altars";
       }
       else if (type == 368)
       {
         this.autoReuse = true;
-        this.name = "Excalibur";
         this.useStyle = 1;
         this.useAnimation = 25;
         this.useTime = 25;
@@ -7599,7 +7098,6 @@ namespace Terraria
       else if (type == 369)
       {
         this.autoReuse = true;
-        this.name = "Hallowed Seeds";
         this.useTurn = true;
         this.useStyle = 1;
         this.useAnimation = 15;
@@ -7614,7 +7112,6 @@ namespace Terraria
       }
       else if (type == 370)
       {
-        this.name = "Ebonsand Block";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -7629,123 +7126,96 @@ namespace Terraria
       }
       else if (type == 371)
       {
-        this.name = "Cobalt Hat";
         this.width = 18;
         this.height = 18;
         this.defense = 2;
         this.headSlot = 29;
         this.rare = 4;
         this.value = 75000;
-        this.toolTip = "Increases maximum mana by 40";
-        this.toolTip2 = "9% increased magic critical strike chance";
       }
       else if (type == 372)
       {
-        this.name = "Cobalt Helmet";
         this.width = 18;
         this.height = 18;
         this.defense = 11;
         this.headSlot = 30;
         this.rare = 4;
         this.value = 75000;
-        this.toolTip = "7% increased movement speed";
-        this.toolTip2 = "12% increased melee speed";
       }
       else if (type == 373)
       {
-        this.name = "Cobalt Mask";
         this.width = 18;
         this.height = 18;
         this.defense = 4;
         this.headSlot = 31;
         this.rare = 4;
         this.value = 75000;
-        this.toolTip = "10% increased ranged damage";
-        this.toolTip2 = "6% increased ranged critical strike chance";
       }
       else if (type == 374)
       {
-        this.name = "Cobalt Breastplate";
         this.width = 18;
         this.height = 18;
         this.defense = 8;
         this.bodySlot = 17;
         this.rare = 4;
         this.value = 60000;
-        this.toolTip2 = "3% increased critical strike chance";
       }
       else if (type == 375)
       {
-        this.name = "Cobalt Leggings";
         this.width = 18;
         this.height = 18;
         this.defense = 7;
         this.legSlot = 16;
         this.rare = 4;
         this.value = 45000;
-        this.toolTip2 = "10% increased movement speed";
       }
       else if (type == 376)
       {
-        this.name = "Mythril Hood";
         this.width = 18;
         this.height = 18;
         this.defense = 3;
         this.headSlot = 32;
         this.rare = 4;
         this.value = 112500;
-        this.toolTip = "Increases maximum mana by 60";
-        this.toolTip2 = "15% increased magic damage";
       }
       else if (type == 377)
       {
-        this.name = "Mythril Helmet";
         this.width = 18;
         this.height = 18;
         this.defense = 16;
         this.headSlot = 33;
         this.rare = 4;
         this.value = 112500;
-        this.toolTip = "5% increased melee critical strike chance";
-        this.toolTip2 = "10% increased melee damage";
       }
       else if (type == 378)
       {
-        this.name = "Mythril Hat";
         this.width = 18;
         this.height = 18;
         this.defense = 6;
         this.headSlot = 34;
         this.rare = 4;
         this.value = 112500;
-        this.toolTip = "12% increased ranged damage";
-        this.toolTip2 = "7% increased ranged critical strike chance";
       }
       else if (type == 379)
       {
-        this.name = "Mythril Chainmail";
         this.width = 18;
         this.height = 18;
         this.defense = 12;
         this.bodySlot = 18;
         this.rare = 4;
         this.value = 90000;
-        this.toolTip2 = "5% increased damage";
       }
       else if (type == 380)
       {
-        this.name = "Mythril Greaves";
         this.width = 18;
         this.height = 18;
         this.defense = 9;
         this.legSlot = 17;
         this.rare = 4;
         this.value = 67500;
-        this.toolTip2 = "3% increased critical strike chance";
       }
       else if (type == 381)
       {
-        this.name = "Cobalt Bar";
         this.width = 20;
         this.height = 20;
         this.maxStack = 99;
@@ -7762,7 +7232,6 @@ namespace Terraria
       }
       else if (type == 382)
       {
-        this.name = "Mythril Bar";
         this.width = 20;
         this.height = 20;
         this.maxStack = 99;
@@ -7779,7 +7248,6 @@ namespace Terraria
       }
       else if (type == 383)
       {
-        this.name = "Cobalt Chainsaw";
         this.useStyle = 5;
         this.useAnimation = 25;
         this.useTime = 8;
@@ -7800,7 +7268,6 @@ namespace Terraria
       }
       else if (type == 384)
       {
-        this.name = "Mythril Chainsaw";
         this.useStyle = 5;
         this.useAnimation = 25;
         this.useTime = 8;
@@ -7821,7 +7288,6 @@ namespace Terraria
       }
       else if (type == 385)
       {
-        this.name = "Cobalt Drill";
         this.useStyle = 5;
         this.useAnimation = 25;
         this.useTime = 13;
@@ -7839,11 +7305,9 @@ namespace Terraria
         this.noUseGraphic = true;
         this.melee = true;
         this.channel = true;
-        this.toolTip = "Can mine Mythril and Orichalcum";
       }
       else if (type == 386)
       {
-        this.name = "Mythril Drill";
         this.useStyle = 5;
         this.useAnimation = 25;
         this.useTime = 10;
@@ -7861,11 +7325,9 @@ namespace Terraria
         this.noUseGraphic = true;
         this.melee = true;
         this.channel = true;
-        this.toolTip = "Can mine Adamantite and Titanium";
       }
       else if (type == 387)
       {
-        this.name = "Adamantite Chainsaw";
         this.useStyle = 5;
         this.useAnimation = 25;
         this.useTime = 6;
@@ -7886,7 +7348,6 @@ namespace Terraria
       }
       else if (type == 388)
       {
-        this.name = "Adamantite Drill";
         this.useStyle = 5;
         this.useAnimation = 25;
         this.useTime = 7;
@@ -7907,7 +7368,6 @@ namespace Terraria
       }
       else if (type == 389)
       {
-        this.name = "Dao of Pow";
         this.noMelee = true;
         this.useStyle = 5;
         this.useAnimation = 45;
@@ -7925,12 +7385,9 @@ namespace Terraria
         this.value = 144000;
         this.melee = true;
         this.channel = true;
-        this.toolTip = "Has a chance to confuse";
-        this.toolTip2 = "'Find your inner pieces'";
       }
       else if (type == 390)
       {
-        this.name = "Mythril Halberd";
         this.useStyle = 5;
         this.useAnimation = 26;
         this.useTime = 26;
@@ -7950,7 +7407,6 @@ namespace Terraria
       }
       else if (type == 391)
       {
-        this.name = "Adamantite Bar";
         this.width = 20;
         this.height = 20;
         this.maxStack = 99;
@@ -7967,7 +7423,6 @@ namespace Terraria
       }
       else if (type == 392)
       {
-        this.name = "Glass Wall";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -7981,64 +7436,49 @@ namespace Terraria
       }
       else if (type == 393)
       {
-        this.name = "Compass";
         this.width = 24;
         this.height = 28;
         this.rare = 1;
         this.value = Item.sellPrice(0, 0, 25, 0);
         this.accessory = true;
-        this.toolTip = "Shows horizontal position";
       }
       else if (type == 394)
       {
-        this.name = "Diving Gear";
         this.width = 24;
         this.height = 28;
         this.rare = 4;
         this.value = 100000;
         this.accessory = true;
-        this.toolTip = "Grants the ability to swim";
-        this.toolTip2 = "Greatly extends underwater breathing";
         this.faceSlot = (sbyte) 4;
       }
       else if (type == 395)
       {
-        this.name = "GPS";
         this.width = 24;
         this.height = 28;
         this.rare = 3;
         this.value = Item.sellPrice(0, 3, 0, 0);
         this.accessory = true;
-        this.toolTip = "Shows position";
-        this.toolTip2 = "Tells the time";
       }
       else if (type == 396)
       {
-        this.name = "Obsidian Horseshoe";
         this.width = 24;
         this.height = 28;
         this.rare = 4;
         this.value = 100000;
         this.accessory = true;
-        this.toolTip = "Negates fall damage";
-        this.toolTip2 = "Grants immunity to fire blocks";
       }
       else if (type == 397)
       {
-        this.name = "Obsidian Shield";
         this.width = 24;
         this.height = 28;
         this.rare = 4;
         this.value = 100000;
         this.accessory = true;
         this.defense = 2;
-        this.toolTip = "Grants immunity to knockback";
-        this.toolTip2 = "Grants immunity to fire blocks";
         this.shieldSlot = (sbyte) 3;
       }
       else if (type == 398)
       {
-        this.name = "Tinkerer's Workshop";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -8050,94 +7490,72 @@ namespace Terraria
         this.width = 26;
         this.height = 20;
         this.value = 100000;
-        this.toolTip = "Allows the combining of some accessories";
       }
       else if (type == 399)
       {
-        this.name = "Cloud in a Balloon";
         this.width = 14;
         this.height = 28;
         this.rare = 4;
         this.value = 150000;
         this.accessory = true;
-        this.toolTip = "Allows the holder to double jump";
-        this.toolTip2 = "Increases jump height";
         this.balloonSlot = (sbyte) 4;
       }
       else if (type == 400)
       {
-        this.name = "Adamantite Headgear";
         this.width = 18;
         this.height = 18;
         this.defense = 4;
         this.headSlot = 35;
         this.rare = 4;
         this.value = 150000;
-        this.toolTip = "Increases maximum mana by 80";
-        this.toolTip2 = "11% increased magic damage and critical strike chance";
       }
       else if (type == 401)
       {
-        this.name = "Adamantite Helmet";
         this.width = 18;
         this.height = 18;
         this.defense = 22;
         this.headSlot = 36;
         this.rare = 4;
         this.value = 150000;
-        this.toolTip = "7% increased melee critical strike chance";
-        this.toolTip2 = "14% increased melee damage";
       }
       else if (type == 402)
       {
-        this.name = "Adamantite Mask";
         this.width = 18;
         this.height = 18;
         this.defense = 8;
         this.headSlot = 37;
         this.rare = 4;
         this.value = 150000;
-        this.toolTip = "14% increased ranged damage";
-        this.toolTip2 = "8% increased ranged critical strike chance";
       }
       else if (type == 403)
       {
-        this.name = "Adamantite Breastplate";
         this.width = 18;
         this.height = 18;
         this.defense = 16;
         this.bodySlot = 19;
         this.rare = 4;
         this.value = 120000;
-        this.toolTip = "6% increased damage";
       }
       else if (type == 404)
       {
-        this.name = "Adamantite Leggings";
         this.width = 18;
         this.height = 18;
         this.defense = 12;
         this.legSlot = 18;
         this.rare = 4;
         this.value = 90000;
-        this.toolTip = "4% increased critical strike chance";
-        this.toolTip2 = "5% increased movement speed";
       }
       else if (type == 405)
       {
-        this.name = "Spectre Boots";
         this.width = 28;
         this.height = 24;
         this.accessory = true;
         this.rare = 4;
-        this.toolTip = "Allows flight";
-        this.toolTip2 = "The wearer can run super fast";
         this.value = 100000;
         this.shoeSlot = (sbyte) 13;
       }
       else if (type == 406)
       {
-        this.name = "Adamantite Glaive";
         this.useStyle = 5;
         this.useAnimation = 25;
         this.useTime = 25;
@@ -8157,18 +7575,15 @@ namespace Terraria
       }
       else if (type == 407)
       {
-        this.name = "Toolbelt";
         this.width = 28;
         this.height = 24;
         this.accessory = true;
         this.rare = 3;
-        this.toolTip = "Increases block placement range";
         this.value = 100000;
         this.waistSlot = (sbyte) 5;
       }
       else if (type == 408)
       {
-        this.name = "Pearlsand Block";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -8183,7 +7598,6 @@ namespace Terraria
       }
       else if (type == 409)
       {
-        this.name = "Pearlstone Block";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -8197,7 +7611,6 @@ namespace Terraria
       }
       else if (type == 410)
       {
-        this.name = "Mining Shirt";
         this.width = 18;
         this.height = 18;
         this.defense = 1;
@@ -8207,7 +7620,6 @@ namespace Terraria
       }
       else if (type == 411)
       {
-        this.name = "Mining Pants";
         this.width = 18;
         this.height = 18;
         this.defense = 1;
@@ -8217,7 +7629,6 @@ namespace Terraria
       }
       else if (type == 412)
       {
-        this.name = "Pearlstone Brick";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -8231,7 +7642,6 @@ namespace Terraria
       }
       else if (type == 413)
       {
-        this.name = "Iridescent Brick";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -8245,7 +7655,6 @@ namespace Terraria
       }
       else if (type == 414)
       {
-        this.name = "Mudstone Block";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -8259,7 +7668,6 @@ namespace Terraria
       }
       else if (type == 415)
       {
-        this.name = "Cobalt Brick";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -8273,7 +7681,6 @@ namespace Terraria
       }
       else if (type == 416)
       {
-        this.name = "Mythril Brick";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -8287,7 +7694,6 @@ namespace Terraria
       }
       else if (type == 417)
       {
-        this.name = "Pearlstone Brick Wall";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -8301,7 +7707,6 @@ namespace Terraria
       }
       else if (type == 418)
       {
-        this.name = "Iridescent Brick Wall";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -8315,7 +7720,6 @@ namespace Terraria
       }
       else if (type == 419)
       {
-        this.name = "Mudstone Brick Wall";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -8329,7 +7733,6 @@ namespace Terraria
       }
       else if (type == 420)
       {
-        this.name = "Cobalt Brick Wall";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -8343,7 +7746,6 @@ namespace Terraria
       }
       else if (type == 421)
       {
-        this.name = "Mythril Brick Wall";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -8358,7 +7760,6 @@ namespace Terraria
       else if (type == 422)
       {
         this.useStyle = 1;
-        this.name = "Holy Water";
         this.shootSpeed = 9f;
         this.rare = 3;
         this.damage = 20;
@@ -8374,12 +7775,10 @@ namespace Terraria
         this.noUseGraphic = true;
         this.noMelee = true;
         this.value = 200;
-        this.toolTip = "Spreads the Hallow to some blocks";
       }
       else if (type == 423)
       {
         this.useStyle = 1;
-        this.name = "Unholy Water";
         this.shootSpeed = 9f;
         this.rare = 3;
         this.damage = 20;
@@ -8395,11 +7794,9 @@ namespace Terraria
         this.noUseGraphic = true;
         this.noMelee = true;
         this.value = 200;
-        this.toolTip = "Spreads the corruption to some blocks";
       }
       else if (type == 424)
       {
-        this.name = "Silt Block";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -8416,7 +7813,6 @@ namespace Terraria
         this.channel = true;
         this.damage = 0;
         this.useStyle = 1;
-        this.name = "Fairy Bell";
         this.width = 24;
         this.height = 24;
         this.UseSound = SoundID.Item25;
@@ -8424,13 +7820,11 @@ namespace Terraria
         this.useTime = 20;
         this.rare = 5;
         this.noMelee = true;
-        this.toolTip = "Summons a magical fairy";
         this.value = this.value = 250000;
         this.buffType = 27;
       }
       else if (type == 426)
       {
-        this.name = "Breaker Blade";
         this.useStyle = 1;
         this.useAnimation = 30;
         this.knockBack = 8f;
@@ -8447,7 +7841,6 @@ namespace Terraria
       {
         this.flame = true;
         this.noWet = true;
-        this.name = "Blue Torch";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -8466,7 +7859,6 @@ namespace Terraria
       {
         this.flame = true;
         this.noWet = true;
-        this.name = "Red Torch";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -8485,7 +7877,6 @@ namespace Terraria
       {
         this.flame = true;
         this.noWet = true;
-        this.name = "Green Torch";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -8504,7 +7895,6 @@ namespace Terraria
       {
         this.flame = true;
         this.noWet = true;
-        this.name = "Purple Torch";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -8523,7 +7913,6 @@ namespace Terraria
       {
         this.flame = true;
         this.noWet = true;
-        this.name = "White Torch";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -8542,7 +7931,6 @@ namespace Terraria
       {
         this.flame = true;
         this.noWet = true;
-        this.name = "Yellow Torch";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -8561,7 +7949,6 @@ namespace Terraria
       {
         this.flame = true;
         this.noWet = true;
-        this.name = "Demon Torch";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -8583,7 +7970,6 @@ namespace Terraria
         this.useAnimation = 12;
         this.useTime = 4;
         this.reuseDelay = 14;
-        this.name = "Clockwork Assault Rifle";
         this.width = 50;
         this.height = 18;
         this.shoot = 10;
@@ -8595,8 +7981,6 @@ namespace Terraria
         this.value = 150000;
         this.rare = 4;
         this.ranged = true;
-        this.toolTip = "Three round burst";
-        this.toolTip2 = "Only the first shot consumes ammo";
       }
       else if (type == 435)
       {
@@ -8604,7 +7988,6 @@ namespace Terraria
         this.autoReuse = true;
         this.useAnimation = 25;
         this.useTime = 25;
-        this.name = "Cobalt Repeater";
         this.width = 50;
         this.height = 18;
         this.shoot = 1;
@@ -8624,7 +8007,6 @@ namespace Terraria
         this.autoReuse = true;
         this.useAnimation = 23;
         this.useTime = 23;
-        this.name = "Mythril Repeater";
         this.width = 50;
         this.height = 18;
         this.shoot = 1;
@@ -8644,7 +8026,6 @@ namespace Terraria
         this.damage = 0;
         this.knockBack = 7f;
         this.useStyle = 5;
-        this.name = "Dual Hook";
         this.shootSpeed = 14f;
         this.shoot = 73;
         this.width = 18;
@@ -8658,7 +8039,6 @@ namespace Terraria
       }
       else if (type == 438)
       {
-        this.name = "Star Statue";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -8674,7 +8054,6 @@ namespace Terraria
       }
       else if (type == 439)
       {
-        this.name = "Sword Statue";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -8690,7 +8069,6 @@ namespace Terraria
       }
       else if (type == 440)
       {
-        this.name = "Slime Statue";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -8706,7 +8084,6 @@ namespace Terraria
       }
       else if (type == 441)
       {
-        this.name = "Goblin Statue";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -8722,7 +8099,6 @@ namespace Terraria
       }
       else if (type == 442)
       {
-        this.name = "Shield Statue";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -8738,7 +8114,6 @@ namespace Terraria
       }
       else if (type == 443)
       {
-        this.name = "Bat Statue";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -8754,7 +8129,6 @@ namespace Terraria
       }
       else if (type == 444)
       {
-        this.name = "Fish Statue";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -8770,7 +8144,6 @@ namespace Terraria
       }
       else if (type == 445)
       {
-        this.name = "Bunny Statue";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -8786,7 +8159,6 @@ namespace Terraria
       }
       else if (type == 446)
       {
-        this.name = "Skeleton Statue";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -8802,7 +8174,6 @@ namespace Terraria
       }
       else if (type == 447)
       {
-        this.name = "Reaper Statue";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -8818,7 +8189,6 @@ namespace Terraria
       }
       else if (type == 448)
       {
-        this.name = "Woman Statue";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -8834,7 +8204,6 @@ namespace Terraria
       }
       else if (type == 449)
       {
-        this.name = "Imp Statue";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -8850,7 +8219,6 @@ namespace Terraria
       }
       else if (type == 450)
       {
-        this.name = "Gargoyle Statue";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -8866,7 +8234,6 @@ namespace Terraria
       }
       else if (type == 451)
       {
-        this.name = "Gloom Statue";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -8882,7 +8249,6 @@ namespace Terraria
       }
       else if (type == 452)
       {
-        this.name = "Hornet Statue";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -8898,7 +8264,6 @@ namespace Terraria
       }
       else if (type == 453)
       {
-        this.name = "Bomb Statue";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -8914,7 +8279,6 @@ namespace Terraria
       }
       else if (type == 454)
       {
-        this.name = "Crab Statue";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -8930,7 +8294,6 @@ namespace Terraria
       }
       else if (type == 455)
       {
-        this.name = "Hammer Statue";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -8946,7 +8309,6 @@ namespace Terraria
       }
       else if (type == 456)
       {
-        this.name = "Potion Statue";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -8962,7 +8324,6 @@ namespace Terraria
       }
       else if (type == 457)
       {
-        this.name = "Spear Statue";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -8978,7 +8339,6 @@ namespace Terraria
       }
       else if (type == 458)
       {
-        this.name = "Cross Statue";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -8994,7 +8354,6 @@ namespace Terraria
       }
       else if (type == 459)
       {
-        this.name = "Jellyfish Statue";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -9010,7 +8369,6 @@ namespace Terraria
       }
       else if (type == 460)
       {
-        this.name = "Bow Statue";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -9026,7 +8384,6 @@ namespace Terraria
       }
       else if (type == 461)
       {
-        this.name = "Boomerang Statue";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -9042,7 +8399,6 @@ namespace Terraria
       }
       else if (type == 462)
       {
-        this.name = "Boot Statue";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -9058,7 +8414,6 @@ namespace Terraria
       }
       else if (type == 463)
       {
-        this.name = "Chest Statue";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -9074,7 +8429,6 @@ namespace Terraria
       }
       else if (type == 464)
       {
-        this.name = "Bird Statue";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -9090,7 +8444,6 @@ namespace Terraria
       }
       else if (type == 465)
       {
-        this.name = "Axe Statue";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -9106,7 +8459,6 @@ namespace Terraria
       }
       else if (type == 466)
       {
-        this.name = "Corrupt Statue";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -9122,7 +8474,6 @@ namespace Terraria
       }
       else if (type == 467)
       {
-        this.name = "Tree Statue";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -9138,7 +8489,6 @@ namespace Terraria
       }
       else if (type == 468)
       {
-        this.name = "Anvil Statue";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -9154,7 +8504,6 @@ namespace Terraria
       }
       else if (type == 469)
       {
-        this.name = "Pickaxe Statue";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -9170,7 +8519,6 @@ namespace Terraria
       }
       else if (type == 470)
       {
-        this.name = "Mushroom Statue";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -9185,7 +8533,6 @@ namespace Terraria
       }
       else if (type == 471)
       {
-        this.name = "Eyeball Statue";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -9201,7 +8548,6 @@ namespace Terraria
       }
       else if (type == 472)
       {
-        this.name = "Pillar Statue";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -9217,7 +8563,6 @@ namespace Terraria
       }
       else if (type == 473)
       {
-        this.name = "Heart Statue";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -9233,7 +8578,6 @@ namespace Terraria
       }
       else if (type == 474)
       {
-        this.name = "Pot Statue";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -9249,7 +8593,6 @@ namespace Terraria
       }
       else if (type == 475)
       {
-        this.name = "Sunflower Statue";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -9265,7 +8608,6 @@ namespace Terraria
       }
       else if (type == 476)
       {
-        this.name = "King Statue";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -9281,7 +8623,6 @@ namespace Terraria
       }
       else if (type == 477)
       {
-        this.name = "Queen Statue";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -9297,7 +8638,6 @@ namespace Terraria
       }
       else if (type == 478)
       {
-        this.name = "Pirahna Statue";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -9313,7 +8653,6 @@ namespace Terraria
       }
       else if (type == 479)
       {
-        this.name = "Planked Wall";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -9327,7 +8666,6 @@ namespace Terraria
       }
       else if (type == 480)
       {
-        this.name = "Wooden Beam";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -9345,7 +8683,6 @@ namespace Terraria
         this.autoReuse = true;
         this.useAnimation = 20;
         this.useTime = 20;
-        this.name = "Adamantite Repeater";
         this.width = 50;
         this.height = 18;
         this.shoot = 1;
@@ -9361,7 +8698,6 @@ namespace Terraria
       }
       else if (type == 482)
       {
-        this.name = "Adamantite Sword";
         this.useStyle = 1;
         this.useAnimation = 27;
         this.useTime = 27;
@@ -9379,7 +8715,6 @@ namespace Terraria
       {
         this.useTurn = true;
         this.autoReuse = true;
-        this.name = "Cobalt Sword";
         this.useStyle = 1;
         this.useAnimation = 23;
         this.useTime = 23;
@@ -9395,7 +8730,6 @@ namespace Terraria
       }
       else if (type == 484)
       {
-        this.name = "Mythril Sword";
         this.useStyle = 1;
         this.useAnimation = 26;
         this.useTime = 26;
@@ -9412,26 +8746,21 @@ namespace Terraria
       else if (type == 485)
       {
         this.rare = 4;
-        this.name = "Moon Charm";
         this.width = 24;
         this.height = 28;
         this.accessory = true;
-        this.toolTip = "Turns the holder into a werewolf on full moons";
         this.value = 150000;
       }
       else if (type == 486)
       {
-        this.name = "Ruler";
         this.width = 10;
         this.height = 26;
         this.accessory = true;
-        this.toolTip = "Creates a grid on screen for block placement";
         this.value = 10000;
         this.rare = 1;
       }
       else if (type == 487)
       {
-        this.name = "Crystal Ball";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -9447,7 +8776,6 @@ namespace Terraria
       }
       else if (type == 488)
       {
-        this.name = "Disco Ball";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -9462,52 +8790,42 @@ namespace Terraria
       }
       else if (type == 489)
       {
-        this.name = "Sorcerer Emblem";
         this.width = 24;
         this.height = 24;
         this.accessory = true;
-        this.toolTip = "15% increased magic damage";
         this.value = 100000;
         this.rare = 4;
       }
       else if (type == 491)
       {
-        this.name = "Ranger Emblem";
         this.width = 24;
         this.height = 24;
         this.accessory = true;
-        this.toolTip = "15% increased ranged damage";
         this.value = 100000;
         this.rare = 4;
       }
       else if (type == 490)
       {
-        this.name = "Warrior Emblem";
         this.width = 24;
         this.height = 24;
         this.accessory = true;
-        this.toolTip = "15% increased melee damage";
         this.value = 100000;
         this.rare = 4;
       }
       else if (type == 492)
       {
-        this.name = "Demon Wings";
         this.width = 24;
         this.height = 8;
         this.accessory = true;
-        this.toolTip = "Allows flight and slow fall";
         this.value = 400000;
         this.rare = 5;
         this.wingSlot = (sbyte) 1;
       }
       else if (type == 493)
       {
-        this.name = "Angel Wings";
         this.width = 24;
         this.height = 8;
         this.accessory = true;
-        this.toolTip = "Allows flight and slow fall";
         this.value = 400000;
         this.rare = 5;
         this.wingSlot = (sbyte) 2;
@@ -9518,7 +8836,6 @@ namespace Terraria
         this.useStyle = 5;
         this.useAnimation = 12;
         this.useTime = 12;
-        this.name = "Magical Harp";
         this.width = 12;
         this.height = 28;
         this.shoot = 76;
@@ -9538,7 +8855,6 @@ namespace Terraria
         this.channel = true;
         this.damage = 74;
         this.useStyle = 1;
-        this.name = "Rainbow Rod";
         this.shootSpeed = 6f;
         this.shoot = 79;
         this.width = 26;
@@ -9548,7 +8864,6 @@ namespace Terraria
         this.useTime = 18;
         this.noMelee = true;
         this.knockBack = 6f;
-        this.toolTip = "Casts a controllable rainbow";
         this.value = 200000;
         this.magic = true;
       }
@@ -9558,7 +8873,6 @@ namespace Terraria
         this.mana = 6;
         this.damage = 28;
         this.useStyle = 1;
-        this.name = "Ice Rod";
         this.shootSpeed = 12f;
         this.shoot = 80;
         this.width = 26;
@@ -9570,24 +8884,20 @@ namespace Terraria
         this.autoReuse = true;
         this.noMelee = true;
         this.knockBack = 0.0f;
-        this.toolTip = "Summons a block of ice";
         this.value = Item.buyPrice(0, 50, 0, 0);
         this.magic = true;
         this.knockBack = 2f;
       }
       else if (type == 497)
       {
-        this.name = "Neptune's Shell";
         this.width = 24;
         this.height = 28;
         this.accessory = true;
-        this.toolTip = "Transforms the holder into merfolk when entering water";
         this.value = 150000;
         this.rare = 5;
       }
       else if (type == 498)
       {
-        this.name = "Mannequin";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -9601,7 +8911,6 @@ namespace Terraria
       }
       else if (type == 499)
       {
-        this.name = "Greater Healing Potion";
         this.UseSound = SoundID.Item3;
         this.healLife = 150;
         this.useStyle = 2;
@@ -9618,7 +8927,6 @@ namespace Terraria
       }
       else if (type == 500)
       {
-        this.name = "Greater Mana Potion";
         this.UseSound = SoundID.Item3;
         this.healMana = 200;
         this.useStyle = 2;
@@ -9634,7 +8942,6 @@ namespace Terraria
       }
       else if (type == 501)
       {
-        this.name = "Pixie Dust";
         this.width = 16;
         this.height = 14;
         this.maxStack = 99;
@@ -9643,7 +8950,6 @@ namespace Terraria
       }
       else if (type == 502)
       {
-        this.name = "Crystal Shard";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -9659,7 +8965,6 @@ namespace Terraria
       }
       else if (type == 503)
       {
-        this.name = "Clown Hat";
         this.width = 18;
         this.height = 18;
         this.headSlot = 40;
@@ -9669,7 +8974,6 @@ namespace Terraria
       }
       else if (type == 504)
       {
-        this.name = "Clown Shirt";
         this.width = 18;
         this.height = 18;
         this.bodySlot = 23;
@@ -9679,7 +8983,6 @@ namespace Terraria
       }
       else if (type == 505)
       {
-        this.name = "Clown Pants";
         this.width = 18;
         this.height = 18;
         this.legSlot = 22;
@@ -9693,7 +8996,6 @@ namespace Terraria
         this.autoReuse = true;
         this.useAnimation = 30;
         this.useTime = 6;
-        this.name = "Flamethrower";
         this.width = 50;
         this.height = 18;
         this.shoot = 85;
@@ -9706,7 +9008,6 @@ namespace Terraria
         this.value = 500000;
         this.rare = 5;
         this.ranged = true;
-        this.toolTip = "Uses gel for ammo";
       }
       else if (type == 507)
       {
@@ -9714,7 +9015,6 @@ namespace Terraria
         this.useStyle = 1;
         this.useAnimation = 12;
         this.useTime = 12;
-        this.name = "Bell";
         this.width = 12;
         this.height = 28;
         this.autoReuse = true;
@@ -9727,7 +9027,6 @@ namespace Terraria
         this.useStyle = 5;
         this.useAnimation = 12;
         this.useTime = 12;
-        this.name = "Harp";
         this.width = 12;
         this.height = 28;
         this.autoReuse = true;
@@ -9741,11 +9040,9 @@ namespace Terraria
         this.useAnimation = 15;
         this.useTime = 5;
         this.autoReuse = true;
-        this.name = "Wrench";
         this.width = 24;
         this.height = 28;
         this.rare = 1;
-        this.toolTip = "Places red wire";
         this.value = 20000;
         this.mech = true;
         this.tileBoost = 20;
@@ -9757,18 +9054,15 @@ namespace Terraria
         this.useAnimation = 15;
         this.useTime = 5;
         this.autoReuse = true;
-        this.name = "Wire Cutter";
         this.width = 24;
         this.height = 28;
         this.rare = 1;
-        this.toolTip = "Removes wire";
         this.value = 20000;
         this.mech = true;
         this.tileBoost = 20;
       }
       else if (type == 511)
       {
-        this.name = "Active Stone Block";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -9784,7 +9078,6 @@ namespace Terraria
       }
       else if (type == 512)
       {
-        this.name = "Inactive Stone Block";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -9800,7 +9093,6 @@ namespace Terraria
       }
       else if (type == 513)
       {
-        this.name = "Lever";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -9820,7 +9112,6 @@ namespace Terraria
         this.useStyle = 5;
         this.useAnimation = 12;
         this.useTime = 12;
-        this.name = "Laser Rifle";
         this.width = 36;
         this.height = 22;
         this.shoot = 88;
@@ -9836,7 +9127,6 @@ namespace Terraria
       }
       else if (type == 515)
       {
-        this.name = "Crystal Bullet";
         this.shootSpeed = 5f;
         this.shoot = 89;
         this.damage = 9;
@@ -9849,11 +9139,9 @@ namespace Terraria
         this.value = 30;
         this.ranged = true;
         this.rare = 3;
-        this.toolTip = "Creates several crystal shards on impact";
       }
       else if (type == 516)
       {
-        this.name = "Holy Arrow";
         this.shootSpeed = 3.5f;
         this.shoot = 91;
         this.damage = 13;
@@ -9866,12 +9154,10 @@ namespace Terraria
         this.value = 80;
         this.ranged = true;
         this.rare = 3;
-        this.toolTip = "Summons falling stars on impact";
       }
       else if (type == 517)
       {
         this.useStyle = 1;
-        this.name = "Magic Dagger";
         this.shootSpeed = 12f;
         this.shoot = 93;
         this.damage = 40;
@@ -9887,7 +9173,6 @@ namespace Terraria
         this.knockBack = 3.75f;
         this.magic = true;
         this.rare = 4;
-        this.toolTip = "A magical returning dagger";
       }
       else if (type == 518)
       {
@@ -9895,7 +9180,6 @@ namespace Terraria
         this.rare = 4;
         this.mana = 4;
         this.UseSound = SoundID.Item9;
-        this.name = "Crystal Storm";
         this.noMelee = true;
         this.useStyle = 5;
         this.damage = 25;
@@ -9907,7 +9191,6 @@ namespace Terraria
         this.scale = 0.9f;
         this.shootSpeed = 16f;
         this.knockBack = 5f;
-        this.toolTip = "Summons rapid fire crystal shards";
         this.magic = true;
         this.value = 500000;
       }
@@ -9917,7 +9200,6 @@ namespace Terraria
         this.rare = 4;
         this.mana = 12;
         this.UseSound = SoundID.Item20;
-        this.name = "Cursed Flames";
         this.noMelee = true;
         this.useStyle = 5;
         this.damage = 36;
@@ -9929,44 +9211,36 @@ namespace Terraria
         this.scale = 0.9f;
         this.shootSpeed = 10f;
         this.knockBack = 6.5f;
-        this.toolTip = "Summons unholy fire balls";
         this.magic = true;
         this.value = 500000;
       }
       else if (type == 520)
       {
-        this.name = "Soul of Light";
         this.width = 18;
         this.height = 18;
         this.maxStack = 999;
         this.value = 1000;
         this.rare = 3;
-        this.toolTip = "'The essence of light creatures'";
       }
       else if (type == 521)
       {
-        this.name = "Soul of Night";
         this.width = 18;
         this.height = 18;
         this.maxStack = 999;
         this.value = 1000;
         this.rare = 3;
-        this.toolTip = "'The essence of dark creatures'";
       }
       else if (type == 522)
       {
-        this.name = "Cursed Flame";
         this.width = 12;
         this.height = 14;
         this.maxStack = 99;
         this.value = 4000;
         this.rare = 3;
-        this.toolTip = "'Not even water can put the flame out'";
       }
       else if (type == 523)
       {
         this.flame = true;
-        this.name = "Cursed Torch";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -9981,11 +9255,9 @@ namespace Terraria
         this.height = 12;
         this.value = 300;
         this.rare = 1;
-        this.toolTip = "Can be placed in water";
       }
       else if (type == 524)
       {
-        this.name = "Adamantite Forge";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -9997,12 +9269,10 @@ namespace Terraria
         this.width = 44;
         this.height = 30;
         this.value = 50000;
-        this.toolTip = "Used to smelt adamantite ore";
         this.rare = 3;
       }
       else if (type == 525)
       {
-        this.name = "Mythril Anvil";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -10014,42 +9284,34 @@ namespace Terraria
         this.width = 28;
         this.height = 14;
         this.value = 25000;
-        this.toolTip = "Used to craft items from mythril and adamantite bars";
         this.rare = 3;
       }
       else if (type == 526)
       {
-        this.name = "Unicorn Horn";
         this.width = 14;
         this.height = 14;
         this.maxStack = 99;
         this.value = 15000;
         this.rare = 1;
-        this.toolTip = "'Sharp and magical!'";
       }
       else if (type == 527)
       {
-        this.name = "Dark Shard";
         this.width = 14;
         this.height = 14;
         this.maxStack = 99;
         this.value = 4500;
         this.rare = 2;
-        this.toolTip = "'Sometimes carried by creatures in corrupt deserts'";
       }
       else if (type == 528)
       {
-        this.name = "Light Shard";
         this.width = 14;
         this.height = 14;
         this.maxStack = 99;
         this.value = 4500;
         this.rare = 2;
-        this.toolTip = "'Sometimes carried by creatures in light deserts'";
       }
       else if (type == 529)
       {
-        this.name = "Red Pressure Plate";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -10064,11 +9326,9 @@ namespace Terraria
         this.mech = true;
         this.value = 5000;
         this.mech = true;
-        this.toolTip = "Activates when stepped on";
       }
       else if (type == 530)
       {
-        this.name = "Wire";
         this.width = 12;
         this.height = 18;
         this.maxStack = 999;
@@ -10078,21 +9338,17 @@ namespace Terraria
       }
       else if (type == 531)
       {
-        this.name = "Spell Tome";
         this.width = 12;
         this.height = 18;
         this.maxStack = 99;
         this.value = 50000;
         this.rare = 1;
-        this.toolTip = "Can be enchanted";
       }
       else if (type == 532)
       {
-        this.name = "Star Cloak";
         this.width = 20;
         this.height = 24;
         this.value = 100000;
-        this.toolTip = "Causes stars to fall when injured";
         this.accessory = true;
         this.rare = 4;
         this.backSlot = (sbyte) 2;
@@ -10103,7 +9359,6 @@ namespace Terraria
         this.autoReuse = true;
         this.useAnimation = 7;
         this.useTime = 7;
-        this.name = "Megashark";
         this.width = 50;
         this.height = 18;
         this.shoot = 10;
@@ -10114,8 +9369,6 @@ namespace Terraria
         this.noMelee = true;
         this.value = 300000;
         this.rare = 5;
-        this.toolTip = "50% chance to not consume ammo";
-        this.toolTip2 = "'Minishark's older brother'";
         this.knockBack = 1f;
         this.ranged = true;
       }
@@ -10125,7 +9378,6 @@ namespace Terraria
         this.useStyle = 5;
         this.useAnimation = 45;
         this.useTime = 45;
-        this.name = "Shotgun";
         this.width = 50;
         this.height = 14;
         this.shoot = 10;
@@ -10137,25 +9389,20 @@ namespace Terraria
         this.value = 250000;
         this.rare = 4;
         this.ranged = true;
-        this.toolTip = "Fires a spread of bullets";
       }
       else if (type == 535)
       {
-        this.name = "Philosopher's Stone";
         this.width = 12;
         this.height = 18;
         this.value = 100000;
-        this.toolTip = "Reduces the cooldown of healing potions";
         this.accessory = true;
         this.rare = 4;
       }
       else if (type == 536)
       {
-        this.name = "Titan Glove";
         this.width = 12;
         this.height = 18;
         this.value = 100000;
-        this.toolTip = "Increases melee knockback";
         this.rare = 4;
         this.accessory = true;
         this.handOnSlot = (sbyte) 15;
@@ -10163,7 +9410,6 @@ namespace Terraria
       }
       else if (type == 537)
       {
-        this.name = "Cobalt Naginata";
         this.useStyle = 5;
         this.useAnimation = 28;
         this.useTime = 28;
@@ -10183,7 +9429,6 @@ namespace Terraria
       }
       else if (type == 538)
       {
-        this.name = "Switch";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -10199,7 +9444,6 @@ namespace Terraria
       }
       else if (type == 539)
       {
-        this.name = "Dart Trap";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -10215,7 +9459,6 @@ namespace Terraria
       }
       else if (type == 540)
       {
-        this.name = "Boulder";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -10230,7 +9473,6 @@ namespace Terraria
       }
       else if (type == 541)
       {
-        this.name = "Green Pressure Plate";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -10244,11 +9486,9 @@ namespace Terraria
         this.placeStyle = 1;
         this.mech = true;
         this.value = 5000;
-        this.toolTip = "Activates when stepped on";
       }
       else if (type == 542)
       {
-        this.name = "Gray Pressure Plate";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -10262,11 +9502,9 @@ namespace Terraria
         this.placeStyle = 2;
         this.mech = true;
         this.value = 5000;
-        this.toolTip = "Activates when a player steps on it on";
       }
       else if (type == 543)
       {
-        this.name = "Brown Pressure Plate";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -10280,24 +9518,20 @@ namespace Terraria
         this.placeStyle = 3;
         this.mech = true;
         this.value = 5000;
-        this.toolTip = "Activates when a player steps on it on";
       }
       else if (type == 544)
       {
         this.useStyle = 4;
-        this.name = "Mechanical Eye";
         this.width = 22;
         this.height = 14;
         this.consumable = true;
         this.useAnimation = 45;
         this.useTime = 45;
         this.maxStack = 20;
-        this.toolTip = "Summons The Twins";
         this.rare = 3;
       }
       else if (type == 545)
       {
-        this.name = "Cursed Arrow";
         this.shootSpeed = 4f;
         this.shoot = 103;
         this.damage = 17;
@@ -10313,7 +9547,6 @@ namespace Terraria
       }
       else if (type == 546)
       {
-        this.name = "Cursed Bullet";
         this.shootSpeed = 5f;
         this.shoot = 104;
         this.damage = 12;
@@ -10330,37 +9563,30 @@ namespace Terraria
       }
       else if (type == 547)
       {
-        this.name = "Soul of Fright";
         this.width = 18;
         this.height = 18;
         this.maxStack = 999;
         this.value = 40000;
         this.rare = 5;
-        this.toolTip = "'The essence of pure terror'";
       }
       else if (type == 548)
       {
-        this.name = "Soul of Might";
         this.width = 18;
         this.height = 18;
         this.maxStack = 999;
         this.value = 40000;
         this.rare = 5;
-        this.toolTip = "'The essence of the destroyer'";
       }
       else if (type == 549)
       {
-        this.name = "Soul of Sight";
         this.width = 18;
         this.height = 18;
         this.maxStack = 999;
         this.value = 40000;
         this.rare = 5;
-        this.toolTip = "'The essence of omniscient watchers'";
       }
       else if (type == 550)
       {
-        this.name = "Gungnir";
         this.useStyle = 5;
         this.useAnimation = 22;
         this.useTime = 22;
@@ -10380,82 +9606,63 @@ namespace Terraria
       }
       else if (type == 551)
       {
-        this.name = "Hallowed Plate Mail";
         this.width = 18;
         this.height = 18;
         this.defense = 15;
         this.bodySlot = 24;
         this.rare = 5;
         this.value = 200000;
-        this.toolTip = "7% increased critical strike chance";
       }
       else if (type == 552)
       {
-        this.name = "Hallowed Greaves";
         this.width = 18;
         this.height = 18;
         this.defense = 11;
         this.legSlot = 23;
         this.rare = 5;
         this.value = 150000;
-        this.toolTip = "7% increased damage";
-        this.toolTip2 = "8% increased movement speed";
       }
       else if (type == 553)
       {
-        this.name = "Hallowed Helmet";
         this.width = 18;
         this.height = 18;
         this.defense = 9;
         this.headSlot = 41;
         this.rare = 5;
         this.value = 250000;
-        this.toolTip = "15% increased ranged damage";
-        this.toolTip2 = "8% increased ranged critical strike chance";
       }
       else if (type == 558)
       {
-        this.name = "Hallowed Headgear";
         this.width = 18;
         this.height = 18;
         this.defense = 5;
         this.headSlot = 42;
         this.rare = 5;
         this.value = 250000;
-        this.toolTip = "Increases maximum mana by 100";
-        this.toolTip2 = "12% increased magic damage and critical strike chance";
       }
       else if (type == 559)
       {
-        this.name = "Hallowed Mask";
         this.width = 18;
         this.height = 18;
         this.defense = 24;
         this.headSlot = 43;
         this.rare = 5;
         this.value = 250000;
-        this.toolTip = "10% increased melee damage and critical strike chance";
-        this.toolTip2 = "10% increased melee haste";
       }
       else if (type == 554)
       {
-        this.name = "Cross Necklace";
         this.width = 20;
         this.height = 24;
         this.value = 1500;
-        this.toolTip = "Increases length of invincibility after taking damage";
         this.accessory = true;
         this.rare = 4;
         this.neckSlot = (sbyte) 2;
       }
       else if (type == 555)
       {
-        this.name = "Mana Flower";
         this.width = 20;
         this.height = 24;
         this.value = 50000;
-        this.toolTip = "8% reduced mana usage";
-        this.toolTip2 = "Automatically use mana potions when needed";
         this.accessory = true;
         this.rare = 4;
         this.waistSlot = (sbyte) 6;
@@ -10463,40 +9670,34 @@ namespace Terraria
       else if (type == 556)
       {
         this.useStyle = 4;
-        this.name = "Mechanical Worm";
         this.width = 22;
         this.height = 14;
         this.consumable = true;
         this.useAnimation = 45;
         this.useTime = 45;
         this.maxStack = 20;
-        this.toolTip = "Summons Destroyer";
         this.rare = 3;
       }
       else if (type == 557)
       {
         this.useStyle = 4;
-        this.name = "Mechanical Skull";
         this.width = 22;
         this.height = 14;
         this.consumable = true;
         this.useAnimation = 45;
         this.useTime = 45;
         this.maxStack = 20;
-        this.toolTip = "Summons Skeletron Prime";
         this.rare = 3;
       }
       else if (type == 560)
       {
         this.useStyle = 4;
-        this.name = "Slime Crown";
         this.width = 22;
         this.height = 14;
         this.consumable = true;
         this.useAnimation = 45;
         this.useTime = 45;
         this.maxStack = 20;
-        this.toolTip = "Summons King Slime";
         this.rare = 1;
       }
       else if (type == 561)
@@ -10505,7 +9706,6 @@ namespace Terraria
         this.autoReuse = true;
         this.noMelee = true;
         this.useStyle = 1;
-        this.name = "Light Disc";
         this.shootSpeed = 13f;
         this.shoot = 106;
         this.damage = 57;
@@ -10519,11 +9719,9 @@ namespace Terraria
         this.rare = 5;
         this.maxStack = 5;
         this.value = 500000;
-        this.toolTip = "Stacks up to 5";
       }
       else if (type == 562)
       {
-        this.name = "Music Box (Overworld Day)";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -10540,7 +9738,6 @@ namespace Terraria
       }
       else if (type == 563)
       {
-        this.name = "Music Box (Eerie)";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -10557,7 +9754,6 @@ namespace Terraria
       }
       else if (type == 564)
       {
-        this.name = "Music Box (Night)";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -10574,7 +9770,6 @@ namespace Terraria
       }
       else if (type == 565)
       {
-        this.name = "Music Box (Title)";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -10591,7 +9786,6 @@ namespace Terraria
       }
       else if (type == 566)
       {
-        this.name = "Music Box (Underground)";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -10608,7 +9802,6 @@ namespace Terraria
       }
       else if (type == 567)
       {
-        this.name = "Music Box (Boss 1)";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -10625,7 +9818,6 @@ namespace Terraria
       }
       else if (type == 568)
       {
-        this.name = "Music Box (Jungle)";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -10642,7 +9834,6 @@ namespace Terraria
       }
       else if (type == 569)
       {
-        this.name = "Music Box (Corruption)";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -10659,7 +9850,6 @@ namespace Terraria
       }
       else if (type == 570)
       {
-        this.name = "Music Box (Underground Corruption)";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -10676,7 +9866,6 @@ namespace Terraria
       }
       else if (type == 571)
       {
-        this.name = "Music Box (The Hallow)";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -10693,7 +9882,6 @@ namespace Terraria
       }
       else if (type == 572)
       {
-        this.name = "Music Box (Boss 2)";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -10710,7 +9898,6 @@ namespace Terraria
       }
       else if (type == 573)
       {
-        this.name = "Music Box (Underground Hallow)";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -10727,7 +9914,6 @@ namespace Terraria
       }
       else if (type == 574)
       {
-        this.name = "Music Box (Boss 3)";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -10744,27 +9930,22 @@ namespace Terraria
       }
       else if (type == 575)
       {
-        this.name = "Soul of Flight";
         this.width = 18;
         this.height = 18;
         this.maxStack = 999;
         this.value = 1000;
         this.rare = 3;
-        this.toolTip = "'The essence of powerful flying creatures'";
       }
       else if (type == 576)
       {
-        this.name = "Music Box";
         this.width = 24;
         this.height = 24;
         this.rare = 3;
-        this.toolTip = "Has a chance to record songs";
         this.value = 100000;
         this.accessory = true;
       }
       else if (type == 577)
       {
-        this.name = "Demonite Brick";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -10782,7 +9963,6 @@ namespace Terraria
         this.autoReuse = true;
         this.useAnimation = 19;
         this.useTime = 19;
-        this.name = "Hallowed Repeater";
         this.width = 50;
         this.height = 18;
         this.shoot = 1;
@@ -10798,7 +9978,6 @@ namespace Terraria
       }
       else if (type == 579)
       {
-        this.name = "Drax";
         this.useStyle = 5;
         this.useAnimation = 25;
         this.useTime = 7;
@@ -10817,12 +9996,10 @@ namespace Terraria
         this.noUseGraphic = true;
         this.melee = true;
         this.channel = true;
-        this.toolTip = "'Not to be confused with a picksaw'";
       }
       else if (type == 580)
       {
         this.mech = true;
-        this.name = "Explosives";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -10833,12 +10010,10 @@ namespace Terraria
         this.createTile = 141;
         this.width = 12;
         this.height = 12;
-        this.toolTip = "Explodes when activated";
       }
       else if (type == 581)
       {
         this.mech = true;
-        this.name = "Inlet Pump";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -10849,12 +10024,10 @@ namespace Terraria
         this.createTile = 142;
         this.width = 12;
         this.height = 12;
-        this.toolTip = "Sends water to outlet pumps";
       }
       else if (type == 582)
       {
         this.mech = true;
-        this.name = "Outlet Pump";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -10865,13 +10038,11 @@ namespace Terraria
         this.createTile = 143;
         this.width = 12;
         this.height = 12;
-        this.toolTip = "Receives water from inlet pumps";
       }
       else if (type == 583)
       {
         this.mech = true;
         this.noWet = true;
-        this.name = "1 Second Timer";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -10884,13 +10055,11 @@ namespace Terraria
         this.width = 10;
         this.height = 12;
         this.value = 50;
-        this.toolTip = "Activates every second";
       }
       else if (type == 584)
       {
         this.mech = true;
         this.noWet = true;
-        this.name = "3 Second Timer";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -10903,13 +10072,11 @@ namespace Terraria
         this.width = 10;
         this.height = 12;
         this.value = 50;
-        this.toolTip = "Activates every 3 seconds";
       }
       else if (type == 585)
       {
         this.mech = true;
         this.noWet = true;
-        this.name = "5 Second Timer";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -10922,11 +10089,9 @@ namespace Terraria
         this.width = 10;
         this.height = 12;
         this.value = 50;
-        this.toolTip = "Activates every 5 seconds";
       }
       else if (type == 586)
       {
-        this.name = "Candy Cane Block";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -10940,7 +10105,6 @@ namespace Terraria
       }
       else if (type == 587)
       {
-        this.name = "Candy Cane Wall";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -10954,7 +10118,6 @@ namespace Terraria
       }
       else if (type == 588)
       {
-        this.name = "Santa Hat";
         this.width = 18;
         this.height = 12;
         this.headSlot = 44;
@@ -10963,7 +10126,6 @@ namespace Terraria
       }
       else if (type == 589)
       {
-        this.name = "Santa Shirt";
         this.width = 18;
         this.height = 18;
         this.bodySlot = 25;
@@ -10972,7 +10134,6 @@ namespace Terraria
       }
       else if (type == 590)
       {
-        this.name = "Santa Pants";
         this.width = 18;
         this.height = 18;
         this.legSlot = 24;
@@ -10981,7 +10142,6 @@ namespace Terraria
       }
       else if (type == 591)
       {
-        this.name = "Green Candy Cane Block";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -10995,7 +10155,6 @@ namespace Terraria
       }
       else if (type == 592)
       {
-        this.name = "Green Candy Cane Wall";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -11009,7 +10168,6 @@ namespace Terraria
       }
       else if (type == 593)
       {
-        this.name = "Snow Block";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -11023,7 +10181,6 @@ namespace Terraria
       }
       else if (type == 594)
       {
-        this.name = "Snow Brick";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -11037,7 +10194,6 @@ namespace Terraria
       }
       else if (type == 595)
       {
-        this.name = "Snow Brick Wall";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -11051,7 +10207,6 @@ namespace Terraria
       }
       else if (type == 596)
       {
-        this.name = "Blue Light";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -11067,7 +10222,6 @@ namespace Terraria
       }
       else if (type == 597)
       {
-        this.name = "Red Light";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -11083,7 +10237,6 @@ namespace Terraria
       }
       else if (type == 598)
       {
-        this.name = "Green Light";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -11099,45 +10252,36 @@ namespace Terraria
       }
       else if (type == 599)
       {
-        this.name = "Blue Present";
         this.width = 12;
         this.height = 12;
         this.rare = 1;
-        this.toolTip = "Right click to open";
       }
       else if (type == 600)
       {
-        this.name = "Green Present";
         this.width = 12;
         this.height = 12;
         this.rare = 1;
-        this.toolTip = "Right click to open";
       }
       else if (type == 601)
       {
-        this.name = "Yellow Present";
         this.width = 12;
         this.height = 12;
         this.rare = 1;
-        this.toolTip = "Right click to open";
       }
       else if (type == 602)
       {
-        this.name = "Snow Globe";
         this.useStyle = 4;
         this.consumable = true;
         this.useAnimation = 45;
         this.useTime = 45;
         this.width = 28;
         this.height = 28;
-        this.toolTip = "Summons the Frost Legion";
         this.rare = 2;
       }
       else if (type == 603)
       {
         this.damage = 0;
         this.useStyle = 1;
-        this.name = "Carrot";
         this.shoot = 111;
         this.width = 16;
         this.height = 30;
@@ -11146,13 +10290,11 @@ namespace Terraria
         this.useTime = 20;
         this.rare = 3;
         this.noMelee = true;
-        this.toolTip = "Summons a pet bunny";
         this.value = 0;
         this.buffType = 40;
       }
       else if (type == 604)
       {
-        this.name = "Adamantite Beam";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -11166,7 +10308,6 @@ namespace Terraria
       }
       else if (type == 605)
       {
-        this.name = "Adamantite Beam Wall";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -11180,7 +10321,6 @@ namespace Terraria
       }
       else if (type == 606)
       {
-        this.name = "Demonite Brick Wall";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -11194,7 +10334,6 @@ namespace Terraria
       }
       else if (type == 607)
       {
-        this.name = "Sandstone Brick";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -11208,7 +10347,6 @@ namespace Terraria
       }
       else if (type == 608)
       {
-        this.name = "Sandstone Brick Wall";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -11222,7 +10360,6 @@ namespace Terraria
       }
       else if (type == 609)
       {
-        this.name = "Ebonstone Brick";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -11236,7 +10373,6 @@ namespace Terraria
       }
       else if (type == 610)
       {
-        this.name = "Ebonstone Brick Wall";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -11250,7 +10386,6 @@ namespace Terraria
       }
       else if (type == 611)
       {
-        this.name = "Red Stucco";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -11264,7 +10399,6 @@ namespace Terraria
       }
       else if (type == 612)
       {
-        this.name = "Yellow Stucco";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -11278,7 +10412,6 @@ namespace Terraria
       }
       else if (type == 613)
       {
-        this.name = "Green Stucco";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -11292,7 +10425,6 @@ namespace Terraria
       }
       else if (type == 614)
       {
-        this.name = "Gray Stucco";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -11306,7 +10438,6 @@ namespace Terraria
       }
       else if (type == 615)
       {
-        this.name = "Red Stucco Wall";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -11320,7 +10451,6 @@ namespace Terraria
       }
       else if (type == 616)
       {
-        this.name = "Yellow Stucco Wall";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -11334,7 +10464,6 @@ namespace Terraria
       }
       else if (type == 617)
       {
-        this.name = "Green Stucco Wall";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -11348,7 +10477,6 @@ namespace Terraria
       }
       else if (type == 618)
       {
-        this.name = "Gray Wall";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -11362,7 +10490,6 @@ namespace Terraria
       }
       else if (type == 619)
       {
-        this.name = "Ebonwood";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -11376,7 +10503,6 @@ namespace Terraria
       }
       else if (type == 620)
       {
-        this.name = "Rich Mahogany";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -11390,7 +10516,6 @@ namespace Terraria
       }
       else if (type == 621)
       {
-        this.name = "Pearlwood";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -11404,7 +10529,6 @@ namespace Terraria
       }
       else if (type == 622)
       {
-        this.name = "Ebonwood Wall";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -11418,7 +10542,6 @@ namespace Terraria
       }
       else if (type == 623)
       {
-        this.name = "Rich Mahogany Wall";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -11432,7 +10555,6 @@ namespace Terraria
       }
       else if (type == 624)
       {
-        this.name = "Pearlwood Wall";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -11446,7 +10568,6 @@ namespace Terraria
       }
       else if (type == 625)
       {
-        this.name = "Ebonwood Chest";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -11462,7 +10583,6 @@ namespace Terraria
       }
       else if (type == 626)
       {
-        this.name = "Rich Mahogany Chest";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -11478,7 +10598,6 @@ namespace Terraria
       }
       else if (type == 627)
       {
-        this.name = "Pearlwood Chest";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -11494,7 +10613,6 @@ namespace Terraria
       }
       else if (type == 628)
       {
-        this.name = "Ebonwood Chair";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -11509,7 +10627,6 @@ namespace Terraria
       }
       else if (type == 629)
       {
-        this.name = "Rich Mahogany Chair";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -11524,7 +10641,6 @@ namespace Terraria
       }
       else if (type == 630)
       {
-        this.name = "Pearlwood Chair";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -11539,7 +10655,6 @@ namespace Terraria
       }
       else if (type == 631)
       {
-        this.name = "Ebonwood Platform";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -11554,7 +10669,6 @@ namespace Terraria
       }
       else if (type == 632)
       {
-        this.name = "Rich Mahogany Platform";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -11569,7 +10683,6 @@ namespace Terraria
       }
       else if (type == 633)
       {
-        this.name = "Pearlwood Platform";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -11584,7 +10697,6 @@ namespace Terraria
       }
       else if (type == 634)
       {
-        this.name = "Bone Platform";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -11599,7 +10711,6 @@ namespace Terraria
       }
       else if (type == 635)
       {
-        this.name = "Ebonwood Work Bench";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -11612,11 +10723,9 @@ namespace Terraria
         this.width = 28;
         this.height = 14;
         this.value = 150;
-        this.toolTip = "Used for basic crafting";
       }
       else if (type == 636)
       {
-        this.name = "Rich Mahogany Work Bench";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -11629,11 +10738,9 @@ namespace Terraria
         this.width = 28;
         this.height = 14;
         this.value = 150;
-        this.toolTip = "Used for basic crafting";
       }
       else if (type == 637)
       {
-        this.name = "Pearlwood Work Bench";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -11646,11 +10753,9 @@ namespace Terraria
         this.width = 28;
         this.height = 14;
         this.value = 150;
-        this.toolTip = "Used for basic crafting";
       }
       else if (type == 638)
       {
-        this.name = "Ebonwood Table";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -11666,7 +10771,6 @@ namespace Terraria
       }
       else if (type == 639)
       {
-        this.name = "Rich Mahogany Table";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -11682,7 +10786,6 @@ namespace Terraria
       }
       else if (type == 640)
       {
-        this.name = "Pearlwood Table";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -11698,7 +10801,6 @@ namespace Terraria
       }
       else if (type == 641)
       {
-        this.name = "Ebonwood Piano";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -11714,7 +10816,6 @@ namespace Terraria
       }
       else if (type == 642)
       {
-        this.name = "Rich Mahogany Piano";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -11730,7 +10831,6 @@ namespace Terraria
       }
       else if (type == 643)
       {
-        this.name = "Pearlwood Piano";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -11746,7 +10846,6 @@ namespace Terraria
       }
       else if (type == 644)
       {
-        this.name = "Ebonwood Bed";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -11761,7 +10860,6 @@ namespace Terraria
       }
       else if (type == 645)
       {
-        this.name = "Rich Mahogany Bed";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -11776,7 +10874,6 @@ namespace Terraria
       }
       else if (type == 646)
       {
-        this.name = "Pearlwood Bed";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -11791,7 +10888,6 @@ namespace Terraria
       }
       else if (type == 647)
       {
-        this.name = "Ebonwood Dresser";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -11807,7 +10903,6 @@ namespace Terraria
       }
       else if (type == 648)
       {
-        this.name = "Rich Mahogany Dresser";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -11823,7 +10918,6 @@ namespace Terraria
       }
       else if (type == 649)
       {
-        this.name = "Pearlwood Dresser";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -11839,7 +10933,6 @@ namespace Terraria
       }
       else if (type == 650)
       {
-        this.name = "Ebonwood Door";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -11854,7 +10947,6 @@ namespace Terraria
       }
       else if (type == 651)
       {
-        this.name = "Rich Mahogany Door";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -11869,7 +10961,6 @@ namespace Terraria
       }
       else if (type == 652)
       {
-        this.name = "Pearlwood Door";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -11884,7 +10975,6 @@ namespace Terraria
       }
       else if (type == 653)
       {
-        this.name = "Ebonwood Sword";
         this.useStyle = 1;
         this.useTurn = false;
         this.useAnimation = 21;
@@ -11900,7 +10990,6 @@ namespace Terraria
       }
       else if (type == 654)
       {
-        this.name = "Ebonwood Hammer";
         this.autoReuse = true;
         this.useStyle = 1;
         this.useTurn = true;
@@ -11918,7 +11007,6 @@ namespace Terraria
       }
       else if (type == 655)
       {
-        this.name = "Ebonwood Bow";
         this.useStyle = 5;
         this.useAnimation = 28;
         this.useTime = 28;
@@ -11935,7 +11023,6 @@ namespace Terraria
       }
       else if (type == 656)
       {
-        this.name = "Rich Mahogany Sword";
         this.useStyle = 1;
         this.useTurn = false;
         this.useAnimation = 23;
@@ -11951,7 +11038,6 @@ namespace Terraria
       }
       else if (type == 657)
       {
-        this.name = "Rich Mahogany Hammer";
         this.autoReuse = true;
         this.useStyle = 1;
         this.useTurn = true;
@@ -11969,7 +11055,6 @@ namespace Terraria
       }
       else if (type == 658)
       {
-        this.name = "Rich Mahogany Bow";
         this.useStyle = 5;
         this.useAnimation = 29;
         this.useTime = 29;
@@ -11986,7 +11071,6 @@ namespace Terraria
       }
       else if (type == 659)
       {
-        this.name = "Pearlwood Sword";
         this.useStyle = 1;
         this.useTurn = false;
         this.useAnimation = 21;
@@ -12002,7 +11086,6 @@ namespace Terraria
       }
       else if (type == 660)
       {
-        this.name = "Pearlwood Hammer";
         this.autoReuse = true;
         this.useStyle = 1;
         this.useTurn = true;
@@ -12020,7 +11103,6 @@ namespace Terraria
       }
       else if (type == 661)
       {
-        this.name = "Pearlwood Bow";
         this.useStyle = 5;
         this.useAnimation = 27;
         this.useTime = 27;
@@ -12037,7 +11119,6 @@ namespace Terraria
       }
       else if (type == 662)
       {
-        this.name = "Rainbow Brick";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -12051,7 +11132,6 @@ namespace Terraria
       }
       else if (type == 663)
       {
-        this.name = "Rainbow Brick Wall";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -12065,7 +11145,6 @@ namespace Terraria
       }
       else if (type == 664)
       {
-        this.name = "Ice Block";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -12079,50 +11158,41 @@ namespace Terraria
       }
       else if (type == 665)
       {
-        this.name = "Red's Wings";
         this.width = 24;
         this.height = 8;
         this.accessory = true;
-        this.toolTip = "You shouldn't have this";
         this.rare = 9;
         this.wingSlot = (sbyte) 3;
         this.value = 400000;
       }
       else if (type == 666)
       {
-        this.name = "Red's Helmet";
         this.width = 18;
         this.height = 18;
         this.headSlot = 45;
         this.rare = 9;
-        this.toolTip = "You shouldn't have this";
         this.vanity = true;
       }
       else if (type == 667)
       {
-        this.name = "Red's Breastplate";
         this.width = 18;
         this.height = 18;
         this.bodySlot = 26;
         this.rare = 9;
-        this.toolTip = "You shouldn't have this";
         this.vanity = true;
       }
       else if (type == 668)
       {
-        this.name = "Red's Leggings";
         this.width = 18;
         this.height = 18;
         this.legSlot = 25;
         this.rare = 9;
-        this.toolTip = "You shouldn't have this";
         this.vanity = true;
       }
       else if (type == 669)
       {
         this.damage = 0;
         this.useStyle = 1;
-        this.name = "Fish";
         this.shoot = 112;
         this.width = 16;
         this.height = 30;
@@ -12131,7 +11201,6 @@ namespace Terraria
         this.useTime = 20;
         this.rare = 3;
         this.noMelee = true;
-        this.toolTip = "Summons a baby penguin";
         this.buffType = 41;
         this.value = Item.sellPrice(0, 2, 0, 0);
       }
@@ -12140,7 +11209,6 @@ namespace Terraria
         this.crit = 2;
         this.noMelee = true;
         this.useStyle = 1;
-        this.name = "Ice Boomerang";
         this.shootSpeed = 11.5f;
         this.shoot = 113;
         this.damage = 16;
@@ -12159,7 +11227,6 @@ namespace Terraria
       {
         this.crit = 13;
         this.autoReuse = true;
-        this.name = "Keybrand";
         this.useStyle = 1;
         this.useAnimation = 20;
         this.useTime = 20;
@@ -12175,7 +11242,6 @@ namespace Terraria
       }
       else if (type == 672)
       {
-        this.name = "Cutlass";
         this.useStyle = 1;
         this.useAnimation = 18;
         this.knockBack = 4f;
@@ -12192,7 +11258,6 @@ namespace Terraria
       }
       else if (type == 673)
       {
-        this.name = "Boreal Wood Work Bench";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -12205,11 +11270,9 @@ namespace Terraria
         this.width = 28;
         this.height = 14;
         this.value = 150;
-        this.toolTip = "Used for basic crafting";
       }
       else if (type == 674)
       {
-        this.name = "True Excalibur";
         this.useStyle = 1;
         this.useAnimation = 16;
         this.useTime = 16;
@@ -12227,7 +11290,6 @@ namespace Terraria
       }
       else if (type == 675)
       {
-        this.name = "True Night's Edge";
         this.useStyle = 1;
         this.useAnimation = 26;
         this.useTime = 26;
@@ -12246,7 +11308,6 @@ namespace Terraria
       else if (type == 676)
       {
         this.autoReuse = true;
-        this.name = "Frostbrand";
         this.useStyle = 1;
         this.useAnimation = 23;
         this.useTime = 55;
@@ -12260,12 +11321,10 @@ namespace Terraria
         this.shoot = 119;
         this.shootSpeed = 12f;
         this.value = 250000;
-        this.toolTip = "Shoots an icy bolt";
         this.melee = true;
       }
       else if (type == 677)
       {
-        this.name = "Boreal Wood Table";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -12281,7 +11340,6 @@ namespace Terraria
       }
       else if (type == 678)
       {
-        this.name = "Red Potion";
         this.UseSound = SoundID.Item3;
         this.useStyle = 2;
         this.useTurn = true;
@@ -12300,7 +11358,6 @@ namespace Terraria
         this.useStyle = 5;
         this.useAnimation = 34;
         this.useTime = 34;
-        this.name = "Tactical Shotgun";
         this.width = 50;
         this.height = 14;
         this.shoot = 10;
@@ -12312,11 +11369,9 @@ namespace Terraria
         this.value = 700000;
         this.rare = 8;
         this.ranged = true;
-        this.toolTip = "Fires a spread of bullets";
       }
       else if (type == 680)
       {
-        this.name = "Bamboo Chest";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -12332,7 +11387,6 @@ namespace Terraria
       }
       else if (type == 681)
       {
-        this.name = "Ice Chest";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -12351,7 +11405,6 @@ namespace Terraria
         this.useStyle = 5;
         this.useAnimation = 19;
         this.useTime = 19;
-        this.name = "Marrow";
         this.width = 14;
         this.height = 32;
         this.shoot = 1;
@@ -12373,7 +11426,6 @@ namespace Terraria
         this.rare = 6;
         this.mana = 25;
         this.UseSound = SoundID.Item20;
-        this.name = "Unholy Trident";
         this.noMelee = true;
         this.useStyle = 5;
         this.damage = 73;
@@ -12384,47 +11436,38 @@ namespace Terraria
         this.shoot = 114;
         this.shootSpeed = 13f;
         this.knockBack = 6.5f;
-        this.toolTip = "Summons the Devil's trident";
         this.magic = true;
         this.value = 500000;
       }
       else if (type == 684)
       {
-        this.name = "Frost Helmet";
         this.width = 18;
         this.height = 18;
         this.defense = 10;
         this.headSlot = 46;
         this.rare = 5;
         this.value = 250000;
-        this.toolTip = "16% increased melee and ranged damage";
       }
       else if (type == 685)
       {
-        this.name = "Frost Breastplate";
         this.width = 18;
         this.height = 18;
         this.defense = 20;
         this.bodySlot = 27;
         this.rare = 5;
         this.value = 200000;
-        this.toolTip = "11% increased melee and ranged critical strike chance";
       }
       else if (type == 686)
       {
-        this.name = "Frost Leggings";
         this.width = 18;
         this.height = 18;
         this.defense = 13;
         this.legSlot = 26;
         this.rare = 5;
         this.value = 150000;
-        this.toolTip = "8% increased movement speed";
-        this.toolTip = "7% increased melee attack speed";
       }
       else if (type == 687)
       {
-        this.name = "Tin Helmet";
         this.width = 18;
         this.height = 18;
         this.defense = 2;
@@ -12433,7 +11476,6 @@ namespace Terraria
       }
       else if (type == 688)
       {
-        this.name = "Tin Chainmail";
         this.width = 18;
         this.height = 18;
         this.defense = 2;
@@ -12442,7 +11484,6 @@ namespace Terraria
       }
       else if (type == 689)
       {
-        this.name = "Tin Greaves";
         this.width = 18;
         this.height = 18;
         this.defense = 1;
@@ -12451,7 +11492,6 @@ namespace Terraria
       }
       else if (type == 690)
       {
-        this.name = "Lead Helmet";
         this.width = 18;
         this.height = 18;
         this.defense = 3;
@@ -12460,7 +11500,6 @@ namespace Terraria
       }
       else if (type == 691)
       {
-        this.name = "Lead Chainmail";
         this.width = 18;
         this.height = 18;
         this.defense = 3;
@@ -12469,7 +11508,6 @@ namespace Terraria
       }
       else if (type == 692)
       {
-        this.name = "Lead Greaves";
         this.width = 18;
         this.height = 18;
         this.defense = 2;
@@ -12478,7 +11516,6 @@ namespace Terraria
       }
       else if (type == 693)
       {
-        this.name = "Tungsten Helmet";
         this.width = 18;
         this.height = 18;
         this.defense = 4;
@@ -12487,7 +11524,6 @@ namespace Terraria
       }
       else if (type == 694)
       {
-        this.name = "Tungsten Chainmail";
         this.width = 18;
         this.height = 18;
         this.defense = 5;
@@ -12496,7 +11532,6 @@ namespace Terraria
       }
       else if (type == 695)
       {
-        this.name = "Tungsten Greaves";
         this.width = 18;
         this.height = 18;
         this.defense = 3;
@@ -12505,7 +11540,6 @@ namespace Terraria
       }
       else if (type == 696)
       {
-        this.name = "Platinum Helmet";
         this.width = 18;
         this.height = 18;
         this.defense = 5;
@@ -12514,7 +11548,6 @@ namespace Terraria
       }
       else if (type == 697)
       {
-        this.name = "Platinum Chainmail";
         this.width = 18;
         this.height = 18;
         this.defense = 6;
@@ -12523,7 +11556,6 @@ namespace Terraria
       }
       else if (type == 698)
       {
-        this.name = "Platinum Greaves";
         this.width = 18;
         this.height = 18;
         this.defense = 5;
@@ -12532,7 +11564,6 @@ namespace Terraria
       }
       else if (type == 699)
       {
-        this.name = "Tin Ore";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -12547,7 +11578,6 @@ namespace Terraria
       }
       else if (type == 700)
       {
-        this.name = "Lead Ore";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -12562,7 +11592,6 @@ namespace Terraria
       }
       else if (type == 701)
       {
-        this.name = "Tungsten Ore";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -12577,7 +11606,6 @@ namespace Terraria
       }
       else if (type == 702)
       {
-        this.name = "Platinum Ore";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -12592,7 +11620,6 @@ namespace Terraria
       }
       else if (type == 703)
       {
-        this.name = "Tin Bar";
         this.width = 20;
         this.height = 20;
         this.maxStack = 99;
@@ -12608,7 +11635,6 @@ namespace Terraria
       }
       else if (type == 704)
       {
-        this.name = "Lead Bar";
         this.width = 20;
         this.height = 20;
         this.maxStack = 99;
@@ -12624,7 +11650,6 @@ namespace Terraria
       }
       else if (type == 705)
       {
-        this.name = "Tungsten Bar";
         this.width = 20;
         this.height = 20;
         this.maxStack = 99;
@@ -12640,7 +11665,6 @@ namespace Terraria
       }
       else if (type == 706)
       {
-        this.name = "Platinum Bar";
         this.width = 20;
         this.height = 20;
         this.maxStack = 99;
@@ -12656,38 +11680,31 @@ namespace Terraria
       }
       else if (type == 707)
       {
-        this.name = "Tin Watch";
         this.width = 24;
         this.height = 28;
         this.accessory = true;
-        this.toolTip = "Tells the time";
         this.value = 1500;
         this.waistSlot = (sbyte) 8;
       }
       else if (type == 708)
       {
-        this.name = "Tungsten Watch";
         this.width = 24;
         this.height = 28;
         this.accessory = true;
-        this.toolTip = "Tells the time";
         this.value = 7500;
         this.waistSlot = (sbyte) 9;
       }
       else if (type == 709)
       {
-        this.name = "Platinum Watch";
         this.width = 24;
         this.height = 28;
         this.accessory = true;
         this.rare = 1;
-        this.toolTip = "Tells the time";
         this.value = 15000;
         this.waistSlot = (sbyte) 4;
       }
       else if (type == 710)
       {
-        this.name = "Tin Chandelier";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -12703,7 +11720,6 @@ namespace Terraria
       }
       else if (type == 711)
       {
-        this.name = "Tungsten Chandelier";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -12719,7 +11735,6 @@ namespace Terraria
       }
       else if (type == 712)
       {
-        this.name = "Platinum Chandelier";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -12736,7 +11751,6 @@ namespace Terraria
       else if (type == 713)
       {
         this.flame = true;
-        this.name = "Platinum Candle";
         this.noWet = true;
         this.useStyle = 1;
         this.useTurn = true;
@@ -12752,7 +11766,6 @@ namespace Terraria
       }
       else if (type == 714)
       {
-        this.name = "Platinum Candelabra";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -12766,7 +11779,6 @@ namespace Terraria
       }
       else if (type == 715)
       {
-        this.name = "Platinum Crown";
         this.width = 18;
         this.height = 18;
         this.headSlot = 51;
@@ -12775,7 +11787,6 @@ namespace Terraria
       }
       else if (type == 716)
       {
-        this.name = "Lead Anvil";
         this.placeStyle = 1;
         this.useStyle = 1;
         this.useTurn = true;
@@ -12788,11 +11799,9 @@ namespace Terraria
         this.width = 28;
         this.height = 14;
         this.value = 7500;
-        this.toolTip = "Used to craft items from metal bars";
       }
       else if (type == 717)
       {
-        this.name = "Tin Brick";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -12806,7 +11815,6 @@ namespace Terraria
       }
       else if (type == 718)
       {
-        this.name = "Tungsten Brick";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -12820,7 +11828,6 @@ namespace Terraria
       }
       else if (type == 719)
       {
-        this.name = "Platinum Brick";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -12834,7 +11841,6 @@ namespace Terraria
       }
       else if (type == 720)
       {
-        this.name = "Tin Brick Wall";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -12848,7 +11854,6 @@ namespace Terraria
       }
       else if (type == 721)
       {
-        this.name = "Tungsten Brick Wall";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -12862,7 +11867,6 @@ namespace Terraria
       }
       else if (type == 722)
       {
-        this.name = "Platinum Brick Wall";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -12878,7 +11882,6 @@ namespace Terraria
       {
         this.rare = 4;
         this.UseSound = SoundID.Item1;
-        this.name = "Beam Sword";
         this.useStyle = 1;
         this.damage = 52;
         this.useAnimation = 15;
@@ -12888,7 +11891,6 @@ namespace Terraria
         this.shoot = 116;
         this.shootSpeed = 11f;
         this.knockBack = 6.5f;
-        this.toolTip = "Shoots a beam of light";
         this.melee = true;
         this.value = 500000;
       }
@@ -12898,7 +11900,6 @@ namespace Terraria
         this.crit = 2;
         this.rare = 1;
         this.UseSound = SoundID.Item1;
-        this.name = "Ice Blade";
         this.useStyle = 1;
         this.damage = 17;
         this.useAnimation = 20;
@@ -12908,7 +11909,6 @@ namespace Terraria
         this.shoot = 118;
         this.shootSpeed = 9.5f;
         this.knockBack = 4.75f;
-        this.toolTip = "Shoots an icy bolt";
         this.melee = true;
         this.value = 20000;
       }
@@ -12917,7 +11917,6 @@ namespace Terraria
         this.useStyle = 5;
         this.useAnimation = 21;
         this.useTime = 21;
-        this.name = "Ice Bow";
         this.width = 12;
         this.height = 28;
         this.shoot = 1;
@@ -12930,7 +11929,6 @@ namespace Terraria
         this.rare = 5;
         this.noMelee = true;
         this.value = Item.sellPrice(0, 3, 50, 0);
-        this.toolTip = "Shoots frost arrows";
         this.ranged = true;
       }
       else if (type == 726)
@@ -12939,7 +11937,6 @@ namespace Terraria
         this.rare = 5;
         this.mana = 14;
         this.UseSound = SoundID.Item20;
-        this.name = "Frost Staff";
         this.useStyle = 5;
         this.damage = 46;
         this.useAnimation = 20;
@@ -12949,14 +11946,12 @@ namespace Terraria
         this.shoot = 359;
         this.shootSpeed = 16f;
         this.knockBack = 5f;
-        this.toolTip = "Shoots a stream of frost";
         this.magic = true;
         this.value = 500000;
         this.noMelee = true;
       }
       else if (type == 727)
       {
-        this.name = "Wood Helmet";
         this.width = 18;
         this.height = 18;
         this.defense = 1;
@@ -12964,7 +11959,6 @@ namespace Terraria
       }
       else if (type == 728)
       {
-        this.name = "Wood Breastplate";
         this.width = 18;
         this.height = 18;
         this.defense = 1;
@@ -12972,7 +11966,6 @@ namespace Terraria
       }
       else if (type == 729)
       {
-        this.name = "Wood Greaves";
         this.width = 18;
         this.height = 18;
         this.defense = 0;
@@ -12980,7 +11973,6 @@ namespace Terraria
       }
       else if (type == 730)
       {
-        this.name = "Ebonwood Helmet";
         this.width = 18;
         this.height = 18;
         this.defense = 1;
@@ -12988,7 +11980,6 @@ namespace Terraria
       }
       else if (type == 731)
       {
-        this.name = "Ebonwood Breastplate";
         this.width = 18;
         this.height = 18;
         this.defense = 2;
@@ -12996,7 +11987,6 @@ namespace Terraria
       }
       else if (type == 732)
       {
-        this.name = "Ebonwood Greaves";
         this.width = 18;
         this.height = 18;
         this.defense = 1;
@@ -13004,7 +11994,6 @@ namespace Terraria
       }
       else if (type == 733)
       {
-        this.name = "Rich Mahogany Helmet";
         this.width = 18;
         this.height = 18;
         this.defense = 1;
@@ -13012,7 +12001,6 @@ namespace Terraria
       }
       else if (type == 734)
       {
-        this.name = "Rich Mahogany Breastplate";
         this.width = 18;
         this.height = 18;
         this.defense = 1;
@@ -13020,7 +12008,6 @@ namespace Terraria
       }
       else if (type == 735)
       {
-        this.name = "Rich Mahogany Greaves";
         this.width = 18;
         this.height = 18;
         this.defense = 1;
@@ -13028,7 +12015,6 @@ namespace Terraria
       }
       else if (type == 736)
       {
-        this.name = "Pearlwood Helmet";
         this.width = 18;
         this.height = 18;
         this.defense = 2;
@@ -13036,7 +12022,6 @@ namespace Terraria
       }
       else if (type == 737)
       {
-        this.name = "Pearlwood Breastplate";
         this.width = 18;
         this.height = 18;
         this.defense = 3;
@@ -13044,7 +12029,6 @@ namespace Terraria
       }
       else if (type == 738)
       {
-        this.name = "Pearlwood Greaves";
         this.width = 18;
         this.height = 18;
         this.defense = 2;
@@ -13052,7 +12036,6 @@ namespace Terraria
       }
       else if (type == 739)
       {
-        this.name = "Amethyst Staff";
         this.mana = 3;
         this.UseSound = SoundID.Item43;
         this.useStyle = 5;
@@ -13070,7 +12053,6 @@ namespace Terraria
       }
       else if (type == 740)
       {
-        this.name = "Topaz Staff";
         this.mana = 4;
         this.UseSound = SoundID.Item43;
         this.useStyle = 5;
@@ -13088,7 +12070,6 @@ namespace Terraria
       }
       else if (type == 741)
       {
-        this.name = "Sapphire Staff";
         this.mana = 5;
         this.UseSound = SoundID.Item43;
         this.useStyle = 5;
@@ -13107,7 +12088,6 @@ namespace Terraria
       }
       else if (type == 742)
       {
-        this.name = "Emerald Staff";
         this.mana = 6;
         this.UseSound = SoundID.Item43;
         this.useStyle = 5;
@@ -13127,7 +12107,6 @@ namespace Terraria
       }
       else if (type == 743)
       {
-        this.name = "Ruby Staff";
         this.mana = 7;
         this.UseSound = SoundID.Item43;
         this.useStyle = 5;
@@ -13147,7 +12126,6 @@ namespace Terraria
       }
       else if (type == 744)
       {
-        this.name = "Diamond Staff";
         this.mana = 8;
         this.UseSound = SoundID.Item43;
         this.useStyle = 5;
@@ -13167,7 +12145,6 @@ namespace Terraria
       }
       else if (type == 745)
       {
-        this.name = "Grass Wall";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -13182,7 +12159,6 @@ namespace Terraria
       }
       else if (type == 746)
       {
-        this.name = "Jungle Wall";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -13197,7 +12173,6 @@ namespace Terraria
       }
       else if (type == 747)
       {
-        this.name = "Flower Wall";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -13212,30 +12187,24 @@ namespace Terraria
       }
       else if (type == 748)
       {
-        this.name = "Jetpack";
         this.width = 24;
         this.height = 8;
         this.accessory = true;
-        this.toolTip = "Allows flight and slow fall";
-        this.toolTip2 = "Hold up to rocket faster";
         this.value = 400000;
         this.rare = 5;
         this.wingSlot = (sbyte) 4;
       }
       else if (type == 749)
       {
-        this.name = "Butterfly Wings";
         this.width = 24;
         this.height = 8;
         this.accessory = true;
-        this.toolTip = "Allows flight and slow fall";
         this.value = 400000;
         this.rare = 5;
         this.wingSlot = (sbyte) 5;
       }
       else if (type == 750)
       {
-        this.name = "Cactus Wall";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -13249,7 +12218,6 @@ namespace Terraria
       }
       else if (type == 751)
       {
-        this.name = "Cloud";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -13263,7 +12231,6 @@ namespace Terraria
       }
       else if (type == 752)
       {
-        this.name = "Cloud Wall";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -13279,7 +12246,6 @@ namespace Terraria
       {
         this.damage = 0;
         this.useStyle = 1;
-        this.name = "Seaweed";
         this.shoot = (int) sbyte.MaxValue;
         this.width = 16;
         this.height = 30;
@@ -13288,13 +12254,11 @@ namespace Terraria
         this.useTime = 20;
         this.rare = 3;
         this.noMelee = true;
-        this.toolTip = "Summons a turtle";
         this.value = Item.sellPrice(0, 2, 0, 0);
         this.buffType = 42;
       }
       else if (type == 754)
       {
-        this.name = "Rune Hat";
         this.width = 28;
         this.height = 20;
         this.headSlot = 56;
@@ -13304,7 +12268,6 @@ namespace Terraria
       }
       else if (type == 755)
       {
-        this.name = "Rune Robe";
         this.width = 18;
         this.height = 14;
         this.bodySlot = 36;
@@ -13315,7 +12278,6 @@ namespace Terraria
       else if (type == 756)
       {
         this.rare = 7;
-        this.name = "Mushroom Spear";
         this.useStyle = 5;
         this.useAnimation = 40;
         this.useTime = 40;
@@ -13336,7 +12298,6 @@ namespace Terraria
       {
         this.rare = 8;
         this.UseSound = SoundID.Item1;
-        this.name = "Terra Blade";
         this.useStyle = 1;
         this.damage = 95;
         this.useAnimation = 16;
@@ -13357,7 +12318,6 @@ namespace Terraria
         this.autoReuse = true;
         this.useAnimation = 30;
         this.useTime = 30;
-        this.name = "Grenade Launcher";
         this.useAmmo = AmmoID.Rocket;
         this.width = 50;
         this.height = 20;
@@ -13377,7 +12337,6 @@ namespace Terraria
         this.autoReuse = true;
         this.useAnimation = 30;
         this.useTime = 30;
-        this.name = "Rocket Launcher";
         this.useAmmo = AmmoID.Rocket;
         this.width = 50;
         this.height = 20;
@@ -13397,7 +12356,6 @@ namespace Terraria
         this.autoReuse = true;
         this.useAnimation = 40;
         this.useTime = 40;
-        this.name = "Proximity Mine Launcher";
         this.useAmmo = AmmoID.Rocket;
         this.width = 50;
         this.height = 20;
@@ -13413,18 +12371,15 @@ namespace Terraria
       }
       else if (type == 761)
       {
-        this.name = "Fairy Wings";
         this.width = 24;
         this.height = 8;
         this.accessory = true;
-        this.toolTip = "Allows flight and slow fall";
         this.value = 400000;
         this.rare = 5;
         this.wingSlot = (sbyte) 6;
       }
       else if (type == 762)
       {
-        this.name = "Slime Block";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -13438,7 +12393,6 @@ namespace Terraria
       }
       else if (type == 763)
       {
-        this.name = "Flesh Block";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -13452,7 +12406,6 @@ namespace Terraria
       }
       else if (type == 764)
       {
-        this.name = "Mushroom Wall";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -13466,7 +12419,6 @@ namespace Terraria
       }
       else if (type == 765)
       {
-        this.name = "Rain Cloud";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -13480,7 +12432,6 @@ namespace Terraria
       }
       else if (type == 766)
       {
-        this.name = "Bone Block";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -13494,7 +12445,6 @@ namespace Terraria
       }
       else if (type == 767)
       {
-        this.name = "Frozen Slime Block";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -13508,7 +12458,6 @@ namespace Terraria
       }
       else if (type == 768)
       {
-        this.name = "Bone Block Wall";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -13522,7 +12471,6 @@ namespace Terraria
       }
       else if (type == 769)
       {
-        this.name = "Slime Block Wall";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -13536,7 +12484,6 @@ namespace Terraria
       }
       else if (type == 770)
       {
-        this.name = "Flesh Block Wall";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -13550,7 +12497,6 @@ namespace Terraria
       }
       else if (type == 771)
       {
-        this.name = "Rocket I";
         this.shoot = 0;
         this.damage = 40;
         this.width = 20;
@@ -13561,11 +12507,9 @@ namespace Terraria
         this.knockBack = 4f;
         this.value = Item.buyPrice(0, 0, 0, 50);
         this.ranged = true;
-        this.toolTip = "Small blast radius. Will not destroy tiles";
       }
       else if (type == 772)
       {
-        this.name = "Rocket II";
         this.shoot = 3;
         this.damage = 40;
         this.width = 20;
@@ -13576,12 +12520,10 @@ namespace Terraria
         this.knockBack = 4f;
         this.value = Item.buyPrice(0, 0, 2, 50);
         this.ranged = true;
-        this.toolTip = "Small blast radius. Will destroy tiles";
         this.rare = 1;
       }
       else if (type == 773)
       {
-        this.name = "Rocket III";
         this.shoot = 6;
         this.damage = 65;
         this.width = 20;
@@ -13592,12 +12534,10 @@ namespace Terraria
         this.knockBack = 6f;
         this.value = Item.buyPrice(0, 0, 1, 0);
         this.ranged = true;
-        this.toolTip = "Large blast radius. Will not destroy tiles";
         this.rare = 1;
       }
       else if (type == 774)
       {
-        this.name = "Rocket IV";
         this.shoot = 9;
         this.damage = 65;
         this.width = 20;
@@ -13608,12 +12548,10 @@ namespace Terraria
         this.knockBack = 6f;
         this.value = this.value = Item.buyPrice(0, 0, 5, 0);
         this.ranged = true;
-        this.toolTip = "Large blast radius. Will destroy tiles";
         this.rare = 2;
       }
       else if (type == 775)
       {
-        this.name = "Asphalt Block";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -13624,11 +12562,9 @@ namespace Terraria
         this.createTile = 198;
         this.width = 12;
         this.height = 12;
-        this.toolTip = "Increases running speed";
       }
       else if (type == 776)
       {
-        this.name = "Cobalt Pickaxe";
         this.useStyle = 1;
         this.useTurn = true;
         this.autoReuse = true;
@@ -13643,12 +12579,10 @@ namespace Terraria
         this.rare = 4;
         this.value = 54000;
         this.melee = true;
-        this.toolTip = "Can mine Mythril and Orichalcum";
         this.scale = 1.15f;
       }
       else if (type == 777)
       {
-        this.name = "Mythril Pickaxe";
         this.useStyle = 1;
         this.useAnimation = 25;
         this.useTime = 10;
@@ -13663,12 +12597,10 @@ namespace Terraria
         this.rare = 4;
         this.value = 81000;
         this.melee = true;
-        this.toolTip = "Can mine Adamantite and Titanium";
         this.scale = 1.15f;
       }
       else if (type == 778)
       {
-        this.name = "Adamantite Pickaxe";
         this.useStyle = 1;
         this.useAnimation = 25;
         this.useTime = 7;
@@ -13691,7 +12623,6 @@ namespace Terraria
         this.autoReuse = true;
         this.useAnimation = 30;
         this.useTime = 5;
-        this.name = "Clentaminator";
         this.width = 50;
         this.height = 18;
         this.shoot = 145;
@@ -13702,12 +12633,9 @@ namespace Terraria
         this.noMelee = true;
         this.value = Item.buyPrice(2, 0, 0, 0);
         this.rare = 5;
-        this.toolTip = "Creates and destroys biomes when sprayed";
-        this.toolTip2 = "Uses colored solution";
       }
       else if (type == 780)
       {
-        this.name = "Green Solution";
         this.shoot = 0;
         this.ammo = AmmoID.Solution;
         this.width = 10;
@@ -13715,13 +12643,10 @@ namespace Terraria
         this.value = Item.buyPrice(0, 0, 25, 0);
         this.rare = 3;
         this.maxStack = 999;
-        this.toolTip = "Used by the Clentaminator";
-        this.toolTip2 = "Spreads the purity";
         this.consumable = true;
       }
       else if (type == 781)
       {
-        this.name = "Blue Solution";
         this.shoot = 1;
         this.ammo = AmmoID.Solution;
         this.width = 10;
@@ -13729,13 +12654,10 @@ namespace Terraria
         this.value = Item.buyPrice(0, 0, 25, 0);
         this.rare = 3;
         this.maxStack = 999;
-        this.toolTip = "Used by the Clentaminator";
-        this.toolTip2 = "Spreads the hallow";
         this.consumable = true;
       }
       else if (type == 782)
       {
-        this.name = "Purple Solution";
         this.shoot = 2;
         this.ammo = AmmoID.Solution;
         this.width = 10;
@@ -13743,13 +12665,10 @@ namespace Terraria
         this.value = Item.buyPrice(0, 0, 25, 0);
         this.rare = 3;
         this.maxStack = 999;
-        this.toolTip = "Used by the Clentaminator";
-        this.toolTip2 = "Spreads the corruption";
         this.consumable = true;
       }
       else if (type == 783)
       {
-        this.name = "Dark Blue Solution";
         this.shoot = 3;
         this.ammo = AmmoID.Solution;
         this.width = 10;
@@ -13757,13 +12676,10 @@ namespace Terraria
         this.value = Item.buyPrice(0, 0, 25, 0);
         this.rare = 3;
         this.maxStack = 999;
-        this.toolTip = "Used by the Clentaminator";
-        this.toolTip2 = "Spreads glowing mushrooms";
         this.consumable = true;
       }
       else if (type == 784)
       {
-        this.name = "Red Solution";
         this.shoot = 4;
         this.ammo = AmmoID.Solution;
         this.width = 10;
@@ -13771,35 +12687,28 @@ namespace Terraria
         this.value = Item.buyPrice(0, 0, 25, 0);
         this.rare = 3;
         this.maxStack = 999;
-        this.toolTip = "Used by the Clentaminator";
-        this.toolTip2 = "Spreads the crimson";
         this.consumable = true;
       }
       else if (type == 785)
       {
-        this.name = "Harpy Wings";
         this.width = 24;
         this.height = 8;
         this.accessory = true;
-        this.toolTip = "Allows flight and slow fall";
         this.value = 400000;
         this.rare = 5;
         this.wingSlot = (sbyte) 7;
       }
       else if (type == 786)
       {
-        this.name = "Bone Wings";
         this.width = 24;
         this.height = 8;
         this.accessory = true;
-        this.toolTip = "Allows flight and slow fall";
         this.value = 400000;
         this.rare = 5;
         this.wingSlot = (sbyte) 8;
       }
       else if (type == 787)
       {
-        this.name = "Hammush";
         this.useTurn = true;
         this.autoReuse = true;
         this.useStyle = 1;
@@ -13815,14 +12724,12 @@ namespace Terraria
         this.rare = 7;
         this.value = Item.buyPrice(0, 40, 0, 0);
         this.melee = true;
-        this.toolTip = "Strong enough to destroy Demon Altars";
       }
       else if (type == 788)
       {
         this.mana = 10;
         this.damage = 28;
         this.useStyle = 5;
-        this.name = "Nettle Burst";
         this.shootSpeed = 32f;
         this.shoot = 150;
         this.width = 26;
@@ -13834,13 +12741,11 @@ namespace Terraria
         this.rare = 7;
         this.noMelee = true;
         this.knockBack = 1f;
-        this.toolTip = "Summons a thorn spear";
         this.value = 200000;
         this.magic = true;
       }
       else if (type == 789)
       {
-        this.name = "Ankh Banner";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -13856,7 +12761,6 @@ namespace Terraria
       }
       else if (type == 790)
       {
-        this.name = "Snake Banner";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -13872,7 +12776,6 @@ namespace Terraria
       }
       else if (type == 791)
       {
-        this.name = "Omega Banner";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -13888,40 +12791,33 @@ namespace Terraria
       }
       else if (type == 792)
       {
-        this.name = "Crimson Helmet";
         this.width = 18;
         this.height = 18;
         this.defense = 6;
         this.headSlot = 57;
         this.value = 50000;
-        this.toolTip = "2% increased damage";
         this.rare = 1;
       }
       else if (type == 793)
       {
-        this.name = "Crimson Scalemail";
         this.width = 18;
         this.height = 18;
         this.defense = 7;
         this.bodySlot = 37;
         this.value = 40000;
-        this.toolTip = "2% increased damage";
         this.rare = 1;
       }
       else if (type == 794)
       {
-        this.name = "Crimson Greaves";
         this.width = 18;
         this.height = 18;
         this.defense = 6;
         this.legSlot = 35;
         this.value = 30000;
-        this.toolTip = "2% increased damage";
         this.rare = 1;
       }
       else if (type == 795)
       {
-        this.name = "Blood Butcherer";
         this.useStyle = 1;
         this.useAnimation = 25;
         this.knockBack = 5f;
@@ -13939,7 +12835,6 @@ namespace Terraria
         this.useStyle = 5;
         this.useAnimation = 30;
         this.useTime = 30;
-        this.name = "Tendon Bow";
         this.width = 12;
         this.height = 28;
         this.shoot = 1;
@@ -13956,7 +12851,6 @@ namespace Terraria
       }
       else if (type == 797)
       {
-        this.name = "Flesh Grinder";
         this.autoReuse = true;
         this.useStyle = 1;
         this.useAnimation = 40;
@@ -13974,7 +12868,6 @@ namespace Terraria
       }
       else if (type == 798)
       {
-        this.name = "Deathbringer Pickaxe";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 22;
@@ -13989,12 +12882,10 @@ namespace Terraria
         this.rare = 1;
         this.value = 18000;
         this.scale = 1.15f;
-        this.toolTip = "Able to mine Hellstone";
         this.melee = true;
       }
       else if (type == 799)
       {
-        this.name = "Blood Lust Cluster";
         this.autoReuse = true;
         this.useStyle = 1;
         this.useAnimation = 32;
@@ -14015,7 +12906,6 @@ namespace Terraria
         this.useStyle = 5;
         this.useAnimation = 23;
         this.useTime = 23;
-        this.name = "The Undertaker";
         this.width = 24;
         this.height = 28;
         this.shoot = 14;
@@ -14032,7 +12922,6 @@ namespace Terraria
       }
       else if (type == 801)
       {
-        this.name = "The Meatball";
         this.useStyle = 5;
         this.useAnimation = 45;
         this.useTime = 45;
@@ -14053,7 +12942,6 @@ namespace Terraria
       }
       else if (type == 802)
       {
-        this.name = "The Rotted Fork";
         this.useStyle = 5;
         this.useAnimation = 31;
         this.useTime = 31;
@@ -14073,7 +12961,6 @@ namespace Terraria
       }
       else if (type == 803)
       {
-        this.name = "Eskimo Hood";
         this.width = 18;
         this.height = 18;
         this.headSlot = 58;
@@ -14082,7 +12969,6 @@ namespace Terraria
       }
       else if (type == 804)
       {
-        this.name = "Eskimo Coat";
         this.width = 18;
         this.height = 18;
         this.bodySlot = 38;
@@ -14091,7 +12977,6 @@ namespace Terraria
       }
       else if (type == 805)
       {
-        this.name = "Eskimo Pants";
         this.width = 18;
         this.height = 18;
         this.legSlot = 36;
@@ -14100,7 +12985,6 @@ namespace Terraria
       }
       else if (type == 806)
       {
-        this.name = "Living Wood Chair";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -14115,7 +12999,6 @@ namespace Terraria
       }
       else if (type == 807)
       {
-        this.name = "Cactus Chair";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -14130,7 +13013,6 @@ namespace Terraria
       }
       else if (type == 808)
       {
-        this.name = "Bone Chair";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -14145,7 +13027,6 @@ namespace Terraria
       }
       else if (type == 809)
       {
-        this.name = "Flesh Chair";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -14160,7 +13041,6 @@ namespace Terraria
       }
       else if (type == 810)
       {
-        this.name = "Mushroom Chair";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -14175,7 +13055,6 @@ namespace Terraria
       }
       else if (type == 811)
       {
-        this.name = "Bone Work Bench";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -14188,11 +13067,9 @@ namespace Terraria
         this.width = 28;
         this.height = 14;
         this.value = 150;
-        this.toolTip = "Used for basic crafting";
       }
       else if (type == 812)
       {
-        this.name = "Cactus Work Bench";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -14205,11 +13082,9 @@ namespace Terraria
         this.width = 28;
         this.height = 14;
         this.value = 150;
-        this.toolTip = "Used for basic crafting";
       }
       else if (type == 813)
       {
-        this.name = "Flesh Work Bench";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -14222,11 +13097,9 @@ namespace Terraria
         this.width = 28;
         this.height = 14;
         this.value = 150;
-        this.toolTip = "Used for basic crafting";
       }
       else if (type == 814)
       {
-        this.name = "Mushroom Work Bench";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -14239,11 +13112,9 @@ namespace Terraria
         this.width = 28;
         this.height = 14;
         this.value = 150;
-        this.toolTip = "Used for basic crafting";
       }
       else if (type == 815)
       {
-        this.name = "Slime Work Bench";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -14256,11 +13127,9 @@ namespace Terraria
         this.width = 28;
         this.height = 14;
         this.value = 150;
-        this.toolTip = "Used for basic crafting";
       }
       else if (type == 816)
       {
-        this.name = "Cactus Door";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -14275,7 +13144,6 @@ namespace Terraria
       }
       else if (type == 817)
       {
-        this.name = "Flesh Door";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -14290,7 +13158,6 @@ namespace Terraria
       }
       else if (type == 818)
       {
-        this.name = "Mushroom Door";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -14305,7 +13172,6 @@ namespace Terraria
       }
       else if (type == 819)
       {
-        this.name = "Living Wood Door";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -14320,7 +13186,6 @@ namespace Terraria
       }
       else if (type == 820)
       {
-        this.name = "Bone Door";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -14335,42 +13200,35 @@ namespace Terraria
       }
       else if (type == 821)
       {
-        this.name = "Flame Wings";
         this.width = 24;
         this.height = 8;
         this.accessory = true;
-        this.toolTip = "Allows flight and slow fall";
         this.value = 400000;
         this.rare = 5;
         this.wingSlot = (sbyte) 9;
       }
       else if (type == 822)
       {
-        this.name = "Frozen Wings";
         this.width = 24;
         this.height = 8;
         this.accessory = true;
-        this.toolTip = "Allows flight and slow fall";
         this.value = 400000;
         this.rare = 5;
         this.wingSlot = (sbyte) 10;
       }
       else if (type == 823)
       {
-        this.name = "Ghost Wings";
         this.color = new Color((int) byte.MaxValue, (int) byte.MaxValue, (int) byte.MaxValue, 0);
         this.alpha = (int) byte.MaxValue;
         this.width = 24;
         this.height = 8;
         this.accessory = true;
-        this.toolTip = "Allows flight and slow fall";
         this.value = 400000;
         this.rare = 8;
         this.wingSlot = (sbyte) 11;
       }
       else if (type == 824)
       {
-        this.name = "Sunplate Block";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -14384,7 +13242,6 @@ namespace Terraria
       }
       else if (type == 825)
       {
-        this.name = "Disc Wall";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -14398,7 +13255,6 @@ namespace Terraria
       }
       else if (type == 826)
       {
-        this.name = "Skyware Chair";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -14413,7 +13269,6 @@ namespace Terraria
       }
       else if (type == 827)
       {
-        this.name = "Bone Table";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -14429,7 +13284,6 @@ namespace Terraria
       }
       else if (type == 828)
       {
-        this.name = "Flesh Table";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -14445,7 +13299,6 @@ namespace Terraria
       }
       else if (type == 829)
       {
-        this.name = "Living Wood Table";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -14461,7 +13314,6 @@ namespace Terraria
       }
       else if (type == 830)
       {
-        this.name = "Skyware Table";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -14477,7 +13329,6 @@ namespace Terraria
       }
       else if (type == 831)
       {
-        this.name = "Living Wood Chest";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -14493,7 +13344,6 @@ namespace Terraria
       }
       else if (type == 832)
       {
-        this.name = "Living Wood Wand";
         this.tileWand = 9;
         this.useStyle = 1;
         this.useTurn = true;
@@ -14504,11 +13354,9 @@ namespace Terraria
         this.width = 8;
         this.height = 10;
         this.rare = 1;
-        this.toolTip = "Places living wood";
       }
       else if (type == 833)
       {
-        this.name = "Purple Ice Block";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -14522,7 +13370,6 @@ namespace Terraria
       }
       else if (type == 834)
       {
-        this.name = "Pink Ice Block";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -14536,7 +13383,6 @@ namespace Terraria
       }
       else if (type == 835)
       {
-        this.name = "Red Ice Block";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -14550,7 +13396,6 @@ namespace Terraria
       }
       else if (type == 836)
       {
-        this.name = "Crimstone";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -14564,7 +13409,6 @@ namespace Terraria
       }
       else if (type == 837)
       {
-        this.name = "Skyware Door";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -14579,7 +13423,6 @@ namespace Terraria
       }
       else if (type == 838)
       {
-        this.name = "Skyware Chest";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -14595,7 +13438,6 @@ namespace Terraria
       }
       else if (type == 839)
       {
-        this.name = "Steampunk Hat";
         this.width = 28;
         this.height = 20;
         this.headSlot = 59;
@@ -14605,7 +13447,6 @@ namespace Terraria
       }
       else if (type == 840)
       {
-        this.name = "Steampunk Shirt";
         this.width = 18;
         this.height = 14;
         this.bodySlot = 39;
@@ -14615,7 +13456,6 @@ namespace Terraria
       }
       else if (type == 841)
       {
-        this.name = "Steampunk Pants";
         this.width = 18;
         this.height = 14;
         this.legSlot = 37;
@@ -14625,7 +13465,6 @@ namespace Terraria
       }
       else if (type == 842)
       {
-        this.name = "Bee Hat";
         this.width = 28;
         this.height = 20;
         this.headSlot = 60;
@@ -14634,7 +13473,6 @@ namespace Terraria
       }
       else if (type == 843)
       {
-        this.name = "Bee Shirt";
         this.width = 18;
         this.height = 14;
         this.bodySlot = 40;
@@ -14643,7 +13481,6 @@ namespace Terraria
       }
       else if (type == 844)
       {
-        this.name = "Bee Pants";
         this.width = 18;
         this.height = 14;
         this.legSlot = 38;
@@ -14652,7 +13489,6 @@ namespace Terraria
       }
       else if (type == 845)
       {
-        this.name = "World Banner";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -14668,7 +13504,6 @@ namespace Terraria
       }
       else if (type == 846)
       {
-        this.name = "Sun Banner";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -14684,7 +13519,6 @@ namespace Terraria
       }
       else if (type == 847)
       {
-        this.name = "Gravity Banner";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -14700,7 +13534,6 @@ namespace Terraria
       }
       else if (type == 848)
       {
-        this.name = "Pharaoh's Mask";
         this.width = 28;
         this.height = 20;
         this.headSlot = 61;
@@ -14714,10 +13547,8 @@ namespace Terraria
         this.useAnimation = 15;
         this.useTime = 10;
         this.autoReuse = true;
-        this.name = "Actuator";
         this.width = 24;
         this.height = 28;
-        this.toolTip = "Enables solid blocks to be toggled on and off";
         this.maxStack = 999;
         this.mech = true;
         this.value = Item.buyPrice(0, 0, 10, 0);
@@ -14729,11 +13560,9 @@ namespace Terraria
         this.useAnimation = 15;
         this.useTime = 5;
         this.autoReuse = true;
-        this.name = "Blue Wrench";
         this.width = 24;
         this.height = 28;
         this.rare = 1;
-        this.toolTip = "Places blue wire";
         this.value = 20000;
         this.mech = true;
         this.tileBoost = 20;
@@ -14745,18 +13574,15 @@ namespace Terraria
         this.useAnimation = 15;
         this.useTime = 5;
         this.autoReuse = true;
-        this.name = "Green Wrench";
         this.width = 24;
         this.height = 28;
         this.rare = 1;
-        this.toolTip = "Places green wire";
         this.value = 20000;
         this.mech = true;
         this.tileBoost = 20;
       }
       else if (type == 852)
       {
-        this.name = "Blue Pressure Plate";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -14770,11 +13596,9 @@ namespace Terraria
         this.placeStyle = 4;
         this.mech = true;
         this.value = 5000;
-        this.toolTip = "Activates when a player steps on it on";
       }
       else if (type == 853)
       {
-        this.name = "Yellow Pressure Plate";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -14788,53 +13612,43 @@ namespace Terraria
         this.placeStyle = 5;
         this.mech = true;
         this.value = 5000;
-        this.toolTip = "Activates when anything but a player steps on it on";
       }
       else if (type == 854)
       {
-        this.name = "Discount Card";
         this.width = 16;
         this.height = 24;
         this.accessory = true;
         this.rare = 5;
-        this.toolTip = "Shops have lower prices";
         this.value = 50000;
       }
       else if (type == 855)
       {
-        this.name = "Lucky Coin";
         this.width = 16;
         this.height = 24;
         this.accessory = true;
         this.rare = 5;
-        this.toolTip = "Hitting enemies will sometimes drop extra coins";
         this.value = 50000;
       }
       else if (type == 856)
       {
         this.noWet = true;
-        this.name = "Stick Unicorn";
         this.holdStyle = 1;
         this.width = 30;
         this.height = 30;
-        this.toolTip = "'Having a wonderful time!'";
         this.value = 500;
         this.rare = 2;
         this.vanity = true;
       }
       else if (type == 857)
       {
-        this.name = "Sandstorm in a Bottle";
         this.width = 16;
         this.height = 24;
         this.accessory = true;
         this.rare = 2;
-        this.toolTip = "Allows the holder to double jump";
         this.value = 50000;
       }
       else if (type == 858)
       {
-        this.name = "Boreal Wood Sofa";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -14851,7 +13665,6 @@ namespace Terraria
       else if (type == 859)
       {
         this.useStyle = 1;
-        this.name = "Beach Ball";
         this.shootSpeed = 6f;
         this.shoot = 155;
         this.width = 44;
@@ -14866,51 +13679,42 @@ namespace Terraria
       }
       else if (type == 860)
       {
-        this.name = "Charm of Myths";
         this.width = 16;
         this.height = 24;
         this.accessory = true;
         this.rare = 6;
         this.lifeRegen = 1;
-        this.toolTip = "Provides life regeneration and reduces the cooldown of healing potions";
         this.value = 500000;
         this.handOnSlot = (sbyte) 4;
       }
       else if (type == 861)
       {
-        this.name = "Moon Shell";
         this.width = 16;
         this.height = 24;
         this.accessory = true;
         this.rare = 6;
-        this.toolTip = "Turns the holder into a werewolf on full moons and a merfolk when entering water";
         this.value = 500000;
       }
       else if (type == 862)
       {
-        this.name = "Star Veil";
         this.width = 16;
         this.height = 24;
         this.accessory = true;
         this.rare = 6;
-        this.toolTip = "Causes stars to fall and increases length of invincibility after taking damage";
         this.value = 500000;
         this.neckSlot = (sbyte) 5;
       }
       else if (type == 863)
       {
-        this.name = "Water Walking Boots";
         this.width = 16;
         this.height = 24;
         this.accessory = true;
         this.rare = 4;
-        this.toolTip = "Provides the ability to walk on water";
         this.value = 200000;
         this.shoeSlot = (sbyte) 2;
       }
       else if (type == 864)
       {
-        this.name = "Tiara";
         this.width = 28;
         this.height = 20;
         this.headSlot = 62;
@@ -14920,7 +13724,6 @@ namespace Terraria
       }
       else if (type == 865)
       {
-        this.name = "Princess Dress";
         this.width = 18;
         this.height = 14;
         this.bodySlot = 41;
@@ -14930,7 +13733,6 @@ namespace Terraria
       }
       else if (type == 866)
       {
-        this.name = "Pharaoh's Robe";
         this.width = 18;
         this.height = 14;
         this.bodySlot = 42;
@@ -14939,7 +13741,6 @@ namespace Terraria
       }
       else if (type == 867)
       {
-        this.name = "Green Cap";
         this.width = 28;
         this.height = 20;
         this.headSlot = 63;
@@ -14948,7 +13749,6 @@ namespace Terraria
       }
       else if (type == 868)
       {
-        this.name = "Mushroom Cap";
         this.width = 28;
         this.height = 20;
         this.headSlot = 64;
@@ -14958,7 +13758,6 @@ namespace Terraria
       }
       else if (type == 869)
       {
-        this.name = "Tam O' Shanter";
         this.width = 28;
         this.height = 20;
         this.headSlot = 65;
@@ -14968,7 +13767,6 @@ namespace Terraria
       }
       else if (type == 870)
       {
-        this.name = "Mummy Mask";
         this.width = 28;
         this.height = 20;
         this.headSlot = 66;
@@ -14977,7 +13775,6 @@ namespace Terraria
       }
       else if (type == 871)
       {
-        this.name = "Mummy Shirt";
         this.width = 28;
         this.height = 20;
         this.bodySlot = 43;
@@ -14986,7 +13783,6 @@ namespace Terraria
       }
       else if (type == 872)
       {
-        this.name = "Mummy Pants";
         this.width = 28;
         this.height = 20;
         this.legSlot = 39;
@@ -14995,7 +13791,6 @@ namespace Terraria
       }
       else if (type == 873)
       {
-        this.name = "Cowboy Hat";
         this.width = 28;
         this.height = 20;
         this.headSlot = 67;
@@ -15005,7 +13800,6 @@ namespace Terraria
       }
       else if (type == 874)
       {
-        this.name = "Cowboy Jacket";
         this.width = 28;
         this.height = 20;
         this.bodySlot = 44;
@@ -15015,7 +13809,6 @@ namespace Terraria
       }
       else if (type == 875)
       {
-        this.name = "Cowboy Pants";
         this.width = 28;
         this.height = 20;
         this.legSlot = 40;
@@ -15025,7 +13818,6 @@ namespace Terraria
       }
       else if (type == 876)
       {
-        this.name = "Pirate Hat";
         this.width = 28;
         this.height = 20;
         this.headSlot = 68;
@@ -15035,7 +13827,6 @@ namespace Terraria
       }
       else if (type == 877)
       {
-        this.name = "Pirate Shirt";
         this.width = 28;
         this.height = 20;
         this.bodySlot = 45;
@@ -15045,7 +13836,6 @@ namespace Terraria
       }
       else if (type == 878)
       {
-        this.name = "Pirate Pants";
         this.width = 28;
         this.height = 20;
         this.legSlot = 41;
@@ -15055,7 +13845,6 @@ namespace Terraria
       }
       else if (type == 879)
       {
-        this.name = "Viking Helmet";
         this.width = 28;
         this.height = 20;
         this.headSlot = 69;
@@ -15065,7 +13854,6 @@ namespace Terraria
       }
       else if (type == 880)
       {
-        this.name = "Crimtane";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -15081,7 +13869,6 @@ namespace Terraria
       }
       else if (type == 881)
       {
-        this.name = "Cactus Sword";
         this.useStyle = 1;
         this.useTurn = false;
         this.useAnimation = 25;
@@ -15097,7 +13884,6 @@ namespace Terraria
       }
       else if (type == 882)
       {
-        this.name = "Cactus Pickaxe";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 23;
@@ -15114,7 +13900,6 @@ namespace Terraria
       }
       else if (type == 883)
       {
-        this.name = "Ice Brick";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -15128,7 +13913,6 @@ namespace Terraria
       }
       else if (type == 884)
       {
-        this.name = "Ice Brick Wall";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -15142,98 +13926,79 @@ namespace Terraria
       }
       else if (type == 885)
       {
-        this.name = "Adhesive Bandage";
         this.width = 16;
         this.height = 24;
         this.accessory = true;
         this.rare = 4;
-        this.toolTip = "Immunity to Bleeding";
         this.value = 100000;
       }
       else if (type == 886)
       {
-        this.name = "Armor Polish";
         this.width = 16;
         this.height = 24;
         this.accessory = true;
         this.rare = 4;
-        this.toolTip = "Immunity to Broken Armor";
         this.value = 100000;
       }
       else if (type == 887)
       {
-        this.name = "Bezoar";
         this.width = 16;
         this.height = 24;
         this.accessory = true;
         this.rare = 4;
-        this.toolTip = "Immunity to Poison";
         this.value = 100000;
       }
       else if (type == 888)
       {
-        this.name = "Blindfold";
         this.width = 16;
         this.height = 24;
         this.accessory = true;
         this.rare = 4;
-        this.toolTip = "Immunity to Darkness";
         this.value = 100000;
         this.faceSlot = (sbyte) 5;
       }
       else if (type == 889)
       {
-        this.name = "Fast Clock";
         this.width = 16;
         this.height = 24;
         this.accessory = true;
         this.rare = 4;
-        this.toolTip = "Immunity to Slow";
         this.value = 100000;
       }
       else if (type == 890)
       {
-        this.name = "Megaphone";
         this.width = 16;
         this.height = 24;
         this.accessory = true;
         this.rare = 4;
-        this.toolTip = "Immunity to Silence";
         this.value = 100000;
       }
       else if (type == 891)
       {
-        this.name = "Nazar";
         this.width = 16;
         this.height = 24;
         this.accessory = true;
         this.rare = 2;
-        this.toolTip = "Immunity to Curse";
         this.value = 100000;
       }
       else if (type == 892)
       {
-        this.name = "Vitamins";
         this.width = 16;
         this.height = 24;
         this.accessory = true;
         this.rare = 4;
-        this.toolTip = "Immunity to Weakness";
         this.value = 100000;
       }
       else if (type == 893)
       {
-        this.name = "Trifold Map";
         this.width = 16;
         this.height = 24;
         this.accessory = true;
         this.rare = 4;
-        this.toolTip = "Immunity to Confusion";
         this.value = 100000;
       }
       else if (type == 894)
       {
-        this.name = "Cactus Helmet";
         this.width = 18;
         this.height = 18;
         this.defense = 1;
@@ -15241,7 +14006,6 @@ namespace Terraria
       }
       else if (type == 895)
       {
-        this.name = "Cactus Breastplate";
         this.width = 18;
         this.height = 18;
         this.defense = 2;
@@ -15249,7 +14013,6 @@ namespace Terraria
       }
       else if (type == 896)
       {
-        this.name = "Cactus Leggings";
         this.width = 18;
         this.height = 18;
         this.defense = 1;
@@ -15257,94 +14020,75 @@ namespace Terraria
       }
       else if (type == 897)
       {
-        this.name = "Power Glove";
         this.width = 16;
         this.height = 24;
         this.accessory = true;
         this.rare = 5;
-        this.toolTip = "Increases melee knockback";
-        this.toolTip = "12% increased melee speed";
         this.value = 300000;
         this.handOffSlot = (sbyte) 5;
         this.handOnSlot = (sbyte) 10;
       }
       else if (type == 898)
       {
-        this.name = "Lightning Boots";
         this.width = 16;
         this.height = 24;
         this.accessory = true;
         this.rare = 5;
-        this.toolTip = "Allows flight and super fast running";
-        this.toolTip = "7% increased movement speed";
         this.value = 300000;
         this.shoeSlot = (sbyte) 10;
       }
       else if (type == 899)
       {
-        this.name = "Sun Stone";
         this.width = 16;
         this.height = 24;
         this.accessory = true;
         this.rare = 7;
-        this.toolTip = "Increases all stats if worn during the day";
         this.value = 300000;
         this.handOnSlot = (sbyte) 13;
       }
       else if (type == 900)
       {
-        this.name = "Moon Stone";
         this.width = 16;
         this.height = 24;
         this.accessory = true;
         this.rare = 5;
-        this.toolTip = "Increases all stats if worn during the night";
         this.value = 300000;
         this.handOnSlot = (sbyte) 14;
       }
       else if (type == 901)
       {
-        this.name = "Armor Bracing";
         this.width = 16;
         this.height = 24;
         this.accessory = true;
         this.rare = 5;
-        this.toolTip = "Immunity to Weakness and Broken Armor";
         this.value = 100000;
       }
       else if (type == 902)
       {
-        this.name = "Medicated Bandage";
         this.width = 16;
         this.height = 24;
         this.accessory = true;
         this.rare = 5;
-        this.toolTip = "Immunity to Poison and Bleeding";
         this.value = 100000;
       }
       else if (type == 903)
       {
-        this.name = "The Plan";
         this.width = 16;
         this.height = 24;
         this.accessory = true;
         this.rare = 5;
-        this.toolTip = "Immunity to Slow and Confusion";
         this.value = 100000;
       }
       else if (type == 904)
       {
-        this.name = "Countercurse Mantra";
         this.width = 16;
         this.height = 24;
         this.accessory = true;
         this.rare = 5;
-        this.toolTip = "Immunity to Silence and Curse";
         this.value = 100000;
       }
       else if (type == 905)
       {
-        this.name = "Coin Gun";
         this.useStyle = 5;
         this.autoReuse = true;
         this.useAnimation = 8;
@@ -15359,48 +14103,37 @@ namespace Terraria
         this.noMelee = true;
         this.value = 300000;
         this.rare = 6;
-        this.toolTip = "Uses coins for ammo";
-        this.toolTip2 = "Higher valued coins do more damage";
         this.knockBack = 2f;
         this.ranged = true;
       }
       else if (type == 906)
       {
-        this.name = "Lava Charm";
         this.width = 16;
         this.height = 24;
         this.accessory = true;
         this.rare = 3;
-        this.toolTip = "Provides 7 seconds of immunity to lava";
         this.value = 300000;
       }
       else if (type == 907)
       {
-        this.name = "Obsidian Water Walking Boots";
         this.width = 16;
         this.height = 24;
         this.accessory = true;
         this.rare = 4;
-        this.toolTip = "Provides the ability to walk on water";
-        this.toolTip = "Grants immunity to fire blocks";
         this.value = 500000;
         this.shoeSlot = (sbyte) 11;
       }
       else if (type == 908)
       {
-        this.name = "Lava Waders";
         this.width = 16;
         this.height = 24;
         this.accessory = true;
         this.rare = 7;
-        this.toolTip = "Provides the ability to walk on water and lava";
-        this.toolTip = "Grants immunity to fire blocks and 7 seconds of immunity to lava";
         this.value = 500000;
         this.shoeSlot = (sbyte) 8;
       }
       else if (type == 909)
       {
-        this.name = "Pure Water Fountain";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -15416,7 +14149,6 @@ namespace Terraria
       }
       else if (type == 910)
       {
-        this.name = "Desert Water Fountain";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -15432,7 +14164,6 @@ namespace Terraria
       }
       else if (type == 911)
       {
-        this.name = "Shadewood";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -15446,7 +14177,6 @@ namespace Terraria
       }
       else if (type == 912)
       {
-        this.name = "Shadewood Door";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -15461,7 +14191,6 @@ namespace Terraria
       }
       else if (type == 913)
       {
-        this.name = "Shadewood Platform";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -15476,7 +14205,6 @@ namespace Terraria
       }
       else if (type == 914)
       {
-        this.name = "Shadewood Chest";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -15492,7 +14220,6 @@ namespace Terraria
       }
       else if (type == 915)
       {
-        this.name = "Shadewood Chair";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -15507,7 +14234,6 @@ namespace Terraria
       }
       else if (type == 916)
       {
-        this.name = "Shadewood Work Bench";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -15520,11 +14246,9 @@ namespace Terraria
         this.width = 28;
         this.height = 14;
         this.value = 150;
-        this.toolTip = "Used for basic crafting";
       }
       else if (type == 917)
       {
-        this.name = "Shadewood Table";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -15540,7 +14264,6 @@ namespace Terraria
       }
       else if (type == 918)
       {
-        this.name = "Shadewood Dresser";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -15556,7 +14279,6 @@ namespace Terraria
       }
       else if (type == 919)
       {
-        this.name = "Shadewood Piano";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -15572,7 +14294,6 @@ namespace Terraria
       }
       else if (type == 920)
       {
-        this.name = "Shadewood Bed";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -15587,7 +14308,6 @@ namespace Terraria
       }
       else if (type == 921)
       {
-        this.name = "Shadewood Sword";
         this.useStyle = 1;
         this.useTurn = false;
         this.useAnimation = 21;
@@ -15603,7 +14323,6 @@ namespace Terraria
       }
       else if (type == 922)
       {
-        this.name = "Shadewood Hammer";
         this.autoReuse = true;
         this.useStyle = 1;
         this.useTurn = true;
@@ -15621,7 +14340,6 @@ namespace Terraria
       }
       else if (type == 923)
       {
-        this.name = "Shadewood Bow";
         this.useStyle = 5;
         this.useAnimation = 28;
         this.useTime = 28;
@@ -15638,7 +14356,6 @@ namespace Terraria
       }
       else if (type == 924)
       {
-        this.name = "Shadewood Helmet";
         this.width = 18;
         this.height = 18;
         this.defense = 1;
@@ -15646,7 +14363,6 @@ namespace Terraria
       }
       else if (type == 925)
       {
-        this.name = "Shadewood Breastplate";
         this.width = 18;
         this.height = 18;
         this.defense = 2;
@@ -15654,7 +14370,6 @@ namespace Terraria
       }
       else if (type == 926)
       {
-        this.name = "Shadewood Greaves";
         this.width = 18;
         this.height = 18;
         this.defense = 1;
@@ -15662,7 +14377,6 @@ namespace Terraria
       }
       else if (type == 927)
       {
-        this.name = "Shadewood Wall";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -15676,7 +14390,6 @@ namespace Terraria
       }
       else if (type == 928)
       {
-        this.name = "Cannon";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -15692,7 +14405,6 @@ namespace Terraria
       }
       else if (type == 929)
       {
-        this.name = "Cannonball";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 20;
@@ -15711,7 +14423,6 @@ namespace Terraria
         this.useStyle = 5;
         this.useAnimation = 18;
         this.useTime = 18;
-        this.name = "Flare Gun";
         this.width = 24;
         this.height = 28;
         this.shoot = 163;
@@ -15727,7 +14438,6 @@ namespace Terraria
       }
       else if (type == 931)
       {
-        this.name = "Flare";
         this.shootSpeed = 6f;
         this.shoot = 163;
         this.damage = 1;
@@ -15742,7 +14452,6 @@ namespace Terraria
       }
       else if (type == 932)
       {
-        this.name = "Bone Wand";
         this.tileWand = 154;
         this.useStyle = 1;
         this.useTurn = true;
@@ -15753,11 +14462,9 @@ namespace Terraria
         this.width = 8;
         this.height = 10;
         this.rare = 1;
-        this.toolTip = "Places bone";
       }
       else if (type == 933)
       {
-        this.name = "Leaf Wand";
         this.tileWand = 9;
         this.useStyle = 1;
         this.useTurn = true;
@@ -15768,44 +14475,35 @@ namespace Terraria
         this.width = 8;
         this.height = 10;
         this.rare = 1;
-        this.toolTip = "Places leaves";
       }
       else if (type == 934)
       {
-        this.name = "Flying Carpet";
         this.width = 34;
         this.height = 12;
         this.accessory = true;
         this.rare = 2;
-        this.toolTip = "Allows the owner to float for a few seconds";
         this.value = 50000;
       }
       else if (type == 935)
       {
-        this.name = "Avenger Emblem";
         this.width = 24;
         this.height = 24;
         this.accessory = true;
-        this.toolTip = "12% increased damage";
         this.value = 300000;
         this.rare = 5;
       }
       else if (type == 936)
       {
-        this.name = "Mechanical Glove";
         this.width = 24;
         this.height = 24;
         this.accessory = true;
         this.rare = 6;
-        this.toolTip = "Increases melee knockback";
-        this.toolTip = "12% increased melee damage and melee speed";
         this.value = 300000;
         this.handOffSlot = (sbyte) 4;
         this.handOnSlot = (sbyte) 9;
       }
       else if (type == 937)
       {
-        this.name = "Land Mine";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -15820,18 +14518,14 @@ namespace Terraria
         this.mech = true;
         this.value = 50000;
         this.mech = true;
-        this.toolTip = "Explodes when stepped on";
       }
       else if (type == 938)
       {
-        this.name = "Paladin's Shield";
         this.width = 24;
         this.height = 24;
         this.accessory = true;
         this.rare = 8;
         this.defense = 6;
-        this.toolTip = "Absorbs 25% of damage done to players on your team when above 25% life";
-        this.toolTip = "Grants immunity to knockback";
         this.value = 300000;
         this.shieldSlot = (sbyte) 2;
       }
@@ -15841,7 +14535,6 @@ namespace Terraria
         this.damage = 0;
         this.knockBack = 7f;
         this.useStyle = 5;
-        this.name = "Web Slinger";
         this.shootSpeed = 10f;
         this.shoot = 165;
         this.width = 18;
@@ -15855,7 +14548,6 @@ namespace Terraria
       }
       else if (type == 940)
       {
-        this.name = "Jungle Water Fountain";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -15871,7 +14563,6 @@ namespace Terraria
       }
       else if (type == 941)
       {
-        this.name = "Icy Water Fountain";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -15887,7 +14578,6 @@ namespace Terraria
       }
       else if (type == 942)
       {
-        this.name = "Corrupt Water Fountain";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -15903,7 +14593,6 @@ namespace Terraria
       }
       else if (type == 943)
       {
-        this.name = "Crimson Water Fountain";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -15919,7 +14608,6 @@ namespace Terraria
       }
       else if (type == 944)
       {
-        this.name = "Hallowed Water Fountain";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -15935,7 +14623,6 @@ namespace Terraria
       }
       else if (type == 945)
       {
-        this.name = "Blood Water Fountain";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -15951,17 +14638,14 @@ namespace Terraria
       }
       else if (type == 946)
       {
-        this.name = "Umbrella";
         this.width = 44;
         this.height = 44;
         this.rare = 1;
         this.value = 10000;
         this.holdStyle = 2;
-        this.toolTip = "You will fall slower while holding this";
       }
       else if (type == 947)
       {
-        this.name = "Chlorophyte Ore";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -15974,15 +14658,12 @@ namespace Terraria
         this.height = 12;
         this.rare = 7;
         this.value = 3000;
-        this.toolTip = "Reacts to the light";
       }
       else if (type == 948)
       {
-        this.name = "Steampunk Wings";
         this.width = 24;
         this.height = 8;
         this.accessory = true;
-        this.toolTip = "Allows flight and slow fall";
         this.value = 400000;
         this.rare = 8;
         this.wingSlot = (sbyte) 12;
@@ -15991,7 +14672,6 @@ namespace Terraria
       else if (type == 949)
       {
         this.useStyle = 1;
-        this.name = "Snowball";
         this.shootSpeed = 7f;
         this.shoot = 166;
         this.ammo = AmmoID.Snowball;
@@ -16010,18 +14690,15 @@ namespace Terraria
       }
       else if (type == 950)
       {
-        this.name = "Ice Skates";
         this.width = 16;
         this.height = 24;
         this.accessory = true;
         this.rare = 1;
-        this.toolTip = "Provides extra mobility on ice";
         this.value = 50000;
         this.shoeSlot = (sbyte) 7;
       }
       else if (type == 951)
       {
-        this.name = "Snowball Launcher";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -16034,11 +14711,9 @@ namespace Terraria
         this.height = 20;
         this.value = 50000;
         this.rare = 2;
-        this.toolTip = "Rapidly launches snowballs";
       }
       else if (type == 952)
       {
-        this.name = "Web Covered Chest";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -16054,20 +14729,16 @@ namespace Terraria
       }
       else if (type == 953)
       {
-        this.name = "Climbing Claws";
         this.width = 16;
         this.height = 24;
         this.accessory = true;
         this.rare = 1;
-        this.toolTip = "Allows the ability to slide down walls";
-        this.toolTip = "Improved ability if combined with Shoe Spikes";
         this.value = 50000;
         this.handOnSlot = (sbyte) 11;
         this.handOffSlot = (sbyte) 6;
       }
       else if (type == 954)
       {
-        this.name = "Ancient Iron Helmet";
         this.width = 18;
         this.height = 18;
         this.defense = 2;
@@ -16076,7 +14747,6 @@ namespace Terraria
       }
       else if (type == 955)
       {
-        this.name = "Ancient Gold Helmet";
         this.width = 18;
         this.height = 18;
         this.defense = 4;
@@ -16085,92 +14755,73 @@ namespace Terraria
       }
       else if (type == 956)
       {
-        this.name = "Ancient Shadow Helmet";
         this.width = 18;
         this.height = 18;
         this.defense = 6;
         this.headSlot = 74;
         this.rare = 1;
         this.value = 37500;
-        this.toolTip = "7% increased melee speed";
       }
       else if (type == 957)
       {
-        this.name = "Ancient Shadow Scalemail";
         this.width = 18;
         this.height = 18;
         this.defense = 7;
         this.bodySlot = 48;
         this.rare = 1;
         this.value = 30000;
-        this.toolTip = "7% increased melee speed";
       }
       else if (type == 958)
       {
-        this.name = "Ancient Shadow Greaves";
         this.width = 18;
         this.height = 18;
         this.defense = 6;
         this.legSlot = 44;
         this.rare = 1;
         this.value = 22500;
-        this.toolTip = "7% increased melee speed";
       }
       else if (type == 959)
       {
-        this.name = "Ancient Necro Helmet";
         this.width = 18;
         this.height = 18;
         this.defense = 5;
         this.headSlot = 75;
         this.rare = 2;
         this.value = 45000;
-        this.toolTip = "4% increased ranged damage.";
       }
       else if (type == 960)
       {
-        this.name = "Ancient Cobalt Helmet";
         this.width = 18;
         this.height = 18;
         this.defense = 5;
         this.headSlot = 76;
         this.rare = 3;
         this.value = 45000;
-        this.toolTip = "Increases maximum mana by 40";
-        this.toolTip2 = "3% increased magic critical strike chance";
       }
       else if (type == 961)
       {
-        this.name = "Ancient Cobalt Breastplate";
         this.width = 18;
         this.height = 18;
         this.defense = 6;
         this.bodySlot = 49;
         this.rare = 3;
         this.value = 30000;
-        this.toolTip = "Increases maximum mana by 20";
-        this.toolTip2 = "3% increased magic critical strike chance";
       }
       else if (type == 962)
       {
-        this.name = "Ancient Cobalt Leggings";
         this.width = 18;
         this.height = 18;
         this.defense = 6;
         this.legSlot = 45;
         this.rare = 3;
         this.value = 30000;
-        this.toolTip = "Increases maximum mana by 20";
-        this.toolTip2 = "3% increased magic critical strike chance";
       }
       else if (type == 963)
       {
-        this.name = "Black Belt";
         this.width = 16;
         this.height = 24;
         this.accessory = true;
         this.rare = 7;
-        this.toolTip = "Gives a chance to dodge attacks";
         this.value = 50000;
         this.waistSlot = (sbyte) 10;
       }
@@ -16180,7 +14831,6 @@ namespace Terraria
         this.useStyle = 5;
         this.useAnimation = 40;
         this.useTime = 40;
-        this.name = "Boomstick";
         this.width = 50;
         this.height = 14;
         this.shoot = 10;
@@ -16192,11 +14842,9 @@ namespace Terraria
         this.value = Item.sellPrice(0, 2, 0, 0);
         this.rare = 2;
         this.ranged = true;
-        this.toolTip = "Fires a spread of bullets";
       }
       else if (type == 965)
       {
-        this.name = "Rope";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -16209,11 +14857,9 @@ namespace Terraria
         this.height = 12;
         this.value = 10;
         this.tileBoost += 3;
-        this.toolTip = "Can be climbed on";
       }
       else if (type == 966)
       {
-        this.name = "Campfire";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -16224,11 +14870,9 @@ namespace Terraria
         this.createTile = 215;
         this.width = 12;
         this.height = 12;
-        this.toolTip = "Life regen is increased when near a campfire";
       }
       else if (type == 967)
       {
-        this.name = "Marshmellow";
         this.width = 12;
         this.height = 12;
         this.maxStack = 99;
@@ -16236,7 +14880,6 @@ namespace Terraria
       }
       else if (type == 968)
       {
-        this.name = "Marshmellow on a Stick";
         this.holdStyle = 1;
         this.width = 12;
         this.height = 12;
@@ -16244,7 +14887,6 @@ namespace Terraria
       }
       else if (type == 969)
       {
-        this.name = "Cooked Marshmellow";
         this.UseSound = SoundID.Item2;
         this.useStyle = 2;
         this.useTurn = true;
@@ -16257,13 +14899,11 @@ namespace Terraria
         this.buffType = 26;
         this.buffTime = 36000;
         this.rare = 1;
-        this.toolTip = "Minor improvements to all stats";
         this.value = 1000;
         this.value = 1000;
       }
       else if (type == 970)
       {
-        this.name = "Red Rocket";
         this.createTile = 216;
         this.placeStyle = 0;
         this.useStyle = 1;
@@ -16280,7 +14920,6 @@ namespace Terraria
       }
       else if (type == 971)
       {
-        this.name = "Green Rocket";
         this.createTile = 216;
         this.placeStyle = 1;
         this.useStyle = 1;
@@ -16297,7 +14936,6 @@ namespace Terraria
       }
       else if (type == 972)
       {
-        this.name = "Blue Rocket";
         this.createTile = 216;
         this.placeStyle = 2;
         this.useStyle = 1;
@@ -16314,7 +14952,6 @@ namespace Terraria
       }
       else if (type == 973)
       {
-        this.name = "Yellow Rocket";
         this.createTile = 216;
         this.placeStyle = 3;
         this.useStyle = 1;
@@ -16332,7 +14969,6 @@ namespace Terraria
       else if (type == 974)
       {
         this.flame = true;
-        this.name = "Ice Torch";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -16350,24 +14986,19 @@ namespace Terraria
       }
       else if (type == 975)
       {
-        this.name = "Shoe Spikes";
         this.width = 16;
         this.height = 24;
         this.accessory = true;
         this.rare = 1;
-        this.toolTip = "Allows the ability to slide down walls";
-        this.toolTip = "Improved ability if combined with Climbing Claws";
         this.value = 50000;
         this.shoeSlot = (sbyte) 4;
       }
       else if (type == 976)
       {
-        this.name = "Tiger Climbing Gear";
         this.width = 16;
         this.height = 24;
         this.accessory = true;
         this.rare = 2;
-        this.toolTip = "Allows the ability to climb walls";
         this.value = 50000;
         this.shoeSlot = (sbyte) 4;
         this.handOnSlot = (sbyte) 11;
@@ -16375,19 +15006,15 @@ namespace Terraria
       }
       else if (type == 977)
       {
-        this.name = "Tabi";
         this.width = 16;
         this.height = 24;
         this.accessory = true;
         this.rare = 7;
-        this.toolTip = "Allows the ability to dash";
-        this.toolTip = "Double tap a direction";
         this.value = 50000;
         this.shoeSlot = (sbyte) 3;
       }
       else if (type == 978)
       {
-        this.name = "Pink Eskimo Hood";
         this.width = 18;
         this.height = 18;
         this.headSlot = 77;
@@ -16396,7 +15023,6 @@ namespace Terraria
       }
       else if (type == 979)
       {
-        this.name = "Pink Eskimo Coat";
         this.width = 18;
         this.height = 18;
         this.bodySlot = 50;
@@ -16405,7 +15031,6 @@ namespace Terraria
       }
       else if (type == 980)
       {
-        this.name = "Pink Eskimo Pants";
         this.width = 18;
         this.height = 18;
         this.legSlot = 46;
@@ -16414,7 +15039,6 @@ namespace Terraria
       }
       else if (type == 981)
       {
-        this.name = "Pink Thread";
         this.maxStack = 99;
         this.width = 12;
         this.height = 20;
@@ -16422,37 +15046,28 @@ namespace Terraria
       }
       else if (type == 982)
       {
-        this.name = "Mana Regeneration Band";
         this.width = 22;
         this.height = 22;
         this.accessory = true;
         this.rare = 1;
-        this.toolTip = "Increases maximum mana by 20";
-        this.toolTip2 = "Increases mana regeneration rate";
         this.value = 50000;
         this.handOnSlot = (sbyte) 1;
       }
       else if (type == 983)
       {
-        this.name = "Sandstorm in a Balloon";
         this.width = 14;
         this.height = 28;
         this.rare = 4;
         this.value = 150000;
         this.accessory = true;
-        this.toolTip = "Allows the holder to double jump";
-        this.toolTip2 = "Increases jump height";
         this.balloonSlot = (sbyte) 6;
       }
       else if (type == 984)
       {
-        this.name = "Master Ninja Gear";
         this.width = 16;
         this.height = 24;
         this.accessory = true;
         this.rare = 8;
-        this.toolTip = "Allows the ability to climb walls and dash";
-        this.toolTip2 = "Gives a chance to dodge attacks";
         this.value = 500000;
         this.handOnSlot = (sbyte) 11;
         this.handOffSlot = (sbyte) 6;
@@ -16462,7 +15077,6 @@ namespace Terraria
       else if (type == 985)
       {
         this.useStyle = 1;
-        this.name = "Rope Coil";
         this.shootSpeed = 10f;
         this.shoot = 171;
         this.damage = 0;
@@ -16476,7 +15090,6 @@ namespace Terraria
         this.noUseGraphic = true;
         this.noMelee = true;
         this.value = 100;
-        this.toolTip = "Throw to create a climbable line of rope";
       }
       else if (type == 986)
       {
@@ -16484,7 +15097,6 @@ namespace Terraria
         this.autoReuse = true;
         this.useAnimation = 35;
         this.useTime = 35;
-        this.name = "Blowgun";
         this.width = 38;
         this.height = 6;
         this.shoot = 10;
@@ -16496,23 +15108,19 @@ namespace Terraria
         this.value = Item.buyPrice(0, 5, 0, 0);
         this.knockBack = 4f;
         this.useAmmo = AmmoID.Dart;
-        this.toolTip = "Allows the collection of seeds for ammo";
         this.ranged = true;
         this.rare = 3;
       }
       else if (type == 987)
       {
-        this.name = "Blizzard in a Bottle";
         this.width = 16;
         this.height = 24;
         this.accessory = true;
         this.rare = 1;
-        this.toolTip = "Allows the holder to double jump";
         this.value = 50000;
       }
       else if (type == 988)
       {
-        this.name = "Frostburn Arrow";
         this.shootSpeed = 3.75f;
         this.shoot = 172;
         this.damage = 9;
@@ -16530,7 +15138,6 @@ namespace Terraria
         this.autoReuse = true;
         this.rare = 2;
         this.UseSound = SoundID.Item1;
-        this.name = "Enchanted Sword";
         this.useStyle = 1;
         this.damage = 24;
         this.useAnimation = 18;
@@ -16541,7 +15148,6 @@ namespace Terraria
         this.shoot = 173;
         this.shootSpeed = 9.5f;
         this.knockBack = 5.25f;
-        this.toolTip = "Shoots an echanted beam";
         this.melee = true;
         this.value = 20000;
       }
@@ -16549,7 +15155,6 @@ namespace Terraria
       {
         this.useTurn = true;
         this.autoReuse = true;
-        this.name = "Pickaxe Axe";
         this.useStyle = 1;
         this.useAnimation = 25;
         this.useTime = 7;
@@ -16564,13 +15169,11 @@ namespace Terraria
         this.value = 220000;
         this.melee = true;
         this.scale = 1.1f;
-        this.toolTip = "'Not to be confused with a hamdrill'";
       }
       else if (type == 991)
       {
         this.useTurn = true;
         this.autoReuse = true;
-        this.name = "Cobalt Waraxe";
         this.useStyle = 1;
         this.useAnimation = 35;
         this.useTime = 8;
@@ -16589,7 +15192,6 @@ namespace Terraria
       {
         this.useTurn = true;
         this.autoReuse = true;
-        this.name = "Mythril Waraxe";
         this.useStyle = 1;
         this.useAnimation = 35;
         this.useTime = 8;
@@ -16608,7 +15210,6 @@ namespace Terraria
       {
         this.useTurn = true;
         this.autoReuse = true;
-        this.name = "Adamantite Waraxe";
         this.useStyle = 1;
         this.useAnimation = 35;
         this.useTime = 6;
@@ -16627,7 +15228,6 @@ namespace Terraria
       {
         this.damage = 0;
         this.useStyle = 1;
-        this.name = "Eater's Bone";
         this.shoot = 175;
         this.width = 16;
         this.height = 30;
@@ -16636,13 +15236,11 @@ namespace Terraria
         this.useTime = 20;
         this.rare = 3;
         this.noMelee = true;
-        this.toolTip = "Summons a Baby Eater of Souls";
         this.value = 0;
         this.buffType = 45;
       }
       else if (type == 995)
       {
-        this.name = "Blend-O-Matic";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -16654,11 +15252,9 @@ namespace Terraria
         this.width = 26;
         this.height = 20;
         this.value = 100000;
-        this.toolTip = "Used to craft objects";
       }
       else if (type == 996)
       {
-        this.name = "Meat Grinder";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -16670,11 +15266,9 @@ namespace Terraria
         this.width = 26;
         this.height = 20;
         this.value = 100000;
-        this.toolTip = "Used to craft objects";
       }
       else if (type == 997)
       {
-        this.name = "Silt Extractinator";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -16686,12 +15280,9 @@ namespace Terraria
         this.width = 26;
         this.height = 20;
         this.value = 100000;
-        this.toolTip = "Turns silt into something more useful";
-        this.toolTip2 = "'To use: Place silt in the extractinator'";
       }
       else if (type == 998)
       {
-        this.name = "Solidifier";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -16703,11 +15294,9 @@ namespace Terraria
         this.width = 26;
         this.height = 20;
         this.value = 100000;
-        this.toolTip = "Used to craft objects";
       }
       else if (type == 999)
       {
-        this.name = "Amber";
         this.createTile = 178;
         this.placeStyle = 6;
         this.useStyle = 1;
@@ -16727,7 +15316,6 @@ namespace Terraria
         if (type != 1000)
           return;
         this.useStyle = 5;
-        this.name = "Confetti Gun";
         this.shootSpeed = 10f;
         this.shoot = 178;
         this.damage = 0;
@@ -16748,67 +15336,51 @@ namespace Terraria
     {
       if (type == 1001)
       {
-        this.name = "Chlorophyte Mask";
         this.width = 18;
         this.height = 18;
         this.defense = 25;
         this.headSlot = 78;
         this.rare = 7;
         this.value = 300000;
-        this.toolTip = "16% increased melee damage";
-        this.toolTip2 = "6% increased melee critical strike chance";
       }
       else if (type == 1002)
       {
-        this.name = "Chlorophyte Helmet";
         this.width = 18;
         this.height = 18;
         this.defense = 13;
         this.headSlot = 79;
         this.rare = 7;
         this.value = 300000;
-        this.toolTip = "16% increased ranged damage";
-        this.toolTip2 = "20% chance to not consume ammo";
       }
       else if (type == 1003)
       {
-        this.name = "Chlorophyte Headgear";
         this.width = 18;
         this.height = 18;
         this.defense = 7;
         this.headSlot = 80;
         this.rare = 7;
         this.value = 300000;
-        this.toolTip = "Increases maximum mana by 80 and reduces mana usage by 17%";
-        this.toolTip2 = "16% increased magic damage";
       }
       else if (type == 1004)
       {
-        this.name = "Chlorophyte Plate Mail";
         this.width = 18;
         this.height = 18;
         this.defense = 18;
         this.bodySlot = 51;
         this.rare = 7;
         this.value = 240000;
-        this.toolTip = "5% increased damage";
-        this.toolTip = "7% increased critical strike chance";
       }
       else if (type == 1005)
       {
-        this.name = "Chlorophyte Greaves";
         this.width = 18;
         this.height = 18;
         this.defense = 13;
         this.legSlot = 47;
         this.rare = 7;
         this.value = 180000;
-        this.toolTip = "8% increased critical strike chance";
-        this.toolTip = "5% increased movement speed";
       }
       else if (type == 1006)
       {
-        this.name = "Chlorophyte Bar";
         this.width = 20;
         this.height = 20;
         this.maxStack = 99;
@@ -16825,7 +15397,6 @@ namespace Terraria
       }
       else if (type == 1007)
       {
-        this.name = "Red Dye";
         this.width = 20;
         this.height = 20;
         this.maxStack = 99;
@@ -16834,7 +15405,6 @@ namespace Terraria
       }
       else if (type == 1008)
       {
-        this.name = "Orange Dye";
         this.width = 20;
         this.height = 20;
         this.maxStack = 99;
@@ -16843,7 +15413,6 @@ namespace Terraria
       }
       else if (type == 1009)
       {
-        this.name = "Yellow Dye";
         this.width = 20;
         this.height = 20;
         this.maxStack = 99;
@@ -16852,7 +15421,6 @@ namespace Terraria
       }
       else if (type == 1010)
       {
-        this.name = "Lime Dye";
         this.width = 20;
         this.height = 20;
         this.maxStack = 99;
@@ -16861,7 +15429,6 @@ namespace Terraria
       }
       else if (type == 1011)
       {
-        this.name = "Green Dye";
         this.width = 20;
         this.height = 20;
         this.maxStack = 99;
@@ -16870,7 +15437,6 @@ namespace Terraria
       }
       else if (type == 1012)
       {
-        this.name = "Teal Dye";
         this.width = 20;
         this.height = 20;
         this.maxStack = 99;
@@ -16879,7 +15445,6 @@ namespace Terraria
       }
       else if (type == 1013)
       {
-        this.name = "Cyan Dye";
         this.width = 20;
         this.height = 20;
         this.maxStack = 99;
@@ -16888,7 +15453,6 @@ namespace Terraria
       }
       else if (type == 1014)
       {
-        this.name = "Sky Blue Dye";
         this.width = 20;
         this.height = 20;
         this.maxStack = 99;
@@ -16897,7 +15461,6 @@ namespace Terraria
       }
       else if (type == 1015)
       {
-        this.name = "Blue Dye";
         this.width = 20;
         this.height = 20;
         this.maxStack = 99;
@@ -16906,7 +15469,6 @@ namespace Terraria
       }
       else if (type == 1016)
       {
-        this.name = "Purple Dye";
         this.width = 20;
         this.height = 20;
         this.maxStack = 99;
@@ -16915,7 +15477,6 @@ namespace Terraria
       }
       else if (type == 1017)
       {
-        this.name = "Violet Dye";
         this.width = 20;
         this.height = 20;
         this.maxStack = 99;
@@ -16924,7 +15485,6 @@ namespace Terraria
       }
       else if (type == 1018)
       {
-        this.name = "Pink Dye";
         this.width = 20;
         this.height = 20;
         this.maxStack = 99;
@@ -16933,7 +15493,6 @@ namespace Terraria
       }
       else if (type == 1019)
       {
-        this.name = "Red and Black Dye";
         this.width = 20;
         this.height = 20;
         this.maxStack = 99;
@@ -16942,7 +15501,6 @@ namespace Terraria
       }
       else if (type == 1020)
       {
-        this.name = "Orange and Black Dye";
         this.width = 20;
         this.height = 20;
         this.maxStack = 99;
@@ -16951,7 +15509,6 @@ namespace Terraria
       }
       else if (type == 1021)
       {
-        this.name = "Yellow and Black Dye";
         this.width = 20;
         this.height = 20;
         this.maxStack = 99;
@@ -16960,7 +15517,6 @@ namespace Terraria
       }
       else if (type == 1022)
       {
-        this.name = "Lime and Black Dye";
         this.width = 20;
         this.height = 20;
         this.maxStack = 99;
@@ -16969,7 +15525,6 @@ namespace Terraria
       }
       else if (type == 1023)
       {
-        this.name = "Green and Black Dye";
         this.width = 20;
         this.height = 20;
         this.maxStack = 99;
@@ -16978,7 +15533,6 @@ namespace Terraria
       }
       else if (type == 1024)
       {
-        this.name = "Teal and Black Dye";
         this.width = 20;
         this.height = 20;
         this.maxStack = 99;
@@ -16987,7 +15541,6 @@ namespace Terraria
       }
       else if (type == 1025)
       {
-        this.name = "Cyan and Black Dye";
         this.width = 20;
         this.height = 20;
         this.maxStack = 99;
@@ -16996,7 +15549,6 @@ namespace Terraria
       }
       else if (type == 1026)
       {
-        this.name = "Sky Blue and Black Dye";
         this.width = 20;
         this.height = 20;
         this.maxStack = 99;
@@ -17005,7 +15557,6 @@ namespace Terraria
       }
       else if (type == 1027)
       {
-        this.name = "Blue and Black Dye";
         this.width = 20;
         this.height = 20;
         this.maxStack = 99;
@@ -17014,7 +15565,6 @@ namespace Terraria
       }
       else if (type == 1028)
       {
-        this.name = "Purple and Black Dye";
         this.width = 20;
         this.height = 20;
         this.maxStack = 99;
@@ -17023,7 +15573,6 @@ namespace Terraria
       }
       else if (type == 1029)
       {
-        this.name = "Violet and Black Dye";
         this.width = 20;
         this.height = 20;
         this.maxStack = 99;
@@ -17032,7 +15581,6 @@ namespace Terraria
       }
       else if (type == 1030)
       {
-        this.name = "Pink and Black Dye";
         this.width = 20;
         this.height = 20;
         this.maxStack = 99;
@@ -17041,7 +15589,6 @@ namespace Terraria
       }
       else if (type == 1031)
       {
-        this.name = "Flame Dye";
         this.width = 20;
         this.height = 20;
         this.maxStack = 99;
@@ -17050,7 +15597,6 @@ namespace Terraria
       }
       else if (type == 1032)
       {
-        this.name = "Flame and Black Dye";
         this.width = 20;
         this.height = 20;
         this.maxStack = 99;
@@ -17059,7 +15605,6 @@ namespace Terraria
       }
       else if (type == 1033)
       {
-        this.name = "Green Flame Dye";
         this.width = 20;
         this.height = 20;
         this.maxStack = 99;
@@ -17068,7 +15613,6 @@ namespace Terraria
       }
       else if (type == 1034)
       {
-        this.name = "Green Flame and Black Dye";
         this.width = 20;
         this.height = 20;
         this.maxStack = 99;
@@ -17077,7 +15621,6 @@ namespace Terraria
       }
       else if (type == 1035)
       {
-        this.name = "Blue Flame Dye";
         this.width = 20;
         this.height = 20;
         this.maxStack = 99;
@@ -17086,7 +15629,6 @@ namespace Terraria
       }
       else if (type == 1036)
       {
-        this.name = "Blue Flame and Black Dye";
         this.width = 20;
         this.height = 20;
         this.maxStack = 99;
@@ -17095,7 +15637,6 @@ namespace Terraria
       }
       else if (type == 1037)
       {
-        this.name = "Silver Dye";
         this.width = 20;
         this.height = 20;
         this.maxStack = 99;
@@ -17104,7 +15645,6 @@ namespace Terraria
       }
       else if (type == 1038)
       {
-        this.name = "Bright Red Dye";
         this.width = 20;
         this.height = 20;
         this.maxStack = 99;
@@ -17113,7 +15653,6 @@ namespace Terraria
       }
       else if (type == 1039)
       {
-        this.name = "Bright Orange Dye";
         this.width = 20;
         this.height = 20;
         this.maxStack = 99;
@@ -17122,7 +15661,6 @@ namespace Terraria
       }
       else if (type == 1040)
       {
-        this.name = "Bright Yellow Dye";
         this.width = 20;
         this.height = 20;
         this.maxStack = 99;
@@ -17131,7 +15669,6 @@ namespace Terraria
       }
       else if (type == 1041)
       {
-        this.name = "Bright Lime Dye";
         this.width = 20;
         this.height = 20;
         this.maxStack = 99;
@@ -17140,7 +15677,6 @@ namespace Terraria
       }
       else if (type == 1042)
       {
-        this.name = "Bright Green Dye";
         this.width = 20;
         this.height = 20;
         this.maxStack = 99;
@@ -17149,7 +15685,6 @@ namespace Terraria
       }
       else if (type == 1043)
       {
-        this.name = "Bright Teal Dye";
         this.width = 20;
         this.height = 20;
         this.maxStack = 99;
@@ -17158,7 +15693,6 @@ namespace Terraria
       }
       else if (type == 1044)
       {
-        this.name = "Bright Cyan Dye";
         this.width = 20;
         this.height = 20;
         this.maxStack = 99;
@@ -17167,7 +15701,6 @@ namespace Terraria
       }
       else if (type == 1045)
       {
-        this.name = "Bright Sky Blue Dye";
         this.width = 20;
         this.height = 20;
         this.maxStack = 99;
@@ -17176,7 +15709,6 @@ namespace Terraria
       }
       else if (type == 1046)
       {
-        this.name = "Bright Blue Dye";
         this.width = 20;
         this.height = 20;
         this.maxStack = 99;
@@ -17185,7 +15717,6 @@ namespace Terraria
       }
       else if (type == 1047)
       {
-        this.name = "Bright Purple Dye";
         this.width = 20;
         this.height = 20;
         this.maxStack = 99;
@@ -17194,7 +15725,6 @@ namespace Terraria
       }
       else if (type == 1048)
       {
-        this.name = "Bright Violet Dye";
         this.width = 20;
         this.height = 20;
         this.maxStack = 99;
@@ -17203,7 +15733,6 @@ namespace Terraria
       }
       else if (type == 1049)
       {
-        this.name = "Bright Pink Dye";
         this.width = 20;
         this.height = 20;
         this.maxStack = 99;
@@ -17212,7 +15741,6 @@ namespace Terraria
       }
       else if (type == 1050)
       {
-        this.name = "Black Dye";
         this.width = 20;
         this.height = 20;
         this.maxStack = 99;
@@ -17221,7 +15749,6 @@ namespace Terraria
       }
       else if (type == 1051)
       {
-        this.name = "Red and Silver Dye";
         this.width = 20;
         this.height = 20;
         this.maxStack = 99;
@@ -17230,7 +15757,6 @@ namespace Terraria
       }
       else if (type == 1052)
       {
-        this.name = "Orange and Silver Dye";
         this.width = 20;
         this.height = 20;
         this.maxStack = 99;
@@ -17239,7 +15765,6 @@ namespace Terraria
       }
       else if (type == 1053)
       {
-        this.name = "Yellow and Silver Dye";
         this.width = 20;
         this.height = 20;
         this.maxStack = 99;
@@ -17248,7 +15773,6 @@ namespace Terraria
       }
       else if (type == 1054)
       {
-        this.name = "Lime and Silver Dye";
         this.width = 20;
         this.height = 20;
         this.maxStack = 99;
@@ -17257,7 +15781,6 @@ namespace Terraria
       }
       else if (type == 1055)
       {
-        this.name = "Green and Silver Dye";
         this.width = 20;
         this.height = 20;
         this.maxStack = 99;
@@ -17266,7 +15789,6 @@ namespace Terraria
       }
       else if (type == 1056)
       {
-        this.name = "Teal and Silver Dye";
         this.width = 20;
         this.height = 20;
         this.maxStack = 99;
@@ -17275,7 +15797,6 @@ namespace Terraria
       }
       else if (type == 1057)
       {
-        this.name = "Cyan and Silver Dye";
         this.width = 20;
         this.height = 20;
         this.maxStack = 99;
@@ -17284,7 +15805,6 @@ namespace Terraria
       }
       else if (type == 1058)
       {
-        this.name = "Sky Blue and Silver Dye";
         this.width = 20;
         this.height = 20;
         this.maxStack = 99;
@@ -17293,7 +15813,6 @@ namespace Terraria
       }
       else if (type == 1059)
       {
-        this.name = "Blue and Silver Dye";
         this.width = 20;
         this.height = 20;
         this.maxStack = 99;
@@ -17302,7 +15821,6 @@ namespace Terraria
       }
       else if (type == 1060)
       {
-        this.name = "Purple and Silver Dye";
         this.width = 20;
         this.height = 20;
         this.maxStack = 99;
@@ -17311,7 +15829,6 @@ namespace Terraria
       }
       else if (type == 1061)
       {
-        this.name = "Violet and Silver Dye";
         this.width = 20;
         this.height = 20;
         this.maxStack = 99;
@@ -17320,7 +15837,6 @@ namespace Terraria
       }
       else if (type == 1062)
       {
-        this.name = "Pink and Silver Dye";
         this.width = 20;
         this.height = 20;
         this.maxStack = 99;
@@ -17329,7 +15845,6 @@ namespace Terraria
       }
       else if (type == 1063)
       {
-        this.name = "Intense Flame Dye";
         this.width = 20;
         this.height = 20;
         this.maxStack = 99;
@@ -17338,7 +15853,6 @@ namespace Terraria
       }
       else if (type == 1064)
       {
-        this.name = "Intense Green Flame Dye";
         this.width = 20;
         this.height = 20;
         this.maxStack = 99;
@@ -17347,7 +15861,6 @@ namespace Terraria
       }
       else if (type == 1065)
       {
-        this.name = "Intense Blue Flame Dye";
         this.width = 20;
         this.height = 20;
         this.maxStack = 99;
@@ -17356,7 +15869,6 @@ namespace Terraria
       }
       else if (type == 1066)
       {
-        this.name = "Rainbow Dye";
         this.width = 20;
         this.height = 20;
         this.maxStack = 99;
@@ -17365,7 +15877,6 @@ namespace Terraria
       }
       else if (type == 1067)
       {
-        this.name = "Intense Rainbow Dye";
         this.width = 20;
         this.height = 20;
         this.maxStack = 99;
@@ -17374,7 +15885,6 @@ namespace Terraria
       }
       else if (type == 1068)
       {
-        this.name = "Yellow Gradient Dye";
         this.width = 20;
         this.height = 20;
         this.maxStack = 99;
@@ -17383,7 +15893,6 @@ namespace Terraria
       }
       else if (type == 1069)
       {
-        this.name = "Cyan Gradient Dye";
         this.width = 20;
         this.height = 20;
         this.maxStack = 99;
@@ -17392,7 +15901,6 @@ namespace Terraria
       }
       else if (type == 1070)
       {
-        this.name = "Violet Gradient Dye";
         this.width = 20;
         this.height = 20;
         this.maxStack = 99;
@@ -17401,7 +15909,6 @@ namespace Terraria
       }
       else if (type == 1071)
       {
-        this.name = "Paintbrush";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -17409,12 +15916,10 @@ namespace Terraria
         this.autoReuse = true;
         this.width = 24;
         this.height = 24;
-        this.toolTip = "Used with paint to color blocks";
         this.value = 10000;
       }
       else if (type == 1072)
       {
-        this.name = "Paint Roller";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -17422,12 +15927,10 @@ namespace Terraria
         this.autoReuse = true;
         this.width = 24;
         this.height = 24;
-        this.toolTip = "Used with paint to color walls";
         this.value = 10000;
       }
       else if (type == 1073)
       {
-        this.name = "Red Paint";
         this.paint = (byte) 1;
         this.width = 24;
         this.height = 24;
@@ -17436,7 +15939,6 @@ namespace Terraria
       }
       else if (type == 1074)
       {
-        this.name = "Orange Paint";
         this.paint = (byte) 2;
         this.width = 24;
         this.height = 24;
@@ -17445,7 +15947,6 @@ namespace Terraria
       }
       else if (type == 1075)
       {
-        this.name = "Yellow Paint";
         this.paint = (byte) 3;
         this.width = 24;
         this.height = 24;
@@ -17454,7 +15955,6 @@ namespace Terraria
       }
       else if (type == 1076)
       {
-        this.name = "Lime Paint";
         this.paint = (byte) 4;
         this.width = 24;
         this.height = 24;
@@ -17463,7 +15963,6 @@ namespace Terraria
       }
       else if (type == 1077)
       {
-        this.name = "Green Paint";
         this.paint = (byte) 5;
         this.width = 24;
         this.height = 24;
@@ -17472,7 +15971,6 @@ namespace Terraria
       }
       else if (type == 1078)
       {
-        this.name = "Teal Paint";
         this.paint = (byte) 6;
         this.width = 24;
         this.height = 24;
@@ -17481,7 +15979,6 @@ namespace Terraria
       }
       else if (type == 1079)
       {
-        this.name = "Cyan Paint";
         this.paint = (byte) 7;
         this.width = 24;
         this.height = 24;
@@ -17490,7 +15987,6 @@ namespace Terraria
       }
       else if (type == 1080)
       {
-        this.name = "Sky Blue Paint";
         this.paint = (byte) 8;
         this.width = 24;
         this.height = 24;
@@ -17499,7 +15995,6 @@ namespace Terraria
       }
       else if (type == 1081)
       {
-        this.name = "Blue Paint";
         this.paint = (byte) 9;
         this.width = 24;
         this.height = 24;
@@ -17508,7 +16003,6 @@ namespace Terraria
       }
       else if (type == 1082)
       {
-        this.name = "Purple Paint";
         this.paint = (byte) 10;
         this.width = 24;
         this.height = 24;
@@ -17517,7 +16011,6 @@ namespace Terraria
       }
       else if (type == 1083)
       {
-        this.name = "Violet Paint";
         this.paint = (byte) 11;
         this.width = 24;
         this.height = 24;
@@ -17526,7 +16019,6 @@ namespace Terraria
       }
       else if (type == 1084)
       {
-        this.name = "Pink Paint";
         this.paint = (byte) 12;
         this.width = 24;
         this.height = 24;
@@ -17535,7 +16027,6 @@ namespace Terraria
       }
       else if (type == 1085)
       {
-        this.name = "Deep Red Paint";
         this.paint = (byte) 13;
         this.width = 24;
         this.height = 24;
@@ -17544,7 +16035,6 @@ namespace Terraria
       }
       else if (type == 1086)
       {
-        this.name = "Deep Orange Paint";
         this.paint = (byte) 14;
         this.width = 24;
         this.height = 24;
@@ -17553,7 +16043,6 @@ namespace Terraria
       }
       else if (type == 1087)
       {
-        this.name = "Deep Yellow Paint";
         this.paint = (byte) 15;
         this.width = 24;
         this.height = 24;
@@ -17562,7 +16051,6 @@ namespace Terraria
       }
       else if (type == 1088)
       {
-        this.name = "Deep Lime Paint";
         this.paint = (byte) 16;
         this.width = 24;
         this.height = 24;
@@ -17571,7 +16059,6 @@ namespace Terraria
       }
       else if (type == 1089)
       {
-        this.name = "Deep Green Paint";
         this.paint = (byte) 17;
         this.width = 24;
         this.height = 24;
@@ -17580,7 +16067,6 @@ namespace Terraria
       }
       else if (type == 1090)
       {
-        this.name = "Deep Teal Paint";
         this.paint = (byte) 18;
         this.width = 24;
         this.height = 24;
@@ -17589,7 +16075,6 @@ namespace Terraria
       }
       else if (type == 1091)
       {
-        this.name = "Deep Cyan Paint";
         this.paint = (byte) 19;
         this.width = 24;
         this.height = 24;
@@ -17598,7 +16083,6 @@ namespace Terraria
       }
       else if (type == 1092)
       {
-        this.name = "Deep Sky Blue Paint";
         this.paint = (byte) 20;
         this.width = 24;
         this.height = 24;
@@ -17607,7 +16091,6 @@ namespace Terraria
       }
       else if (type == 1093)
       {
-        this.name = "Deep Blue Paint";
         this.paint = (byte) 21;
         this.width = 24;
         this.height = 24;
@@ -17616,7 +16099,6 @@ namespace Terraria
       }
       else if (type == 1094)
       {
-        this.name = "Deep Purple Paint";
         this.paint = (byte) 22;
         this.width = 24;
         this.height = 24;
@@ -17625,7 +16107,6 @@ namespace Terraria
       }
       else if (type == 1095)
       {
-        this.name = "Deep Violet Paint";
         this.paint = (byte) 23;
         this.width = 24;
         this.height = 24;
@@ -17634,7 +16115,6 @@ namespace Terraria
       }
       else if (type == 1096)
       {
-        this.name = "Deep Pink Paint";
         this.paint = (byte) 24;
         this.width = 24;
         this.height = 24;
@@ -17643,7 +16123,6 @@ namespace Terraria
       }
       else if (type == 1097)
       {
-        this.name = "Black Paint";
         this.paint = (byte) 25;
         this.width = 24;
         this.height = 24;
@@ -17652,7 +16131,6 @@ namespace Terraria
       }
       else if (type == 1098)
       {
-        this.name = "White Paint";
         this.paint = (byte) 26;
         this.width = 24;
         this.height = 24;
@@ -17661,7 +16139,6 @@ namespace Terraria
       }
       else if (type == 1099)
       {
-        this.name = "Gray Paint";
         this.paint = (byte) 27;
         this.width = 24;
         this.height = 24;
@@ -17670,7 +16147,6 @@ namespace Terraria
       }
       else if (type == 1100)
       {
-        this.name = "Paint Scraper";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -17678,12 +16154,10 @@ namespace Terraria
         this.autoReuse = true;
         this.width = 24;
         this.height = 24;
-        this.toolTip = "Used to remove paint";
         this.value = 10000;
       }
       else if (type == 1101)
       {
-        this.name = "Lihzahrd Brick";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -17697,7 +16171,6 @@ namespace Terraria
       }
       else if (type == 1102)
       {
-        this.name = "Lihzahrd Brick Wall";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -17711,7 +16184,6 @@ namespace Terraria
       }
       else if (type == 1103)
       {
-        this.name = "Slush Block";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -17725,7 +16197,6 @@ namespace Terraria
       }
       else if (type == 1104)
       {
-        this.name = "Palladium Ore";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -17741,7 +16212,6 @@ namespace Terraria
       }
       else if (type == 1105)
       {
-        this.name = "Orichalcum Ore";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -17757,7 +16227,6 @@ namespace Terraria
       }
       else if (type == 1106)
       {
-        this.name = "Titanium Ore";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -17773,13 +16242,11 @@ namespace Terraria
       }
       else if (type == 1107)
       {
-        this.name = "Teal Mushroom";
         this.width = 20;
         this.height = 20;
         this.maxStack = 99;
         this.value = 10000;
         this.rare = 1;
-        this.toolTip = "Used to make Teal Dye";
         this.placeStyle = 0;
         this.createTile = 227;
         this.useStyle = 1;
@@ -17791,13 +16258,11 @@ namespace Terraria
       }
       else if (type == 1108)
       {
-        this.name = "Green Mushroom";
         this.width = 20;
         this.height = 20;
         this.maxStack = 99;
         this.value = 10000;
         this.rare = 1;
-        this.toolTip = "Used to make Green Dye";
         this.placeStyle = 1;
         this.createTile = 227;
         this.useStyle = 1;
@@ -17809,13 +16274,11 @@ namespace Terraria
       }
       else if (type == 1109)
       {
-        this.name = "Sky Blue Flower";
         this.width = 20;
         this.height = 20;
         this.maxStack = 99;
         this.value = 10000;
         this.rare = 1;
-        this.toolTip = "Used to make Sky Blue Dye";
         this.placeStyle = 2;
         this.createTile = 227;
         this.useStyle = 1;
@@ -17827,13 +16290,11 @@ namespace Terraria
       }
       else if (type == 1110)
       {
-        this.name = "Yellow Marigold";
         this.width = 20;
         this.height = 20;
         this.maxStack = 99;
         this.value = 10000;
         this.rare = 1;
-        this.toolTip = "Used to make Yellow Dye";
         this.placeStyle = 3;
         this.createTile = 227;
         this.useStyle = 1;
@@ -17845,13 +16306,11 @@ namespace Terraria
       }
       else if (type == 1111)
       {
-        this.name = "Blue Berries";
         this.width = 20;
         this.height = 20;
         this.maxStack = 99;
         this.value = 10000;
         this.rare = 1;
-        this.toolTip = "Used to make Blue Dye";
         this.placeStyle = 4;
         this.createTile = 227;
         this.useStyle = 1;
@@ -17863,13 +16322,11 @@ namespace Terraria
       }
       else if (type == 1112)
       {
-        this.name = "Lime Kelp";
         this.width = 20;
         this.height = 20;
         this.maxStack = 99;
         this.value = 10000;
         this.rare = 1;
-        this.toolTip = "Used to make Lime Dye";
         this.placeStyle = 5;
         this.createTile = 227;
         this.useStyle = 1;
@@ -17881,23 +16338,19 @@ namespace Terraria
       }
       else if (type == 1113)
       {
-        this.name = "Pink Prickly Pear";
         this.width = 20;
         this.height = 20;
         this.maxStack = 99;
         this.value = 10000;
         this.rare = 1;
-        this.toolTip = "Used to make Pink Dye";
       }
       else if (type == 1114)
       {
-        this.name = "Orange Bloodroot";
         this.width = 20;
         this.height = 20;
         this.maxStack = 99;
         this.value = 10000;
         this.rare = 1;
-        this.toolTip = "Used to make Orange Dye";
         this.placeStyle = 7;
         this.createTile = 227;
         this.useStyle = 1;
@@ -17909,57 +16362,46 @@ namespace Terraria
       }
       else if (type == 1115)
       {
-        this.name = "Red Husk";
         this.width = 20;
         this.height = 20;
         this.maxStack = 99;
         this.value = 10000;
         this.rare = 1;
-        this.toolTip = "Used to make Red Dye";
       }
       else if (type == 1116)
       {
-        this.name = "Cyan Husk";
         this.width = 20;
         this.height = 20;
         this.maxStack = 99;
         this.value = 10000;
         this.rare = 1;
-        this.toolTip = "Used to make Cyan Dye";
       }
       else if (type == 1117)
       {
-        this.name = "Violet Husk";
         this.width = 20;
         this.height = 20;
         this.maxStack = 99;
         this.value = 10000;
         this.rare = 1;
-        this.toolTip = "Used to make Violet Dye";
       }
       else if (type == 1118)
       {
-        this.name = "Purple Mucus";
         this.width = 20;
         this.height = 20;
         this.maxStack = 99;
         this.value = 10000;
         this.rare = 1;
-        this.toolTip = "Used to make Purple Dye";
       }
       else if (type == 1119)
       {
-        this.name = "Black Ink";
         this.width = 20;
         this.height = 20;
         this.maxStack = 99;
         this.value = 10000;
         this.rare = 1;
-        this.toolTip = "Used to make Black Dye";
       }
       else if (type == 1120)
       {
-        this.name = "Dye Vat";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -17971,11 +16413,9 @@ namespace Terraria
         this.width = 26;
         this.height = 20;
         this.value = Item.buyPrice(0, 5, 0, 0);
-        this.toolTip = "Used to craft dyes";
       }
       else if (type == 1121)
       {
-        this.name = "Beegun";
         this.useStyle = 5;
         this.autoReuse = true;
         this.useAnimation = 12;
@@ -17997,7 +16437,6 @@ namespace Terraria
       {
         this.autoReuse = true;
         this.useStyle = 1;
-        this.name = "Possessed Hatchet";
         this.shootSpeed = 12f;
         this.shoot = 182;
         this.damage = 80;
@@ -18012,11 +16451,9 @@ namespace Terraria
         this.knockBack = 5f;
         this.melee = true;
         this.rare = 7;
-        this.toolTip = "A magical returning hatchet";
       }
       else if (type == 1123)
       {
-        this.name = "Bee Keeper";
         this.useStyle = 1;
         this.useAnimation = 20;
         this.knockBack = 5.3f;
@@ -18029,19 +16466,15 @@ namespace Terraria
         this.rare = 3;
         this.value = 27000;
         this.melee = true;
-        this.toolTip = "Summons killer bees after striking your foe";
-        this.toolTip2 = "Small chance to cause confusion";
       }
       else if (type == 1124)
       {
-        this.name = "Hive";
         this.width = 12;
         this.height = 12;
         this.maxStack = 999;
       }
       else if (type == 1125)
       {
-        this.name = "Honey Block";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -18055,7 +16488,6 @@ namespace Terraria
       }
       else if (type == 1126)
       {
-        this.name = "Hive Wall";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -18069,7 +16501,6 @@ namespace Terraria
       }
       else if (type == 1127)
       {
-        this.name = "Crispy Honey Block";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -18083,7 +16514,6 @@ namespace Terraria
       }
       else if (type == 1128)
       {
-        this.name = "Honey Bucket";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -18095,7 +16525,6 @@ namespace Terraria
       }
       else if (type == 1129)
       {
-        this.name = "Hive Wand";
         this.tileWand = 1124;
         this.useStyle = 1;
         this.useTurn = true;
@@ -18106,12 +16535,10 @@ namespace Terraria
         this.width = 8;
         this.height = 10;
         this.rare = 1;
-        this.toolTip = "Places hives";
       }
       else if (type == 1130)
       {
         this.useStyle = 1;
-        this.name = "Beenade";
         this.shootSpeed = 6f;
         this.shoot = 183;
         this.knockBack = 1f;
@@ -18130,24 +16557,19 @@ namespace Terraria
       }
       else if (type == 1131)
       {
-        this.name = "Gravity Globe";
         this.width = 22;
         this.height = 22;
         this.accessory = true;
         this.rare = 8;
-        this.toolTip = "Allows the holder to reverse gravity";
-        this.toolTip2 = "Press UP to change gravity";
         this.value = 50000;
         this.expert = true;
       }
       else if (type == 1132)
       {
-        this.name = "Honey Comb";
         this.width = 22;
         this.height = 22;
         this.accessory = true;
         this.rare = 2;
-        this.toolTip = "Releases bees when damaged";
         this.value = 100000;
       }
       else if (type == 1133)
@@ -18156,15 +16578,12 @@ namespace Terraria
         this.consumable = true;
         this.useAnimation = 45;
         this.useTime = 45;
-        this.name = "Abeemination";
         this.width = 28;
         this.height = 28;
         this.maxStack = 20;
-        this.toolTip = "Summons the Queen Bee";
       }
       else if (type == 1134)
       {
-        this.name = "Bottled Honey";
         this.UseSound = SoundID.Item3;
         this.healLife = 80;
         this.useStyle = 2;
@@ -18180,7 +16599,6 @@ namespace Terraria
       }
       else if (type == 1135)
       {
-        this.name = "Rain Hat";
         this.width = 18;
         this.height = 18;
         this.headSlot = 81;
@@ -18189,7 +16607,6 @@ namespace Terraria
       }
       else if (type == 1136)
       {
-        this.name = "Rain Coat";
         this.width = 18;
         this.height = 18;
         this.bodySlot = 52;
@@ -18198,7 +16615,6 @@ namespace Terraria
       }
       else if (type == 1137)
       {
-        this.name = "Lihzahrd Door";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -18213,7 +16629,6 @@ namespace Terraria
       }
       else if (type == 1138)
       {
-        this.name = "Dungeon Door";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -18228,7 +16643,6 @@ namespace Terraria
       }
       else if (type == 1139)
       {
-        this.name = "Lead Door";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -18243,7 +16657,6 @@ namespace Terraria
       }
       else if (type == 1140)
       {
-        this.name = "Iron Door";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -18258,16 +16671,13 @@ namespace Terraria
       }
       else if (type == 1141)
       {
-        this.name = "Temple Key";
         this.width = 14;
         this.height = 20;
         this.maxStack = 99;
-        this.toolTip = "Opens the jungle temple door";
         this.rare = 7;
       }
       else if (type == 1142)
       {
-        this.name = "Lihzahrd Chest";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -18283,7 +16693,6 @@ namespace Terraria
       }
       else if (type == 1143)
       {
-        this.name = "Lihzahrd Chair";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -18298,7 +16707,6 @@ namespace Terraria
       }
       else if (type == 1144)
       {
-        this.name = "Lihzahrd Table";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -18314,7 +16722,6 @@ namespace Terraria
       }
       else if (type == 1145)
       {
-        this.name = "Lihzahrd Work Bench";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -18327,11 +16734,9 @@ namespace Terraria
         this.width = 28;
         this.height = 14;
         this.value = 150;
-        this.toolTip = "Used for basic crafting";
       }
       else if (type == 1146)
       {
-        this.name = "Super Dart Trap";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -18348,7 +16753,6 @@ namespace Terraria
       }
       else if (type == 1147)
       {
-        this.name = "Flame Trap";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -18365,7 +16769,6 @@ namespace Terraria
       }
       else if (type == 1148)
       {
-        this.name = "Spiky Ball Trap";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -18382,7 +16785,6 @@ namespace Terraria
       }
       else if (type == 1149)
       {
-        this.name = "Spear Trap";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -18399,7 +16801,6 @@ namespace Terraria
       }
       else if (type == 1150)
       {
-        this.name = "Wooden Spike";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -18413,7 +16814,6 @@ namespace Terraria
       }
       else if (type == 1151)
       {
-        this.name = "Lihzahrd Pressure Plate";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -18427,11 +16827,9 @@ namespace Terraria
         this.placeStyle = 6;
         this.mech = true;
         this.value = 5000;
-        this.toolTip = "Activates when a player steps on it on";
       }
       else if (type == 1152)
       {
-        this.name = "Lihzahrd Statue";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -18447,7 +16845,6 @@ namespace Terraria
       }
       else if (type == 1153)
       {
-        this.name = "Lihzahrd Watcher Statue";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -18463,7 +16860,6 @@ namespace Terraria
       }
       else if (type == 1154)
       {
-        this.name = "Lihzahrd Guardian Statue";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -18479,7 +16875,6 @@ namespace Terraria
       }
       else if (type == 1155)
       {
-        this.name = "Wasp Gun";
         this.useStyle = 5;
         this.autoReuse = true;
         this.useAnimation = 11;
@@ -18499,7 +16894,6 @@ namespace Terraria
       else if (type == 1156)
       {
         this.channel = true;
-        this.name = "Piranha Gun";
         this.useStyle = 5;
         this.useAnimation = 30;
         this.useTime = 30;
@@ -18521,7 +16915,6 @@ namespace Terraria
         this.mana = 10;
         this.damage = 34;
         this.useStyle = 1;
-        this.name = "Pygmy Staff";
         this.shootSpeed = 10f;
         this.shoot = 191;
         this.width = 26;
@@ -18532,107 +16925,84 @@ namespace Terraria
         this.rare = 7;
         this.noMelee = true;
         this.knockBack = 3f;
-        this.toolTip = "Summons a pygmy to fight for you";
         this.buffType = 49;
         this.value = 100000;
         this.summon = true;
       }
       else if (type == 1158)
       {
-        this.name = "Pygmy Necklace";
         this.rare = 7;
         this.width = 24;
         this.height = 28;
         this.accessory = true;
-        this.toolTip = "Increases your max number of minions";
         this.value = Item.buyPrice(0, 40, 0, 0);
         this.neckSlot = (sbyte) 4;
       }
       else if (type == 1159)
       {
-        this.name = "Tiki Mask";
         this.width = 18;
         this.height = 18;
         this.defense = 6;
         this.headSlot = 82;
         this.rare = 7;
         this.value = Item.buyPrice(0, 50, 0, 0);
-        this.toolTip = "Increases your max number of minions";
-        this.toolTip2 = "Increases minion damage by 10%";
       }
       else if (type == 1160)
       {
-        this.name = "Tiki Shirt";
         this.width = 18;
         this.height = 18;
         this.defense = 17;
         this.bodySlot = 53;
         this.rare = 7;
         this.value = Item.buyPrice(0, 50, 0, 0);
-        this.toolTip = "Increases your max number of minions";
-        this.toolTip2 = "Increases minion damage by 10%";
       }
       else if (type == 1161)
       {
-        this.name = "Tiki Pants";
         this.width = 18;
         this.height = 18;
         this.defense = 12;
         this.legSlot = 48;
         this.rare = 7;
         this.value = Item.buyPrice(0, 50, 0, 0);
-        this.toolTip = "Increases your max number of minions";
-        this.toolTip2 = "Increases minion damage by 10%";
       }
       else if (type == 1162)
       {
-        this.name = "Leaf Wings";
         this.width = 24;
         this.height = 8;
         this.accessory = true;
-        this.toolTip = "Allows flight and slow fall";
         this.value = Item.buyPrice(1, 0, 0, 0);
         this.wingSlot = (sbyte) 13;
         this.rare = 5;
       }
       else if (type == 1163)
       {
-        this.name = "Blizzard in a Balloon";
         this.width = 14;
         this.height = 28;
         this.rare = 4;
         this.value = 150000;
         this.accessory = true;
-        this.toolTip = "Allows the holder to double jump";
-        this.toolTip2 = "Increases jump height";
         this.balloonSlot = (sbyte) 1;
       }
       else if (type == 1164)
       {
-        this.name = "Bundle of Balloons";
         this.width = 14;
         this.height = 28;
         this.rare = 8;
         this.value = 150000;
         this.accessory = true;
-        this.toolTip = "Allows the holder to quadruple jump";
-        this.toolTip2 = "Increases jump height";
         this.balloonSlot = (sbyte) 3;
       }
       else if (type == 1165)
       {
-        this.name = "Bat Wings";
         this.width = 24;
         this.height = 8;
         this.accessory = true;
-        this.toolTip = "Allows flight and slow fall";
         this.value = 400000;
         this.rare = 5;
         this.wingSlot = (sbyte) 14;
       }
       else if (type == 1166)
       {
-        this.name = "Bone Sword";
         this.useStyle = 1;
         this.useAnimation = 22;
         this.knockBack = 4.5f;
@@ -18647,18 +17017,15 @@ namespace Terraria
       }
       else if (type == 1167)
       {
-        this.name = "Hercules Beetle";
         this.rare = 7;
         this.width = 24;
         this.height = 28;
         this.accessory = true;
-        this.toolTip = "Increases the damage and knockback of your minions";
         this.value = Item.buyPrice(0, 40, 0, 0);
       }
       else if (type == 1168)
       {
         this.useStyle = 1;
-        this.name = "Smoke Bomb";
         this.shootSpeed = 6f;
         this.shoot = 196;
         this.width = 18;
@@ -18676,7 +17043,6 @@ namespace Terraria
       {
         this.damage = 0;
         this.useStyle = 1;
-        this.name = "Bone Key";
         this.shoot = 197;
         this.width = 16;
         this.height = 30;
@@ -18685,7 +17051,6 @@ namespace Terraria
         this.useTime = 20;
         this.rare = 3;
         this.noMelee = true;
-        this.toolTip = "Summons a Baby Skeletron Head";
         this.value = Item.sellPrice(0, 5, 0, 0);
         this.buffType = 50;
       }
@@ -18693,7 +17058,6 @@ namespace Terraria
       {
         this.damage = 0;
         this.useStyle = 1;
-        this.name = "Nectar";
         this.shoot = 198;
         this.width = 16;
         this.height = 30;
@@ -18702,7 +17066,6 @@ namespace Terraria
         this.useTime = 20;
         this.rare = 3;
         this.noMelee = true;
-        this.toolTip = "Summons a Baby Hornet";
         this.value = Item.sellPrice(0, 3, 0, 0);
         this.buffType = 51;
       }
@@ -18710,7 +17073,6 @@ namespace Terraria
       {
         this.damage = 0;
         this.useStyle = 1;
-        this.name = "Tiki Totem";
         this.shoot = 199;
         this.width = 16;
         this.height = 30;
@@ -18719,7 +17081,6 @@ namespace Terraria
         this.useTime = 20;
         this.rare = 3;
         this.noMelee = true;
-        this.toolTip = "Summons a Tiki Spirit";
         this.buffType = 52;
         this.value = Item.buyPrice(2, 0, 0, 0);
       }
@@ -18727,7 +17088,6 @@ namespace Terraria
       {
         this.damage = 0;
         this.useStyle = 1;
-        this.name = "Lizard Egg";
         this.shoot = 200;
         this.width = 16;
         this.height = 30;
@@ -18736,13 +17096,11 @@ namespace Terraria
         this.useTime = 20;
         this.rare = 3;
         this.noMelee = true;
-        this.toolTip = "Summons a Pet Lizard";
         this.value = Item.sellPrice(0, 2, 0, 0);
         this.buffType = 53;
       }
       else if (type == 1173)
       {
-        this.name = "Grave Marker";
         this.useTurn = true;
         this.useStyle = 1;
         this.useAnimation = 15;
@@ -18756,7 +17114,6 @@ namespace Terraria
       }
       else if (type == 1174)
       {
-        this.name = "Cross Grave Marker";
         this.useTurn = true;
         this.useStyle = 1;
         this.useAnimation = 15;
@@ -18770,7 +17127,6 @@ namespace Terraria
       }
       else if (type == 1175)
       {
-        this.name = "Headstone";
         this.useTurn = true;
         this.useStyle = 1;
         this.useAnimation = 15;
@@ -18784,7 +17140,6 @@ namespace Terraria
       }
       else if (type == 1176)
       {
-        this.name = "Gravestone";
         this.useTurn = true;
         this.useStyle = 1;
         this.useAnimation = 15;
@@ -18798,7 +17153,6 @@ namespace Terraria
       }
       else if (type == 1177)
       {
-        this.name = "Obelisk";
         this.useTurn = true;
         this.useStyle = 1;
         this.useAnimation = 15;
@@ -18817,7 +17171,6 @@ namespace Terraria
         this.autoReuse = true;
         this.useAnimation = 7;
         this.useTime = 7;
-        this.name = "Leaf Blower";
         this.width = 24;
         this.height = 18;
         this.shoot = 206;
@@ -18828,12 +17181,10 @@ namespace Terraria
         this.value = 300000;
         this.knockBack = 4f;
         this.rare = 7;
-        this.toolTip = "Rapidly shoots razor sharp leaves";
         this.magic = true;
       }
       else if (type == 1179)
       {
-        this.name = "Chlorophyte Bullet";
         this.shootSpeed = 5f;
         this.shoot = 207;
         this.damage = 10;
@@ -18851,7 +17202,6 @@ namespace Terraria
       {
         this.damage = 0;
         this.useStyle = 1;
-        this.name = "Parrot Cracker";
         this.shoot = 208;
         this.width = 16;
         this.height = 30;
@@ -18860,7 +17210,6 @@ namespace Terraria
         this.useTime = 20;
         this.rare = 3;
         this.noMelee = true;
-        this.toolTip = "Summons a Pet Parrot";
         this.buffType = 54;
         this.value = Item.sellPrice(0, 75, 0, 0);
       }
@@ -18868,7 +17217,6 @@ namespace Terraria
       {
         this.damage = 0;
         this.useStyle = 1;
-        this.name = "Strange Glowing Mushroom";
         this.shoot = 209;
         this.width = 16;
         this.height = 30;
@@ -18877,7 +17225,6 @@ namespace Terraria
         this.useTime = 20;
         this.rare = 3;
         this.noMelee = true;
-        this.toolTip = "Summons a Baby Truffle";
         this.value = Item.buyPrice(0, 45, 0, 0);
         this.buffType = 55;
       }
@@ -18885,7 +17232,6 @@ namespace Terraria
       {
         this.damage = 0;
         this.useStyle = 1;
-        this.name = "Seedling";
         this.shoot = 210;
         this.width = 16;
         this.height = 30;
@@ -18894,7 +17240,6 @@ namespace Terraria
         this.useTime = 20;
         this.rare = 3;
         this.noMelee = true;
-        this.toolTip = "Summons a Pet Sapling";
         this.value = Item.sellPrice(0, 2, 0, 0);
         this.buffType = 56;
       }
@@ -18902,7 +17247,6 @@ namespace Terraria
       {
         this.damage = 0;
         this.useStyle = 1;
-        this.name = "Wisp in a Bottle";
         this.shoot = 211;
         this.width = 16;
         this.height = 30;
@@ -18911,13 +17255,11 @@ namespace Terraria
         this.useTime = 20;
         this.rare = 8;
         this.noMelee = true;
-        this.toolTip = "Summons a Wisp to provide light";
         this.value = Item.sellPrice(0, 5, 50, 0);
         this.buffType = 57;
       }
       else if (type == 1184)
       {
-        this.name = "Palladium Bar";
         this.width = 20;
         this.height = 20;
         this.maxStack = 99;
@@ -18936,7 +17278,6 @@ namespace Terraria
       {
         this.useTurn = true;
         this.autoReuse = true;
-        this.name = "Palladium Sword";
         this.useStyle = 1;
         this.useAnimation = 25;
         this.useTime = 25;
@@ -18952,7 +17293,6 @@ namespace Terraria
       }
       else if (type == 1186)
       {
-        this.name = "Palladium Pike";
         this.useStyle = 5;
         this.useAnimation = 27;
         this.useTime = 27;
@@ -18976,7 +17316,6 @@ namespace Terraria
         this.autoReuse = true;
         this.useAnimation = 24;
         this.useTime = 24;
-        this.name = "Palladium Repeater";
         this.width = 50;
         this.height = 18;
         this.shoot = 1;
@@ -18992,7 +17331,6 @@ namespace Terraria
       }
       else if (type == 1188)
       {
-        this.name = "Palladium Pickaxe";
         this.useStyle = 1;
         this.useTurn = true;
         this.autoReuse = true;
@@ -19007,12 +17345,10 @@ namespace Terraria
         this.rare = 4;
         this.value = 72000;
         this.melee = true;
-        this.toolTip = "Can mine Mythril and Orichalcum";
         this.scale = 1.15f;
       }
       else if (type == 1189)
       {
-        this.name = "Palladium Drill";
         this.useStyle = 5;
         this.useAnimation = 25;
         this.useTime = 11;
@@ -19030,11 +17366,9 @@ namespace Terraria
         this.noUseGraphic = true;
         this.melee = true;
         this.channel = true;
-        this.toolTip = "Can mine Mythril and Orichalcum";
       }
       else if (type == 1190)
       {
-        this.name = "Palladium Chainsaw";
         this.useStyle = 5;
         this.useAnimation = 25;
         this.useTime = 8;
@@ -19055,7 +17389,6 @@ namespace Terraria
       }
       else if (type == 1191)
       {
-        this.name = "Orichalcum Bar";
         this.width = 20;
         this.height = 20;
         this.maxStack = 99;
@@ -19072,7 +17405,6 @@ namespace Terraria
       }
       else if (type == 1192)
       {
-        this.name = "Orichalcum Sword";
         this.useStyle = 1;
         this.useAnimation = 26;
         this.useTime = 26;
@@ -19088,7 +17420,6 @@ namespace Terraria
       }
       else if (type == 1193)
       {
-        this.name = "Orichalcum Halberd";
         this.useStyle = 5;
         this.useAnimation = 25;
         this.useTime = 25;
@@ -19112,7 +17443,6 @@ namespace Terraria
         this.autoReuse = true;
         this.useAnimation = 22;
         this.useTime = 22;
-        this.name = "Orichalcum Repeater";
         this.width = 50;
         this.height = 18;
         this.shoot = 1;
@@ -19128,7 +17458,6 @@ namespace Terraria
       }
       else if (type == 1195)
       {
-        this.name = "Orichalcum Pickaxe";
         this.useStyle = 1;
         this.useAnimation = 25;
         this.useTime = 8;
@@ -19143,12 +17472,10 @@ namespace Terraria
         this.rare = 4;
         this.value = 99000;
         this.melee = true;
-        this.toolTip = "Can mine Adamantite and Titanium";
         this.scale = 1.15f;
       }
       else if (type == 1196)
       {
-        this.name = "Orichalcum Drill";
         this.useStyle = 5;
         this.useAnimation = 25;
         this.useTime = 10;
@@ -19166,11 +17493,9 @@ namespace Terraria
         this.noUseGraphic = true;
         this.melee = true;
         this.channel = true;
-        this.toolTip = "Can mine Adamantite and Titanium";
       }
       else if (type == 1197)
       {
-        this.name = "Orichalcum Chainsaw";
         this.useStyle = 5;
         this.useAnimation = 25;
         this.useTime = 7;
@@ -19191,7 +17516,6 @@ namespace Terraria
       }
       else if (type == 1198)
       {
-        this.name = "Titanium Bar";
         this.width = 20;
         this.height = 20;
         this.maxStack = 99;
@@ -19208,7 +17532,6 @@ namespace Terraria
       }
       else if (type == 1199)
       {
-        this.name = "Titanium Sword";
         this.useStyle = 1;
         this.useAnimation = 26;
         this.useTime = 26;
@@ -19224,7 +17547,6 @@ namespace Terraria
       }
       else if (type == 1200)
       {
-        this.name = "Titanium Trident";
         this.useStyle = 5;
         this.useAnimation = 23;
         this.useTime = 23;
@@ -19248,7 +17570,6 @@ namespace Terraria
         this.autoReuse = true;
         this.useAnimation = 19;
         this.useTime = 19;
-        this.name = "Titanium Repeater";
         this.width = 50;
         this.height = 18;
         this.shoot = 1;
@@ -19264,7 +17585,6 @@ namespace Terraria
       }
       else if (type == 1202)
       {
-        this.name = "Titanium Pickaxe";
         this.useStyle = 1;
         this.useAnimation = 25;
         this.useTime = 7;
@@ -19283,7 +17603,6 @@ namespace Terraria
       }
       else if (type == 1203)
       {
-        this.name = "Titanium Drill";
         this.useStyle = 5;
         this.useAnimation = 25;
         this.useTime = 7;
@@ -19304,7 +17623,6 @@ namespace Terraria
       }
       else if (type == 1204)
       {
-        this.name = "Titanium Chainsaw";
         this.useStyle = 5;
         this.useAnimation = 25;
         this.useTime = 6;
@@ -19325,182 +17643,141 @@ namespace Terraria
       }
       else if (type == 1205)
       {
-        this.name = "Palladium Mask";
         this.width = 18;
         this.height = 18;
         this.defense = 14;
         this.headSlot = 83;
         this.rare = 4;
         this.value = 75000;
-        this.toolTip = "7% increased movement speed";
-        this.toolTip2 = "12% increased melee speed";
       }
       else if (type == 1206)
       {
-        this.name = "Palladium Helmet";
         this.width = 18;
         this.height = 18;
         this.defense = 5;
         this.headSlot = 84;
         this.rare = 4;
         this.value = 75000;
-        this.toolTip = "10% increased ranged damage";
-        this.toolTip2 = "6% increased ranged critical strike chance";
       }
       else if (type == 1207)
       {
-        this.name = "Palladium Headgear";
         this.width = 18;
         this.height = 18;
         this.defense = 3;
         this.headSlot = 85;
         this.rare = 4;
         this.value = 75000;
-        this.toolTip = "Increases maximum mana by 40";
-        this.toolTip2 = "9% increased magic critical strike chance";
       }
       else if (type == 1208)
       {
-        this.name = "Palladium Breastplate";
         this.width = 18;
         this.height = 18;
         this.defense = 10;
         this.bodySlot = 54;
         this.rare = 4;
         this.value = 60000;
-        this.toolTip2 = "3% increased critical strike chance";
       }
       else if (type == 1209)
       {
-        this.name = "Palladium Leggings";
         this.width = 18;
         this.height = 18;
         this.defense = 8;
         this.legSlot = 49;
         this.rare = 4;
         this.value = 45000;
-        this.toolTip2 = "10% increased movement speed";
       }
       else if (type == 1210)
       {
-        this.name = "Orichalcum Mask";
         this.width = 18;
         this.height = 18;
         this.defense = 19;
         this.headSlot = 86;
         this.rare = 4;
         this.value = 112500;
-        this.toolTip = "5% increased melee critical strike chance";
-        this.toolTip2 = "10% increased melee damage";
       }
       else if (type == 1211)
       {
-        this.name = "Orichalcum Helmet";
         this.width = 18;
         this.height = 18;
         this.defense = 7;
         this.headSlot = 87;
         this.rare = 4;
         this.value = 112500;
-        this.toolTip = "12% increased ranged damage";
-        this.toolTip2 = "7% increased ranged critical strike chance";
       }
       else if (type == 1212)
       {
-        this.name = "Orichalcum Headgear";
         this.width = 18;
         this.height = 18;
         this.defense = 4;
         this.headSlot = 88;
         this.rare = 4;
         this.value = 112500;
-        this.toolTip = "Increases maximum mana by 60";
-        this.toolTip2 = "15% increased magic damage";
       }
       else if (type == 1213)
       {
-        this.name = "Orichalcum Breastplate";
         this.width = 18;
         this.height = 18;
         this.defense = 13;
         this.bodySlot = 55;
         this.rare = 4;
         this.value = 90000;
-        this.toolTip2 = "5% increased damage";
       }
       else if (type == 1214)
       {
-        this.name = "Orichalcum Leggings";
         this.width = 18;
         this.height = 18;
         this.defense = 10;
         this.legSlot = 50;
         this.rare = 4;
         this.value = 67500;
-        this.toolTip2 = "3% increased critical strike chance";
       }
       else if (type == 1215)
       {
-        this.name = "Titanium Mask";
         this.width = 18;
         this.height = 18;
         this.defense = 23;
         this.headSlot = 89;
         this.rare = 4;
         this.value = 150000;
-        this.toolTip = "7% increased melee critical strike chance";
-        this.toolTip2 = "14% increased melee damage";
       }
       else if (type == 1216)
       {
-        this.name = "Titanium Helmet";
         this.width = 18;
         this.height = 18;
         this.defense = 8;
         this.headSlot = 90;
         this.rare = 4;
         this.value = 150000;
-        this.toolTip = "14% increased ranged damage";
-        this.toolTip2 = "8% increased ranged critical strike chance";
       }
       else if (type == 1217)
       {
-        this.name = "Titanium Headgear";
         this.width = 18;
         this.height = 18;
         this.defense = 4;
         this.headSlot = 91;
         this.rare = 4;
         this.value = 150000;
-        this.toolTip = "Increases maximum mana by 80";
-        this.toolTip2 = "11% increased magic damage and critical strike chance";
       }
       else if (type == 1218)
       {
-        this.name = "Titanium Breastplate";
         this.width = 18;
         this.height = 18;
         this.defense = 15;
         this.bodySlot = 56;
         this.rare = 4;
         this.value = 120000;
-        this.toolTip = "6% increased damage";
       }
       else if (type == 1219)
       {
-        this.name = "Titanium Leggings";
         this.width = 18;
         this.height = 18;
         this.defense = 11;
         this.legSlot = 51;
         this.rare = 4;
         this.value = 90000;
-        this.toolTip = "4% increased critical strike chance";
-        this.toolTip2 = "5% increased movement speed";
       }
       else if (type == 1220)
       {
-        this.name = "Mythril Anvil";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -19513,12 +17790,10 @@ namespace Terraria
         this.width = 28;
         this.height = 14;
         this.value = 25000;
-        this.toolTip = "Used to craft items from mythril, orichalcum, adamantite, and titanium bars";
         this.rare = 3;
       }
       else if (type == 1221)
       {
-        this.name = "Orichalcum Forge";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -19531,14 +17806,12 @@ namespace Terraria
         this.width = 44;
         this.height = 30;
         this.value = 50000;
-        this.toolTip = "Used to smelt adamantite and titanium ore";
         this.rare = 3;
       }
       else if (type == 1222)
       {
         this.useTurn = true;
         this.autoReuse = true;
-        this.name = "Palladium Waraxe";
         this.useStyle = 1;
         this.useAnimation = 35;
         this.useTime = 8;
@@ -19557,7 +17830,6 @@ namespace Terraria
       {
         this.useTurn = true;
         this.autoReuse = true;
-        this.name = "Orichalcum Waraxe";
         this.useStyle = 1;
         this.useAnimation = 35;
         this.useTime = 7;
@@ -19576,7 +17848,6 @@ namespace Terraria
       {
         this.useTurn = true;
         this.autoReuse = true;
-        this.name = "Titanium Waraxe";
         this.useStyle = 1;
         this.useAnimation = 35;
         this.useTime = 6;
@@ -19593,7 +17864,6 @@ namespace Terraria
       }
       else if (type == 1225)
       {
-        this.name = "Hallowed Bar";
         this.width = 20;
         this.height = 20;
         this.maxStack = 99;
@@ -19610,7 +17880,6 @@ namespace Terraria
       }
       else if (type == 1226)
       {
-        this.name = "Chlorophyte Claymore";
         this.useStyle = 1;
         this.useAnimation = 26;
         this.useTime = 60;
@@ -19628,7 +17897,6 @@ namespace Terraria
       }
       else if (type == 1227)
       {
-        this.name = "Chlorophyte Saber";
         this.autoReuse = true;
         this.useTurn = true;
         this.useStyle = 1;
@@ -19647,7 +17915,6 @@ namespace Terraria
       }
       else if (type == 1228)
       {
-        this.name = "Chlorophyte Partisan";
         this.useStyle = 5;
         this.useAnimation = 23;
         this.useTime = 23;
@@ -19671,7 +17938,6 @@ namespace Terraria
         this.autoReuse = true;
         this.useAnimation = 19;
         this.useTime = 19;
-        this.name = "Chlorophyte Shotbow";
         this.width = 50;
         this.height = 18;
         this.shoot = 1;
@@ -19687,7 +17953,6 @@ namespace Terraria
       }
       else if (type == 1230)
       {
-        this.name = "Chlorophyte Pickaxe";
         this.useStyle = 1;
         this.useAnimation = 25;
         this.useTime = 7;
@@ -19707,7 +17972,6 @@ namespace Terraria
       }
       else if (type == 1231)
       {
-        this.name = "Chlorophyte Drill";
         this.useStyle = 5;
         this.useAnimation = 25;
         this.useTime = 7;
@@ -19729,7 +17993,6 @@ namespace Terraria
       }
       else if (type == 1232)
       {
-        this.name = "Chlorophyte Chainsaw";
         this.useStyle = 5;
         this.useAnimation = 25;
         this.useTime = 7;
@@ -19753,7 +18016,6 @@ namespace Terraria
       {
         this.useTurn = true;
         this.autoReuse = true;
-        this.name = "Chlorophyte Greataxe";
         this.useStyle = 1;
         this.useAnimation = 30;
         this.useTime = 6;
@@ -19771,7 +18033,6 @@ namespace Terraria
       }
       else if (type == 1234)
       {
-        this.name = "Chlorophyte Warhammer";
         this.useTurn = true;
         this.autoReuse = true;
         this.useStyle = 1;
@@ -19791,7 +18052,6 @@ namespace Terraria
       }
       else if (type == 1235)
       {
-        this.name = "Chlorophyte Arrow";
         this.shootSpeed = 4.5f;
         this.shoot = 225;
         this.damage = 16;
@@ -19811,7 +18071,6 @@ namespace Terraria
         this.damage = 0;
         this.knockBack = 7f;
         this.useStyle = 5;
-        this.name = "Amethyst Hook";
         this.shootSpeed = 10f;
         this.shoot = 230;
         this.width = 18;
@@ -19829,7 +18088,6 @@ namespace Terraria
         this.damage = 0;
         this.knockBack = 7f;
         this.useStyle = 5;
-        this.name = "Topaz Hook";
         this.shootSpeed = 10.5f;
         this.shoot = 231;
         this.width = 18;
@@ -19847,7 +18105,6 @@ namespace Terraria
         this.damage = 0;
         this.knockBack = 7f;
         this.useStyle = 5;
-        this.name = "Sapphire Hook";
         this.shootSpeed = 11f;
         this.shoot = 232;
         this.width = 18;
@@ -19865,7 +18122,6 @@ namespace Terraria
         this.damage = 0;
         this.knockBack = 7f;
         this.useStyle = 5;
-        this.name = "Emerald Hook";
         this.shootSpeed = 11.5f;
         this.shoot = 233;
         this.width = 18;
@@ -19883,7 +18139,6 @@ namespace Terraria
         this.damage = 0;
         this.knockBack = 7f;
         this.useStyle = 5;
-        this.name = "Ruby Hook";
         this.shootSpeed = 12f;
         this.shoot = 234;
         this.width = 18;
@@ -19901,7 +18156,6 @@ namespace Terraria
         this.damage = 0;
         this.knockBack = 7f;
         this.useStyle = 5;
-        this.name = "Diamond Hook";
         this.shootSpeed = 12.5f;
         this.shoot = 235;
         this.width = 18;
@@ -19917,7 +18171,6 @@ namespace Terraria
       {
         this.damage = 0;
         this.useStyle = 1;
-        this.name = "Amber Mosquito";
         this.shoot = 236;
         this.width = 16;
         this.height = 30;
@@ -19926,13 +18179,11 @@ namespace Terraria
         this.useTime = 20;
         this.rare = 3;
         this.noMelee = true;
-        this.toolTip = "Summons a Baby Dinosaur";
         this.value = Item.sellPrice(0, 7, 50, 0);
         this.buffType = 61;
       }
       else if (type == 1243)
       {
-        this.name = "Umbrella Hat";
         this.width = 28;
         this.height = 20;
         this.headSlot = 92;
@@ -19944,7 +18195,6 @@ namespace Terraria
         this.mana = 10;
         this.damage = 36;
         this.useStyle = 1;
-        this.name = "Nimbus Rod";
         this.shootSpeed = 16f;
         this.shoot = 237;
         this.width = 26;
@@ -19955,13 +18205,11 @@ namespace Terraria
         this.rare = 6;
         this.noMelee = true;
         this.knockBack = 0.0f;
-        this.toolTip = "Summons a cloud to rain down on your foes";
         this.value = Item.sellPrice(0, 3, 50, 0);
         this.magic = true;
       }
       else if (type == 1245)
       {
-        this.name = "Orange Torch";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -19979,7 +18227,6 @@ namespace Terraria
       }
       else if (type == 1246)
       {
-        this.name = "Crimsand Block";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -19994,80 +18241,62 @@ namespace Terraria
       }
       else if (type == 1247)
       {
-        this.name = "Bee Cloak";
         this.width = 20;
         this.height = 24;
         this.value = 150000;
-        this.toolTip = "Causes stars to fall and releases bees when injured";
         this.accessory = true;
         this.rare = 4;
         this.backSlot = (sbyte) 1;
       }
       else if (type == 1248)
       {
-        this.name = "Eye of the Golem";
         this.width = 24;
         this.height = 24;
         this.accessory = true;
-        this.toolTip = "10% increased critical strike chance";
         this.value = 100000;
         this.rare = 7;
       }
       else if (type == 1249)
       {
-        this.name = "Honey Balloon";
         this.width = 14;
         this.height = 28;
         this.rare = 2;
         this.value = 54000;
         this.accessory = true;
-        this.toolTip = "Increases jump height";
-        this.toolTip2 = "Releases bees when damaged";
         this.balloonSlot = (sbyte) 7;
       }
       else if (type == 1250)
       {
-        this.name = "Blue Horseshoe Balloon";
         this.width = 20;
         this.height = 22;
         this.rare = 4;
         this.value = 45000;
         this.accessory = true;
-        this.toolTip = "Allows the holder to double jump";
-        this.toolTip = "Increases jump height and negates fall damage";
         this.balloonSlot = (sbyte) 2;
       }
       else if (type == 1251)
       {
-        this.name = "White Horseshoe Balloon";
         this.width = 20;
         this.height = 22;
         this.rare = 4;
         this.value = 45000;
         this.accessory = true;
-        this.toolTip = "Allows the holder to double jump";
-        this.toolTip = "Increases jump height and negates fall damage";
         this.balloonSlot = (sbyte) 9;
       }
       else if (type == 1252)
       {
-        this.name = "Yellow Horseshoe Balloon";
         this.width = 20;
         this.height = 22;
         this.rare = 4;
         this.value = 45000;
         this.accessory = true;
-        this.toolTip = "Allows the holder to double jump";
-        this.toolTip = "Increases jump height and negates fall damage";
         this.balloonSlot = (sbyte) 10;
       }
       else if (type == 1253)
       {
-        this.name = "Frozen Turtle Scale";
         this.width = 20;
         this.height = 24;
         this.value = 225000;
-        this.toolTip = "Puts a shell around the owner when below 20% life";
         this.accessory = true;
         this.rare = 5;
       }
@@ -20076,7 +18305,6 @@ namespace Terraria
         this.useStyle = 5;
         this.useAnimation = 36;
         this.useTime = 36;
-        this.name = "Sniper Rifle";
         this.crit += 25;
         this.width = 44;
         this.height = 14;
@@ -20097,7 +18325,6 @@ namespace Terraria
         this.useStyle = 5;
         this.useAnimation = 8;
         this.useTime = 8;
-        this.name = "Venus Magnum";
         this.width = 24;
         this.height = 22;
         this.shoot = 14;
@@ -20117,7 +18344,6 @@ namespace Terraria
         this.mana = 10;
         this.damage = 12;
         this.useStyle = 1;
-        this.name = "Crimson Rod";
         this.shootSpeed = 12f;
         this.shoot = 243;
         this.width = 26;
@@ -20128,13 +18354,11 @@ namespace Terraria
         this.rare = 1;
         this.noMelee = true;
         this.knockBack = 0.0f;
-        this.toolTip = "Summons a cloud to rain blood on your foes";
         this.value = 10000;
         this.magic = true;
       }
       else if (type == 1257)
       {
-        this.name = "Crimtane Bar";
         this.width = 20;
         this.height = 20;
         this.maxStack = 99;
@@ -20155,7 +18379,6 @@ namespace Terraria
         this.autoReuse = true;
         this.useAnimation = 22;
         this.useTime = 22;
-        this.name = "Stynger";
         this.width = 50;
         this.height = 18;
         this.shoot = 246;
@@ -20168,11 +18391,9 @@ namespace Terraria
         this.value = 350000;
         this.rare = 7;
         this.ranged = true;
-        this.toolTip = "Shoots a bolt that explodes into deadly shrapnel";
       }
       else if (type == 1259)
       {
-        this.name = "Flower Pow";
         this.noMelee = true;
         this.useStyle = 5;
         this.useAnimation = 40;
@@ -20196,7 +18417,6 @@ namespace Terraria
         this.useStyle = 5;
         this.useAnimation = 40;
         this.useTime = 40;
-        this.name = "Rainbow Gun";
         this.width = 50;
         this.height = 18;
         this.shoot = 250;
@@ -20212,7 +18432,6 @@ namespace Terraria
       }
       else if (type == 1261)
       {
-        this.name = "Stynger Bolt";
         this.shootSpeed = 2f;
         this.shoot = 246;
         this.damage = 17;
@@ -20228,7 +18447,6 @@ namespace Terraria
       }
       else if (type == 1262)
       {
-        this.name = "Chlorophyte Jackhammer";
         this.useStyle = 5;
         this.useAnimation = 25;
         this.useTime = 7;
@@ -20250,7 +18468,6 @@ namespace Terraria
       }
       else if (type == 1263)
       {
-        this.name = "Teleporter";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -20269,7 +18486,6 @@ namespace Terraria
         this.mana = 17;
         this.damage = 55;
         this.useStyle = 1;
-        this.name = "Flower of Frost";
         this.shootSpeed = 7f;
         this.shoot = 253;
         this.width = 26;
@@ -20280,7 +18496,6 @@ namespace Terraria
         this.rare = 6;
         this.noMelee = true;
         this.knockBack = 6.5f;
-        this.toolTip = "Throws balls of frost";
         this.value = 10000;
         this.magic = true;
       }
@@ -20290,7 +18505,6 @@ namespace Terraria
         this.useStyle = 5;
         this.useAnimation = 9;
         this.useTime = 9;
-        this.name = "Uzi";
         this.width = 24;
         this.height = 22;
         this.shoot = 14;
@@ -20310,7 +18524,6 @@ namespace Terraria
         this.rare = 8;
         this.mana = 14;
         this.UseSound = SoundID.Item20;
-        this.name = "Magnet Sphere";
         this.noMelee = true;
         this.useStyle = 5;
         this.damage = 48;
@@ -20321,13 +18534,11 @@ namespace Terraria
         this.height = 28;
         this.shoot = 254;
         this.shootSpeed = 1.2f;
-        this.toolTip = "Summons something to do stuff and things";
         this.magic = true;
         this.value = 500000;
       }
       else if (type == 1267)
       {
-        this.name = "Purple Stained Glass";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -20342,7 +18553,6 @@ namespace Terraria
       }
       else if (type == 1268)
       {
-        this.name = "Yellow Stained Glass";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -20357,7 +18567,6 @@ namespace Terraria
       }
       else if (type == 1269)
       {
-        this.name = "Blue Stained Glass";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -20372,7 +18581,6 @@ namespace Terraria
       }
       else if (type == 1270)
       {
-        this.name = "Green Stained Glass";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -20387,7 +18595,6 @@ namespace Terraria
       }
       else if (type == 1271)
       {
-        this.name = "Red Stained Glass";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -20402,7 +18609,6 @@ namespace Terraria
       }
       else if (type == 1272)
       {
-        this.name = "Multicolored Stained Glass";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -20417,7 +18623,6 @@ namespace Terraria
       }
       else if (type == 1273)
       {
-        this.name = "Skeletron Hand";
         this.useStyle = 5;
         this.useAnimation = 25;
         this.useTime = 25;
@@ -20432,7 +18637,6 @@ namespace Terraria
       }
       else if (type == 1274)
       {
-        this.name = "Skull";
         this.width = 28;
         this.height = 20;
         this.headSlot = 93;
@@ -20441,7 +18645,6 @@ namespace Terraria
       }
       else if (type == 1275)
       {
-        this.name = "Balla Hat";
         this.width = 28;
         this.height = 20;
         this.headSlot = 94;
@@ -20451,7 +18654,6 @@ namespace Terraria
       }
       else if (type == 1276)
       {
-        this.name = "Gangsta Hat";
         this.width = 28;
         this.height = 20;
         this.headSlot = 95;
@@ -20461,7 +18663,6 @@ namespace Terraria
       }
       else if (type == 1277)
       {
-        this.name = "Sailor Hat";
         this.width = 28;
         this.height = 20;
         this.headSlot = 96;
@@ -20470,7 +18671,6 @@ namespace Terraria
       }
       else if (type == 1278)
       {
-        this.name = "Eye Patch";
         this.width = 28;
         this.height = 20;
         this.headSlot = 97;
@@ -20479,7 +18679,6 @@ namespace Terraria
       }
       else if (type == 1279)
       {
-        this.name = "Sailor Shirt";
         this.width = 28;
         this.height = 20;
         this.bodySlot = 57;
@@ -20488,7 +18687,6 @@ namespace Terraria
       }
       else if (type == 1280)
       {
-        this.name = "Sailor Pants";
         this.width = 28;
         this.height = 20;
         this.legSlot = 52;
@@ -20497,7 +18695,6 @@ namespace Terraria
       }
       else if (type == 1281)
       {
-        this.name = "Skeletron Mask";
         this.width = 28;
         this.height = 20;
         this.headSlot = 98;
@@ -20506,76 +18703,57 @@ namespace Terraria
       }
       else if (type == 1282)
       {
-        this.name = "Amethyst Robe";
         this.width = 18;
         this.height = 14;
         this.bodySlot = 58;
         this.value = Item.sellPrice(0, 0, 50, 0);
-        this.toolTip = "Increases maximum mana by 20";
-        this.toolTip = "Reduces mana usage by 5%";
       }
       else if (type == 1283)
       {
-        this.name = "Topaz Robe";
         this.width = 18;
         this.height = 14;
         this.bodySlot = 59;
         this.defense = 1;
         this.value = Item.sellPrice(0, 0, 50, 0) * 2;
-        this.toolTip = "Increases maximum mana by 40";
-        this.toolTip2 = "Reduces mana usage by 7%";
       }
       else if (type == 1284)
       {
-        this.name = "Sapphire Robe";
         this.width = 18;
         this.height = 14;
         this.bodySlot = 60;
         this.defense = 1;
         this.value = Item.sellPrice(0, 0, 50, 0) * 3;
-        this.toolTip = "Increases maximum mana by 40";
-        this.toolTip2 = "Reduces mana usage by 9%";
         this.rare = 1;
       }
       else if (type == 1285)
       {
-        this.name = "Emerald Robe";
         this.width = 18;
         this.height = 14;
         this.bodySlot = 61;
         this.defense = 2;
         this.value = Item.sellPrice(0, 0, 50, 0) * 4;
-        this.toolTip = "Increases maximum mana by 60";
-        this.toolTip2 = "Reduces mana usage by 11%";
         this.rare = 1;
       }
       else if (type == 1286)
       {
-        this.name = "Ruby Robe";
         this.width = 18;
         this.height = 14;
         this.bodySlot = 62;
         this.defense = 2;
         this.value = Item.sellPrice(0, 0, 50, 0) * 5;
-        this.toolTip = "Increases maximum mana by 60";
-        this.toolTip2 = "Reduces mana usage by 13%";
         this.rare = 1;
       }
       else if (type == 1287)
       {
-        this.name = "Diamond Robe";
         this.defense = 3;
         this.width = 18;
         this.height = 14;
         this.bodySlot = 63;
         this.value = Item.sellPrice(0, 0, 50, 0) * 6;
-        this.toolTip = "Increases maximum mana by 80";
-        this.toolTip2 = "Reduces mana usage by 15%";
         this.rare = 2;
       }
       else if (type == 1288)
       {
-        this.name = "White Tuxedo Shirt";
         this.width = 28;
         this.height = 20;
         this.bodySlot = 64;
@@ -20585,7 +18763,6 @@ namespace Terraria
       }
       else if (type == 1289)
       {
-        this.name = "White Tuxedo Pants";
         this.width = 28;
         this.height = 20;
         this.legSlot = 53;
@@ -20595,18 +18772,15 @@ namespace Terraria
       }
       else if (type == 1290)
       {
-        this.name = "Panic Necklace";
         this.width = 22;
         this.height = 22;
         this.accessory = true;
         this.rare = 1;
-        this.toolTip = "Increases movement speed after being struck";
         this.value = 50000;
         this.neckSlot = (sbyte) 3;
       }
       else if (type == 1291)
       {
-        this.name = "Heart Fruit";
         this.maxStack = 99;
         this.consumable = true;
         this.width = 18;
@@ -20615,13 +18789,11 @@ namespace Terraria
         this.useTime = 30;
         this.UseSound = SoundID.Item4;
         this.useAnimation = 30;
-        this.toolTip = "Permanently increases maximum life by 5";
         this.rare = 7;
         this.value = Item.sellPrice(0, 2, 0, 0);
       }
       else if (type == 1292)
       {
-        this.name = "Lihzahrd Altar";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -20636,7 +18808,6 @@ namespace Terraria
       }
       else if (type == 1293)
       {
-        this.name = "Lihzahrd Power Cell";
         this.maxStack = 99;
         this.consumable = true;
         this.width = 22;
@@ -20645,7 +18816,6 @@ namespace Terraria
       }
       else if (type == 1294)
       {
-        this.name = "Picksaw";
         this.useStyle = 1;
         this.useAnimation = 16;
         this.useTime = 6;
@@ -20663,7 +18833,6 @@ namespace Terraria
         this.melee = true;
         this.scale = 1.15f;
         ++this.tileBoost;
-        this.toolTip = "Capable of mining Lihzahrd Bricks";
       }
       else if (type == 1295)
       {
@@ -20672,7 +18841,6 @@ namespace Terraria
         this.autoReuse = true;
         this.useAnimation = 16;
         this.useTime = 16;
-        this.name = "Heat Ray";
         this.width = 24;
         this.height = 18;
         this.shoot = 260;
@@ -20684,14 +18852,12 @@ namespace Terraria
         this.knockBack = 3f;
         this.rare = 7;
         this.magic = true;
-        this.toolTip = "Shoots a piercing beam of heat";
       }
       else if (type == 1296)
       {
         this.mana = 15;
         this.damage = 73;
         this.useStyle = 1;
-        this.name = "Staff of Earth";
         this.shootSpeed = 11f;
         this.shoot = 261;
         this.width = 26;
@@ -20704,12 +18870,10 @@ namespace Terraria
         this.knockBack = 7.5f;
         this.value = Item.sellPrice(0, 10, 0, 0);
         this.magic = true;
-        this.toolTip = "Summons a powerful boulder";
       }
       else if (type == 1297)
       {
         this.autoReuse = true;
-        this.name = "Golem Fist";
         this.useStyle = 5;
         this.useAnimation = 24;
         this.useTime = 24;
@@ -20725,11 +18889,9 @@ namespace Terraria
         this.value = Item.sellPrice(0, 5, 0, 0);
         this.melee = true;
         this.noMelee = true;
-        this.toolTip = "Punches with the force of a golem";
       }
       else if (type == 1298)
       {
-        this.name = "Water Chest";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -20745,38 +18907,29 @@ namespace Terraria
       }
       else if (type == 1299)
       {
-        this.name = "Binoculars";
         this.width = 14;
         this.height = 28;
         this.rare = 4;
         this.value = 150000;
-        this.toolTip = "Increases view range when held";
       }
       else if (type == 1300)
       {
-        this.name = "Rifle Scope";
         this.width = 14;
         this.height = 28;
         this.rare = 4;
         this.value = 150000;
         this.accessory = true;
-        this.toolTip = "Increases view range for guns";
-        this.toolTip2 = "Right click to zoom out";
       }
       else if (type == 1301)
       {
-        this.name = "Destroyer Emblem";
         this.width = 24;
         this.height = 24;
         this.accessory = true;
-        this.toolTip = "10% increased damage";
-        this.toolTip2 = "8% increased critical strike chance";
         this.value = 300000;
         this.rare = 7;
       }
       else if (type == 1302)
       {
-        this.name = "High Velocity Bullet";
         this.shootSpeed = 4f;
         this.shoot = 242;
         this.damage = 10;
@@ -20792,18 +18945,15 @@ namespace Terraria
       }
       else if (type == 1303)
       {
-        this.name = "Jellyfish Necklace";
         this.width = 24;
         this.height = 24;
         this.accessory = true;
-        this.toolTip = "Provides light under water";
         this.value = Item.sellPrice(0, 1, 0, 0);
         this.rare = 2;
         this.neckSlot = (sbyte) 1;
       }
       else if (type == 1304)
       {
-        this.name = "Zombie Arm";
         this.useStyle = 1;
         this.useTurn = false;
         this.useAnimation = 23;
@@ -20819,7 +18969,6 @@ namespace Terraria
       }
       else if (type == 1305)
       {
-        this.name = "The Axe";
         this.autoReuse = true;
         this.useStyle = 1;
         this.useAnimation = 23;
@@ -20839,7 +18988,6 @@ namespace Terraria
       }
       else if (type == 1306)
       {
-        this.name = "Ice Sickle";
         this.useStyle = 1;
         this.useAnimation = 25;
         this.useTime = 25;
@@ -20853,22 +19001,18 @@ namespace Terraria
         this.shoot = 263;
         this.shootSpeed = 8f;
         this.value = 250000;
-        this.toolTip = "Shoots an icy sickle";
         this.melee = true;
       }
       else if (type == 1307)
       {
         this.accessory = true;
-        this.name = "Clothier Voodoo Doll";
         this.width = 14;
         this.height = 26;
         this.value = 1000;
-        this.toolTip = "'You are a terrible person.'";
         this.rare = 1;
       }
       else if (type == 1308)
       {
-        this.name = "Poison Staff";
         this.mana = 22;
         this.UseSound = SoundID.Item43;
         this.useStyle = 5;
@@ -20891,7 +19035,6 @@ namespace Terraria
         this.mana = 10;
         this.damage = 8;
         this.useStyle = 1;
-        this.name = "Slime Staff";
         this.shootSpeed = 10f;
         this.shoot = 266;
         this.width = 26;
@@ -20902,21 +19045,17 @@ namespace Terraria
         this.rare = 4;
         this.noMelee = true;
         this.knockBack = 2f;
-        this.toolTip = "Summons a baby slime to fight for you";
         this.buffType = 64;
         this.value = 100000;
         this.summon = true;
       }
       else if (type == 1310)
       {
-        this.name = "Poison Dart";
         this.shoot = 267;
         this.width = 8;
         this.height = 8;
         this.maxStack = 999;
         this.ammo = AmmoID.Dart;
-        this.toolTip = "Inflicts poison on enemies";
-        this.toolTip2 = "For use with Blowpipe and Blowgun";
         this.damage = 10;
         this.knockBack = 2f;
         this.shootSpeed = 2f;
@@ -20928,7 +19067,6 @@ namespace Terraria
       {
         this.damage = 0;
         this.useStyle = 1;
-        this.name = "Eyespring";
         this.shoot = 268;
         this.width = 16;
         this.height = 30;
@@ -20937,7 +19075,6 @@ namespace Terraria
         this.useTime = 20;
         this.rare = 6;
         this.noMelee = true;
-        this.toolTip = "Summons an eye spring";
         this.value = Item.sellPrice(0, 3, 0, 0);
         this.buffType = 65;
       }
@@ -20945,7 +19082,6 @@ namespace Terraria
       {
         this.damage = 0;
         this.useStyle = 1;
-        this.name = "Toy Sled";
         this.shoot = 269;
         this.width = 16;
         this.height = 30;
@@ -20954,7 +19090,6 @@ namespace Terraria
         this.useTime = 20;
         this.rare = 6;
         this.noMelee = true;
-        this.toolTip = "Summons a baby snowman";
         this.value = Item.sellPrice(0, 2, 50, 0);
         this.buffType = 66;
       }
@@ -20964,7 +19099,6 @@ namespace Terraria
         this.rare = 2;
         this.mana = 18;
         this.UseSound = SoundID.Item8;
-        this.name = "Book of Skulls";
         this.noMelee = true;
         this.useStyle = 5;
         this.damage = 29;
@@ -20976,14 +19110,12 @@ namespace Terraria
         this.scale = 0.9f;
         this.shootSpeed = 3.5f;
         this.knockBack = 3.5f;
-        this.toolTip = "Shoots a skull";
         this.magic = true;
         this.value = 50000;
       }
       else if (type == 1314)
       {
         this.autoReuse = true;
-        this.name = "KO Cannon";
         this.useStyle = 5;
         this.useAnimation = 28;
         this.useTime = 28;
@@ -20999,7 +19131,6 @@ namespace Terraria
         this.value = 27000;
         this.melee = true;
         this.noMelee = true;
-        this.toolTip = "Shoots a boxing glove";
       }
       else if (type == 1315)
       {
@@ -21007,50 +19138,38 @@ namespace Terraria
         this.consumable = true;
         this.useAnimation = 45;
         this.useTime = 45;
-        this.name = "Pirate Map";
         this.width = 28;
         this.height = 28;
-        this.toolTip = "Summons a Pirate Invasion";
       }
       else if (type == 1316)
       {
-        this.name = "Turtle Helmet";
         this.width = 18;
         this.height = 18;
         this.defense = 21;
         this.headSlot = 99;
         this.rare = 8;
         this.value = 300000;
-        this.toolTip = "5% increased melee damage";
-        this.toolTip2 = "Enemies are more likely to target you";
       }
       else if (type == 1317)
       {
-        this.name = "Turtle Scale Mail";
         this.width = 18;
         this.height = 18;
         this.defense = 27;
         this.bodySlot = 65;
         this.rare = 8;
         this.value = 240000;
-        this.toolTip = "7% increased melee damage and critical strike chance";
-        this.toolTip2 = "Enemies are more likely to target you";
       }
       else if (type == 1318)
       {
-        this.name = "Turtle Leggings";
         this.width = 18;
         this.height = 18;
         this.defense = 17;
         this.legSlot = 54;
         this.rare = 8;
         this.value = 180000;
-        this.toolTip = "3% increased melee critical strike chance";
-        this.toolTip2 = "Enemies are more likely to target you";
       }
       else if (type == 1319)
       {
-        this.name = "Snowball Cannon";
         this.autoReuse = true;
         this.useStyle = 5;
         this.useAnimation = 19;
@@ -21072,7 +19191,6 @@ namespace Terraria
       }
       else if (type == 1320)
       {
-        this.name = "Bone Pickaxe";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 19;
@@ -21091,33 +19209,26 @@ namespace Terraria
       }
       else if (type == 1321)
       {
-        this.name = "Magic Quiver";
         this.width = 24;
         this.height = 28;
         this.accessory = true;
-        this.toolTip = "Increase arrow speed and damage by 10%";
-        this.toolTip2 = "20% chance to not consume arrow";
         this.value = Item.sellPrice(0, 5, 0, 0);
         this.rare = 4;
         this.backSlot = (sbyte) 7;
       }
       else if (type == 1322)
       {
-        this.name = "Magma Stone";
         this.width = 24;
         this.height = 28;
         this.accessory = true;
-        this.toolTip = "Chance to inflict fire damage on attack";
         this.value = Item.sellPrice(0, 2, 0, 0);
         this.rare = 3;
       }
       else if (type == 1323)
       {
-        this.name = "Lava Rose";
         this.width = 24;
         this.height = 28;
         this.accessory = true;
-        this.toolTip = "Reduced damage from touching lava";
         this.value = Item.sellPrice(0, 2, 0, 0);
         this.rare = 3;
         this.faceSlot = (sbyte) 6;
@@ -21127,7 +19238,6 @@ namespace Terraria
         this.autoReuse = true;
         this.noMelee = true;
         this.useStyle = 1;
-        this.name = "Bananarang";
         this.shootSpeed = 14f;
         this.shoot = 272;
         this.damage = 55;
@@ -21146,7 +19256,6 @@ namespace Terraria
       else if (type == 1325)
       {
         this.autoReuse = false;
-        this.name = "Chain Knife";
         this.useStyle = 5;
         this.useAnimation = 20;
         this.useTime = 20;
@@ -21165,7 +19274,6 @@ namespace Terraria
       else if (type == 1326)
       {
         this.autoReuse = false;
-        this.name = "Rod of Discord";
         this.useStyle = 1;
         this.useAnimation = 20;
         this.useTime = 20;
@@ -21174,12 +19282,10 @@ namespace Terraria
         this.UseSound = SoundID.Item8;
         this.rare = 7;
         this.value = Item.sellPrice(0, 10, 0, 0);
-        this.toolTip = "Teleports to a new location";
       }
       else if (type == 1327)
       {
         this.autoReuse = true;
-        this.name = "Death Sickle";
         this.useStyle = 1;
         this.useAnimation = 25;
         this.useTime = 25;
@@ -21193,12 +19299,10 @@ namespace Terraria
         this.shoot = 274;
         this.shootSpeed = 9f;
         this.value = 250000;
-        this.toolTip = "Shoots a deathly sickle";
         this.melee = true;
       }
       else if (type == 1328)
       {
-        this.name = "Turtle Scale";
         this.width = 14;
         this.height = 18;
         this.maxStack = 99;
@@ -21207,7 +19311,6 @@ namespace Terraria
       }
       else if (type == 1329)
       {
-        this.name = "Tissue Sample";
         this.width = 14;
         this.height = 18;
         this.maxStack = 99;
@@ -21216,7 +19319,6 @@ namespace Terraria
       }
       else if (type == 1330)
       {
-        this.name = "Vertebrae";
         this.width = 18;
         this.height = 20;
         this.maxStack = 99;
@@ -21228,26 +19330,21 @@ namespace Terraria
         this.consumable = true;
         this.useAnimation = 45;
         this.useTime = 45;
-        this.name = "Bloody Spine";
         this.width = 28;
         this.height = 28;
         this.maxStack = 20;
-        this.toolTip = "Summons the Brain of Cthulhu";
       }
       else if (type == 1332)
       {
-        this.name = "Ichor";
         this.width = 12;
         this.height = 14;
         this.maxStack = 99;
         this.value = 4500;
         this.rare = 3;
-        this.toolTip = "'The blood of gods'";
       }
       else if (type == 1333)
       {
         this.flame = true;
-        this.name = "Ichor Torch";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -21262,11 +19359,9 @@ namespace Terraria
         this.height = 12;
         this.value = 330;
         this.rare = 1;
-        this.toolTip = "Can be placed in water";
       }
       else if (type == 1334)
       {
-        this.name = "Ichor Arrow";
         this.shootSpeed = 4.25f;
         this.shoot = 278;
         this.damage = 16;
@@ -21279,11 +19374,9 @@ namespace Terraria
         this.value = 80;
         this.ranged = true;
         this.rare = 3;
-        this.toolTip = "Decreases target's defense";
       }
       else if (type == 1335)
       {
-        this.name = "Ichor Bullet";
         this.shootSpeed = 5.25f;
         this.shoot = 279;
         this.damage = 13;
@@ -21296,13 +19389,11 @@ namespace Terraria
         this.value = 30;
         this.ranged = true;
         this.rare = 3;
-        this.toolTip = "Decreases target's defense";
       }
       else if (type == 1336)
       {
         this.mana = 7;
         this.autoReuse = true;
-        this.name = "Golden Shower";
         this.useStyle = 5;
         this.useAnimation = 18;
         this.useTime = 6;
@@ -21315,13 +19406,11 @@ namespace Terraria
         this.UseSound = SoundID.Item13;
         this.rare = 4;
         this.value = 500000;
-        this.toolTip = "Sprays out a shower of ichor";
         this.magic = true;
         this.noMelee = true;
       }
       else if (type == 1337)
       {
-        this.name = "Bunny Cannon";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -21337,7 +19426,6 @@ namespace Terraria
       }
       else if (type == 1338)
       {
-        this.name = "Explosive Bunny";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 20;
@@ -21353,7 +19441,6 @@ namespace Terraria
       }
       else if (type == 1339)
       {
-        this.name = "Vial of Venom";
         this.width = 12;
         this.height = 20;
         this.maxStack = 99;
@@ -21361,7 +19448,6 @@ namespace Terraria
       }
       else if (type == 1340)
       {
-        this.name = "Flask of Venom";
         this.UseSound = SoundID.Item3;
         this.useStyle = 2;
         this.useTurn = true;
@@ -21373,13 +19459,11 @@ namespace Terraria
         this.height = 24;
         this.buffType = 71;
         this.buffTime = 72000;
-        this.toolTip = "Melee attacks inflict venom on enemies";
         this.value = Item.sellPrice(0, 0, 5, 0);
         this.rare = 4;
       }
       else if (type == 1341)
       {
-        this.name = "Venom Arrow";
         this.shootSpeed = 4.3f;
         this.shoot = 282;
         this.damage = 17;
@@ -21392,11 +19476,9 @@ namespace Terraria
         this.value = 90;
         this.ranged = true;
         this.rare = 3;
-        this.toolTip = "Inflicts target with venom";
       }
       else if (type == 1342)
       {
-        this.name = "Venom Bullet";
         this.shootSpeed = 5.3f;
         this.shoot = 283;
         this.damage = 14;
@@ -21409,24 +19491,19 @@ namespace Terraria
         this.value = 40;
         this.ranged = true;
         this.rare = 3;
-        this.toolTip = "Inflicts target with venom";
       }
       else if (type == 1343)
       {
-        this.name = "Fire Gauntlet";
         this.width = 16;
         this.height = 24;
         this.accessory = true;
         this.rare = 7;
-        this.toolTip = "Increases melee knockback and inflicts fire damage on attack";
-        this.toolTip = "9% increased melee damage and speed";
         this.value = 300000;
         this.handOffSlot = (sbyte) 1;
         this.handOnSlot = (sbyte) 6;
       }
       else if (type == 1344)
       {
-        this.name = "Cog";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -21441,7 +19518,6 @@ namespace Terraria
       }
       else if (type == 1345)
       {
-        this.name = "Confetti";
         this.width = 12;
         this.height = 20;
         this.maxStack = 99;
@@ -21454,7 +19530,6 @@ namespace Terraria
       }
       else if (type == 1346)
       {
-        this.name = "Nanites";
         this.width = 12;
         this.height = 20;
         this.maxStack = 99;
@@ -21462,7 +19537,6 @@ namespace Terraria
       }
       else if (type == 1347)
       {
-        this.name = "Explosive Powder";
         this.width = 12;
         this.height = 20;
         this.maxStack = 99;
@@ -21470,7 +19544,6 @@ namespace Terraria
       }
       else if (type == 1348)
       {
-        this.name = "Gold Dust";
         this.width = 12;
         this.height = 20;
         this.maxStack = 99;
@@ -21478,7 +19551,6 @@ namespace Terraria
       }
       else if (type == 1349)
       {
-        this.name = "Party Bullet";
         this.shootSpeed = 5.1f;
         this.shoot = 284;
         this.damage = 10;
@@ -21491,11 +19563,9 @@ namespace Terraria
         this.value = 40;
         this.ranged = true;
         this.rare = 3;
-        this.toolTip = "Explodes into confetti on impact";
       }
       else if (type == 1350)
       {
-        this.name = "Nano Bullet";
         this.shootSpeed = 4.6f;
         this.shoot = 285;
         this.damage = 10;
@@ -21508,11 +19578,9 @@ namespace Terraria
         this.value = 40;
         this.ranged = true;
         this.rare = 3;
-        this.toolTip = "Causes confusion";
       }
       else if (type == 1351)
       {
-        this.name = "Exploding Bullet";
         this.shootSpeed = 4.7f;
         this.shoot = 286;
         this.damage = 10;
@@ -21525,11 +19593,9 @@ namespace Terraria
         this.value = 40;
         this.ranged = true;
         this.rare = 3;
-        this.toolTip = "Explodes on impact";
       }
       else if (type == 1352)
       {
-        this.name = "Golden Bullet";
         this.shootSpeed = 4.6f;
         this.shoot = 287;
         this.damage = 10;
@@ -21542,11 +19608,9 @@ namespace Terraria
         this.value = 40;
         this.ranged = true;
         this.rare = 3;
-        this.toolTip = "Enemies killed will drop more money";
       }
       else if (type == 1353)
       {
-        this.name = "Flask of Cursed Flames";
         this.UseSound = SoundID.Item3;
         this.useStyle = 2;
         this.useTurn = true;
@@ -21563,7 +19627,6 @@ namespace Terraria
       }
       else if (type == 1354)
       {
-        this.name = "Flask of Fire";
         this.UseSound = SoundID.Item3;
         this.useStyle = 2;
         this.useTurn = true;
@@ -21580,7 +19643,6 @@ namespace Terraria
       }
       else if (type == 1355)
       {
-        this.name = "Flask of Gold";
         this.UseSound = SoundID.Item3;
         this.useStyle = 2;
         this.useTurn = true;
@@ -21597,7 +19659,6 @@ namespace Terraria
       }
       else if (type == 1356)
       {
-        this.name = "Flask of Ichor";
         this.UseSound = SoundID.Item3;
         this.useStyle = 2;
         this.useTurn = true;
@@ -21614,7 +19675,6 @@ namespace Terraria
       }
       else if (type == 1357)
       {
-        this.name = "Flask of Nanites";
         this.UseSound = SoundID.Item3;
         this.useStyle = 2;
         this.useTurn = true;
@@ -21631,7 +19691,6 @@ namespace Terraria
       }
       else if (type == 1358)
       {
-        this.name = "Flask of Party";
         this.UseSound = SoundID.Item3;
         this.useStyle = 2;
         this.useTurn = true;
@@ -21648,7 +19707,6 @@ namespace Terraria
       }
       else if (type == 1359)
       {
-        this.name = "Flask of Poison";
         this.UseSound = SoundID.Item3;
         this.useStyle = 2;
         this.useTurn = true;
@@ -21665,7 +19723,6 @@ namespace Terraria
       }
       else if (type == 1360)
       {
-        this.name = "Eye of Cthulhu Trophy";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -21682,7 +19739,6 @@ namespace Terraria
       }
       else if (type == 1361)
       {
-        this.name = "Eater of Worlds Trophy";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -21699,7 +19755,6 @@ namespace Terraria
       }
       else if (type == 1362)
       {
-        this.name = "Brain of Cthulhu Trophy";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -21716,7 +19771,6 @@ namespace Terraria
       }
       else if (type == 1363)
       {
-        this.name = "Skeletron Trophy";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -21733,7 +19787,6 @@ namespace Terraria
       }
       else if (type == 1364)
       {
-        this.name = "Queen Bee Trophy";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -21750,7 +19803,6 @@ namespace Terraria
       }
       else if (type == 1365)
       {
-        this.name = "Wall of Flesh Trophy";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -21767,7 +19819,6 @@ namespace Terraria
       }
       else if (type == 1366)
       {
-        this.name = "Destroyer Trophy";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -21784,7 +19835,6 @@ namespace Terraria
       }
       else if (type == 1367)
       {
-        this.name = "Skeletron Prime Trophy";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -21801,7 +19851,6 @@ namespace Terraria
       }
       else if (type == 1368)
       {
-        this.name = "Retinazer Trophy";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -21818,7 +19867,6 @@ namespace Terraria
       }
       else if (type == 1369)
       {
-        this.name = "Spazmatism Trophy";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -21835,7 +19883,6 @@ namespace Terraria
       }
       else if (type == 1370)
       {
-        this.name = "Plantera Trophy";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -21852,7 +19899,6 @@ namespace Terraria
       }
       else if (type == 1371)
       {
-        this.name = "Golem Trophy";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -21869,7 +19915,6 @@ namespace Terraria
       }
       else if (type == 1372)
       {
-        this.name = "Blood Moon Rising";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -21885,7 +19930,6 @@ namespace Terraria
       }
       else if (type == 1373)
       {
-        this.name = "The Hanged Man";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -21901,7 +19945,6 @@ namespace Terraria
       }
       else if (type == 1374)
       {
-        this.name = "Glory of the Fire";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -21917,7 +19960,6 @@ namespace Terraria
       }
       else if (type == 1375)
       {
-        this.name = "Bone Warp";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -21933,7 +19975,6 @@ namespace Terraria
       }
       else if (type == 1376)
       {
-        this.name = "Wall Skeleton";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -21948,7 +19989,6 @@ namespace Terraria
       }
       else if (type == 1377)
       {
-        this.name = "Hanging Skeleton";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -21963,7 +20003,6 @@ namespace Terraria
       }
       else if (type == 1378)
       {
-        this.name = "Blue Slab Wall";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -21977,7 +20016,6 @@ namespace Terraria
       }
       else if (type == 1379)
       {
-        this.name = "Blue Tiled Wall";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -21991,7 +20029,6 @@ namespace Terraria
       }
       else if (type == 1380)
       {
-        this.name = "Pink Slab Wall";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -22005,7 +20042,6 @@ namespace Terraria
       }
       else if (type == 1381)
       {
-        this.name = "Pink Tiled Wall";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -22019,7 +20055,6 @@ namespace Terraria
       }
       else if (type == 1382)
       {
-        this.name = "Green Slab Wall";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -22033,7 +20068,6 @@ namespace Terraria
       }
       else if (type == 1383)
       {
-        this.name = "Green Tiled Wall";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -22047,7 +20081,6 @@ namespace Terraria
       }
       else if (type == 1384)
       {
-        this.name = "Blue Brick Platform";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -22062,7 +20095,6 @@ namespace Terraria
       }
       else if (type == 1385)
       {
-        this.name = "Pink Brick Platform";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -22077,7 +20109,6 @@ namespace Terraria
       }
       else if (type == 1386)
       {
-        this.name = "Green Brick Platform";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -22092,7 +20123,6 @@ namespace Terraria
       }
       else if (type == 1387)
       {
-        this.name = "Dungeon Shelf 1";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -22107,7 +20137,6 @@ namespace Terraria
       }
       else if (type == 1388)
       {
-        this.name = "Dungeon Shelf 2";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -22122,7 +20151,6 @@ namespace Terraria
       }
       else if (type == 1389)
       {
-        this.name = "Dungeon Shelf 3";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -22137,7 +20165,6 @@ namespace Terraria
       }
       else if (type == 1390)
       {
-        this.name = "Lantern 1";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -22152,7 +20179,6 @@ namespace Terraria
       }
       else if (type == 1391)
       {
-        this.name = "Lantern 2";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -22167,7 +20193,6 @@ namespace Terraria
       }
       else if (type == 1392)
       {
-        this.name = "Lantern 3";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -22182,7 +20207,6 @@ namespace Terraria
       }
       else if (type == 1393)
       {
-        this.name = "Lantern 4";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -22197,7 +20221,6 @@ namespace Terraria
       }
       else if (type == 1394)
       {
-        this.name = "Lantern 5";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -22212,7 +20235,6 @@ namespace Terraria
       }
       else if (type == 1395)
       {
-        this.name = "Lantern 6";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -22227,7 +20249,6 @@ namespace Terraria
       }
       else if (type == 1396)
       {
-        this.name = "Blue Dungeon Chair";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -22242,7 +20263,6 @@ namespace Terraria
       }
       else if (type == 1397)
       {
-        this.name = "Blue Dungeon Table";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -22258,7 +20278,6 @@ namespace Terraria
       }
       else if (type == 1398)
       {
-        this.name = "Blue Dungeon Work Bench";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -22274,7 +20293,6 @@ namespace Terraria
       }
       else if (type == 1399)
       {
-        this.name = "Green Dungeon Chair";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -22289,7 +20307,6 @@ namespace Terraria
       }
       else if (type == 1400)
       {
-        this.name = "Green Dungeon Table";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -22305,7 +20322,6 @@ namespace Terraria
       }
       else if (type == 1401)
       {
-        this.name = "Green Dungeon Work Bench";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -22321,7 +20337,6 @@ namespace Terraria
       }
       else if (type == 1402)
       {
-        this.name = "Pink Dungeon Chair";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -22336,7 +20351,6 @@ namespace Terraria
       }
       else if (type == 1403)
       {
-        this.name = "Pink Dungeon Table";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -22352,7 +20366,6 @@ namespace Terraria
       }
       else if (type == 1404)
       {
-        this.name = "Pink Dungeon Work Bench";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -22369,7 +20382,6 @@ namespace Terraria
       else if (type == 1405)
       {
         this.noWet = true;
-        this.name = "Blue Dungeon Candle";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -22385,7 +20397,6 @@ namespace Terraria
       else if (type == 1406)
       {
         this.noWet = true;
-        this.name = "Green Dungeon Candle";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -22401,7 +20412,6 @@ namespace Terraria
       else if (type == 1407)
       {
         this.noWet = true;
-        this.name = "Pink Dungeon Candle";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -22416,7 +20426,6 @@ namespace Terraria
       }
       else if (type == 1408)
       {
-        this.name = "Blue Dungeon Vase";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -22432,7 +20441,6 @@ namespace Terraria
       }
       else if (type == 1409)
       {
-        this.name = "Green Dungeon Vase";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -22448,7 +20456,6 @@ namespace Terraria
       }
       else if (type == 1410)
       {
-        this.name = "Pink Dungeon Vase";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -22464,7 +20471,6 @@ namespace Terraria
       }
       else if (type == 1411)
       {
-        this.name = "Blue Dungeon Door";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -22479,7 +20485,6 @@ namespace Terraria
       }
       else if (type == 1412)
       {
-        this.name = "Green Dungeon Door";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -22494,7 +20499,6 @@ namespace Terraria
       }
       else if (type == 1413)
       {
-        this.name = "Pink Dungeon Door";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -22509,7 +20513,6 @@ namespace Terraria
       }
       else if (type == 1414)
       {
-        this.name = "Blue Dungeon Bookcase";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -22525,7 +20528,6 @@ namespace Terraria
       }
       else if (type == 1415)
       {
-        this.name = "Green Dungeon Bookcase";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -22541,7 +20543,6 @@ namespace Terraria
       }
       else if (type == 1416)
       {
-        this.name = "Pink Dungeon Bookcase";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -22557,7 +20558,6 @@ namespace Terraria
       }
       else if (type == 1417)
       {
-        this.name = "Catacomb";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -22572,7 +20572,6 @@ namespace Terraria
       }
       else if (type == 1418)
       {
-        this.name = "Dungeon Shelf 4";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -22587,7 +20586,6 @@ namespace Terraria
       }
       else if (type == 1419)
       {
-        this.name = "Skellington J Skellingsworth";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -22603,7 +20601,6 @@ namespace Terraria
       }
       else if (type == 1420)
       {
-        this.name = "The Cursed Man";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -22619,7 +20616,6 @@ namespace Terraria
       }
       else if (type == 1421)
       {
-        this.name = "The Eye Sees the End";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -22635,7 +20631,6 @@ namespace Terraria
       }
       else if (type == 1422)
       {
-        this.name = "Something Evil is Watching You";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -22651,7 +20646,6 @@ namespace Terraria
       }
       else if (type == 1423)
       {
-        this.name = "The Twins Have Awoken";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -22667,7 +20661,6 @@ namespace Terraria
       }
       else if (type == 1424)
       {
-        this.name = "The Screamer";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -22683,7 +20676,6 @@ namespace Terraria
       }
       else if (type == 1425)
       {
-        this.name = "Goblins Playing Poker";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -22699,7 +20691,6 @@ namespace Terraria
       }
       else if (type == 1426)
       {
-        this.name = "Dryadisque";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -22715,7 +20706,6 @@ namespace Terraria
       }
       else if (type == 1427)
       {
-        this.name = "Sunflowers";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -22731,7 +20721,6 @@ namespace Terraria
       }
       else if (type == 1428)
       {
-        this.name = "Terrarian Gothic";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -22747,7 +20736,6 @@ namespace Terraria
       }
       else if (type == 1429)
       {
-        this.name = "Beanie";
         this.width = 18;
         this.height = 18;
         this.headSlot = 100;
@@ -22756,7 +20744,6 @@ namespace Terraria
       }
       else if (type == 1430)
       {
-        this.name = "Imbuing Station";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -22772,7 +20759,6 @@ namespace Terraria
       }
       else if (type == 1431)
       {
-        this.name = "Star in a Bottle";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -22787,7 +20773,6 @@ namespace Terraria
       }
       else if (type == 1432)
       {
-        this.name = "Empty Bullet";
         this.width = 12;
         this.height = 20;
         this.maxStack = 999;
@@ -22795,7 +20780,6 @@ namespace Terraria
       }
       else if (type == 1433)
       {
-        this.name = "Impact";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -22811,7 +20795,6 @@ namespace Terraria
       }
       else if (type == 1434)
       {
-        this.name = "Powered by Birds";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -22827,7 +20810,6 @@ namespace Terraria
       }
       else if (type == 1435)
       {
-        this.name = "The Destroyer";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -22843,7 +20825,6 @@ namespace Terraria
       }
       else if (type == 1436)
       {
-        this.name = "The Persistency of Eyes";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -22859,7 +20840,6 @@ namespace Terraria
       }
       else if (type == 1437)
       {
-        this.name = "Unicorn Crossing the Hallows";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -22875,7 +20855,6 @@ namespace Terraria
       }
       else if (type == 1438)
       {
-        this.name = "Great Wave";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -22891,7 +20870,6 @@ namespace Terraria
       }
       else if (type == 1439)
       {
-        this.name = "Starry Night";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -22907,7 +20885,6 @@ namespace Terraria
       }
       else if (type == 1440)
       {
-        this.name = "Guide Picasso";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -22923,7 +20900,6 @@ namespace Terraria
       }
       else if (type == 1441)
       {
-        this.name = "The Guardian's Gaze";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -22939,7 +20915,6 @@ namespace Terraria
       }
       else if (type == 1442)
       {
-        this.name = "Father of Someone";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -22955,7 +20930,6 @@ namespace Terraria
       }
       else if (type == 1443)
       {
-        this.name = "Nurse Lisa";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -22971,7 +20945,6 @@ namespace Terraria
       }
       else if (type == 1444)
       {
-        this.name = "Shadowbeam Staff";
         this.mana = 7;
         this.UseSound = SoundID.Item72;
         this.useStyle = 5;
@@ -22991,7 +20964,6 @@ namespace Terraria
       }
       else if (type == 1445)
       {
-        this.name = "Inferno Fork";
         this.mana = 18;
         this.UseSound = SoundID.Item73;
         this.useStyle = 5;
@@ -23010,7 +20982,6 @@ namespace Terraria
       }
       else if (type == 1446)
       {
-        this.name = "Spectre Staff";
         this.mana = 11;
         this.UseSound = SoundID.Item43;
         this.useStyle = 5;
@@ -23030,7 +21001,6 @@ namespace Terraria
       }
       else if (type == 1447)
       {
-        this.name = "Wooden Fence";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -23044,7 +21014,6 @@ namespace Terraria
       }
       else if (type == 1448)
       {
-        this.name = "Lead Fence";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -23058,7 +21027,6 @@ namespace Terraria
       }
       else if (type == 1449)
       {
-        this.name = "Bubble Machine";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -23074,7 +21042,6 @@ namespace Terraria
       }
       else if (type == 1450)
       {
-        this.name = "Bubble Wand";
         this.useStyle = 1;
         this.autoReuse = true;
         this.useTurn = false;
@@ -23089,7 +21056,6 @@ namespace Terraria
       }
       else if (type == 1451)
       {
-        this.name = "Marching Bones Banner";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -23105,7 +21071,6 @@ namespace Terraria
       }
       else if (type == 1452)
       {
-        this.name = "Necromantic Sign";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -23121,7 +21086,6 @@ namespace Terraria
       }
       else if (type == 1453)
       {
-        this.name = "Rusted Company Standard";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -23137,7 +21101,6 @@ namespace Terraria
       }
       else if (type == 1454)
       {
-        this.name = "Ragged Brotherhood Sigil";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -23153,7 +21116,6 @@ namespace Terraria
       }
       else if (type == 1455)
       {
-        this.name = "Molten Legion Flag";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -23169,7 +21131,6 @@ namespace Terraria
       }
       else if (type == 1456)
       {
-        this.name = "Diabolic Sigil";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -23185,7 +21146,6 @@ namespace Terraria
       }
       else if (type == 1457)
       {
-        this.name = "Obsidian Platform";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -23200,7 +21160,6 @@ namespace Terraria
       }
       else if (type == 1458)
       {
-        this.name = "Obsidian Door";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -23215,7 +21174,6 @@ namespace Terraria
       }
       else if (type == 1459)
       {
-        this.name = "Obsidian Chair";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -23230,7 +21188,6 @@ namespace Terraria
       }
       else if (type == 1460)
       {
-        this.name = "Obsidian Table";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -23246,7 +21203,6 @@ namespace Terraria
       }
       else if (type == 1461)
       {
-        this.name = "Obsidian Work Bench";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -23262,7 +21218,6 @@ namespace Terraria
       }
       else if (type == 1462)
       {
-        this.name = "Obsidian Vase";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -23278,7 +21233,6 @@ namespace Terraria
       }
       else if (type == 1463)
       {
-        this.name = "Obsidian Bookcase";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -23294,7 +21248,6 @@ namespace Terraria
       }
       else if (type == 1464)
       {
-        this.name = "Hellbound Banner";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -23310,7 +21263,6 @@ namespace Terraria
       }
       else if (type == 1465)
       {
-        this.name = "Hell Hammer Banner";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -23326,7 +21278,6 @@ namespace Terraria
       }
       else if (type == 1466)
       {
-        this.name = "Helltower Banner";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -23342,7 +21293,6 @@ namespace Terraria
       }
       else if (type == 1467)
       {
-        this.name = "Lost Hopes of Man Banner";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -23358,7 +21308,6 @@ namespace Terraria
       }
       else if (type == 1468)
       {
-        this.name = "Obsidian Watcher Banner";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -23374,7 +21323,6 @@ namespace Terraria
       }
       else if (type == 1469)
       {
-        this.name = "Lava Erupts Banner";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -23390,7 +21338,6 @@ namespace Terraria
       }
       else if (type == 1470)
       {
-        this.name = "Blue Dungeon Bed";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -23405,7 +21352,6 @@ namespace Terraria
       }
       else if (type == 1471)
       {
-        this.name = "Green Dungeon Bed";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -23420,7 +21366,6 @@ namespace Terraria
       }
       else if (type == 1472)
       {
-        this.name = "Red Dungeon Bed";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -23435,7 +21380,6 @@ namespace Terraria
       }
       else if (type == 1473)
       {
-        this.name = "Obsidian Bed";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -23450,7 +21394,6 @@ namespace Terraria
       }
       else if (type >= 1474 && type <= 1478)
       {
-        this.name = "Picture";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -23466,7 +21409,6 @@ namespace Terraria
       }
       else if (type >= 1479 && type <= 1494)
       {
-        this.name = "Picture";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -23482,7 +21424,6 @@ namespace Terraria
       }
       else if (type == 1495)
       {
-        this.name = "American Explosive";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -23498,7 +21439,6 @@ namespace Terraria
       }
       else if (type >= 1496 && type <= 1499)
       {
-        this.name = "Picture";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -23514,7 +21454,6 @@ namespace Terraria
       }
       else if (type >= 1500 && type <= 1502)
       {
-        this.name = "Picture";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -23530,41 +21469,33 @@ namespace Terraria
       }
       else if (type == 1503)
       {
-        this.name = "Spectre Hood";
         this.width = 18;
         this.height = 18;
         this.defense = 6;
         this.headSlot = 101;
         this.rare = 8;
         this.value = 375000;
-        this.toolTip = "40% decreased magic damage";
       }
       else if (type == 1504)
       {
-        this.name = "Spectre Robe";
         this.width = 18;
         this.height = 18;
         this.defense = 14;
         this.bodySlot = 66;
         this.rare = 8;
         this.value = 300000;
-        this.toolTip = "7% increased magic damage and critical strike chance";
       }
       else if (type == 1505)
       {
-        this.name = "Spectre Pants";
         this.width = 18;
         this.height = 18;
         this.defense = 10;
         this.legSlot = 55;
         this.rare = 8;
         this.value = 225000;
-        this.toolTip = "8% increased magic damage";
-        this.toolTip2 = "8% increased movement speed";
       }
       else if (type == 1506)
       {
-        this.name = "Spirit Pickaxe";
         this.useStyle = 1;
         this.useAnimation = 24;
         this.useTime = 10;
@@ -23584,7 +21515,6 @@ namespace Terraria
       }
       else if (type == 1507)
       {
-        this.name = "Spirit Hamaxe";
         this.useTurn = true;
         this.autoReuse = true;
         this.useStyle = 1;
@@ -23605,7 +21535,6 @@ namespace Terraria
       }
       else if (type == 1508)
       {
-        this.name = "Ectoplasm";
         this.maxStack = 99;
         this.width = 16;
         this.height = 14;
@@ -23614,7 +21543,6 @@ namespace Terraria
       }
       else if (type == 1509)
       {
-        this.name = "Gothic Chair";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -23629,7 +21557,6 @@ namespace Terraria
       }
       else if (type == 1510)
       {
-        this.name = "Gothic Table";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -23645,7 +21572,6 @@ namespace Terraria
       }
       else if (type == 1511)
       {
-        this.name = "Gothic Work Bench";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -23661,7 +21587,6 @@ namespace Terraria
       }
       else if (type == 1512)
       {
-        this.name = "Gothic Bookcase";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -23679,7 +21604,6 @@ namespace Terraria
       {
         this.noMelee = true;
         this.useStyle = 1;
-        this.name = "Paladin's Hammer";
         this.shootSpeed = 14f;
         this.shoot = 301;
         this.damage = 90;
@@ -23696,7 +21620,6 @@ namespace Terraria
       }
       else if (type == 1514)
       {
-        this.name = "SWAT Helmet";
         this.width = 18;
         this.height = 18;
         this.headSlot = 102;
@@ -23706,18 +21629,15 @@ namespace Terraria
       }
       else if (type == 1515)
       {
-        this.name = "Bee Wings";
         this.width = 24;
         this.height = 8;
         this.accessory = true;
-        this.toolTip = "Allows flight and slow fall";
         this.value = 400000;
         this.rare = 5;
         this.wingSlot = (sbyte) 15;
       }
       else if (type >= 1516 && type <= 1521)
       {
-        this.name = "Feather";
         this.maxStack = 99;
         this.width = 16;
         this.height = 14;
@@ -23726,14 +21646,12 @@ namespace Terraria
       }
       else if (type >= 1522 && type <= 1527)
       {
-        this.name = "Large Gem";
         this.width = 20;
         this.height = 20;
         this.rare = 1;
       }
       else if (type >= 1528 && type <= 1532)
       {
-        this.name = "Dungeon Chest";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -23749,7 +21667,6 @@ namespace Terraria
       }
       else if (type >= 1533 && type <= 1537)
       {
-        this.name = "Dungeon Key";
         this.width = 14;
         this.height = 20;
         this.maxStack = 99;
@@ -23757,7 +21674,6 @@ namespace Terraria
       }
       else if (type >= 1538 && type <= 1540)
       {
-        this.name = "Picture";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -23773,7 +21689,6 @@ namespace Terraria
       }
       else if (type >= 1541 && type <= 1542)
       {
-        this.name = "Picture";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -23789,7 +21704,6 @@ namespace Terraria
       }
       else if (type >= 1543 && type <= 1545)
       {
-        this.name = "Spectre Paintbrush";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -23802,67 +21716,51 @@ namespace Terraria
       }
       else if (type == 1546)
       {
-        this.name = "Shroomite Headgear";
         this.width = 18;
         this.height = 18;
         this.defense = 11;
         this.headSlot = 103;
         this.rare = 8;
         this.value = 375000;
-        this.toolTip = "15% increased arrow damage";
-        this.toolTip2 = "5% ranged critical strike chance";
       }
       else if (type == 1547)
       {
-        this.name = "Shroomite Mask";
         this.width = 18;
         this.height = 18;
         this.defense = 11;
         this.headSlot = 104;
         this.rare = 8;
         this.value = 375000;
-        this.toolTip = "15% increased bullet damage";
-        this.toolTip2 = "5% ranged critical strike chance";
       }
       else if (type == 1548)
       {
-        this.name = "Shroomite Helmet";
         this.width = 18;
         this.height = 18;
         this.defense = 11;
         this.headSlot = 105;
         this.rare = 8;
         this.value = 375000;
-        this.toolTip = "15% increased rocket damage";
-        this.toolTip2 = "5% ranged critical strike chance";
       }
       else if (type == 1549)
       {
-        this.name = "Shroomite Breastplate";
         this.width = 18;
         this.height = 18;
         this.defense = 24;
         this.bodySlot = 67;
         this.rare = 8;
         this.value = 300000;
-        this.toolTip = "13% increased ranged critical strike chance";
-        this.toolTip2 = "20% chance to not consume ammo";
       }
       else if (type == 1550)
       {
-        this.name = "Shroomite Leggings";
         this.width = 18;
         this.height = 18;
         this.defense = 16;
         this.legSlot = 56;
         this.rare = 8;
         this.value = 225000;
-        this.toolTip = "7% increased ranged critical strike chance";
-        this.toolTip2 = "12% increased movement speed";
       }
       else if (type == 1551)
       {
-        this.name = "Autohammer";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -23874,11 +21772,9 @@ namespace Terraria
         this.width = 26;
         this.height = 24;
         this.value = Item.buyPrice(1, 0, 0, 0);
-        this.toolTip = "Converts Chlorophyte Bars into Shroomite Bars";
       }
       else if (type == 1552)
       {
-        this.name = "Shroomite Bar";
         this.width = 20;
         this.height = 20;
         this.maxStack = 99;
@@ -23899,7 +21795,6 @@ namespace Terraria
         this.autoReuse = true;
         this.useAnimation = 5;
         this.useTime = 5;
-        this.name = "S.D.M.G.";
         this.crit += 10;
         this.width = 60;
         this.height = 26;
@@ -23911,14 +21806,11 @@ namespace Terraria
         this.noMelee = true;
         this.value = 750000;
         this.rare = 10;
-        this.toolTip = "50% chance to not consume ammo";
-        this.toolTip2 = "'Space Dolphin Machine Gun'";
         this.knockBack = 2.5f;
         this.ranged = true;
       }
       else if (type == 1554)
       {
-        this.name = "Cenx's Tiara";
         this.width = 18;
         this.height = 18;
         this.rare = 9;
@@ -23927,7 +21819,6 @@ namespace Terraria
       }
       else if (type == 1555)
       {
-        this.name = "Cenx's Breastplate";
         this.width = 18;
         this.height = 18;
         this.rare = 9;
@@ -23936,7 +21827,6 @@ namespace Terraria
       }
       else if (type == 1556)
       {
-        this.name = "Cenx's Leggings";
         this.width = 18;
         this.height = 18;
         this.rare = 9;
@@ -23945,7 +21835,6 @@ namespace Terraria
       }
       else if (type == 1557)
       {
-        this.name = "Crowno's Mask";
         this.width = 18;
         this.height = 18;
         this.rare = 9;
@@ -23954,7 +21843,6 @@ namespace Terraria
       }
       else if (type == 1558)
       {
-        this.name = "Crowno's Breastplate";
         this.width = 18;
         this.height = 18;
         this.rare = 9;
@@ -23963,7 +21851,6 @@ namespace Terraria
       }
       else if (type == 1559)
       {
-        this.name = "Crowno's Leggings";
         this.width = 18;
         this.height = 18;
         this.rare = 9;
@@ -23972,7 +21859,6 @@ namespace Terraria
       }
       else if (type == 1560)
       {
-        this.name = "Will's Helmet";
         this.width = 18;
         this.height = 18;
         this.rare = 9;
@@ -23981,7 +21867,6 @@ namespace Terraria
       }
       else if (type == 1561)
       {
-        this.name = "Will's Breastplate";
         this.width = 18;
         this.height = 18;
         this.rare = 9;
@@ -23990,7 +21875,6 @@ namespace Terraria
       }
       else if (type == 1562)
       {
-        this.name = "Will's Leggings";
         this.width = 18;
         this.height = 18;
         this.rare = 9;
@@ -23999,7 +21883,6 @@ namespace Terraria
       }
       else if (type == 1563)
       {
-        this.name = "Jim's Helmet";
         this.width = 18;
         this.height = 18;
         this.rare = 9;
@@ -24008,7 +21891,6 @@ namespace Terraria
       }
       else if (type == 1564)
       {
-        this.name = "Jim's Breastplate";
         this.width = 18;
         this.height = 18;
         this.rare = 9;
@@ -24017,7 +21899,6 @@ namespace Terraria
       }
       else if (type == 1565)
       {
-        this.name = "Jim's Leggings";
         this.width = 18;
         this.height = 18;
         this.rare = 9;
@@ -24026,7 +21907,6 @@ namespace Terraria
       }
       else if (type == 1566)
       {
-        this.name = "Aaron's Helmet";
         this.width = 18;
         this.height = 18;
         this.rare = 9;
@@ -24035,7 +21915,6 @@ namespace Terraria
       }
       else if (type == 1567)
       {
-        this.name = "Aaron's Breastplate";
         this.width = 18;
         this.height = 18;
         this.rare = 9;
@@ -24044,7 +21923,6 @@ namespace Terraria
       }
       else if (type == 1568)
       {
-        this.name = "Aaron's Leggings";
         this.width = 18;
         this.height = 18;
         this.rare = 9;
@@ -24055,7 +21933,6 @@ namespace Terraria
       {
         this.autoReuse = true;
         this.useStyle = 1;
-        this.name = "Vampire Knives";
         this.shootSpeed = 15f;
         this.shoot = 304;
         this.damage = 29;
@@ -24070,11 +21947,9 @@ namespace Terraria
         this.knockBack = 2.75f;
         this.melee = true;
         this.rare = 8;
-        this.toolTip = "Rapidly shoot life stealing daggers";
       }
       else if (type == 1570)
       {
-        this.name = "Broken Hero Sword";
         this.width = 14;
         this.height = 18;
         this.maxStack = 99;
@@ -24085,7 +21960,6 @@ namespace Terraria
       {
         this.autoReuse = true;
         this.useStyle = 5;
-        this.name = "Eater's Bite";
         this.shootSpeed = 14f;
         this.shoot = 306;
         this.damage = 64;
@@ -24103,7 +21977,6 @@ namespace Terraria
       }
       else if (type == 1572)
       {
-        this.name = "Hydra Staff";
         this.useStyle = 1;
         this.shootSpeed = 14f;
         this.shoot = 308;
@@ -24123,7 +21996,6 @@ namespace Terraria
       }
       else if (type == 1573)
       {
-        this.name = "The Creation of the Guide";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -24139,7 +22011,6 @@ namespace Terraria
       }
       else if (type >= 1574 && type <= 1576)
       {
-        this.name = "Picture";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -24155,7 +22026,6 @@ namespace Terraria
       }
       else if (type == 1577)
       {
-        this.name = "Glorious Night";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -24171,29 +22041,24 @@ namespace Terraria
       }
       else if (type == 1578)
       {
-        this.name = "Sweetheart Necklace";
         this.width = 22;
         this.height = 22;
         this.accessory = true;
         this.rare = 3;
-        this.toolTip = "Releases bees and increases movement speed when damaged";
         this.value = 100000;
         this.neckSlot = (sbyte) 6;
       }
       else if (type == 1579)
       {
-        this.name = "Flurry Boots";
         this.width = 28;
         this.height = 24;
         this.accessory = true;
         this.rare = 1;
-        this.toolTip = "The wearer can run super fast";
         this.value = 50000;
         this.shoeSlot = (sbyte) 5;
       }
       else if (type == 1580)
       {
-        this.name = "D-Town's Helmet";
         this.width = 18;
         this.height = 18;
         this.rare = 9;
@@ -24202,7 +22067,6 @@ namespace Terraria
       }
       else if (type == 1581)
       {
-        this.name = "D-Town's Breastplate";
         this.width = 18;
         this.height = 18;
         this.rare = 9;
@@ -24211,7 +22075,6 @@ namespace Terraria
       }
       else if (type == 1582)
       {
-        this.name = "D-Town's Leggings";
         this.width = 18;
         this.height = 18;
         this.rare = 9;
@@ -24220,7 +22083,6 @@ namespace Terraria
       }
       else if (type == 1583)
       {
-        this.name = "D-Town's Wings";
         this.width = 24;
         this.height = 8;
         this.accessory = true;
@@ -24230,7 +22092,6 @@ namespace Terraria
       }
       else if (type == 1584)
       {
-        this.name = "Will's Wings";
         this.width = 24;
         this.height = 8;
         this.accessory = true;
@@ -24240,7 +22101,6 @@ namespace Terraria
       }
       else if (type == 1585)
       {
-        this.name = "Crowno's Wings";
         this.width = 24;
         this.height = 8;
         this.accessory = true;
@@ -24250,7 +22110,6 @@ namespace Terraria
       }
       else if (type == 1586)
       {
-        this.name = "Cenx's Wings";
         this.width = 24;
         this.height = 8;
         this.accessory = true;
@@ -24260,7 +22119,6 @@ namespace Terraria
       }
       else if (type == 1587)
       {
-        this.name = "Cenx's Dress";
         this.width = 18;
         this.height = 18;
         this.rare = 9;
@@ -24269,7 +22127,6 @@ namespace Terraria
       }
       else if (type == 1588)
       {
-        this.name = "Cenx's Dress Pants";
         this.width = 18;
         this.height = 18;
         this.rare = 9;
@@ -24278,7 +22135,6 @@ namespace Terraria
       }
       else if (type == 1589)
       {
-        this.name = "Palladium Column";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -24292,7 +22148,6 @@ namespace Terraria
       }
       else if (type == 1590)
       {
-        this.name = "Palladium Column Wall";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -24306,7 +22161,6 @@ namespace Terraria
       }
       else if (type == 1591)
       {
-        this.name = "Bubblegum Block";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -24320,7 +22174,6 @@ namespace Terraria
       }
       else if (type == 1592)
       {
-        this.name = "Bubblegum Block Wall";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -24334,7 +22187,6 @@ namespace Terraria
       }
       else if (type == 1593)
       {
-        this.name = "Titanstone Block";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -24348,7 +22200,6 @@ namespace Terraria
       }
       else if (type == 1594)
       {
-        this.name = "Titanstone Block Wall";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -24362,20 +22213,16 @@ namespace Terraria
       }
       else if (type == 1595)
       {
-        this.name = "Magic Cuffs";
         this.width = 22;
         this.height = 22;
         this.accessory = true;
         this.rare = 2;
-        this.toolTip = "Increases maximum mana by 20";
-        this.toolTip2 = "Restores mana when damaged";
         this.value = 100000;
         this.handOffSlot = (sbyte) 3;
         this.handOnSlot = (sbyte) 8;
       }
       else if (type >= 1596 && type <= 1610)
       {
-        this.name = "Music Box";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -24392,7 +22239,6 @@ namespace Terraria
       }
       else if (type == 1611)
       {
-        this.name = "Butterfly Dust";
         this.maxStack = 99;
         this.width = 16;
         this.height = 14;
@@ -24401,30 +22247,24 @@ namespace Terraria
       }
       else if (type == 1612)
       {
-        this.name = "Ankh Charm";
         this.width = 16;
         this.height = 24;
         this.accessory = true;
         this.rare = 6;
-        this.toolTip = "Grants immunity to most debuffs";
         this.value = Item.sellPrice(0, 3, 0, 0);
       }
       else if (type == 1613)
       {
-        this.name = "Ankh Shield";
         this.width = 24;
         this.height = 28;
         this.rare = 7;
         this.value = Item.sellPrice(0, 5, 0, 0);
         this.accessory = true;
         this.defense = 4;
-        this.toolTip = "Grants immunity to knockback and fire blocks";
-        this.toolTip2 = "Grants immunity to most debuffs";
         this.shieldSlot = (sbyte) 4;
       }
       else if (type == 1614)
       {
-        this.name = "Blue Flare";
         this.shootSpeed = 6f;
         this.shoot = 310;
         this.damage = 1;
@@ -24439,7 +22279,6 @@ namespace Terraria
       }
       else if (type >= 1615 && type <= 1701)
       {
-        this.name = "Monster Banner";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -24456,7 +22295,6 @@ namespace Terraria
       }
       else if (type == 1702)
       {
-        this.name = "Glass Platform";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -24471,7 +22309,6 @@ namespace Terraria
       }
       else if (type >= 1703 && type <= 1708)
       {
-        this.name = "Chair";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -24486,7 +22323,6 @@ namespace Terraria
       }
       else if (type >= 1709 && type <= 1712)
       {
-        this.name = "Door";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -24501,7 +22337,6 @@ namespace Terraria
       }
       else if (type >= 1713 && type <= 1718)
       {
-        this.name = "Table";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -24517,7 +22352,6 @@ namespace Terraria
       }
       else if (type >= 1719 && type <= 1722)
       {
-        this.name = "Bed";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -24532,7 +22366,6 @@ namespace Terraria
       }
       else if (type == 1723)
       {
-        this.name = "Living Wood Wall";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -24546,17 +22379,14 @@ namespace Terraria
       }
       else if (type == 1724)
       {
-        this.name = "Fart in a Jar";
         this.width = 16;
         this.height = 24;
         this.accessory = true;
         this.rare = 2;
-        this.toolTip = "Allows the holder to double jump";
         this.value = 75000;
       }
       else if (type == 1725)
       {
-        this.name = "Pumpkin";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -24571,7 +22401,6 @@ namespace Terraria
       }
       else if (type == 1726)
       {
-        this.name = "Pumpkin Wall";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -24585,7 +22414,6 @@ namespace Terraria
       }
       else if (type == 1727)
       {
-        this.name = "Hay";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -24599,7 +22427,6 @@ namespace Terraria
       }
       else if (type == 1728)
       {
-        this.name = "Hay Wall";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -24613,7 +22440,6 @@ namespace Terraria
       }
       else if (type == 1729)
       {
-        this.name = "Spooky Wood";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -24627,7 +22453,6 @@ namespace Terraria
       }
       else if (type == 1730)
       {
-        this.name = "Spooky Wood Wall";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -24641,7 +22466,6 @@ namespace Terraria
       }
       else if (type == 1731)
       {
-        this.name = "Pumpkin Helmet";
         this.width = 18;
         this.height = 18;
         this.defense = 2;
@@ -24649,7 +22473,6 @@ namespace Terraria
       }
       else if (type == 1732)
       {
-        this.name = "Pumpkin Breastplate";
         this.width = 18;
         this.height = 18;
         this.defense = 3;
@@ -24657,7 +22480,6 @@ namespace Terraria
       }
       else if (type == 1733)
       {
-        this.name = "Pumpkin Leggings";
         this.width = 18;
         this.height = 18;
         this.defense = 2;
@@ -24665,19 +22487,16 @@ namespace Terraria
       }
       else if (type == 1734)
       {
-        this.name = "Candy Apple";
         this.width = 12;
         this.height = 12;
       }
       else if (type == 1735)
       {
-        this.name = "Soul Cake";
         this.width = 12;
         this.height = 12;
       }
       else if (type == 1736)
       {
-        this.name = "Nurse Hat";
         this.width = 18;
         this.height = 18;
         this.headSlot = 113;
@@ -24686,7 +22505,6 @@ namespace Terraria
       }
       else if (type == 1737)
       {
-        this.name = "Nurse Shirt";
         this.width = 18;
         this.height = 18;
         this.bodySlot = 76;
@@ -24695,7 +22513,6 @@ namespace Terraria
       }
       else if (type == 1738)
       {
-        this.name = "Nurse Pants";
         this.width = 18;
         this.height = 18;
         this.legSlot = 65;
@@ -24704,7 +22521,6 @@ namespace Terraria
       }
       else if (type == 1739)
       {
-        this.name = "Wizard's Hat";
         this.width = 18;
         this.height = 18;
         this.headSlot = 114;
@@ -24713,7 +22529,6 @@ namespace Terraria
       }
       else if (type == 1740)
       {
-        this.name = "Guy Fawkes Mask";
         this.width = 18;
         this.height = 18;
         this.headSlot = 115;
@@ -24722,7 +22537,6 @@ namespace Terraria
       }
       else if (type == 1741)
       {
-        this.name = "Dye Trader Robe";
         this.width = 18;
         this.height = 18;
         this.bodySlot = 77;
@@ -24731,7 +22545,6 @@ namespace Terraria
       }
       else if (type == 1742)
       {
-        this.name = "Steampunk Goggles";
         this.width = 18;
         this.height = 18;
         this.headSlot = 116;
@@ -24740,7 +22553,6 @@ namespace Terraria
       }
       else if (type == 1743)
       {
-        this.name = "Cyborg Helmet";
         this.width = 18;
         this.height = 18;
         this.headSlot = 117;
@@ -24749,7 +22561,6 @@ namespace Terraria
       }
       else if (type == 1744)
       {
-        this.name = "Cyborg Shirt";
         this.width = 18;
         this.height = 18;
         this.bodySlot = 78;
@@ -24758,7 +22569,6 @@ namespace Terraria
       }
       else if (type == 1745)
       {
-        this.name = "Cyborg Pants";
         this.width = 18;
         this.height = 18;
         this.legSlot = 66;
@@ -24767,7 +22577,6 @@ namespace Terraria
       }
       else if (type == 1746)
       {
-        this.name = "Creeper Mask";
         this.width = 18;
         this.height = 18;
         this.headSlot = 118;
@@ -24776,7 +22585,6 @@ namespace Terraria
       }
       else if (type == 1747)
       {
-        this.name = "Creeper Shirt";
         this.width = 18;
         this.height = 18;
         this.bodySlot = 79;
@@ -24785,7 +22593,6 @@ namespace Terraria
       }
       else if (type == 1748)
       {
-        this.name = "Creeper Pants";
         this.width = 18;
         this.height = 18;
         this.legSlot = 67;
@@ -24794,7 +22601,6 @@ namespace Terraria
       }
       else if (type == 1749)
       {
-        this.name = "Cat Mask";
         this.width = 18;
         this.height = 18;
         this.headSlot = 119;
@@ -24803,7 +22609,6 @@ namespace Terraria
       }
       else if (type == 1750)
       {
-        this.name = "Cat Shirt";
         this.width = 18;
         this.height = 18;
         this.bodySlot = 80;
@@ -24812,7 +22617,6 @@ namespace Terraria
       }
       else if (type == 1751)
       {
-        this.name = "Cat Pants";
         this.width = 18;
         this.height = 18;
         this.legSlot = 68;
@@ -24821,7 +22625,6 @@ namespace Terraria
       }
       else if (type == 1752)
       {
-        this.name = "Ghost Mask";
         this.width = 18;
         this.height = 18;
         this.headSlot = 120;
@@ -24830,7 +22633,6 @@ namespace Terraria
       }
       else if (type == 1753)
       {
-        this.name = "Ghost Shirt";
         this.width = 18;
         this.height = 18;
         this.bodySlot = 81;
@@ -24839,7 +22641,6 @@ namespace Terraria
       }
       else if (type == 1754)
       {
-        this.name = "Pumpkin Mask";
         this.width = 18;
         this.height = 18;
         this.headSlot = 121;
@@ -24848,7 +22649,6 @@ namespace Terraria
       }
       else if (type == 1755)
       {
-        this.name = "Pumpkin Shirt";
         this.width = 18;
         this.height = 18;
         this.bodySlot = 82;
@@ -24857,7 +22657,6 @@ namespace Terraria
       }
       else if (type == 1756)
       {
-        this.name = "Pumpkin Pants";
         this.width = 18;
         this.height = 18;
         this.legSlot = 69;
@@ -24866,7 +22665,6 @@ namespace Terraria
       }
       else if (type == 1757)
       {
-        this.name = "Robot Mask";
         this.width = 18;
         this.height = 18;
         this.headSlot = 122;
@@ -24875,7 +22673,6 @@ namespace Terraria
       }
       else if (type == 1758)
       {
-        this.name = "Robot Shirt";
         this.width = 18;
         this.height = 18;
         this.bodySlot = 83;
@@ -24884,7 +22681,6 @@ namespace Terraria
       }
       else if (type == 1759)
       {
-        this.name = "Robot Pants";
         this.width = 18;
         this.height = 18;
         this.legSlot = 70;
@@ -24893,7 +22689,6 @@ namespace Terraria
       }
       else if (type == 1760)
       {
-        this.name = "Unicorn Mask";
         this.width = 18;
         this.height = 18;
         this.headSlot = 123;
@@ -24902,7 +22697,6 @@ namespace Terraria
       }
       else if (type == 1761)
       {
-        this.name = "Unicorn Shirt";
         this.width = 18;
         this.height = 18;
         this.bodySlot = 84;
@@ -24911,7 +22705,6 @@ namespace Terraria
       }
       else if (type == 1762)
       {
-        this.name = "Unicorn Pants";
         this.width = 18;
         this.height = 18;
         this.legSlot = 71;
@@ -24920,7 +22713,6 @@ namespace Terraria
       }
       else if (type == 1763)
       {
-        this.name = "Vampire Mask";
         this.width = 18;
         this.height = 18;
         this.headSlot = 124;
@@ -24929,7 +22721,6 @@ namespace Terraria
       }
       else if (type == 1764)
       {
-        this.name = "Vampire Shirt";
         this.width = 18;
         this.height = 18;
         this.bodySlot = 85;
@@ -24938,7 +22729,6 @@ namespace Terraria
       }
       else if (type == 1765)
       {
-        this.name = "Vampire Pants";
         this.width = 18;
         this.height = 18;
         this.legSlot = 72;
@@ -24947,7 +22737,6 @@ namespace Terraria
       }
       else if (type == 1766)
       {
-        this.name = "Witch Hat";
         this.width = 18;
         this.height = 18;
         this.headSlot = 125;
@@ -24956,7 +22745,6 @@ namespace Terraria
       }
       else if (type == 1767)
       {
-        this.name = "Leprechaun Hat";
         this.width = 18;
         this.height = 18;
         this.headSlot = 126;
@@ -24965,7 +22753,6 @@ namespace Terraria
       }
       else if (type == 1768)
       {
-        this.name = "Leprechaun Shirt";
         this.width = 18;
         this.height = 18;
         this.bodySlot = 86;
@@ -24974,7 +22761,6 @@ namespace Terraria
       }
       else if (type == 1769)
       {
-        this.name = "Leprechaun Pants";
         this.width = 18;
         this.height = 18;
         this.legSlot = 73;
@@ -24983,7 +22769,6 @@ namespace Terraria
       }
       else if (type == 1770)
       {
-        this.name = "Pixie Shirt";
         this.width = 18;
         this.height = 18;
         this.bodySlot = 87;
@@ -24992,7 +22777,6 @@ namespace Terraria
       }
       else if (type == 1771)
       {
-        this.name = "Pixie Pants";
         this.width = 18;
         this.height = 18;
         this.legSlot = 74;
@@ -25001,7 +22785,6 @@ namespace Terraria
       }
       else if (type == 1772)
       {
-        this.name = "Princess Hat";
         this.width = 18;
         this.height = 18;
         this.headSlot = (int) sbyte.MaxValue;
@@ -25010,7 +22793,6 @@ namespace Terraria
       }
       else if (type == 1773)
       {
-        this.name = "Princess Dress";
         this.width = 18;
         this.height = 18;
         this.bodySlot = 88;
@@ -25019,17 +22801,14 @@ namespace Terraria
       }
       else if (type == 1774)
       {
-        this.name = "Goodie Bag";
         this.width = 12;
         this.height = 12;
         this.rare = 3;
-        this.toolTip = "Right click to open";
         this.maxStack = 99;
         this.value = Item.sellPrice(0, 1, 0, 0);
       }
       else if (type == 1775)
       {
-        this.name = "Witch Dress";
         this.width = 18;
         this.height = 18;
         this.bodySlot = 89;
@@ -25038,7 +22817,6 @@ namespace Terraria
       }
       else if (type == 1776)
       {
-        this.name = "Witch Boots";
         this.width = 18;
         this.height = 18;
         this.legSlot = 75;
@@ -25047,7 +22825,6 @@ namespace Terraria
       }
       else if (type == 1777)
       {
-        this.name = "Bride of Frankenstein Mask";
         this.width = 18;
         this.height = 18;
         this.headSlot = 128;
@@ -25056,7 +22833,6 @@ namespace Terraria
       }
       else if (type == 1778)
       {
-        this.name = "Bride of Frankenstein Dress";
         this.width = 18;
         this.height = 18;
         this.bodySlot = 90;
@@ -25065,7 +22841,6 @@ namespace Terraria
       }
       else if (type == 1779)
       {
-        this.name = "Karate Tortoise Mask";
         this.width = 18;
         this.height = 18;
         this.headSlot = 129;
@@ -25074,7 +22849,6 @@ namespace Terraria
       }
       else if (type == 1780)
       {
-        this.name = "Karate Tortoise Shirt";
         this.width = 18;
         this.height = 18;
         this.bodySlot = 91;
@@ -25083,7 +22857,6 @@ namespace Terraria
       }
       else if (type == 1781)
       {
-        this.name = "Karate Tortoise Pants";
         this.width = 18;
         this.height = 18;
         this.legSlot = 76;
@@ -25096,7 +22869,6 @@ namespace Terraria
         this.autoReuse = true;
         this.useAnimation = 9;
         this.useTime = 9;
-        this.name = "Candy Corn Rifle";
         this.crit += 6;
         this.width = 60;
         this.height = 26;
@@ -25113,7 +22885,6 @@ namespace Terraria
       }
       else if (type == 1783)
       {
-        this.name = "Candy Corn";
         this.shootSpeed = 4f;
         this.shoot = 311;
         this.damage = 9;
@@ -25132,7 +22903,6 @@ namespace Terraria
         this.autoReuse = true;
         this.useAnimation = 30;
         this.useTime = 30;
-        this.name = "Jack 'O Lantern Launcher";
         this.crit += 6;
         this.width = 60;
         this.height = 26;
@@ -25149,7 +22919,6 @@ namespace Terraria
       }
       else if (type == 1785)
       {
-        this.name = "Explosive Jack 'O Lantern";
         this.shootSpeed = 4f;
         this.shoot = 312;
         this.damage = 30;
@@ -25164,7 +22933,6 @@ namespace Terraria
       }
       else if (type == 1786)
       {
-        this.name = "Sickle";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 24;
@@ -25179,7 +22947,6 @@ namespace Terraria
       }
       else if (type == 1787)
       {
-        this.name = "Pumpkin Pie";
         this.UseSound = SoundID.Item2;
         this.useStyle = 2;
         this.useTurn = true;
@@ -25192,12 +22959,10 @@ namespace Terraria
         this.buffType = 26;
         this.buffTime = 162000;
         this.rare = 1;
-        this.toolTip = "Minor improvements to all stats";
         this.value = 1000;
       }
       else if (type == 1788)
       {
-        this.name = "Scarecrow Hat";
         this.width = 18;
         this.height = 18;
         this.headSlot = 130;
@@ -25206,7 +22971,6 @@ namespace Terraria
       }
       else if (type == 1789)
       {
-        this.name = "Scarecrow Shirt";
         this.width = 18;
         this.height = 18;
         this.bodySlot = 92;
@@ -25215,7 +22979,6 @@ namespace Terraria
       }
       else if (type == 1790)
       {
-        this.name = "Scarecrow Pants";
         this.width = 18;
         this.height = 18;
         this.legSlot = 77;
@@ -25224,7 +22987,6 @@ namespace Terraria
       }
       else if (type == 1791)
       {
-        this.name = "Cauldron";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -25240,7 +23002,6 @@ namespace Terraria
       }
       else if (type == 1792)
       {
-        this.name = "Pumpkin Chair";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -25255,7 +23016,6 @@ namespace Terraria
       }
       else if (type == 1793)
       {
-        this.name = "Pumpkin Door";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -25270,7 +23030,6 @@ namespace Terraria
       }
       else if (type == 1794)
       {
-        this.name = "Pumpkin Table";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -25286,7 +23045,6 @@ namespace Terraria
       }
       else if (type == 1795)
       {
-        this.name = "Pumpkin Work Bench";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -25302,7 +23060,6 @@ namespace Terraria
       }
       else if (type == 1796)
       {
-        this.name = "Pumpkin Platform";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -25317,7 +23074,6 @@ namespace Terraria
       }
       else if (type == 1797)
       {
-        this.name = "Tattered Fairy Wings";
         this.width = 24;
         this.height = 8;
         this.accessory = true;
@@ -25329,7 +23085,6 @@ namespace Terraria
       {
         this.damage = 0;
         this.useStyle = 1;
-        this.name = "Spider Egg";
         this.shoot = 313;
         this.width = 16;
         this.height = 30;
@@ -25338,7 +23093,6 @@ namespace Terraria
         this.useTime = 20;
         this.rare = 3;
         this.noMelee = true;
-        this.toolTip = "Summons a pet spider";
         this.buffType = 81;
         this.value = Item.sellPrice(0, 2, 0, 0);
       }
@@ -25346,7 +23100,6 @@ namespace Terraria
       {
         this.damage = 0;
         this.useStyle = 1;
-        this.name = "Magical Pumpkin Seed";
         this.shoot = 314;
         this.width = 16;
         this.height = 30;
@@ -25355,7 +23108,6 @@ namespace Terraria
         this.useTime = 20;
         this.rare = 3;
         this.noMelee = true;
-        this.toolTip = "Summons a squashling";
         this.buffType = 82;
         this.value = Item.sellPrice(0, 2, 0, 0);
       }
@@ -25365,7 +23117,6 @@ namespace Terraria
         this.damage = 0;
         this.knockBack = 7f;
         this.useStyle = 5;
-        this.name = "Bat Hook";
         this.shootSpeed = 15.5f;
         this.shoot = 315;
         this.width = 18;
@@ -25379,7 +23130,6 @@ namespace Terraria
       }
       else if (type == 1801)
       {
-        this.name = "Bat Scepter";
         this.useStyle = 5;
         this.autoReuse = true;
         this.useAnimation = 12;
@@ -25402,7 +23152,6 @@ namespace Terraria
         this.mana = 10;
         this.damage = 37;
         this.useStyle = 1;
-        this.name = "Raven Staff";
         this.shootSpeed = 10f;
         this.shoot = 317;
         this.width = 26;
@@ -25413,7 +23162,6 @@ namespace Terraria
         this.rare = 8;
         this.noMelee = true;
         this.knockBack = 3f;
-        this.toolTip = "Summons a raven to fight for you";
         this.buffType = 83;
         this.value = 100000;
         this.summon = true;
@@ -25424,7 +23172,6 @@ namespace Terraria
           return;
         if (type == 1808)
         {
-          this.name = "Hanging Jack 'O Lantern";
           this.useStyle = 1;
           this.useTurn = true;
           this.useAnimation = 15;
@@ -25440,7 +23187,6 @@ namespace Terraria
         else if (type == 1809)
         {
           this.useStyle = 1;
-          this.name = "Rotten Egg";
           this.shootSpeed = 9f;
           this.shoot = 318;
           this.damage = 13;
@@ -25460,7 +23206,6 @@ namespace Terraria
         {
           this.damage = 0;
           this.useStyle = 1;
-          this.name = "Unlucky Yarn";
           this.shoot = 319;
           this.width = 16;
           this.height = 30;
@@ -25474,7 +23219,6 @@ namespace Terraria
         }
         else if (type == 1811)
         {
-          this.name = "Black Fairy Dust";
           this.maxStack = 99;
           this.width = 16;
           this.height = 14;
@@ -25483,7 +23227,6 @@ namespace Terraria
         }
         else if (type == 1812)
         {
-          this.name = "Jackelier";
           this.useStyle = 1;
           this.useTurn = true;
           this.useAnimation = 15;
@@ -25498,7 +23241,6 @@ namespace Terraria
         }
         else if (type == 1813)
         {
-          this.name = "Jack 'O Lantern";
           this.useStyle = 1;
           this.useTurn = true;
           this.useAnimation = 15;
@@ -25512,7 +23254,6 @@ namespace Terraria
         }
         else if (type == 1814)
         {
-          this.name = "Spooky Chair";
           this.useStyle = 1;
           this.useTurn = true;
           this.useAnimation = 15;
@@ -25527,7 +23268,6 @@ namespace Terraria
         }
         else if (type == 1815)
         {
-          this.name = "Spooky Door";
           this.useStyle = 1;
           this.useTurn = true;
           this.useAnimation = 15;
@@ -25542,7 +23282,6 @@ namespace Terraria
         }
         else if (type == 1816)
         {
-          this.name = "Spooky Table";
           this.useStyle = 1;
           this.useTurn = true;
           this.useAnimation = 15;
@@ -25558,7 +23297,6 @@ namespace Terraria
         }
         else if (type == 1817)
         {
-          this.name = "Spooky Work Bench";
           this.useStyle = 1;
           this.useTurn = true;
           this.useAnimation = 15;
@@ -25574,7 +23312,6 @@ namespace Terraria
         }
         else if (type == 1818)
         {
-          this.name = "Spooky Platform";
           this.useStyle = 1;
           this.useTurn = true;
           this.useAnimation = 15;
@@ -25589,7 +23326,6 @@ namespace Terraria
         }
         else if (type == 1819)
         {
-          this.name = "Reaper Mask";
           this.width = 18;
           this.height = 18;
           this.headSlot = 131;
@@ -25598,7 +23334,6 @@ namespace Terraria
         }
         else if (type == 1820)
         {
-          this.name = "Reaper Robe";
           this.width = 18;
           this.height = 18;
           this.bodySlot = 93;
@@ -25607,7 +23342,6 @@ namespace Terraria
         }
         else if (type == 1821)
         {
-          this.name = "Fox Mask";
           this.width = 18;
           this.height = 18;
           this.headSlot = 132;
@@ -25616,7 +23350,6 @@ namespace Terraria
         }
         else if (type == 1822)
         {
-          this.name = "Fox Shirt";
           this.width = 18;
           this.height = 18;
           this.bodySlot = 94;
@@ -25625,7 +23358,6 @@ namespace Terraria
         }
         else if (type == 1823)
         {
-          this.name = "Fox Pants";
           this.width = 18;
           this.height = 18;
           this.legSlot = 78;
@@ -25634,7 +23366,6 @@ namespace Terraria
         }
         else if (type == 1824)
         {
-          this.name = "Cat Ears";
           this.width = 18;
           this.height = 18;
           this.headSlot = 133;
@@ -25645,7 +23376,6 @@ namespace Terraria
         {
           this.noMelee = true;
           this.useStyle = 1;
-          this.name = "Bloody Machete";
           this.shootSpeed = 15f;
           this.shoot = 320;
           this.damage = 15;
@@ -25663,7 +23393,6 @@ namespace Terraria
         else if (type == 1826)
         {
           this.autoReuse = true;
-          this.name = "Horseman's Blade";
           this.useStyle = 1;
           this.useAnimation = 26;
           this.knockBack = 7.5f;
@@ -25678,7 +23407,6 @@ namespace Terraria
         }
         else if (type == 1827)
         {
-          this.name = "Bladed Glove";
           this.useStyle = 1;
           this.useTurn = true;
           this.autoReuse = true;
@@ -25698,7 +23426,6 @@ namespace Terraria
         else if (type == 1828)
         {
           this.autoReuse = true;
-          this.name = "Pumpkin Seed";
           this.useStyle = 1;
           this.useTurn = true;
           this.useAnimation = 15;
@@ -25717,7 +23444,6 @@ namespace Terraria
           this.damage = 0;
           this.knockBack = 7f;
           this.useStyle = 5;
-          this.name = "Spooky Hook";
           this.shootSpeed = 15.5f;
           this.shoot = 322;
           this.width = 18;
@@ -25731,7 +23457,6 @@ namespace Terraria
         }
         else if (type == 1830)
         {
-          this.name = "Spooky Wings";
           this.width = 24;
           this.height = 8;
           this.accessory = true;
@@ -25741,7 +23466,6 @@ namespace Terraria
         }
         else if (type == 1831)
         {
-          this.name = "Spooky Twig";
           this.maxStack = 99;
           this.width = 16;
           this.height = 14;
@@ -25750,39 +23474,30 @@ namespace Terraria
         }
         else if (type == 1832)
         {
-          this.name = "Spooky Helmet";
           this.width = 18;
           this.height = 18;
           this.headSlot = 134;
           this.value = Item.sellPrice(0, 1, 0, 0);
           this.defense = 8;
           this.rare = 8;
-          this.toolTip = "Increases your max number of minions";
-          this.toolTip2 = "Increases minion damage by 11%";
         }
         else if (type == 1833)
         {
-          this.name = "Spooky Breastplate";
           this.width = 18;
           this.height = 18;
           this.bodySlot = 95;
           this.value = Item.sellPrice(0, 1, 0, 0);
           this.defense = 10;
           this.rare = 8;
-          this.toolTip = "Increases your max number of minions";
-          this.toolTip2 = "Increases minion damage by 11%";
         }
         else if (type == 1834)
         {
-          this.name = "Spooky Leggings";
           this.width = 18;
           this.height = 18;
           this.legSlot = 79;
           this.value = Item.sellPrice(0, 1, 0, 0);
           this.defense = 9;
           this.rare = 8;
-          this.toolTip = "Increases your max number of minions";
-          this.toolTip2 = "Increases minion damage by 11%";
         }
         else if (type == 1835)
         {
@@ -25790,7 +23505,6 @@ namespace Terraria
           this.autoReuse = true;
           this.useAnimation = 26;
           this.useTime = 26;
-          this.name = "Stake Launcher";
           this.crit += 10;
           this.width = 40;
           this.height = 26;
@@ -25807,7 +23521,6 @@ namespace Terraria
         }
         else if (type == 1836)
         {
-          this.name = "Stake";
           this.shootSpeed = 3f;
           this.shoot = 323;
           this.damage = 25;
@@ -25823,7 +23536,6 @@ namespace Terraria
         else if (type == 1837)
         {
           this.useStyle = 1;
-          this.name = "Cursed Sapling";
           this.shoot = 324;
           this.width = 16;
           this.height = 30;
@@ -25837,7 +23549,6 @@ namespace Terraria
         }
         else if (type == 1838)
         {
-          this.name = "Space Creature Mask";
           this.width = 18;
           this.height = 18;
           this.headSlot = 135;
@@ -25846,7 +23557,6 @@ namespace Terraria
         }
         else if (type == 1839)
         {
-          this.name = "Space Creature Shirt";
           this.width = 18;
           this.height = 18;
           this.bodySlot = 96;
@@ -25855,7 +23565,6 @@ namespace Terraria
         }
         else if (type == 1840)
         {
-          this.name = "Space Creature Pants";
           this.width = 18;
           this.height = 18;
           this.legSlot = 80;
@@ -25864,7 +23573,6 @@ namespace Terraria
         }
         else if (type == 1841)
         {
-          this.name = "Wolf Mask";
           this.width = 18;
           this.height = 18;
           this.headSlot = 136;
@@ -25873,7 +23581,6 @@ namespace Terraria
         }
         else if (type == 1842)
         {
-          this.name = "Wolf Shirt";
           this.width = 18;
           this.height = 18;
           this.bodySlot = 97;
@@ -25882,7 +23589,6 @@ namespace Terraria
         }
         else if (type == 1843)
         {
-          this.name = "Wolf Pants";
           this.width = 18;
           this.height = 18;
           this.legSlot = 81;
@@ -25892,30 +23598,24 @@ namespace Terraria
         else if (type == 1844)
         {
           this.useStyle = 4;
-          this.name = "Pumpkin Moon Medallion";
           this.width = 22;
           this.height = 14;
           this.consumable = true;
           this.useAnimation = 45;
           this.useTime = 45;
           this.maxStack = 20;
-          this.toolTip = "Summons the Pumpkin Moon";
           this.rare = 8;
         }
         else if (type == 1845)
         {
-          this.name = "Necromantic Scroll";
           this.rare = 8;
           this.width = 24;
           this.height = 28;
           this.accessory = true;
-          this.toolTip = "Increases your max number of minions";
-          this.toolTip2 = "Increases minion damage by 10%";
           this.value = Item.buyPrice(0, 20, 0, 0);
         }
         else if (type >= 1846 && type <= 1850)
         {
-          this.name = "Large Painting";
           this.useStyle = 1;
           this.useTurn = true;
           this.useAnimation = 15;
@@ -25931,7 +23631,6 @@ namespace Terraria
         }
         else if (type == 1851)
         {
-          this.name = "Treasure Hunter Shirt";
           this.width = 18;
           this.height = 18;
           this.bodySlot = 98;
@@ -25940,7 +23639,6 @@ namespace Terraria
         }
         else if (type == 1852)
         {
-          this.name = "Treasure Hunter Pants";
           this.width = 18;
           this.height = 18;
           this.legSlot = 82;
@@ -25949,7 +23647,6 @@ namespace Terraria
         }
         else if (type == 1853)
         {
-          this.name = "Dryad Coverings";
           this.width = 18;
           this.height = 18;
           this.bodySlot = 99;
@@ -25958,7 +23655,6 @@ namespace Terraria
         }
         else if (type == 1854)
         {
-          this.name = "Dryad Loincloth";
           this.width = 18;
           this.height = 18;
           this.legSlot = 83;
@@ -25967,7 +23663,6 @@ namespace Terraria
         }
         else if (type == 1855 || type == 1856)
         {
-          this.name = "Trophy";
           this.useStyle = 1;
           this.useTurn = true;
           this.useAnimation = 15;
@@ -25984,7 +23679,6 @@ namespace Terraria
         }
         else if (type == 1857)
         {
-          this.name = "Jack 'O Lantern Mask";
           this.width = 18;
           this.height = 18;
           this.headSlot = 137;
@@ -25994,18 +23688,14 @@ namespace Terraria
         }
         else if (type == 1858)
         {
-          this.name = "Sniper Scope";
           this.width = 14;
           this.height = 28;
           this.rare = 7;
           this.value = 300000;
           this.accessory = true;
-          this.toolTip = "Increases view range for guns (Right click to zoom out)";
-          this.toolTip2 = "10% increased ranged damage and critical strike chance";
         }
         else if (type == 1859)
         {
-          this.name = "Heart Lantern";
           this.useStyle = 1;
           this.useTurn = true;
           this.useAnimation = 15;
@@ -26020,100 +23710,77 @@ namespace Terraria
         }
         else if (type == 1860)
         {
-          this.name = "Jellyfish Diving Gear";
           this.width = 24;
           this.height = 28;
           this.rare = 5;
           this.value = 150000;
           this.accessory = true;
-          this.toolTip = "Grants the ability to swim and greatly extends underwater breathing";
-          this.toolTip2 = "Provides light under water";
           this.faceSlot = (sbyte) 3;
         }
         else if (type == 1861)
         {
-          this.name = "Arctic Diving Gear";
           this.width = 24;
           this.height = 28;
           this.rare = 6;
           this.value = 250000;
           this.accessory = true;
-          this.toolTip = "Grants the ability to swim and greatly extends underwater breathing";
-          this.toolTip2 = "Provides light under water and extra mobility on ice";
           this.faceSlot = (sbyte) 2;
         }
         else if (type == 1862)
         {
-          this.name = "Sparkfrost Boots";
           this.width = 16;
           this.height = 24;
           this.accessory = true;
           this.rare = 7;
-          this.toolTip = "Allows flight, super fast running, and extra mobility on ice";
-          this.toolTip = "7% increased movement speed";
           this.value = 350000;
           this.shoeSlot = (sbyte) 9;
         }
         else if (type == 1863)
         {
-          this.name = "Fart in a Balloon";
           this.width = 14;
           this.height = 28;
           this.rare = 4;
           this.value = 150000;
           this.accessory = true;
-          this.toolTip = "Allows the holder to double jump";
-          this.toolTip2 = "Increases jump height";
           this.balloonSlot = (sbyte) 5;
         }
         else if (type == 1864)
         {
-          this.name = "Papyrus Scarab";
           this.rare = 8;
           this.width = 24;
           this.height = 28;
           this.accessory = true;
-          this.toolTip = "Increases your max number of minions";
-          this.toolTip2 = "Increases the damage and knockback of your minions";
           this.value = Item.buyPrice(0, 25, 0, 0);
         }
         else if (type == 1865)
         {
-          this.name = "Celestial Stone";
           this.width = 16;
           this.height = 24;
           this.accessory = true;
           this.rare = 7;
-          this.toolTip = "Minor increase to damage, attack speed, critical strike chance,";
-          this.toolTip2 = "life regeneration, defense, pick speed, and minion knockback";
           this.value = 400000;
         }
         else if (type == 1866)
         {
-          this.name = "Hoverboard";
           this.width = 24;
           this.height = 8;
           this.accessory = true;
-          this.toolTip = "Allows flight and slow fall";
           this.value = 400000;
           this.rare = 5;
           this.wingSlot = (sbyte) 22;
         }
         else if (type == 1867)
         {
-          this.name = "Candy Cane";
           this.width = 12;
           this.height = 12;
         }
         else if (type == 1868)
         {
-          this.name = "Sugar Plum";
           this.width = 12;
           this.height = 12;
         }
         else if (type == 1869)
         {
-          this.name = "Present";
           this.useStyle = 1;
           this.useTurn = true;
           this.useAnimation = 15;
@@ -26125,7 +23792,6 @@ namespace Terraria
           this.width = 12;
           this.height = 28;
           this.rare = 1;
-          this.toolTip = "Right click to open";
         }
         else if (type == 1870)
         {
@@ -26133,7 +23799,6 @@ namespace Terraria
           this.autoReuse = true;
           this.useAnimation = 38;
           this.useTime = 38;
-          this.name = "Red Ryder";
           this.width = 44;
           this.height = 14;
           this.shoot = 10;
@@ -26149,18 +23814,15 @@ namespace Terraria
         }
         else if (type == 1871)
         {
-          this.name = "Festive Wings";
           this.width = 24;
           this.height = 8;
           this.accessory = true;
-          this.toolTip = "Allows flight and slow fall";
           this.value = 400000;
           this.rare = 5;
           this.wingSlot = (sbyte) 23;
         }
         else if (type == 1872)
         {
-          this.name = "Tree Block";
           this.useStyle = 1;
           this.useTurn = true;
           this.useAnimation = 15;
@@ -26174,7 +23836,6 @@ namespace Terraria
         }
         else if (type == 1873)
         {
-          this.name = "Christmas Tree";
           this.useStyle = 1;
           this.useTurn = true;
           this.useAnimation = 15;
@@ -26189,7 +23850,6 @@ namespace Terraria
         }
         else if (type >= 1874 && type <= 1905)
         {
-          this.name = "Xmas decorations";
           this.useStyle = 1;
           this.useTurn = true;
           this.useAnimation = 15;
@@ -26204,7 +23864,6 @@ namespace Terraria
         }
         else if (type == 1906)
         {
-          this.name = "Giant Bow";
           this.width = 18;
           this.height = 18;
           this.headSlot = 138;
@@ -26213,7 +23872,6 @@ namespace Terraria
         }
         else if (type == 1907)
         {
-          this.name = "Reindeer Antlers";
           this.width = 18;
           this.height = 18;
           this.headSlot = 139;
@@ -26222,7 +23880,6 @@ namespace Terraria
         }
         else if (type == 1908)
         {
-          this.name = "Holly";
           this.useStyle = 1;
           this.useTurn = true;
           this.useAnimation = 15;
@@ -26238,7 +23895,6 @@ namespace Terraria
         }
         else if (type == 1909)
         {
-          this.name = "Candy Cane Sword";
           this.useStyle = 1;
           this.useAnimation = 27;
           this.knockBack = 5.3f;
@@ -26253,7 +23909,6 @@ namespace Terraria
         }
         else if (type == 1910)
         {
-          this.name = "Elf Melter";
           this.useStyle = 5;
           this.autoReuse = true;
           this.useAnimation = 30;
@@ -26270,11 +23925,9 @@ namespace Terraria
           this.value = 500000;
           this.rare = 8;
           this.ranged = true;
-          this.toolTip = "Uses gel for ammo";
         }
         else if (type == 1911)
         {
-          this.name = "Christmas Pudding";
           this.UseSound = SoundID.Item2;
           this.useStyle = 2;
           this.useTurn = true;
@@ -26287,12 +23940,10 @@ namespace Terraria
           this.buffType = 26;
           this.buffTime = 126000;
           this.rare = 1;
-          this.toolTip = "Minor improvements to all stats";
           this.value = 1000;
         }
         else if (type == 1912)
         {
-          this.name = "Eggnog";
           this.UseSound = SoundID.Item3;
           this.healLife = 80;
           this.useStyle = 2;
@@ -26310,7 +23961,6 @@ namespace Terraria
         else if (type == 1913)
         {
           this.useStyle = 1;
-          this.name = "Star Anise";
           this.shootSpeed = 12f;
           this.shoot = 330;
           this.damage = 14;
@@ -26329,7 +23979,6 @@ namespace Terraria
         else if (type == 1914)
         {
           this.useStyle = 1;
-          this.name = "Reindeer Bells";
           this.width = 16;
           this.height = 30;
           this.UseSound = SoundID.Item25;
@@ -26346,7 +23995,6 @@ namespace Terraria
           this.damage = 0;
           this.knockBack = 7f;
           this.useStyle = 5;
-          this.name = "Candy Cane Hook";
           this.shootSpeed = 11.5f;
           this.shoot = 331;
           this.width = 18;
@@ -26364,7 +24012,6 @@ namespace Terraria
           this.damage = 0;
           this.knockBack = 7f;
           this.useStyle = 5;
-          this.name = "Christmas Hook";
           this.shootSpeed = 15.5f;
           this.shoot = 332;
           this.width = 18;
@@ -26378,7 +24025,6 @@ namespace Terraria
         }
         else if (type == 1917)
         {
-          this.name = "Candy Cane Pickaxe";
           this.useStyle = 1;
           this.useTurn = true;
           this.useAnimation = 20;
@@ -26392,13 +24038,11 @@ namespace Terraria
           this.knockBack = 2.5f;
           this.value = 10000;
           this.melee = true;
-          this.toolTip = "Can mine Meteorite";
         }
         else if (type == 1918)
         {
           this.noMelee = true;
           this.useStyle = 1;
-          this.name = "Fruitcake Chakrum";
           this.shootSpeed = 11f;
           this.shoot = 333;
           this.damage = 14;
@@ -26415,7 +24059,6 @@ namespace Terraria
         }
         else if (type == 1919)
         {
-          this.name = "Sugar Cookie";
           this.UseSound = SoundID.Item2;
           this.useStyle = 2;
           this.useTurn = true;
@@ -26428,12 +24071,10 @@ namespace Terraria
           this.buffType = 26;
           this.buffTime = 108000;
           this.rare = 1;
-          this.toolTip = "Minor improvements to all stats";
           this.value = 1000;
         }
         else if (type == 1920)
         {
-          this.name = "Gingerbread Man";
           this.UseSound = SoundID.Item2;
           this.useStyle = 2;
           this.useTurn = true;
@@ -26446,12 +24087,10 @@ namespace Terraria
           this.buffType = 26;
           this.buffTime = 108000;
           this.rare = 1;
-          this.toolTip = "Minor improvements to all stats";
           this.value = 1000;
         }
         else if (type == 1921)
         {
-          this.name = "Hand Warmer";
           this.width = 16;
           this.height = 24;
           this.accessory = true;
@@ -26462,13 +24101,11 @@ namespace Terraria
         }
         else if (type == 1922)
         {
-          this.name = "Coal";
           this.width = 16;
           this.height = 24;
         }
         else if (type == 1923)
         {
-          this.name = "Toolbox";
           this.width = 16;
           this.height = 24;
           this.accessory = true;
@@ -26477,7 +24114,6 @@ namespace Terraria
         }
         else if (type == 1924)
         {
-          this.name = "Pine Door";
           this.useStyle = 1;
           this.useTurn = true;
           this.useAnimation = 15;
@@ -26492,7 +24128,6 @@ namespace Terraria
         }
         else if (type == 1925)
         {
-          this.name = "Pine Chair";
           this.useStyle = 1;
           this.useTurn = true;
           this.useAnimation = 15;
@@ -26507,7 +24142,6 @@ namespace Terraria
         }
         else if (type == 1926)
         {
-          this.name = "Pine Table";
           this.useStyle = 1;
           this.useTurn = true;
           this.useAnimation = 15;
@@ -26524,7 +24158,6 @@ namespace Terraria
         else if (type == 1927)
         {
           this.useStyle = 1;
-          this.name = "Dog Whistle";
           this.shoot = 334;
           this.width = 16;
           this.height = 30;
@@ -26533,13 +24166,11 @@ namespace Terraria
           this.useTime = 20;
           this.rare = 3;
           this.noMelee = true;
-          this.toolTip = "Summons a Puppy";
           this.value = 0;
           this.buffType = 91;
         }
         else if (type == 1928)
         {
-          this.name = "Christmas Sword";
           this.useStyle = 1;
           this.useAnimation = 23;
           this.useTime = 23;
@@ -26561,7 +24192,6 @@ namespace Terraria
           this.autoReuse = true;
           this.useAnimation = 4;
           this.useTime = 4;
-          this.name = "Chaingun";
           this.width = 50;
           this.height = 18;
           this.shoot = 10;
@@ -26572,14 +24202,12 @@ namespace Terraria
           this.noMelee = true;
           this.value = Item.sellPrice(0, 5, 0, 0);
           this.rare = 8;
-          this.toolTip = "50% chance to not consume ammo";
           this.knockBack = 1.75f;
           this.ranged = true;
         }
         else if (type == 1930)
         {
           this.autoReuse = true;
-          this.name = "Razorpine";
           this.mana = 5;
           this.UseSound = SoundID.Item39;
           this.useStyle = 5;
@@ -26592,7 +24220,6 @@ namespace Terraria
           this.shootSpeed = 12f;
           this.knockBack = 3.25f;
           this.value = Item.sellPrice(0, 5, 0, 0);
-          this.toolTip = "Shoots razor sharp pine needles";
           this.magic = true;
           this.rare = 8;
           this.noMelee = true;
@@ -26600,7 +24227,6 @@ namespace Terraria
         else if (type == 1931)
         {
           this.autoReuse = true;
-          this.name = "Blizzard Staff";
           this.mana = 9;
           this.useStyle = 5;
           this.damage = 58;
@@ -26618,7 +24244,6 @@ namespace Terraria
         }
         else if (type == 1932)
         {
-          this.name = "Mrs. Clause Hat";
           this.width = 18;
           this.height = 18;
           this.headSlot = 140;
@@ -26627,7 +24252,6 @@ namespace Terraria
         }
         else if (type == 1933)
         {
-          this.name = "Mrs. Clause Shirt";
           this.width = 18;
           this.height = 18;
           this.bodySlot = 100;
@@ -26636,7 +24260,6 @@ namespace Terraria
         }
         else if (type == 1934)
         {
-          this.name = "Mrs. Clause Heals";
           this.width = 18;
           this.height = 18;
           this.legSlot = 84;
@@ -26645,7 +24268,6 @@ namespace Terraria
         }
         else if (type == 1935)
         {
-          this.name = "Parka Hood";
           this.width = 18;
           this.height = 18;
           this.headSlot = 142;
@@ -26654,7 +24276,6 @@ namespace Terraria
         }
         else if (type == 1936)
         {
-          this.name = "Parka Coat";
           this.width = 18;
           this.height = 18;
           this.bodySlot = 102;
@@ -26663,7 +24284,6 @@ namespace Terraria
         }
         else if (type == 1937)
         {
-          this.name = "Parka Pants";
           this.width = 18;
           this.height = 18;
           this.legSlot = 86;
@@ -26672,7 +24292,6 @@ namespace Terraria
         }
         else if (type == 1940)
         {
-          this.name = "Tree Mask";
           this.width = 18;
           this.height = 18;
           this.headSlot = 141;
@@ -26681,7 +24300,6 @@ namespace Terraria
         }
         else if (type == 1941)
         {
-          this.name = "Tree Shirt";
           this.width = 18;
           this.height = 18;
           this.bodySlot = 101;
@@ -26690,7 +24308,6 @@ namespace Terraria
         }
         else if (type == 1942)
         {
-          this.name = "Tree Trunks";
           this.width = 18;
           this.height = 18;
           this.legSlot = 85;
@@ -26699,7 +24316,6 @@ namespace Terraria
         }
         else if (type == 1938)
         {
-          this.name = "Snow Hat";
           this.width = 18;
           this.height = 18;
           this.headSlot = 143;
@@ -26708,7 +24324,6 @@ namespace Terraria
         }
         else if (type == 1939)
         {
-          this.name = "Christmas Sweater";
           this.width = 18;
           this.height = 18;
           this.bodySlot = 103;
@@ -26717,7 +24332,6 @@ namespace Terraria
         }
         else if (type == 1943)
         {
-          this.name = "Elf Mask";
           this.width = 18;
           this.height = 18;
           this.headSlot = 144;
@@ -26726,7 +24340,6 @@ namespace Terraria
         }
         else if (type == 1944)
         {
-          this.name = "Elf Shirt";
           this.width = 18;
           this.height = 18;
           this.bodySlot = 104;
@@ -26735,7 +24348,6 @@ namespace Terraria
         }
         else if (type == 1945)
         {
-          this.name = "Elf Pants";
           this.width = 18;
           this.height = 18;
           this.legSlot = 87;
@@ -26748,7 +24360,6 @@ namespace Terraria
           this.autoReuse = true;
           this.useAnimation = 15;
           this.useTime = 15;
-          this.name = "Snowman Cannon";
           this.useAmmo = AmmoID.Rocket;
           this.width = 50;
           this.height = 20;
@@ -26764,7 +24375,6 @@ namespace Terraria
         }
         else if (type == 1947)
         {
-          this.name = "North Pole";
           this.useStyle = 5;
           this.useAnimation = 25;
           this.useTime = 25;
@@ -26784,7 +24394,6 @@ namespace Terraria
         }
         else if (type >= 1948 && type <= 1957)
         {
-          this.name = "Christmas Wallpaper";
           this.useStyle = 1;
           this.useTurn = true;
           this.useAnimation = 15;
@@ -26800,20 +24409,17 @@ namespace Terraria
         else if (type == 1958)
         {
           this.useStyle = 4;
-          this.name = "Naughty Present";
           this.width = 22;
           this.height = 14;
           this.consumable = true;
           this.useAnimation = 45;
           this.useTime = 45;
           this.maxStack = 20;
-          this.toolTip = "Summons the Frost Moon";
           this.rare = 8;
         }
         else if (type == 1959)
         {
           this.useStyle = 1;
-          this.name = "Baby Grinch Mischief's Whistle";
           this.shoot = 353;
           this.width = 16;
           this.height = 30;
@@ -26822,13 +24428,11 @@ namespace Terraria
           this.useTime = 20;
           this.rare = 3;
           this.noMelee = true;
-          this.toolTip = "Summons a Baby Grinch";
           this.value = 0;
           this.buffType = 92;
         }
         else if (type == 1960 || type == 1961 || type == 1962)
         {
-          this.name = "Trophy";
           this.useStyle = 1;
           this.useTurn = true;
           this.useAnimation = 15;
@@ -26845,7 +24449,6 @@ namespace Terraria
         }
         else if (type == 1963)
         {
-          this.name = "Music Box (Pumpkin Moon)";
           this.useStyle = 1;
           this.useTurn = true;
           this.useAnimation = 15;
@@ -26862,7 +24465,6 @@ namespace Terraria
         }
         else if (type == 1964)
         {
-          this.name = "Music Box (Alt Underground)";
           this.useStyle = 1;
           this.useTurn = true;
           this.useAnimation = 15;
@@ -26879,7 +24481,6 @@ namespace Terraria
         }
         else if (type == 1965)
         {
-          this.name = "Music Box (Frost Moon)";
           this.useStyle = 1;
           this.useTurn = true;
           this.useAnimation = 15;
@@ -26896,7 +24497,6 @@ namespace Terraria
         }
         else if (type == 1966)
         {
-          this.name = "Brown Paint";
           this.paint = (byte) 28;
           this.width = 24;
           this.height = 24;
@@ -26905,7 +24505,6 @@ namespace Terraria
         }
         else if (type == 1967)
         {
-          this.name = "Shadow Paint";
           this.paint = (byte) 29;
           this.width = 24;
           this.height = 24;
@@ -26914,7 +24513,6 @@ namespace Terraria
         }
         else if (type == 1968)
         {
-          this.name = "Negative Paint";
           this.paint = (byte) 30;
           this.width = 24;
           this.height = 24;
@@ -26923,7 +24521,6 @@ namespace Terraria
         }
         else if (type == 1969)
         {
-          this.name = "Team Dye";
           this.width = 20;
           this.height = 20;
           this.maxStack = 99;
@@ -26932,7 +24529,6 @@ namespace Terraria
         }
         else if (type >= 1970 && type <= 1976)
         {
-          this.name = "Gemspark Block";
           this.useStyle = 1;
           this.useTurn = true;
           this.useAnimation = 15;
@@ -26946,7 +24542,6 @@ namespace Terraria
         }
         else if (type >= 1977 && type <= 1986)
         {
-          this.name = "Hair Dye";
           this.width = 20;
           this.height = 26;
           this.maxStack = 99;
@@ -26967,7 +24562,6 @@ namespace Terraria
         }
         else if (type == 1987)
         {
-          this.name = "Angel Halo";
           this.width = 18;
           this.height = 12;
           this.maxStack = 1;
@@ -26979,7 +24573,6 @@ namespace Terraria
         }
         else if (type == 1988)
         {
-          this.name = "Fez";
           this.width = 20;
           this.height = 14;
           this.maxStack = 1;
@@ -26989,7 +24582,6 @@ namespace Terraria
         }
         else if (type == 1989)
         {
-          this.name = "Womannequin";
           this.useStyle = 1;
           this.useTurn = true;
           this.useAnimation = 15;
@@ -27003,7 +24595,6 @@ namespace Terraria
         }
         else if (type == 1990)
         {
-          this.name = "Hair Dye Remover";
           this.width = 20;
           this.height = 26;
           this.maxStack = 99;
@@ -27019,7 +24610,6 @@ namespace Terraria
         }
         else if (type == 1991)
         {
-          this.name = "Bug Net";
           this.useTurn = true;
           this.useStyle = 1;
           this.useAnimation = 25;
@@ -27031,7 +24621,6 @@ namespace Terraria
         }
         else if (type == 1992)
         {
-          this.name = "Firefly";
           this.useStyle = 1;
           this.autoReuse = true;
           this.useTurn = true;
@@ -27047,7 +24636,6 @@ namespace Terraria
         }
         else if (type == 1993)
         {
-          this.name = "Firefly in a Bottle";
           this.useStyle = 1;
           this.useTurn = true;
           this.useAnimation = 15;
@@ -27063,7 +24651,6 @@ namespace Terraria
         {
           if (type < 1994 || type > 2001)
             return;
-          this.name = "Butterfly";
           this.useStyle = 1;
           this.autoReuse = true;
           this.useTurn = true;
@@ -27102,7 +24689,6 @@ namespace Terraria
     {
       if (type == 2002)
       {
-        this.name = "Worm";
         this.useStyle = 1;
         this.autoReuse = true;
         this.useTurn = true;
@@ -27118,7 +24704,6 @@ namespace Terraria
       }
       else if (type == 2003)
       {
-        this.name = "Mouse";
         this.useStyle = 1;
         this.autoReuse = true;
         this.useTurn = true;
@@ -27133,7 +24718,6 @@ namespace Terraria
       }
       else if (type == 2004)
       {
-        this.name = "Lightning Bug";
         this.useStyle = 1;
         this.autoReuse = true;
         this.useTurn = true;
@@ -27149,7 +24733,6 @@ namespace Terraria
       }
       else if (type == 2005)
       {
-        this.name = "Lightning Bug in a Bottle";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -27163,7 +24746,6 @@ namespace Terraria
       }
       else if (type == 2006)
       {
-        this.name = "Snail";
         this.useStyle = 1;
         this.autoReuse = true;
         this.useTurn = true;
@@ -27179,7 +24761,6 @@ namespace Terraria
       }
       else if (type == 2007)
       {
-        this.name = "Glowing Snail";
         this.useStyle = 1;
         this.autoReuse = true;
         this.useTurn = true;
@@ -27195,7 +24776,6 @@ namespace Terraria
       }
       else if (type >= 2008 && type <= 2014)
       {
-        this.name = "Wallpaper";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -27210,7 +24790,6 @@ namespace Terraria
       }
       else if (type >= 2015 && type <= 2019)
       {
-        this.name = "Glowing Snail";
         this.useStyle = 1;
         this.autoReuse = true;
         this.useTurn = true;
@@ -27235,7 +24814,6 @@ namespace Terraria
       }
       else if (type == 2020)
       {
-        this.name = "Cactus Bookcase";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -27251,7 +24829,6 @@ namespace Terraria
       }
       else if (type == 2021)
       {
-        this.name = "Ebonwood Bookcase";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -27267,7 +24844,6 @@ namespace Terraria
       }
       else if (type == 2022)
       {
-        this.name = "Flesh Bookcase";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -27283,7 +24859,6 @@ namespace Terraria
       }
       else if (type == 2023)
       {
-        this.name = "Hive Bookcase";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -27299,7 +24874,6 @@ namespace Terraria
       }
       else if (type == 2024)
       {
-        this.name = "Steampunk Bookcase";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -27315,7 +24889,6 @@ namespace Terraria
       }
       else if (type == 2025)
       {
-        this.name = "Glass Bookcase";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -27331,7 +24904,6 @@ namespace Terraria
       }
       else if (type == 2026)
       {
-        this.name = "Rich Mahogany Bookcase";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -27347,7 +24919,6 @@ namespace Terraria
       }
       else if (type == 2027)
       {
-        this.name = "Pearlwood Bookcase";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -27363,7 +24934,6 @@ namespace Terraria
       }
       else if (type == 2028)
       {
-        this.name = "Spooky Bookcase";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -27379,7 +24949,6 @@ namespace Terraria
       }
       else if (type == 2029)
       {
-        this.name = "Sunplate Bookcase";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -27395,7 +24964,6 @@ namespace Terraria
       }
       else if (type == 2030)
       {
-        this.name = "Temple Bookcase";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -27411,7 +24979,6 @@ namespace Terraria
       }
       else if (type == 2031)
       {
-        this.name = "Frozen Bookcase";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -27427,7 +24994,6 @@ namespace Terraria
       }
       else if (type == 2032)
       {
-        this.name = "Lantern 10";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -27442,7 +25008,6 @@ namespace Terraria
       }
       else if (type == 2033)
       {
-        this.name = "Lantern 11";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -27457,7 +25022,6 @@ namespace Terraria
       }
       else if (type == 2034)
       {
-        this.name = "Lantern 12";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -27472,7 +25036,6 @@ namespace Terraria
       }
       else if (type == 2035)
       {
-        this.name = "Lantern 13";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -27487,7 +25050,6 @@ namespace Terraria
       }
       else if (type == 2036)
       {
-        this.name = "Lantern 14";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -27502,7 +25064,6 @@ namespace Terraria
       }
       else if (type == 2037)
       {
-        this.name = "Lantern 15";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -27517,7 +25078,6 @@ namespace Terraria
       }
       else if (type == 2038)
       {
-        this.name = "Lantern 16";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -27532,7 +25092,6 @@ namespace Terraria
       }
       else if (type == 2039)
       {
-        this.name = "Lantern 17";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -27547,7 +25106,6 @@ namespace Terraria
       }
       else if (type == 2040)
       {
-        this.name = "Lantern 18";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -27562,7 +25120,6 @@ namespace Terraria
       }
       else if (type == 2041)
       {
-        this.name = "Lantern 19";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -27577,7 +25134,6 @@ namespace Terraria
       }
       else if (type == 2042)
       {
-        this.name = "Lantern 20";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -27592,7 +25148,6 @@ namespace Terraria
       }
       else if (type == 2043)
       {
-        this.name = "Lantern 21";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -27607,7 +25162,6 @@ namespace Terraria
       }
       else if (type == 2044)
       {
-        this.name = "Frozen Door";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -27623,7 +25177,6 @@ namespace Terraria
       else if (type >= 2045 && type <= 2054)
       {
         this.noWet = true;
-        this.name = "more candles";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -27638,7 +25191,6 @@ namespace Terraria
       }
       else if (type >= 2055 && type <= 2065)
       {
-        this.name = "more chandeliers";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -27654,7 +25206,6 @@ namespace Terraria
       }
       else if (type >= 2066 && type <= 2071)
       {
-        this.name = "more beds";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -27670,7 +25221,6 @@ namespace Terraria
       }
       else if (type >= 2072 && type <= 2081)
       {
-        this.name = "more bathtubs";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -27686,7 +25236,6 @@ namespace Terraria
       }
       else if (type >= 2082 && type <= 2091)
       {
-        this.name = "Lamps";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -27702,7 +25251,6 @@ namespace Terraria
       }
       else if (type >= 2092 && type <= 2103)
       {
-        this.name = "more candelabras";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -27718,7 +25266,6 @@ namespace Terraria
       }
       else if (type >= 2104 && type <= 2113)
       {
-        this.name = "Skeletron Mask";
         this.width = 28;
         this.height = 20;
         this.headSlot = type + 146 - 2104;
@@ -27727,7 +25274,6 @@ namespace Terraria
       }
       else if (type >= 2114 && type <= 2118)
       {
-        this.name = "Rack";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -27744,7 +25290,6 @@ namespace Terraria
       }
       else if (type == 2119)
       {
-        this.name = "Stone Slab";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -27758,7 +25303,6 @@ namespace Terraria
       }
       else if (type == 2120)
       {
-        this.name = "Sandstone Slab";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -27772,7 +25316,6 @@ namespace Terraria
       }
       else if (type == 2121)
       {
-        this.name = "Frog";
         this.useStyle = 1;
         this.autoReuse = true;
         this.useTurn = true;
@@ -27787,7 +25330,6 @@ namespace Terraria
       }
       else if (type == 2122)
       {
-        this.name = "Duck";
         this.useStyle = 1;
         this.autoReuse = true;
         this.useTurn = true;
@@ -27802,7 +25344,6 @@ namespace Terraria
       }
       else if (type == 2123)
       {
-        this.name = "Duck";
         this.useStyle = 1;
         this.autoReuse = true;
         this.useTurn = true;
@@ -27817,7 +25358,6 @@ namespace Terraria
       }
       else if (type >= 2124 && type <= 2128)
       {
-        this.name = "more bathtubs";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -27833,7 +25373,6 @@ namespace Terraria
       }
       else if (type >= 2129 && type <= 2134)
       {
-        this.name = "Lamps";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -27849,7 +25388,6 @@ namespace Terraria
       }
       else if (type >= 2135 && type <= 2138)
       {
-        this.name = "Bookcase";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -27865,7 +25403,6 @@ namespace Terraria
       }
       else if (type == 2139)
       {
-        this.name = "more beds";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -27881,7 +25418,6 @@ namespace Terraria
       }
       else if (type == 2140)
       {
-        this.name = "more beds";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -27897,7 +25433,6 @@ namespace Terraria
       }
       else if (type >= 2141 && type <= 2144)
       {
-        this.name = "more chandeliers";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -27913,7 +25448,6 @@ namespace Terraria
       }
       else if (type >= 2145 && type <= 2148)
       {
-        this.name = "Lantern 22";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -27928,7 +25462,6 @@ namespace Terraria
       }
       else if (type >= 2149 && type <= 2152)
       {
-        this.name = "more candelabras";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -27945,7 +25478,6 @@ namespace Terraria
       else if (type >= 2153 && type <= 2155)
       {
         this.noWet = true;
-        this.name = "more candles";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -27960,7 +25492,6 @@ namespace Terraria
       }
       else if (type == 2156)
       {
-        this.name = "Black Scorpion";
         this.useStyle = 1;
         this.autoReuse = true;
         this.useTurn = true;
@@ -27976,7 +25507,6 @@ namespace Terraria
       }
       else if (type == 2157)
       {
-        this.name = "Scorpion";
         this.useStyle = 1;
         this.autoReuse = true;
         this.useTurn = true;
@@ -27992,7 +25522,6 @@ namespace Terraria
       }
       else if (type >= 2158 && type <= 2160)
       {
-        this.name = "Wallpaper";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -28007,7 +25536,6 @@ namespace Terraria
       }
       else if (type == 2161)
       {
-        this.name = "Frost Core";
         this.width = 18;
         this.height = 18;
         this.maxStack = 999;
@@ -28016,7 +25544,6 @@ namespace Terraria
       }
       else if (type >= 2162 && type <= 2168)
       {
-        this.name = "Critter Cage";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -28030,7 +25557,6 @@ namespace Terraria
       }
       else if (type == 2169)
       {
-        this.name = "Waterfall Wall";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -28044,7 +25570,6 @@ namespace Terraria
       }
       else if (type == 2170)
       {
-        this.name = "Lavafall Wall";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -28059,7 +25584,6 @@ namespace Terraria
       else if (type == 2171)
       {
         this.autoReuse = true;
-        this.name = "Crimson Seeds";
         this.useTurn = true;
         this.useStyle = 1;
         this.useAnimation = 15;
@@ -28073,7 +25597,6 @@ namespace Terraria
       }
       else if (type == 2172)
       {
-        this.name = "Heavy Work Bench";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -28085,11 +25608,9 @@ namespace Terraria
         this.width = 28;
         this.height = 14;
         this.value = 500;
-        this.toolTip = "Used for advanced crafting";
       }
       else if (type == 2173)
       {
-        this.name = "Copper Plating";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -28103,7 +25624,6 @@ namespace Terraria
       }
       else if (type >= 2174 && type <= 2175)
       {
-        this.name = "Critter Cage";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -28117,7 +25637,6 @@ namespace Terraria
       }
       else if (type == 2176)
       {
-        this.name = "Shroomite Digging Claw";
         this.useStyle = 1;
         this.useAnimation = 12;
         this.useTime = 4;
@@ -28137,7 +25656,6 @@ namespace Terraria
       }
       else if (type == 2177)
       {
-        this.name = "Ammo Box";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -28153,7 +25671,6 @@ namespace Terraria
       }
       else if (type >= 2178 && type <= 2187)
       {
-        this.name = "Butterfly Jar";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -28167,19 +25684,15 @@ namespace Terraria
       }
       else if (type == 2189)
       {
-        this.name = "Spectre Mask";
         this.width = 18;
         this.height = 18;
         this.defense = 18;
         this.headSlot = 156;
         this.rare = 8;
         this.value = 375000;
-        this.toolTip = "Increases maximum mana by 60 and reduces mana usage by 13%";
-        this.toolTip2 = "5% increased magic damage and critical strike chance";
       }
       else if (type == 2188)
       {
-        this.name = "Venom Staff";
         this.mana = 25;
         this.UseSound = SoundID.Item43;
         this.useStyle = 5;
@@ -28199,7 +25712,6 @@ namespace Terraria
       }
       else if (type >= 2190 && type <= 2191)
       {
-        this.name = "Critter Cage";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -28213,7 +25725,6 @@ namespace Terraria
       }
       else if (type >= 2192 && type <= 2198 || (type == 2203 || type == 2204))
       {
-        this.name = "Crafting Tables";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -28228,55 +25739,42 @@ namespace Terraria
       }
       else if (type == 2199)
       {
-        this.name = "Beetle Helmet";
         this.width = 18;
         this.height = 18;
         this.defense = 23;
         this.headSlot = 157;
         this.rare = 8;
         this.value = 300000;
-        this.toolTip = "6% increased melee damage";
-        this.toolTip2 = "Enemies are more likely to target you";
       }
       else if (type == 2200)
       {
-        this.name = "Beetle Scale Mail";
         this.width = 18;
         this.height = 18;
         this.defense = 20;
         this.bodySlot = 105;
         this.rare = 8;
         this.value = 240000;
-        this.toolTip = "8% increased melee damage and critical strike chance";
-        this.toolTip = "6% increased movement and melee speed";
       }
       else if (type == 2201)
       {
-        this.name = "Beetle Shell";
         this.width = 18;
         this.height = 18;
         this.defense = 32;
         this.bodySlot = 106;
         this.rare = 8;
         this.value = 240000;
-        this.toolTip = "5% increased melee damage and critical strike chance";
-        this.toolTip2 = "Enemies are more likely to target you";
       }
       else if (type == 2202)
       {
-        this.name = "Beetle Leggings";
         this.width = 18;
         this.height = 18;
         this.defense = 18;
         this.legSlot = 98;
         this.rare = 8;
         this.value = 180000;
-        this.toolTip = "6% increased movement and melee speed";
-        this.toolTip2 = "Enemies are more likely to target you";
       }
       else if (type == 2205)
       {
-        this.name = "Penguin";
         this.useStyle = 1;
         this.autoReuse = true;
         this.useTurn = true;
@@ -28291,7 +25789,6 @@ namespace Terraria
       }
       else if (type == 2206 || type == 2207)
       {
-        this.name = "Critter Cage";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -28305,14 +25802,12 @@ namespace Terraria
       }
       else if (type == 2208)
       {
-        this.name = "Terrarium";
         this.width = 18;
         this.height = 20;
         this.maxStack = 99;
       }
       else if (type == 2209)
       {
-        this.name = "Super Mana Potion";
         this.UseSound = SoundID.Item3;
         this.healMana = 300;
         this.useStyle = 2;
@@ -28328,7 +25823,6 @@ namespace Terraria
       }
       else if (type >= 2210 && type <= 2213)
       {
-        this.name = "Wooden Fences";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -28342,7 +25836,6 @@ namespace Terraria
       }
       else if (type >= 2214 && type <= 2217)
       {
-        this.name = "Builder's Accessories";
         this.width = 30;
         this.height = 30;
         this.accessory = true;
@@ -28351,7 +25844,6 @@ namespace Terraria
       }
       else if (type == 2218)
       {
-        this.name = "Beetle Husk";
         this.width = 14;
         this.height = 18;
         this.maxStack = 99;
@@ -28360,41 +25852,32 @@ namespace Terraria
       }
       else if (type == 2219)
       {
-        this.name = "Celestial Magnet";
         this.width = 24;
         this.height = 24;
         this.accessory = true;
-        this.toolTip = "Increases pickup range for stars";
         this.value = Item.buyPrice(0, 15, 0, 0);
         this.rare = 4;
       }
       else if (type == 2220)
       {
-        this.name = "Celestial Emblem";
         this.width = 24;
         this.height = 24;
         this.accessory = true;
-        this.toolTip = "15% increased magic damage";
-        this.toolTip2 = "Increases pickup range for stars";
         this.value = Item.buyPrice(0, 16, 0, 0);
         this.rare = 5;
       }
       else if (type == 2221)
       {
-        this.name = "Celestial Cuffs";
         this.width = 24;
         this.height = 24;
         this.accessory = true;
         this.rare = 5;
-        this.toolTip = "Restores mana when damaged";
-        this.toolTip2 = "Increases pickup range for stars";
         this.value = Item.buyPrice(0, 16, 0, 0);
         this.handOffSlot = (sbyte) 10;
         this.handOnSlot = (sbyte) 17;
       }
       else if (type == 2222)
       {
-        this.name = "Peddler's Hat";
         this.width = 18;
         this.height = 18;
         this.headSlot = 158;
@@ -28407,7 +25890,6 @@ namespace Terraria
         this.useStyle = 5;
         this.useAnimation = 22;
         this.useTime = 22;
-        this.name = "Pulse Bow";
         this.width = 50;
         this.height = 18;
         this.shoot = 10;
@@ -28421,11 +25903,9 @@ namespace Terraria
         this.value = Item.buyPrice(0, 45, 0, 0);
         this.rare = 8;
         this.ranged = true;
-        this.toolTip = "Shoots a charged arrow";
       }
       else if (type == 2224)
       {
-        this.name = "more chandeliers";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -28441,7 +25921,6 @@ namespace Terraria
       }
       else if (type == 2225)
       {
-        this.name = "Lamps";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -28457,7 +25936,6 @@ namespace Terraria
       }
       else if (type == 2226)
       {
-        this.name = "Lantern";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -28472,7 +25950,6 @@ namespace Terraria
       }
       else if (type == 2227)
       {
-        this.name = "more candelabras";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -28488,7 +25965,6 @@ namespace Terraria
       }
       else if (type == 2228)
       {
-        this.name = "Dynasty Chair";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -28503,7 +25979,6 @@ namespace Terraria
       }
       else if (type == 2229)
       {
-        this.name = "Dynasty Work Bench";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -28519,7 +25994,6 @@ namespace Terraria
       }
       else if (type == 2230)
       {
-        this.name = "Dynasty Chest";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -28535,7 +26009,6 @@ namespace Terraria
       }
       else if (type == 2231)
       {
-        this.name = "Dynasty Bed";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -28551,7 +26024,6 @@ namespace Terraria
       }
       else if (type == 2232)
       {
-        this.name = "more bathtubs";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -28567,7 +26039,6 @@ namespace Terraria
       }
       else if (type == 2233)
       {
-        this.name = "Bookcase";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -28583,7 +26054,6 @@ namespace Terraria
       }
       else if (type == 2234)
       {
-        this.name = "Dynasty Cup";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -28599,7 +26069,6 @@ namespace Terraria
       }
       else if (type == 2235)
       {
-        this.name = "Bowl";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -28616,7 +26085,6 @@ namespace Terraria
       else if (type == 2236)
       {
         this.noWet = true;
-        this.name = "more candles";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -28631,7 +26099,6 @@ namespace Terraria
       }
       else if (type >= 2237 && type <= 2241)
       {
-        this.name = "Grandfather Clock";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -28647,7 +26114,6 @@ namespace Terraria
       }
       else if (type == 2242 || type == 2243)
       {
-        this.name = "Bowl";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -28666,7 +26132,6 @@ namespace Terraria
       }
       else if (type == 2244)
       {
-        this.name = "Wine Glass";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -28682,7 +26147,6 @@ namespace Terraria
       }
       else if (type >= 2245 && type <= 2247)
       {
-        this.name = "Piano";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -28698,7 +26162,6 @@ namespace Terraria
       }
       else if (type == 2248)
       {
-        this.name = "Frozen Table";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -28714,7 +26177,6 @@ namespace Terraria
       }
       else if (type == 2249 || type == 2250)
       {
-        this.name = "Dynasty Chest";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -28730,7 +26192,6 @@ namespace Terraria
       }
       else if (type >= 2251 && type <= 2253)
       {
-        this.name = "Honey Work Bench";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -28746,7 +26207,6 @@ namespace Terraria
       }
       else if (type >= 2254 && type <= 2256)
       {
-        this.name = "Piano";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -28762,7 +26222,6 @@ namespace Terraria
       }
       else if (type == 2257 || type == 2258)
       {
-        this.name = "more cups";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -28781,7 +26240,6 @@ namespace Terraria
       }
       else if (type == 2259)
       {
-        this.name = "Dynasty Table";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -28797,7 +26255,6 @@ namespace Terraria
       }
       else if (type >= 2260 && type <= 2262)
       {
-        this.name = "Dynasty Blocks";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -28812,7 +26269,6 @@ namespace Terraria
       }
       else if (type >= 2263 && type <= 2264)
       {
-        this.name = "Dynasty Walls";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -28826,7 +26282,6 @@ namespace Terraria
       }
       else if (type == 2265)
       {
-        this.name = "Dynasty Door";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -28841,7 +26296,6 @@ namespace Terraria
       }
       else if (type == 2266)
       {
-        this.name = "Sake";
         this.UseSound = SoundID.Item3;
         this.useStyle = 2;
         this.useTurn = true;
@@ -28858,7 +26312,6 @@ namespace Terraria
       }
       else if (type == 2267)
       {
-        this.name = "Pad Thai";
         this.UseSound = SoundID.Item3;
         this.useStyle = 2;
         this.useTurn = true;
@@ -28871,12 +26324,10 @@ namespace Terraria
         this.buffType = 26;
         this.buffTime = 36000;
         this.rare = 1;
-        this.toolTip = "Minor improvements to all stats";
         this.value = Item.buyPrice(0, 0, 20, 0);
       }
       else if (type == 2268)
       {
-        this.name = "Pho";
         this.UseSound = SoundID.Item3;
         this.useStyle = 2;
         this.useTurn = true;
@@ -28889,12 +26340,10 @@ namespace Terraria
         this.buffType = 26;
         this.buffTime = 54000;
         this.rare = 1;
-        this.toolTip = "Minor improvements to all stats";
         this.value = Item.buyPrice(0, 0, 30, 0);
       }
       else if (type == 2269)
       {
-        this.name = "Revolver";
         this.autoReuse = false;
         this.useStyle = 5;
         this.useAnimation = 22;
@@ -28920,7 +26369,6 @@ namespace Terraria
         this.autoReuse = true;
         this.useAnimation = 7;
         this.useTime = 7;
-        this.name = "Gatligator";
         this.width = 50;
         this.height = 18;
         this.shoot = 10;
@@ -28932,12 +26380,10 @@ namespace Terraria
         this.value = Item.buyPrice(0, 35, 0, 0);
         this.knockBack = 1.5f;
         this.rare = 4;
-        this.toolTip = "33% chance to not consume ammo";
         this.ranged = true;
       }
       else if (type == 2271)
       {
-        this.name = "Arcane Runes";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -28952,7 +26398,6 @@ namespace Terraria
       }
       else if (type == 2272)
       {
-        this.name = "Water Gun";
         this.useStyle = 5;
         this.useAnimation = 20;
         this.useTime = 20;
@@ -28968,7 +26413,6 @@ namespace Terraria
       {
         this.autoReuse = true;
         this.useTurn = true;
-        this.name = "Katana";
         this.useStyle = 1;
         this.useAnimation = 22;
         this.knockBack = 3.5f;
@@ -28986,7 +26430,6 @@ namespace Terraria
       {
         this.flame = true;
         this.noWet = true;
-        this.name = "Ultrabright Torch";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -29003,18 +26446,15 @@ namespace Terraria
       }
       else if (type == 2275)
       {
-        this.name = "Magic Hat";
         this.width = 18;
         this.height = 18;
         this.headSlot = 159;
         this.value = Item.buyPrice(0, 3, 0, 0);
-        this.toolTip = "7% increased magic damage and critical strike chance";
         this.defense = 2;
         this.rare = 2;
       }
       else if (type == 2276)
       {
-        this.name = "Diamond Ring";
         this.width = 24;
         this.height = 24;
         this.accessory = true;
@@ -29025,19 +26465,15 @@ namespace Terraria
       }
       else if (type == 2277)
       {
-        this.name = "Gi";
         this.width = 18;
         this.height = 14;
         this.bodySlot = 165;
         this.value = Item.buyPrice(0, 2, 0, 0);
         this.defense = 4;
-        this.toolTip = "5% increased damage and critical strike chance";
-        this.toolTip = "10% increased melee and movement speed";
         this.rare = 1;
       }
       else if (type == 2278)
       {
-        this.name = "Kimono";
         this.width = 18;
         this.height = 14;
         this.bodySlot = 166;
@@ -29046,30 +26482,24 @@ namespace Terraria
       }
       else if (type == 2279)
       {
-        this.name = "Gypsy Robe";
         this.width = 18;
         this.height = 14;
         this.bodySlot = 167;
         this.value = Item.buyPrice(0, 3, 50, 0);
         this.defense = 2;
-        this.toolTip = "6% increased magic damage and critical strike chance";
-        this.toolTip2 = "Reduces mana usage by 10%";
         this.rare = 1;
       }
       else if (type == 2280)
       {
-        this.name = "Beetle Wings";
         this.width = 22;
         this.height = 20;
         this.accessory = true;
-        this.toolTip = "Allows flight and slow fall";
         this.value = 400000;
         this.rare = 7;
         this.wingSlot = (sbyte) 24;
       }
       else if (type >= 2281 && type <= 2283)
       {
-        this.name = "Animal Skins";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -29085,7 +26515,6 @@ namespace Terraria
       }
       else if (type >= 2284 && type <= 2287)
       {
-        this.name = "Capes";
         this.width = 26;
         this.height = 30;
         this.maxStack = 1;
@@ -29098,7 +26527,6 @@ namespace Terraria
       }
       else if (type == 2288)
       {
-        this.name = "Frozen Chair";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -29113,7 +26541,6 @@ namespace Terraria
       }
       else if (type == 2289 || type >= 2291 && type <= 2296)
       {
-        this.name = "Fishing Poles";
         this.useStyle = 1;
         this.useAnimation = 8;
         this.useTime = 8;
@@ -29171,7 +26598,6 @@ namespace Terraria
       }
       else if (type >= 2421 && type <= 2422)
       {
-        this.name = "Fishing Poles";
         this.useStyle = 1;
         this.useAnimation = 8;
         this.useTime = 8;
@@ -29195,7 +26621,6 @@ namespace Terraria
       }
       else if (type == 2320)
       {
-        this.name = "Rockfish";
         this.autoReuse = true;
         this.width = 26;
         this.height = 26;
@@ -29213,7 +26638,6 @@ namespace Terraria
       }
       else if (type == 2314)
       {
-        this.name = "Honeyfin";
         this.maxStack = 30;
         this.width = 26;
         this.height = 26;
@@ -29230,7 +26654,6 @@ namespace Terraria
       }
       else if (type >= 2290 && type <= 2321)
       {
-        this.name = "Fish";
         this.maxStack = 999;
         this.width = 26;
         this.height = 26;
@@ -29329,7 +26752,6 @@ namespace Terraria
       }
       else if (type == 2322)
       {
-        this.name = "Mining Potion";
         this.UseSound = SoundID.Item3;
         this.useStyle = 2;
         this.useTurn = true;
@@ -29341,13 +26763,11 @@ namespace Terraria
         this.height = 24;
         this.buffType = 104;
         this.buffTime = 28800;
-        this.toolTip = "Increases mining speed";
         this.value = 1000;
         this.rare = 1;
       }
       else if (type == 2323)
       {
-        this.name = "Heartreach Potion";
         this.UseSound = SoundID.Item3;
         this.useStyle = 2;
         this.useTurn = true;
@@ -29359,13 +26779,11 @@ namespace Terraria
         this.height = 24;
         this.buffType = 105;
         this.buffTime = 28800;
-        this.toolTip = "Increases pickup range for life hearts";
         this.value = 1000;
         this.rare = 1;
       }
       else if (type == 2324)
       {
-        this.name = "Calming Potion";
         this.UseSound = SoundID.Item3;
         this.useStyle = 2;
         this.useTurn = true;
@@ -29377,13 +26795,11 @@ namespace Terraria
         this.height = 24;
         this.buffType = 106;
         this.buffTime = 18000;
-        this.toolTip = "Reduces enemy aggression and spawn rate";
         this.value = 1000;
         this.rare = 1;
       }
       else if (type == 2325)
       {
-        this.name = "Builder Potion";
         this.UseSound = SoundID.Item3;
         this.useStyle = 2;
         this.useTurn = true;
@@ -29395,13 +26811,11 @@ namespace Terraria
         this.height = 24;
         this.buffType = 107;
         this.buffTime = 54000;
-        this.toolTip = "Increases placement speed and range";
         this.value = 1000;
         this.rare = 1;
       }
       else if (type == 2326)
       {
-        this.name = "Titan Potion";
         this.UseSound = SoundID.Item3;
         this.useStyle = 2;
         this.useTurn = true;
@@ -29413,13 +26827,11 @@ namespace Terraria
         this.height = 24;
         this.buffType = 108;
         this.buffTime = 14400;
-        this.toolTip = "Increases knockback";
         this.value = 1000;
         this.rare = 1;
       }
       else if (type == 2327)
       {
-        this.name = "Flipper Potion";
         this.UseSound = SoundID.Item3;
         this.useStyle = 2;
         this.useTurn = true;
@@ -29431,13 +26843,11 @@ namespace Terraria
         this.height = 24;
         this.buffType = 109;
         this.buffTime = 28800;
-        this.toolTip = "Lets you to move swiftly in liquids";
         this.value = 1000;
         this.rare = 1;
       }
       else if (type == 2328)
       {
-        this.name = "Summoning Potion";
         this.UseSound = SoundID.Item3;
         this.useStyle = 2;
         this.useTurn = true;
@@ -29449,13 +26859,11 @@ namespace Terraria
         this.height = 24;
         this.buffType = 110;
         this.buffTime = 21600;
-        this.toolTip = "Increases your max number of minions";
         this.value = 1000;
         this.rare = 1;
       }
       else if (type == 2329)
       {
-        this.name = "Trapsight Potion";
         this.UseSound = SoundID.Item3;
         this.useStyle = 2;
         this.useTurn = true;
@@ -29467,13 +26875,11 @@ namespace Terraria
         this.height = 24;
         this.buffType = 111;
         this.buffTime = 36000;
-        this.toolTip = "Allows you to see nearby traps";
         this.value = 1000;
         this.rare = 1;
       }
       else if (type == 2330)
       {
-        this.name = "Purple Clubberfish";
         this.autoReuse = true;
         this.useStyle = 1;
         this.useAnimation = 35;
@@ -29489,7 +26895,6 @@ namespace Terraria
       }
       else if (type == 2331)
       {
-        this.name = "Obsidian Swordfish";
         this.useStyle = 5;
         this.useAnimation = 20;
         this.useTime = 20;
@@ -29509,7 +26914,6 @@ namespace Terraria
       }
       else if (type == 2332)
       {
-        this.name = "Swordfish";
         this.useStyle = 5;
         this.useAnimation = 20;
         this.useTime = 20;
@@ -29528,7 +26932,6 @@ namespace Terraria
       }
       else if (type == 2333)
       {
-        this.name = "Iron Fence";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -29542,11 +26945,9 @@ namespace Terraria
       }
       else if (type == 2334)
       {
-        this.name = "Wooden Crate";
         this.width = 12;
         this.height = 12;
         this.rare = 1;
-        this.toolTip = "Right click to open";
         this.maxStack = 99;
         this.value = Item.sellPrice(0, 0, 10, 0);
         this.createTile = 376;
@@ -29559,11 +26960,9 @@ namespace Terraria
       }
       else if (type == 2335)
       {
-        this.name = "Iron Crate";
         this.width = 12;
         this.height = 12;
         this.rare = 2;
-        this.toolTip = "Right click to open";
         this.maxStack = 99;
         this.value = Item.sellPrice(0, 0, 50, 0);
         this.createTile = 376;
@@ -29576,11 +26975,9 @@ namespace Terraria
       }
       else if (type == 2336)
       {
-        this.name = "Golden Crate";
         this.width = 12;
         this.height = 12;
         this.rare = 3;
-        this.toolTip = "Right click to open";
         this.maxStack = 99;
         this.value = Item.sellPrice(0, 2, 0, 0);
         this.createTile = 376;
@@ -29593,7 +26990,6 @@ namespace Terraria
       }
       else if (type >= 2337 && type <= 2339)
       {
-        this.name = "Junk";
         this.width = 12;
         this.height = 12;
         this.rare = -1;
@@ -29601,7 +26997,6 @@ namespace Terraria
       }
       else if (type == 2340)
       {
-        this.name = "Tracks";
         this.useStyle = 1;
         this.useAnimation = 15;
         this.useTime = 7;
@@ -29618,7 +27013,6 @@ namespace Terraria
       }
       else if (type == 2341)
       {
-        this.name = "Reaver Shark";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 22;
@@ -29637,7 +27031,6 @@ namespace Terraria
       }
       else if (type == 2342)
       {
-        this.name = "Sawtooth Shark";
         this.useStyle = 5;
         this.useAnimation = 25;
         this.useTime = 8;
@@ -29658,7 +27051,6 @@ namespace Terraria
       }
       else if (type == 2343)
       {
-        this.name = "Minecart";
         this.width = 48;
         this.height = 28;
         this.mountType = 6;
@@ -29667,7 +27059,6 @@ namespace Terraria
       }
       else if (type == 2344)
       {
-        this.name = "Ammo Reservation Potion";
         this.UseSound = SoundID.Item3;
         this.useStyle = 2;
         this.useTurn = true;
@@ -29679,13 +27070,11 @@ namespace Terraria
         this.height = 24;
         this.buffType = 112;
         this.buffTime = 25200;
-        this.toolTip = "Gives 15% chance to not consume ammo";
         this.value = 1000;
         this.rare = 1;
       }
       else if (type == 2345)
       {
-        this.name = "Lifeforce Potion";
         this.UseSound = SoundID.Item3;
         this.useStyle = 2;
         this.useTurn = true;
@@ -29697,13 +27086,11 @@ namespace Terraria
         this.height = 24;
         this.buffType = 113;
         this.buffTime = 18000;
-        this.toolTip = "Increases max life by 20%";
         this.value = 1000;
         this.rare = 1;
       }
       else if (type == 2346)
       {
-        this.name = "Endurance Potion";
         this.UseSound = SoundID.Item3;
         this.useStyle = 2;
         this.useTurn = true;
@@ -29715,13 +27102,11 @@ namespace Terraria
         this.height = 24;
         this.buffType = 114;
         this.buffTime = 14400;
-        this.toolTip = "Reduces damage taken by 10%";
         this.value = 1000;
         this.rare = 1;
       }
       else if (type == 2347)
       {
-        this.name = "Rage Potion";
         this.UseSound = SoundID.Item3;
         this.useStyle = 2;
         this.useTurn = true;
@@ -29733,13 +27118,11 @@ namespace Terraria
         this.height = 24;
         this.buffType = 115;
         this.buffTime = 14400;
-        this.toolTip = "Increases critical strike chance by 10%";
         this.value = 1000;
         this.rare = 1;
       }
       else if (type == 2348)
       {
-        this.name = "Inferno Potion";
         this.UseSound = SoundID.Item3;
         this.useStyle = 2;
         this.useTurn = true;
@@ -29751,13 +27134,11 @@ namespace Terraria
         this.height = 24;
         this.buffType = 116;
         this.buffTime = 14400;
-        this.toolTip = "Ignites nearby enemies";
         this.value = 1000;
         this.rare = 1;
       }
       else if (type == 2349)
       {
-        this.name = "Wrath Potion";
         this.UseSound = SoundID.Item3;
         this.useStyle = 2;
         this.useTurn = true;
@@ -29769,13 +27150,11 @@ namespace Terraria
         this.height = 24;
         this.buffType = 117;
         this.buffTime = 14400;
-        this.toolTip = "Increases damage by 10%";
         this.value = 1000;
         this.rare = 1;
       }
       else if (type == 2350)
       {
-        this.name = "Recall Potion";
         this.UseSound = SoundID.Item6;
         this.useStyle = 2;
         this.useTurn = true;
@@ -29785,13 +27164,11 @@ namespace Terraria
         this.consumable = true;
         this.width = 14;
         this.height = 24;
-        this.toolTip = "Teleports you home";
         this.value = 1000;
         this.rare = 1;
       }
       else if (type == 2351)
       {
-        this.name = "Teleportation Potion";
         this.UseSound = SoundID.Item6;
         this.useStyle = 2;
         this.useTurn = true;
@@ -29801,14 +27178,12 @@ namespace Terraria
         this.consumable = true;
         this.width = 14;
         this.height = 24;
-        this.toolTip = "Teleports you to a random location";
         this.value = 1000;
         this.rare = 1;
       }
       else if (type == 2352)
       {
         this.useStyle = 1;
-        this.name = "Love Potion";
         this.shootSpeed = 9f;
         this.shoot = 370;
         this.width = 18;
@@ -29821,12 +27196,10 @@ namespace Terraria
         this.noUseGraphic = true;
         this.noMelee = true;
         this.value = 200;
-        this.toolTip = "Throw at someone to make them fall in love";
       }
       else if (type == 2353)
       {
         this.useStyle = 1;
-        this.name = "Stink Potion";
         this.shootSpeed = 9f;
         this.shoot = 371;
         this.width = 18;
@@ -29839,11 +27212,9 @@ namespace Terraria
         this.noUseGraphic = true;
         this.noMelee = true;
         this.value = 200;
-        this.toolTip = "Throw at someone to make them smell terrible";
       }
       else if (type == 2354)
       {
-        this.name = "Fishing Potion";
         this.UseSound = SoundID.Item3;
         this.useStyle = 2;
         this.useTurn = true;
@@ -29855,13 +27226,11 @@ namespace Terraria
         this.height = 24;
         this.buffType = 121;
         this.buffTime = 28800;
-        this.toolTip = "Increases fishing skill";
         this.rare = 1;
         this.value = 1000;
       }
       else if (type == 2355)
       {
-        this.name = "Sonar Potion";
         this.UseSound = SoundID.Item3;
         this.useStyle = 2;
         this.useTurn = true;
@@ -29878,7 +27247,6 @@ namespace Terraria
       }
       else if (type == 2356)
       {
-        this.name = "Crate Potion";
         this.UseSound = SoundID.Item3;
         this.useStyle = 2;
         this.useTurn = true;
@@ -29896,7 +27264,6 @@ namespace Terraria
       else if (type == 2357)
       {
         this.autoReuse = true;
-        this.name = "Shiverthorn Seeds";
         this.useTurn = true;
         this.useStyle = 1;
         this.useAnimation = 15;
@@ -29911,7 +27278,6 @@ namespace Terraria
       }
       else if (type == 2358)
       {
-        this.name = "Shiverthorn";
         this.maxStack = 99;
         this.width = 12;
         this.height = 14;
@@ -29919,7 +27285,6 @@ namespace Terraria
       }
       else if (type == 2359)
       {
-        this.name = "Warmth Potion";
         this.UseSound = SoundID.Item3;
         this.useStyle = 2;
         this.useTurn = true;
@@ -29931,7 +27296,6 @@ namespace Terraria
         this.height = 24;
         this.buffType = 124;
         this.buffTime = 54000;
-        this.toolTip = "Reduces damage from cold sources";
         this.value = 1000;
         this.rare = 1;
       }
@@ -29940,7 +27304,6 @@ namespace Terraria
         this.noUseGraphic = true;
         this.damage = 0;
         this.useStyle = 5;
-        this.name = "Fish Hook";
         this.shootSpeed = 13f;
         this.shoot = 372;
         this.width = 18;
@@ -29954,43 +27317,36 @@ namespace Terraria
       }
       else if (type == 2361)
       {
-        this.name = "Bee Headgear";
         this.width = 18;
         this.height = 18;
         this.defense = 4;
         this.headSlot = 160;
         this.rare = 3;
         this.value = 45000;
-        this.toolTip = "Increases minion damage by 4%";
       }
       else if (type == 2362)
       {
-        this.name = "Bee Breastplate";
         this.width = 18;
         this.height = 18;
         this.defense = 5;
         this.bodySlot = 168;
         this.rare = 3;
         this.value = 30000;
-        this.toolTip = "Increases minion damage by 6%";
       }
       else if (type == 2363)
       {
-        this.name = "Bee Greaves";
         this.width = 18;
         this.height = 18;
         this.defense = 4;
         this.legSlot = 103;
         this.rare = 3;
         this.value = 30000;
-        this.toolTip = "Increases minion damage by 5%";
       }
       else if (type == 2364)
       {
         this.mana = 10;
         this.damage = 9;
         this.useStyle = 1;
-        this.name = "Hornet Staff";
         this.shootSpeed = 10f;
         this.shoot = 373;
         this.width = 26;
@@ -30001,7 +27357,6 @@ namespace Terraria
         this.rare = 3;
         this.noMelee = true;
         this.knockBack = 2f;
-        this.toolTip = "Summons a hornet to fight for you";
         this.buffType = 125;
         this.value = 10000;
         this.summon = true;
@@ -30011,7 +27366,6 @@ namespace Terraria
         this.mana = 10;
         this.damage = 21;
         this.useStyle = 1;
-        this.name = "Imp Staff";
         this.shootSpeed = 10f;
         this.shoot = 375;
         this.width = 26;
@@ -30022,7 +27376,6 @@ namespace Terraria
         this.rare = 3;
         this.noMelee = true;
         this.knockBack = 2f;
-        this.toolTip = "Summons an imp to fight for you";
         this.buffType = 126;
         this.value = 10000;
         this.summon = true;
@@ -30031,7 +27384,6 @@ namespace Terraria
       {
         this.mana = 10;
         this.damage = 26;
-        this.name = "Spider Queen Staff";
         this.useStyle = 1;
         this.shootSpeed = 14f;
         this.shoot = 377;
@@ -30049,7 +27401,6 @@ namespace Terraria
       }
       else if (type == 2367)
       {
-        this.name = "Angler Hat";
         this.width = 18;
         this.height = 18;
         this.defense = 1;
@@ -30059,7 +27410,6 @@ namespace Terraria
       }
       else if (type == 2368)
       {
-        this.name = "Angler Vest";
         this.width = 18;
         this.height = 18;
         this.bodySlot = 169;
@@ -30069,7 +27419,6 @@ namespace Terraria
       }
       else if (type == 2369)
       {
-        this.name = "Angler Pants";
         this.width = 18;
         this.height = 18;
         this.legSlot = 104;
@@ -30079,43 +27428,33 @@ namespace Terraria
       }
       else if (type == 2370)
       {
-        this.name = "Spider Mask";
         this.width = 18;
         this.height = 18;
         this.headSlot = 162;
         this.rare = 4;
         this.value = Item.sellPrice(0, 0, 75, 0);
-        this.toolTip = "Increases your max number of minions";
-        this.toolTip2 = "Increases minion damage by 5%";
         this.defense = 5;
       }
       else if (type == 2371)
       {
-        this.name = "Spider Breastplate";
         this.width = 18;
         this.height = 18;
         this.bodySlot = 170;
         this.rare = 4;
         this.value = Item.sellPrice(0, 0, 75, 0);
-        this.toolTip = "Increases your max number of minions";
-        this.toolTip2 = "Increases minion damage by 6%";
         this.defense = 8;
       }
       else if (type == 2372)
       {
-        this.name = "Spider Greaves";
         this.width = 18;
         this.height = 18;
         this.legSlot = 105;
         this.rare = 4;
         this.value = Item.sellPrice(0, 0, 75, 0);
-        this.toolTip = "Increases your max number of minions";
-        this.toolTip2 = "Increases minion damage by 6%";
         this.defense = 7;
       }
       else if (type >= 2373 && type <= 2375)
       {
-        this.name = "Fishing Accessories";
         this.width = 26;
         this.height = 30;
         this.maxStack = 1;
@@ -30125,7 +27464,6 @@ namespace Terraria
       }
       else if (type >= 2376 && type <= 2385)
       {
-        this.name = "More Pianos";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -30141,7 +27479,6 @@ namespace Terraria
       }
       else if (type >= 2386 && type <= 2396)
       {
-        this.name = "More Dressers";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -30157,7 +27494,6 @@ namespace Terraria
       }
       else if (type >= 2397 && type <= 2416)
       {
-        this.name = "Sofas";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -30173,7 +27509,6 @@ namespace Terraria
       }
       else if (type == 2417)
       {
-        this.name = "Seashell Hairpin";
         this.width = 18;
         this.height = 18;
         this.headSlot = 163;
@@ -30182,7 +27517,6 @@ namespace Terraria
       }
       else if (type == 2418)
       {
-        this.name = "Mermaid Adornment";
         this.width = 18;
         this.height = 18;
         this.bodySlot = 171;
@@ -30191,7 +27525,6 @@ namespace Terraria
       }
       else if (type == 2419)
       {
-        this.name = "Mermaid Tail";
         this.width = 18;
         this.height = 18;
         this.legSlot = 106;
@@ -30202,7 +27535,6 @@ namespace Terraria
       {
         this.damage = 0;
         this.useStyle = 1;
-        this.name = "Zephyr Fish";
         this.shoot = 380;
         this.width = 16;
         this.height = 30;
@@ -30211,19 +27543,15 @@ namespace Terraria
         this.useTime = 20;
         this.rare = 3;
         this.noMelee = true;
-        this.toolTip = "Summons a Zephyr Fish";
         this.value = Item.sellPrice(0, 3, 0, 0);
         this.buffType = (int) sbyte.MaxValue;
       }
       else if (type == 2423)
       {
-        this.name = "Frog Leg";
         this.width = 16;
         this.height = 24;
         this.accessory = true;
         this.rare = 1;
-        this.toolTip = "Increases Jump Speed";
-        this.toolTip2 = "Allows constant jumping";
         this.value = 50000;
         this.shoeSlot = (sbyte) 15;
       }
@@ -30231,7 +27559,6 @@ namespace Terraria
       {
         this.noMelee = true;
         this.useStyle = 1;
-        this.name = "Anchor";
         this.shootSpeed = 20f;
         this.shoot = 383;
         this.damage = 30;
@@ -30248,7 +27575,6 @@ namespace Terraria
       }
       else if (type >= 2425 && type <= 2427)
       {
-        this.name = "Fishing Food";
         this.UseSound = SoundID.Item2;
         this.useStyle = 2;
         this.useTurn = true;
@@ -30261,13 +27587,11 @@ namespace Terraria
         this.buffType = 26;
         this.buffTime = 72000;
         this.rare = 1;
-        this.toolTip = "Minor improvements to all stats";
         this.value = Item.sellPrice(0, 0, 5, 0);
       }
       else if (type == 2428)
       {
         this.useStyle = 1;
-        this.name = "Fuzzy Carrot";
         this.width = 16;
         this.height = 30;
         this.UseSound = SoundID.Item79;
@@ -30281,7 +27605,6 @@ namespace Terraria
       else if (type == 2429)
       {
         this.useStyle = 1;
-        this.name = "Scaly Truffle";
         this.width = 16;
         this.height = 30;
         this.UseSound = SoundID.Item80;
@@ -30295,7 +27618,6 @@ namespace Terraria
       else if (type == 2430)
       {
         this.useStyle = 1;
-        this.name = "Slimy Saddle";
         this.width = 16;
         this.height = 30;
         this.UseSound = SoundID.Item81;
@@ -30308,7 +27630,6 @@ namespace Terraria
       }
       else if (type == 2431)
       {
-        this.name = "Bee Wax";
         this.width = 18;
         this.height = 16;
         this.maxStack = 99;
@@ -30316,7 +27637,6 @@ namespace Terraria
       }
       else if (type >= 2432 && type <= 2434)
       {
-        this.name = "Some walls";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -30333,7 +27653,6 @@ namespace Terraria
       }
       else if (type == 2435)
       {
-        this.name = "Coralstone Block";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -30348,7 +27667,6 @@ namespace Terraria
       }
       else if (type >= 2436 && type <= 2438)
       {
-        this.name = "Jellyfish(es)";
         this.useStyle = 1;
         this.autoReuse = true;
         this.useTurn = true;
@@ -30364,7 +27682,6 @@ namespace Terraria
       }
       else if (type >= 2439 && type <= 2441)
       {
-        this.name = "Jellyfish Jar";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -30378,7 +27695,6 @@ namespace Terraria
       }
       else if (type >= 2442 && type <= 2449)
       {
-        this.name = "Fishing Wall Hangings";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -30394,7 +27710,6 @@ namespace Terraria
       }
       else if (type >= 2450 && type <= 2488)
       {
-        this.name = "Quest Fish";
         this.questItem = true;
         this.maxStack = 1;
         this.width = 26;
@@ -30404,7 +27719,6 @@ namespace Terraria
       }
       else if (type == 2489)
       {
-        this.name = "King Slime Trophy";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -30421,7 +27735,6 @@ namespace Terraria
       }
       else if (type == 2490)
       {
-        this.name = "Ship in a Bottle";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -30437,7 +27750,6 @@ namespace Terraria
       else if (type == 2491)
       {
         this.useStyle = 1;
-        this.name = "Hardy Saddle";
         this.width = 16;
         this.height = 30;
         this.UseSound = SoundID.Item25;
@@ -30450,7 +27762,6 @@ namespace Terraria
       }
       else if (type == 2492)
       {
-        this.name = "Pressure Track";
         this.useStyle = 1;
         this.useAnimation = 15;
         this.useTime = 7;
@@ -30469,7 +27780,6 @@ namespace Terraria
       }
       else if (type == 2493)
       {
-        this.name = "King Slime Mask";
         this.width = 28;
         this.height = 20;
         this.headSlot = 164;
@@ -30478,18 +27788,15 @@ namespace Terraria
       }
       else if (type == 2494)
       {
-        this.name = "Fin Wings";
         this.width = 22;
         this.height = 20;
         this.accessory = true;
-        this.toolTip = "Allows flight and slow fall";
         this.value = Item.sellPrice(0, 10, 0, 0);
         this.rare = 4;
         this.wingSlot = (sbyte) 25;
       }
       else if (type == 2495)
       {
-        this.name = "Treasure Map";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -30505,7 +27812,6 @@ namespace Terraria
       }
       else if (type == 2496)
       {
-        this.name = "Seaweed Planter";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -30521,7 +27827,6 @@ namespace Terraria
       }
       else if (type == 2497)
       {
-        this.name = "Pillagin Me Pixels";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -30537,7 +27842,6 @@ namespace Terraria
       }
       else if (type == 2498)
       {
-        this.name = "Fish Costume Mask";
         this.width = 18;
         this.height = 18;
         this.headSlot = 165;
@@ -30546,7 +27850,6 @@ namespace Terraria
       }
       else if (type == 2499)
       {
-        this.name = "Fish Costume Shirt";
         this.width = 18;
         this.height = 18;
         this.bodySlot = 172;
@@ -30555,7 +27858,6 @@ namespace Terraria
       }
       else if (type == 2500)
       {
-        this.name = "Fish Costume Finskirt";
         this.width = 18;
         this.height = 18;
         this.legSlot = 107;
@@ -30564,7 +27866,6 @@ namespace Terraria
       }
       else if (type == 2501)
       {
-        this.name = "Ginger Beard";
         this.width = 18;
         this.height = 12;
         this.maxStack = 1;
@@ -30577,7 +27878,6 @@ namespace Terraria
       else if (type == 2502)
       {
         this.useStyle = 1;
-        this.name = "Honeyed Goggles";
         this.width = 16;
         this.height = 30;
         this.UseSound = SoundID.Item25;
@@ -30590,7 +27890,6 @@ namespace Terraria
       }
       else if (type == 2503)
       {
-        this.name = "Boreal Wood";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -30604,7 +27903,6 @@ namespace Terraria
       }
       else if (type == 2504)
       {
-        this.name = "Palm Wood";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -30618,7 +27916,6 @@ namespace Terraria
       }
       else if (type == 2505)
       {
-        this.name = "Boreal Wood Wall";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -30632,7 +27929,6 @@ namespace Terraria
       }
       else if (type == 2506)
       {
-        this.name = "Palm Wood Wall";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -30646,7 +27942,6 @@ namespace Terraria
       }
       else if (type == 2507)
       {
-        this.name = "Boreal Wood Fence";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -30660,7 +27955,6 @@ namespace Terraria
       }
       else if (type == 2508)
       {
-        this.name = "Palm Wood Fence";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -30674,7 +27968,6 @@ namespace Terraria
       }
       else if (type == 2509)
       {
-        this.name = "Boreal Wood Helmet";
         this.width = 18;
         this.height = 18;
         this.defense = 1;
@@ -30682,7 +27975,6 @@ namespace Terraria
       }
       else if (type == 2510)
       {
-        this.name = "Boreal Wood Breastplate";
         this.width = 18;
         this.height = 18;
         this.defense = 1;
@@ -30690,7 +27982,6 @@ namespace Terraria
       }
       else if (type == 2511)
       {
-        this.name = "Boreal Wood Greaves";
         this.width = 18;
         this.height = 18;
         this.defense = 1;
@@ -30698,7 +27989,6 @@ namespace Terraria
       }
       else if (type == 2512)
       {
-        this.name = "Palm Wood Helmet";
         this.width = 18;
         this.height = 18;
         this.defense = 1;
@@ -30706,7 +27996,6 @@ namespace Terraria
       }
       else if (type == 2513)
       {
-        this.name = "Palm Wood Breastplate";
         this.width = 18;
         this.height = 18;
         this.defense = 1;
@@ -30714,7 +28003,6 @@ namespace Terraria
       }
       else if (type == 2514)
       {
-        this.name = "Palm Wood Greaves";
         this.width = 18;
         this.height = 18;
         this.defense = 1;
@@ -30722,7 +28010,6 @@ namespace Terraria
       }
       else if (type == 2517)
       {
-        this.name = "Palm Wood Sword";
         this.useStyle = 1;
         this.useTurn = false;
         this.useAnimation = 23;
@@ -30738,7 +28025,6 @@ namespace Terraria
       }
       else if (type == 2516)
       {
-        this.name = "Palm Wood Hammer";
         this.autoReuse = true;
         this.useStyle = 1;
         this.useTurn = true;
@@ -30756,7 +28042,6 @@ namespace Terraria
       }
       else if (type == 2515)
       {
-        this.name = "Palm Wood Bow";
         this.useStyle = 5;
         this.useAnimation = 29;
         this.useTime = 29;
@@ -30773,7 +28058,6 @@ namespace Terraria
       }
       else if (type == 2518)
       {
-        this.name = "Palm Wood Platform";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -30788,7 +28072,6 @@ namespace Terraria
       }
       else if (type == 2519)
       {
-        this.name = "Palm Wood Bathtub";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -30804,7 +28087,6 @@ namespace Terraria
       }
       else if (type == 2520)
       {
-        this.name = "Palm Wood Bed";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -30820,7 +28102,6 @@ namespace Terraria
       }
       else if (type == 2521)
       {
-        this.name = "Palm Wood Bench";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -30836,7 +28117,6 @@ namespace Terraria
       }
       else if (type == 2527)
       {
-        this.name = "Palm Wood Sofa";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -30852,7 +28132,6 @@ namespace Terraria
       }
       else if (type == 2522)
       {
-        this.name = "Palm Wood Candelabra";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -30869,7 +28148,6 @@ namespace Terraria
       else if (type == 2523)
       {
         this.noWet = true;
-        this.name = "Palm Wood Candle";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -30884,7 +28162,6 @@ namespace Terraria
       }
       else if (type == 2524)
       {
-        this.name = "Palm Wood Chair";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -30899,7 +28176,6 @@ namespace Terraria
       }
       else if (type == 2525)
       {
-        this.name = "Palm Wood Chandelier";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -30915,7 +28191,6 @@ namespace Terraria
       }
       else if (type == 2526)
       {
-        this.name = "Palm Wood Chest";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -30931,7 +28206,6 @@ namespace Terraria
       }
       else if (type == 2528)
       {
-        this.name = "Palm Wood Door";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -30946,7 +28220,6 @@ namespace Terraria
       }
       else if (type == 2529)
       {
-        this.name = "Palm Wood Dresser";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -30962,7 +28235,6 @@ namespace Terraria
       }
       else if (type == 2530)
       {
-        this.name = "Palm Wood Lantern";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -30977,7 +28249,6 @@ namespace Terraria
       }
       else if (type == 2531)
       {
-        this.name = "Palm Wood Piano";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -30996,7 +28267,6 @@ namespace Terraria
         this.mana = 10;
         this.damage = 30;
         this.useStyle = 1;
-        this.name = "Optic Staff";
         this.shootSpeed = 10f;
         this.shoot = 387;
         this.width = 26;
@@ -31007,14 +28277,12 @@ namespace Terraria
         this.rare = 5;
         this.noMelee = true;
         this.knockBack = 2f;
-        this.toolTip = "Summons twins to fight for you";
         this.buffType = 134;
         this.value = Item.buyPrice(0, 10, 0, 0);
         this.summon = true;
       }
       else if (type == 2532)
       {
-        this.name = "Palm Wood Table";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -31030,7 +28298,6 @@ namespace Terraria
       }
       else if (type == 2533)
       {
-        this.name = "Palm Wood Lamp";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -31046,7 +28313,6 @@ namespace Terraria
       }
       else if (type == 2534)
       {
-        this.name = "Palm Wood Work Bench";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -31059,11 +28325,9 @@ namespace Terraria
         this.width = 28;
         this.height = 14;
         this.value = 150;
-        this.toolTip = "Used for basic crafting";
       }
       else if (type == 2536)
       {
-        this.name = "Palm Wood Bookcase";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -31079,7 +28343,6 @@ namespace Terraria
       }
       else if (type == 2549)
       {
-        this.name = "Mushroom Platform";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -31094,7 +28357,6 @@ namespace Terraria
       }
       else if (type == 2537)
       {
-        this.name = "Mushroom Bathtub";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -31110,7 +28372,6 @@ namespace Terraria
       }
       else if (type == 2538)
       {
-        this.name = "Mushroom Bed";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -31126,7 +28387,6 @@ namespace Terraria
       }
       else if (type == 2539)
       {
-        this.name = "Mushroom Bench";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -31142,7 +28402,6 @@ namespace Terraria
       }
       else if (type == 2540)
       {
-        this.name = "Mushroom Bookcase";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -31158,7 +28417,6 @@ namespace Terraria
       }
       else if (type == 2541)
       {
-        this.name = "Mushroom Candelabra";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -31175,7 +28433,6 @@ namespace Terraria
       else if (type == 2542)
       {
         this.noWet = true;
-        this.name = "Mushroom Candle";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -31190,7 +28447,6 @@ namespace Terraria
       }
       else if (type == 2543)
       {
-        this.name = "Mushroom Chandelier";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -31206,7 +28462,6 @@ namespace Terraria
       }
       else if (type == 2544)
       {
-        this.name = "Mushroom Chest";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -31222,7 +28477,6 @@ namespace Terraria
       }
       else if (type == 2545)
       {
-        this.name = "Mushroom Dresser";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -31238,7 +28492,6 @@ namespace Terraria
       }
       else if (type == 2547)
       {
-        this.name = "Mushroom Lamp";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -31254,7 +28507,6 @@ namespace Terraria
       }
       else if (type == 2546)
       {
-        this.name = "Mushroom Lantern";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -31269,7 +28521,6 @@ namespace Terraria
       }
       else if (type == 2548)
       {
-        this.name = "Mushroom Piano";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -31285,7 +28536,6 @@ namespace Terraria
       }
       else if (type == 2413)
       {
-        this.name = "Mushroom Sofa";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -31301,7 +28551,6 @@ namespace Terraria
       }
       else if (type == 2550)
       {
-        this.name = "Mushroom Table";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -31320,7 +28569,6 @@ namespace Terraria
         this.mana = 10;
         this.damage = 26;
         this.useStyle = 1;
-        this.name = "Spider Staff";
         this.shootSpeed = 10f;
         this.shoot = 390;
         this.width = 26;
@@ -31331,14 +28579,12 @@ namespace Terraria
         this.rare = 4;
         this.noMelee = true;
         this.knockBack = 3f;
-        this.toolTip = "Summons spiders to fight for you";
         this.buffType = 133;
         this.value = Item.buyPrice(0, 5, 0, 0);
         this.summon = true;
       }
       else if (type == 2552)
       {
-        this.name = "Boreal Wood Bathtub";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -31354,7 +28600,6 @@ namespace Terraria
       }
       else if (type == 2553)
       {
-        this.name = "Boreal Wood Bed";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -31370,7 +28615,6 @@ namespace Terraria
       }
       else if (type == 2554)
       {
-        this.name = "Boreal Wood Bookcase";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -31386,7 +28630,6 @@ namespace Terraria
       }
       else if (type == 2555)
       {
-        this.name = "Boreal Wood Candelabra";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -31403,7 +28646,6 @@ namespace Terraria
       else if (type == 2556)
       {
         this.noWet = true;
-        this.name = "Boreal Wood Candle";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -31418,7 +28660,6 @@ namespace Terraria
       }
       else if (type == 2557)
       {
-        this.name = "Boreal Wood Chair";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -31433,7 +28674,6 @@ namespace Terraria
       }
       else if (type == 2558)
       {
-        this.name = "Boreal Wood Chandelier";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -31449,7 +28689,6 @@ namespace Terraria
       }
       else if (type == 2559)
       {
-        this.name = "Boreal Wood Chest";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -31465,7 +28704,6 @@ namespace Terraria
       }
       else if (type == 2560)
       {
-        this.name = "Boreal Wood Clock";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -31481,7 +28719,6 @@ namespace Terraria
       }
       else if (type == 2561)
       {
-        this.name = "Boreal Wood Door";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -31496,7 +28733,6 @@ namespace Terraria
       }
       else if (type == 2562)
       {
-        this.name = "Boreal Wood Dresser";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -31512,7 +28748,6 @@ namespace Terraria
       }
       else if (type == 2563)
       {
-        this.name = "Boreal Wood Lamp";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -31528,7 +28763,6 @@ namespace Terraria
       }
       else if (type == 2564)
       {
-        this.name = "Boreal Wood Lantern";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -31543,7 +28777,6 @@ namespace Terraria
       }
       else if (type == 2565)
       {
-        this.name = "Boreal Wood Piano";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -31559,7 +28792,6 @@ namespace Terraria
       }
       else if (type == 2566)
       {
-        this.name = "Boreal Wood Platform";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -31574,7 +28806,6 @@ namespace Terraria
       }
       else if (type == 2567)
       {
-        this.name = "Slime Bathtub";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -31590,7 +28821,6 @@ namespace Terraria
       }
       else if (type == 2568)
       {
-        this.name = "Slime Bed";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -31606,7 +28836,6 @@ namespace Terraria
       }
       else if (type == 2569)
       {
-        this.name = "Slime Bookcase";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -31622,7 +28851,6 @@ namespace Terraria
       }
       else if (type == 2570)
       {
-        this.name = "Slime Candelabra";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -31639,7 +28867,6 @@ namespace Terraria
       else if (type == 2571)
       {
         this.noWet = true;
-        this.name = "Slime Candle";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -31654,7 +28881,6 @@ namespace Terraria
       }
       else if (type == 2572)
       {
-        this.name = "Slime Chair";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -31669,7 +28895,6 @@ namespace Terraria
       }
       else if (type == 2573)
       {
-        this.name = "Slime Chandelier";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -31685,7 +28910,6 @@ namespace Terraria
       }
       else if (type == 2574)
       {
-        this.name = "Slime Chest";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -31701,7 +28925,6 @@ namespace Terraria
       }
       else if (type == 2575)
       {
-        this.name = "Slime Clock";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -31717,7 +28940,6 @@ namespace Terraria
       }
       else if (type == 2576)
       {
-        this.name = "Slime Door";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -31732,7 +28954,6 @@ namespace Terraria
       }
       else if (type == 2577)
       {
-        this.name = "Slime Dresser";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -31748,7 +28969,6 @@ namespace Terraria
       }
       else if (type == 2578)
       {
-        this.name = "Slime Lamp";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -31764,7 +28984,6 @@ namespace Terraria
       }
       else if (type == 2579)
       {
-        this.name = "Slime Lantern";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -31779,7 +28998,6 @@ namespace Terraria
       }
       else if (type == 2580)
       {
-        this.name = "Slime Piano";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -31795,7 +29013,6 @@ namespace Terraria
       }
       else if (type == 2581)
       {
-        this.name = "Slime Platform";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -31810,7 +29027,6 @@ namespace Terraria
       }
       else if (type == 2582)
       {
-        this.name = "Slime Sofa";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -31826,7 +29042,6 @@ namespace Terraria
       }
       else if (type == 2583)
       {
-        this.name = "Slime Table";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -31845,7 +29060,6 @@ namespace Terraria
         this.mana = 10;
         this.damage = 40;
         this.useStyle = 1;
-        this.name = "Pirate Staff";
         this.shootSpeed = 10f;
         this.shoot = 393;
         this.width = 26;
@@ -31856,7 +29070,6 @@ namespace Terraria
         this.rare = 5;
         this.noMelee = true;
         this.knockBack = 6f;
-        this.toolTip = "Summons pirates to fight for you";
         this.buffType = 135;
         this.value = Item.buyPrice(0, 5, 0, 0);
         this.summon = true;
@@ -31866,7 +29079,6 @@ namespace Terraria
         this.noUseGraphic = true;
         this.damage = 0;
         this.useStyle = 5;
-        this.name = "Slime Hook";
         this.shootSpeed = 13f;
         this.shoot = 396;
         this.width = 18;
@@ -31881,7 +29093,6 @@ namespace Terraria
       else if (type == 2586)
       {
         this.useStyle = 5;
-        this.name = "Sticky Grenade";
         this.shootSpeed = 5.5f;
         this.shoot = 397;
         this.width = 20;
@@ -31896,15 +29107,12 @@ namespace Terraria
         this.value = 75;
         this.damage = 60;
         this.knockBack = 8f;
-        this.toolTip = "A small explosion that will not destroy tiles";
-        this.toolTip2 = "Tossing may be difficult";
         this.thrown = true;
       }
       else if (type == 2587)
       {
         this.damage = 0;
         this.useStyle = 1;
-        this.name = "Tartar Sauce";
         this.shoot = 398;
         this.width = 16;
         this.height = 30;
@@ -31913,13 +29121,11 @@ namespace Terraria
         this.useTime = 20;
         this.rare = 3;
         this.noMelee = true;
-        this.toolTip = "Summons a mini minotaur";
         this.buffType = 136;
         this.value = Item.sellPrice(0, 2, 0, 0);
       }
       else if (type == 2588)
       {
-        this.name = "Duke Fishron Mask";
         this.width = 28;
         this.height = 20;
         this.headSlot = 168;
@@ -31928,7 +29134,6 @@ namespace Terraria
       }
       else if (type == 2589)
       {
-        this.name = "Duke Fishron Trophy";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -31946,7 +29151,6 @@ namespace Terraria
       else if (type == 2590)
       {
         this.useStyle = 5;
-        this.name = "Molotov Cocktail";
         this.shootSpeed = 6.5f;
         this.shoot = 399;
         this.width = 20;
@@ -31961,14 +29165,11 @@ namespace Terraria
         this.value = Item.sellPrice(0, 0, 1, 0);
         this.damage = 23;
         this.knockBack = 7f;
-        this.toolTip = "A small explosion that puts enemies on fire";
-        this.toolTip2 = "Lights nearby area on fire for a while";
         this.thrown = true;
         this.rare = 1;
       }
       else if (type >= 2591 && type <= 2606)
       {
-        this.name = "Grandfather Clock";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -31984,7 +29185,6 @@ namespace Terraria
       }
       else if (type == 2607)
       {
-        this.name = "Spider Fang";
         this.maxStack = 99;
         this.width = 12;
         this.height = 12;
@@ -31995,7 +29195,6 @@ namespace Terraria
       {
         this.autoReuse = true;
         this.scale = 1.05f;
-        this.name = "Falcon Blade";
         this.useStyle = 1;
         this.useAnimation = 15;
         this.knockBack = 6f;
@@ -32010,18 +29209,15 @@ namespace Terraria
       }
       else if (type == 2609)
       {
-        this.name = "Fishron Wings";
         this.width = 22;
         this.height = 20;
         this.accessory = true;
-        this.toolTip = "Allows flight and slow fall";
         this.value = Item.buyPrice(0, 10, 0, 0);
         this.rare = 8;
         this.wingSlot = (sbyte) 26;
       }
       else if (type == 2610)
       {
-        this.name = "Slime Gun";
         this.useStyle = 5;
         this.useAnimation = 12;
         this.useTime = 12;
@@ -32037,7 +29233,6 @@ namespace Terraria
       else if (type == 2611)
       {
         this.autoReuse = false;
-        this.name = "Flairon";
         this.useStyle = 5;
         this.useAnimation = 20;
         this.useTime = 20;
@@ -32056,7 +29251,6 @@ namespace Terraria
       }
       else if (type >= 2612 && type <= 2620)
       {
-        this.name = "Many Chests";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -32075,7 +29269,6 @@ namespace Terraria
         this.mana = 10;
         this.damage = 50;
         this.useStyle = 1;
-        this.name = "Tempest Staff";
         this.shootSpeed = 10f;
         this.shoot = 407;
         this.width = 26;
@@ -32086,7 +29279,6 @@ namespace Terraria
         this.rare = 8;
         this.noMelee = true;
         this.knockBack = 2f;
-        this.toolTip = "Summons sharknados to fight for you";
         this.buffType = 139;
         this.value = Item.sellPrice(0, 5, 0, 0);
         this.summon = true;
@@ -32097,7 +29289,6 @@ namespace Terraria
         this.autoReuse = true;
         this.useAnimation = 24;
         this.useTime = 24;
-        this.name = "Tsunami";
         this.width = 50;
         this.height = 18;
         this.shoot = 1;
@@ -32116,7 +29307,6 @@ namespace Terraria
         this.mana = 16;
         this.damage = 60;
         this.useStyle = 5;
-        this.name = "Razorblade Typhoon";
         this.shootSpeed = 6f;
         this.shoot = 409;
         this.width = 26;
@@ -32129,13 +29319,11 @@ namespace Terraria
         this.noMelee = true;
         this.knockBack = 5f;
         this.scale = 0.9f;
-        this.toolTip = "Casts a typhoon";
         this.value = Item.sellPrice(0, 5, 0, 0);
         this.magic = true;
       }
       else if (type == 2625 || type == 2626)
       {
-        this.name = "Beach Stuff";
         this.useStyle = 1;
         this.autoReuse = true;
         this.useAnimation = 15;
@@ -32157,7 +29345,6 @@ namespace Terraria
       }
       else if (type >= 2627 && type <= 2630)
       {
-        this.name = "More Platforms";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -32172,7 +29359,6 @@ namespace Terraria
       }
       else if (type >= 2631 && type <= 2633)
       {
-        this.name = "More Work Benches";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -32185,11 +29371,9 @@ namespace Terraria
         this.width = 28;
         this.height = 14;
         this.value = 150;
-        this.toolTip = "Used for basic crafting";
       }
       else if (type >= 2634 && type <= 2636)
       {
-        this.name = "Sofas";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -32206,7 +29390,6 @@ namespace Terraria
       else if (type == 2623)
       {
         this.autoReuse = true;
-        this.name = "Bubble Gun";
         this.mana = 4;
         this.UseSound = SoundID.Item85;
         this.useStyle = 5;
@@ -32225,7 +29408,6 @@ namespace Terraria
       }
       else if (type >= 2637 && type <= 2640)
       {
-        this.name = "Dressers";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -32241,7 +29423,6 @@ namespace Terraria
       }
       else if (type == 2641 || type == 2642)
       {
-        this.name = "Lantern 1";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -32256,7 +29437,6 @@ namespace Terraria
       }
       else if (type >= 2643 && type <= 2647)
       {
-        this.name = "More Lamps";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -32273,7 +29453,6 @@ namespace Terraria
       else if (type >= 2648 && type <= 2651)
       {
         this.noWet = true;
-        this.name = "even more candles";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -32288,7 +29467,6 @@ namespace Terraria
       }
       else if (type >= 2652 && type <= 2657)
       {
-        this.name = "More Chandeliers";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -32304,7 +29482,6 @@ namespace Terraria
       }
       else if (type >= 2658 && type <= 2663)
       {
-        this.name = "more bathtubs";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -32320,7 +29497,6 @@ namespace Terraria
       }
       else if (type >= 2664 && type <= 2668)
       {
-        this.name = "even more candelabras";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -32336,7 +29512,6 @@ namespace Terraria
       }
       else if (type == 2669)
       {
-        this.name = "Pumpkin Bed";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -32352,7 +29527,6 @@ namespace Terraria
       }
       else if (type == 2670)
       {
-        this.name = "Pumpkin Bookcase";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -32368,7 +29542,6 @@ namespace Terraria
       }
       else if (type == 2671)
       {
-        this.name = "Pumpkin Piano";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -32384,7 +29557,6 @@ namespace Terraria
       }
       else if (type == 2672)
       {
-        this.name = "Shark Statue";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -32400,7 +29572,6 @@ namespace Terraria
       }
       else if (type == 2673)
       {
-        this.name = "Truffle Worm";
         this.useStyle = 1;
         this.autoReuse = true;
         this.useTurn = true;
@@ -32416,7 +29587,6 @@ namespace Terraria
       }
       else if (type >= 2674 && type <= 2676)
       {
-        this.name = "baits";
         this.maxStack = 999;
         this.consumable = true;
         this.width = 12;
@@ -32439,7 +29609,6 @@ namespace Terraria
       }
       else if (type >= 2677 && type <= 2690)
       {
-        this.name = "gemspark walls";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -32497,7 +29666,6 @@ namespace Terraria
       }
       else if (type == 2691)
       {
-        this.name = "Tin Plating Wall";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -32511,7 +29679,6 @@ namespace Terraria
       }
       else if (type == 2692)
       {
-        this.name = "Tin Plating";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -32525,7 +29692,6 @@ namespace Terraria
       }
       else if (type == 2693)
       {
-        this.name = "Waterfall Block";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -32539,7 +29705,6 @@ namespace Terraria
       }
       else if (type == 2694)
       {
-        this.name = "Lavafall Block";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -32553,7 +29718,6 @@ namespace Terraria
       }
       else if (type == 2695)
       {
-        this.name = "Confetti Block";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -32567,7 +29731,6 @@ namespace Terraria
       }
       else if (type == 2696)
       {
-        this.name = "Confetti Wall";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -32581,7 +29744,6 @@ namespace Terraria
       }
       else if (type == 2697)
       {
-        this.name = "Confetti Block";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -32595,7 +29757,6 @@ namespace Terraria
       }
       else if (type == 2698)
       {
-        this.name = "Confetti Wall";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -32609,7 +29770,6 @@ namespace Terraria
       }
       else if (type == 2699)
       {
-        this.name = "Weapon Rack";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -32624,7 +29784,6 @@ namespace Terraria
       }
       else if (type == 2700)
       {
-        this.name = "Fireworks Box";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -32640,7 +29799,6 @@ namespace Terraria
       }
       else if (type == 2701)
       {
-        this.name = "Living Fire Block";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -32654,7 +29812,6 @@ namespace Terraria
       }
       else if (type >= 2702 && type <= 2737)
       {
-        this.name = "statues";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -32670,7 +29827,6 @@ namespace Terraria
       }
       else if (type == 2738)
       {
-        this.name = "Firework Fountain";
         this.createTile = 338;
         this.placeStyle = 0;
         this.useStyle = 1;
@@ -32687,7 +29843,6 @@ namespace Terraria
       }
       else if (type == 2739)
       {
-        this.name = "Booster Track";
         this.useStyle = 1;
         this.useAnimation = 15;
         this.useTime = 7;
@@ -32706,7 +29861,6 @@ namespace Terraria
       }
       else if (type == 2740)
       {
-        this.name = "Grasshopper";
         this.useStyle = 1;
         this.autoReuse = true;
         this.useTurn = true;
@@ -32722,7 +29876,6 @@ namespace Terraria
       }
       else if (type == 2741)
       {
-        this.name = "Critter Cage";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -32736,7 +29889,6 @@ namespace Terraria
       }
       else if (type == 2742)
       {
-        this.name = "Music Box (Underground Crimson)";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -32753,7 +29905,6 @@ namespace Terraria
       }
       else if (type == 2743)
       {
-        this.name = "Cactus Table";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -32769,7 +29920,6 @@ namespace Terraria
       }
       else if (type == 2744)
       {
-        this.name = "Cactus Platform";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -32784,7 +29934,6 @@ namespace Terraria
       }
       else if (type == 2745)
       {
-        this.name = "Boreal Wood Sword";
         this.useStyle = 1;
         this.useTurn = false;
         this.useAnimation = 23;
@@ -32800,7 +29949,6 @@ namespace Terraria
       }
       else if (type == 2746)
       {
-        this.name = "Boreal Wood Hammer";
         this.autoReuse = true;
         this.useStyle = 1;
         this.useTurn = true;
@@ -32818,7 +29966,6 @@ namespace Terraria
       }
       else if (type == 2747)
       {
-        this.name = "Boreal Wood Bow";
         this.useStyle = 5;
         this.useAnimation = 29;
         this.useTime = 29;
@@ -32835,7 +29982,6 @@ namespace Terraria
       }
       else if (type == 2748)
       {
-        this.name = "Glass Chest";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -32854,7 +30000,6 @@ namespace Terraria
         this.mana = 10;
         this.damage = 36;
         this.useStyle = 1;
-        this.name = "Xeno Staff";
         this.shootSpeed = 10f;
         this.shoot = 423;
         this.width = 26;
@@ -32865,15 +30010,13 @@ namespace Terraria
         this.rare = 8;
         this.noMelee = true;
         this.knockBack = 2f;
-        this.toolTip = "Summons a UFO to fight for you";
         this.buffType = 140;
-        this.value = 10000;
+        this.value = Item.sellPrice(0, 10, 0, 0);
         this.summon = true;
       }
       else if (type == 2750)
       {
         this.autoReuse = true;
-        this.name = "Meteor Staff";
         this.mana = 13;
         this.useStyle = 5;
         this.damage = 50;
@@ -32892,7 +30035,6 @@ namespace Terraria
       }
       else if (type >= 2751 && type <= 2755)
       {
-        this.name = "Living Fire Block";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -32906,7 +30048,6 @@ namespace Terraria
       }
       else if (type == 2756)
       {
-        this.name = "Gender Change Potion";
         this.UseSound = SoundID.Item6;
         this.useStyle = 2;
         this.useTurn = true;
@@ -32921,7 +30062,6 @@ namespace Terraria
       }
       else if (type == 2757)
       {
-        this.name = "Vortex Helmet";
         this.width = 18;
         this.height = 18;
         this.defense = 14;
@@ -32931,7 +30071,6 @@ namespace Terraria
       }
       else if (type == 2758)
       {
-        this.name = "Vortex Breastplate";
         this.width = 18;
         this.height = 18;
         this.defense = 28;
@@ -32941,7 +30080,6 @@ namespace Terraria
       }
       else if (type == 2759)
       {
-        this.name = "Vortex Leggings";
         this.width = 18;
         this.height = 18;
         this.defense = 20;
@@ -32950,7 +30088,6 @@ namespace Terraria
       }
       else if (type == 2760)
       {
-        this.name = "Nebula Helmet";
         this.width = 18;
         this.height = 18;
         this.defense = 14;
@@ -32960,7 +30097,6 @@ namespace Terraria
       }
       else if (type == 2761)
       {
-        this.name = "Nebula Breastplate";
         this.width = 18;
         this.height = 18;
         this.defense = 18;
@@ -32970,7 +30106,6 @@ namespace Terraria
       }
       else if (type == 2762)
       {
-        this.name = "Nebula Leggings";
         this.width = 18;
         this.height = 18;
         this.defense = 14;
@@ -32980,7 +30115,6 @@ namespace Terraria
       }
       else if (type == 2763)
       {
-        this.name = "Solar Flare Helmet";
         this.width = 18;
         this.height = 18;
         this.defense = 24;
@@ -32989,7 +30123,6 @@ namespace Terraria
       }
       else if (type == 2764)
       {
-        this.name = "Solar Flare Breastplate";
         this.width = 18;
         this.height = 18;
         this.defense = 34;
@@ -32998,7 +30131,6 @@ namespace Terraria
       }
       else if (type == 2765)
       {
-        this.name = "Solar Flare Leggings";
         this.width = 18;
         this.height = 18;
         this.defense = 20;
@@ -33008,32 +30140,26 @@ namespace Terraria
       else if (type == 2767)
       {
         this.useStyle = 4;
-        this.name = "Lunar Tablet";
         this.width = 22;
         this.height = 14;
         this.consumable = true;
         this.useAnimation = 45;
         this.useTime = 45;
         this.maxStack = 20;
-        this.toolTip = "Summons the Eclipse";
         this.rare = 8;
       }
       else if (type == 2766)
       {
-        this.name = "Lunar Tablet Fragment";
         this.width = 22;
         this.height = 14;
         this.maxStack = 99;
-        this.toolTip = "Power pulses weakly in the fragment";
         this.rare = 8;
       }
       else if (type == 2770)
       {
-        this.name = "Mothron Wings";
         this.width = 22;
         this.height = 20;
         this.accessory = true;
-        this.toolTip = "Allows flight and slow fall";
         this.value = 400000;
         this.rare = 8;
         this.wingSlot = (sbyte) 27;
@@ -33041,7 +30167,6 @@ namespace Terraria
       else if (type == 2769)
       {
         this.useStyle = 1;
-        this.name = "Cosmic Car Key";
         this.width = 32;
         this.height = 30;
         this.UseSound = SoundID.Item25;
@@ -33055,7 +30180,6 @@ namespace Terraria
       else if (type == 2768)
       {
         this.useStyle = 1;
-        this.name = "Drill Containment Unit";
         this.width = 32;
         this.height = 30;
         this.UseSound = SoundID.Item25;
@@ -33069,7 +30193,6 @@ namespace Terraria
       else if (type == 2771)
       {
         this.useStyle = 1;
-        this.name = "Brain Scrambler";
         this.channel = true;
         this.width = 34;
         this.height = 34;
@@ -33083,7 +30206,6 @@ namespace Terraria
       }
       else if (type == 2772)
       {
-        this.name = "Vortex Axe";
         this.autoReuse = true;
         this.useStyle = 1;
         this.useAnimation = 25;
@@ -33103,7 +30225,6 @@ namespace Terraria
       }
       else if (type == 2773)
       {
-        this.name = "Vortex Chainsaw";
         this.useStyle = 5;
         this.useAnimation = 25;
         this.useTime = 7;
@@ -33126,7 +30247,6 @@ namespace Terraria
       }
       else if (type == 2774)
       {
-        this.name = "Vortex Drill";
         this.useStyle = 5;
         this.useAnimation = 25;
         this.useTime = 9;
@@ -33149,7 +30269,6 @@ namespace Terraria
       }
       else if (type == 2776)
       {
-        this.name = "Vortex Pickaxe";
         this.useStyle = 1;
         this.useAnimation = 12;
         this.useTime = 6;
@@ -33169,7 +30288,6 @@ namespace Terraria
       }
       else if (type == 2775)
       {
-        this.name = "Vortex Hammer";
         this.useTurn = true;
         this.autoReuse = true;
         this.useStyle = 1;
@@ -33192,14 +30310,12 @@ namespace Terraria
       {
         this.SetDefaults3(2772);
         type = 2777;
-        this.name = "Nebula Axe";
         this.glowMask = (short) 6;
       }
       else if (type == 2778)
       {
         this.SetDefaults3(2773);
         type = 2778;
-        this.name = "Nebula Chainsaw";
         this.shoot = 429;
         this.glowMask = (short) 22;
       }
@@ -33207,7 +30323,6 @@ namespace Terraria
       {
         this.SetDefaults3(2774);
         type = 2779;
-        this.name = "Nebula Drill";
         this.shoot = 430;
         this.glowMask = (short) 23;
       }
@@ -33215,28 +30330,24 @@ namespace Terraria
       {
         this.SetDefaults3(2775);
         type = 2780;
-        this.name = "Nebula Hammer";
         this.glowMask = (short) 9;
       }
       else if (type == 2781)
       {
         this.SetDefaults3(2776);
         type = 2781;
-        this.name = "Nebula Pickaxe";
         this.glowMask = (short) 10;
       }
       else if (type == 2782)
       {
         this.SetDefaults3(2772);
         type = 2782;
-        this.name = "Solar Flare Axe";
         this.glowMask = (short) -1;
       }
       else if (type == 2783)
       {
         this.SetDefaults3(2773);
         type = 2783;
-        this.name = "Solar Flare Chainsaw";
         this.shoot = 431;
         this.glowMask = (short) -1;
       }
@@ -33244,7 +30355,6 @@ namespace Terraria
       {
         this.SetDefaults3(2774);
         type = 2784;
-        this.name = "Solar Flare Drill";
         this.shoot = 432;
         this.glowMask = (short) -1;
       }
@@ -33252,19 +30362,16 @@ namespace Terraria
       {
         this.SetDefaults3(2775);
         type = 2785;
-        this.name = "Solar Flare Hammer";
         this.glowMask = (short) -1;
       }
       else if (type == 2786)
       {
         this.SetDefaults3(2776);
         type = 2786;
-        this.name = "Solar Flare Pickaxe";
         this.glowMask = (short) -1;
       }
       else if (type == 2787)
       {
-        this.name = "Honeyfall Block";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -33278,7 +30385,6 @@ namespace Terraria
       }
       else if (type == 2788)
       {
-        this.name = "Honeyfall Wall";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -33292,7 +30398,6 @@ namespace Terraria
       }
       else if (type >= 2789 && type <= 2791)
       {
-        this.name = "Walls";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -33306,7 +30411,6 @@ namespace Terraria
       }
       else if (type >= 2792 && type <= 2794)
       {
-        this.name = "bricks";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -33320,7 +30424,6 @@ namespace Terraria
       }
       else if (type == 2795)
       {
-        this.name = "Laser Machinegun";
         this.useStyle = 5;
         this.useAnimation = 20;
         this.useTime = 20;
@@ -33344,7 +30447,6 @@ namespace Terraria
         this.useStyle = 5;
         this.useAnimation = 12;
         this.useTime = 12;
-        this.name = "Electrosphere Launcher";
         this.width = 50;
         this.height = 18;
         this.shoot = 442;
@@ -33365,7 +30467,6 @@ namespace Terraria
         this.useAnimation = 21;
         this.useTime = 21;
         this.autoReuse = true;
-        this.name = "Xenopopper";
         this.width = 50;
         this.height = 18;
         this.shoot = 444;
@@ -33382,7 +30483,6 @@ namespace Terraria
       }
       else if (type == 2798)
       {
-        this.name = "Laser Drill";
         this.useStyle = 5;
         this.useAnimation = 25;
         this.useTime = 7;
@@ -33406,11 +30506,9 @@ namespace Terraria
       }
       else if (type == 2799)
       {
-        this.name = "Laser Ruler";
         this.width = 10;
         this.height = 26;
         this.accessory = true;
-        this.toolTip = "Creates measurement lines on screen for block placement";
         this.value = Item.buyPrice(0, 1, 0, 0);
         this.rare = 1;
       }
@@ -33420,7 +30518,6 @@ namespace Terraria
         this.damage = 0;
         this.knockBack = 7f;
         this.useStyle = 5;
-        this.name = "Anti-Gravity Hook";
         this.shootSpeed = 14f;
         this.shoot = 446;
         this.width = 18;
@@ -33434,7 +30531,6 @@ namespace Terraria
       }
       else if (type == 2801)
       {
-        this.name = "Moon Mask";
         this.width = 28;
         this.height = 20;
         this.headSlot = 172;
@@ -33443,7 +30539,6 @@ namespace Terraria
       }
       else if (type == 2802)
       {
-        this.name = "Sun Mask";
         this.width = 28;
         this.height = 20;
         this.headSlot = 173;
@@ -33452,7 +30547,6 @@ namespace Terraria
       }
       else if (type == 2803)
       {
-        this.name = "Martian Costume Mask";
         this.width = 18;
         this.height = 18;
         this.headSlot = 174;
@@ -33461,7 +30555,6 @@ namespace Terraria
       }
       else if (type == 2804)
       {
-        this.name = "Martian Costume Shirt";
         this.width = 18;
         this.height = 18;
         this.bodySlot = 178;
@@ -33470,7 +30563,6 @@ namespace Terraria
       }
       else if (type == 2805)
       {
-        this.name = "Martian Costume Pants";
         this.width = 18;
         this.height = 18;
         this.legSlot = 113;
@@ -33479,7 +30571,6 @@ namespace Terraria
       }
       else if (type == 2806)
       {
-        this.name = "Martian Uniform Helmet";
         this.width = 18;
         this.height = 18;
         this.headSlot = 175;
@@ -33489,7 +30580,6 @@ namespace Terraria
       }
       else if (type == 2807)
       {
-        this.name = "Martian Uniform Torso";
         this.width = 18;
         this.height = 18;
         this.bodySlot = 179;
@@ -33499,7 +30589,6 @@ namespace Terraria
       }
       else if (type == 2808)
       {
-        this.name = "Martian Uniform Pants";
         this.width = 18;
         this.height = 18;
         this.legSlot = 114;
@@ -33508,7 +30597,6 @@ namespace Terraria
       }
       else if (type == 2822)
       {
-        this.name = "Martian Platform";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -33523,7 +30611,6 @@ namespace Terraria
       }
       else if (type == 2810)
       {
-        this.name = "Martian Bathtub";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -33539,7 +30626,6 @@ namespace Terraria
       }
       else if (type == 2811)
       {
-        this.name = "Martian Bed";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -33555,7 +30641,6 @@ namespace Terraria
       }
       else if (type == 2823)
       {
-        this.name = "Martian Sofa";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -33571,7 +30656,6 @@ namespace Terraria
       }
       else if (type == 2825)
       {
-        this.name = "Martian Table Lamp";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -33588,7 +30672,6 @@ namespace Terraria
       else if (type == 2818)
       {
         this.noWet = true;
-        this.name = "Martian Hover Candle";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -33603,7 +30686,6 @@ namespace Terraria
       }
       else if (type == 2812)
       {
-        this.name = "Martian Chair";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -33618,7 +30700,6 @@ namespace Terraria
       }
       else if (type == 2813)
       {
-        this.name = "Martian Chandelier";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -33634,7 +30715,6 @@ namespace Terraria
       }
       else if (type == 2814)
       {
-        this.name = "Martian Chest";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -33650,7 +30730,6 @@ namespace Terraria
       }
       else if (type == 2815)
       {
-        this.name = "Martian Door";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -33665,7 +30744,6 @@ namespace Terraria
       }
       else if (type == 2816)
       {
-        this.name = "Martian Dresser";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -33681,7 +30759,6 @@ namespace Terraria
       }
       else if (type == 2820)
       {
-        this.name = "Martian Lantern";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -33696,7 +30773,6 @@ namespace Terraria
       }
       else if (type == 2821)
       {
-        this.name = "Martian Piano";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -33712,7 +30788,6 @@ namespace Terraria
       }
       else if (type == 2824)
       {
-        this.name = "Martian Table";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -33728,7 +30803,6 @@ namespace Terraria
       }
       else if (type == 2819)
       {
-        this.name = "Martian Lamppost";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -33744,7 +30818,6 @@ namespace Terraria
       }
       else if (type == 2826)
       {
-        this.name = "Martian Work Bench";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -33757,11 +30830,9 @@ namespace Terraria
         this.width = 28;
         this.height = 14;
         this.value = 150;
-        this.toolTip = "Used for basic crafting";
       }
       else if (type == 2817)
       {
-        this.name = "Martian Holobookcase";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -33777,7 +30848,6 @@ namespace Terraria
       }
       else if (type == 2809)
       {
-        this.name = "Martian Astro Clock";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -33793,7 +30863,6 @@ namespace Terraria
       }
       else if (type >= 2827 && type <= 2855)
       {
-        this.name = "Sink";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -33809,7 +30878,6 @@ namespace Terraria
       }
       else if (type == 2856)
       {
-        this.name = "White Lunatic Hood";
         this.width = 28;
         this.height = 20;
         this.headSlot = 176;
@@ -33819,7 +30887,6 @@ namespace Terraria
       }
       else if (type == 2857)
       {
-        this.name = "Blue Lunatic Hood";
         this.width = 28;
         this.height = 20;
         this.headSlot = 177;
@@ -33829,7 +30896,6 @@ namespace Terraria
       }
       else if (type == 2858)
       {
-        this.name = "White Lunatic Robe";
         this.width = 18;
         this.height = 14;
         this.bodySlot = 180;
@@ -33839,7 +30905,6 @@ namespace Terraria
       }
       else if (type == 2859)
       {
-        this.name = "Blue Lunatic Robe";
         this.width = 18;
         this.height = 14;
         this.bodySlot = 181;
@@ -33849,7 +30914,6 @@ namespace Terraria
       }
       else if (type == 2860)
       {
-        this.name = "Martian Conduit Plating";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -33864,7 +30928,6 @@ namespace Terraria
       }
       else if (type == 2861)
       {
-        this.name = "Martian Conduit Wall";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -33879,7 +30942,6 @@ namespace Terraria
       }
       else if (type == 2862)
       {
-        this.name = "HiTek Sunglasses";
         this.width = 28;
         this.height = 12;
         this.headSlot = 178;
@@ -33890,7 +30952,6 @@ namespace Terraria
       }
       else if (type == 2863)
       {
-        this.name = "Martian Hair Dye";
         this.width = 20;
         this.height = 26;
         this.maxStack = 99;
@@ -33906,7 +30967,6 @@ namespace Terraria
       }
       else if (type == 2864)
       {
-        this.name = "Martian Dye";
         this.glowMask = (short) 99;
         this.width = 20;
         this.height = 20;
@@ -33916,7 +30976,6 @@ namespace Terraria
       }
       else if (type == 2865)
       {
-        this.name = "Castle Marsberg";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -33932,7 +30991,6 @@ namespace Terraria
       }
       else if (type == 2866)
       {
-        this.name = "Martia Lisa";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -33948,7 +31006,6 @@ namespace Terraria
       }
       else if (type == 2867)
       {
-        this.name = "The Truth Is Up There";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -33964,7 +31021,6 @@ namespace Terraria
       }
       else if (type == 2868)
       {
-        this.name = "Smoke Block";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -33979,7 +31035,6 @@ namespace Terraria
       }
       else if (type == 2869)
       {
-        this.name = "Living Flame Dye";
         this.width = 20;
         this.height = 20;
         this.maxStack = 99;
@@ -33988,7 +31043,6 @@ namespace Terraria
       }
       else if (type == 2870)
       {
-        this.name = "Living Rainbow Dye";
         this.width = 20;
         this.height = 20;
         this.maxStack = 99;
@@ -33997,7 +31051,6 @@ namespace Terraria
       }
       else if (type == 2871)
       {
-        this.name = "Shadow Dye";
         this.width = 20;
         this.height = 20;
         this.maxStack = 99;
@@ -34006,7 +31059,6 @@ namespace Terraria
       }
       else if (type == 2872)
       {
-        this.name = "Negative Dye";
         this.width = 20;
         this.height = 20;
         this.maxStack = 99;
@@ -34015,7 +31067,6 @@ namespace Terraria
       }
       else if (type == 2873)
       {
-        this.name = "Living Ocean Dye";
         this.width = 20;
         this.height = 20;
         this.maxStack = 99;
@@ -34024,7 +31075,6 @@ namespace Terraria
       }
       else if (type == 2874)
       {
-        this.name = "Brown Dye";
         this.width = 20;
         this.height = 20;
         this.maxStack = 99;
@@ -34033,7 +31083,6 @@ namespace Terraria
       }
       else if (type == 2875)
       {
-        this.name = "Brown and Black Dye";
         this.width = 20;
         this.height = 20;
         this.maxStack = 99;
@@ -34042,7 +31091,6 @@ namespace Terraria
       }
       else if (type == 2876)
       {
-        this.name = "Bright Brown Dye";
         this.width = 20;
         this.height = 20;
         this.maxStack = 99;
@@ -34051,7 +31099,6 @@ namespace Terraria
       }
       else if (type == 2877)
       {
-        this.name = "Brown and Silver Dye";
         this.width = 20;
         this.height = 20;
         this.maxStack = 99;
@@ -34060,7 +31107,6 @@ namespace Terraria
       }
       else if (type == 2878)
       {
-        this.name = "Wisp Dye";
         this.width = 20;
         this.height = 20;
         this.maxStack = 99;
@@ -34070,7 +31116,6 @@ namespace Terraria
       }
       else if (type == 2879)
       {
-        this.name = "Pixie Dye";
         this.width = 20;
         this.height = 20;
         this.maxStack = 99;
@@ -34080,7 +31125,6 @@ namespace Terraria
       }
       else if (type == 2880)
       {
-        this.name = "Spellbound Edge";
         this.useStyle = 1;
         this.useAnimation = 20;
         this.useTime = 20;
@@ -34099,7 +31143,6 @@ namespace Terraria
       }
       else if (type == 2882)
       {
-        this.name = "Charged Blaster Cannon";
         this.useStyle = 5;
         this.useAnimation = 20;
         this.useTime = 20;
@@ -34121,7 +31164,6 @@ namespace Terraria
       }
       else if (type == 2883)
       {
-        this.name = "Chlorophyte Dye";
         this.width = 20;
         this.height = 20;
         this.maxStack = 99;
@@ -34131,7 +31173,6 @@ namespace Terraria
       }
       else if (type == 2885)
       {
-        this.name = "Infernal Wisp Dye";
         this.width = 20;
         this.height = 20;
         this.maxStack = 99;
@@ -34141,7 +31182,6 @@ namespace Terraria
       }
       else if (type == 2884)
       {
-        this.name = "Unicorn Wisp Dye";
         this.width = 20;
         this.height = 20;
         this.maxStack = 99;
@@ -34151,7 +31191,6 @@ namespace Terraria
       }
       else if (type == 2887)
       {
-        this.name = "Vicious Mushroom";
         this.width = 16;
         this.height = 18;
         this.maxStack = 99;
@@ -34161,7 +31200,6 @@ namespace Terraria
       {
         this.damage = 0;
         this.useStyle = 1;
-        this.name = "Vicious Powder";
         this.shootSpeed = 4f;
         this.shoot = 463;
         this.width = 16;
@@ -34173,14 +31211,12 @@ namespace Terraria
         this.useTime = 15;
         this.noMelee = true;
         this.value = 100;
-        this.toolTip = "Removes the Hallow";
       }
       else if (type == 2888)
       {
         this.useStyle = 5;
         this.useAnimation = 23;
         this.useTime = 23;
-        this.name = "The Bee's Knees";
         this.width = 12;
         this.height = 28;
         this.shoot = 469;
@@ -34196,7 +31232,6 @@ namespace Terraria
       }
       else if (type >= 2889 && type <= 2895)
       {
-        this.name = "Gold Critter";
         this.useStyle = 1;
         this.autoReuse = true;
         this.useTurn = true;
@@ -34217,7 +31252,6 @@ namespace Terraria
       else if (type == 2896)
       {
         this.useStyle = 1;
-        this.name = "Sticky Dynamite";
         this.shootSpeed = 4f;
         this.shoot = 470;
         this.width = 8;
@@ -34234,7 +31268,6 @@ namespace Terraria
       }
       else if (type >= 2897 && type <= 2994)
       {
-        this.name = "Monster Banner";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -34251,7 +31284,6 @@ namespace Terraria
       }
       else if (type == 2995)
       {
-        this.name = "Sparky Painting";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -34267,7 +31299,6 @@ namespace Terraria
       }
       else if (type == 2996)
       {
-        this.name = "Vine Rope";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -34279,34 +31310,27 @@ namespace Terraria
         this.width = 12;
         this.height = 12;
         this.tileBoost += 3;
-        this.toolTip = "Can be climbed on";
       }
       else if (type == 2997)
       {
-        this.name = "Unity Potion";
         this.maxStack = 30;
         this.consumable = true;
         this.width = 14;
         this.height = 24;
-        this.toolTip = "Teleports you to a party member";
-        this.toolTip2 = "Right click their head on the fullscreen map";
         this.value = 1000;
         this.rare = 1;
       }
       else if (type == 2998)
       {
-        this.name = "Summoner Emblem";
         this.width = 24;
         this.height = 24;
         this.accessory = true;
-        this.toolTip = "15% increased summon damage";
         this.value = 100000;
         this.rare = 4;
       }
       else if (type == 2999)
       {
         this.rare = 1;
-        this.name = "Bewitching Table";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -34324,7 +31348,6 @@ namespace Terraria
         if (type != 3000)
           return;
         this.rare = 1;
-        this.name = "Alchemy Table";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -34344,7 +31367,6 @@ namespace Terraria
       if (type == 3001)
       {
         this.rare = 1;
-        this.name = "StrangeBrew";
         this.UseSound = SoundID.Item3;
         this.healLife = 80;
         this.healMana = 400;
@@ -34361,7 +31383,6 @@ namespace Terraria
       }
       else if (type == 3061)
       {
-        this.name = "Architect Gizmo Pack";
         this.width = 30;
         this.height = 30;
         this.accessory = true;
@@ -34375,7 +31396,6 @@ namespace Terraria
         this.color = new Color((int) byte.MaxValue, (int) byte.MaxValue, (int) byte.MaxValue, 0);
         this.rare = 1;
         this.useStyle = 1;
-        this.name = "Spelunker Glowstick";
         this.shootSpeed = 6f;
         this.shoot = 473;
         this.width = 12;
@@ -34391,7 +31411,6 @@ namespace Terraria
       }
       else if (type == 3003)
       {
-        this.name = "Bone Arrow";
         this.shootSpeed = 3.5f;
         this.shoot = 474;
         this.damage = 6;
@@ -34408,7 +31427,6 @@ namespace Terraria
       {
         this.flame = true;
         this.noWet = true;
-        this.name = "Bone Torch";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -34426,7 +31444,6 @@ namespace Terraria
       else if (type == 3005)
       {
         this.useStyle = 1;
-        this.name = "Vine Rope Coil";
         this.shootSpeed = 10f;
         this.shoot = 475;
         this.damage = 0;
@@ -34439,7 +31456,6 @@ namespace Terraria
         this.useTime = 20;
         this.noUseGraphic = true;
         this.noMelee = true;
-        this.toolTip = "Throw to create a climbable line of vine rope";
       }
       else if (type == 3006)
       {
@@ -34447,7 +31463,6 @@ namespace Terraria
         this.autoReuse = true;
         this.damage = 30;
         this.useStyle = 5;
-        this.name = "Soul Drain";
         this.shootSpeed = 10f;
         this.shoot = 476;
         this.width = 26;
@@ -34457,14 +31472,12 @@ namespace Terraria
         this.rare = 5;
         this.noMelee = true;
         this.knockBack = 2.5f;
-        this.toolTip = "Drains power from enemies";
         this.value = Item.sellPrice(0, 8, 0, 0);
         this.magic = true;
       }
       else if (type == 3007)
       {
         this.autoReuse = true;
-        this.name = "Dart Pistol";
         this.useStyle = 5;
         this.useAnimation = 22;
         this.useTime = 22;
@@ -34486,7 +31499,6 @@ namespace Terraria
       else if (type == 3008)
       {
         this.autoReuse = true;
-        this.name = "Dart Rifle";
         this.useStyle = 5;
         this.useAnimation = 38;
         this.useTime = 38;
@@ -34507,7 +31519,6 @@ namespace Terraria
       }
       else if (type == 3009)
       {
-        this.name = "Crystal Dart";
         this.shoot = 477;
         this.width = 8;
         this.height = 8;
@@ -34522,7 +31533,6 @@ namespace Terraria
       }
       else if (type == 3010)
       {
-        this.name = "Cursed Dart";
         this.shoot = 478;
         this.width = 8;
         this.height = 8;
@@ -34537,7 +31547,6 @@ namespace Terraria
       }
       else if (type == 3011)
       {
-        this.name = "Ichor Dart";
         this.shoot = 479;
         this.width = 8;
         this.height = 8;
@@ -34553,7 +31562,6 @@ namespace Terraria
       else if (type == 3012)
       {
         this.autoReuse = true;
-        this.name = "Chain Guillotines";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 14;
@@ -34572,7 +31580,6 @@ namespace Terraria
       }
       else if (type == 3013)
       {
-        this.name = "Fetid Baghnakhs";
         this.useStyle = 1;
         this.useTurn = true;
         this.autoReuse = true;
@@ -34595,7 +31602,6 @@ namespace Terraria
         this.autoReuse = true;
         this.damage = 43;
         this.useStyle = 1;
-        this.name = "Clinger Staff";
         this.shootSpeed = 15f;
         this.shoot = 482;
         this.width = 26;
@@ -34606,13 +31612,11 @@ namespace Terraria
         this.rare = 5;
         this.noMelee = true;
         this.knockBack = 8f;
-        this.toolTip = "Summons a wall of cursed flames";
         this.value = Item.sellPrice(0, 8, 0, 0);
         this.magic = true;
       }
       else if (type == 3024)
       {
-        this.name = "Skiphs's Dye";
         this.width = 20;
         this.height = 20;
         this.maxStack = 99;
@@ -34621,7 +31625,6 @@ namespace Terraria
       }
       else if (type == 3599)
       {
-        this.name = "Loki's Dye";
         this.width = 20;
         this.height = 20;
         this.maxStack = 99;
@@ -34630,40 +31633,32 @@ namespace Terraria
       }
       else if (type == 3015)
       {
-        this.name = "Putrid Scent";
         this.width = 24;
         this.height = 24;
         this.accessory = true;
-        this.toolTip = "Enemies are less likely to target you";
-        this.toolTip2 = "3% increased damage and critical strike chance";
         this.value = Item.sellPrice(0, 8, 0, 0);
         this.rare = 6;
       }
       else if (type == 3016)
       {
-        this.name = "Flesh Knuckles";
         this.width = 24;
         this.height = 24;
         this.accessory = true;
-        this.toolTip = "Enemies are more likely to target you";
         this.defense = 7;
         this.value = Item.sellPrice(0, 8, 0, 0);
         this.rare = 5;
       }
       else if (type == 3017)
       {
-        this.name = "Flower Boots";
         this.width = 16;
         this.height = 24;
         this.accessory = true;
         this.rare = 7;
-        this.toolTip = "Flowers grow on the grass beneath you";
         this.value = Item.sellPrice(0, 8, 0, 0);
         this.shoeSlot = (sbyte) 16;
       }
       else if (type == 3018)
       {
-        this.name = "Seedler";
         this.useStyle = 1;
         this.autoReuse = true;
         this.useAnimation = 23;
@@ -34685,7 +31680,6 @@ namespace Terraria
         this.useStyle = 5;
         this.useAnimation = 14;
         this.useTime = 14;
-        this.name = "Hellwing Bow";
         this.width = 18;
         this.height = 46;
         this.shoot = 485;
@@ -34698,11 +31692,9 @@ namespace Terraria
         this.value = Item.sellPrice(0, 4, 0, 0);
         this.rare = 3;
         this.ranged = true;
-        this.toolTip = "Shoots a charged arrow";
       }
       else if (type >= 3020 && type <= 3023)
       {
-        this.name = "Hook";
         this.noUseGraphic = true;
         this.damage = 0;
         this.useStyle = 5;
@@ -34719,7 +31711,6 @@ namespace Terraria
       }
       else if (type == 3025)
       {
-        this.name = "Plaid Dye";
         this.width = 20;
         this.height = 20;
         this.maxStack = 99;
@@ -34728,7 +31719,6 @@ namespace Terraria
       }
       else if (type == 3026)
       {
-        this.name = "Reflective Silver Dye";
         this.width = 20;
         this.height = 20;
         this.maxStack = 99;
@@ -34737,7 +31727,6 @@ namespace Terraria
       }
       else if (type == 3027)
       {
-        this.name = "Reflective Gold Dye";
         this.width = 20;
         this.height = 20;
         this.maxStack = 99;
@@ -34746,7 +31735,6 @@ namespace Terraria
       }
       else if (type == 3190)
       {
-        this.name = "Reflective Dye";
         this.width = 20;
         this.height = 20;
         this.maxStack = 99;
@@ -34755,7 +31743,6 @@ namespace Terraria
       }
       else if (type == 3038)
       {
-        this.name = "Hades Dye";
         this.width = 20;
         this.height = 20;
         this.maxStack = 99;
@@ -34764,7 +31751,6 @@ namespace Terraria
       }
       else if (type == 3597)
       {
-        this.name = "Burning Hades Dye";
         this.width = 20;
         this.height = 20;
         this.maxStack = 99;
@@ -34773,7 +31759,6 @@ namespace Terraria
       }
       else if (type == 3600)
       {
-        this.name = "Shadowflame Hades Dye";
         this.width = 20;
         this.height = 20;
         this.maxStack = 99;
@@ -34782,7 +31767,6 @@ namespace Terraria
       }
       else if (type == 3598)
       {
-        this.name = "Grim Dye";
         this.width = 20;
         this.height = 20;
         this.maxStack = 99;
@@ -34795,7 +31779,6 @@ namespace Terraria
         this.autoReuse = true;
         this.useAnimation = 19;
         this.useTime = 19;
-        this.name = "Daedalus Stormbow";
         this.width = 28;
         this.height = 60;
         this.shoot = 1;
@@ -34814,7 +31797,6 @@ namespace Terraria
         this.channel = true;
         this.damage = 40;
         this.useStyle = 1;
-        this.name = "Flying Knife";
         this.shootSpeed = 17f;
         this.shoot = 491;
         this.width = 26;
@@ -34844,7 +31826,6 @@ namespace Terraria
       }
       else if (type == 3036)
       {
-        this.name = "Fish Finder";
         this.width = 24;
         this.height = 28;
         this.rare = 3;
@@ -34853,7 +31834,6 @@ namespace Terraria
       }
       else if (type == 3037)
       {
-        this.name = "Weather Radio";
         this.width = 24;
         this.height = 28;
         this.rare = 1;
@@ -34862,7 +31842,6 @@ namespace Terraria
       }
       else if (type == 3033)
       {
-        this.name = "Gold Ring";
         this.width = 16;
         this.height = 24;
         this.accessory = true;
@@ -34871,7 +31850,6 @@ namespace Terraria
       }
       else if (type == 3034)
       {
-        this.name = "Coin Ring";
         this.width = 16;
         this.height = 24;
         this.accessory = true;
@@ -34880,7 +31858,6 @@ namespace Terraria
       }
       else if (type == 3035)
       {
-        this.name = "Greedy Ring";
         this.width = 16;
         this.height = 24;
         this.accessory = true;
@@ -34889,7 +31866,6 @@ namespace Terraria
       }
       else if (type == 3039)
       {
-        this.name = "Twilight Dye";
         this.width = 20;
         this.height = 20;
         this.maxStack = 99;
@@ -34898,7 +31874,6 @@ namespace Terraria
       }
       else if (type == 3040)
       {
-        this.name = "Acid Dye";
         this.width = 20;
         this.height = 20;
         this.maxStack = 99;
@@ -34907,7 +31882,6 @@ namespace Terraria
       }
       else if (type == 3028)
       {
-        this.name = "Blue Acid Dye";
         this.width = 20;
         this.height = 20;
         this.maxStack = 99;
@@ -34916,7 +31890,6 @@ namespace Terraria
       }
       else if (type == 3041)
       {
-        this.name = "Glowing Mushroom Dye";
         this.width = 20;
         this.height = 20;
         this.maxStack = 99;
@@ -34925,7 +31898,6 @@ namespace Terraria
       }
       else if (type == 3042)
       {
-        this.name = "Phase Dye";
         this.width = 20;
         this.height = 20;
         this.maxStack = 99;
@@ -34936,7 +31908,6 @@ namespace Terraria
       {
         this.damage = 0;
         this.useStyle = 1;
-        this.name = "Magic Lantern";
         this.shoot = 492;
         this.width = 16;
         this.height = 30;
@@ -34950,7 +31921,6 @@ namespace Terraria
       }
       else if (type == 3044)
       {
-        this.name = "Music Box (Lunar Boss?)";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -34969,7 +31939,6 @@ namespace Terraria
       {
         this.flame = true;
         this.noWet = true;
-        this.name = "Rainbow Torch";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -34987,7 +31956,6 @@ namespace Terraria
       }
       else if (type >= 3046 && type <= 3050)
       {
-        this.name = "Campfire";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -34999,14 +31967,12 @@ namespace Terraria
         this.placeStyle = 1 + type - 3046;
         this.width = 12;
         this.height = 12;
-        this.toolTip = "Life regen is increased when near a campfire";
       }
       else if (type == 3051)
       {
         this.mana = 13;
         this.damage = 19;
         this.useStyle = 5;
-        this.name = "Crystal Vile Shard";
         this.shootSpeed = 32f;
         this.shoot = 494;
         this.width = 26;
@@ -35084,7 +32050,6 @@ namespace Terraria
       }
       else if (type >= 3055 && type <= 3059)
       {
-        this.name = "Painting";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -35102,7 +32067,6 @@ namespace Terraria
       {
         this.damage = 0;
         this.useStyle = 1;
-        this.name = "Bone Rattle";
         this.shoot = 499;
         this.width = 16;
         this.height = 30;
@@ -35119,7 +32083,6 @@ namespace Terraria
         this.channel = true;
         this.damage = 0;
         this.useStyle = 4;
-        this.name = "Crimson Heart";
         this.shoot = 500;
         this.width = 24;
         this.height = 24;
@@ -35128,7 +32091,6 @@ namespace Terraria
         this.useTime = 20;
         this.rare = 1;
         this.noMelee = true;
-        this.toolTip = "Creates a magical crimson heart";
         this.value = 10000;
         this.buffType = 155;
       }
@@ -35136,7 +32098,6 @@ namespace Terraria
       {
         this.rare = 10;
         this.UseSound = SoundID.Item1;
-        this.name = "Meowmere";
         this.useStyle = 1;
         this.damage = 200;
         this.useAnimation = 16;
@@ -35153,7 +32114,6 @@ namespace Terraria
       }
       else if (type == 3064)
       {
-        this.name = "Sundial";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -35171,7 +32131,6 @@ namespace Terraria
       {
         this.rare = 9;
         this.UseSound = SoundID.Item105;
-        this.name = "Star Wrath";
         this.useStyle = 1;
         this.damage = 110;
         this.useAnimation = 16;
@@ -35188,7 +32147,6 @@ namespace Terraria
       }
       else if (type == 3066)
       {
-        this.name = "Marble Block";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -35202,7 +32160,6 @@ namespace Terraria
       }
       else if (type == 3067)
       {
-        this.name = "Hellstone Brick Wall";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -35216,7 +32173,6 @@ namespace Terraria
       }
       else if (type == 3068)
       {
-        this.name = "Guide to Making Cordage";
         this.width = 16;
         this.height = 24;
         this.accessory = true;
@@ -35228,7 +32184,6 @@ namespace Terraria
         this.mana = 2;
         this.damage = 8;
         this.useStyle = 1;
-        this.name = "Wand of Sparking";
         this.shootSpeed = 7f;
         this.shoot = 504;
         this.width = 26;
@@ -35243,7 +32198,6 @@ namespace Terraria
       }
       else if (type >= 3070 && type <= 3076)
       {
-        this.name = "Gold Critter Cage";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -35259,7 +32213,6 @@ namespace Terraria
       }
       else if (type == 3077)
       {
-        this.name = "Silk Rope";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -35272,11 +32225,9 @@ namespace Terraria
         this.height = 12;
         this.value = 10;
         this.tileBoost += 3;
-        this.toolTip = "Can be climbed on";
       }
       else if (type == 3078)
       {
-        this.name = "Web Rope";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -35289,11 +32240,9 @@ namespace Terraria
         this.height = 12;
         this.value = 10;
         this.tileBoost += 3;
-        this.toolTip = "Can be climbed on";
       }
       else if (type == 3081)
       {
-        this.name = "Marble";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -35307,7 +32256,6 @@ namespace Terraria
       }
       else if (type == 3082)
       {
-        this.name = "Marble Wall";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -35321,7 +32269,6 @@ namespace Terraria
       }
       else if (type == 3083)
       {
-        this.name = "Marble Block Wall";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -35335,7 +32282,6 @@ namespace Terraria
       }
       else if (type == 3084)
       {
-        this.name = "Radar";
         this.width = 24;
         this.height = 18;
         this.accessory = true;
@@ -35344,18 +32290,14 @@ namespace Terraria
       }
       else if (type == 3085)
       {
-        this.name = "Gold Lock Box";
         this.width = 12;
         this.height = 12;
         this.rare = 2;
-        this.toolTip = "Right click to open";
-        this.toolTip2 = "Requires a Golden Key";
         this.maxStack = 99;
         this.value = Item.buyPrice(0, 2, 0, 0);
       }
       else if (type == 3086)
       {
-        this.name = "Granite";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -35370,7 +32312,6 @@ namespace Terraria
       else if (type == 3080)
       {
         this.useStyle = 1;
-        this.name = "Web Rope Coil";
         this.shootSpeed = 10f;
         this.shoot = 506;
         this.damage = 0;
@@ -35384,12 +32325,10 @@ namespace Terraria
         this.noUseGraphic = true;
         this.noMelee = true;
         this.value = 100;
-        this.toolTip = "Throw to create a climbable line of rope";
       }
       else if (type == 3079)
       {
         this.useStyle = 1;
-        this.name = "Silk Rope Coil";
         this.shootSpeed = 10f;
         this.shoot = 505;
         this.damage = 0;
@@ -35403,11 +32342,9 @@ namespace Terraria
         this.noUseGraphic = true;
         this.noMelee = true;
         this.value = 100;
-        this.toolTip = "Throw to create a climbable line of rope";
       }
       else if (type == 3087)
       {
-        this.name = "Granite Block";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -35421,7 +32358,6 @@ namespace Terraria
       }
       else if (type == 3088)
       {
-        this.name = "Granite Wall";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -35435,7 +32371,6 @@ namespace Terraria
       }
       else if (type == 3089)
       {
-        this.name = "Granite Block Wall";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -35449,39 +32384,32 @@ namespace Terraria
       }
       else if (type == 3090)
       {
-        this.name = "Royal Gel";
         this.width = 16;
         this.height = 24;
         this.accessory = true;
         this.rare = 2;
-        this.toolTip = "Slimes become friendly";
         this.value = 100000;
         this.expert = true;
       }
       else if (type == 3091 || type == 3092)
       {
-        this.name = "Mimic Key";
         this.width = 14;
         this.height = 20;
         this.maxStack = 99;
-        this.toolTip = "Spawns a mimic";
         this.useAnimation = 20;
         this.useTime = 20;
       }
       else if (type == 3093)
       {
-        this.name = "Herb Bag";
         this.width = 12;
         this.height = 12;
         this.rare = 1;
-        this.toolTip = "Right click to open";
         this.maxStack = 99;
         this.value = Item.sellPrice(0, 0, 10, 0);
       }
       else if (type == 3094)
       {
         this.useStyle = 1;
-        this.name = "Javelin";
         this.shootSpeed = 11.5f;
         this.shoot = 507;
         this.damage = 17;
@@ -35499,7 +32427,6 @@ namespace Terraria
       }
       else if (type == 3095)
       {
-        this.name = "Tally Counter";
         this.width = 24;
         this.height = 18;
         this.accessory = true;
@@ -35510,7 +32437,6 @@ namespace Terraria
       {
         this.melee = true;
         this.damage = 30;
-        this.name = "Shield of Cthulhu";
         this.width = 24;
         this.height = 28;
         this.rare = 1;
@@ -35523,7 +32449,6 @@ namespace Terraria
       }
       else if (type == 3098)
       {
-        this.name = "Butcher's Chainsaw";
         this.useStyle = 5;
         this.useAnimation = 25;
         this.useTime = 8;
@@ -35544,7 +32469,6 @@ namespace Terraria
       }
       else if (type == 3099)
       {
-        this.name = "Stopwatch";
         this.width = 24;
         this.height = 18;
         this.accessory = true;
@@ -35553,7 +32477,6 @@ namespace Terraria
       }
       else if (type == 3100)
       {
-        this.name = "Meteorite Brick";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -35567,7 +32490,6 @@ namespace Terraria
       }
       else if (type == 3101)
       {
-        this.name = "Meteorite Brick Wall";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -35581,7 +32503,6 @@ namespace Terraria
       }
       else if (type == 3102)
       {
-        this.name = "Metal Detector";
         this.width = 24;
         this.height = 18;
         this.accessory = true;
@@ -35590,7 +32511,6 @@ namespace Terraria
       }
       else if (type == 3103)
       {
-        this.name = "Endless Quiver";
         this.shootSpeed = 3f;
         this.shoot = 1;
         this.damage = 5;
@@ -35604,7 +32524,6 @@ namespace Terraria
       }
       else if (type == 3104)
       {
-        this.name = "Endless Musket Pouch";
         this.shootSpeed = 4f;
         this.shoot = 14;
         this.damage = 7;
@@ -35621,7 +32540,6 @@ namespace Terraria
         this.magic = true;
         this.mana = 30;
         this.useStyle = 1;
-        this.name = "Toxic Flask";
         this.shootSpeed = 9f;
         this.rare = 8;
         this.damage = 46;
@@ -35639,7 +32557,6 @@ namespace Terraria
       else if (type == 3106)
       {
         this.autoReuse = true;
-        this.name = "Psycho Knife";
         this.useStyle = 1;
         this.useAnimation = 20;
         this.useTime = 20;
@@ -35659,7 +32576,6 @@ namespace Terraria
         this.autoReuse = true;
         this.useAnimation = 15;
         this.useTime = 15;
-        this.name = "Nailgun";
         this.width = 50;
         this.height = 18;
         this.shoot = 514;
@@ -35674,7 +32590,6 @@ namespace Terraria
       }
       else if (type == 3108)
       {
-        this.name = "Nail";
         this.shootSpeed = 6f;
         this.shoot = 514;
         this.damage = 30;
@@ -35690,41 +32605,33 @@ namespace Terraria
       }
       else if (type == 3109)
       {
-        this.name = "Night Vision Helmet";
         this.width = 22;
         this.height = 22;
         this.defense = 2;
         this.headSlot = 179;
         this.rare = 3;
         this.value = Item.sellPrice(0, 2, 0, 0);
-        this.toolTip = "Improves vision";
       }
       else if (type == 3110)
       {
-        this.name = "Celestial Shell";
         this.width = 16;
         this.height = 24;
         this.accessory = true;
         this.rare = 8;
-        this.toolTip = "Turns the holder into a werewolf at night and a merfolk when entering water";
-        this.toolTip2 = "Minor increases to all stats";
         this.value = 700000;
       }
       else if (type == 3111)
       {
-        this.name = "Pink Gel";
         this.width = 10;
         this.height = 12;
         this.maxStack = 999;
         this.alpha = 100;
-        this.toolTip = "'Bouncy and sweet!'";
         this.value = 15;
       }
       else if (type == 3112)
       {
         this.color = new Color((int) byte.MaxValue, (int) byte.MaxValue, (int) byte.MaxValue, 0);
         this.useStyle = 1;
-        this.name = "Bouncy Glowstick";
         this.shootSpeed = 6f;
         this.shoot = 515;
         this.width = 12;
@@ -35737,16 +32644,12 @@ namespace Terraria
         this.noMelee = true;
         this.value = 10;
         this.holdStyle = 1;
-        this.toolTip = "Works when wet";
-        this.toolTip2 = "Very bouncy";
       }
       else if (type == 3113)
       {
-        this.name = "Pink Slime Block";
         this.createTile = 371;
         this.width = 12;
         this.height = 12;
-        this.toolTip = "Very bouncy";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -35759,7 +32662,6 @@ namespace Terraria
       {
         this.flame = true;
         this.noWet = true;
-        this.name = "Pink Torch";
         this.holdStyle = 1;
         this.autoReuse = true;
         this.maxStack = 99;
@@ -35777,7 +32679,6 @@ namespace Terraria
       else if (type == 3115)
       {
         this.useStyle = 1;
-        this.name = "Bouncy Bomb";
         this.shootSpeed = 5f;
         this.shoot = 516;
         this.width = 20;
@@ -35791,13 +32692,10 @@ namespace Terraria
         this.noMelee = true;
         this.value = Item.buyPrice(0, 0, 4, 0);
         this.damage = 0;
-        this.toolTip = "A small explosion that will destroy some tiles";
-        this.toolTip2 = "Very bouncy";
       }
       else if (type == 3116)
       {
         this.useStyle = 5;
-        this.name = "Bouncy Grenade";
         this.shootSpeed = 6.5f;
         this.shoot = 517;
         this.width = 20;
@@ -35812,20 +32710,16 @@ namespace Terraria
         this.value = 100;
         this.damage = 65;
         this.knockBack = 8f;
-        this.toolTip = "A small explosion that will not destroy tiles";
-        this.toolTip2 = "Very bouncy";
         this.thrown = true;
       }
       else if (type == 3117)
       {
         this.flame = true;
         this.noWet = true;
-        this.name = "Peace Candle";
         this.createTile = 372;
         this.width = 8;
         this.height = 18;
         this.holdStyle = 1;
-        this.toolTip = "Makes surrounding creatures less hostile";
         this.rare = 1;
         this.useStyle = 1;
         this.useTurn = true;
@@ -35837,11 +32731,9 @@ namespace Terraria
       }
       else if (type >= 3203 && type <= 3208)
       {
-        this.name = "Biome Crate";
         this.width = 12;
         this.height = 12;
         this.rare = 2;
-        this.toolTip = "Right click to open";
         this.maxStack = 99;
         this.createTile = 376;
         this.placeStyle = 3 + type - 3203;
@@ -35854,7 +32746,6 @@ namespace Terraria
       }
       else if (type == 3209)
       {
-        this.name = "Crystal Serpent";
         this.mana = 9;
         this.UseSound = SoundID.Item109;
         this.useStyle = 5;
@@ -35874,7 +32765,6 @@ namespace Terraria
       }
       else if (type == 3210)
       {
-        this.name = "Toxikcarp";
         this.UseSound = SoundID.Item111;
         this.useStyle = 5;
         this.damage = 43;
@@ -35893,7 +32783,6 @@ namespace Terraria
       }
       else if (type == 3211)
       {
-        this.name = "Bladetongue";
         this.useStyle = 1;
         this.useAnimation = 28;
         this.useTime = 28;
@@ -35910,18 +32799,15 @@ namespace Terraria
       }
       else if (type == 3212)
       {
-        this.name = "Shark Tooth Necklace";
         this.width = 22;
         this.height = 22;
         this.accessory = true;
         this.rare = 1;
-        this.toolTip = "Increases armor penetration";
         this.value = Item.sellPrice(0, 1, 0, 0);
         this.neckSlot = (sbyte) 7;
       }
       else if (type == 3213)
       {
-        this.name = "Money Trough";
         this.useStyle = 1;
         this.shootSpeed = 4f;
         this.shoot = 525;
@@ -35935,7 +32821,6 @@ namespace Terraria
       }
       else if (type == 3119)
       {
-        this.name = "DPS Meter";
         this.width = 24;
         this.height = 18;
         this.accessory = true;
@@ -35944,7 +32829,6 @@ namespace Terraria
       }
       else if (type == 3118)
       {
-        this.name = "Lifeform Analyzer";
         this.width = 24;
         this.height = 18;
         this.accessory = true;
@@ -35953,7 +32837,6 @@ namespace Terraria
       }
       else if (type == 3096)
       {
-        this.name = "Sextant";
         this.width = 24;
         this.height = 18;
         this.accessory = true;
@@ -35962,7 +32845,6 @@ namespace Terraria
       }
       else if (type == 3120)
       {
-        this.name = "Fisherman's Guide";
         this.width = 24;
         this.height = 28;
         this.rare = 1;
@@ -35971,7 +32853,6 @@ namespace Terraria
       }
       else if (type == 3121)
       {
-        this.name = "Goblin Tech";
         this.width = 24;
         this.height = 28;
         this.rare = 3;
@@ -35980,7 +32861,6 @@ namespace Terraria
       }
       else if (type == 3122)
       {
-        this.name = "REK";
         this.width = 24;
         this.height = 28;
         this.rare = 3;
@@ -35989,7 +32869,6 @@ namespace Terraria
       }
       else if (type == 3123)
       {
-        this.name = "PDA";
         this.width = 24;
         this.height = 28;
         this.rare = 5;
@@ -35998,7 +32877,6 @@ namespace Terraria
       }
       else if (type == 3124)
       {
-        this.name = "Cell Phone";
         this.width = 24;
         this.height = 28;
         this.rare = 7;
@@ -36011,7 +32889,6 @@ namespace Terraria
       }
       else if (type == 3159 || type == 3160 || type == 3161)
       {
-        this.name = "Bathtubs";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -36032,7 +32909,6 @@ namespace Terraria
       }
       else if (type == 3162 || type == 3163 || type == 3164)
       {
-        this.name = "Beds";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -36059,7 +32935,6 @@ namespace Terraria
       }
       else if (type == 3165 || type == 3166 || type == 3167)
       {
-        this.name = "Bookcases";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -36086,7 +32961,6 @@ namespace Terraria
       }
       else if (type == 3168 || type == 3169 || type == 3170)
       {
-        this.name = "Candelabras";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -36113,7 +32987,6 @@ namespace Terraria
       }
       else if (type == 3171 || type == 3172 || type == 3173)
       {
-        this.name = "Candles";
         this.noWet = true;
         this.useStyle = 1;
         this.useTurn = true;
@@ -36140,7 +33013,6 @@ namespace Terraria
       }
       else if (type == 3174 || type == 3175 || type == 3176)
       {
-        this.name = "Chairs";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -36166,7 +33038,6 @@ namespace Terraria
       }
       else if (type == 3177 || type == 3178 || type == 3179)
       {
-        this.name = "Chandeliers";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -36193,7 +33064,6 @@ namespace Terraria
       }
       else if (type == 3180 || type == 3181 || type == 3125)
       {
-        this.name = "Chests";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -36220,7 +33090,6 @@ namespace Terraria
       }
       else if (type == 3126 || type == 3127 || type == 3128)
       {
-        this.name = "Clocks";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -36247,7 +33116,6 @@ namespace Terraria
       }
       else if (type == 3129 || type == 3130 || type == 3131)
       {
-        this.name = "Doors";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -36273,7 +33141,6 @@ namespace Terraria
       }
       else if (type == 3132 || type == 3133 || type == 3134)
       {
-        this.name = "Dressers";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -36300,7 +33167,6 @@ namespace Terraria
       }
       else if (type == 3135 || type == 3136 || type == 3137)
       {
-        this.name = "Lamps";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -36327,7 +33193,6 @@ namespace Terraria
       }
       else if (type == 3138 || type == 3139 || type == 3140)
       {
-        this.name = "Lanterns";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -36353,7 +33218,6 @@ namespace Terraria
       }
       else if (type == 3141 || type == 3142 || type == 3143)
       {
-        this.name = "Pianos";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -36380,7 +33244,6 @@ namespace Terraria
       }
       else if (type == 3144 || type == 3145 || type == 3146)
       {
-        this.name = "Platforms";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -36406,7 +33269,6 @@ namespace Terraria
       }
       else if (type == 3147 || type == 3148 || type == 3149)
       {
-        this.name = "Sinks";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -36433,7 +33295,6 @@ namespace Terraria
       }
       else if (type == 3150 || type == 3151 || type == 3152)
       {
-        this.name = "Sofas";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -36460,7 +33321,6 @@ namespace Terraria
       }
       else if (type == 3153 || type == 3154 || type == 3155)
       {
-        this.name = "Tables";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -36487,7 +33347,6 @@ namespace Terraria
       }
       else if (type == 3156 || type == 3157 || type == 3158)
       {
-        this.name = "Workbenchs";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -36514,7 +33373,6 @@ namespace Terraria
       }
       else if (type == 3182)
       {
-        this.name = "Magic Water Dropper";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -36529,7 +33387,6 @@ namespace Terraria
       }
       else if (type == 3183)
       {
-        this.name = "Golden Bug Net";
         this.useTurn = true;
         this.useStyle = 1;
         this.useAnimation = 18;
@@ -36543,7 +33400,6 @@ namespace Terraria
       }
       else if (type == 3184)
       {
-        this.name = "Magic Lava Dropper";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -36558,7 +33414,6 @@ namespace Terraria
       }
       else if (type == 3185)
       {
-        this.name = "Magic Honey Dropper";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -36573,7 +33428,6 @@ namespace Terraria
       }
       else if (type == 3186)
       {
-        this.name = "Empty Dropper";
         this.maxStack = 999;
         this.width = 24;
         this.height = 24;
@@ -36581,7 +33435,6 @@ namespace Terraria
       }
       else if (type == 3187)
       {
-        this.name = "Gladiator Helmet";
         this.width = 18;
         this.height = 18;
         this.defense = 2;
@@ -36590,7 +33443,6 @@ namespace Terraria
       }
       else if (type == 3188)
       {
-        this.name = "Gladiator Breastplate";
         this.width = 18;
         this.height = 18;
         this.defense = 3;
@@ -36599,7 +33451,6 @@ namespace Terraria
       }
       else if (type == 3189)
       {
-        this.name = "Gladiator Leggings";
         this.width = 18;
         this.height = 18;
         this.defense = 2;
@@ -36608,7 +33459,6 @@ namespace Terraria
       }
       else if (type >= 3191 && type <= 3194)
       {
-        this.name = "Grub";
         this.useStyle = 1;
         this.autoReuse = true;
         this.useTurn = true;
@@ -36631,7 +33481,6 @@ namespace Terraria
       }
       else if (type == 3195)
       {
-        this.name = "Grub Soup";
         this.UseSound = SoundID.Item3;
         this.useStyle = 2;
         this.useTurn = true;
@@ -36644,13 +33493,11 @@ namespace Terraria
         this.buffType = 26;
         this.buffTime = 108000;
         this.rare = 1;
-        this.toolTip = "Minor improvements to all stats";
         this.value = 1000;
       }
       else if (type == 3196)
       {
         this.useStyle = 1;
-        this.name = "Bomb Fish";
         this.shootSpeed = 6f;
         this.shoot = 519;
         this.width = 26;
@@ -36664,14 +33511,12 @@ namespace Terraria
         this.noMelee = true;
         this.value = Item.sellPrice(0, 0, 2, 0);
         this.damage = 0;
-        this.toolTip = "A small explosion that will destroy some tiles";
         this.rare = 1;
       }
       else if (type == 3197)
       {
         this.rare = 1;
         this.useStyle = 1;
-        this.name = "Frost Daggerfish";
         this.shootSpeed = 12.5f;
         this.shoot = 520;
         this.damage = 17;
@@ -36691,7 +33536,6 @@ namespace Terraria
       else if (type == 3198)
       {
         this.rare = 1;
-        this.name = "Sharpening Station";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -36706,7 +33550,6 @@ namespace Terraria
       }
       else if (type == 3199)
       {
-        this.name = "Ice Mirror";
         this.useTurn = true;
         this.width = 20;
         this.height = 20;
@@ -36714,36 +33557,30 @@ namespace Terraria
         this.useTime = 90;
         this.UseSound = SoundID.Item6;
         this.useAnimation = 90;
-        this.toolTip = "Gaze in the mirror to return home";
         this.rare = 1;
         this.value = 50000;
       }
       else if (type == 3200)
       {
-        this.name = "Sailfish Boots";
         this.width = 28;
         this.height = 24;
         this.accessory = true;
         this.rare = 1;
-        this.toolTip = "The wearer can run super fast";
         this.value = 50000;
         this.shoeSlot = (sbyte) 17;
       }
       else if (type == 3201)
       {
-        this.name = "Tsunami in a Bottle";
         this.width = 16;
         this.height = 24;
         this.accessory = true;
         this.rare = 1;
-        this.toolTip = "Allows the holder to double jump";
         this.value = 50000;
         this.waistSlot = (sbyte) 11;
       }
       else if (type == 3202)
       {
         this.rare = 1;
-        this.name = "Target Dummy";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -36758,7 +33595,6 @@ namespace Terraria
       }
       else if (type == 3214)
       {
-        this.name = "Bubble";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -36773,7 +33609,6 @@ namespace Terraria
       }
       else if (type >= 3215 && type <= 3222)
       {
-        this.name = "Planter Box";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -36789,41 +33624,34 @@ namespace Terraria
       }
       else if (type == 3223)
       {
-        this.name = "Brain of Confusion";
         this.width = 22;
         this.height = 22;
         this.accessory = true;
         this.rare = 1;
-        this.toolTip = "May confuse nearby enemies after being struck";
         this.value = 50000;
         this.expert = true;
       }
       else if (type == 3224)
       {
-        this.name = "Worm Scarf";
         this.width = 22;
         this.height = 22;
         this.accessory = true;
         this.rare = 1;
-        this.toolTip = "Reduces damage taken by 10%";
         this.value = 50000;
         this.neckSlot = (sbyte) 8;
         this.expert = true;
       }
       else if (type == 3225)
       {
-        this.name = "Balloon Pufferfish";
         this.width = 14;
         this.height = 28;
         this.rare = 1;
         this.value = 27000;
         this.accessory = true;
-        this.toolTip = "Increases jump height";
         this.balloonSlot = (sbyte) 11;
       }
       else if (type == 3226)
       {
-        this.name = "Lazure's Helmet";
         this.width = 28;
         this.height = 20;
         this.headSlot = 181;
@@ -36832,7 +33660,6 @@ namespace Terraria
       }
       else if (type == 3227)
       {
-        this.name = "Lazure's Armor";
         this.width = 18;
         this.height = 14;
         this.bodySlot = 183;
@@ -36841,7 +33668,6 @@ namespace Terraria
       }
       else if (type == 3228)
       {
-        this.name = "Lazure's Wings";
         this.width = 24;
         this.height = 8;
         this.accessory = true;
@@ -36851,7 +33677,6 @@ namespace Terraria
       }
       else if (type >= 3229 && type <= 3233)
       {
-        this.name = "Grave Marker";
         this.useTurn = true;
         this.useStyle = 1;
         this.useAnimation = 15;
@@ -36865,7 +33690,6 @@ namespace Terraria
       }
       else if (type == 3234)
       {
-        this.name = "Crystal Block";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -36879,7 +33703,6 @@ namespace Terraria
       }
       else if (type >= 3235 && type <= 3237)
       {
-        this.name = "Music Boxes";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -36896,7 +33719,6 @@ namespace Terraria
       }
       else if (type == 3238)
       {
-        this.name = "Crystal Wall";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -36910,7 +33732,6 @@ namespace Terraria
       }
       else if (type == 3239)
       {
-        this.name = "Trap Door";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -36924,7 +33745,6 @@ namespace Terraria
       }
       else if (type == 3240)
       {
-        this.name = "Tall Gate";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -36938,18 +33758,15 @@ namespace Terraria
       }
       else if (type == 3241)
       {
-        this.name = "Balloon Sharkron";
         this.width = 14;
         this.height = 28;
         this.rare = 1;
         this.value = 27000;
         this.accessory = true;
-        this.toolTip = "Increases jump height";
         this.balloonSlot = (sbyte) 12;
       }
       else if (type == 3242)
       {
-        this.name = "Tax Collector's Hat";
         this.width = 18;
         this.height = 18;
         this.value = Item.buyPrice(0, 3, 0, 0);
@@ -36958,7 +33775,6 @@ namespace Terraria
       }
       else if (type == 3243)
       {
-        this.name = "Tax Collector's Suit";
         this.width = 18;
         this.height = 18;
         this.value = Item.buyPrice(0, 3, 0, 0);
@@ -36967,7 +33783,6 @@ namespace Terraria
       }
       else if (type == 3244)
       {
-        this.name = "Tax Collector's Pants";
         this.width = 18;
         this.height = 18;
         this.value = Item.buyPrice(0, 3, 0, 0);
@@ -36976,7 +33791,6 @@ namespace Terraria
       }
       else if (type == 3245)
       {
-        this.name = "Bone Glove";
         this.width = 16;
         this.height = 16;
         this.value = Item.sellPrice(0, 1, 0, 0);
@@ -36997,7 +33811,6 @@ namespace Terraria
       }
       else if (type == 3246)
       {
-        this.name = "Clothier's Jacket";
         this.width = 18;
         this.height = 18;
         this.value = Item.buyPrice(0, 3, 0, 0);
@@ -37006,7 +33819,6 @@ namespace Terraria
       }
       else if (type == 3247)
       {
-        this.name = "Clothier's Pants";
         this.width = 18;
         this.height = 18;
         this.value = Item.buyPrice(0, 3, 0, 0);
@@ -37015,7 +33827,6 @@ namespace Terraria
       }
       else if (type == 3248)
       {
-        this.name = "Dye Trader's Turban";
         this.width = 18;
         this.height = 18;
         this.value = Item.buyPrice(0, 3, 0, 0);
@@ -37027,7 +33838,6 @@ namespace Terraria
         this.mana = 10;
         this.damage = 50;
         this.useStyle = 1;
-        this.name = "Deadly Sphere Staff";
         this.shootSpeed = 10f;
         this.shoot = 533;
         this.buffType = 161;
@@ -37039,13 +33849,11 @@ namespace Terraria
         this.rare = 8;
         this.noMelee = true;
         this.knockBack = 2f;
-        this.toolTip = "Summons deadly spheres to fight for you";
         this.value = Item.sellPrice(0, 5, 0, 0);
         this.summon = true;
       }
       else if (type == 3250 || type == 3251 || type == 3252)
       {
-        this.name = "Horseshoe Balloons";
         this.width = 20;
         this.height = 22;
         this.rare = 4;
@@ -37055,7 +33863,6 @@ namespace Terraria
       }
       else if (type == 3253)
       {
-        this.name = "Lava Lamp";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -37072,7 +33879,6 @@ namespace Terraria
       }
       else if (type >= 3254 && type <= 3257)
       {
-        this.name = "Critter Cage";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -37086,7 +33892,6 @@ namespace Terraria
       }
       else if (type == 3258)
       {
-        this.name = "Slap Hand";
         this.useStyle = 1;
         this.useAnimation = 21;
         this.useTime = 21;
@@ -37105,7 +33910,6 @@ namespace Terraria
       else if (type == 3260)
       {
         this.useStyle = 4;
-        this.name = "Blessed Apple";
         this.channel = true;
         this.width = 34;
         this.height = 34;
@@ -37119,7 +33923,6 @@ namespace Terraria
       }
       else if (type == 3259)
       {
-        this.name = "Twilight Hair Dye";
         this.width = 20;
         this.height = 26;
         this.maxStack = 99;
@@ -37134,7 +33937,6 @@ namespace Terraria
       }
       else if (type == 3261)
       {
-        this.name = "Spectre Bar";
         this.width = 20;
         this.height = 20;
         this.maxStack = 99;
@@ -37151,7 +33953,6 @@ namespace Terraria
       }
       else if (type == 3262 || type >= 3278 && type <= 3292 || type >= 3315 && type <= 3317)
       {
-        this.name = "Yoyo";
         this.useStyle = 5;
         this.width = 24;
         this.height = 24;
@@ -37304,7 +34105,6 @@ namespace Terraria
       }
       else if (type == 3389)
       {
-        this.name = "Yoyo";
         this.useStyle = 5;
         this.width = 24;
         this.height = 24;
@@ -37325,7 +34125,6 @@ namespace Terraria
       }
       else if (type >= 3293 && type <= 3308)
       {
-        this.name = "String";
         this.width = 24;
         this.height = 24;
         this.rare = 1;
@@ -37344,7 +34143,6 @@ namespace Terraria
       }
       else if (type >= 3309 && type <= 3314)
       {
-        this.name = "Counterweight";
         this.width = 24;
         this.height = 24;
         this.rare = 2;
@@ -37353,7 +34151,6 @@ namespace Terraria
       }
       else if (type == 3263)
       {
-        this.name = "Hat";
         this.width = 18;
         this.height = 18;
         this.value = Item.buyPrice(0, 3, 0, 0);
@@ -37362,7 +34159,6 @@ namespace Terraria
       }
       else if (type == 3264)
       {
-        this.name = "Torso";
         this.width = 18;
         this.height = 18;
         this.value = Item.buyPrice(0, 3, 0, 0);
@@ -37371,7 +34167,6 @@ namespace Terraria
       }
       else if (type == 3265)
       {
-        this.name = "Pants";
         this.width = 18;
         this.height = 18;
         this.value = Item.buyPrice(0, 3, 0, 0);
@@ -37380,7 +34175,6 @@ namespace Terraria
       }
       else if (type == 3266)
       {
-        this.name = "Hat";
         this.width = 18;
         this.height = 18;
         this.value = 4500;
@@ -37389,7 +34183,6 @@ namespace Terraria
       }
       else if (type == 3267)
       {
-        this.name = "Torso";
         this.width = 18;
         this.height = 18;
         this.value = 4500;
@@ -37398,7 +34191,6 @@ namespace Terraria
       }
       else if (type == 3268)
       {
-        this.name = "Pants";
         this.width = 18;
         this.height = 18;
         this.value = 4500;
@@ -37407,7 +34199,6 @@ namespace Terraria
       }
       else if (type == 3269)
       {
-        this.name = "Medusa Head";
         this.useStyle = 4;
         this.useAnimation = 20;
         this.useTime = 20;
@@ -37430,7 +34221,6 @@ namespace Terraria
       }
       else if (type == 3270)
       {
-        this.name = "Item Frame";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -37445,7 +34235,6 @@ namespace Terraria
       }
       else if (type == 3272)
       {
-        this.name = "Hardened Sand";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -37459,7 +34248,6 @@ namespace Terraria
       }
       else if (type == 3271)
       {
-        this.name = "Sandstone";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -37473,7 +34261,6 @@ namespace Terraria
       }
       else if (type == 3273)
       {
-        this.name = "Sandstone Wall";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -37487,7 +34274,6 @@ namespace Terraria
       }
       else if (type == 3344)
       {
-        this.name = "Corrupt Sandstone Wall";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -37501,7 +34287,6 @@ namespace Terraria
       }
       else if (type == 3345)
       {
-        this.name = "Crimson Sandstone Wall";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -37515,7 +34300,6 @@ namespace Terraria
       }
       else if (type == 3346)
       {
-        this.name = "Hallow Sandstone Wall";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -37529,7 +34313,6 @@ namespace Terraria
       }
       else if (type == 3340)
       {
-        this.name = "Hardened Sand Wall";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -37543,7 +34326,6 @@ namespace Terraria
       }
       else if (type == 3341)
       {
-        this.name = "Corrupt Hardened Sand Wall";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -37557,7 +34339,6 @@ namespace Terraria
       }
       else if (type == 3342)
       {
-        this.name = "Crimson Hardened Sand Wall";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -37571,7 +34352,6 @@ namespace Terraria
       }
       else if (type == 3343)
       {
-        this.name = "Hallow Hardened Sand Wall";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -37585,7 +34365,6 @@ namespace Terraria
       }
       else if (type == 3277)
       {
-        this.name = "Crimson Sandstone";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -37599,7 +34378,6 @@ namespace Terraria
       }
       else if (type == 3276)
       {
-        this.name = "Corrupt Sandstone";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -37613,7 +34391,6 @@ namespace Terraria
       }
       else if (type == 3275)
       {
-        this.name = "Crimson Hardened Sand";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -37627,7 +34404,6 @@ namespace Terraria
       }
       else if (type == 3274)
       {
-        this.name = "Corrupt Hardened Sand";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -37641,7 +34417,6 @@ namespace Terraria
       }
       else if (type == 3339)
       {
-        this.name = "Hallow Sandstone";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -37655,7 +34430,6 @@ namespace Terraria
       }
       else if (type == 3338)
       {
-        this.name = "Hallow Hardened Sand";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -37669,7 +34443,6 @@ namespace Terraria
       }
       else if (type == 3347)
       {
-        this.name = "Desert Fossil Block";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -37683,7 +34456,6 @@ namespace Terraria
       }
       else if (type == 3348)
       {
-        this.name = "Desert Fossil Wall";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -37697,7 +34469,6 @@ namespace Terraria
       }
       else if (type >= 3318 && type <= 3332)
       {
-        this.name = "Treasure Bag";
         this.maxStack = 999;
         this.consumable = true;
         this.width = 24;
@@ -37733,7 +34504,6 @@ namespace Terraria
       }
       else if (type == 3333)
       {
-        this.name = "Hive Backpack";
         this.width = 22;
         this.height = 22;
         this.accessory = true;
@@ -37744,7 +34514,6 @@ namespace Terraria
       }
       else if (type == 3334)
       {
-        this.name = "Yoyo Golve";
         this.width = 22;
         this.height = 22;
         this.accessory = true;
@@ -37755,7 +34524,6 @@ namespace Terraria
       }
       else if (type == 3335)
       {
-        this.name = "Demon Heart";
         this.maxStack = 99;
         this.consumable = true;
         this.width = 18;
@@ -37770,7 +34538,6 @@ namespace Terraria
       }
       else if (type == 3336)
       {
-        this.name = "Spore Sac";
         this.width = 22;
         this.height = 22;
         this.accessory = true;
@@ -37780,7 +34547,6 @@ namespace Terraria
       }
       else if (type == 3337)
       {
-        this.name = "Shiny Stone";
         this.width = 22;
         this.height = 22;
         this.accessory = true;
@@ -37790,7 +34556,6 @@ namespace Terraria
       }
       else if (type == 3353)
       {
-        this.name = "Minecart Mech";
         this.width = 36;
         this.height = 26;
         this.mountType = 11;
@@ -37800,7 +34565,6 @@ namespace Terraria
       }
       else if (type == 3355 || type == 3354 || type == 3356)
       {
-        this.name = "Mechanical Piece";
         this.width = 20;
         this.height = 20;
         this.maxStack = 99;
@@ -37810,7 +34574,6 @@ namespace Terraria
       }
       else if (type == 3357 || type == 3358 || type == 3359)
       {
-        this.name = "Trophy";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -37827,7 +34590,6 @@ namespace Terraria
       }
       else if (type == 3360)
       {
-        this.name = "Wand";
         this.tileWand = 620;
         this.useStyle = 1;
         this.useTurn = true;
@@ -37841,7 +34603,6 @@ namespace Terraria
       }
       else if (type == 3361)
       {
-        this.name = "Wand";
         this.tileWand = 620;
         this.useStyle = 1;
         this.useTurn = true;
@@ -37855,7 +34616,6 @@ namespace Terraria
       }
       else if (type == 3362)
       {
-        this.name = "Fallen Tuxedo Shirt";
         this.width = 28;
         this.height = 20;
         this.bodySlot = 188;
@@ -37865,7 +34625,6 @@ namespace Terraria
       }
       else if (type == 3363)
       {
-        this.name = "Fallen Tuxedo Pants";
         this.width = 28;
         this.height = 20;
         this.legSlot = 128;
@@ -37875,7 +34634,6 @@ namespace Terraria
       }
       else if (type == 3364)
       {
-        this.name = "Fireplace";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -37890,7 +34648,6 @@ namespace Terraria
       }
       else if (type == 3365)
       {
-        this.name = "Fireplace";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -37905,7 +34662,6 @@ namespace Terraria
       }
       else if (type == 3366)
       {
-        this.name = "Yoyo Bag";
         this.width = 24;
         this.height = 24;
         this.rare = 4;
@@ -37915,7 +34671,6 @@ namespace Terraria
       else if (type == 3367)
       {
         this.useStyle = 4;
-        this.name = "Shrimpy Truffle";
         this.channel = true;
         this.width = 34;
         this.height = 34;
@@ -37930,7 +34685,6 @@ namespace Terraria
       }
       else if (type == 3368)
       {
-        this.name = "Arkhalis";
         this.width = 14;
         this.height = 38;
         this.useAnimation = 25;
@@ -37951,7 +34705,6 @@ namespace Terraria
       }
       else if (type == 3369)
       {
-        this.name = "Confetti Cannon";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -37968,7 +34721,6 @@ namespace Terraria
       }
       else if (type == 3370)
       {
-        this.name = "Music Box (Towers)";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -37985,7 +34737,6 @@ namespace Terraria
       }
       else if (type == 3371)
       {
-        this.name = "Music Box (Goblins)";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -38002,7 +34753,6 @@ namespace Terraria
       }
       else if (type >= 3372 && type <= 3373)
       {
-        this.name = "Skeletron Mask";
         this.width = 28;
         this.height = 20;
         this.headSlot = type + 186 - 3372;
@@ -38011,7 +34761,6 @@ namespace Terraria
       }
       else if (type == 3374)
       {
-        this.name = "Fossil Helmet";
         this.width = 18;
         this.height = 18;
         this.defense = 3;
@@ -38021,7 +34770,6 @@ namespace Terraria
       }
       else if (type == 3375)
       {
-        this.name = "Fossil Plate";
         this.width = 18;
         this.height = 18;
         this.defense = 6;
@@ -38031,7 +34779,6 @@ namespace Terraria
       }
       else if (type == 3376)
       {
-        this.name = "Fossil Greaves";
         this.width = 18;
         this.height = 18;
         this.defense = 4;
@@ -38041,7 +34788,6 @@ namespace Terraria
       }
       else if (type == 3377)
       {
-        this.name = "Amber Staff";
         this.mana = 7;
         this.UseSound = SoundID.Item43;
         this.useStyle = 5;
@@ -38061,7 +34807,6 @@ namespace Terraria
       }
       else if (type == 3378)
       {
-        this.name = "Bone Javelin";
         this.shoot = 598;
         this.shootSpeed = 10f;
         this.damage = 29;
@@ -38085,7 +34830,6 @@ namespace Terraria
       {
         this.autoReuse = true;
         this.useStyle = 1;
-        this.name = "Bone Knife";
         this.shootSpeed = 10f;
         this.shoot = 599;
         this.damage = 14;
@@ -38105,7 +34849,6 @@ namespace Terraria
       }
       else if (type == 3380)
       {
-        this.name = "Fossil Ore";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -38120,7 +34863,6 @@ namespace Terraria
       }
       else if (type == 3381)
       {
-        this.name = "Stardust Helmet";
         this.width = 18;
         this.height = 18;
         this.defense = 10;
@@ -38129,7 +34871,6 @@ namespace Terraria
       }
       else if (type == 3382)
       {
-        this.name = "Stardust Breastplate";
         this.width = 18;
         this.height = 18;
         this.defense = 16;
@@ -38138,7 +34879,6 @@ namespace Terraria
       }
       else if (type == 3383)
       {
-        this.name = "Stardust Leggings";
         this.width = 18;
         this.height = 18;
         this.defense = 12;
@@ -38147,7 +34887,6 @@ namespace Terraria
       }
       else if (type == 3384)
       {
-        this.name = "Portal Gun";
         this.useStyle = 5;
         this.useAnimation = 20;
         this.useTime = 20;
@@ -38166,7 +34905,6 @@ namespace Terraria
       }
       else if (type >= 3385 && type <= 3388)
       {
-        this.name = "Strange Plant";
         this.width = 20;
         this.height = 20;
         this.maxStack = 99;
@@ -38183,7 +34921,6 @@ namespace Terraria
       }
       else if (type >= 3390 && type <= 3452)
       {
-        this.name = "Monster Banner";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -38200,7 +34937,6 @@ namespace Terraria
       }
       else if (type >= 3453 && type <= 3455)
       {
-        this.name = "Nebulae";
         this.width = 12;
         this.height = 12;
         switch (type)
@@ -38218,7 +34954,6 @@ namespace Terraria
       }
       else if (type >= 3456 && type <= 3459)
       {
-        this.name = "Fragment";
         this.width = 18;
         this.height = 18;
         this.maxStack = 999;
@@ -38227,7 +34962,6 @@ namespace Terraria
       }
       else if (type == 3460)
       {
-        this.name = "Lunar Ore";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -38243,7 +34977,6 @@ namespace Terraria
       }
       else if (type == 3461)
       {
-        this.name = "Lunar Brick";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -38259,14 +34992,12 @@ namespace Terraria
       {
         this.SetDefaults3(2772);
         type = 3462;
-        this.name = "Stardust Axe";
         this.glowMask = (short) 174;
       }
       else if (type == 3463)
       {
         this.SetDefaults3(2773);
         type = 3463;
-        this.name = "Stardust Chainsaw";
         this.shoot = 610;
         this.glowMask = (short) 175;
       }
@@ -38274,7 +35005,6 @@ namespace Terraria
       {
         this.SetDefaults3(2774);
         type = 3464;
-        this.name = "Stardust Drill";
         this.shoot = 609;
         this.glowMask = (short) 176;
       }
@@ -38282,19 +35012,16 @@ namespace Terraria
       {
         this.SetDefaults3(2775);
         type = 3465;
-        this.name = "Stardust Hammer";
         this.glowMask = (short) 177;
       }
       else if (type == 3466)
       {
         this.SetDefaults3(2776);
         type = 3466;
-        this.name = "Stardust Pickaxe";
         this.glowMask = (short) 178;
       }
       else if (type == 3467)
       {
-        this.name = "Luminite";
         this.width = 20;
         this.height = 20;
         this.maxStack = 999;
@@ -38311,18 +35038,15 @@ namespace Terraria
       }
       else if (type >= 3468 && type <= 3471)
       {
-        this.name = "Wings";
         this.width = 22;
         this.height = 20;
         this.accessory = true;
-        this.toolTip = "Allows flight and slow fall";
         this.value = Item.buyPrice(0, 10, 0, 0);
         this.rare = 10;
         this.wingSlot = (sbyte) (29 + type - 3468);
       }
       else if (type == 3472)
       {
-        this.name = "Lunar Brick Wall";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -38336,7 +35060,6 @@ namespace Terraria
       }
       else if (type == 3473)
       {
-        this.name = "Solar Eruption";
         this.useStyle = 5;
         this.useAnimation = 20;
         this.useTime = 20;
@@ -38360,7 +35083,6 @@ namespace Terraria
         this.mana = 10;
         this.damage = 60;
         this.useStyle = 1;
-        this.name = "Stardust Cell Staff";
         this.shootSpeed = 10f;
         this.shoot = 613;
         this.width = 26;
@@ -38377,7 +35099,6 @@ namespace Terraria
       }
       else if (type == 3475)
       {
-        this.name = "Vortex Beater";
         this.useStyle = 5;
         this.useAnimation = 20;
         this.useTime = 20;
@@ -38403,7 +35124,6 @@ namespace Terraria
         this.mana = 30;
         this.damage = 70;
         this.useStyle = 5;
-        this.name = "Nebula Arcanum";
         this.shootSpeed = 7f;
         this.shoot = 617;
         this.width = 26;
@@ -38423,7 +35143,6 @@ namespace Terraria
       else if (type == 3477)
       {
         this.useStyle = 1;
-        this.name = "Blood Water";
         this.shootSpeed = 9f;
         this.rare = 3;
         this.damage = 20;
@@ -38439,11 +35158,9 @@ namespace Terraria
         this.noUseGraphic = true;
         this.noMelee = true;
         this.value = 200;
-        this.toolTip = "Spreads the Crimson to some blocks";
       }
       else if (type == 3478)
       {
-        this.name = "Wedding Veil";
         this.width = 18;
         this.height = 18;
         this.headSlot = 190;
@@ -38452,7 +35169,6 @@ namespace Terraria
       }
       else if (type == 3479)
       {
-        this.name = "Wedding Dress";
         this.width = 18;
         this.height = 18;
         this.bodySlot = 191;
@@ -38461,7 +35177,6 @@ namespace Terraria
       }
       else if (type >= 3522 && type <= 3525)
       {
-        this.name = "Lunar Hamaxe";
         this.useTurn = true;
         this.autoReuse = true;
         this.useStyle = 1;
@@ -38912,7 +35627,6 @@ namespace Terraria
       }
       else if (type == 3526)
       {
-        this.name = "Solar Dye";
         this.width = 20;
         this.height = 20;
         this.maxStack = 99;
@@ -38921,7 +35635,6 @@ namespace Terraria
       }
       else if (type == 3527)
       {
-        this.name = "Nebula Dye";
         this.width = 20;
         this.height = 20;
         this.maxStack = 99;
@@ -38930,7 +35643,6 @@ namespace Terraria
       }
       else if (type == 3528)
       {
-        this.name = "Vortex Dye";
         this.width = 20;
         this.height = 20;
         this.maxStack = 99;
@@ -38939,7 +35651,6 @@ namespace Terraria
       }
       else if (type == 3529)
       {
-        this.name = "Stardust Dye";
         this.width = 20;
         this.height = 20;
         this.maxStack = 99;
@@ -38948,7 +35659,6 @@ namespace Terraria
       }
       else if (type == 3530)
       {
-        this.name = "Void Dye";
         this.width = 20;
         this.height = 20;
         this.maxStack = 99;
@@ -38960,7 +35670,6 @@ namespace Terraria
         this.mana = 10;
         this.damage = 40;
         this.useStyle = 1;
-        this.name = "Stardust Dragon Staff";
         this.shootSpeed = 10f;
         this.shoot = 625;
         this.width = 26;
@@ -38977,7 +35686,6 @@ namespace Terraria
       }
       else if (type == 3540)
       {
-        this.name = "Phantasm";
         this.useStyle = 5;
         this.useAnimation = 12;
         this.useTime = 12;
@@ -39000,7 +35708,6 @@ namespace Terraria
       }
       else if (type == 3532)
       {
-        this.name = "Bacon";
         this.UseSound = SoundID.Item2;
         this.useStyle = 2;
         this.useTurn = true;
@@ -39013,12 +35720,10 @@ namespace Terraria
         this.buffType = 26;
         this.buffTime = 108000;
         this.rare = 1;
-        this.toolTip = "Minor improvements to all stats";
         this.value = 1000;
       }
       else if (type == 3541)
       {
-        this.name = "Last Prism";
         this.useStyle = 5;
         this.useAnimation = 10;
         this.useTime = 10;
@@ -39040,7 +35745,6 @@ namespace Terraria
       }
       else if (type == 3533)
       {
-        this.name = "Shifting Sands Dye";
         this.width = 20;
         this.height = 20;
         this.maxStack = 99;
@@ -39049,7 +35753,6 @@ namespace Terraria
       }
       else if (type == 3534)
       {
-        this.name = "Mirage Dye";
         this.width = 20;
         this.height = 20;
         this.maxStack = 99;
@@ -39058,7 +35761,6 @@ namespace Terraria
       }
       else if (type == 3535)
       {
-        this.name = "Shifting Pearlsands Dye";
         this.width = 20;
         this.height = 20;
         this.maxStack = 99;
@@ -39067,7 +35769,6 @@ namespace Terraria
       }
       else if (type == 3536)
       {
-        this.name = "Vortex Monolith";
         this.width = 22;
         this.height = 32;
         this.useStyle = 1;
@@ -39080,11 +35781,10 @@ namespace Terraria
         this.createTile = 410;
         this.placeStyle = 0;
         this.rare = 9;
-        this.value = Item.buyPrice(0, 5, 0, 0);
+        this.value = Item.buyPrice(1, 0, 0, 0);
       }
       else if (type == 3537)
       {
-        this.name = "Nebula Monolith";
         this.width = 22;
         this.height = 32;
         this.useStyle = 1;
@@ -39101,7 +35801,6 @@ namespace Terraria
       }
       else if (type == 3538)
       {
-        this.name = "Stardust Monolith";
         this.width = 22;
         this.height = 32;
         this.useStyle = 1;
@@ -39118,7 +35817,6 @@ namespace Terraria
       }
       else if (type == 3539)
       {
-        this.name = "Solar Monolith";
         this.width = 22;
         this.height = 32;
         this.useStyle = 1;
@@ -39135,7 +35833,6 @@ namespace Terraria
       }
       else if (type == 3542)
       {
-        this.name = "Nebula Blaze";
         this.useStyle = 5;
         this.useAnimation = 15;
         this.useTime = 15;
@@ -39157,7 +35854,6 @@ namespace Terraria
       }
       else if (type == 3543)
       {
-        this.name = "Daybreak";
         this.shoot = 636;
         this.shootSpeed = 10f;
         this.damage = 150;
@@ -39177,7 +35873,6 @@ namespace Terraria
       }
       else if (type == 3544)
       {
-        this.name = "Super Healing Potion";
         this.UseSound = SoundID.Item3;
         this.healLife = 200;
         this.useStyle = 2;
@@ -39194,7 +35889,6 @@ namespace Terraria
       }
       else if (type == 3545)
       {
-        this.name = "Detonator";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -39211,7 +35905,6 @@ namespace Terraria
       else if (type == 3547)
       {
         this.useStyle = 1;
-        this.name = "Bouncy Dynamite";
         this.shootSpeed = 4f;
         this.shoot = 637;
         this.width = 8;
@@ -39233,7 +35926,6 @@ namespace Terraria
         this.autoReuse = true;
         this.useAnimation = 30;
         this.useTime = 30;
-        this.name = "Fireworks Launcher";
         this.useAmmo = AmmoID.Rocket;
         this.width = 50;
         this.height = 20;
@@ -39252,7 +35944,6 @@ namespace Terraria
         this.useStyle = 5;
         this.useAnimation = 24;
         this.useTime = 9;
-        this.name = "Paintball Gun";
         this.width = 24;
         this.height = 14;
         this.shoot = 587;
@@ -39306,7 +35997,6 @@ namespace Terraria
       else if (type == 3548)
       {
         this.useStyle = 5;
-        this.name = "Party Grenade";
         this.shootSpeed = 6f;
         this.shoot = 588;
         this.width = 20;
@@ -39326,7 +36016,6 @@ namespace Terraria
       }
       else if (type == 3549)
       {
-        this.name = "Lunar Crafting Station";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -39341,7 +36030,6 @@ namespace Terraria
       }
       else if (type == 3563)
       {
-        this.name = "Squirrel";
         this.useStyle = 1;
         this.autoReuse = true;
         this.useTurn = true;
@@ -39356,7 +36044,6 @@ namespace Terraria
       }
       else if (type == 3564)
       {
-        this.name = "Gold Critter";
         this.useStyle = 1;
         this.autoReuse = true;
         this.useTurn = true;
@@ -39373,7 +36060,6 @@ namespace Terraria
       }
       else if (type == 3565)
       {
-        this.name = "Critter Cage";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -39387,7 +36073,6 @@ namespace Terraria
       }
       else if (type == 3566)
       {
-        this.name = "Gold Critter Cage";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -39403,7 +36088,6 @@ namespace Terraria
       }
       else if (type == 3550)
       {
-        this.name = "Flame And Silver Dye";
         this.width = 20;
         this.height = 20;
         this.maxStack = 99;
@@ -39412,7 +36096,6 @@ namespace Terraria
       }
       else if (type == 3551)
       {
-        this.name = "Green Flame And Silver Dye";
         this.width = 20;
         this.height = 20;
         this.maxStack = 99;
@@ -39421,7 +36104,6 @@ namespace Terraria
       }
       else if (type == 3552)
       {
-        this.name = "Blue Flame And Silver Dye";
         this.width = 20;
         this.height = 20;
         this.maxStack = 99;
@@ -39430,7 +36112,6 @@ namespace Terraria
       }
       else if (type == 3553)
       {
-        this.name = "Reflective Copper Dye";
         this.width = 20;
         this.height = 20;
         this.maxStack = 99;
@@ -39439,7 +36120,6 @@ namespace Terraria
       }
       else if (type == 3554)
       {
-        this.name = "Reflective Obsidian Dye";
         this.width = 20;
         this.height = 20;
         this.maxStack = 99;
@@ -39448,7 +36128,6 @@ namespace Terraria
       }
       else if (type == 3555)
       {
-        this.name = "Reflective Metal Dye";
         this.width = 20;
         this.height = 20;
         this.maxStack = 99;
@@ -39457,7 +36136,6 @@ namespace Terraria
       }
       else if (type == 3556)
       {
-        this.name = "Midnight Rainbow Dye";
         this.width = 20;
         this.height = 20;
         this.maxStack = 99;
@@ -39466,7 +36144,6 @@ namespace Terraria
       }
       else if (type == 3557)
       {
-        this.name = "Black And White Dye";
         this.width = 20;
         this.height = 20;
         this.maxStack = 99;
@@ -39475,7 +36152,6 @@ namespace Terraria
       }
       else if (type == 3558)
       {
-        this.name = "Bright Silver Dye";
         this.width = 20;
         this.height = 20;
         this.maxStack = 99;
@@ -39484,7 +36160,6 @@ namespace Terraria
       }
       else if (type == 3559)
       {
-        this.name = "Silver And Black Dye";
         this.width = 20;
         this.height = 20;
         this.maxStack = 99;
@@ -39493,7 +36168,6 @@ namespace Terraria
       }
       else if (type == 3560)
       {
-        this.name = "Red Acid Dye";
         this.width = 20;
         this.height = 20;
         this.maxStack = 99;
@@ -39502,7 +36176,6 @@ namespace Terraria
       }
       else if (type == 3561)
       {
-        this.name = "Gel Dye";
         this.width = 20;
         this.height = 20;
         this.maxStack = 99;
@@ -39511,7 +36184,6 @@ namespace Terraria
       }
       else if (type == 3562)
       {
-        this.name = "Pink Gel Dye";
         this.width = 20;
         this.height = 20;
         this.maxStack = 99;
@@ -39520,7 +36192,6 @@ namespace Terraria
       }
       else if (type == 3567)
       {
-        this.name = "Phaser Bullet";
         this.shootSpeed = 2f;
         this.shoot = 638;
         this.damage = 20;
@@ -39537,7 +36208,6 @@ namespace Terraria
       }
       else if (type == 3568)
       {
-        this.name = "Luminite Arrow";
         this.shootSpeed = 3f;
         this.shoot = 639;
         this.damage = 15;
@@ -39556,7 +36226,6 @@ namespace Terraria
       {
         this.mana = 10;
         this.damage = 50;
-        this.name = "Lunar Portal Staff";
         this.useStyle = 1;
         this.shootSpeed = 14f;
         this.shoot = 641;
@@ -39576,7 +36245,6 @@ namespace Terraria
       {
         this.mana = 10;
         this.damage = 150;
-        this.name = "Rainbow Crystal Staff";
         this.useStyle = 1;
         this.shootSpeed = 14f;
         this.shoot = 643;
@@ -39595,7 +36263,6 @@ namespace Terraria
       else if (type == 3570)
       {
         this.autoReuse = true;
-        this.name = "Flare Staff";
         this.mana = 13;
         this.useStyle = 5;
         this.damage = 100;
@@ -39617,7 +36284,6 @@ namespace Terraria
         this.noUseGraphic = true;
         this.damage = 0;
         this.useStyle = 5;
-        this.name = "Lunar Hook";
         this.shootSpeed = 16f;
         this.shoot = 646;
         this.width = 18;
@@ -39631,7 +36297,6 @@ namespace Terraria
       }
       else if (type >= 3573 && type <= 3576)
       {
-        this.name = "Lunar Block";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -39648,7 +36313,6 @@ namespace Terraria
         this.channel = true;
         this.damage = 0;
         this.useStyle = 4;
-        this.name = "Suspicious Looking Tentacle";
         this.shoot = 650;
         this.width = 24;
         this.height = 24;
@@ -39657,13 +36321,11 @@ namespace Terraria
         this.useTime = 20;
         this.rare = 10;
         this.noMelee = true;
-        this.toolTip = "Summons a suspicious tentacle";
         this.value = Item.sellPrice(0, 10, 0, 0);
         this.buffType = 190;
       }
       else if (type == 3578)
       {
-        this.name = "If you're reading this, hi";
         this.width = 28;
         this.height = 20;
         this.bodySlot = 192;
@@ -39672,7 +36334,6 @@ namespace Terraria
       }
       else if (type == 3579)
       {
-        this.name = "Yes, this is my dev armor, deal with it";
         this.width = 18;
         this.height = 14;
         this.legSlot = 132;
@@ -39681,7 +36342,6 @@ namespace Terraria
       }
       else if (type == 3580)
       {
-        this.name = "Isn't this glorious?";
         this.width = 18;
         this.height = 14;
         this.wingSlot = (sbyte) 33;
@@ -39691,7 +36351,6 @@ namespace Terraria
       }
       else if (type == 3581)
       {
-        this.name = "Dark...";
         this.width = 18;
         this.height = 14;
         this.rare = 9;
@@ -39700,7 +36359,6 @@ namespace Terraria
       }
       else if (type == 3582)
       {
-        this.name = "Jimm's Wings";
         this.width = 24;
         this.height = 8;
         this.accessory = true;
@@ -39710,7 +36368,6 @@ namespace Terraria
       }
       else if (type == 3583)
       {
-        this.name = "Testokun";
         this.width = 28;
         this.height = 20;
         this.headSlot = 191;
@@ -39719,7 +36376,6 @@ namespace Terraria
       }
       else if (type == 3584)
       {
-        this.name = "Living Leaf Wall";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -39733,7 +36389,6 @@ namespace Terraria
       }
       else if (type == 3585)
       {
-        this.name = "Skiphs's Helm";
         this.width = 28;
         this.height = 20;
         this.headSlot = 192;
@@ -39742,7 +36397,6 @@ namespace Terraria
       }
       else if (type == 3586)
       {
-        this.name = "Skiphs's Shirt";
         this.width = 28;
         this.height = 20;
         this.bodySlot = 193;
@@ -39751,7 +36405,6 @@ namespace Terraria
       }
       else if (type == 3587)
       {
-        this.name = "Skiphs's Pants";
         this.width = 18;
         this.height = 14;
         this.legSlot = 133;
@@ -39760,7 +36413,6 @@ namespace Terraria
       }
       else if (type == 3588)
       {
-        this.name = "Skiphs's Wings";
         this.width = 24;
         this.height = 8;
         this.accessory = true;
@@ -39770,7 +36422,6 @@ namespace Terraria
       }
       else if (type == 3589)
       {
-        this.name = "Loki's Helm";
         this.width = 28;
         this.height = 20;
         this.headSlot = 193;
@@ -39779,7 +36430,6 @@ namespace Terraria
       }
       else if (type == 3590)
       {
-        this.name = "Loki's Shirt";
         this.width = 28;
         this.height = 20;
         this.bodySlot = 194;
@@ -39788,7 +36438,6 @@ namespace Terraria
       }
       else if (type == 3591)
       {
-        this.name = "Loki's Pants";
         this.width = 18;
         this.height = 14;
         this.legSlot = 134;
@@ -39797,7 +36446,6 @@ namespace Terraria
       }
       else if (type == 3592)
       {
-        this.name = "Loki's Wings";
         this.width = 24;
         this.height = 8;
         this.accessory = true;
@@ -39807,7 +36455,6 @@ namespace Terraria
       }
       else if (type >= 3593 && type <= 3594)
       {
-        this.name = "Monster Banner";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -39824,7 +36471,6 @@ namespace Terraria
       }
       else if (type == 3595)
       {
-        this.name = "Trophy";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -39841,7 +36487,6 @@ namespace Terraria
       }
       else if (type == 3596)
       {
-        this.name = "moonlord painting";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -39858,19 +36503,16 @@ namespace Terraria
       else if (type == 3601)
       {
         this.useStyle = 4;
-        this.name = "Celestial Sigil";
         this.width = 22;
         this.height = 14;
         this.consumable = true;
         this.useAnimation = 45;
         this.useTime = 45;
         this.maxStack = 20;
-        this.toolTip = "Summons the impending doom";
         this.rare = 10;
       }
       else if (type == 3602)
       {
-        this.name = "logic";
         this.createTile = 419;
         this.width = 16;
         this.height = 16;
@@ -39887,7 +36529,6 @@ namespace Terraria
       }
       else if (type >= 3603 && type <= 3608)
       {
-        this.name = "logic";
         this.createTile = 420;
         this.width = 16;
         this.height = 16;
@@ -39905,7 +36546,6 @@ namespace Terraria
       }
       else if (type == 3609)
       {
-        this.name = "logic";
         this.createTile = 421;
         this.width = 16;
         this.height = 16;
@@ -39921,7 +36561,6 @@ namespace Terraria
       }
       else if (type == 3610)
       {
-        this.name = "logic";
         this.createTile = 422;
         this.width = 16;
         this.height = 16;
@@ -39937,7 +36576,6 @@ namespace Terraria
       }
       else if (type == 3611)
       {
-        this.name = "kite";
         this.useStyle = 5;
         this.useAnimation = 10;
         this.useTime = 10;
@@ -39958,7 +36596,6 @@ namespace Terraria
         this.useAnimation = 15;
         this.useTime = 5;
         this.autoReuse = true;
-        this.name = "Wrench";
         this.width = 24;
         this.height = 28;
         this.rare = 1;
@@ -39968,7 +36605,6 @@ namespace Terraria
       }
       else if (type >= 3613 && type <= 3615)
       {
-        this.name = "logic";
         this.createTile = 423;
         this.width = 16;
         this.height = 16;
@@ -39985,7 +36621,6 @@ namespace Terraria
       }
       else if (type == 3616)
       {
-        this.name = "logic";
         this.createTile = 424;
         this.width = 16;
         this.height = 16;
@@ -40002,7 +36637,6 @@ namespace Terraria
       }
       else if (type == 3617)
       {
-        this.name = "Sign";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -40017,7 +36651,6 @@ namespace Terraria
       }
       else if (type == 3618)
       {
-        this.name = "logic";
         this.createTile = 419;
         this.placeStyle = 1;
         this.width = 16;
@@ -40035,7 +36668,6 @@ namespace Terraria
       }
       else if (type == 3619)
       {
-        this.name = "info acc";
         this.width = 24;
         this.height = 28;
         this.rare = 3;
@@ -40049,7 +36681,6 @@ namespace Terraria
         this.useAnimation = 15;
         this.useTime = 5;
         this.autoReuse = true;
-        this.name = "rod";
         this.width = 24;
         this.height = 28;
         this.rare = 1;
@@ -40059,7 +36690,6 @@ namespace Terraria
       }
       else if (type == 3621)
       {
-        this.name = "logic";
         this.createTile = 426;
         this.width = 16;
         this.height = 16;
@@ -40075,7 +36705,6 @@ namespace Terraria
       }
       else if (type == 3622)
       {
-        this.name = "logic";
         this.createTile = 427;
         this.width = 16;
         this.height = 16;
@@ -40094,7 +36723,6 @@ namespace Terraria
         this.noUseGraphic = true;
         this.damage = 0;
         this.useStyle = 5;
-        this.name = "Static Hook";
         this.shootSpeed = 16f;
         this.shoot = 652;
         this.width = 18;
@@ -40108,7 +36736,6 @@ namespace Terraria
       }
       else if (type == 3624)
       {
-        this.name = "Builder's Accessories";
         this.width = 30;
         this.height = 30;
         this.accessory = true;
@@ -40122,7 +36749,6 @@ namespace Terraria
         this.useAnimation = 15;
         this.useTime = 5;
         this.autoReuse = true;
-        this.name = "Wrench";
         this.width = 24;
         this.height = 28;
         this.rare = 1;
@@ -40132,7 +36758,6 @@ namespace Terraria
       }
       else if (type == 3626)
       {
-        this.name = "logic";
         this.createTile = 428;
         this.width = 16;
         this.height = 16;
@@ -40149,7 +36774,6 @@ namespace Terraria
       }
       else if (type == 3627)
       {
-        this.name = "Engineering Helmet";
         this.width = 18;
         this.height = 18;
         this.headSlot = 194;
@@ -40161,7 +36785,6 @@ namespace Terraria
         this.channel = true;
         this.damage = 0;
         this.useStyle = 4;
-        this.name = "Companion Cube";
         this.shoot = 653;
         this.width = 24;
         this.height = 24;
@@ -40175,7 +36798,6 @@ namespace Terraria
       }
       else if (type == 3629)
       {
-        this.name = "logic";
         this.createTile = 429;
         this.width = 16;
         this.height = 16;
@@ -40192,7 +36814,6 @@ namespace Terraria
       }
       else if (type == 3630)
       {
-        this.name = "logic";
         this.createTile = 428;
         this.width = 16;
         this.height = 16;
@@ -40209,7 +36830,6 @@ namespace Terraria
       }
       else if (type == 3631)
       {
-        this.name = "logic";
         this.createTile = 428;
         this.width = 16;
         this.height = 16;
@@ -40226,7 +36846,6 @@ namespace Terraria
       }
       else if (type == 3632)
       {
-        this.name = "logic";
         this.createTile = 428;
         this.width = 16;
         this.height = 16;
@@ -40243,7 +36862,6 @@ namespace Terraria
       }
       else if (type >= 3633 && type <= 3637)
       {
-        this.name = "logic";
         this.createTile = 430 + (type - 3633);
         this.width = 16;
         this.height = 16;
@@ -40259,7 +36877,6 @@ namespace Terraria
       }
       else if (type >= 3638 && type <= 3642)
       {
-        this.name = "logic";
         this.createTile = 435 + (type - 3638);
         this.width = 16;
         this.height = 16;
@@ -40275,14 +36892,12 @@ namespace Terraria
       }
       else if (type == 3643)
       {
-        this.name = "Large Gem";
         this.width = 20;
         this.height = 20;
         this.rare = 1;
       }
       else if (type >= 3644 && type <= 3650)
       {
-        this.name = "Gem Lock";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -40298,7 +36913,6 @@ namespace Terraria
       }
       else if (type >= 3651 && type <= 3662)
       {
-        this.name = "Statue";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -40314,7 +36928,6 @@ namespace Terraria
       }
       else if (type == 3663)
       {
-        this.name = "logic";
         this.createTile = 419;
         this.width = 16;
         this.height = 16;
@@ -40332,7 +36945,6 @@ namespace Terraria
       }
       else if (type == 3664)
       {
-        this.name = "Portal Gun Station";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -40349,7 +36961,6 @@ namespace Terraria
       }
       else if (type >= 3665 && type <= 3706)
       {
-        this.name = "Chest";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -40365,7 +36976,6 @@ namespace Terraria
       }
       else if (type == 3707)
       {
-        this.name = "logic";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -40383,7 +36993,6 @@ namespace Terraria
       }
       else if (type >= 3708 && type <= 3720)
       {
-        this.name = "Statue";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -40399,7 +37008,6 @@ namespace Terraria
       }
       else if (type == 3721)
       {
-        this.name = "Fishing Accessories";
         this.width = 26;
         this.height = 30;
         this.maxStack = 1;
@@ -40410,7 +37018,6 @@ namespace Terraria
       }
       else if (type == 3722)
       {
-        this.name = "logic";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -40426,7 +37033,6 @@ namespace Terraria
       }
       else if (type >= 3723 && type <= 3724)
       {
-        this.name = "Campfire";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -40438,11 +37044,9 @@ namespace Terraria
         this.placeStyle = 6 + type - 3723;
         this.width = 12;
         this.height = 12;
-        this.toolTip = "Life regen is increased when near a campfire";
       }
       else if (type == 3725)
       {
-        this.name = "logic";
         this.createTile = 445;
         this.width = 16;
         this.height = 16;
@@ -40459,7 +37063,6 @@ namespace Terraria
       }
       else if (type >= 3726 && type <= 3729)
       {
-        this.name = "logic";
         this.createTile = 423;
         this.width = 16;
         this.height = 16;
@@ -40476,7 +37079,6 @@ namespace Terraria
       }
       else if (type == 3730 || type == 3731)
       {
-        this.name = "balloon";
         this.width = 20;
         this.height = 22;
         this.rare = 1;
@@ -40487,7 +37089,6 @@ namespace Terraria
       }
       else if (type == 3732)
       {
-        this.name = "hat";
         this.width = 18;
         this.height = 18;
         this.headSlot = 195;
@@ -40496,7 +37097,6 @@ namespace Terraria
       }
       else if (type == 3733)
       {
-        this.name = "hat";
         this.width = 18;
         this.height = 18;
         this.headSlot = 196;
@@ -40505,7 +37105,6 @@ namespace Terraria
       }
       else if (type == 3734)
       {
-        this.name = "shirt";
         this.width = 28;
         this.height = 20;
         this.bodySlot = 195;
@@ -40514,7 +37113,6 @@ namespace Terraria
       }
       else if (type == 3735)
       {
-        this.name = "pants";
         this.width = 18;
         this.height = 14;
         this.legSlot = 138;
@@ -40523,7 +37121,6 @@ namespace Terraria
       }
       else if (type >= 3736 && type <= 3738)
       {
-        this.name = "block";
         this.createTile = 446 + (type - 3736);
         this.width = 16;
         this.height = 16;
@@ -40538,7 +37135,6 @@ namespace Terraria
       }
       else if (type >= 3739 && type <= 3741)
       {
-        this.name = "block";
         this.createTile = 449 + (type - 3739);
         this.width = 16;
         this.height = 16;
@@ -40569,7 +37165,6 @@ namespace Terraria
       }
       else if (type >= 3743 && type <= 3745)
       {
-        this.name = "obj 1x3";
         this.createTile = 453;
         this.placeStyle = type - 3743;
         if (3744 == type)
@@ -40591,7 +37186,6 @@ namespace Terraria
       }
       else if (type == 3746)
       {
-        this.name = "obj 3x3";
         this.createTile = 454;
         this.useStyle = 1;
         this.useTurn = true;
@@ -40606,7 +37200,6 @@ namespace Terraria
       }
       else if (type == 3747)
       {
-        this.name = "obj 3x3";
         this.createTile = 455;
         this.useStyle = 1;
         this.useTurn = true;
@@ -40622,7 +37215,6 @@ namespace Terraria
       }
       else if (type == 3748)
       {
-        this.name = "obj 2x3";
         this.createTile = 456;
         this.useStyle = 1;
         this.useTurn = true;
@@ -40652,7 +37244,6 @@ namespace Terraria
       }
       else if (type == 3750)
       {
-        this.name = "buff pot";
         this.UseSound = SoundID.Item3;
         this.useStyle = 2;
         this.useTurn = true;
@@ -40667,7 +37258,6 @@ namespace Terraria
       }
       else if (type == 3751)
       {
-        this.name = "wall";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -40681,7 +37271,6 @@ namespace Terraria
       }
       else if (type == 3752)
       {
-        this.name = "wall";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -40695,7 +37284,6 @@ namespace Terraria
       }
       else if (type == 3753)
       {
-        this.name = "wall";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -40709,7 +37297,6 @@ namespace Terraria
       }
       else if (type == 3754)
       {
-        this.name = "block";
         this.createTile = 458;
         this.width = 16;
         this.height = 16;
@@ -40724,7 +37311,6 @@ namespace Terraria
       }
       else if (type == 3755)
       {
-        this.name = "block";
         this.createTile = 459;
         this.width = 16;
         this.height = 16;
@@ -40738,7 +37324,6 @@ namespace Terraria
       }
       else if (type == 3756)
       {
-        this.name = "block";
         this.createTile = 460;
         this.width = 16;
         this.height = 16;
@@ -40752,7 +37337,6 @@ namespace Terraria
       }
       else if (type == 3757)
       {
-        this.name = "hat";
         this.width = 18;
         this.height = 18;
         this.headSlot = 197;
@@ -40762,7 +37346,6 @@ namespace Terraria
       }
       else if (type == 3758)
       {
-        this.name = "shirt";
         this.width = 28;
         this.height = 20;
         this.bodySlot = 196;
@@ -40772,7 +37355,6 @@ namespace Terraria
       }
       else if (type == 3759)
       {
-        this.name = "pants";
         this.width = 18;
         this.height = 14;
         this.legSlot = 139;
@@ -40782,7 +37364,6 @@ namespace Terraria
       }
       else if (type >= 3760 && type <= 3762)
       {
-        this.name = "wall";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -40796,7 +37377,6 @@ namespace Terraria
       }
       else if (type == 3763)
       {
-        this.name = "hat";
         this.width = 18;
         this.height = 18;
         this.headSlot = 198;
@@ -40816,7 +37396,6 @@ namespace Terraria
       }
       else if (type == 3770)
       {
-        this.name = "pants";
         this.width = 18;
         this.height = 14;
         this.legSlot = 140;
@@ -40827,7 +37406,6 @@ namespace Terraria
       else if (type == 3771)
       {
         this.useStyle = 4;
-        this.name = "Mount Item";
         this.channel = true;
         this.width = 34;
         this.height = 34;
@@ -40841,7 +37419,6 @@ namespace Terraria
       }
       else if (type == 3772)
       {
-        this.name = "melee claw";
         this.useStyle = 1;
         this.useTurn = true;
         this.autoReuse = true;
@@ -40859,7 +37436,6 @@ namespace Terraria
       }
       else if (type == 3773)
       {
-        this.name = "hat";
         this.width = 18;
         this.height = 18;
         this.headSlot = 199;
@@ -40869,7 +37445,6 @@ namespace Terraria
       }
       else if (type == 3774)
       {
-        this.name = "shirt";
         this.width = 18;
         this.height = 18;
         this.bodySlot = 197;
@@ -40879,7 +37454,6 @@ namespace Terraria
       }
       else if (type == 3775)
       {
-        this.name = "pants";
         this.width = 18;
         this.height = 18;
         this.legSlot = 141;
@@ -40889,7 +37463,6 @@ namespace Terraria
       }
       else if (type == 3776)
       {
-        this.name = "hat";
         this.width = 18;
         this.height = 18;
         this.defense = 6;
@@ -40899,7 +37472,6 @@ namespace Terraria
       }
       else if (type == 3777)
       {
-        this.name = "shirt";
         this.width = 18;
         this.height = 18;
         this.defense = 12;
@@ -40909,7 +37481,6 @@ namespace Terraria
       }
       else if (type == 3778)
       {
-        this.name = "pants";
         this.width = 18;
         this.height = 18;
         this.defense = 8;
@@ -40922,7 +37493,6 @@ namespace Terraria
         this.mana = 18;
         this.damage = 85;
         this.useStyle = 5;
-        this.name = "spell";
         this.shootSpeed = 3f;
         this.shoot = 659;
         this.width = 26;
@@ -40940,7 +37510,6 @@ namespace Terraria
       }
       else if (type == 3780)
       {
-        this.name = "Monster Banner";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -40957,7 +37526,6 @@ namespace Terraria
       }
       else if (type == 3781)
       {
-        this.name = "accessory";
         this.width = 24;
         this.height = 28;
         this.rare = 3;
@@ -40966,7 +37534,6 @@ namespace Terraria
       }
       else if (type == 3784)
       {
-        this.name = "pants";
         this.width = 18;
         this.height = 18;
         this.legSlot = 143;
@@ -40976,7 +37543,6 @@ namespace Terraria
       }
       else if (type == 3785)
       {
-        this.name = "shirt";
         this.width = 18;
         this.height = 18;
         this.bodySlot = 199;
@@ -40986,7 +37552,6 @@ namespace Terraria
       }
       else if (type == 3786)
       {
-        this.name = "hat";
         this.width = 18;
         this.height = 18;
         this.headSlot = 201;
@@ -41010,7 +37575,6 @@ namespace Terraria
       }
       else if (type == 3787)
       {
-        this.name = "magic glove";
         this.useStyle = 5;
         this.useAnimation = 12;
         this.useTime = 4;
@@ -41032,7 +37596,6 @@ namespace Terraria
       }
       else if (type == 3788)
       {
-        this.name = "shotgun";
         this.knockBack = 6.5f;
         this.useStyle = 5;
         this.useAnimation = 45;
@@ -41051,7 +37614,6 @@ namespace Terraria
       }
       else if (type == 3783)
       {
-        this.name = "material";
         this.width = 18;
         this.height = 18;
         this.maxStack = 999;
@@ -41060,7 +37622,6 @@ namespace Terraria
       }
       else if (type >= 3789 && type <= 3793)
       {
-        this.name = "Monster Banner";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -41077,7 +37638,6 @@ namespace Terraria
       }
       else if (type == 3794)
       {
-        this.name = "material";
         this.width = 18;
         this.height = 18;
         this.maxStack = 999;
@@ -41101,7 +37661,6 @@ namespace Terraria
       }
       else if (type == 3796)
       {
-        this.name = "Music Boxes";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -41118,7 +37677,6 @@ namespace Terraria
       }
       else if (type == 3797)
       {
-        this.name = "Apprentice's Hat";
         this.width = 18;
         this.height = 18;
         this.headSlot = 203;
@@ -41128,7 +37686,6 @@ namespace Terraria
       }
       else if (type == 3798)
       {
-        this.name = "Apprentice's Robe";
         this.width = 18;
         this.height = 18;
         this.bodySlot = 200;
@@ -41138,7 +37695,6 @@ namespace Terraria
       }
       else if (type == 3799)
       {
-        this.name = "Apprentice's Trousers";
         this.width = 18;
         this.height = 18;
         this.legSlot = 144;
@@ -41148,7 +37704,6 @@ namespace Terraria
       }
       else if (type == 3800)
       {
-        this.name = "Squire's Great Helm";
         this.width = 18;
         this.height = 18;
         this.headSlot = 204;
@@ -41158,7 +37713,6 @@ namespace Terraria
       }
       else if (type == 3801)
       {
-        this.name = "Squire's Plating";
         this.width = 18;
         this.height = 18;
         this.bodySlot = 201;
@@ -41168,7 +37722,6 @@ namespace Terraria
       }
       else if (type == 3802)
       {
-        this.name = "Squire's Greaves";
         this.width = 18;
         this.height = 18;
         this.legSlot = 145;
@@ -41178,7 +37731,6 @@ namespace Terraria
       }
       else if (type == 3803)
       {
-        this.name = "Huntress's Wig";
         this.width = 18;
         this.height = 18;
         this.headSlot = 205;
@@ -41188,7 +37740,6 @@ namespace Terraria
       }
       else if (type == 3804)
       {
-        this.name = "Huntress's Jerkin";
         this.width = 18;
         this.height = 18;
         this.bodySlot = 202;
@@ -41198,7 +37749,6 @@ namespace Terraria
       }
       else if (type == 3805)
       {
-        this.name = "Huntress's Pants";
         this.width = 18;
         this.height = 18;
         this.legSlot = 146;
@@ -41208,7 +37758,6 @@ namespace Terraria
       }
       else if (type == 3806)
       {
-        this.name = "Monk's Brows";
         this.width = 18;
         this.height = 18;
         this.headSlot = 206;
@@ -41218,7 +37767,6 @@ namespace Terraria
       }
       else if (type == 3807)
       {
-        this.name = "Monk's Shirt";
         this.width = 18;
         this.height = 18;
         this.bodySlot = 203;
@@ -41228,7 +37776,6 @@ namespace Terraria
       }
       else if (type == 3808)
       {
-        this.name = "Monk's Pants";
         this.width = 18;
         this.height = 18;
         this.legSlot = 148;
@@ -41238,7 +37785,6 @@ namespace Terraria
       }
       else if (type == 3809)
       {
-        this.name = "Apprentice's Scarf";
         this.width = 22;
         this.height = 22;
         this.accessory = true;
@@ -41248,7 +37794,6 @@ namespace Terraria
       }
       else if (type == 3810)
       {
-        this.name = "Squire's Shield";
         this.width = 22;
         this.height = 22;
         this.accessory = true;
@@ -41258,7 +37803,6 @@ namespace Terraria
       }
       else if (type == 3811)
       {
-        this.name = "Huntress's Buckler";
         this.width = 22;
         this.height = 22;
         this.accessory = true;
@@ -41268,7 +37812,6 @@ namespace Terraria
       }
       else if (type == 3812)
       {
-        this.name = "Monk's Belt";
         this.width = 22;
         this.height = 22;
         this.accessory = true;
@@ -41279,7 +37822,6 @@ namespace Terraria
       else if (type == 3813)
       {
         this.rare = 3;
-        this.name = "Defender's Forge";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -41296,7 +37838,6 @@ namespace Terraria
       else if (type == 3814)
       {
         this.rare = 1;
-        this.name = "War Table";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -41312,7 +37853,6 @@ namespace Terraria
       else if (type == 3815)
       {
         this.rare = 1;
-        this.name = "War Table Banner";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -41328,7 +37868,6 @@ namespace Terraria
       else if (type == 3816)
       {
         this.rare = 3;
-        this.name = "tile";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -41343,7 +37882,6 @@ namespace Terraria
       }
       else if (type == 3817)
       {
-        this.name = "our first non coin currency!";
         this.width = 12;
         this.height = 12;
         this.maxStack = 999;
@@ -41352,7 +37890,6 @@ namespace Terraria
       }
       else if (type == 3818 || type == 3819 || (type == 3820 || type == 3824) || (type == 3825 || type == 3826 || (type == 3829 || type == 3830)) || (type == 3831 || type == 3832 || (type == 3833 || type == 3834)))
       {
-        this.name = "tower popper";
         this.width = 18;
         this.height = 20;
         this.UseSound = SoundID.DD2_DefenseTowerSpawn;
@@ -41453,7 +37990,6 @@ namespace Terraria
       }
       else if (type == 3821)
       {
-        this.name = "throwing glove";
         this.shootSpeed = 6.5f;
         this.shoot = 669;
         this.width = 20;
@@ -41474,7 +38010,6 @@ namespace Terraria
       }
       else if (type == 3822)
       {
-        this.name = "its an ammo technically!";
         this.width = 12;
         this.height = 12;
         this.maxStack = 999;
@@ -41483,7 +38018,6 @@ namespace Terraria
       else if (type == 3823)
       {
         this.UseSound = SoundID.Item1;
-        this.name = "Brand of the inferno";
         this.useStyle = 1;
         this.damage = 44;
         this.useAnimation = 25;
@@ -41502,7 +38036,6 @@ namespace Terraria
       else if (type == 3828)
       {
         this.rare = 3;
-        this.name = "Eternia Crystal";
         this.maxStack = 99;
         this.consumable = true;
         this.width = 22;
@@ -41511,7 +38044,6 @@ namespace Terraria
       }
       else if (type == 3835)
       {
-        this.name = "Sleepy Octopod";
         this.useStyle = 5;
         this.useAnimation = 30;
         this.useTime = 30;
@@ -41532,7 +38064,6 @@ namespace Terraria
       }
       else if (type == 3836)
       {
-        this.name = "Ghastly Glaive";
         this.useStyle = 5;
         this.useAnimation = 27;
         this.useTime = 27;
@@ -41552,7 +38083,6 @@ namespace Terraria
       }
       else if (type >= 3837 && type <= 3846)
       {
-        this.name = "Monster Banner";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -41569,7 +38099,6 @@ namespace Terraria
       }
       else if (type == 3855 || type == 3856 || type == 3857)
       {
-        this.name = "pet item";
         this.damage = 0;
         this.useStyle = 1;
         this.width = 16;
@@ -41596,7 +38125,6 @@ namespace Terraria
       }
       else if (type == 3854)
       {
-        this.name = "bow";
         this.useStyle = 5;
         this.useAnimation = 20;
         this.useTime = 20;
@@ -41620,7 +38148,6 @@ namespace Terraria
       {
         this.rare = 8;
         this.UseSound = SoundID.DD2_SonicBoomBladeSlash;
-        this.name = "Flying Dragon";
         this.useStyle = 1;
         this.damage = 90;
         this.useAnimation = 25;
@@ -41638,7 +38165,6 @@ namespace Terraria
       }
       else if (type == 3852)
       {
-        this.name = "staff";
         this.useStyle = 5;
         this.useAnimation = 30;
         this.useTime = 3;
@@ -41658,7 +38184,6 @@ namespace Terraria
       }
       else if (type == 3858)
       {
-        this.name = "Sky Dragon's Fury";
         this.useStyle = 5;
         this.useAnimation = 30;
         this.useTime = 30;
@@ -41700,7 +38225,6 @@ namespace Terraria
       }
       else if (type == 3860 || type == 3862 || type == 3861)
       {
-        this.name = "Treasure Bag";
         this.maxStack = 999;
         this.consumable = true;
         this.width = 24;
@@ -41716,7 +38240,6 @@ namespace Terraria
       }
       else if (type >= 3863 && type <= 3865)
       {
-        this.name = "Mask";
         this.width = 28;
         this.height = 20;
         this.rare = 1;
@@ -41736,7 +38259,6 @@ namespace Terraria
       }
       else if (type == 3866 || type == 3867 || type == 3868)
       {
-        this.name = "Trophy";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -41757,7 +38279,6 @@ namespace Terraria
       }
       else if (type == 3869)
       {
-        this.name = "Music Boxes";
         this.useStyle = 1;
         this.useTurn = true;
         this.useAnimation = 15;
@@ -41774,7 +38295,6 @@ namespace Terraria
       }
       else if (type == 3870)
       {
-        this.name = "staff";
         this.useStyle = 5;
         this.useAnimation = 20;
         this.useTime = 20;
@@ -41796,7 +38316,6 @@ namespace Terraria
       }
       else if (type == 3871)
       {
-        this.name = "head";
         this.width = 18;
         this.height = 18;
         this.rare = 8;
@@ -41806,7 +38325,6 @@ namespace Terraria
       }
       else if (type == 3872)
       {
-        this.name = "shirt";
         this.width = 18;
         this.height = 18;
         this.rare = 8;
@@ -41816,7 +38334,6 @@ namespace Terraria
       }
       else if (type == 3873)
       {
-        this.name = "pants";
         this.width = 18;
         this.height = 18;
         this.rare = 8;
@@ -41826,7 +38343,6 @@ namespace Terraria
       }
       else if (type == 3874)
       {
-        this.name = "head";
         this.width = 18;
         this.height = 18;
         this.rare = 8;
@@ -41836,7 +38352,6 @@ namespace Terraria
       }
       else if (type == 3875)
       {
-        this.name = "shirt";
         this.width = 18;
         this.height = 18;
         this.rare = 8;
@@ -41847,7 +38362,6 @@ namespace Terraria
       }
       else if (type == 3876)
       {
-        this.name = "pants";
         this.width = 18;
         this.height = 18;
         this.rare = 8;
@@ -41857,7 +38371,6 @@ namespace Terraria
       }
       else if (type == 3877)
       {
-        this.name = "head";
         this.width = 18;
         this.height = 18;
         this.rare = 8;
@@ -41867,7 +38380,6 @@ namespace Terraria
       }
       else if (type == 3878)
       {
-        this.name = "shirt";
         this.width = 18;
         this.height = 18;
         this.rare = 8;
@@ -41878,7 +38390,6 @@ namespace Terraria
       }
       else if (type == 3879)
       {
-        this.name = "pants";
         this.width = 18;
         this.height = 18;
         this.rare = 8;
@@ -41888,7 +38399,6 @@ namespace Terraria
       }
       else if (type == 3880)
       {
-        this.name = "head";
         this.width = 18;
         this.height = 18;
         this.rare = 8;
@@ -41898,7 +38408,6 @@ namespace Terraria
       }
       else if (type == 3881)
       {
-        this.name = "shirt";
         this.width = 18;
         this.height = 18;
         this.rare = 8;
@@ -41909,7 +38418,6 @@ namespace Terraria
       }
       else if (type == 3882)
       {
-        this.name = "pants";
         this.width = 18;
         this.height = 18;
         this.rare = 8;
@@ -41917,11 +38425,8 @@ namespace Terraria
         this.value = Item.sellPrice(0, 3, 0, 0);
         this.legSlot = 156;
       }
-      else
+      else if (type == 3883)
       {
-        if (type != 3883)
-          return;
-        this.name = "Wings";
         this.width = 22;
         this.height = 20;
         this.accessory = true;
@@ -41929,18 +38434,449 @@ namespace Terraria
         this.rare = 8;
         this.wingSlot = (sbyte) 37;
       }
+      else if (type == 3884)
+      {
+        this.useStyle = 1;
+        this.useTurn = true;
+        this.useAnimation = 15;
+        this.useTime = 10;
+        this.autoReuse = true;
+        this.maxStack = 99;
+        this.consumable = true;
+        this.createTile = 467;
+        this.width = 26;
+        this.height = 22;
+        this.value = 500;
+        this.placeStyle = 0;
+      }
+      else if (type == 3885)
+      {
+        this.useStyle = 1;
+        this.useTurn = true;
+        this.useAnimation = 15;
+        this.useTime = 10;
+        this.autoReuse = true;
+        this.maxStack = 99;
+        this.consumable = true;
+        this.createTile = 467;
+        this.width = 26;
+        this.height = 22;
+        this.value = 500;
+        this.placeStyle = 1;
+      }
+      else if (type == 3886)
+      {
+        this.useStyle = 1;
+        this.useTurn = true;
+        this.useAnimation = 15;
+        this.useTime = 10;
+        this.autoReuse = true;
+        this.maxStack = 99;
+        this.consumable = true;
+        this.createTile = 468;
+        this.width = 26;
+        this.height = 22;
+        this.value = 500;
+        this.placeStyle = 0;
+      }
+      else if (type == 3887)
+      {
+        this.useStyle = 1;
+        this.useTurn = true;
+        this.useAnimation = 15;
+        this.useTime = 10;
+        this.autoReuse = true;
+        this.maxStack = 99;
+        this.consumable = true;
+        this.createTile = 468;
+        this.width = 26;
+        this.height = 22;
+        this.value = 500;
+        this.placeStyle = 1;
+      }
+      else if (type == 3888)
+      {
+        this.useStyle = 1;
+        this.useTurn = true;
+        this.useAnimation = 15;
+        this.useTime = 10;
+        this.maxStack = 99;
+        this.consumable = true;
+        this.createTile = 10;
+        this.width = 14;
+        this.height = 28;
+        this.value = 200;
+        this.placeStyle = 36;
+      }
+      else if (type == 3889)
+      {
+        this.useStyle = 1;
+        this.useTurn = true;
+        this.useAnimation = 15;
+        this.useTime = 10;
+        this.autoReuse = true;
+        this.maxStack = 99;
+        this.consumable = true;
+        this.createTile = 15;
+        this.width = 12;
+        this.height = 30;
+        this.placeStyle = 36;
+      }
+      else if (type == 3890)
+      {
+        this.noWet = true;
+        this.useStyle = 1;
+        this.useTurn = true;
+        this.useAnimation = 15;
+        this.useTime = 10;
+        this.autoReuse = true;
+        this.maxStack = 99;
+        this.consumable = true;
+        this.createTile = 33;
+        this.width = 8;
+        this.height = 18;
+        this.placeStyle = 30;
+      }
+      else if (type == 3891)
+      {
+        this.useStyle = 1;
+        this.useTurn = true;
+        this.useAnimation = 15;
+        this.useTime = 10;
+        this.autoReuse = true;
+        this.maxStack = 999;
+        this.consumable = true;
+        this.createTile = 42;
+        this.width = 12;
+        this.height = 28;
+        this.placeStyle = 37;
+      }
+      else if (type == 3892)
+      {
+        this.useStyle = 1;
+        this.useTurn = true;
+        this.useAnimation = 15;
+        this.useTime = 10;
+        this.autoReuse = true;
+        this.maxStack = 99;
+        this.consumable = true;
+        this.createTile = 93;
+        this.width = 10;
+        this.height = 24;
+        this.value = 500;
+        this.placeStyle = 31;
+      }
+      else if (type == 3893)
+      {
+        this.useStyle = 1;
+        this.useTurn = true;
+        this.useAnimation = 15;
+        this.useTime = 10;
+        this.autoReuse = true;
+        this.maxStack = 99;
+        this.consumable = true;
+        this.createTile = 100;
+        this.width = 20;
+        this.height = 20;
+        this.value = 1500;
+        this.placeStyle = 31;
+      }
+      else if (type == 3894)
+      {
+        this.useStyle = 1;
+        this.useTurn = true;
+        this.useAnimation = 15;
+        this.useTime = 10;
+        this.autoReuse = true;
+        this.maxStack = 99;
+        this.consumable = true;
+        this.createTile = 34;
+        this.width = 26;
+        this.height = 26;
+        this.value = 3000;
+        this.placeStyle = 37;
+      }
+      else if (type == 3895)
+      {
+        this.useStyle = 1;
+        this.useTurn = true;
+        this.useAnimation = 15;
+        this.useTime = 10;
+        this.autoReuse = true;
+        this.maxStack = 99;
+        this.consumable = true;
+        this.createTile = 90;
+        this.width = 20;
+        this.height = 20;
+        this.value = 300;
+        this.placeStyle = 31;
+      }
+      else if (type == 3896)
+      {
+        this.useStyle = 1;
+        this.useTurn = true;
+        this.useAnimation = 15;
+        this.useTime = 10;
+        this.autoReuse = true;
+        this.maxStack = 99;
+        this.consumable = true;
+        this.createTile = 172;
+        this.width = 20;
+        this.height = 20;
+        this.value = 300;
+        this.placeStyle = 32;
+      }
+      else if (type == 3897)
+      {
+        this.useStyle = 1;
+        this.useTurn = true;
+        this.useAnimation = 15;
+        this.useTime = 10;
+        this.maxStack = 99;
+        this.consumable = true;
+        this.autoReuse = true;
+        this.createTile = 79;
+        this.width = 28;
+        this.height = 20;
+        this.value = 2000;
+        this.placeStyle = 31;
+      }
+      else if (type >= 3898 && type <= 3902)
+      {
+        this.useStyle = 1;
+        this.useTurn = true;
+        this.useAnimation = 15;
+        this.useTime = 10;
+        this.autoReuse = true;
+        this.maxStack = 99;
+        this.consumable = true;
+        this.createTile = 104;
+        this.width = 20;
+        this.height = 20;
+        this.value = 300;
+        this.placeStyle = 28 + type - 3898;
+      }
+      else if (type >= 3903 && type <= 3908)
+      {
+        this.useStyle = 1;
+        this.useTurn = true;
+        this.useAnimation = 15;
+        this.useTime = 10;
+        this.autoReuse = true;
+        this.maxStack = 999;
+        this.consumable = true;
+        this.createTile = 19;
+        this.width = 8;
+        this.height = 10;
+        this.placeStyle = 30 + type - 3903;
+      }
+      else if (type == 3909)
+      {
+        this.useStyle = 1;
+        this.useTurn = true;
+        this.useAnimation = 15;
+        this.useTime = 10;
+        this.autoReuse = true;
+        this.maxStack = 99;
+        this.consumable = true;
+        this.createTile = 18;
+        this.width = 28;
+        this.height = 14;
+        this.value = 150;
+        this.placeStyle = 31;
+      }
+      else if (type == 3910)
+      {
+        this.useStyle = 1;
+        this.useTurn = true;
+        this.useAnimation = 15;
+        this.useTime = 10;
+        this.autoReuse = true;
+        this.maxStack = 99;
+        this.consumable = true;
+        this.createTile = 18;
+        this.width = 28;
+        this.height = 14;
+        this.value = 150;
+        this.placeStyle = 32;
+      }
+      else if (type >= 3911 && type <= 3914)
+      {
+        this.useStyle = 1;
+        this.useTurn = true;
+        this.useAnimation = 15;
+        this.useTime = 10;
+        this.autoReuse = true;
+        this.maxStack = 99;
+        this.consumable = true;
+        this.createTile = 88;
+        this.width = 20;
+        this.height = 20;
+        this.value = 300;
+        this.placeStyle = 28 + type - 3911;
+      }
+      else if (type >= 3915 && type <= 3916)
+      {
+        this.useStyle = 1;
+        this.useTurn = true;
+        this.useAnimation = 15;
+        this.useTime = 10;
+        this.autoReuse = true;
+        this.maxStack = 99;
+        this.consumable = true;
+        this.createTile = 87;
+        this.width = 20;
+        this.height = 20;
+        this.value = 300;
+        this.placeStyle = 30 + type - 3915;
+      }
+      else if (type == 3917)
+      {
+        this.useStyle = 1;
+        this.useTurn = true;
+        this.useAnimation = 15;
+        this.useTime = 10;
+        this.autoReuse = true;
+        this.maxStack = 99;
+        this.consumable = true;
+        this.createTile = 101;
+        this.width = 20;
+        this.height = 20;
+        this.value = 300;
+        this.placeStyle = 32;
+      }
+      else if (type == 3918)
+      {
+        this.useStyle = 1;
+        this.useTurn = true;
+        this.useAnimation = 15;
+        this.useTime = 10;
+        this.autoReuse = true;
+        this.maxStack = 99;
+        this.consumable = true;
+        this.createTile = 89;
+        this.width = 20;
+        this.height = 20;
+        this.value = 300;
+        this.placeStyle = 33;
+      }
+      else if (type == 3919)
+      {
+        this.useStyle = 1;
+        this.useTurn = true;
+        this.useAnimation = 15;
+        this.useTime = 10;
+        this.autoReuse = true;
+        this.maxStack = 99;
+        this.consumable = true;
+        this.createTile = 89;
+        this.width = 20;
+        this.height = 20;
+        this.value = 300;
+        this.placeStyle = 34;
+      }
+      else if (type == 3920)
+      {
+        this.useStyle = 1;
+        this.useTurn = true;
+        this.useAnimation = 15;
+        this.useTime = 10;
+        this.autoReuse = true;
+        this.maxStack = 99;
+        this.consumable = true;
+        this.createTile = 469;
+        this.width = 26;
+        this.height = 20;
+        this.value = 300;
+        this.placeStyle = 0;
+      }
+      else if (type == 3921)
+      {
+        this.width = 28;
+        this.height = 20;
+        this.headSlot = 214;
+        this.rare = 9;
+        this.vanity = true;
+      }
+      else if (type == 3922)
+      {
+        this.width = 28;
+        this.height = 20;
+        this.bodySlot = 208;
+        this.rare = 9;
+        this.vanity = true;
+      }
+      else if (type == 3923)
+      {
+        this.width = 18;
+        this.height = 14;
+        this.legSlot = 158;
+        this.rare = 9;
+        this.vanity = true;
+      }
+      else if (type == 3924)
+      {
+        this.width = 24;
+        this.height = 8;
+        this.accessory = true;
+        this.rare = 9;
+        this.wingSlot = (sbyte) 38;
+        this.value = 400000;
+      }
+      else if (type == 3925)
+      {
+        this.width = 28;
+        this.height = 20;
+        this.headSlot = 215;
+        this.rare = 9;
+        this.vanity = true;
+      }
+      else if (type == 3926)
+      {
+        this.width = 28;
+        this.height = 20;
+        this.bodySlot = 209;
+        this.rare = 9;
+        this.vanity = true;
+      }
+      else if (type == 3927)
+      {
+        this.width = 18;
+        this.height = 14;
+        this.legSlot = 159;
+        this.rare = 9;
+        this.vanity = true;
+      }
+      else if (type == 3928)
+      {
+        this.width = 24;
+        this.height = 8;
+        this.accessory = true;
+        this.rare = 9;
+        this.wingSlot = (sbyte) 39;
+        this.value = 400000;
+      }
+      else
+      {
+        if (type != 3929)
+          return;
+        this.width = 18;
+        this.height = 14;
+        this.rare = 9;
+        this.vanity = true;
+        this.accessory = true;
+      }
     }
 
     public void SetDefaults(int Type = 0, bool noMatCheck = false)
     {
       this.owner = Main.netMode == 1 || Main.netMode == 2 ? (int) byte.MaxValue : Main.myPlayer;
       this.ResetStats(Type);
-      if (this.type >= 3884)
+      if (this.type >= 3930)
         this.type = 0;
       if (this.type == 0)
       {
         this.netID = 0;
-        this.name = "";
         this.stack = 0;
       }
       else if (this.type <= 1000)
@@ -42055,14 +38991,12 @@ namespace Terraria
       this.netID = this.type;
       if (!noMatCheck)
         this.checkMat();
-      this.name = Lang.itemName(this.netID, false);
-      this.CheckTip();
-      if (this.type <= 0 || this.type >= 3884 || !ItemID.Sets.Deprecated[this.type])
+      this.RebuildTooltip();
+      if (this.type <= 0 || this.type >= 3930 || !ItemID.Sets.Deprecated[this.type])
         return;
       this.netID = 0;
       this.type = 0;
       this.stack = 0;
-      this.name = "";
     }
 
     public void ResetStats(int Type)
@@ -42125,7 +39059,7 @@ namespace Terraria
       this.legSlot = -1;
       this.headSlot = -1;
       this.potion = false;
-      this.color = new Color();
+      this.color = (Color) null;
       this.glowMask = (short) -1;
       this.consumable = false;
       this.createTile = -1;
@@ -42142,8 +39076,7 @@ namespace Terraria
       this.scale = 1f;
       this.shoot = 0;
       this.stack = 1;
-      this.toolTip = (string) null;
-      this.toolTip2 = (string) null;
+      this.ToolTip = (ItemTooltip) null;
       this.tileBoost = 0;
       this.useStyle = 0;
       this.UseSound = (LegacySoundStyle) null;
@@ -42168,53 +39101,17 @@ namespace Terraria
       this.type = Type;
     }
 
-    public static string VersionName(string oldName, int release)
-    {
-      string str = oldName;
-      if (release <= 4)
-      {
-        if (oldName == "Cobalt Helmet")
-          str = "Jungle Hat";
-        else if (oldName == "Cobalt Breastplate")
-          str = "Jungle Shirt";
-        else if (oldName == "Cobalt Greaves")
-          str = "Jungle Pants";
-      }
-      if (release <= 13 && oldName == "Jungle Rose")
-        str = "Jungle Spores";
-      if (release <= 20)
-      {
-        if (oldName == "Gills potion")
-          str = "Gills Potion";
-        else if (oldName == "Thorn Chakrum")
-          str = "Thorn Chakram";
-        else if (oldName == "Ball 'O Hurt")
-          str = "Ball O' Hurt";
-      }
-      if (release <= 41 && oldName == "Iron Chain")
-        str = "Chain";
-      if (release <= 44 && oldName == "Orb of Light")
-        str = "Shadow Orb";
-      if (release <= 46)
-      {
-        if (oldName == "Black Dye")
-          str = "Black Thread";
-        if (oldName == "Green Dye")
-          str = "Green Thread";
-      }
-      return str;
-    }
-
     public Color GetAlpha(Color newColor)
     {
       switch (this.type)
       {
         case 3822:
-          return Color.Lerp(Color.White, newColor, 0.5f) * (float) (((double) byte.MaxValue - (double) this.alpha) / (double) byte.MaxValue);
+          return Color.op_Multiply(Color.Lerp(Color.get_White(), newColor, 0.5f), (float) (((double) byte.MaxValue - (double) this.alpha) / (double) byte.MaxValue));
         case 3858:
         case 3065:
         case 75:
-          return new Color((int) byte.MaxValue, (int) byte.MaxValue, (int) byte.MaxValue, (int) newColor.A - this.alpha);
+          // ISSUE: explicit reference operation
+          return new Color((int) byte.MaxValue, (int) byte.MaxValue, (int) byte.MaxValue, (int) ((Color) @newColor).get_A() - this.alpha);
         case 3522:
         case 2782:
         case 2783:
@@ -42262,7 +39159,10 @@ namespace Terraria
         case 1446:
         case 1506:
         case 1507:
-          return new Color((int) newColor.R, (int) newColor.G, (int) newColor.B, (int) Main.gFade);
+          // ISSUE: explicit reference operation
+          // ISSUE: explicit reference operation
+          // ISSUE: explicit reference operation
+          return new Color((int) ((Color) @newColor).get_R(), (int) ((Color) @newColor).get_G(), (int) ((Color) @newColor).get_B(), (int) Main.gFade);
         case 1572:
           return new Color(200, 200, (int) byte.MaxValue, 125);
         case 1508:
@@ -42290,46 +39190,58 @@ namespace Terraria
         case 201:
         case 202:
         case 203:
-          return Color.White;
+          return Color.get_White();
         case 51:
           return new Color((int) byte.MaxValue, (int) byte.MaxValue, (int) byte.MaxValue, 0);
         default:
-          float num = (float) ((int) byte.MaxValue - this.alpha) / (float) byte.MaxValue;
-          int r = (int) ((double) newColor.R * (double) num);
-          int g = (int) ((double) newColor.G * (double) num);
-          int b = (int) ((double) newColor.B * (double) num);
-          int a = (int) newColor.A - this.alpha;
-          if (a < 0)
-            a = 0;
-          if (a > (int) byte.MaxValue)
-            a = (int) byte.MaxValue;
-          return new Color(r, g, b, a);
+          float num1 = (float) ((int) byte.MaxValue - this.alpha) / (float) byte.MaxValue;
+          // ISSUE: explicit reference operation
+          int num2 = (int) ((double) ((Color) @newColor).get_R() * (double) num1);
+          // ISSUE: explicit reference operation
+          int num3 = (int) ((double) ((Color) @newColor).get_G() * (double) num1);
+          // ISSUE: explicit reference operation
+          int num4 = (int) ((double) ((Color) @newColor).get_B() * (double) num1);
+          // ISSUE: explicit reference operation
+          int num5 = (int) ((Color) @newColor).get_A() - this.alpha;
+          if (num5 < 0)
+            num5 = 0;
+          if (num5 > (int) byte.MaxValue)
+            num5 = (int) byte.MaxValue;
+          return new Color(num2, num3, num4, num5);
       }
     }
 
     public Color GetColor(Color newColor)
     {
-      int r = (int) this.color.R - ((int) byte.MaxValue - (int) newColor.R);
-      int g = (int) this.color.G - ((int) byte.MaxValue - (int) newColor.G);
-      int b = (int) this.color.B - ((int) byte.MaxValue - (int) newColor.B);
-      int a = (int) this.color.A - ((int) byte.MaxValue - (int) newColor.A);
-      if (r < 0)
-        r = 0;
-      if (r > (int) byte.MaxValue)
-        r = (int) byte.MaxValue;
-      if (g < 0)
-        g = 0;
-      if (g > (int) byte.MaxValue)
-        g = (int) byte.MaxValue;
-      if (b < 0)
-        b = 0;
-      if (b > (int) byte.MaxValue)
-        b = (int) byte.MaxValue;
-      if (a < 0)
-        a = 0;
-      if (a > (int) byte.MaxValue)
-        a = (int) byte.MaxValue;
-      return new Color(r, g, b, a);
+      // ISSUE: explicit reference operation
+      // ISSUE: explicit reference operation
+      int num1 = (int) ((Color) @this.color).get_R() - ((int) byte.MaxValue - (int) ((Color) @newColor).get_R());
+      // ISSUE: explicit reference operation
+      // ISSUE: explicit reference operation
+      int num2 = (int) ((Color) @this.color).get_G() - ((int) byte.MaxValue - (int) ((Color) @newColor).get_G());
+      // ISSUE: explicit reference operation
+      // ISSUE: explicit reference operation
+      int num3 = (int) ((Color) @this.color).get_B() - ((int) byte.MaxValue - (int) ((Color) @newColor).get_B());
+      // ISSUE: explicit reference operation
+      // ISSUE: explicit reference operation
+      int num4 = (int) ((Color) @this.color).get_A() - ((int) byte.MaxValue - (int) ((Color) @newColor).get_A());
+      if (num1 < 0)
+        num1 = 0;
+      if (num1 > (int) byte.MaxValue)
+        num1 = (int) byte.MaxValue;
+      if (num2 < 0)
+        num2 = 0;
+      if (num2 > (int) byte.MaxValue)
+        num2 = (int) byte.MaxValue;
+      if (num3 < 0)
+        num3 = 0;
+      if (num3 > (int) byte.MaxValue)
+        num3 = (int) byte.MaxValue;
+      if (num4 < 0)
+        num4 = 0;
+      if (num4 > (int) byte.MaxValue)
+        num4 = (int) byte.MaxValue;
+      return new Color(num1, num2, num3, num4);
     }
 
     public static bool MechSpawn(float x, float y, int type)
@@ -42342,9 +39254,11 @@ namespace Terraria
         if (Main.item[index].active && Main.item[index].type == type)
         {
           ++num1;
-          Vector2 vector2 = new Vector2(x, y);
-          float num4 = Main.item[index].position.X - vector2.X;
-          float num5 = Main.item[index].position.Y - vector2.Y;
+          Vector2 vector2;
+          // ISSUE: explicit reference operation
+          ((Vector2) @vector2).\u002Ector(x, y);
+          float num4 = (float) (Main.item[index].position.X - vector2.X);
+          float num5 = (float) (Main.item[index].position.Y - vector2.Y);
           float num6 = (float) Math.Sqrt((double) num4 * (double) num4 + (double) num5 * (double) num5);
           if ((double) num6 < 300.0)
             ++num2;
@@ -42390,13 +39304,13 @@ namespace Terraria
         float num1 = 7f;
         if (Main.netMode == 1)
         {
-          int index1 = (int) ((double) this.position.X + (double) (this.width / 2)) / 16;
-          int index2 = (int) ((double) this.position.Y + (double) (this.height / 2)) / 16;
+          int index1 = (int) (this.position.X + (double) (this.width / 2)) / 16;
+          int index2 = (int) (this.position.Y + (double) (this.height / 2)) / 16;
           if (index1 >= 0 && index2 >= 0 && (index1 < Main.maxTilesX && index2 < Main.maxTilesY) && Main.tile[index1, index2] == null)
           {
             gravity = 0.0f;
-            this.velocity.X = 0.0f;
-            this.velocity.Y = 0.0f;
+            this.velocity.X = (__Null) 0.0;
+            this.velocity.Y = (__Null) 0.0;
           }
         }
         if (this.honeyWet)
@@ -42416,7 +39330,7 @@ namespace Terraria
         if (this.keepTime > 0)
           --this.keepTime;
         this.isBeingGrabbed = this.beingGrabbed;
-        Vector2 vector2_1 = this.velocity * 0.5f;
+        Vector2 vector2_1 = Vector2.op_Multiply(this.velocity, 0.5f);
         if (!this.beingGrabbed)
         {
           bool flag1 = true;
@@ -42435,10 +39349,10 @@ namespace Terraria
           {
             for (int number = i + 1; number < 400; ++number)
             {
-              if (Main.item[number].active && Main.item[number].type == this.type && (Main.item[number].stack > 0 && Main.item[number].owner == this.owner) && (double) (Math.Abs((float) ((double) this.position.X + (double) (this.width / 2) - ((double) Main.item[number].position.X + (double) (Main.item[number].width / 2)))) + Math.Abs((float) ((double) this.position.Y + (double) (this.height / 2) - ((double) Main.item[number].position.Y + (double) (Main.item[number].height / 2))))) < 30.0)
+              if (Main.item[number].active && Main.item[number].type == this.type && (Main.item[number].stack > 0 && Main.item[number].owner == this.owner) && (double) (Math.Abs((float) (this.position.X + (double) (this.width / 2) - (Main.item[number].position.X + (double) (Main.item[number].width / 2)))) + Math.Abs((float) (this.position.Y + (double) (this.height / 2) - (Main.item[number].position.Y + (double) (Main.item[number].height / 2))))) < 30.0)
               {
-                this.position = (this.position + Main.item[number].position) / 2f;
-                this.velocity = (this.velocity + Main.item[number].velocity) / 2f;
+                this.position = Vector2.op_Division(Vector2.op_Addition(this.position, Main.item[number].position), 2f);
+                this.velocity = Vector2.op_Division(Vector2.op_Addition(this.velocity, Main.item[number].velocity), 2f);
                 int num2 = Main.item[number].stack;
                 if (num2 > this.maxStack - this.stack)
                   num2 = this.maxStack - this.stack;
@@ -42451,15 +39365,17 @@ namespace Terraria
                 }
                 if (Main.netMode != 0 && this.owner == Main.myPlayer)
                 {
-                  NetMessage.SendData(21, -1, -1, "", i, 0.0f, 0.0f, 0.0f, 0, 0, 0);
-                  NetMessage.SendData(21, -1, -1, "", number, 0.0f, 0.0f, 0.0f, 0, 0, 0);
+                  NetMessage.SendData(21, -1, -1, (NetworkText) null, i, 0.0f, 0.0f, 0.0f, 0, 0, 0);
+                  NetMessage.SendData(21, -1, -1, (NetworkText) null, number, 0.0f, 0.0f, 0.0f, 0, 0, 0);
                 }
               }
             }
           }
           if (Main.netMode != 2 && Main.expertMode && (this.owner == Main.myPlayer && this.type >= 71) && this.type <= 74)
           {
-            Rectangle rectangle1 = new Rectangle((int) this.position.X, (int) this.position.Y, this.width, this.height);
+            Rectangle rectangle1;
+            // ISSUE: explicit reference operation
+            ((Rectangle) @rectangle1).\u002Ector((int) this.position.X, (int) this.position.Y, this.width, this.height);
             for (int index1 = 0; index1 < 200; ++index1)
             {
               if (Main.npc[index1].active && Main.npc[index1].lifeMax > 5 && (!Main.npc[index1].friendly && !Main.npc[index1].immortal) && !Main.npc[index1].dontTakeDamage)
@@ -42481,8 +39397,11 @@ namespace Terraria
                   index2 = -1;
                 if ((double) extraValue < (double) num3)
                 {
-                  Rectangle rectangle2 = new Rectangle((int) Main.npc[index1].position.X, (int) Main.npc[index1].position.Y, Main.npc[index1].width, Main.npc[index1].height);
-                  if (rectangle1.Intersects(rectangle2))
+                  Rectangle rectangle2;
+                  // ISSUE: explicit reference operation
+                  ((Rectangle) @rectangle2).\u002Ector((int) Main.npc[index1].position.X, (int) Main.npc[index1].position.Y, Main.npc[index1].width, Main.npc[index1].height);
+                  // ISSUE: explicit reference operation
+                  if (((Rectangle) @rectangle1).Intersects(rectangle2))
                   {
                     float num4 = (float) Main.rand.Next(50, 76) * 0.01f;
                     if (this.type == 71)
@@ -42505,13 +39424,13 @@ namespace Terraria
                     if (Main.netMode == 0)
                       Main.npc[number].moneyPing(this.position);
                     else
-                      NetMessage.SendData(92, -1, -1, "", number, number2, this.position.X, this.position.Y, 0, 0, 0);
+                      NetMessage.SendData(92, -1, -1, (NetworkText) null, number, number2, (float) this.position.X, (float) this.position.Y, 0, 0, 0);
                     if (this.stack <= 0)
                     {
                       this.SetDefaults(0, false);
                       this.active = false;
                     }
-                    NetMessage.SendData(21, -1, -1, "", i, 0.0f, 0.0f, 0.0f, 0, 0, 0);
+                    NetMessage.SendData(21, -1, -1, (NetworkText) null, i, 0.0f, 0.0f, 0.0f, 0, 0, 0);
                   }
                 }
               }
@@ -42519,21 +39438,45 @@ namespace Terraria
           }
           if (ItemID.Sets.ItemNoGravity[this.type])
           {
-            this.velocity.X *= 0.95f;
+            // ISSUE: explicit reference operation
+            // ISSUE: variable of a reference type
+            Vector2& local1 = @this.velocity;
+            // ISSUE: explicit reference operation
+            double num2 = (^local1).X * 0.949999988079071;
+            // ISSUE: explicit reference operation
+            (^local1).X = (__Null) num2;
             if ((double) this.velocity.X < 0.1 && (double) this.velocity.X > -0.1)
-              this.velocity.X = 0.0f;
-            this.velocity.Y *= 0.95f;
+              this.velocity.X = (__Null) 0.0;
+            // ISSUE: explicit reference operation
+            // ISSUE: variable of a reference type
+            Vector2& local2 = @this.velocity;
+            // ISSUE: explicit reference operation
+            double num3 = (^local2).Y * 0.949999988079071;
+            // ISSUE: explicit reference operation
+            (^local2).Y = (__Null) num3;
             if ((double) this.velocity.Y < 0.1 && (double) this.velocity.Y > -0.1)
-              this.velocity.Y = 0.0f;
+              this.velocity.Y = (__Null) 0.0;
           }
           else
           {
-            this.velocity.Y += gravity;
-            if ((double) this.velocity.Y > (double) num1)
-              this.velocity.Y = num1;
-            this.velocity.X *= 0.95f;
+            // ISSUE: explicit reference operation
+            // ISSUE: variable of a reference type
+            Vector2& local1 = @this.velocity;
+            // ISSUE: explicit reference operation
+            double num2 = (^local1).Y + (double) gravity;
+            // ISSUE: explicit reference operation
+            (^local1).Y = (__Null) num2;
+            if (this.velocity.Y > (double) num1)
+              this.velocity.Y = (__Null) (double) num1;
+            // ISSUE: explicit reference operation
+            // ISSUE: variable of a reference type
+            Vector2& local2 = @this.velocity;
+            // ISSUE: explicit reference operation
+            double num3 = (^local2).X * 0.949999988079071;
+            // ISSUE: explicit reference operation
+            (^local2).X = (__Null) num3;
             if ((double) this.velocity.X < 0.1 && (double) this.velocity.X > -0.1)
-              this.velocity.X = 0.0f;
+              this.velocity.X = (__Null) 0.0;
           }
           bool flag2 = Collision.LavaCollision(this.position, this.width, this.height);
           if (flag2)
@@ -42554,9 +39497,21 @@ namespace Terraria
                   {
                     for (int index1 = 0; index1 < 5; ++index1)
                     {
-                      int index2 = Dust.NewDust(new Vector2(this.position.X - 6f, (float) ((double) this.position.Y + (double) (this.height / 2) - 8.0)), this.width + 12, 24, 152, 0.0f, 0.0f, 0, new Color(), 1f);
-                      --Main.dust[index2].velocity.Y;
-                      Main.dust[index2].velocity.X *= 2.5f;
+                      int index2 = Dust.NewDust(new Vector2((float) (this.position.X - 6.0), (float) (this.position.Y + (double) (this.height / 2) - 8.0)), this.width + 12, 24, 152, 0.0f, 0.0f, 0, (Color) null, 1f);
+                      // ISSUE: explicit reference operation
+                      // ISSUE: variable of a reference type
+                      Vector2& local1 = @Main.dust[index2].velocity;
+                      // ISSUE: explicit reference operation
+                      double num2 = (^local1).Y - 1.0;
+                      // ISSUE: explicit reference operation
+                      (^local1).Y = (__Null) num2;
+                      // ISSUE: explicit reference operation
+                      // ISSUE: variable of a reference type
+                      Vector2& local2 = @Main.dust[index2].velocity;
+                      // ISSUE: explicit reference operation
+                      double num3 = (^local2).X * 2.5;
+                      // ISSUE: explicit reference operation
+                      (^local2).X = (__Null) num3;
                       Main.dust[index2].scale = 1.3f;
                       Main.dust[index2].alpha = 100;
                       Main.dust[index2].noGravity = true;
@@ -42567,9 +39522,21 @@ namespace Terraria
                   {
                     for (int index1 = 0; index1 < 10; ++index1)
                     {
-                      int index2 = Dust.NewDust(new Vector2(this.position.X - 6f, (float) ((double) this.position.Y + (double) (this.height / 2) - 8.0)), this.width + 12, 24, Dust.dustWater(), 0.0f, 0.0f, 0, new Color(), 1f);
-                      Main.dust[index2].velocity.Y -= 4f;
-                      Main.dust[index2].velocity.X *= 2.5f;
+                      int index2 = Dust.NewDust(new Vector2((float) (this.position.X - 6.0), (float) (this.position.Y + (double) (this.height / 2) - 8.0)), this.width + 12, 24, Dust.dustWater(), 0.0f, 0.0f, 0, (Color) null, 1f);
+                      // ISSUE: explicit reference operation
+                      // ISSUE: variable of a reference type
+                      Vector2& local1 = @Main.dust[index2].velocity;
+                      // ISSUE: explicit reference operation
+                      double num2 = (^local1).Y - 4.0;
+                      // ISSUE: explicit reference operation
+                      (^local1).Y = (__Null) num2;
+                      // ISSUE: explicit reference operation
+                      // ISSUE: variable of a reference type
+                      Vector2& local2 = @Main.dust[index2].velocity;
+                      // ISSUE: explicit reference operation
+                      double num3 = (^local2).X * 2.5;
+                      // ISSUE: explicit reference operation
+                      (^local2).X = (__Null) num3;
                       Main.dust[index2].scale *= 0.8f;
                       Main.dust[index2].alpha = 100;
                       Main.dust[index2].noGravity = true;
@@ -42581,9 +39548,21 @@ namespace Terraria
                 {
                   for (int index1 = 0; index1 < 5; ++index1)
                   {
-                    int index2 = Dust.NewDust(new Vector2(this.position.X - 6f, (float) ((double) this.position.Y + (double) (this.height / 2) - 8.0)), this.width + 12, 24, 35, 0.0f, 0.0f, 0, new Color(), 1f);
-                    Main.dust[index2].velocity.Y -= 1.5f;
-                    Main.dust[index2].velocity.X *= 2.5f;
+                    int index2 = Dust.NewDust(new Vector2((float) (this.position.X - 6.0), (float) (this.position.Y + (double) (this.height / 2) - 8.0)), this.width + 12, 24, 35, 0.0f, 0.0f, 0, (Color) null, 1f);
+                    // ISSUE: explicit reference operation
+                    // ISSUE: variable of a reference type
+                    Vector2& local1 = @Main.dust[index2].velocity;
+                    // ISSUE: explicit reference operation
+                    double num2 = (^local1).Y - 1.5;
+                    // ISSUE: explicit reference operation
+                    (^local1).Y = (__Null) num2;
+                    // ISSUE: explicit reference operation
+                    // ISSUE: variable of a reference type
+                    Vector2& local2 = @Main.dust[index2].velocity;
+                    // ISSUE: explicit reference operation
+                    double num3 = (^local2).X * 2.5;
+                    // ISSUE: explicit reference operation
+                    (^local2).X = (__Null) num3;
                     Main.dust[index2].scale = 1.3f;
                     Main.dust[index2].alpha = 100;
                     Main.dust[index2].noGravity = true;
@@ -42612,9 +39591,9 @@ namespace Terraria
             {
               Vector2 velocity = this.velocity;
               this.velocity = Collision.TileCollision(this.position, this.velocity, this.width, this.height, false, false, 1);
-              if ((double) this.velocity.X != (double) velocity.X)
+              if (this.velocity.X != velocity.X)
                 vector2_1.X = this.velocity.X;
-              if ((double) this.velocity.Y != (double) velocity.Y)
+              if (this.velocity.Y != velocity.Y)
                 vector2_1.Y = this.velocity.Y;
             }
           }
@@ -42634,114 +39613,120 @@ namespace Terraria
               {
                 this.active = false;
                 this.type = 0;
-                this.name = "";
                 this.stack = 0;
                 for (int number = 0; number < 200; ++number)
                 {
                   if (Main.npc[number].active && Main.npc[number].type == 22)
                   {
                     if (Main.netMode == 2)
-                      NetMessage.SendData(28, -1, -1, "", number, 9999f, 10f, (float) -Main.npc[number].direction, 0, 0, 0);
+                      NetMessage.SendData(28, -1, -1, (NetworkText) null, number, 9999f, 10f, (float) -Main.npc[number].direction, 0, 0, 0);
                     Main.npc[number].StrikeNPCNoInteraction(9999, 10f, -Main.npc[number].direction, false, false, false);
                     NPC.SpawnWOF(this.position);
                   }
                 }
-                NetMessage.SendData(21, -1, -1, "", i, 0.0f, 0.0f, 0.0f, 0, 0, 0);
+                NetMessage.SendData(21, -1, -1, (NetworkText) null, i, 0.0f, 0.0f, 0.0f, 0, 0, 0);
               }
             }
             else if (this.owner == Main.myPlayer && this.type != 312 && (this.type != 318 && this.type != 173) && (this.type != 174 && this.type != 175 && (this.type != 2701 && this.rare == 0)))
             {
               this.active = false;
               this.type = 0;
-              this.name = "";
               this.stack = 0;
               if (Main.netMode != 0)
-                NetMessage.SendData(21, -1, -1, "", i, 0.0f, 0.0f, 0.0f, 0, 0, 0);
+                NetMessage.SendData(21, -1, -1, (NetworkText) null, i, 0.0f, 0.0f, 0.0f, 0, 0, 0);
             }
           }
           if (this.type == 3191)
           {
             float num2 = (float) Main.rand.Next(90, 111) * 0.01f * (float) (((double) Main.essScale + 0.5) / 2.0);
-            Lighting.AddLight((int) (((double) this.position.X + (double) (this.width / 2)) / 16.0), (int) (((double) this.position.Y + (double) (this.height / 2)) / 16.0), 0.3f * num2, 0.1f * num2, 0.25f * num2);
+            Lighting.AddLight((int) ((this.position.X + (double) (this.width / 2)) / 16.0), (int) ((this.position.Y + (double) (this.height / 2)) / 16.0), 0.3f * num2, 0.1f * num2, 0.25f * num2);
           }
           else if (this.type == 520 || this.type == 3454)
           {
             float num2 = (float) Main.rand.Next(90, 111) * 0.01f * Main.essScale;
-            Lighting.AddLight((int) (((double) this.position.X + (double) (this.width / 2)) / 16.0), (int) (((double) this.position.Y + (double) (this.height / 2)) / 16.0), 0.5f * num2, 0.1f * num2, 0.25f * num2);
+            Lighting.AddLight((int) ((this.position.X + (double) (this.width / 2)) / 16.0), (int) ((this.position.Y + (double) (this.height / 2)) / 16.0), 0.5f * num2, 0.1f * num2, 0.25f * num2);
           }
           else if (this.type == 521 || this.type == 3455)
           {
             float num2 = (float) Main.rand.Next(90, 111) * 0.01f * Main.essScale;
-            Lighting.AddLight((int) (((double) this.position.X + (double) (this.width / 2)) / 16.0), (int) (((double) this.position.Y + (double) (this.height / 2)) / 16.0), 0.25f * num2, 0.1f * num2, 0.5f * num2);
+            Lighting.AddLight((int) ((this.position.X + (double) (this.width / 2)) / 16.0), (int) ((this.position.Y + (double) (this.height / 2)) / 16.0), 0.25f * num2, 0.1f * num2, 0.5f * num2);
           }
           else if (this.type == 547 || this.type == 3453)
           {
             float num2 = (float) Main.rand.Next(90, 111) * 0.01f * Main.essScale;
-            Lighting.AddLight((int) (((double) this.position.X + (double) (this.width / 2)) / 16.0), (int) (((double) this.position.Y + (double) (this.height / 2)) / 16.0), 0.5f * num2, 0.3f * num2, 0.05f * num2);
+            Lighting.AddLight((int) ((this.position.X + (double) (this.width / 2)) / 16.0), (int) ((this.position.Y + (double) (this.height / 2)) / 16.0), 0.5f * num2, 0.3f * num2, 0.05f * num2);
           }
           else if (this.type == 548)
           {
             float num2 = (float) Main.rand.Next(90, 111) * 0.01f * Main.essScale;
-            Lighting.AddLight((int) (((double) this.position.X + (double) (this.width / 2)) / 16.0), (int) (((double) this.position.Y + (double) (this.height / 2)) / 16.0), 0.1f * num2, 0.1f * num2, 0.6f * num2);
+            Lighting.AddLight((int) ((this.position.X + (double) (this.width / 2)) / 16.0), (int) ((this.position.Y + (double) (this.height / 2)) / 16.0), 0.1f * num2, 0.1f * num2, 0.6f * num2);
           }
           else if (this.type == 575)
           {
             float num2 = (float) Main.rand.Next(90, 111) * 0.01f * Main.essScale;
-            Lighting.AddLight((int) (((double) this.position.X + (double) (this.width / 2)) / 16.0), (int) (((double) this.position.Y + (double) (this.height / 2)) / 16.0), 0.1f * num2, 0.3f * num2, 0.5f * num2);
+            Lighting.AddLight((int) ((this.position.X + (double) (this.width / 2)) / 16.0), (int) ((this.position.Y + (double) (this.height / 2)) / 16.0), 0.1f * num2, 0.3f * num2, 0.5f * num2);
           }
           else if (this.type == 549)
           {
             float num2 = (float) Main.rand.Next(90, 111) * 0.01f * Main.essScale;
-            Lighting.AddLight((int) (((double) this.position.X + (double) (this.width / 2)) / 16.0), (int) (((double) this.position.Y + (double) (this.height / 2)) / 16.0), 0.1f * num2, 0.5f * num2, 0.2f * num2);
+            Lighting.AddLight((int) ((this.position.X + (double) (this.width / 2)) / 16.0), (int) ((this.position.Y + (double) (this.height / 2)) / 16.0), 0.1f * num2, 0.5f * num2, 0.2f * num2);
           }
           else if (this.type == 58 || this.type == 1734 || this.type == 1867)
           {
             float num2 = (float) Main.rand.Next(90, 111) * 0.01f * (Main.essScale * 0.5f);
-            Lighting.AddLight((int) (((double) this.position.X + (double) (this.width / 2)) / 16.0), (int) (((double) this.position.Y + (double) (this.height / 2)) / 16.0), 0.5f * num2, 0.1f * num2, 0.1f * num2);
+            Lighting.AddLight((int) ((this.position.X + (double) (this.width / 2)) / 16.0), (int) ((this.position.Y + (double) (this.height / 2)) / 16.0), 0.5f * num2, 0.1f * num2, 0.1f * num2);
           }
           else if (this.type == 184 || this.type == 1735 || this.type == 1868)
           {
             float num2 = (float) Main.rand.Next(90, 111) * 0.01f * (Main.essScale * 0.5f);
-            Lighting.AddLight((int) (((double) this.position.X + (double) (this.width / 2)) / 16.0), (int) (((double) this.position.Y + (double) (this.height / 2)) / 16.0), 0.1f * num2, 0.1f * num2, 0.5f * num2);
+            Lighting.AddLight((int) ((this.position.X + (double) (this.width / 2)) / 16.0), (int) ((this.position.Y + (double) (this.height / 2)) / 16.0), 0.1f * num2, 0.1f * num2, 0.5f * num2);
           }
           else if (this.type == 522)
           {
             float num2 = (float) Main.rand.Next(90, 111) * 0.01f * (Main.essScale * 0.2f);
-            Lighting.AddLight((int) (((double) this.position.X + (double) (this.width / 2)) / 16.0), (int) (((double) this.position.Y + (double) (this.height / 2)) / 16.0), 0.5f * num2, 1f * num2, 0.1f * num2);
+            Lighting.AddLight((int) ((this.position.X + (double) (this.width / 2)) / 16.0), (int) ((this.position.Y + (double) (this.height / 2)) / 16.0), 0.5f * num2, 1f * num2, 0.1f * num2);
           }
           else if (this.type == 1332)
           {
             float num2 = (float) Main.rand.Next(90, 111) * 0.01f * (Main.essScale * 0.2f);
-            Lighting.AddLight((int) (((double) this.position.X + (double) (this.width / 2)) / 16.0), (int) (((double) this.position.Y + (double) (this.height / 2)) / 16.0), 1f * num2, 1f * num2, 0.1f * num2);
+            Lighting.AddLight((int) ((this.position.X + (double) (this.width / 2)) / 16.0), (int) ((this.position.Y + (double) (this.height / 2)) / 16.0), 1f * num2, 1f * num2, 0.1f * num2);
           }
           else if (this.type == 3456)
-            Lighting.AddLight(this.Center, new Vector3(0.2f, 0.4f, 0.5f) * Main.essScale);
+            Lighting.AddLight(this.Center, Vector3.op_Multiply(new Vector3(0.2f, 0.4f, 0.5f), Main.essScale));
           else if (this.type == 3457)
-            Lighting.AddLight(this.Center, new Vector3(0.4f, 0.2f, 0.5f) * Main.essScale);
+            Lighting.AddLight(this.Center, Vector3.op_Multiply(new Vector3(0.4f, 0.2f, 0.5f), Main.essScale));
           else if (this.type == 3458)
-            Lighting.AddLight(this.Center, new Vector3(0.5f, 0.4f, 0.2f) * Main.essScale);
+            Lighting.AddLight(this.Center, Vector3.op_Multiply(new Vector3(0.5f, 0.4f, 0.2f), Main.essScale));
           else if (this.type == 3459)
-            Lighting.AddLight(this.Center, new Vector3(0.2f, 0.2f, 0.5f) * Main.essScale);
+            Lighting.AddLight(this.Center, Vector3.op_Multiply(new Vector3(0.2f, 0.2f, 0.5f), Main.essScale));
           if (this.type == 75 && Main.dayTime)
           {
             for (int index = 0; index < 10; ++index)
-              Dust.NewDust(this.position, this.width, this.height, 15, this.velocity.X, this.velocity.Y, 150, new Color(), 1.2f);
+              Dust.NewDust(this.position, this.width, this.height, 15, (float) this.velocity.X, (float) this.velocity.Y, 150, (Color) null, 1.2f);
             for (int index = 0; index < 3; ++index)
-              Gore.NewGore(this.position, new Vector2(this.velocity.X, this.velocity.Y), Main.rand.Next(16, 18), 1f);
+              Gore.NewGore(this.position, new Vector2((float) this.velocity.X, (float) this.velocity.Y), Main.rand.Next(16, 18), 1f);
             this.active = false;
             this.type = 0;
             this.stack = 0;
             if (Main.netMode == 2)
-              NetMessage.SendData(21, -1, -1, "", i, 0.0f, 0.0f, 0.0f, 0, 0, 0);
+              NetMessage.SendData(21, -1, -1, (NetworkText) null, i, 0.0f, 0.0f, 0.0f, 0, 0, 0);
           }
           if (this.type == 3822 && !DD2Event.Ongoing)
           {
             int num2 = Main.rand.Next(18, 24);
             for (int index1 = 0; index1 < num2; ++index1)
             {
-              int index2 = Dust.NewDust(this.Center, 0, 0, 61, 0.0f, 0.0f, 0, new Color(), 1.7f);
-              Main.dust[index2].velocity *= 8f;
-              --Main.dust[index2].velocity.Y;
+              int index2 = Dust.NewDust(this.Center, 0, 0, 61, 0.0f, 0.0f, 0, (Color) null, 1.7f);
+              Dust dust = Main.dust[index2];
+              Vector2 vector2_2 = Vector2.op_Multiply(dust.velocity, 8f);
+              dust.velocity = vector2_2;
+              // ISSUE: explicit reference operation
+              // ISSUE: variable of a reference type
+              Vector2& local = @Main.dust[index2].velocity;
+              // ISSUE: explicit reference operation
+              double num3 = (^local).Y - 1.0;
+              // ISSUE: explicit reference operation
+              (^local).Y = (__Null) num3;
               Main.dust[index2].position = Vector2.Lerp(Main.dust[index2].position, this.Center, 0.5f);
               Main.dust[index2].noGravity = true;
               Main.dust[index2].noLight = true;
@@ -42750,7 +39735,7 @@ namespace Terraria
             this.type = 0;
             this.stack = 0;
             if (Main.netMode == 2)
-              NetMessage.SendData(21, -1, -1, "", i, 0.0f, 0.0f, 0.0f, 0, 0, 0);
+              NetMessage.SendData(21, -1, -1, (NetworkText) null, i, 0.0f, 0.0f, 0.0f, 0, 0, 0);
           }
         }
         else
@@ -42760,67 +39745,69 @@ namespace Terraria
           if (Main.rand.Next(6) == 0)
           {
             int index = Dust.NewDust(this.position, this.width, this.height, 55, 0.0f, 0.0f, 200, this.color, 1f);
-            Main.dust[index].velocity *= 0.3f;
+            Dust dust = Main.dust[index];
+            Vector2 vector2_2 = Vector2.op_Multiply(dust.velocity, 0.3f);
+            dust.velocity = vector2_2;
             Main.dust[index].scale *= 0.5f;
           }
         }
         else if (this.type == 3822)
           Lighting.AddLight(this.Center, 0.1f, 0.3f, 0.1f);
         else if (this.type == 1970)
-          Lighting.AddLight((int) (((double) this.position.X + (double) (this.width / 2)) / 16.0), (int) (((double) this.position.Y + (double) (this.height / 2)) / 16.0), 0.75f, 0.0f, 0.75f);
+          Lighting.AddLight((int) ((this.position.X + (double) (this.width / 2)) / 16.0), (int) ((this.position.Y + (double) (this.height / 2)) / 16.0), 0.75f, 0.0f, 0.75f);
         else if (this.type == 1972)
-          Lighting.AddLight((int) (((double) this.position.X + (double) (this.width / 2)) / 16.0), (int) (((double) this.position.Y + (double) (this.height / 2)) / 16.0), 0.0f, 0.0f, 0.75f);
+          Lighting.AddLight((int) ((this.position.X + (double) (this.width / 2)) / 16.0), (int) ((this.position.Y + (double) (this.height / 2)) / 16.0), 0.0f, 0.0f, 0.75f);
         else if (this.type == 1971)
-          Lighting.AddLight((int) (((double) this.position.X + (double) (this.width / 2)) / 16.0), (int) (((double) this.position.Y + (double) (this.height / 2)) / 16.0), 0.75f, 0.75f, 0.0f);
+          Lighting.AddLight((int) ((this.position.X + (double) (this.width / 2)) / 16.0), (int) ((this.position.Y + (double) (this.height / 2)) / 16.0), 0.75f, 0.75f, 0.0f);
         else if (this.type == 1973)
-          Lighting.AddLight((int) (((double) this.position.X + (double) (this.width / 2)) / 16.0), (int) (((double) this.position.Y + (double) (this.height / 2)) / 16.0), 0.0f, 0.75f, 0.0f);
+          Lighting.AddLight((int) ((this.position.X + (double) (this.width / 2)) / 16.0), (int) ((this.position.Y + (double) (this.height / 2)) / 16.0), 0.0f, 0.75f, 0.0f);
         else if (this.type == 1974)
-          Lighting.AddLight((int) (((double) this.position.X + (double) (this.width / 2)) / 16.0), (int) (((double) this.position.Y + (double) (this.height / 2)) / 16.0), 0.75f, 0.0f, 0.0f);
+          Lighting.AddLight((int) ((this.position.X + (double) (this.width / 2)) / 16.0), (int) ((this.position.Y + (double) (this.height / 2)) / 16.0), 0.75f, 0.0f, 0.0f);
         else if (this.type == 1975)
-          Lighting.AddLight((int) (((double) this.position.X + (double) (this.width / 2)) / 16.0), (int) (((double) this.position.Y + (double) (this.height / 2)) / 16.0), 0.75f, 0.75f, 0.75f);
+          Lighting.AddLight((int) ((this.position.X + (double) (this.width / 2)) / 16.0), (int) ((this.position.Y + (double) (this.height / 2)) / 16.0), 0.75f, 0.75f, 0.75f);
         else if (this.type == 1976)
-          Lighting.AddLight((int) (((double) this.position.X + (double) (this.width / 2)) / 16.0), (int) (((double) this.position.Y + (double) (this.height / 2)) / 16.0), 0.75f, 0.375f, 0.0f);
+          Lighting.AddLight((int) ((this.position.X + (double) (this.width / 2)) / 16.0), (int) ((this.position.Y + (double) (this.height / 2)) / 16.0), 0.75f, 0.375f, 0.0f);
         else if (this.type == 2679)
-          Lighting.AddLight((int) (((double) this.position.X + (double) (this.width / 2)) / 16.0), (int) (((double) this.position.Y + (double) (this.height / 2)) / 16.0), 0.6f, 0.0f, 0.6f);
+          Lighting.AddLight((int) ((this.position.X + (double) (this.width / 2)) / 16.0), (int) ((this.position.Y + (double) (this.height / 2)) / 16.0), 0.6f, 0.0f, 0.6f);
         else if (this.type == 2687)
-          Lighting.AddLight((int) (((double) this.position.X + (double) (this.width / 2)) / 16.0), (int) (((double) this.position.Y + (double) (this.height / 2)) / 16.0), 0.0f, 0.0f, 0.6f);
+          Lighting.AddLight((int) ((this.position.X + (double) (this.width / 2)) / 16.0), (int) ((this.position.Y + (double) (this.height / 2)) / 16.0), 0.0f, 0.0f, 0.6f);
         else if (this.type == 2689)
-          Lighting.AddLight((int) (((double) this.position.X + (double) (this.width / 2)) / 16.0), (int) (((double) this.position.Y + (double) (this.height / 2)) / 16.0), 0.6f, 0.6f, 0.0f);
+          Lighting.AddLight((int) ((this.position.X + (double) (this.width / 2)) / 16.0), (int) ((this.position.Y + (double) (this.height / 2)) / 16.0), 0.6f, 0.6f, 0.0f);
         else if (this.type == 2683)
-          Lighting.AddLight((int) (((double) this.position.X + (double) (this.width / 2)) / 16.0), (int) (((double) this.position.Y + (double) (this.height / 2)) / 16.0), 0.0f, 0.6f, 0.0f);
+          Lighting.AddLight((int) ((this.position.X + (double) (this.width / 2)) / 16.0), (int) ((this.position.Y + (double) (this.height / 2)) / 16.0), 0.0f, 0.6f, 0.0f);
         else if (this.type == 2685)
-          Lighting.AddLight((int) (((double) this.position.X + (double) (this.width / 2)) / 16.0), (int) (((double) this.position.Y + (double) (this.height / 2)) / 16.0), 0.6f, 0.0f, 0.0f);
+          Lighting.AddLight((int) ((this.position.X + (double) (this.width / 2)) / 16.0), (int) ((this.position.Y + (double) (this.height / 2)) / 16.0), 0.6f, 0.0f, 0.0f);
         else if (this.type == 2681)
-          Lighting.AddLight((int) (((double) this.position.X + (double) (this.width / 2)) / 16.0), (int) (((double) this.position.Y + (double) (this.height / 2)) / 16.0), 0.6f, 0.6f, 0.6f);
+          Lighting.AddLight((int) ((this.position.X + (double) (this.width / 2)) / 16.0), (int) ((this.position.Y + (double) (this.height / 2)) / 16.0), 0.6f, 0.6f, 0.6f);
         else if (this.type == 2677)
-          Lighting.AddLight((int) (((double) this.position.X + (double) (this.width / 2)) / 16.0), (int) (((double) this.position.Y + (double) (this.height / 2)) / 16.0), 0.6f, 0.375f, 0.0f);
+          Lighting.AddLight((int) ((this.position.X + (double) (this.width / 2)) / 16.0), (int) ((this.position.Y + (double) (this.height / 2)) / 16.0), 0.6f, 0.375f, 0.0f);
         else if (this.type == 8 || this.type == 105)
         {
           if (!this.wet)
-            Lighting.AddLight((int) (((double) this.position.X + (double) (this.width / 2)) / 16.0), (int) (((double) this.position.Y + (double) (this.height / 2)) / 16.0), 1f, 0.95f, 0.8f);
+            Lighting.AddLight((int) ((this.position.X + (double) (this.width / 2)) / 16.0), (int) ((this.position.Y + (double) (this.height / 2)) / 16.0), 1f, 0.95f, 0.8f);
         }
         else if (this.type == 2701)
-          Lighting.AddLight((int) (((double) this.position.X + (double) (this.width / 2)) / 16.0), (int) (((double) this.position.Y + (double) (this.height / 2)) / 16.0), 0.7f, 0.65f, 0.55f);
+          Lighting.AddLight((int) ((this.position.X + (double) (this.width / 2)) / 16.0), (int) ((this.position.Y + (double) (this.height / 2)) / 16.0), 0.7f, 0.65f, 0.55f);
         else if (this.type == 523)
-          Lighting.AddLight((int) (((double) this.position.X + (double) (this.width / 2)) / 16.0), (int) (((double) this.position.Y + (double) (this.height / 2)) / 16.0), 0.85f, 1f, 0.7f);
+          Lighting.AddLight((int) ((this.position.X + (double) (this.width / 2)) / 16.0), (int) ((this.position.Y + (double) (this.height / 2)) / 16.0), 0.85f, 1f, 0.7f);
         else if (this.type == 974)
         {
           if (!this.wet)
-            Lighting.AddLight((int) (((double) this.position.X + (double) (this.width / 2)) / 16.0), (int) (((double) this.position.Y + (double) (this.height / 2)) / 16.0), 0.7f, 0.85f, 1f);
+            Lighting.AddLight((int) ((this.position.X + (double) (this.width / 2)) / 16.0), (int) ((this.position.Y + (double) (this.height / 2)) / 16.0), 0.7f, 0.85f, 1f);
         }
         else if (this.type == 1333)
-          Lighting.AddLight((int) (((double) this.position.X + (double) (this.width / 2)) / 16.0), (int) (((double) this.position.Y + (double) (this.height / 2)) / 16.0), 1.25f, 1.25f, 0.8f);
+          Lighting.AddLight((int) ((this.position.X + (double) (this.width / 2)) / 16.0), (int) ((this.position.Y + (double) (this.height / 2)) / 16.0), 1.25f, 1.25f, 0.8f);
         else if (this.type == 3045)
-          Lighting.AddLight((int) (((double) this.position.X + (double) (this.width / 2)) / 16.0), (int) (((double) this.position.Y + (double) (this.height / 2)) / 16.0), (float) Main.DiscoR / (float) byte.MaxValue, (float) Main.DiscoG / (float) byte.MaxValue, (float) Main.DiscoB / (float) byte.MaxValue);
+          Lighting.AddLight((int) ((this.position.X + (double) (this.width / 2)) / 16.0), (int) ((this.position.Y + (double) (this.height / 2)) / 16.0), (float) Main.DiscoR / (float) byte.MaxValue, (float) Main.DiscoG / (float) byte.MaxValue, (float) Main.DiscoB / (float) byte.MaxValue);
         else if (this.type == 3004)
-          Lighting.AddLight((int) (((double) this.position.X + (double) (this.width / 2)) / 16.0), (int) (((double) this.position.Y + (double) (this.height / 2)) / 16.0), 0.95f, 0.65f, 1.3f);
+          Lighting.AddLight((int) ((this.position.X + (double) (this.width / 2)) / 16.0), (int) ((this.position.Y + (double) (this.height / 2)) / 16.0), 0.95f, 0.65f, 1.3f);
         else if (this.type == 2274)
         {
           float R = 0.75f;
           float G = 1.35f;
           float B = 1.5f;
           if (!this.wet)
-            Lighting.AddLight((int) (((double) this.position.X + (double) (this.width / 2)) / 16.0), (int) (((double) this.position.Y + (double) (this.height / 2)) / 16.0), R, G, B);
+            Lighting.AddLight((int) ((this.position.X + (double) (this.width / 2)) / 16.0), (int) ((this.position.Y + (double) (this.height / 2)) / 16.0), R, G, B);
         }
         else if (this.type >= 427 && this.type <= 432)
         {
@@ -42866,47 +39853,47 @@ namespace Terraria
               G = 0.9f;
               B = 0.0f;
             }
-            Lighting.AddLight((int) (((double) this.position.X + (double) (this.width / 2)) / 16.0), (int) (((double) this.position.Y + (double) (this.height / 2)) / 16.0), R, G, B);
+            Lighting.AddLight((int) ((this.position.X + (double) (this.width / 2)) / 16.0), (int) ((this.position.Y + (double) (this.height / 2)) / 16.0), R, G, B);
           }
         }
         else if (this.type == 2777 || this.type == 2778 || (this.type == 2779 || this.type == 2780) || (this.type == 2781 || this.type == 2760 || (this.type == 2761 || this.type == 2762)) || this.type == 3524)
-          Lighting.AddLight((int) (((double) this.position.X + (double) (this.width / 2)) / 16.0), (int) (((double) this.position.Y + (double) (this.height / 2)) / 16.0), 0.4f, 0.16f, 0.36f);
+          Lighting.AddLight((int) ((this.position.X + (double) (this.width / 2)) / 16.0), (int) ((this.position.Y + (double) (this.height / 2)) / 16.0), 0.4f, 0.16f, 0.36f);
         else if (this.type == 2772 || this.type == 2773 || (this.type == 2774 || this.type == 2775) || (this.type == 2776 || this.type == 2757 || (this.type == 2758 || this.type == 2759)) || this.type == 3523)
-          Lighting.AddLight((int) (((double) this.position.X + (double) (this.width / 2)) / 16.0), (int) (((double) this.position.Y + (double) (this.height / 2)) / 16.0), 0.0f, 0.36f, 0.4f);
+          Lighting.AddLight((int) ((this.position.X + (double) (this.width / 2)) / 16.0), (int) ((this.position.Y + (double) (this.height / 2)) / 16.0), 0.0f, 0.36f, 0.4f);
         else if (this.type == 2782 || this.type == 2783 || (this.type == 2784 || this.type == 2785) || (this.type == 2786 || this.type == 2763 || (this.type == 2764 || this.type == 2765)) || this.type == 3522)
-          Lighting.AddLight((int) (((double) this.position.X + (double) (this.width / 2)) / 16.0), (int) (((double) this.position.Y + (double) (this.height / 2)) / 16.0), 0.5f, 0.25f, 0.05f);
+          Lighting.AddLight((int) ((this.position.X + (double) (this.width / 2)) / 16.0), (int) ((this.position.Y + (double) (this.height / 2)) / 16.0), 0.5f, 0.25f, 0.05f);
         else if (this.type == 3462 || this.type == 3463 || (this.type == 3464 || this.type == 3465) || (this.type == 3466 || this.type == 3381 || (this.type == 3382 || this.type == 3383)) || this.type == 3525)
           Lighting.AddLight(this.Center, 0.3f, 0.3f, 0.2f);
         else if (this.type == 41)
         {
           if (!this.wet)
-            Lighting.AddLight((int) (((double) this.position.X + (double) this.width) / 16.0), (int) (((double) this.position.Y + (double) (this.height / 2)) / 16.0), 1f, 0.75f, 0.55f);
+            Lighting.AddLight((int) ((this.position.X + (double) this.width) / 16.0), (int) ((this.position.Y + (double) (this.height / 2)) / 16.0), 1f, 0.75f, 0.55f);
         }
         else if (this.type == 988)
         {
           if (!this.wet)
-            Lighting.AddLight((int) (((double) this.position.X + (double) this.width) / 16.0), (int) (((double) this.position.Y + (double) (this.height / 2)) / 16.0), 0.35f, 0.65f, 1f);
+            Lighting.AddLight((int) ((this.position.X + (double) this.width) / 16.0), (int) ((this.position.Y + (double) (this.height / 2)) / 16.0), 0.35f, 0.65f, 1f);
         }
         else if (this.type == 282)
-          Lighting.AddLight((int) (((double) this.position.X + (double) this.width) / 16.0), (int) (((double) this.position.Y + (double) (this.height / 2)) / 16.0), 0.7f, 1f, 0.8f);
+          Lighting.AddLight((int) ((this.position.X + (double) this.width) / 16.0), (int) ((this.position.Y + (double) (this.height / 2)) / 16.0), 0.7f, 1f, 0.8f);
         else if (this.type == 286)
-          Lighting.AddLight((int) (((double) this.position.X + (double) this.width) / 16.0), (int) (((double) this.position.Y + (double) (this.height / 2)) / 16.0), 0.7f, 0.8f, 1f);
+          Lighting.AddLight((int) ((this.position.X + (double) this.width) / 16.0), (int) ((this.position.Y + (double) (this.height / 2)) / 16.0), 0.7f, 0.8f, 1f);
         else if (this.type == 3112)
-          Lighting.AddLight((int) (((double) this.position.X + (double) this.width) / 16.0), (int) (((double) this.position.Y + (double) (this.height / 2)) / 16.0), 1f, 0.6f, 0.85f);
+          Lighting.AddLight((int) ((this.position.X + (double) this.width) / 16.0), (int) ((this.position.Y + (double) (this.height / 2)) / 16.0), 1f, 0.6f, 0.85f);
         else if (this.type == 3002)
-          Lighting.AddLight((int) (((double) this.position.X + (double) this.width) / 16.0), (int) (((double) this.position.Y + (double) (this.height / 2)) / 16.0), 1.05f, 0.95f, 0.55f);
+          Lighting.AddLight((int) ((this.position.X + (double) this.width) / 16.0), (int) ((this.position.Y + (double) (this.height / 2)) / 16.0), 1.05f, 0.95f, 0.55f);
         else if (this.type == 331)
-          Lighting.AddLight((int) (((double) this.position.X + (double) this.width) / 16.0), (int) (((double) this.position.Y + (double) (this.height / 2)) / 16.0), 0.55f, 0.75f, 0.6f);
+          Lighting.AddLight((int) ((this.position.X + (double) this.width) / 16.0), (int) ((this.position.Y + (double) (this.height / 2)) / 16.0), 0.55f, 0.75f, 0.6f);
         else if (this.type == 183)
-          Lighting.AddLight((int) (((double) this.position.X + (double) this.width) / 16.0), (int) (((double) this.position.Y + (double) (this.height / 2)) / 16.0), 0.15f, 0.45f, 0.9f);
+          Lighting.AddLight((int) ((this.position.X + (double) this.width) / 16.0), (int) ((this.position.Y + (double) (this.height / 2)) / 16.0), 0.15f, 0.45f, 0.9f);
         else if (this.type == 75)
-          Lighting.AddLight((int) (((double) this.position.X + (double) this.width) / 16.0), (int) (((double) this.position.Y + (double) (this.height / 2)) / 16.0), 0.8f, 0.7f, 0.1f);
+          Lighting.AddLight((int) ((this.position.X + (double) this.width) / 16.0), (int) ((this.position.Y + (double) (this.height / 2)) / 16.0), 0.8f, 0.7f, 0.1f);
         if (this.type == 75)
         {
           if (Main.rand.Next(25) == 0)
-            Dust.NewDust(this.position, this.width, this.height, 58, this.velocity.X * 0.5f, this.velocity.Y * 0.5f, 150, new Color(), 1.2f);
+            Dust.NewDust(this.position, this.width, this.height, 58, (float) (this.velocity.X * 0.5), (float) (this.velocity.Y * 0.5), 150, (Color) null, 1.2f);
           if (Main.rand.Next(50) == 0)
-            Gore.NewGore(this.position, new Vector2(this.velocity.X * 0.2f, this.velocity.Y * 0.2f), Main.rand.Next(16, 18), 1f);
+            Gore.NewGore(this.position, new Vector2((float) (this.velocity.X * 0.200000002980232), (float) (this.velocity.Y * 0.200000002980232)), Main.rand.Next(16, 18), 1f);
         }
         if (this.spawnTime < 2147483646)
         {
@@ -42920,19 +39907,19 @@ namespace Terraria
           if (this.release >= 300)
           {
             this.release = 0;
-            NetMessage.SendData(39, this.owner, -1, "", i, 0.0f, 0.0f, 0.0f, 0, 0, 0);
+            NetMessage.SendData(39, this.owner, -1, (NetworkText) null, i, 0.0f, 0.0f, 0.0f, 0, 0, 0);
           }
         }
         if (this.wet)
         {
           Item obj = this;
-          Vector2 vector2_2 = obj.position + vector2_1;
+          Vector2 vector2_2 = Vector2.op_Addition(obj.position, vector2_1);
           obj.position = vector2_2;
         }
         else
         {
           Item obj = this;
-          Vector2 vector2_2 = obj.position + this.velocity;
+          Vector2 vector2_2 = Vector2.op_Addition(obj.position, this.velocity);
           obj.position = vector2_2;
         }
         if (this.noGrabDelay <= 0)
@@ -43019,21 +40006,21 @@ namespace Terraria
       Main.item[index1] = new Item();
       Main.item[index1].SetDefaults(Type, false);
       Main.item[index1].Prefix(pfix);
-      Main.item[index1].position.X = (float) (X + Width / 2 - Main.item[index1].width / 2);
-      Main.item[index1].position.Y = (float) (Y + Height / 2 - Main.item[index1].height / 2);
+      Main.item[index1].position.X = (__Null) (double) (X + Width / 2 - Main.item[index1].width / 2);
+      Main.item[index1].position.Y = (__Null) (double) (Y + Height / 2 - Main.item[index1].height / 2);
       Main.item[index1].wet = Collision.WetCollision(Main.item[index1].position, Main.item[index1].width, Main.item[index1].height);
-      Main.item[index1].velocity.X = (float) Main.rand.Next(-30, 31) * 0.1f;
-      Main.item[index1].velocity.Y = (float) Main.rand.Next(-40, -15) * 0.1f;
+      Main.item[index1].velocity.X = (__Null) ((double) Main.rand.Next(-30, 31) * 0.100000001490116);
+      Main.item[index1].velocity.Y = (__Null) ((double) Main.rand.Next(-40, -15) * 0.100000001490116);
       if (Type == 859)
       {
         Item obj = Main.item[index1];
-        Vector2 vector2 = obj.velocity * 0.0f;
+        Vector2 vector2 = Vector2.op_Multiply(obj.velocity, 0.0f);
         obj.velocity = vector2;
       }
       if (Type == 520 || Type == 521 || Main.item[index1].type >= 0 && ItemID.Sets.NebulaPickup[Main.item[index1].type])
       {
-        Main.item[index1].velocity.X = (float) Main.rand.Next(-30, 31) * 0.1f;
-        Main.item[index1].velocity.Y = (float) Main.rand.Next(-30, 31) * 0.1f;
+        Main.item[index1].velocity.X = (__Null) ((double) Main.rand.Next(-30, 31) * 0.100000001490116);
+        Main.item[index1].velocity.Y = (__Null) ((double) Main.rand.Next(-30, 31) * 0.100000001490116);
       }
       Main.item[index1].active = true;
       Main.item[index1].spawnTime = 0;
@@ -43045,7 +40032,7 @@ namespace Terraria
         int num = 0;
         if (noGrabDelay)
           num = 1;
-        NetMessage.SendData(21, -1, -1, "", index1, (float) num, 0.0f, 0.0f, 0, 0, 0);
+        NetMessage.SendData(21, -1, -1, (NetworkText) null, index1, (float) num, 0.0f, 0.0f, 0, 0, 0);
         Main.item[index1].FindOwner(index1);
       }
       else if (Main.netMode == 0)
@@ -43064,7 +40051,7 @@ namespace Terraria
       {
         if (this.ownIgnore != index && Main.player[index].active && Main.player[index].ItemSpace(Main.item[whoAmI]))
         {
-          float num2 = Math.Abs(Main.player[index].position.X + (float) (Main.player[index].width / 2) - this.position.X - (float) (this.width / 2)) + Math.Abs(Main.player[index].position.Y + (float) (Main.player[index].height / 2) - this.position.Y - (float) this.height);
+          float num2 = Math.Abs((float) (Main.player[index].position.X + (double) (Main.player[index].width / 2) - this.position.X) - (float) (this.width / 2)) + Math.Abs((float) (Main.player[index].position.Y + (double) (Main.player[index].height / 2) - this.position.Y) - (float) this.height);
           if (Main.player[index].manaMagnet && (this.type == 184 || this.type == 1735 || this.type == 1868))
             num2 -= (float) Item.manaGrabRange;
           if (Main.player[index].lifeMagnet && (this.type == 58 || this.type == 1734 || this.type == 1867))
@@ -43078,10 +40065,10 @@ namespace Terraria
       }
       if (this.owner == owner || (owner != Main.myPlayer || Main.netMode != 1) && (owner != (int) byte.MaxValue || Main.netMode != 2) && (owner == (int) byte.MaxValue || Main.player[owner].active))
         return;
-      NetMessage.SendData(21, -1, -1, "", whoAmI, 0.0f, 0.0f, 0.0f, 0, 0, 0);
+      NetMessage.SendData(21, -1, -1, (NetworkText) null, whoAmI, 0.0f, 0.0f, 0.0f, 0, 0, 0);
       if (!this.active)
         return;
-      NetMessage.SendData(22, -1, -1, "", whoAmI, 0.0f, 0.0f, 0.0f, 0, 0, 0);
+      NetMessage.SendData(22, -1, -1, (NetworkText) null, whoAmI, 0.0f, 0.0f, 0.0f, 0, 0, 0);
     }
 
     public Item Clone()
@@ -43108,12 +40095,21 @@ namespace Terraria
       return true;
     }
 
+    public void SetNameOverride(string name)
+    {
+      this._nameOverride = name;
+    }
+
+    public void ClearNameOverride()
+    {
+      this._nameOverride = (string) null;
+    }
+
     public void TurnToAir()
     {
       this.type = 0;
       this.stack = 0;
       this.netID = 0;
-      this.name = "";
     }
 
     public void OnPurchase(Item item)

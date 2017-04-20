@@ -1,8 +1,8 @@
 ﻿// Decompiled with JetBrains decompiler
 // Type: Terraria.Map.MapHelper
-// Assembly: Terraria, Version=1.3.4.4, Culture=neutral, PublicKeyToken=null
-// MVID: DEE50102-BCC2-472F-987B-153E892583F1
-// Assembly location: E:\Steam\SteamApps\common\Terraria\Terraria.exe
+// Assembly: Terraria, Version=1.3.5.1, Culture=neutral, PublicKeyToken=null
+// MVID: DF0400F4-EE47-4864-BE80-932EDB02D8A6
+// Assembly location: F:\Steam\steamapps\common\Terraria\Terraria.exe
 
 using Ionic.Zlib;
 using Microsoft.Xna.Framework;
@@ -56,16 +56,19 @@ namespace Terraria.Map
 
     public static void Initialize()
     {
-      Color[][] colorArray1 = new Color[467][];
-      for (int index = 0; index < 467; ++index)
+      Color[][] colorArray1 = new Color[470][];
+      for (int index = 0; index < 470; ++index)
         colorArray1[index] = new Color[12];
-      Color color1 = new Color(151, 107, 75);
+      Color color1;
+      // ISSUE: explicit reference operation
+      ((Color) @color1).\u002Ector(151, 107, 75);
       colorArray1[0][0] = color1;
       colorArray1[5][0] = color1;
       colorArray1[30][0] = color1;
       colorArray1[191][0] = color1;
       colorArray1[272][0] = new Color(121, 119, 101);
-      color1 = new Color(128, 128, 128);
+      // ISSUE: explicit reference operation
+      ((Color) @color1).\u002Ector(128, 128, 128);
       colorArray1[1][0] = color1;
       colorArray1[38][0] = color1;
       colorArray1[48][0] = color1;
@@ -74,7 +77,8 @@ namespace Terraria.Map
       colorArray1[273][0] = color1;
       colorArray1[283][0] = color1;
       colorArray1[2][0] = new Color(28, 216, 94);
-      color1 = new Color(26, 196, 84);
+      // ISSUE: explicit reference operation
+      ((Color) @color1).\u002Ector(26, 196, 84);
       colorArray1[3][0] = color1;
       colorArray1[192][0] = color1;
       colorArray1[73][0] = new Color(27, 197, 109);
@@ -82,17 +86,21 @@ namespace Terraria.Map
       colorArray1[353][0] = new Color(28, 216, 94);
       colorArray1[20][0] = new Color(163, 116, 81);
       colorArray1[6][0] = new Color(140, 101, 80);
-      color1 = new Color(150, 67, 22);
+      // ISSUE: explicit reference operation
+      ((Color) @color1).\u002Ector(150, 67, 22);
       colorArray1[7][0] = color1;
       colorArray1[47][0] = color1;
       colorArray1[284][0] = color1;
-      color1 = new Color(185, 164, 23);
+      // ISSUE: explicit reference operation
+      ((Color) @color1).\u002Ector(185, 164, 23);
       colorArray1[8][0] = color1;
       colorArray1[45][0] = color1;
-      color1 = new Color(185, 194, 195);
+      // ISSUE: explicit reference operation
+      ((Color) @color1).\u002Ector(185, 194, 195);
       colorArray1[9][0] = color1;
       colorArray1[46][0] = color1;
-      color1 = new Color(98, 95, 167);
+      // ISSUE: explicit reference operation
+      ((Color) @color1).\u002Ector(98, 95, 167);
       colorArray1[22][0] = color1;
       colorArray1[140][0] = color1;
       colorArray1[23][0] = new Color(141, 137, 223);
@@ -105,7 +113,8 @@ namespace Terraria.Map
       colorArray1[43][0] = new Color(84, 100, 63);
       colorArray1[44][0] = new Color(107, 68, 99);
       colorArray1[53][0] = new Color(186, 168, 84);
-      color1 = new Color(190, 171, 94);
+      // ISSUE: explicit reference operation
+      ((Color) @color1).\u002Ector(190, 171, 94);
       colorArray1[151][0] = color1;
       colorArray1[154][0] = color1;
       colorArray1[274][0] = color1;
@@ -115,10 +124,12 @@ namespace Terraria.Map
       colorArray1[56][0] = new Color(43, 40, 84);
       colorArray1[75][0] = new Color(26, 26, 26);
       colorArray1[57][0] = new Color(68, 68, 76);
-      color1 = new Color(142, 66, 66);
+      // ISSUE: explicit reference operation
+      ((Color) @color1).\u002Ector(142, 66, 66);
       colorArray1[58][0] = color1;
       colorArray1[76][0] = color1;
-      color1 = new Color(92, 68, 73);
+      // ISSUE: explicit reference operation
+      ((Color) @color1).\u002Ector(92, 68, 73);
       colorArray1[59][0] = color1;
       colorArray1[120][0] = color1;
       colorArray1[60][0] = new Color(143, 215, 29);
@@ -133,20 +144,25 @@ namespace Terraria.Map
       colorArray1[67][0] = new Color(140, 58, 166);
       colorArray1[68][0] = new Color(125, 191, 197);
       colorArray1[70][0] = new Color(93, (int) sbyte.MaxValue, (int) byte.MaxValue);
-      color1 = new Color(182, 175, 130);
+      // ISSUE: explicit reference operation
+      ((Color) @color1).\u002Ector(182, 175, 130);
       colorArray1[71][0] = color1;
       colorArray1[72][0] = color1;
       colorArray1[190][0] = color1;
-      color1 = new Color(73, 120, 17);
+      // ISSUE: explicit reference operation
+      ((Color) @color1).\u002Ector(73, 120, 17);
       colorArray1[80][0] = color1;
       colorArray1[188][0] = color1;
-      color1 = new Color(11, 80, 143);
+      // ISSUE: explicit reference operation
+      ((Color) @color1).\u002Ector(11, 80, 143);
       colorArray1[107][0] = color1;
       colorArray1[121][0] = color1;
-      color1 = new Color(91, 169, 169);
+      // ISSUE: explicit reference operation
+      ((Color) @color1).\u002Ector(91, 169, 169);
       colorArray1[108][0] = color1;
       colorArray1[122][0] = color1;
-      color1 = new Color(128, 26, 52);
+      // ISSUE: explicit reference operation
+      ((Color) @color1).\u002Ector(128, 26, 52);
       colorArray1[111][0] = color1;
       colorArray1[150][0] = color1;
       colorArray1[109][0] = new Color(78, 193, 227);
@@ -154,7 +170,8 @@ namespace Terraria.Map
       colorArray1[113][0] = new Color(48, 208, 234);
       colorArray1[115][0] = new Color(33, 171, 207);
       colorArray1[112][0] = new Color(103, 98, 122);
-      color1 = new Color(238, 225, 218);
+      // ISSUE: explicit reference operation
+      ((Color) @color1).\u002Ector(238, 225, 218);
       colorArray1[116][0] = color1;
       colorArray1[118][0] = color1;
       colorArray1[117][0] = new Color(181, 172, 190);
@@ -164,7 +181,8 @@ namespace Terraria.Map
       colorArray1[131][0] = new Color(52, 52, 52);
       colorArray1[145][0] = new Color(192, 30, 30);
       colorArray1[146][0] = new Color(43, 192, 30);
-      color1 = new Color(211, 236, 241);
+      // ISSUE: explicit reference operation
+      ((Color) @color1).\u002Ector(211, 236, 241);
       colorArray1[147][0] = color1;
       colorArray1[148][0] = color1;
       colorArray1[152][0] = new Color(128, 133, 184);
@@ -172,7 +190,8 @@ namespace Terraria.Map
       colorArray1[155][0] = new Color(131, 162, 161);
       colorArray1[156][0] = new Color(170, 171, 157);
       colorArray1[157][0] = new Color(104, 100, 126);
-      color1 = new Color(145, 81, 85);
+      // ISSUE: explicit reference operation
+      ((Color) @color1).\u002Ector(145, 81, 85);
       colorArray1[158][0] = color1;
       colorArray1[232][0] = color1;
       colorArray1[159][0] = new Color(148, 133, 98);
@@ -185,14 +204,17 @@ namespace Terraria.Map
       colorArray1[164][0] = new Color(218, 182, 204);
       colorArray1[170][0] = new Color(27, 109, 69);
       colorArray1[171][0] = new Color(33, 135, 85);
-      color1 = new Color(129, 125, 93);
+      // ISSUE: explicit reference operation
+      ((Color) @color1).\u002Ector(129, 125, 93);
       colorArray1[166][0] = color1;
       colorArray1[175][0] = color1;
       colorArray1[167][0] = new Color(62, 82, 114);
-      color1 = new Color(132, 157, (int) sbyte.MaxValue);
+      // ISSUE: explicit reference operation
+      ((Color) @color1).\u002Ector(132, 157, (int) sbyte.MaxValue);
       colorArray1[168][0] = color1;
       colorArray1[176][0] = color1;
-      color1 = new Color(152, 171, 198);
+      // ISSUE: explicit reference operation
+      ((Color) @color1).\u002Ector(152, 171, 198);
       colorArray1[169][0] = color1;
       colorArray1[177][0] = color1;
       colorArray1[179][0] = new Color(49, 134, 114);
@@ -256,7 +278,8 @@ namespace Terraria.Map
       colorArray1[267][0] = new Color(240, 240, 247);
       colorArray1[268][0] = new Color((int) byte.MaxValue, 145, 79);
       colorArray1[287][0] = new Color(79, 128, 17);
-      color1 = new Color(122, 217, 232);
+      // ISSUE: explicit reference operation
+      ((Color) @color1).\u002Ector(122, 217, 232);
       colorArray1[275][0] = color1;
       colorArray1[276][0] = color1;
       colorArray1[277][0] = color1;
@@ -306,18 +329,22 @@ namespace Terraria.Map
       colorArray1[313][0] = new Color(87, 150, 154);
       colorArray1[4][0] = new Color(253, 221, 3);
       colorArray1[4][1] = new Color(253, 221, 3);
-      color1 = new Color(253, 221, 3);
+      // ISSUE: explicit reference operation
+      ((Color) @color1).\u002Ector(253, 221, 3);
       colorArray1[93][0] = color1;
       colorArray1[33][0] = color1;
       colorArray1[174][0] = color1;
       colorArray1[100][0] = color1;
       colorArray1[98][0] = color1;
       colorArray1[173][0] = color1;
-      color1 = new Color(119, 105, 79);
+      // ISSUE: explicit reference operation
+      ((Color) @color1).\u002Ector(119, 105, 79);
       colorArray1[11][0] = color1;
       colorArray1[10][0] = color1;
-      color1 = new Color(191, 142, 111);
+      // ISSUE: explicit reference operation
+      ((Color) @color1).\u002Ector(191, 142, 111);
       colorArray1[14][0] = color1;
+      colorArray1[469][0] = color1;
       colorArray1[15][0] = color1;
       colorArray1[18][0] = color1;
       colorArray1[19][0] = color1;
@@ -343,7 +370,8 @@ namespace Terraria.Map
       colorArray1[395][0] = color1;
       colorArray1[12][0] = new Color(174, 24, 69);
       colorArray1[13][0] = new Color(133, 213, 247);
-      color1 = new Color(144, 148, 144);
+      // ISSUE: explicit reference operation
+      ((Color) @color1).\u002Ector(144, 148, 144);
       colorArray1[17][0] = color1;
       colorArray1[90][0] = color1;
       colorArray1[96][0] = color1;
@@ -438,7 +466,8 @@ namespace Terraria.Map
       colorArray1[240][4] = new Color(234, 231, 226);
       colorArray1[241][0] = new Color(77, 74, 72);
       colorArray1[244][0] = new Color(200, 245, 253);
-      color1 = new Color(99, 50, 30);
+      // ISSUE: explicit reference operation
+      ((Color) @color1).\u002Ector(99, 50, 30);
       colorArray1[242][0] = color1;
       colorArray1[245][0] = color1;
       colorArray1[246][0] = color1;
@@ -457,38 +486,45 @@ namespace Terraria.Map
       colorArray1[21][2] = new Color(137, 128, 200);
       colorArray1[21][3] = new Color(160, 160, 160);
       colorArray1[21][4] = new Color(106, 210, (int) byte.MaxValue);
-      colorArray1[441][0] = new Color(174, 129, 92);
-      colorArray1[441][1] = new Color(233, 207, 94);
-      colorArray1[441][2] = new Color(137, 128, 200);
-      colorArray1[441][3] = new Color(160, 160, 160);
-      colorArray1[441][4] = new Color(106, 210, (int) byte.MaxValue);
+      colorArray1[441][0] = colorArray1[21][0];
+      colorArray1[441][1] = colorArray1[21][1];
+      colorArray1[441][2] = colorArray1[21][2];
+      colorArray1[441][3] = colorArray1[21][3];
+      colorArray1[441][4] = colorArray1[21][4];
       colorArray1[27][0] = new Color(54, 154, 54);
       colorArray1[27][1] = new Color(226, 196, 49);
-      color1 = new Color(246, 197, 26);
+      // ISSUE: explicit reference operation
+      ((Color) @color1).\u002Ector(246, 197, 26);
       colorArray1[82][0] = color1;
       colorArray1[83][0] = color1;
       colorArray1[84][0] = color1;
-      color1 = new Color(76, 150, 216);
+      // ISSUE: explicit reference operation
+      ((Color) @color1).\u002Ector(76, 150, 216);
       colorArray1[82][1] = color1;
       colorArray1[83][1] = color1;
       colorArray1[84][1] = color1;
-      color1 = new Color(185, 214, 42);
+      // ISSUE: explicit reference operation
+      ((Color) @color1).\u002Ector(185, 214, 42);
       colorArray1[82][2] = color1;
       colorArray1[83][2] = color1;
       colorArray1[84][2] = color1;
-      color1 = new Color(167, 203, 37);
+      // ISSUE: explicit reference operation
+      ((Color) @color1).\u002Ector(167, 203, 37);
       colorArray1[82][3] = color1;
       colorArray1[83][3] = color1;
       colorArray1[84][3] = color1;
-      color1 = new Color(72, 145, 125);
+      // ISSUE: explicit reference operation
+      ((Color) @color1).\u002Ector(72, 145, 125);
       colorArray1[82][4] = color1;
       colorArray1[83][4] = color1;
       colorArray1[84][4] = color1;
-      color1 = new Color(177, 69, 49);
+      // ISSUE: explicit reference operation
+      ((Color) @color1).\u002Ector(177, 69, 49);
       colorArray1[82][5] = color1;
       colorArray1[83][5] = color1;
       colorArray1[84][5] = color1;
-      color1 = new Color(40, 152, 240);
+      // ISSUE: explicit reference operation
+      ((Color) @color1).\u002Ector(40, 152, 240);
       colorArray1[82][6] = color1;
       colorArray1[83][6] = color1;
       colorArray1[84][6] = color1;
@@ -509,43 +545,53 @@ namespace Terraria.Map
       colorArray1[184][3] = new Color(34, 63, 102);
       colorArray1[184][4] = new Color(79, 35, 95);
       colorArray1[184][5] = new Color(253, 62, 3);
-      color1 = new Color(99, 99, 99);
+      // ISSUE: explicit reference operation
+      ((Color) @color1).\u002Ector(99, 99, 99);
       colorArray1[185][0] = color1;
       colorArray1[186][0] = color1;
       colorArray1[187][0] = color1;
-      color1 = new Color(114, 81, 56);
+      // ISSUE: explicit reference operation
+      ((Color) @color1).\u002Ector(114, 81, 56);
       colorArray1[185][1] = color1;
       colorArray1[186][1] = color1;
       colorArray1[187][1] = color1;
-      color1 = new Color(133, 133, 101);
+      // ISSUE: explicit reference operation
+      ((Color) @color1).\u002Ector(133, 133, 101);
       colorArray1[185][2] = color1;
       colorArray1[186][2] = color1;
       colorArray1[187][2] = color1;
-      color1 = new Color(151, 200, 211);
+      // ISSUE: explicit reference operation
+      ((Color) @color1).\u002Ector(151, 200, 211);
       colorArray1[185][3] = color1;
       colorArray1[186][3] = color1;
       colorArray1[187][3] = color1;
-      color1 = new Color(177, 183, 161);
+      // ISSUE: explicit reference operation
+      ((Color) @color1).\u002Ector(177, 183, 161);
       colorArray1[185][4] = color1;
       colorArray1[186][4] = color1;
       colorArray1[187][4] = color1;
-      color1 = new Color(134, 114, 38);
+      // ISSUE: explicit reference operation
+      ((Color) @color1).\u002Ector(134, 114, 38);
       colorArray1[185][5] = color1;
       colorArray1[186][5] = color1;
       colorArray1[187][5] = color1;
-      color1 = new Color(82, 62, 66);
+      // ISSUE: explicit reference operation
+      ((Color) @color1).\u002Ector(82, 62, 66);
       colorArray1[185][6] = color1;
       colorArray1[186][6] = color1;
       colorArray1[187][6] = color1;
-      color1 = new Color(143, 117, 121);
+      // ISSUE: explicit reference operation
+      ((Color) @color1).\u002Ector(143, 117, 121);
       colorArray1[185][7] = color1;
       colorArray1[186][7] = color1;
       colorArray1[187][7] = color1;
-      color1 = new Color(177, 92, 31);
+      // ISSUE: explicit reference operation
+      ((Color) @color1).\u002Ector(177, 92, 31);
       colorArray1[185][8] = color1;
       colorArray1[186][8] = color1;
       colorArray1[187][8] = color1;
-      color1 = new Color(85, 73, 87);
+      // ISSUE: explicit reference operation
+      ((Color) @color1).\u002Ector(85, 73, 87);
       colorArray1[185][9] = color1;
       colorArray1[186][9] = color1;
       colorArray1[187][9] = color1;
@@ -695,6 +741,10 @@ namespace Terraria.Map
       colorArray1[459][0] = new Color(190, 223, 232);
       colorArray1[460][0] = new Color(141, 163, 181);
       colorArray1[462][0] = new Color(231, 178, 28);
+      colorArray1[467][0] = new Color(129, 56, 121);
+      colorArray1[467][1] = new Color((int) byte.MaxValue, 249, 59);
+      colorArray1[468][0] = colorArray1[467][0];
+      colorArray1[468][1] = colorArray1[467][1];
       Color[] colorArray2 = new Color[3]
       {
         new Color(9, 61, 191),
@@ -725,7 +775,8 @@ namespace Terraria.Map
       colorArray3[227][0] = new Color(95, 137, 191);
       colorArray3[170][0] = new Color(59, 39, 22);
       colorArray3[171][0] = new Color(59, 39, 22);
-      color1 = new Color(52, 52, 52);
+      // ISSUE: explicit reference operation
+      ((Color) @color1).\u002Ector(52, 52, 52);
       colorArray3[1][0] = color1;
       colorArray3[53][0] = color1;
       colorArray3[52][0] = color1;
@@ -735,45 +786,56 @@ namespace Terraria.Map
       colorArray3[48][0] = color1;
       colorArray3[44][0] = color1;
       colorArray3[5][0] = color1;
-      color1 = new Color(88, 61, 46);
+      // ISSUE: explicit reference operation
+      ((Color) @color1).\u002Ector(88, 61, 46);
       colorArray3[2][0] = color1;
       colorArray3[16][0] = color1;
       colorArray3[59][0] = color1;
       colorArray3[3][0] = new Color(61, 58, 78);
       colorArray3[4][0] = new Color(73, 51, 36);
       colorArray3[6][0] = new Color(91, 30, 30);
-      color1 = new Color(27, 31, 42);
+      // ISSUE: explicit reference operation
+      ((Color) @color1).\u002Ector(27, 31, 42);
       colorArray3[7][0] = color1;
       colorArray3[17][0] = color1;
-      color1 = new Color(32, 40, 45);
+      // ISSUE: explicit reference operation
+      ((Color) @color1).\u002Ector(32, 40, 45);
       colorArray3[94][0] = color1;
       colorArray3[100][0] = color1;
-      color1 = new Color(44, 41, 50);
+      // ISSUE: explicit reference operation
+      ((Color) @color1).\u002Ector(44, 41, 50);
       colorArray3[95][0] = color1;
       colorArray3[101][0] = color1;
-      color1 = new Color(31, 39, 26);
+      // ISSUE: explicit reference operation
+      ((Color) @color1).\u002Ector(31, 39, 26);
       colorArray3[8][0] = color1;
       colorArray3[18][0] = color1;
-      color1 = new Color(36, 45, 44);
+      // ISSUE: explicit reference operation
+      ((Color) @color1).\u002Ector(36, 45, 44);
       colorArray3[98][0] = color1;
       colorArray3[104][0] = color1;
-      color1 = new Color(38, 49, 50);
+      // ISSUE: explicit reference operation
+      ((Color) @color1).\u002Ector(38, 49, 50);
       colorArray3[99][0] = color1;
       colorArray3[105][0] = color1;
-      color1 = new Color(41, 28, 36);
+      // ISSUE: explicit reference operation
+      ((Color) @color1).\u002Ector(41, 28, 36);
       colorArray3[9][0] = color1;
       colorArray3[19][0] = color1;
-      color1 = new Color(72, 50, 77);
+      // ISSUE: explicit reference operation
+      ((Color) @color1).\u002Ector(72, 50, 77);
       colorArray3[96][0] = color1;
       colorArray3[102][0] = color1;
-      color1 = new Color(78, 50, 69);
+      // ISSUE: explicit reference operation
+      ((Color) @color1).\u002Ector(78, 50, 69);
       colorArray3[97][0] = color1;
       colorArray3[103][0] = color1;
       colorArray3[10][0] = new Color(74, 62, 12);
       colorArray3[11][0] = new Color(46, 56, 59);
       colorArray3[12][0] = new Color(75, 32, 11);
       colorArray3[13][0] = new Color(67, 37, 37);
-      color1 = new Color(15, 15, 15);
+      // ISSUE: explicit reference operation
+      ((Color) @color1).\u002Ector(15, 15, 15);
       colorArray3[14][0] = color1;
       colorArray3[20][0] = color1;
       colorArray3[15][0] = new Color(52, 43, 45);
@@ -788,7 +850,8 @@ namespace Terraria.Map
       colorArray3[29][0] = new Color(88, 23, 23);
       colorArray3[30][0] = new Color(28, 88, 23);
       colorArray3[31][0] = new Color(78, 87, 99);
-      color1 = new Color(69, 67, 41);
+      // ISSUE: explicit reference operation
+      ((Color) @color1).\u002Ector(69, 67, 41);
       colorArray3[34][0] = color1;
       colorArray3[37][0] = color1;
       colorArray3[32][0] = new Color(86, 17, 40);
@@ -814,19 +877,22 @@ namespace Terraria.Map
       colorArray3[62][0] = new Color(39, 33, 26);
       colorArray3[69][0] = new Color(43, 42, 68);
       colorArray3[70][0] = new Color(30, 70, 80);
-      color1 = new Color(30, 80, 48);
+      // ISSUE: explicit reference operation
+      ((Color) @color1).\u002Ector(30, 80, 48);
       colorArray3[63][0] = color1;
       colorArray3[65][0] = color1;
       colorArray3[66][0] = color1;
       colorArray3[68][0] = color1;
-      color1 = new Color(53, 80, 30);
+      // ISSUE: explicit reference operation
+      ((Color) @color1).\u002Ector(53, 80, 30);
       colorArray3[64][0] = color1;
       colorArray3[67][0] = color1;
       colorArray3[78][0] = new Color(63, 39, 26);
       colorArray3[71][0] = new Color(78, 105, 135);
       colorArray3[72][0] = new Color(52, 84, 12);
       colorArray3[73][0] = new Color(190, 204, 223);
-      color1 = new Color(64, 62, 80);
+      // ISSUE: explicit reference operation
+      ((Color) @color1).\u002Ector(64, 62, 80);
       colorArray3[74][0] = color1;
       colorArray3[80][0] = color1;
       colorArray3[75][0] = new Color(65, 65, 35);
@@ -838,10 +904,12 @@ namespace Terraria.Map
       colorArray3[83][0] = new Color(62, 38, 41);
       colorArray3[84][0] = new Color(48, 78, 93);
       colorArray3[85][0] = new Color(54, 63, 69);
-      color1 = new Color(138, 73, 38);
+      // ISSUE: explicit reference operation
+      ((Color) @color1).\u002Ector(138, 73, 38);
       colorArray3[86][0] = color1;
       colorArray3[108][0] = color1;
-      color1 = new Color(50, 15, 8);
+      // ISSUE: explicit reference operation
+      ((Color) @color1).\u002Ector(50, 15, 8);
       colorArray3[87][0] = color1;
       colorArray3[112][0] = color1;
       colorArray3[109][0] = new Color(94, 25, 17);
@@ -941,40 +1009,71 @@ namespace Terraria.Map
       colorArray3[229][0] = new Color(100, 55, 164);
       colorArray3[230][0] = new Color(0, 117, 101);
       Color[] colorArray4 = new Color[256];
-      Color color2 = new Color(50, 40, (int) byte.MaxValue);
-      Color color3 = new Color(145, 185, (int) byte.MaxValue);
+      Color color2;
+      // ISSUE: explicit reference operation
+      ((Color) @color2).\u002Ector(50, 40, (int) byte.MaxValue);
+      Color color3;
+      // ISSUE: explicit reference operation
+      ((Color) @color3).\u002Ector(145, 185, (int) byte.MaxValue);
       for (int index = 0; index < colorArray4.Length; ++index)
       {
         float num1 = (float) index / (float) colorArray4.Length;
         float num2 = 1f - num1;
-        colorArray4[index] = new Color((int) (byte) ((double) color2.R * (double) num2 + (double) color3.R * (double) num1), (int) (byte) ((double) color2.G * (double) num2 + (double) color3.G * (double) num1), (int) (byte) ((double) color2.B * (double) num2 + (double) color3.B * (double) num1));
+        // ISSUE: explicit reference operation
+        // ISSUE: explicit reference operation
+        // ISSUE: explicit reference operation
+        // ISSUE: explicit reference operation
+        // ISSUE: explicit reference operation
+        // ISSUE: explicit reference operation
+        colorArray4[index] = new Color((int) (byte) ((double) ((Color) @color2).get_R() * (double) num2 + (double) ((Color) @color3).get_R() * (double) num1), (int) (byte) ((double) ((Color) @color2).get_G() * (double) num2 + (double) ((Color) @color3).get_G() * (double) num1), (int) (byte) ((double) ((Color) @color2).get_B() * (double) num2 + (double) ((Color) @color3).get_B() * (double) num1));
       }
       Color[] colorArray5 = new Color[256];
-      Color color4 = new Color(88, 61, 46);
-      Color color5 = new Color(37, 78, 123);
+      Color color4;
+      // ISSUE: explicit reference operation
+      ((Color) @color4).\u002Ector(88, 61, 46);
+      Color color5;
+      // ISSUE: explicit reference operation
+      ((Color) @color5).\u002Ector(37, 78, 123);
       for (int index = 0; index < colorArray5.Length; ++index)
       {
         float num1 = (float) index / (float) byte.MaxValue;
         float num2 = 1f - num1;
-        colorArray5[index] = new Color((int) (byte) ((double) color4.R * (double) num2 + (double) color5.R * (double) num1), (int) (byte) ((double) color4.G * (double) num2 + (double) color5.G * (double) num1), (int) (byte) ((double) color4.B * (double) num2 + (double) color5.B * (double) num1));
+        // ISSUE: explicit reference operation
+        // ISSUE: explicit reference operation
+        // ISSUE: explicit reference operation
+        // ISSUE: explicit reference operation
+        // ISSUE: explicit reference operation
+        // ISSUE: explicit reference operation
+        colorArray5[index] = new Color((int) (byte) ((double) ((Color) @color4).get_R() * (double) num2 + (double) ((Color) @color5).get_R() * (double) num1), (int) (byte) ((double) ((Color) @color4).get_G() * (double) num2 + (double) ((Color) @color5).get_G() * (double) num1), (int) (byte) ((double) ((Color) @color4).get_B() * (double) num2 + (double) ((Color) @color5).get_B() * (double) num1));
       }
       Color[] colorArray6 = new Color[256];
-      Color color6 = new Color(74, 67, 60);
-      color5 = new Color(53, 70, 97);
+      Color color6;
+      // ISSUE: explicit reference operation
+      ((Color) @color6).\u002Ector(74, 67, 60);
+      // ISSUE: explicit reference operation
+      ((Color) @color5).\u002Ector(53, 70, 97);
       for (int index = 0; index < colorArray6.Length; ++index)
       {
         float num1 = (float) index / (float) byte.MaxValue;
         float num2 = 1f - num1;
-        colorArray6[index] = new Color((int) (byte) ((double) color6.R * (double) num2 + (double) color5.R * (double) num1), (int) (byte) ((double) color6.G * (double) num2 + (double) color5.G * (double) num1), (int) (byte) ((double) color6.B * (double) num2 + (double) color5.B * (double) num1));
+        // ISSUE: explicit reference operation
+        // ISSUE: explicit reference operation
+        // ISSUE: explicit reference operation
+        // ISSUE: explicit reference operation
+        // ISSUE: explicit reference operation
+        // ISSUE: explicit reference operation
+        colorArray6[index] = new Color((int) (byte) ((double) ((Color) @color6).get_R() * (double) num2 + (double) ((Color) @color5).get_R() * (double) num1), (int) (byte) ((double) ((Color) @color6).get_G() * (double) num2 + (double) ((Color) @color5).get_G() * (double) num1), (int) (byte) ((double) ((Color) @color6).get_B() * (double) num2 + (double) ((Color) @color5).get_B() * (double) num1));
       }
-      Color color7 = new Color(50, 44, 38);
+      Color color7;
+      // ISSUE: explicit reference operation
+      ((Color) @color7).\u002Ector(50, 44, 38);
       int num3 = 0;
-      MapHelper.tileOptionCounts = new int[467];
-      for (int index1 = 0; index1 < 467; ++index1)
+      MapHelper.tileOptionCounts = new int[470];
+      for (int index1 = 0; index1 < 470; ++index1)
       {
         Color[] colorArray7 = colorArray1[index1];
         int index2 = 0;
-        while (index2 < 12 && !(colorArray7[index2] == Color.Transparent))
+        while (index2 < 12 && !Color.op_Equality(colorArray7[index2], Color.get_Transparent()))
           ++index2;
         MapHelper.tileOptionCounts[index1] = index2;
         num3 += index2;
@@ -984,17 +1083,17 @@ namespace Terraria.Map
       {
         Color[] colorArray7 = colorArray3[index1];
         int index2 = 0;
-        while (index2 < 2 && !(colorArray7[index2] == Color.Transparent))
+        while (index2 < 2 && !Color.op_Equality(colorArray7[index2], Color.get_Transparent()))
           ++index2;
         MapHelper.wallOptionCounts[index1] = index2;
         num3 += index2;
       }
       MapHelper.colorLookup = new Color[num3 + 773];
-      MapHelper.colorLookup[0] = Color.Transparent;
+      MapHelper.colorLookup[0] = Color.get_Transparent();
       ushort num4 = 1;
       MapHelper.tilePosition = num4;
-      MapHelper.tileLookup = new ushort[467];
-      for (int index1 = 0; index1 < 467; ++index1)
+      MapHelper.tileLookup = new ushort[470];
+      for (int index1 = 0; index1 < 470; ++index1)
       {
         if (MapHelper.tileOptionCounts[index1] > 0)
         {
@@ -1061,6 +1160,7 @@ namespace Terraria.Map
       MapHelper.snowTypes[3] = MapHelper.tileLookup[163];
       MapHelper.snowTypes[4] = MapHelper.tileLookup[164];
       MapHelper.snowTypes[5] = MapHelper.tileLookup[200];
+      Lang.BuildMapAtlas();
     }
 
     public static int TileToLookup(int tileType, int option)
@@ -1076,9 +1176,12 @@ namespace Terraria.Map
     private static void MapColor(ushort type, ref Color oldColor, byte colorType)
     {
       Color color = WorldGen.paintColor((int) colorType);
-      float num1 = (float) oldColor.R / (float) byte.MaxValue;
-      float num2 = (float) oldColor.G / (float) byte.MaxValue;
-      float num3 = (float) oldColor.B / (float) byte.MaxValue;
+      // ISSUE: explicit reference operation
+      float num1 = (float) ((Color) @oldColor).get_R() / (float) byte.MaxValue;
+      // ISSUE: explicit reference operation
+      float num2 = (float) ((Color) @oldColor).get_G() / (float) byte.MaxValue;
+      // ISSUE: explicit reference operation
+      float num3 = (float) ((Color) @oldColor).get_B() / (float) byte.MaxValue;
       if ((double) num2 > (double) num1)
         num1 = num2;
       if ((double) num3 > (double) num1)
@@ -1090,31 +1193,55 @@ namespace Terraria.Map
       if ((int) colorType == 29)
       {
         float num4 = num3 * 0.3f;
-        oldColor.R = (byte) ((double) color.R * (double) num4);
-        oldColor.G = (byte) ((double) color.G * (double) num4);
-        oldColor.B = (byte) ((double) color.B * (double) num4);
+        // ISSUE: explicit reference operation
+        // ISSUE: explicit reference operation
+        ((Color) @oldColor).set_R((byte) ((double) ((Color) @color).get_R() * (double) num4));
+        // ISSUE: explicit reference operation
+        // ISSUE: explicit reference operation
+        ((Color) @oldColor).set_G((byte) ((double) ((Color) @color).get_G() * (double) num4));
+        // ISSUE: explicit reference operation
+        // ISSUE: explicit reference operation
+        ((Color) @oldColor).set_B((byte) ((double) ((Color) @color).get_B() * (double) num4));
       }
       else if ((int) colorType == 30)
       {
         if ((int) type >= (int) MapHelper.wallRangeStart && (int) type <= (int) MapHelper.wallRangeEnd)
         {
-          oldColor.R = (byte) ((double) ((int) byte.MaxValue - (int) oldColor.R) * 0.5);
-          oldColor.G = (byte) ((double) ((int) byte.MaxValue - (int) oldColor.G) * 0.5);
-          oldColor.B = (byte) ((double) ((int) byte.MaxValue - (int) oldColor.B) * 0.5);
+          // ISSUE: explicit reference operation
+          // ISSUE: explicit reference operation
+          ((Color) @oldColor).set_R((byte) ((double) ((int) byte.MaxValue - (int) ((Color) @oldColor).get_R()) * 0.5));
+          // ISSUE: explicit reference operation
+          // ISSUE: explicit reference operation
+          ((Color) @oldColor).set_G((byte) ((double) ((int) byte.MaxValue - (int) ((Color) @oldColor).get_G()) * 0.5));
+          // ISSUE: explicit reference operation
+          // ISSUE: explicit reference operation
+          ((Color) @oldColor).set_B((byte) ((double) ((int) byte.MaxValue - (int) ((Color) @oldColor).get_B()) * 0.5));
         }
         else
         {
-          oldColor.R = (byte) ((uint) byte.MaxValue - (uint) oldColor.R);
-          oldColor.G = (byte) ((uint) byte.MaxValue - (uint) oldColor.G);
-          oldColor.B = (byte) ((uint) byte.MaxValue - (uint) oldColor.B);
+          // ISSUE: explicit reference operation
+          // ISSUE: explicit reference operation
+          ((Color) @oldColor).set_R((byte) ((uint) byte.MaxValue - (uint) ((Color) @oldColor).get_R()));
+          // ISSUE: explicit reference operation
+          // ISSUE: explicit reference operation
+          ((Color) @oldColor).set_G((byte) ((uint) byte.MaxValue - (uint) ((Color) @oldColor).get_G()));
+          // ISSUE: explicit reference operation
+          // ISSUE: explicit reference operation
+          ((Color) @oldColor).set_B((byte) ((uint) byte.MaxValue - (uint) ((Color) @oldColor).get_B()));
         }
       }
       else
       {
         float num4 = num1;
-        oldColor.R = (byte) ((double) color.R * (double) num4);
-        oldColor.G = (byte) ((double) color.G * (double) num4);
-        oldColor.B = (byte) ((double) color.B * (double) num4);
+        // ISSUE: explicit reference operation
+        // ISSUE: explicit reference operation
+        ((Color) @oldColor).set_R((byte) ((double) ((Color) @color).get_R() * (double) num4));
+        // ISSUE: explicit reference operation
+        // ISSUE: explicit reference operation
+        ((Color) @oldColor).set_G((byte) ((double) ((Color) @color).get_G() * (double) num4));
+        // ISSUE: explicit reference operation
+        // ISSUE: explicit reference operation
+        ((Color) @oldColor).set_B((byte) ((double) ((Color) @color).get_B() * (double) num4));
       }
     }
 
@@ -1127,9 +1254,15 @@ namespace Terraria.Map
       if ((int) tile.Light == (int) byte.MaxValue)
         return oldColor;
       float num = (float) tile.Light / (float) byte.MaxValue;
-      oldColor.R = (byte) ((double) oldColor.R * (double) num);
-      oldColor.G = (byte) ((double) oldColor.G * (double) num);
-      oldColor.B = (byte) ((double) oldColor.B * (double) num);
+      // ISSUE: explicit reference operation
+      // ISSUE: explicit reference operation
+      ((Color) @oldColor).set_R((byte) ((double) ((Color) @oldColor).get_R() * (double) num));
+      // ISSUE: explicit reference operation
+      // ISSUE: explicit reference operation
+      ((Color) @oldColor).set_G((byte) ((double) ((Color) @oldColor).get_G() * (double) num));
+      // ISSUE: explicit reference operation
+      // ISSUE: explicit reference operation
+      ((Color) @oldColor).set_B((byte) ((double) ((Color) @oldColor).get_B() * (double) num));
       return oldColor;
     }
 
@@ -1152,11 +1285,43 @@ namespace Terraria.Map
           num1 = type2 != 160 ? (int) tile.color() : 0;
           switch (type2)
           {
-            case 440:
-              int num5 = (int) tile.frameX / 54;
-              if (num5 > 6)
-                num5 = 6;
+            case 453:
+              int num5 = (int) tile.frameX / 36;
+              if (num5 > 2)
+                num5 = 2;
               num4 = num5;
+              break;
+            case 457:
+              int num6 = (int) tile.frameX / 36;
+              if (num6 > 4)
+                num6 = 4;
+              num4 = num6;
+              break;
+            case 467:
+            case 468:
+              switch ((int) tile.frameX / 36)
+              {
+                case 0:
+                  num4 = 0;
+                  break;
+                case 1:
+                  num4 = 1;
+                  break;
+                default:
+                  num4 = 0;
+                  break;
+              }
+            case 428:
+              int num7 = (int) tile.frameY / 18;
+              if (num7 > 3)
+                num7 = 3;
+              num4 = num7;
+              break;
+            case 440:
+              int num8 = (int) tile.frameX / 54;
+              if (num8 > 6)
+                num8 = 6;
+              num4 = num8;
               break;
             case 441:
             case 21:
@@ -1184,81 +1349,63 @@ namespace Terraria.Map
                   num4 = 0;
                   break;
               }
-            case 453:
-              int num6 = (int) tile.frameX / 36;
-              if (num6 > 2)
-                num6 = 2;
-              num4 = num6;
-              break;
-            case 457:
-              int num7 = (int) tile.frameX / 36;
-              if (num7 > 4)
-                num7 = 4;
-              num4 = num7;
-              break;
-            case 419:
-              int num8 = (int) tile.frameX / 18;
-              if (num8 > 2)
-                num8 = 2;
-              num4 = num8;
-              break;
-            case 420:
-              int num9 = (int) tile.frameY / 18;
-              if (num9 > 5)
-                num9 = 5;
-              num4 = num9;
-              break;
-            case 423:
-              int num10 = (int) tile.frameY / 18;
-              if (num10 > 6)
-                num10 = 6;
-              num4 = num10;
-              break;
-            case 428:
-              int num11 = (int) tile.frameY / 18;
-              if (num11 > 3)
-                num11 = 3;
-              num4 = num11;
-              break;
             case 227:
               num4 = (int) tile.frameX / 34;
               break;
             case 240:
-              int num12 = (int) tile.frameX / 54 + (int) tile.frameY / 54 * 36;
-              if (num12 >= 0 && num12 <= 11 || num12 >= 47 && num12 <= 53)
+              int num9 = (int) tile.frameX / 54 + (int) tile.frameY / 54 * 36;
+              if (num9 >= 0 && num9 <= 11 || num9 >= 47 && num9 <= 53)
               {
                 num4 = 0;
                 break;
               }
-              if (num12 >= 12 && num12 <= 15)
+              if (num9 >= 12 && num9 <= 15)
               {
                 num4 = 1;
                 break;
               }
-              if (num12 == 16 || num12 == 17)
+              if (num9 == 16 || num9 == 17)
               {
                 num4 = 2;
                 break;
               }
-              if (num12 >= 18 && num12 <= 35)
+              if (num9 >= 18 && num9 <= 35)
               {
                 num4 = 1;
                 break;
               }
-              if (num12 >= 41 && num12 <= 45)
+              if (num9 >= 41 && num9 <= 45)
               {
                 num4 = 3;
                 break;
               }
-              if (num12 == 46)
+              if (num9 == 46)
               {
                 num4 = 4;
                 break;
               }
               break;
             case 242:
-              int num13 = (int) tile.frameY / 72;
-              num4 = num13 < 22 || num13 > 24 ? 0 : 1;
+              int num10 = (int) tile.frameY / 72;
+              num4 = num10 < 22 || num10 > 24 ? 0 : 1;
+              break;
+            case 419:
+              int num11 = (int) tile.frameX / 18;
+              if (num11 > 2)
+                num11 = 2;
+              num4 = num11;
+              break;
+            case 420:
+              int num12 = (int) tile.frameY / 18;
+              if (num12 > 5)
+                num12 = 5;
+              num4 = num12;
+              break;
+            case 423:
+              int num13 = (int) tile.frameY / 18;
+              if (num13 > 6)
+                num13 = 6;
+              num4 = num13;
               break;
             case 178:
               num4 = (int) tile.frameX >= 18 ? ((int) tile.frameX >= 36 ? ((int) tile.frameX >= 54 ? ((int) tile.frameX >= 72 ? ((int) tile.frameX >= 90 ? ((int) tile.frameX >= 108 ? 6 : 5) : 4) : 3) : 2) : 1) : 0;
@@ -1491,10 +1638,10 @@ namespace Terraria.Map
           num1 = 0;
           bool flag = (int) type1 < (int) MapHelper.dirtPosition || (int) type1 >= (int) MapHelper.hellPosition;
           byte num5 = 0;
-          float num6 = (float) ((double) Main.screenPosition.X / 16.0 - 5.0);
-          float num7 = (float) (((double) Main.screenPosition.X + (double) Main.screenWidth) / 16.0 + 5.0);
-          float num8 = (float) ((double) Main.screenPosition.Y / 16.0 - 5.0);
-          float num9 = (float) (((double) Main.screenPosition.Y + (double) Main.screenHeight) / 16.0 + 5.0);
+          float num6 = (float) (Main.screenPosition.X / 16.0 - 5.0);
+          float num7 = (float) ((Main.screenPosition.X + (double) Main.screenWidth) / 16.0 + 5.0);
+          float num8 = (float) (Main.screenPosition.Y / 16.0 - 5.0);
+          float num9 = (float) ((Main.screenPosition.Y + (double) Main.screenHeight) / 16.0 + 5.0);
           if (((double) i < (double) num6 || (double) i > (double) num7 || ((double) j < (double) num8 || (double) j > (double) num9)) && (i > 40 && i < Main.maxTilesX - 40 && (j > 40 && j < Main.maxTilesY - 40)) && flag)
           {
             int num10 = i - 36;
@@ -1538,7 +1685,7 @@ namespace Terraria.Map
       bool isCloudSave = Main.ActivePlayerFileData.IsCloudSave;
       if (isCloudSave && SocialAPI.Cloud == null || (!Main.mapEnabled || MapHelper.saveLock))
         return;
-      string path = Main.playerPathName.Substring(0, Main.playerPathName.Length - 4);
+      string path1 = Main.playerPathName.Substring(0, Main.playerPathName.Length - 4);
       lock (MapHelper.padlock)
       {
         try
@@ -1547,275 +1694,275 @@ namespace Terraria.Map
           try
           {
             if (!isCloudSave)
-              Directory.CreateDirectory(path);
+              Directory.CreateDirectory(path1);
           }
           catch
           {
           }
-          string local_1_1 = path + (object) Path.DirectorySeparatorChar;
-          string local_1_2 = !Main.ActiveWorldFileData.UseGuidAsMapName ? local_1_1 + (object) Main.worldID + ".map" : local_1_1 + Main.ActiveWorldFileData.UniqueId.ToString() + ".map";
+          string str = path1 + (object) Path.DirectorySeparatorChar;
+          string path2 = !Main.ActiveWorldFileData.UseGuidAsMapName ? str + (object) Main.worldID + ".map" : str + Main.ActiveWorldFileData.UniqueId.ToString() + ".map";
           new Stopwatch().Start();
-          bool local_3 = false;
+          bool flag1 = false;
           if (!Main.gameMenu)
-            local_3 = true;
-          using (MemoryStream resource_2 = new MemoryStream(4000))
+            flag1 = true;
+          using (MemoryStream memoryStream = new MemoryStream(4000))
           {
-            using (BinaryWriter resource_1 = new BinaryWriter((Stream) resource_2))
+            using (BinaryWriter writer = new BinaryWriter((Stream) memoryStream))
             {
-              using (DeflateStream resource_0 = new DeflateStream((Stream) resource_2, (CompressionMode) 0))
+              using (DeflateStream deflateStream = new DeflateStream((Stream) memoryStream, (CompressionMode) 0))
               {
-                int local_9 = 0;
-                byte[] local_10 = new byte[16384];
-                resource_1.Write(188);
-                Main.MapFileMetadata.IncrementAndWrite(resource_1);
-                resource_1.Write(Main.worldName);
-                resource_1.Write(Main.worldID);
-                resource_1.Write(Main.maxTilesY);
-                resource_1.Write(Main.maxTilesX);
-                resource_1.Write((short) 467);
-                resource_1.Write((short) 231);
-                resource_1.Write((short) 3);
-                resource_1.Write((short) 256);
-                resource_1.Write((short) 256);
-                resource_1.Write((short) 256);
-                byte local_11 = 1;
-                byte local_12 = 0;
-                for (int local_13 = 0; local_13 < 467; ++local_13)
+                int count = 0;
+                byte[] buffer = new byte[16384];
+                writer.Write(192);
+                Main.MapFileMetadata.IncrementAndWrite(writer);
+                writer.Write(Main.worldName);
+                writer.Write(Main.worldID);
+                writer.Write(Main.maxTilesY);
+                writer.Write(Main.maxTilesX);
+                writer.Write((short) 470);
+                writer.Write((short) 231);
+                writer.Write((short) 3);
+                writer.Write((short) 256);
+                writer.Write((short) 256);
+                writer.Write((short) 256);
+                byte num1 = 1;
+                byte num2 = 0;
+                for (int index = 0; index < 470; ++index)
                 {
-                  if (MapHelper.tileOptionCounts[local_13] != 1)
-                    local_12 |= local_11;
-                  if ((int) local_11 == 128)
+                  if (MapHelper.tileOptionCounts[index] != 1)
+                    num2 |= num1;
+                  if ((int) num1 == 128)
                   {
-                    resource_1.Write(local_12);
-                    local_12 = (byte) 0;
-                    local_11 = (byte) 1;
+                    writer.Write(num2);
+                    num2 = (byte) 0;
+                    num1 = (byte) 1;
                   }
                   else
-                    local_11 <<= 1;
+                    num1 <<= 1;
                 }
-                if ((int) local_11 != 1)
-                  resource_1.Write(local_12);
-                int local_13_1 = 0;
-                byte local_11_1 = 1;
-                byte local_12_1 = 0;
-                for (; local_13_1 < 231; ++local_13_1)
+                if ((int) num1 != 1)
+                  writer.Write(num2);
+                int index1 = 0;
+                byte num3 = 1;
+                byte num4 = 0;
+                for (; index1 < 231; ++index1)
                 {
-                  if (MapHelper.wallOptionCounts[local_13_1] != 1)
-                    local_12_1 |= local_11_1;
-                  if ((int) local_11_1 == 128)
+                  if (MapHelper.wallOptionCounts[index1] != 1)
+                    num4 |= num3;
+                  if ((int) num3 == 128)
                   {
-                    resource_1.Write(local_12_1);
-                    local_12_1 = (byte) 0;
-                    local_11_1 = (byte) 1;
+                    writer.Write(num4);
+                    num4 = (byte) 0;
+                    num3 = (byte) 1;
                   }
                   else
-                    local_11_1 <<= 1;
+                    num3 <<= 1;
                 }
-                if ((int) local_11_1 != 1)
-                  resource_1.Write(local_12_1);
-                for (int local_13_2 = 0; local_13_2 < 467; ++local_13_2)
+                if ((int) num3 != 1)
+                  writer.Write(num4);
+                for (int index2 = 0; index2 < 470; ++index2)
                 {
-                  if (MapHelper.tileOptionCounts[local_13_2] != 1)
-                    resource_1.Write((byte) MapHelper.tileOptionCounts[local_13_2]);
+                  if (MapHelper.tileOptionCounts[index2] != 1)
+                    writer.Write((byte) MapHelper.tileOptionCounts[index2]);
                 }
-                for (int local_13_3 = 0; local_13_3 < 231; ++local_13_3)
+                for (int index2 = 0; index2 < 231; ++index2)
                 {
-                  if (MapHelper.wallOptionCounts[local_13_3] != 1)
-                    resource_1.Write((byte) MapHelper.wallOptionCounts[local_13_3]);
+                  if (MapHelper.wallOptionCounts[index2] != 1)
+                    writer.Write((byte) MapHelper.wallOptionCounts[index2]);
                 }
-                resource_1.Flush();
-                for (int local_14 = 0; local_14 < Main.maxTilesY; ++local_14)
+                writer.Flush();
+                for (int index2 = 0; index2 < Main.maxTilesY; ++index2)
                 {
-                  if (!local_3)
+                  if (!flag1)
                   {
-                    float local_15 = (float) local_14 / (float) Main.maxTilesY;
-                    Main.statusText = Lang.gen[66] + " " + (object) (int) ((double) local_15 * 100.0 + 1.0) + "%";
+                    float num5 = (float) index2 / (float) Main.maxTilesY;
+                    Main.statusText = Lang.gen[66].Value + " " + (object) (int) ((double) num5 * 100.0 + 1.0) + "%";
                   }
-                  int local_16_1;
-                  for (int local_16 = 0; local_16 < Main.maxTilesX; local_16 = local_16_1 + 1)
+                  int num6;
+                  for (int index3 = 0; index3 < Main.maxTilesX; index3 = num6 + 1)
                   {
-                    MapTile local_17 = Main.Map[local_16, local_14];
-                    byte local_8;
-                    byte local_7 = local_8 = (byte) 0;
-                    bool local_23 = true;
-                    bool local_24 = true;
-                    int local_25 = 0;
-                    int local_26 = 0;
-                    byte local_27 = 0;
-                    int local_20;
-                    ushort local_21;
-                    int local_18_1;
-                    if ((int) local_17.Light <= 18)
+                    MapTile mapTile = Main.Map[index3, index2];
+                    byte num5;
+                    byte num7 = num5 = (byte) 0;
+                    bool flag2 = true;
+                    bool flag3 = true;
+                    int num8 = 0;
+                    int num9 = 0;
+                    byte num10 = 0;
+                    int num11;
+                    ushort num12;
+                    int num13;
+                    if ((int) mapTile.Light <= 18)
                     {
-                      local_24 = false;
-                      local_23 = false;
-                      local_20 = 0;
-                      local_21 = (ushort) 0;
-                      local_18_1 = 0;
-                      int local_19 = local_16 + 1;
-                      for (int local_22 = Main.maxTilesX - local_16 - 1; local_22 > 0 && (int) Main.Map[local_19, local_14].Light <= 18; ++local_19)
+                      flag3 = false;
+                      flag2 = false;
+                      num11 = 0;
+                      num12 = (ushort) 0;
+                      num13 = 0;
+                      int index4 = index3 + 1;
+                      for (int index5 = Main.maxTilesX - index3 - 1; index5 > 0 && (int) Main.Map[index4, index2].Light <= 18; ++index4)
                       {
-                        ++local_18_1;
-                        --local_22;
+                        ++num13;
+                        --index5;
                       }
                     }
                     else
                     {
-                      local_27 = local_17.Color;
-                      local_21 = local_17.Type;
-                      if ((int) local_21 < (int) MapHelper.wallPosition)
+                      num10 = mapTile.Color;
+                      num12 = mapTile.Type;
+                      if ((int) num12 < (int) MapHelper.wallPosition)
                       {
-                        local_20 = 1;
-                        local_21 -= MapHelper.tilePosition;
+                        num11 = 1;
+                        num12 -= MapHelper.tilePosition;
                       }
-                      else if ((int) local_21 < (int) MapHelper.liquidPosition)
+                      else if ((int) num12 < (int) MapHelper.liquidPosition)
                       {
-                        local_20 = 2;
-                        local_21 -= MapHelper.wallPosition;
+                        num11 = 2;
+                        num12 -= MapHelper.wallPosition;
                       }
-                      else if ((int) local_21 < (int) MapHelper.skyPosition)
+                      else if ((int) num12 < (int) MapHelper.skyPosition)
                       {
-                        local_20 = 3 + ((int) local_21 - (int) MapHelper.liquidPosition);
-                        local_23 = false;
+                        num11 = 3 + ((int) num12 - (int) MapHelper.liquidPosition);
+                        flag2 = false;
                       }
-                      else if ((int) local_21 < (int) MapHelper.dirtPosition)
+                      else if ((int) num12 < (int) MapHelper.dirtPosition)
                       {
-                        local_20 = 6;
-                        local_24 = false;
-                        local_23 = false;
+                        num11 = 6;
+                        flag3 = false;
+                        flag2 = false;
                       }
-                      else if ((int) local_21 < (int) MapHelper.hellPosition)
+                      else if ((int) num12 < (int) MapHelper.hellPosition)
                       {
-                        local_20 = 7;
-                        if ((int) local_21 < (int) MapHelper.rockPosition)
-                          local_21 -= MapHelper.dirtPosition;
+                        num11 = 7;
+                        if ((int) num12 < (int) MapHelper.rockPosition)
+                          num12 -= MapHelper.dirtPosition;
                         else
-                          local_21 -= MapHelper.rockPosition;
+                          num12 -= MapHelper.rockPosition;
                       }
                       else
                       {
-                        local_20 = 6;
-                        local_23 = false;
+                        num11 = 6;
+                        flag2 = false;
                       }
-                      if ((int) local_17.Light == (int) byte.MaxValue)
-                        local_24 = false;
-                      if (local_24)
+                      if ((int) mapTile.Light == (int) byte.MaxValue)
+                        flag3 = false;
+                      if (flag3)
                       {
-                        local_18_1 = 0;
-                        int local_19_1 = local_16 + 1;
-                        int local_22_1 = Main.maxTilesX - local_16 - 1;
-                        local_25 = local_19_1;
-                        while (local_22_1 > 0)
+                        num13 = 0;
+                        int index4 = index3 + 1;
+                        int num14 = Main.maxTilesX - index3 - 1;
+                        num8 = index4;
+                        while (num14 > 0)
                         {
-                          MapTile local_29 = Main.Map[local_19_1, local_14];
-                          if (local_17.EqualsWithoutLight(ref local_29))
+                          MapTile other = Main.Map[index4, index2];
+                          if (mapTile.EqualsWithoutLight(ref other))
                           {
-                            --local_22_1;
-                            ++local_18_1;
-                            ++local_19_1;
+                            --num14;
+                            ++num13;
+                            ++index4;
                           }
                           else
                           {
-                            local_26 = local_19_1;
+                            num9 = index4;
                             break;
                           }
                         }
                       }
                       else
                       {
-                        local_18_1 = 0;
-                        int local_19_2 = local_16 + 1;
-                        int local_22_2 = Main.maxTilesX - local_16 - 1;
-                        while (local_22_2 > 0)
+                        num13 = 0;
+                        int index4 = index3 + 1;
+                        int num14 = Main.maxTilesX - index3 - 1;
+                        while (num14 > 0)
                         {
-                          MapTile local_30 = Main.Map[local_19_2, local_14];
-                          if (local_17.Equals(ref local_30))
+                          MapTile other = Main.Map[index4, index2];
+                          if (mapTile.Equals(ref other))
                           {
-                            --local_22_2;
-                            ++local_18_1;
-                            ++local_19_2;
+                            --num14;
+                            ++num13;
+                            ++index4;
                           }
                           else
                             break;
                         }
                       }
                     }
-                    if ((int) local_27 > 0)
-                      local_8 |= (byte) ((uint) local_27 << 1);
-                    if ((int) local_8 != 0)
-                      local_7 |= (byte) 1;
-                    byte local_7_1 = (byte) ((uint) local_7 | (uint) (byte) (local_20 << 1));
-                    if (local_23 && (int) local_21 > (int) byte.MaxValue)
-                      local_7_1 |= (byte) 16;
-                    if (local_24)
-                      local_7_1 |= (byte) 32;
-                    if (local_18_1 > 0)
+                    if ((int) num10 > 0)
+                      num5 |= (byte) ((uint) num10 << 1);
+                    if ((int) num5 != 0)
+                      num7 |= (byte) 1;
+                    byte num15 = (byte) ((uint) num7 | (uint) (byte) (num11 << 1));
+                    if (flag2 && (int) num12 > (int) byte.MaxValue)
+                      num15 |= (byte) 16;
+                    if (flag3)
+                      num15 |= (byte) 32;
+                    if (num13 > 0)
                     {
-                      if (local_18_1 > (int) byte.MaxValue)
-                        local_7_1 |= (byte) 128;
+                      if (num13 > (int) byte.MaxValue)
+                        num15 |= (byte) 128;
                       else
-                        local_7_1 |= (byte) 64;
+                        num15 |= (byte) 64;
                     }
-                    local_10[local_9] = local_7_1;
-                    ++local_9;
-                    if ((int) local_8 != 0)
+                    buffer[count] = num15;
+                    ++count;
+                    if ((int) num5 != 0)
                     {
-                      local_10[local_9] = local_8;
-                      ++local_9;
+                      buffer[count] = num5;
+                      ++count;
                     }
-                    if (local_23)
+                    if (flag2)
                     {
-                      local_10[local_9] = (byte) local_21;
-                      ++local_9;
-                      if ((int) local_21 > (int) byte.MaxValue)
+                      buffer[count] = (byte) num12;
+                      ++count;
+                      if ((int) num12 > (int) byte.MaxValue)
                       {
-                        local_10[local_9] = (byte) ((uint) local_21 >> 8);
-                        ++local_9;
+                        buffer[count] = (byte) ((uint) num12 >> 8);
+                        ++count;
                       }
                     }
-                    if (local_24)
+                    if (flag3)
                     {
-                      local_10[local_9] = local_17.Light;
-                      ++local_9;
+                      buffer[count] = mapTile.Light;
+                      ++count;
                     }
-                    if (local_18_1 > 0)
+                    if (num13 > 0)
                     {
-                      local_10[local_9] = (byte) local_18_1;
-                      ++local_9;
-                      if (local_18_1 > (int) byte.MaxValue)
+                      buffer[count] = (byte) num13;
+                      ++count;
+                      if (num13 > (int) byte.MaxValue)
                       {
-                        local_10[local_9] = (byte) (local_18_1 >> 8);
-                        ++local_9;
+                        buffer[count] = (byte) (num13 >> 8);
+                        ++count;
                       }
                     }
-                    for (int local_31 = local_25; local_31 < local_26; ++local_31)
+                    for (int index4 = num8; index4 < num9; ++index4)
                     {
-                      local_10[local_9] = Main.Map[local_31, local_14].Light;
-                      ++local_9;
+                      buffer[count] = Main.Map[index4, index2].Light;
+                      ++count;
                     }
-                    local_16_1 = local_16 + local_18_1;
-                    if (local_9 >= 4096)
+                    num6 = index3 + num13;
+                    if (count >= 4096)
                     {
-                      ((Stream) resource_0).Write(local_10, 0, local_9);
-                      local_9 = 0;
+                      ((Stream) deflateStream).Write(buffer, 0, count);
+                      count = 0;
                     }
                   }
                 }
-                if (local_9 > 0)
-                  ((Stream) resource_0).Write(local_10, 0, local_9);
-                ((Stream) resource_0).Dispose();
-                FileUtilities.WriteAllBytes(local_1_2, resource_2.ToArray(), isCloudSave);
+                if (count > 0)
+                  ((Stream) deflateStream).Write(buffer, 0, count);
+                ((Stream) deflateStream).Dispose();
+                FileUtilities.WriteAllBytes(path2, memoryStream.ToArray(), isCloudSave);
               }
             }
           }
         }
-        catch (Exception exception_0)
+        catch (Exception ex)
         {
-          using (StreamWriter resource_3 = new StreamWriter("client-crashlog.txt", true))
+          using (StreamWriter streamWriter = new StreamWriter("client-crashlog.txt", true))
           {
-            resource_3.WriteLine((object) DateTime.Now);
-            resource_3.WriteLine((object) exception_0);
-            resource_3.WriteLine("");
+            streamWriter.WriteLine((object) DateTime.Now);
+            streamWriter.WriteLine((object) ex);
+            streamWriter.WriteLine("");
           }
         }
         MapHelper.saveLock = false;
@@ -1833,7 +1980,7 @@ namespace Terraria.Map
       for (int x = 0; x < Main.maxTilesX; ++x)
       {
         float num4 = (float) x / (float) Main.maxTilesX;
-        Main.statusText = Lang.gen[67] + " " + (object) (int) ((double) num4 * 100.0 + 1.0) + "%";
+        Main.statusText = Lang.gen[67].Value + " " + (object) (int) ((double) num4 * 100.0 + 1.0) + "%";
         for (int y = 0; y < Main.maxTilesY; ++y)
         {
           if (fileIO.ReadBoolean())
@@ -2030,7 +2177,7 @@ namespace Terraria.Map
       ushort num16 = 1;
       ushort num17 = 1;
       ushort num18 = num17;
-      for (int index1 = 0; index1 < 467; ++index1)
+      for (int index1 = 0; index1 < 470; ++index1)
       {
         if (index1 < (int) num4)
         {
@@ -2115,7 +2262,7 @@ namespace Terraria.Map
       for (int y = 0; y < Main.maxTilesY; ++y)
       {
         float num19 = (float) y / (float) Main.maxTilesY;
-        Main.statusText = Lang.gen[67] + " " + (object) (int) ((double) num19 * 100.0 + 1.0) + "%";
+        Main.statusText = Lang.gen[67].Value + " " + (object) (int) ((double) num19 * 100.0 + 1.0) + "%";
         for (int x = 0; x < Main.maxTilesX; ++x)
         {
           byte num26 = binaryReader.ReadByte();

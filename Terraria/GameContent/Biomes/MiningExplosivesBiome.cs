@@ -1,8 +1,8 @@
 ﻿// Decompiled with JetBrains decompiler
 // Type: Terraria.GameContent.Biomes.MiningExplosivesBiome
-// Assembly: Terraria, Version=1.3.4.4, Culture=neutral, PublicKeyToken=null
-// MVID: DEE50102-BCC2-472F-987B-153E892583F1
-// Assembly location: E:\Steam\SteamApps\common\Terraria\Terraria.exe
+// Assembly: Terraria, Version=1.3.5.1, Culture=neutral, PublicKeyToken=null
+// MVID: DF0400F4-EE47-4864-BE80-932EDB02D8A6
+// Assembly location: F:\Steam\steamapps\common\Terraria\Terraria.exe
 
 using Microsoft.Xna.Framework;
 using Terraria.GameContent.Generation;
@@ -14,7 +14,7 @@ namespace Terraria.GameContent.Biomes
   {
     public override bool Place(Point origin, StructureMap structures)
     {
-      if (WorldGen.SolidTile(origin.X, origin.Y))
+      if (WorldGen.SolidTile((int) origin.X, (int) origin.Y))
         return false;
       ushort type = Utils.SelectRandom<ushort>(GenBase._random, new ushort[4]
       {
@@ -34,7 +34,9 @@ namespace Terraria.GameContent.Biomes
       WorldUtils.Gen(origin, new ShapeRunner(10f, 20, new Vector2((float) num1, 1f)).Output(shapeData), Actions.Chain((GenAction) new Modifiers.Blotches(2, 0.3), (GenAction) new Actions.Scanner(count1), (GenAction) new Modifiers.IsSolid(), (GenAction) new Actions.Scanner(count2)));
       if (count2.Value < count1.Value / 2)
         return false;
-      Microsoft.Xna.Framework.Rectangle area = new Microsoft.Xna.Framework.Rectangle(origin.X - 15, origin.Y - 10, 30, 20);
+      Rectangle area;
+      // ISSUE: explicit reference operation
+      ((Rectangle) @area).\u002Ector(origin.X - 15, origin.Y - 10, 30, 20);
       if (!structures.CanPlace(area, 0))
         return false;
       WorldUtils.Gen(origin, (GenShape) new ModShapes.All(shapeData), (GenAction) new Actions.SetTile(type, true, true));
@@ -45,14 +47,26 @@ namespace Terraria.GameContent.Biomes
       Point result2;
       if (((flag ? 1 : 0) & (WorldUtils.Find(new Point(origin.X - (num1 > 0.0 ? -num2 : num2), origin.Y - 3), Searches.Chain((GenSearch) new Searches.Down(10), (GenCondition) new Conditions.IsSolid()), out result2) ? 1 : 0)) == 0)
         return false;
-      --result1.Y;
-      --result2.Y;
-      Tile tile1 = GenBase._tiles[result1.X, result1.Y + 1];
+      // ISSUE: explicit reference operation
+      // ISSUE: variable of a reference type
+      Point& local1 = @result1;
+      // ISSUE: explicit reference operation
+      int num3 = (^local1).Y - 1;
+      // ISSUE: explicit reference operation
+      (^local1).Y = (__Null) num3;
+      // ISSUE: explicit reference operation
+      // ISSUE: variable of a reference type
+      Point& local2 = @result2;
+      // ISSUE: explicit reference operation
+      int num4 = (^local2).Y - 1;
+      // ISSUE: explicit reference operation
+      (^local2).Y = (__Null) num4;
+      Tile tile1 = GenBase._tiles[(int) result1.X, result1.Y + 1];
       tile1.slope((byte) 0);
       tile1.halfBrick(false);
       for (int index = -1; index <= 1; ++index)
       {
-        WorldUtils.ClearTile(result2.X + index, result2.Y, false);
+        WorldUtils.ClearTile(result2.X + index, (int) result2.Y, false);
         Tile tile2 = GenBase._tiles[result2.X + index, result2.Y + 1];
         if (!WorldGen.SolidOrSlopedTile(tile2))
         {
@@ -63,8 +77,8 @@ namespace Terraria.GameContent.Biomes
         tile2.halfBrick(false);
         WorldUtils.TileFrame(result2.X + index, result2.Y + 1, true);
       }
-      WorldGen.PlaceTile(result1.X, result1.Y, 141, false, false, -1, 0);
-      WorldGen.PlaceTile(result2.X, result2.Y, 411, true, true, -1, 0);
+      WorldGen.PlaceTile((int) result1.X, (int) result1.Y, 141, false, false, -1, 0);
+      WorldGen.PlaceTile((int) result2.X, (int) result2.Y, 411, true, true, -1, 0);
       WorldUtils.WireLine(result1, result2);
       structures.AddStructure(area, 5);
       return true;

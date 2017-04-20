@@ -1,13 +1,14 @@
 ﻿// Decompiled with JetBrains decompiler
 // Type: Terraria.GameContent.Tile_Entities.TEItemFrame
-// Assembly: Terraria, Version=1.3.4.4, Culture=neutral, PublicKeyToken=null
-// MVID: DEE50102-BCC2-472F-987B-153E892583F1
-// Assembly location: E:\Steam\SteamApps\common\Terraria\Terraria.exe
+// Assembly: Terraria, Version=1.3.5.1, Culture=neutral, PublicKeyToken=null
+// MVID: DF0400F4-EE47-4864-BE80-932EDB02D8A6
+// Assembly location: F:\Steam\steamapps\common\Terraria\Terraria.exe
 
 using System;
 using System.IO;
 using Terraria.DataStructures;
 using Terraria.ID;
+using Terraria.Localization;
 
 namespace Terraria.GameContent.Tile_Entities
 {
@@ -29,7 +30,7 @@ namespace Terraria.GameContent.Tile_Entities
     {
       if (type != 1 || !TEItemFrame.ValidTile(x, y))
         return;
-      NetMessage.SendData(86, -1, -1, "", TEItemFrame.Place(x, y), (float) x, (float) y, 0.0f, 0, 0, 0);
+      NetMessage.SendData(86, -1, -1, (NetworkText) null, TEItemFrame.Place(x, y), (float) x, (float) y, 0.0f, 0, 0, 0);
     }
 
     public static int Place(int x, int y)
@@ -48,7 +49,7 @@ namespace Terraria.GameContent.Tile_Entities
       if (Main.netMode != 1)
         return TEItemFrame.Place(x, y);
       NetMessage.SendTileSquare(Main.myPlayer, x, y, 2, TileChangeType.None);
-      NetMessage.SendData(87, -1, -1, "", x, (float) y, 1f, 0.0f, 0, 0, 0);
+      NetMessage.SendData(87, -1, -1, (NetworkText) null, x, (float) y, 1f, 0.0f, 0, 0, 0);
       return -1;
     }
 
@@ -110,7 +111,7 @@ namespace Terraria.GameContent.Tile_Entities
         Main.item[number].netDefaults(netid);
         Main.item[number].Prefix(prefix);
         Main.item[number].stack = stack;
-        NetMessage.SendData(21, -1, -1, "", number, 0.0f, 0.0f, 0.0f, 0, 0, 0);
+        NetMessage.SendData(21, -1, -1, (NetworkText) null, number, 0.0f, 0.0f, 0.0f, 0, 0, 0);
       }
       else
       {
@@ -121,7 +122,7 @@ namespace Terraria.GameContent.Tile_Entities
         teItemFrame.item.netDefaults(netid);
         teItemFrame.item.Prefix(prefix);
         teItemFrame.item.stack = stack;
-        NetMessage.SendData(86, -1, -1, "", teItemFrame.ID, (float) x, (float) y, 0.0f, 0, 0, 0);
+        NetMessage.SendData(86, -1, -1, (NetworkText) null, teItemFrame.ID, (float) x, (float) y, 0.0f, 0, 0, 0);
       }
     }
   }

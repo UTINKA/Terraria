@@ -1,8 +1,8 @@
 ﻿// Decompiled with JetBrains decompiler
 // Type: Terraria.ID.DustID
-// Assembly: Terraria, Version=1.3.4.4, Culture=neutral, PublicKeyToken=null
-// MVID: DEE50102-BCC2-472F-987B-153E892583F1
-// Assembly location: E:\Steam\SteamApps\common\Terraria\Terraria.exe
+// Assembly: Terraria, Version=1.3.5.1, Culture=neutral, PublicKeyToken=null
+// MVID: DF0400F4-EE47-4864-BE80-932EDB02D8A6
+// Assembly location: F:\Steam\steamapps\common\Terraria\Terraria.exe
 
 namespace Terraria.ID
 {
@@ -73,5 +73,21 @@ namespace Terraria.ID
     public const short GreenBlood = 273;
     public const short ApprenticeStorm = 274;
     public const short Count = 275;
+    public const short t_BorealWood = 214;
+    public const short t_Slime = 4;
+    public const short t_SteampunkMetal = 8;
+    public const short t_LivingWood = 78;
+    public const short t_Honey = 147;
+    public const short t_Cactus = 40;
+    public const short t_Martian = 226;
+    public const short t_Meteor = 23;
+    public const short t_Granite = 240;
+    public const short t_Marble = 236;
+    public const short t_Crystal = 68;
+    public const short t_Golden = 10;
+    public const short t_PearlWood = 78;
+    public const short t_Lihzahrd = 148;
+    public const short t_Flesh = 5;
+    public const short t_Frozen = 80;
   }
 }

@@ -1,8 +1,8 @@
 ﻿// Decompiled with JetBrains decompiler
 // Type: Terraria.Initializers.ScreenEffectInitializer
-// Assembly: Terraria, Version=1.3.4.4, Culture=neutral, PublicKeyToken=null
-// MVID: DEE50102-BCC2-472F-987B-153E892583F1
-// Assembly location: E:\Steam\SteamApps\common\Terraria\Terraria.exe
+// Assembly: Terraria, Version=1.3.5.1, Culture=neutral, PublicKeyToken=null
+// MVID: DF0400F4-EE47-4864-BE80-932EDB02D8A6
+// Assembly location: F:\Steam\steamapps\common\Terraria\Terraria.exe
 
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -31,8 +31,8 @@ namespace Terraria.Initializers
       Filters.Scene["BloodMoon"] = new Filter(new BloodMoonScreenShaderData("FilterBloodMoon").UseColor(2f, -0.8f, -0.6f), EffectPriority.Medium);
       Filters.Scene["Sandstorm"] = new Filter(new SandstormShaderData("FilterSandstormForeground").UseColor(1.1f, 1f, 0.5f).UseSecondaryColor(0.7f, 0.5f, 0.3f).UseImage("Images/Misc/noise", 0, (SamplerState) null).UseIntensity(0.4f), EffectPriority.High);
       Overlays.Scene["Sandstorm"] = (Overlay) new SimpleOverlay("Images/Misc/noise", new SandstormShaderData("FilterSandstormBackground").UseColor(1.1f, 1f, 0.5f).UseSecondaryColor(0.7f, 0.5f, 0.3f).UseImage("Images/Misc/noise", 0, (SamplerState) null).UseIntensity(0.4f), EffectPriority.High, RenderLayers.Landscape);
-      Filters.Scene["Blizzard"] = new Filter(new BlizzardShaderData("FilterBlizzardForeground").UseColor(1f, 1f, 1f).UseSecondaryColor(0.7f, 0.7f, 1f).UseImage("Images/Misc/noise", 0, (SamplerState) null).UseIntensity(0.4f).UseImageScale(new Vector2(3f, 0.75f)), EffectPriority.High);
-      Overlays.Scene["Blizzard"] = (Overlay) new SimpleOverlay("Images/Misc/noise", new BlizzardShaderData("FilterBlizzardBackground").UseColor(1f, 1f, 1f).UseSecondaryColor(0.7f, 0.7f, 1f).UseImage("Images/Misc/noise", 0, (SamplerState) null).UseIntensity(0.4f).UseImageScale(new Vector2(3f, 0.75f)), EffectPriority.High, RenderLayers.Landscape);
+      Filters.Scene["Blizzard"] = new Filter(new BlizzardShaderData("FilterBlizzardForeground").UseColor(1f, 1f, 1f).UseSecondaryColor(0.7f, 0.7f, 1f).UseImage("Images/Misc/noise", 0, (SamplerState) null).UseIntensity(0.4f).UseImageScale(new Vector2(3f, 0.75f), 0), EffectPriority.High);
+      Overlays.Scene["Blizzard"] = (Overlay) new SimpleOverlay("Images/Misc/noise", new BlizzardShaderData("FilterBlizzardBackground").UseColor(1f, 1f, 1f).UseSecondaryColor(0.7f, 0.7f, 1f).UseImage("Images/Misc/noise", 0, (SamplerState) null).UseIntensity(0.4f).UseImageScale(new Vector2(3f, 0.75f), 0), EffectPriority.High, RenderLayers.Landscape);
       Filters.Scene["HeatDistortion"] = new Filter(new ScreenShaderData("FilterHeatDistortion").UseImage("Images/Misc/noise", 0, (SamplerState) null).UseIntensity(4f), EffectPriority.Low);
       Filters.Scene["WaterDistortion"] = new Filter(new WaterShaderData("FilterWaterDistortion").UseIntensity(1f).UseImage("Images/Misc/noise", 0, (SamplerState) null), EffectPriority.VeryHigh);
       Filters.Scene["CrystalDestructionColor"] = new Filter(new ScreenShaderData("FilterCrystalDestructionColor").UseColor(1f, 0.0f, 0.75f).UseIntensity(1f).UseOpacity(0.8f), EffectPriority.VeryHigh);

@@ -1,8 +1,8 @@
 ﻿// Decompiled with JetBrains decompiler
 // Type: Terraria.World.Generation.SimpleStructure
-// Assembly: Terraria, Version=1.3.4.4, Culture=neutral, PublicKeyToken=null
-// MVID: DEE50102-BCC2-472F-987B-153E892583F1
-// Assembly location: E:\Steam\SteamApps\common\Terraria\Terraria.exe
+// Assembly: Terraria, Version=1.3.5.1, Culture=neutral, PublicKeyToken=null
+// MVID: DF0400F4-EE47-4864-BE80-932EDB02D8A6
+// Assembly location: F:\Steam\steamapps\common\Terraria\Terraria.exe
 
 using Microsoft.Xna.Framework;
 
@@ -73,7 +73,7 @@ namespace Terraria.World.Generation
 
     public override bool Place(Point origin, StructureMap structures)
     {
-      if (!structures.CanPlace(new Microsoft.Xna.Framework.Rectangle(origin.X, origin.Y, this._width, this._height), 0))
+      if (!structures.CanPlace(new Rectangle((int) origin.X, (int) origin.Y, this._width, this._height), 0))
         return false;
       for (int index1 = 0; index1 < this._width; ++index1)
       {
@@ -85,7 +85,7 @@ namespace Terraria.World.Generation
             return false;
         }
       }
-      structures.AddStructure(new Microsoft.Xna.Framework.Rectangle(origin.X, origin.Y, this._width, this._height), 0);
+      structures.AddStructure(new Rectangle((int) origin.X, (int) origin.Y, this._width, this._height), 0);
       return true;
     }
   }

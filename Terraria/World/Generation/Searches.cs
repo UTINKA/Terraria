@@ -1,8 +1,8 @@
 ﻿// Decompiled with JetBrains decompiler
 // Type: Terraria.World.Generation.Searches
-// Assembly: Terraria, Version=1.3.4.4, Culture=neutral, PublicKeyToken=null
-// MVID: DEE50102-BCC2-472F-987B-153E892583F1
-// Assembly location: E:\Steam\SteamApps\common\Terraria\Terraria.exe
+// Assembly: Terraria, Version=1.3.5.1, Culture=neutral, PublicKeyToken=null
+// MVID: DF0400F4-EE47-4864-BE80-932EDB02D8A6
+// Assembly location: F:\Steam\steamapps\common\Terraria\Terraria.exe
 
 using Microsoft.Xna.Framework;
 
@@ -28,8 +28,8 @@ namespace Terraria.World.Generation
       {
         for (int index = 0; index < this._maxDistance; ++index)
         {
-          if (this.Check(origin.X - index, origin.Y))
-            return new Point(origin.X - index, origin.Y);
+          if (this.Check(origin.X - index, (int) origin.Y))
+            return new Point(origin.X - index, (int) origin.Y);
         }
         return GenSearch.NOT_FOUND;
       }
@@ -48,8 +48,8 @@ namespace Terraria.World.Generation
       {
         for (int index = 0; index < this._maxDistance; ++index)
         {
-          if (this.Check(origin.X + index, origin.Y))
-            return new Point(origin.X + index, origin.Y);
+          if (this.Check(origin.X + index, (int) origin.Y))
+            return new Point(origin.X + index, (int) origin.Y);
         }
         return GenSearch.NOT_FOUND;
       }
@@ -68,8 +68,8 @@ namespace Terraria.World.Generation
       {
         for (int index = 0; index < this._maxDistance; ++index)
         {
-          if (this.Check(origin.X, origin.Y + index))
-            return new Point(origin.X, origin.Y + index);
+          if (this.Check((int) origin.X, origin.Y + index))
+            return new Point((int) origin.X, origin.Y + index);
         }
         return GenSearch.NOT_FOUND;
       }
@@ -88,8 +88,8 @@ namespace Terraria.World.Generation
       {
         for (int index = 0; index < this._maxDistance; ++index)
         {
-          if (this.Check(origin.X, origin.Y - index))
-            return new Point(origin.X, origin.Y - index);
+          if (this.Check((int) origin.X, origin.Y - index))
+            return new Point((int) origin.X, origin.Y - index);
         }
         return GenSearch.NOT_FOUND;
       }

@@ -1,8 +1,8 @@
 ﻿// Decompiled with JetBrains decompiler
 // Type: Terraria.Graphics.Effects.SimpleOverlay
-// Assembly: Terraria, Version=1.3.4.4, Culture=neutral, PublicKeyToken=null
-// MVID: DEE50102-BCC2-472F-987B-153E892583F1
-// Assembly location: E:\Steam\SteamApps\common\Terraria\Terraria.exe
+// Assembly: Terraria, Version=1.3.5.1, Culture=neutral, PublicKeyToken=null
+// MVID: DF0400F4-EE47-4864-BE80-932EDB02D8A6
+// Assembly location: F:\Steam\steamapps\common\Terraria\Terraria.exe
 
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -12,21 +12,21 @@ namespace Terraria.Graphics.Effects
 {
   public class SimpleOverlay : Overlay
   {
-    public Vector2 TargetPosition = Vector2.Zero;
+    public Vector2 TargetPosition = Vector2.get_Zero();
     private Ref<Texture2D> _texture;
     private ScreenShaderData _shader;
 
     public SimpleOverlay(string textureName, ScreenShaderData shader, EffectPriority priority = EffectPriority.VeryLow, RenderLayers layer = RenderLayers.All)
       : base(priority, layer)
     {
-      this._texture = TextureManager.Retrieve(textureName == null ? "" : textureName);
+      this._texture = TextureManager.AsyncLoad(textureName == null ? "" : textureName);
       this._shader = shader;
     }
 
     public SimpleOverlay(string textureName, string shaderName = "Default", EffectPriority priority = EffectPriority.VeryLow, RenderLayers layer = RenderLayers.All)
       : base(priority, layer)
     {
-      this._texture = TextureManager.Retrieve(textureName == null ? "" : textureName);
+      this._texture = TextureManager.AsyncLoad(textureName == null ? "" : textureName);
       this._shader = new ScreenShaderData(Main.ScreenShaderRef, shaderName);
     }
 

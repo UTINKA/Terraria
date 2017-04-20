@@ -1,14 +1,15 @@
 ﻿// Decompiled with JetBrains decompiler
 // Type: Terraria.UI.ChestUI
-// Assembly: Terraria, Version=1.3.4.4, Culture=neutral, PublicKeyToken=null
-// MVID: DEE50102-BCC2-472F-987B-153E892583F1
-// Assembly location: E:\Steam\SteamApps\common\Terraria\Terraria.exe
+// Assembly: Terraria, Version=1.3.5.1, Culture=neutral, PublicKeyToken=null
+// MVID: DF0400F4-EE47-4864-BE80-932EDB02D8A6
+// Assembly location: F:\Steam\steamapps\common\Terraria\Terraria.exe
 
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System.Collections.Generic;
 using Terraria.GameInput;
+using Terraria.Localization;
 using Terraria.UI.Chat;
 using Terraria.UI.Gamepad;
 
@@ -79,6 +80,7 @@ namespace Terraria.UI
         }
         if (Main.instance.textBlinkerState == 1)
           text += "|";
+        Main.instance.DrawWindowsIMEPanel(new Vector2(120f, 518f), 0.0f);
       }
       else if (player.chest > -1)
       {
@@ -88,24 +90,29 @@ namespace Terraria.UI
         if (chest.name != "")
           text = chest.name;
         else if ((int) Main.tile[player.chestX, player.chestY].type == 21)
-          text = Lang.chestType[(int) Main.tile[player.chestX, player.chestY].frameX / 36];
+          text = Lang.chestType[(int) Main.tile[player.chestX, player.chestY].frameX / 36].Value;
+        else if ((int) Main.tile[player.chestX, player.chestY].type == 467)
+          text = Lang.chestType2[(int) Main.tile[player.chestX, player.chestY].frameX / 36].Value;
         else if ((int) Main.tile[player.chestX, player.chestY].type == 88)
-          text = Lang.dresserType[(int) Main.tile[player.chestX, player.chestY].frameX / 54];
+          text = Lang.dresserType[(int) Main.tile[player.chestX, player.chestY].frameX / 54].Value;
       }
       else if (player.chest == -2)
-        text = Lang.inter[32];
+        text = Lang.inter[32].Value;
       else if (player.chest == -3)
-        text = Lang.inter[33];
+        text = Lang.inter[33].Value;
       else if (player.chest == -4)
-        text = Main.itemName[3813];
-      Color color = new Color((int) Main.mouseTextColor, (int) Main.mouseTextColor, (int) Main.mouseTextColor, (int) Main.mouseTextColor);
-      Color baseColor = Color.White * (float) (1.0 - ((double) byte.MaxValue - (double) Main.mouseTextColor) / (double) byte.MaxValue * 0.5);
-      baseColor.A = byte.MaxValue;
+        text = Lang.GetItemNameValue(3813);
+      Color color;
+      // ISSUE: explicit reference operation
+      ((Color) @color).\u002Ector((int) Main.mouseTextColor, (int) Main.mouseTextColor, (int) Main.mouseTextColor, (int) Main.mouseTextColor);
+      Color baseColor = Color.op_Multiply(Color.get_White(), (float) (1.0 - ((double) byte.MaxValue - (double) Main.mouseTextColor) / (double) byte.MaxValue * 0.5));
+      // ISSUE: explicit reference operation
+      ((Color) @baseColor).set_A(byte.MaxValue);
       int lineAmount;
       Utils.WordwrapString(text, Main.fontMouseText, 200, 1, out lineAmount);
       ++lineAmount;
       for (int index = 0; index < lineAmount; ++index)
-        ChatManager.DrawColorCodedStringWithShadow(spritebatch, Main.fontMouseText, text, new Vector2(504f, (float) (Main.instance.invBottom + index * 26)), baseColor, 0.0f, Vector2.Zero, Vector2.One, -1f, 1.5f);
+        ChatManager.DrawColorCodedStringWithShadow(spritebatch, Main.fontMouseText, text, new Vector2(504f, (float) (Main.instance.invBottom + index * 26)), baseColor, 0.0f, Vector2.get_Zero(), Vector2.get_One(), -1f, 1.5f);
     }
 
     private static void DrawButtons(SpriteBatch spritebatch)
@@ -129,50 +136,51 @@ namespace Terraria.UI
         switch (ID)
         {
           case 0:
-            text = Lang.inter[29];
+            text = Lang.inter[29].Value;
             break;
           case 1:
-            text = Lang.inter[30];
+            text = Lang.inter[30].Value;
             break;
           case 2:
-            text = Lang.inter[31];
+            text = Lang.inter[31].Value;
             break;
           case 3:
-            text = Lang.inter[82];
+            text = Lang.inter[82].Value;
             break;
           case 4:
-            text = Lang.inter[122];
+            text = Lang.inter[122].Value;
             break;
           case 5:
-            text = Lang.inter[Main.editChest ? 47 : 61];
+            text = Lang.inter[Main.editChest ? 47 : 61].Value;
             break;
           case 6:
-            text = Lang.inter[63];
+            text = Lang.inter[63].Value;
             break;
         }
         Vector2 vector2 = Main.fontMouseText.MeasureString(text);
-        Color color = new Color((int) Main.mouseTextColor, (int) Main.mouseTextColor, (int) Main.mouseTextColor, (int) Main.mouseTextColor) * num;
-        Color baseColor = Color.White * 0.97f * (float) (1.0 - ((double) byte.MaxValue - (double) Main.mouseTextColor) / (double) byte.MaxValue * 0.5);
-        baseColor.A = byte.MaxValue;
-        X += (int) ((double) vector2.X * (double) num / 2.0);
-        ChatManager.DrawColorCodedStringWithShadow(spriteBatch, Main.fontMouseText, text, new Vector2((float) X, (float) Y), baseColor, 0.0f, vector2 / 2f, new Vector2(num), -1f, 1.5f);
-        vector2 *= num;
+        Color.op_Multiply(new Color((int) Main.mouseTextColor, (int) Main.mouseTextColor, (int) Main.mouseTextColor, (int) Main.mouseTextColor), num);
+        Color baseColor = Color.op_Multiply(Color.op_Multiply(Color.get_White(), 0.97f), (float) (1.0 - ((double) byte.MaxValue - (double) Main.mouseTextColor) / (double) byte.MaxValue * 0.5));
+        // ISSUE: explicit reference operation
+        ((Color) @baseColor).set_A(byte.MaxValue);
+        X += (int) (vector2.X * (double) num / 2.0);
+        ChatManager.DrawColorCodedStringWithShadow(spriteBatch, Main.fontMouseText, text, new Vector2((float) X, (float) Y), baseColor, 0.0f, Vector2.op_Division(vector2, 2f), new Vector2(num), -1f, 1.5f);
+        vector2 = Vector2.op_Multiply(vector2, num);
         switch (ID)
         {
           case 0:
-            UILinkPointNavigator.SetPosition(500, new Vector2((float) X - (float) ((double) vector2.X * (double) num / 2.0 * 0.800000011920929), (float) Y));
+            UILinkPointNavigator.SetPosition(500, new Vector2((float) X - (float) (vector2.X * (double) num / 2.0 * 0.800000011920929), (float) Y));
             break;
           case 1:
-            UILinkPointNavigator.SetPosition(501, new Vector2((float) X - (float) ((double) vector2.X * (double) num / 2.0 * 0.800000011920929), (float) Y));
+            UILinkPointNavigator.SetPosition(501, new Vector2((float) X - (float) (vector2.X * (double) num / 2.0 * 0.800000011920929), (float) Y));
             break;
           case 2:
-            UILinkPointNavigator.SetPosition(502, new Vector2((float) X - (float) ((double) vector2.X * (double) num / 2.0 * 0.800000011920929), (float) Y));
+            UILinkPointNavigator.SetPosition(502, new Vector2((float) X - (float) (vector2.X * (double) num / 2.0 * 0.800000011920929), (float) Y));
             break;
           case 3:
-            UILinkPointNavigator.SetPosition(503, new Vector2((float) X - (float) ((double) vector2.X * (double) num / 2.0 * 0.800000011920929), (float) Y));
+            UILinkPointNavigator.SetPosition(503, new Vector2((float) X - (float) (vector2.X * (double) num / 2.0 * 0.800000011920929), (float) Y));
             break;
           case 4:
-            UILinkPointNavigator.SetPosition(505, new Vector2((float) X - (float) ((double) vector2.X * (double) num / 2.0 * 0.800000011920929), (float) Y));
+            UILinkPointNavigator.SetPosition(505, new Vector2((float) X - (float) (vector2.X * (double) num / 2.0 * 0.800000011920929), (float) Y));
             break;
           case 5:
             UILinkPointNavigator.SetPosition(504, new Vector2((float) X, (float) Y));
@@ -181,7 +189,7 @@ namespace Terraria.UI
             UILinkPointNavigator.SetPosition(504, new Vector2((float) X, (float) Y));
             break;
         }
-        if (!Utils.FloatIntersect((float) Main.mouseX, (float) Main.mouseY, 0.0f, 0.0f, (float) X - vector2.X / 2f, (float) Y - vector2.Y / 2f, vector2.X, vector2.Y))
+        if (!Utils.FloatIntersect((float) Main.mouseX, (float) Main.mouseY, 0.0f, 0.0f, (float) X - (float) (vector2.X / 2.0), (float) Y - (float) (vector2.Y / 2.0), (float) vector2.X, (float) vector2.Y))
         {
           ChestUI.UpdateHover(ID, false);
         }
@@ -258,12 +266,12 @@ namespace Terraria.UI
           int num2 = (int) ((double) Main.instance.invBottom + (double) (index2 * 56) * (double) Main.inventoryScale);
           int slot = index1 + index2 * 10;
           Color color = new Color(100, 100, 100, 100);
-          if (Utils.FloatIntersect((float) Main.mouseX, (float) Main.mouseY, 0.0f, 0.0f, (float) num1, (float) num2, (float) Main.inventoryBackTexture.Width * Main.inventoryScale, (float) Main.inventoryBackTexture.Height * Main.inventoryScale) && !PlayerInput.IgnoreMouseInterface)
+          if (Utils.FloatIntersect((float) Main.mouseX, (float) Main.mouseY, 0.0f, 0.0f, (float) num1, (float) num2, (float) Main.inventoryBackTexture.get_Width() * Main.inventoryScale, (float) Main.inventoryBackTexture.get_Height() * Main.inventoryScale) && !PlayerInput.IgnoreMouseInterface)
           {
             player.mouseInterface = true;
             ItemSlot.Handle(inv, context, slot);
           }
-          ItemSlot.Draw(spriteBatch, inv, context, slot, new Vector2((float) num1, (float) num2), new Color());
+          ItemSlot.Draw(spriteBatch, inv, context, slot, new Vector2((float) num1, (float) num2), (Color) null);
         }
       }
     }
@@ -281,7 +289,7 @@ namespace Terraria.UI
             chest.item[index].position = player.Center;
             chest.item[index] = player.GetItem(Main.myPlayer, chest.item[index], false, false);
             if (Main.netMode == 1)
-              NetMessage.SendData(32, -1, -1, "", player.chest, (float) index, 0.0f, 0.0f, 0, 0, 0);
+              NetMessage.SendData(32, -1, -1, (NetworkText) null, player.chest, (float) index, 0.0f, 0.0f, 0, 0, 0);
           }
         }
       }
@@ -355,7 +363,7 @@ namespace Terraria.UI
                     player.inventory[index1].SetDefaults(0, false);
                     if (Main.netMode == 1)
                     {
-                      NetMessage.SendData(32, -1, -1, "", player.chest, (float) index2, 0.0f, 0.0f, 0, 0, 0);
+                      NetMessage.SendData(32, -1, -1, (NetworkText) null, player.chest, (float) index2, 0.0f, 0.0f, 0, 0, 0);
                       break;
                     }
                     break;
@@ -366,7 +374,7 @@ namespace Terraria.UI
                     player.inventory[index1].SetDefaults(0, false);
                   }
                   if (Main.netMode == 1)
-                    NetMessage.SendData(32, -1, -1, "", player.chest, (float) index2, 0.0f, 0.0f, 0, 0, 0);
+                    NetMessage.SendData(32, -1, -1, (NetworkText) null, player.chest, (float) index2, 0.0f, 0.0f, 0, 0, 0);
                 }
               }
               else if (player.chest == -3)
@@ -447,7 +455,7 @@ namespace Terraria.UI
                   player.inventory[index1].SetDefaults(0, false);
                   if (Main.netMode == 1)
                   {
-                    NetMessage.SendData(32, -1, -1, "", player.chest, (float) index2, 0.0f, 0.0f, 0, 0, 0);
+                    NetMessage.SendData(32, -1, -1, (NetworkText) null, player.chest, (float) index2, 0.0f, 0.0f, 0, 0, 0);
                     break;
                   }
                   break;
@@ -614,7 +622,7 @@ namespace Terraria.UI
       if (Main.netMode == 1 && player.chest >= 0)
       {
         for (int index = 0; index < flagArray.Length; ++index)
-          NetMessage.SendData(32, -1, -1, "", player.chest, (float) index, 0.0f, 0.0f, 0, 0, 0);
+          NetMessage.SendData(32, -1, -1, (NetworkText) null, player.chest, (float) index, 0.0f, 0.0f, 0, 0, 0);
       }
       intList1.Clear();
       intList2.Clear();
@@ -652,7 +660,7 @@ namespace Terraria.UI
       Main.PlaySound(12, -1, -1, 1, 1f, 0.0f);
       Main.editChest = false;
       Main.npcChatText = string.Empty;
-      Main.blockKey = Keys.Escape.ToString();
+      Main.blockKey = ((object) (Keys) 27).ToString();
     }
 
     public static void Restock()
@@ -708,7 +716,7 @@ namespace Terraria.UI
               if (inventory[slot].stack == inventory[slot].maxStack)
               {
                 if (Main.netMode == 1 && Main.player[Main.myPlayer].chest > -1)
-                  NetMessage.SendData(32, -1, -1, "", Main.player[Main.myPlayer].chest, (float) index1, 0.0f, 0.0f, 0, 0, 0);
+                  NetMessage.SendData(32, -1, -1, (NetworkText) null, Main.player[Main.myPlayer].chest, (float) index1, 0.0f, 0.0f, 0, 0, 0);
                 intList1.RemoveAt(index2);
                 --index2;
               }
@@ -718,7 +726,7 @@ namespace Terraria.UI
                 flag2 = true;
                 if (Main.netMode == 1 && Main.player[Main.myPlayer].chest > -1)
                 {
-                  NetMessage.SendData(32, -1, -1, "", Main.player[Main.myPlayer].chest, (float) index1, 0.0f, 0.0f, 0, 0, 0);
+                  NetMessage.SendData(32, -1, -1, (NetworkText) null, Main.player[Main.myPlayer].chest, (float) index1, 0.0f, 0.0f, 0, 0, 0);
                   break;
                 }
                 break;
@@ -736,7 +744,7 @@ namespace Terraria.UI
               {
                 Utils.Swap<Item>(ref inventory[intList2[index2]], ref objArray[index1]);
                 if (Main.netMode == 1 && Main.player[Main.myPlayer].chest > -1)
-                  NetMessage.SendData(32, -1, -1, "", Main.player[Main.myPlayer].chest, (float) index1, 0.0f, 0.0f, 0, 0, 0);
+                  NetMessage.SendData(32, -1, -1, (NetworkText) null, Main.player[Main.myPlayer].chest, (float) index1, 0.0f, 0.0f, 0, 0, 0);
                 intList1.Add(intList2[index2]);
                 intList2.RemoveAt(index2);
                 flag1 = true;
@@ -835,7 +843,7 @@ namespace Terraria.UI
             numArray2[index1] = -1;
           }
           if (Main.netMode == 1 && Main.player[Main.myPlayer].chest > -1)
-            NetMessage.SendData(32, -1, -1, "", Main.player[Main.myPlayer].chest, (float) index2, 0.0f, 0.0f, 0, 0, 0);
+            NetMessage.SendData(32, -1, -1, (NetworkText) null, Main.player[Main.myPlayer].chest, (float) index2, 0.0f, 0.0f, 0, 0, 0);
           intList2.Remove(index2);
         }
       }
@@ -861,7 +869,7 @@ namespace Terraria.UI
               --index3;
           }
           if (Main.netMode == 1 && Main.player[Main.myPlayer].chest > -1)
-            NetMessage.SendData(32, -1, -1, "", Main.player[Main.myPlayer].chest, (float) index2, 0.0f, 0.0f, 0, 0, 0);
+            NetMessage.SendData(32, -1, -1, (NetworkText) null, Main.player[Main.myPlayer].chest, (float) index2, 0.0f, 0.0f, 0, 0, 0);
           intList2.Remove(index2);
         }
       }
@@ -884,7 +892,7 @@ namespace Terraria.UI
             --index2;
         }
         if (Main.netMode == 1 && Main.player[Main.myPlayer].chest > -1)
-          NetMessage.SendData(32, -1, -1, "", Main.player[Main.myPlayer].chest, (float) intList2[0], 0.0f, 0.0f, 0, 0, 0);
+          NetMessage.SendData(32, -1, -1, (NetworkText) null, Main.player[Main.myPlayer].chest, (float) intList2[0], 0.0f, 0.0f, 0, 0, 0);
         intList2.RemoveAt(0);
       }
       int index4 = 3;
@@ -944,7 +952,7 @@ namespace Terraria.UI
               I.SetDefaults(0, false);
               if (flag1)
               {
-                NetMessage.SendData(32, -1, -1, "", player.chest, (float) index, 0.0f, 0.0f, 0, 0, 0);
+                NetMessage.SendData(32, -1, -1, (NetworkText) null, player.chest, (float) index, 0.0f, 0.0f, 0, 0, 0);
                 break;
               }
               break;
@@ -955,7 +963,7 @@ namespace Terraria.UI
               I.SetDefaults(0, false);
             }
             if (flag1)
-              NetMessage.SendData(32, -1, -1, "", player.chest, (float) index, 0.0f, 0.0f, 0, 0, 0);
+              NetMessage.SendData(32, -1, -1, (NetworkText) null, player.chest, (float) index, 0.0f, 0.0f, 0, 0, 0);
           }
         }
       }
@@ -975,7 +983,7 @@ namespace Terraria.UI
             I.SetDefaults(0, false);
             if (flag1)
             {
-              NetMessage.SendData(32, -1, -1, "", player.chest, (float) index, 0.0f, 0.0f, 0, 0, 0);
+              NetMessage.SendData(32, -1, -1, (NetworkText) null, player.chest, (float) index, 0.0f, 0.0f, 0, 0, 0);
               break;
             }
             break;
@@ -1026,7 +1034,7 @@ namespace Terraria.UI
               obj.SetDefaults(0, false);
               if (flag1)
               {
-                NetMessage.SendData(32, -1, -1, "", player.chest, (float) index, 0.0f, 0.0f, 0, 0, 0);
+                NetMessage.SendData(32, -1, -1, (NetworkText) null, player.chest, (float) index, 0.0f, 0.0f, 0, 0, 0);
                 break;
               }
               break;
@@ -1037,7 +1045,7 @@ namespace Terraria.UI
               obj.SetDefaults(0, false);
             }
             if (flag1)
-              NetMessage.SendData(32, -1, -1, "", player.chest, (float) index, 0.0f, 0.0f, 0, 0, 0);
+              NetMessage.SendData(32, -1, -1, (NetworkText) null, player.chest, (float) index, 0.0f, 0.0f, 0, 0, 0);
           }
         }
       }
@@ -1057,7 +1065,7 @@ namespace Terraria.UI
             obj.SetDefaults(0, false);
             if (flag1)
             {
-              NetMessage.SendData(32, -1, -1, "", player.chest, (float) index, 0.0f, 0.0f, 0, 0, 0);
+              NetMessage.SendData(32, -1, -1, (NetworkText) null, player.chest, (float) index, 0.0f, 0.0f, 0, 0, 0);
               break;
             }
             break;

@@ -1,8 +1,8 @@
 ﻿// Decompiled with JetBrains decompiler
 // Type: Terraria.Modules.TileObjectStyleModule
-// Assembly: Terraria, Version=1.3.4.4, Culture=neutral, PublicKeyToken=null
-// MVID: DEE50102-BCC2-472F-987B-153E892583F1
-// Assembly location: E:\Steam\SteamApps\common\Terraria\Terraria.exe
+// Assembly: Terraria, Version=1.3.5.1, Culture=neutral, PublicKeyToken=null
+// MVID: DF0400F4-EE47-4864-BE80-932EDB02D8A6
+// Assembly location: F:\Steam\steamapps\common\Terraria\Terraria.exe
 
 namespace Terraria.Modules
 {
@@ -12,6 +12,7 @@ namespace Terraria.Modules
     public bool horizontal;
     public int styleWrapLimit;
     public int styleMultiplier;
+    public int styleLineSkip;
 
     public TileObjectStyleModule(TileObjectStyleModule copyFrom = null)
     {
@@ -21,6 +22,7 @@ namespace Terraria.Modules
         this.horizontal = false;
         this.styleWrapLimit = 0;
         this.styleMultiplier = 1;
+        this.styleLineSkip = 1;
       }
       else
       {
@@ -28,6 +30,7 @@ namespace Terraria.Modules
         this.horizontal = copyFrom.horizontal;
         this.styleWrapLimit = copyFrom.styleWrapLimit;
         this.styleMultiplier = copyFrom.styleMultiplier;
+        this.styleLineSkip = copyFrom.styleLineSkip;
       }
     }
   }

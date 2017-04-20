@@ -1,8 +1,8 @@
 ﻿// Decompiled with JetBrains decompiler
 // Type: Terraria.Graphics.TextureManager
-// Assembly: Terraria, Version=1.3.4.4, Culture=neutral, PublicKeyToken=null
-// MVID: DEE50102-BCC2-472F-987B-153E892583F1
-// Assembly location: E:\Steam\SteamApps\common\Terraria\Terraria.exe
+// Assembly: Terraria, Version=1.3.5.1, Culture=neutral, PublicKeyToken=null
+// MVID: DF0400F4-EE47-4864-BE80-932EDB02D8A6
+// Assembly location: F:\Steam\steamapps\common\Terraria\Terraria.exe
 
 using Microsoft.Xna.Framework.Graphics;
 using System;
@@ -21,7 +21,7 @@ namespace Terraria.Graphics
 
     public static void Initialize()
     {
-      TextureManager.BlankTexture = new Texture2D(Main.graphics.GraphicsDevice, 4, 4);
+      TextureManager.BlankTexture = new Texture2D(Main.graphics.get_GraphicsDevice(), 4, 4);
     }
 
     public static Texture2D Load(string name)
@@ -47,22 +47,22 @@ namespace Terraria.Graphics
       return texture2D;
     }
 
-    public static Ref<Texture2D> Retrieve(string name)
+    public static Ref<Texture2D> AsyncLoad(string name)
     {
       return new Ref<Texture2D>(TextureManager.Load(name));
     }
 
-    public static void Run(object context)
+    private static void Run(object context)
     {
       bool looping = true;
-      Main.instance.Exiting += (EventHandler<EventArgs>) ((obj, args) =>
+      Main.instance.add_Exiting((EventHandler<EventArgs>) ((obj, args) =>
       {
         looping = false;
         if (!Monitor.TryEnter(TextureManager._loadThreadLock))
           return;
         Monitor.Pulse(TextureManager._loadThreadLock);
         Monitor.Exit(TextureManager._loadThreadLock);
-      });
+      }));
       Monitor.Enter(TextureManager._loadThreadLock);
       while (looping)
       {

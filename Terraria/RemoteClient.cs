@@ -1,8 +1,8 @@
 ﻿// Decompiled with JetBrains decompiler
 // Type: Terraria.RemoteClient
-// Assembly: Terraria, Version=1.3.4.4, Culture=neutral, PublicKeyToken=null
-// MVID: DEE50102-BCC2-472F-987B-153E892583F1
-// Assembly location: E:\Steam\SteamApps\common\Terraria\Terraria.exe
+// Assembly: Terraria, Version=1.3.5.1, Culture=neutral, PublicKeyToken=null
+// MVID: DF0400F4-EE47-4864-BE80-932EDB02D8A6
+// Assembly location: F:\Steam\steamapps\common\Terraria\Terraria.exe
 
 using Microsoft.Xna.Framework;
 using Terraria.Localization;
@@ -55,13 +55,13 @@ namespace Terraria
       else
       {
         if ((double) this.SpamProjectile > (double) this.SpamProjectileMax)
-          NetMessage.BootPlayer(this.Id, Language.GetTextValue("Net.CheatingProjectileSpam"));
+          NetMessage.BootPlayer(this.Id, NetworkText.FromKey("Net.CheatingProjectileSpam"));
         if ((double) this.SpamAddBlock > (double) this.SpamAddBlockMax)
-          NetMessage.BootPlayer(this.Id, Language.GetTextValue("Net.CheatingTileSpam"));
+          NetMessage.BootPlayer(this.Id, NetworkText.FromKey("Net.CheatingTileSpam"));
         if ((double) this.SpamDeleteBlock > (double) this.SpamDeleteBlockMax)
-          NetMessage.BootPlayer(this.Id, Language.GetTextValue("Net.CheatingTileRemovalSpam"));
+          NetMessage.BootPlayer(this.Id, NetworkText.FromKey("Net.CheatingTileRemovalSpam"));
         if ((double) this.SpamWater > (double) this.SpamWaterMax)
-          NetMessage.BootPlayer(this.Id, Language.GetTextValue("Net.CheatingLiquidSpam"));
+          NetMessage.BootPlayer(this.Id, NetworkText.FromKey("Net.CheatingLiquidSpam"));
         this.SpamProjectile -= 0.4f;
         if ((double) this.SpamProjectile < 0.0)
           this.SpamProjectile = 0.0f;
@@ -89,8 +89,8 @@ namespace Terraria
     public static void CheckSection(int playerIndex, Vector2 position, int fluff = 1)
     {
       int index1 = playerIndex;
-      int sectionX = Netplay.GetSectionX((int) ((double) position.X / 16.0));
-      int sectionY1 = Netplay.GetSectionY((int) ((double) position.Y / 16.0));
+      int sectionX = Netplay.GetSectionX((int) (position.X / 16.0));
+      int sectionY1 = Netplay.GetSectionY((int) (position.Y / 16.0));
       int num = 0;
       for (int index2 = sectionX - fluff; index2 < sectionX + fluff + 1; ++index2)
       {
@@ -103,7 +103,7 @@ namespace Terraria
       if (num <= 0)
         return;
       int number = num;
-      NetMessage.SendData(9, index1, -1, Lang.inter[44], number, 0.0f, 0.0f, 0.0f, 0, 0, 0);
+      NetMessage.SendData(9, index1, -1, Lang.inter[44].ToNetworkText(), number, 0.0f, 0.0f, 0.0f, 0, 0, 0);
       Netplay.Clients[index1].StatusText2 = Language.GetTextValue("Net.IsReceivingTileData");
       Netplay.Clients[index1].StatusMax += number;
       for (int index2 = sectionX - fluff; index2 < sectionX + fluff + 1; ++index2)
@@ -113,7 +113,7 @@ namespace Terraria
           if (index2 >= 0 && index2 < Main.maxSectionsX && (sectionY2 >= 0 && sectionY2 < Main.maxSectionsY) && !Netplay.Clients[index1].TileSections[index2, sectionY2])
           {
             NetMessage.SendSection(index1, index2, sectionY2, false);
-            NetMessage.SendData(11, index1, -1, "", index2, (float) sectionY2, (float) index2, (float) sectionY2, 0, 0, 0);
+            NetMessage.SendData(11, index1, -1, (NetworkText) null, index2, (float) sectionY2, (float) index2, (float) sectionY2, 0, 0, 0);
           }
         }
       }
@@ -189,14 +189,14 @@ namespace Terraria
         {
           try
           {
-            NetMessage.RecieveBytes(this.ReadBuffer, streamLength, this.Id);
+            NetMessage.ReceiveBytes(this.ReadBuffer, streamLength, this.Id);
           }
           catch
           {
           }
         }
         else
-          NetMessage.RecieveBytes(this.ReadBuffer, streamLength, this.Id);
+          NetMessage.ReceiveBytes(this.ReadBuffer, streamLength, this.Id);
       }
       this.IsReading = false;
     }

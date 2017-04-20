@@ -1,14 +1,13 @@
 ﻿// Decompiled with JetBrains decompiler
 // Type: Terraria.IO.PlayerFileData
-// Assembly: Terraria, Version=1.3.4.4, Culture=neutral, PublicKeyToken=null
-// MVID: DEE50102-BCC2-472F-987B-153E892583F1
-// Assembly location: E:\Steam\SteamApps\common\Terraria\Terraria.exe
+// Assembly: Terraria, Version=1.3.5.1, Culture=neutral, PublicKeyToken=null
+// MVID: DF0400F4-EE47-4864-BE80-932EDB02D8A6
+// Assembly location: F:\Steam\steamapps\common\Terraria\Terraria.exe
 
 using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
-using System.Text.RegularExpressions;
+using System.Linq;
 using Terraria.Social;
 using Terraria.Utilities;
 
@@ -96,13 +95,16 @@ namespace Terraria.IO
       if (!FileUtilities.MoveToLocal(this.Path, playerPathFromName))
         return;
       string fileName = this.GetFileName(false);
-      char directorySeparatorChar = Path.DirectorySeparatorChar;
-      string matchPattern = Regex.Escape(Main.CloudPlayerPath) + "/" + Regex.Escape(fileName) + "/.+\\.map";
-      List<string> files = SocialAPI.Cloud.GetFiles(matchPattern);
-      for (int index = 0; index < files.Count; ++index)
+      string mapPath = Path.Combine(Main.CloudPlayerPath, fileName);
+      foreach (string str in SocialAPI.Cloud.GetFiles().Where<string>((Func<string, bool>) (path =>
       {
-        string localPath = Main.PlayerPath + (object) directorySeparatorChar + fileName + (object) directorySeparatorChar + FileUtilities.GetFileName(files[index], true);
-        FileUtilities.MoveToLocal(files[index], localPath);
+        if (path.StartsWith(mapPath, StringComparison.CurrentCultureIgnoreCase))
+          return path.EndsWith(".map", StringComparison.CurrentCultureIgnoreCase);
+        return false;
+      })))
+      {
+        string localPath = Path.Combine(Main.PlayerPath, fileName, FileUtilities.GetFileName(str, true));
+        FileUtilities.MoveToLocal(str, localPath);
       }
       Main.CloudFavoritesData.ClearEntry((FileData) this);
       this._isCloudSave = false;
@@ -112,7 +114,7 @@ namespace Terraria.IO
 
     public void UpdatePlayTimer()
     {
-      if (Main.instance.IsActive && !Main.gamePaused && (Main.hasFocus && this._isTimerActive))
+      if (Main.instance.get_IsActive() && !Main.gamePaused && (Main.hasFocus && this._isTimerActive))
         this.StartPlayTimer();
       else
         this.PausePlayTimer();

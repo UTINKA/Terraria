@@ -1,11 +1,12 @@
 ﻿// Decompiled with JetBrains decompiler
 // Type: Terraria.GameContent.UI.Chat.ItemTagHandler
-// Assembly: Terraria, Version=1.3.4.4, Culture=neutral, PublicKeyToken=null
-// MVID: DEE50102-BCC2-472F-987B-153E892583F1
-// Assembly location: E:\Steam\SteamApps\common\Terraria\Terraria.exe
+// Assembly: Terraria, Version=1.3.5.1, Culture=neutral, PublicKeyToken=null
+// MVID: DF0400F4-EE47-4864-BE80-932EDB02D8A6
+// Assembly location: F:\Steam\steamapps\common\Terraria\Terraria.exe
 
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using ReLogic.Graphics;
 using Terraria.UI;
 using Terraria.UI.Chat;
 
@@ -19,8 +20,6 @@ namespace Terraria.GameContent.UI.Chat
       int result1;
       if (int.TryParse(text, out result1))
         obj.netDefaults(result1);
-      else
-        obj.SetDefaults(text);
       if (obj.type <= 0)
         return new TextSnippet(text);
       obj.stack = 1;
@@ -89,8 +88,8 @@ namespace Terraria.GameContent.UI.Chat
 
       public override void OnHover()
       {
-        Main.toolTip = this._item.Clone();
-        Main.instance.MouseText(this._item.name, this._item.rare, (byte) 0);
+        Main.HoverItem = this._item.Clone();
+        Main.instance.MouseText(this._item.Name, this._item.rare, (byte) 0, -1, -1, -1, -1);
       }
 
       public override bool UniqueDraw(bool justCheckingString, out Vector2 size, SpriteBatch spriteBatch, Vector2 position = null, Color color = null, float scale = 1f)
@@ -108,18 +107,18 @@ namespace Terraria.GameContent.UI.Chat
         float num4 = num1 * num3;
         if ((double) num4 > 0.75)
           num4 = 0.75f;
-        if (!justCheckingString && color != Color.Black)
+        if (!justCheckingString && Color.op_Inequality(color, Color.get_Black()))
         {
           float inventoryScale = Main.inventoryScale;
           Main.inventoryScale = scale * num4;
-          ItemSlot.Draw(spriteBatch, ref this._item, 14, position - new Vector2(10f) * scale * num4, Color.White);
+          ItemSlot.Draw(spriteBatch, ref this._item, 14, Vector2.op_Subtraction(position, Vector2.op_Multiply(Vector2.op_Multiply(new Vector2(10f), scale), num4)), Color.get_White());
           Main.inventoryScale = inventoryScale;
         }
-        size = new Vector2(32f) * scale * num4;
+        size = Vector2.op_Multiply(Vector2.op_Multiply(new Vector2(32f), scale), num4);
         return true;
       }
 
-      public override float GetStringLength(SpriteFont font)
+      public override float GetStringLength(DynamicSpriteFont font)
       {
         return (float) (32.0 * (double) this.Scale * 0.649999976158142);
       }

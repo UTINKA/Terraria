@@ -1,19 +1,65 @@
 ﻿// Decompiled with JetBrains decompiler
 // Type: Terraria.ID.ItemID
-// Assembly: Terraria, Version=1.3.4.4, Culture=neutral, PublicKeyToken=null
-// MVID: DEE50102-BCC2-472F-987B-153E892583F1
-// Assembly location: E:\Steam\SteamApps\common\Terraria\Terraria.exe
+// Assembly: Terraria, Version=1.3.5.1, Culture=neutral, PublicKeyToken=null
+// MVID: DF0400F4-EE47-4864-BE80-932EDB02D8A6
+// Assembly location: F:\Steam\steamapps\common\Terraria\Terraria.exe
+
+using ReLogic.Reflection;
+using System.Collections.Generic;
 
 namespace Terraria.ID
 {
   public class ItemID
   {
+    public static readonly IdDictionary Search = IdDictionary.Create<ItemID, short>();
     public const short YellowPhasesaberOld = -24;
     public const short WhitePhasesaberOld = -23;
     public const short PurplePhasesaberOld = -22;
     public const short GreenPhasesaberOld = -21;
     public const short RedPhasesaberOld = -20;
     public const short BluePhasesaberOld = -19;
+    public const short PlatinumBowOld = -48;
+    public const short PlatinumHammerOld = -47;
+    public const short PlatinumAxeOld = -46;
+    public const short PlatinumShortswordOld = -45;
+    public const short PlatinumBroadswordOld = -44;
+    public const short PlatinumPickaxeOld = -43;
+    public const short TungstenBowOld = -42;
+    public const short TungstenHammerOld = -41;
+    public const short TungstenAxeOld = -40;
+    public const short TungstenShortswordOld = -39;
+    public const short TungstenBroadswordOld = -38;
+    public const short TungstenPickaxeOld = -37;
+    public const short LeadBowOld = -36;
+    public const short LeadHammerOld = -35;
+    public const short LeadAxeOld = -34;
+    public const short LeadShortswordOld = -33;
+    public const short LeadBroadswordOld = -32;
+    public const short LeadPickaxeOld = -31;
+    public const short TinBowOld = -30;
+    public const short TinHammerOld = -29;
+    public const short TinAxeOld = -28;
+    public const short TinShortswordOld = -27;
+    public const short TinBroadswordOld = -26;
+    public const short TinPickaxeOld = -25;
+    public const short CopperBowOld = -18;
+    public const short CopperHammerOld = -17;
+    public const short CopperAxeOld = -16;
+    public const short CopperShortswordOld = -15;
+    public const short CopperBroadswordOld = -14;
+    public const short CopperPickaxeOld = -13;
+    public const short SilverBowOld = -12;
+    public const short SilverHammerOld = -11;
+    public const short SilverAxeOld = -10;
+    public const short SilverShortswordOld = -9;
+    public const short SilverBroadswordOld = -8;
+    public const short SilverPickaxeOld = -7;
+    public const short GoldBowOld = -6;
+    public const short GoldHammerOld = -5;
+    public const short GoldAxeOld = -4;
+    public const short GoldShortswordOld = -3;
+    public const short GoldBroadswordOld = -2;
+    public const short GoldPickaxeOld = -1;
     public const short None = 0;
     public const short IronPickaxe = 1;
     public const short DirtBlock = 2;
@@ -2465,7 +2511,7 @@ namespace Terraria.ID
     public const short SwordfishTrophy = 2448;
     public const short SharkteethTrophy = 2449;
     public const short Batfish = 2450;
-    public const short BublebeeTuna = 2451;
+    public const short BumblebeeTuna = 2451;
     public const short Catfish = 2452;
     public const short Cloudfish = 2453;
     public const short Cursedfish = 2454;
@@ -2487,7 +2533,7 @@ namespace Terraria.ID
     public const short TundraTrout = 2470;
     public const short UnicornFish = 2471;
     public const short GuideVoodooFish = 2472;
-    public const short Whyverntail = 2473;
+    public const short Wyverntail = 2473;
     public const short ZombieFish = 2474;
     public const short AmanitiaFungifin = 2475;
     public const short Angelfish = 2476;
@@ -3832,9 +3878,9 @@ namespace Terraria.ID
     public const short WarTableBanner = 3815;
     public const short DD2ElderCrystalStand = 3816;
     public const short DefenderMedal = 3817;
-    public const short DD2FlameBurstTowerT1Popper = 3818;
-    public const short DD2FlameBurstTowerT2Popper = 3819;
-    public const short DD2FlameBurstTowerT3Popper = 3820;
+    public const short DD2FlameburstTowerT1Popper = 3818;
+    public const short DD2FlameburstTowerT2Popper = 3819;
+    public const short DD2FlameburstTowerT3Popper = 3820;
     public const short AleThrowingGlove = 3821;
     public const short DD2EnergyCrystal = 3822;
     public const short DD2SquireDemonSword = 3823;
@@ -3898,7 +3944,2811 @@ namespace Terraria.ID
     public const short MonkAltShirt = 3881;
     public const short MonkAltPants = 3882;
     public const short BetsyWings = 3883;
-    public const short Count = 3884;
+    public const short CrystalChest = 3884;
+    public const short GoldenChest = 3885;
+    public const short Fake_CrystalChest = 3886;
+    public const short Fake_GoldenChest = 3887;
+    public const short CrystalDoor = 3888;
+    public const short CrystalChair = 3889;
+    public const short CrystalCandle = 3890;
+    public const short CrystalLantern = 3891;
+    public const short CrystalLamp = 3892;
+    public const short CrystalCandelabra = 3893;
+    public const short CrystalChandelier = 3894;
+    public const short CrystalBathtub = 3895;
+    public const short CrystalSink = 3896;
+    public const short CrystalBed = 3897;
+    public const short CrystalClock = 3898;
+    public const short SkywareClock2 = 3899;
+    public const short DungeonClockBlue = 3900;
+    public const short DungeonClockGreen = 3901;
+    public const short DungeonClockPink = 3902;
+    public const short CrystalPlatform = 3903;
+    public const short GoldenPlatform = 3904;
+    public const short DynastyPlatform = 3905;
+    public const short LihzahrdPlatform = 3906;
+    public const short FleshPlatform = 3907;
+    public const short FrozenPlatform = 3908;
+    public const short CrystalWorkbench = 3909;
+    public const short GoldenWorkbench = 3910;
+    public const short CrystalDresser = 3911;
+    public const short DynastyDresser = 3912;
+    public const short FrozenDresser = 3913;
+    public const short LivingWoodDresser = 3914;
+    public const short CrystalPiano = 3915;
+    public const short DynastyPiano = 3916;
+    public const short CrystalBookCase = 3917;
+    public const short CrystalSofaHowDoesThatEvenWork = 3918;
+    public const short DynastySofa = 3919;
+    public const short CrystalTable = 3920;
+    public const short ArkhalisHat = 3921;
+    public const short ArkhalisShirt = 3922;
+    public const short ArkhalisPants = 3923;
+    public const short ArkhalisWings = 3924;
+    public const short LeinforsHat = 3925;
+    public const short LeinforsShirt = 3926;
+    public const short LeinforsPants = 3927;
+    public const short LeinforsWings = 3928;
+    public const short LeinforsAccessory = 3929;
+    public const short Count = 3930;
+    private static Dictionary<string, short> _legacyItemLookup;
+
+    private static Dictionary<string, short> GenerateLegacyItemDictionary()
+    {
+      return new Dictionary<string, short>()
+      {
+        {
+          "Iron Pickaxe",
+          (short) 1
+        },
+        {
+          "Dirt Block",
+          (short) 2
+        },
+        {
+          "Stone Block",
+          (short) 3
+        },
+        {
+          "Iron Broadsword",
+          (short) 4
+        },
+        {
+          "Mushroom",
+          (short) 5
+        },
+        {
+          "Iron Shortsword",
+          (short) 6
+        },
+        {
+          "Iron Hammer",
+          (short) 7
+        },
+        {
+          "Torch",
+          (short) 8
+        },
+        {
+          "Wood",
+          (short) 9
+        },
+        {
+          "Iron Axe",
+          (short) 10
+        },
+        {
+          "Iron Ore",
+          (short) 11
+        },
+        {
+          "Copper Ore",
+          (short) 12
+        },
+        {
+          "Gold Ore",
+          (short) 13
+        },
+        {
+          "Silver Ore",
+          (short) 14
+        },
+        {
+          "Copper Watch",
+          (short) 15
+        },
+        {
+          "Silver Watch",
+          (short) 16
+        },
+        {
+          "Gold Watch",
+          (short) 17
+        },
+        {
+          "Depth Meter",
+          (short) 18
+        },
+        {
+          "Gold Bar",
+          (short) 19
+        },
+        {
+          "Copper Bar",
+          (short) 20
+        },
+        {
+          "Silver Bar",
+          (short) 21
+        },
+        {
+          "Iron Bar",
+          (short) 22
+        },
+        {
+          "Gel",
+          (short) 23
+        },
+        {
+          "Wooden Sword",
+          (short) 24
+        },
+        {
+          "Wooden Door",
+          (short) 25
+        },
+        {
+          "Stone Wall",
+          (short) 26
+        },
+        {
+          "Acorn",
+          (short) 27
+        },
+        {
+          "Lesser Healing Potion",
+          (short) 28
+        },
+        {
+          "Life Crystal",
+          (short) 29
+        },
+        {
+          "Dirt Wall",
+          (short) 30
+        },
+        {
+          "Bottle",
+          (short) 31
+        },
+        {
+          "Wooden Table",
+          (short) 32
+        },
+        {
+          "Furnace",
+          (short) 33
+        },
+        {
+          "Wooden Chair",
+          (short) 34
+        },
+        {
+          "Iron Anvil",
+          (short) 35
+        },
+        {
+          "Work Bench",
+          (short) 36
+        },
+        {
+          "Goggles",
+          (short) 37
+        },
+        {
+          "Lens",
+          (short) 38
+        },
+        {
+          "Wooden Bow",
+          (short) 39
+        },
+        {
+          "Wooden Arrow",
+          (short) 40
+        },
+        {
+          "Flaming Arrow",
+          (short) 41
+        },
+        {
+          "Shuriken",
+          (short) 42
+        },
+        {
+          "Suspicious Looking Eye",
+          (short) 43
+        },
+        {
+          "Demon Bow",
+          (short) 44
+        },
+        {
+          "War Axe of the Night",
+          (short) 45
+        },
+        {
+          "Light's Bane",
+          (short) 46
+        },
+        {
+          "Unholy Arrow",
+          (short) 47
+        },
+        {
+          "Chest",
+          (short) 48
+        },
+        {
+          "Band of Regeneration",
+          (short) 49
+        },
+        {
+          "Magic Mirror",
+          (short) 50
+        },
+        {
+          "Jester's Arrow",
+          (short) 51
+        },
+        {
+          "Angel Statue",
+          (short) 52
+        },
+        {
+          "Cloud in a Bottle",
+          (short) 53
+        },
+        {
+          "Hermes Boots",
+          (short) 54
+        },
+        {
+          "Enchanted Boomerang",
+          (short) 55
+        },
+        {
+          "Demonite Ore",
+          (short) 56
+        },
+        {
+          "Demonite Bar",
+          (short) 57
+        },
+        {
+          "Heart",
+          (short) 58
+        },
+        {
+          "Corrupt Seeds",
+          (short) 59
+        },
+        {
+          "Vile Mushroom",
+          (short) 60
+        },
+        {
+          "Ebonstone Block",
+          (short) 61
+        },
+        {
+          "Grass Seeds",
+          (short) 62
+        },
+        {
+          "Sunflower",
+          (short) 63
+        },
+        {
+          "Vilethorn",
+          (short) 64
+        },
+        {
+          "Starfury",
+          (short) 65
+        },
+        {
+          "Purification Powder",
+          (short) 66
+        },
+        {
+          "Vile Powder",
+          (short) 67
+        },
+        {
+          "Rotten Chunk",
+          (short) 68
+        },
+        {
+          "Worm Tooth",
+          (short) 69
+        },
+        {
+          "Worm Food",
+          (short) 70
+        },
+        {
+          "Copper Coin",
+          (short) 71
+        },
+        {
+          "Silver Coin",
+          (short) 72
+        },
+        {
+          "Gold Coin",
+          (short) 73
+        },
+        {
+          "Platinum Coin",
+          (short) 74
+        },
+        {
+          "Fallen Star",
+          (short) 75
+        },
+        {
+          "Copper Greaves",
+          (short) 76
+        },
+        {
+          "Iron Greaves",
+          (short) 77
+        },
+        {
+          "Silver Greaves",
+          (short) 78
+        },
+        {
+          "Gold Greaves",
+          (short) 79
+        },
+        {
+          "Copper Chainmail",
+          (short) 80
+        },
+        {
+          "Iron Chainmail",
+          (short) 81
+        },
+        {
+          "Silver Chainmail",
+          (short) 82
+        },
+        {
+          "Gold Chainmail",
+          (short) 83
+        },
+        {
+          "Grappling Hook",
+          (short) 84
+        },
+        {
+          "Chain",
+          (short) 85
+        },
+        {
+          "Shadow Scale",
+          (short) 86
+        },
+        {
+          "Piggy Bank",
+          (short) 87
+        },
+        {
+          "Mining Helmet",
+          (short) 88
+        },
+        {
+          "Copper Helmet",
+          (short) 89
+        },
+        {
+          "Iron Helmet",
+          (short) 90
+        },
+        {
+          "Silver Helmet",
+          (short) 91
+        },
+        {
+          "Gold Helmet",
+          (short) 92
+        },
+        {
+          "Wood Wall",
+          (short) 93
+        },
+        {
+          "Wood Platform",
+          (short) 94
+        },
+        {
+          "Flintlock Pistol",
+          (short) 95
+        },
+        {
+          "Musket",
+          (short) 96
+        },
+        {
+          "Musket Ball",
+          (short) 97
+        },
+        {
+          "Minishark",
+          (short) 98
+        },
+        {
+          "Iron Bow",
+          (short) 99
+        },
+        {
+          "Shadow Greaves",
+          (short) 100
+        },
+        {
+          "Shadow Scalemail",
+          (short) 101
+        },
+        {
+          "Shadow Helmet",
+          (short) 102
+        },
+        {
+          "Nightmare Pickaxe",
+          (short) 103
+        },
+        {
+          "The Breaker",
+          (short) 104
+        },
+        {
+          "Candle",
+          (short) 105
+        },
+        {
+          "Copper Chandelier",
+          (short) 106
+        },
+        {
+          "Silver Chandelier",
+          (short) 107
+        },
+        {
+          "Gold Chandelier",
+          (short) 108
+        },
+        {
+          "Mana Crystal",
+          (short) 109
+        },
+        {
+          "Lesser Mana Potion",
+          (short) 110
+        },
+        {
+          "Band of Starpower",
+          (short) 111
+        },
+        {
+          "Flower of Fire",
+          (short) 112
+        },
+        {
+          "Magic Missile",
+          (short) 113
+        },
+        {
+          "Dirt Rod",
+          (short) 114
+        },
+        {
+          "Shadow Orb",
+          (short) 115
+        },
+        {
+          "Meteorite",
+          (short) 116
+        },
+        {
+          "Meteorite Bar",
+          (short) 117
+        },
+        {
+          "Hook",
+          (short) 118
+        },
+        {
+          "Flamarang",
+          (short) 119
+        },
+        {
+          "Molten Fury",
+          (short) 120
+        },
+        {
+          "Fiery Greatsword",
+          (short) 121
+        },
+        {
+          "Molten Pickaxe",
+          (short) 122
+        },
+        {
+          "Meteor Helmet",
+          (short) 123
+        },
+        {
+          "Meteor Suit",
+          (short) 124
+        },
+        {
+          "Meteor Leggings",
+          (short) 125
+        },
+        {
+          "Bottled Water",
+          (short) 126
+        },
+        {
+          "Space Gun",
+          (short) sbyte.MaxValue
+        },
+        {
+          "Rocket Boots",
+          (short) 128
+        },
+        {
+          "Gray Brick",
+          (short) 129
+        },
+        {
+          "Gray Brick Wall",
+          (short) 130
+        },
+        {
+          "Red Brick",
+          (short) 131
+        },
+        {
+          "Red Brick Wall",
+          (short) 132
+        },
+        {
+          "Clay Block",
+          (short) 133
+        },
+        {
+          "Blue Brick",
+          (short) 134
+        },
+        {
+          "Blue Brick Wall",
+          (short) 135
+        },
+        {
+          "Chain Lantern",
+          (short) 136
+        },
+        {
+          "Green Brick",
+          (short) 137
+        },
+        {
+          "Green Brick Wall",
+          (short) 138
+        },
+        {
+          "Pink Brick",
+          (short) 139
+        },
+        {
+          "Pink Brick Wall",
+          (short) 140
+        },
+        {
+          "Gold Brick",
+          (short) 141
+        },
+        {
+          "Gold Brick Wall",
+          (short) 142
+        },
+        {
+          "Silver Brick",
+          (short) 143
+        },
+        {
+          "Silver Brick Wall",
+          (short) 144
+        },
+        {
+          "Copper Brick",
+          (short) 145
+        },
+        {
+          "Copper Brick Wall",
+          (short) 146
+        },
+        {
+          "Spike",
+          (short) 147
+        },
+        {
+          "Water Candle",
+          (short) 148
+        },
+        {
+          "Book",
+          (short) 149
+        },
+        {
+          "Cobweb",
+          (short) 150
+        },
+        {
+          "Necro Helmet",
+          (short) 151
+        },
+        {
+          "Necro Breastplate",
+          (short) 152
+        },
+        {
+          "Necro Greaves",
+          (short) 153
+        },
+        {
+          "Bone",
+          (short) 154
+        },
+        {
+          "Muramasa",
+          (short) 155
+        },
+        {
+          "Cobalt Shield",
+          (short) 156
+        },
+        {
+          "Aqua Scepter",
+          (short) 157
+        },
+        {
+          "Lucky Horseshoe",
+          (short) 158
+        },
+        {
+          "Shiny Red Balloon",
+          (short) 159
+        },
+        {
+          "Harpoon",
+          (short) 160
+        },
+        {
+          "Spiky Ball",
+          (short) 161
+        },
+        {
+          "Ball O' Hurt",
+          (short) 162
+        },
+        {
+          "Blue Moon",
+          (short) 163
+        },
+        {
+          "Handgun",
+          (short) 164
+        },
+        {
+          "Water Bolt",
+          (short) 165
+        },
+        {
+          "Bomb",
+          (short) 166
+        },
+        {
+          "Dynamite",
+          (short) 167
+        },
+        {
+          "Grenade",
+          (short) 168
+        },
+        {
+          "Sand Block",
+          (short) 169
+        },
+        {
+          "Glass",
+          (short) 170
+        },
+        {
+          "Sign",
+          (short) 171
+        },
+        {
+          "Ash Block",
+          (short) 172
+        },
+        {
+          "Obsidian",
+          (short) 173
+        },
+        {
+          "Hellstone",
+          (short) 174
+        },
+        {
+          "Hellstone Bar",
+          (short) 175
+        },
+        {
+          "Mud Block",
+          (short) 176
+        },
+        {
+          "Sapphire",
+          (short) 177
+        },
+        {
+          "Ruby",
+          (short) 178
+        },
+        {
+          "Emerald",
+          (short) 179
+        },
+        {
+          "Topaz",
+          (short) 180
+        },
+        {
+          "Amethyst",
+          (short) 181
+        },
+        {
+          "Diamond",
+          (short) 182
+        },
+        {
+          "Glowing Mushroom",
+          (short) 183
+        },
+        {
+          "Star",
+          (short) 184
+        },
+        {
+          "Ivy Whip",
+          (short) 185
+        },
+        {
+          "Breathing Reed",
+          (short) 186
+        },
+        {
+          "Flipper",
+          (short) 187
+        },
+        {
+          "Healing Potion",
+          (short) 188
+        },
+        {
+          "Mana Potion",
+          (short) 189
+        },
+        {
+          "Blade of Grass",
+          (short) 190
+        },
+        {
+          "Thorn Chakram",
+          (short) 191
+        },
+        {
+          "Obsidian Brick",
+          (short) 192
+        },
+        {
+          "Obsidian Skull",
+          (short) 193
+        },
+        {
+          "Mushroom Grass Seeds",
+          (short) 194
+        },
+        {
+          "Jungle Grass Seeds",
+          (short) 195
+        },
+        {
+          "Wooden Hammer",
+          (short) 196
+        },
+        {
+          "Star Cannon",
+          (short) 197
+        },
+        {
+          "Blue Phaseblade",
+          (short) 198
+        },
+        {
+          "Red Phaseblade",
+          (short) 199
+        },
+        {
+          "Green Phaseblade",
+          (short) 200
+        },
+        {
+          "Purple Phaseblade",
+          (short) 201
+        },
+        {
+          "White Phaseblade",
+          (short) 202
+        },
+        {
+          "Yellow Phaseblade",
+          (short) 203
+        },
+        {
+          "Meteor Hamaxe",
+          (short) 204
+        },
+        {
+          "Empty Bucket",
+          (short) 205
+        },
+        {
+          "Water Bucket",
+          (short) 206
+        },
+        {
+          "Lava Bucket",
+          (short) 207
+        },
+        {
+          "Jungle Rose",
+          (short) 208
+        },
+        {
+          "Stinger",
+          (short) 209
+        },
+        {
+          "Vine",
+          (short) 210
+        },
+        {
+          "Feral Claws",
+          (short) 211
+        },
+        {
+          "Anklet of the Wind",
+          (short) 212
+        },
+        {
+          "Staff of Regrowth",
+          (short) 213
+        },
+        {
+          "Hellstone Brick",
+          (short) 214
+        },
+        {
+          "Whoopie Cushion",
+          (short) 215
+        },
+        {
+          "Shackle",
+          (short) 216
+        },
+        {
+          "Molten Hamaxe",
+          (short) 217
+        },
+        {
+          "Flamelash",
+          (short) 218
+        },
+        {
+          "Phoenix Blaster",
+          (short) 219
+        },
+        {
+          "Sunfury",
+          (short) 220
+        },
+        {
+          "Hellforge",
+          (short) 221
+        },
+        {
+          "Clay Pot",
+          (short) 222
+        },
+        {
+          "Nature's Gift",
+          (short) 223
+        },
+        {
+          "Bed",
+          (short) 224
+        },
+        {
+          "Silk",
+          (short) 225
+        },
+        {
+          "Lesser Restoration Potion",
+          (short) 226
+        },
+        {
+          "Restoration Potion",
+          (short) 227
+        },
+        {
+          "Jungle Hat",
+          (short) 228
+        },
+        {
+          "Jungle Shirt",
+          (short) 229
+        },
+        {
+          "Jungle Pants",
+          (short) 230
+        },
+        {
+          "Molten Helmet",
+          (short) 231
+        },
+        {
+          "Molten Breastplate",
+          (short) 232
+        },
+        {
+          "Molten Greaves",
+          (short) 233
+        },
+        {
+          "Meteor Shot",
+          (short) 234
+        },
+        {
+          "Sticky Bomb",
+          (short) 235
+        },
+        {
+          "Black Lens",
+          (short) 236
+        },
+        {
+          "Sunglasses",
+          (short) 237
+        },
+        {
+          "Wizard Hat",
+          (short) 238
+        },
+        {
+          "Top Hat",
+          (short) 239
+        },
+        {
+          "Tuxedo Shirt",
+          (short) 240
+        },
+        {
+          "Tuxedo Pants",
+          (short) 241
+        },
+        {
+          "Summer Hat",
+          (short) 242
+        },
+        {
+          "Bunny Hood",
+          (short) 243
+        },
+        {
+          "Plumber's Hat",
+          (short) 244
+        },
+        {
+          "Plumber's Shirt",
+          (short) 245
+        },
+        {
+          "Plumber's Pants",
+          (short) 246
+        },
+        {
+          "Hero's Hat",
+          (short) 247
+        },
+        {
+          "Hero's Shirt",
+          (short) 248
+        },
+        {
+          "Hero's Pants",
+          (short) 249
+        },
+        {
+          "Fish Bowl",
+          (short) 250
+        },
+        {
+          "Archaeologist's Hat",
+          (short) 251
+        },
+        {
+          "Archaeologist's Jacket",
+          (short) 252
+        },
+        {
+          "Archaeologist's Pants",
+          (short) 253
+        },
+        {
+          "Black Thread",
+          (short) 254
+        },
+        {
+          "Green Thread",
+          (short) byte.MaxValue
+        },
+        {
+          "Ninja Hood",
+          (short) 256
+        },
+        {
+          "Ninja Shirt",
+          (short) 257
+        },
+        {
+          "Ninja Pants",
+          (short) 258
+        },
+        {
+          "Leather",
+          (short) 259
+        },
+        {
+          "Red Hat",
+          (short) 260
+        },
+        {
+          "Goldfish",
+          (short) 261
+        },
+        {
+          "Robe",
+          (short) 262
+        },
+        {
+          "Robot Hat",
+          (short) 263
+        },
+        {
+          "Gold Crown",
+          (short) 264
+        },
+        {
+          "Hellfire Arrow",
+          (short) 265
+        },
+        {
+          "Sandgun",
+          (short) 266
+        },
+        {
+          "Guide Voodoo Doll",
+          (short) 267
+        },
+        {
+          "Diving Helmet",
+          (short) 268
+        },
+        {
+          "Familiar Shirt",
+          (short) 269
+        },
+        {
+          "Familiar Pants",
+          (short) 270
+        },
+        {
+          "Familiar Wig",
+          (short) 271
+        },
+        {
+          "Demon Scythe",
+          (short) 272
+        },
+        {
+          "Night's Edge",
+          (short) 273
+        },
+        {
+          "Dark Lance",
+          (short) 274
+        },
+        {
+          "Coral",
+          (short) 275
+        },
+        {
+          "Cactus",
+          (short) 276
+        },
+        {
+          "Trident",
+          (short) 277
+        },
+        {
+          "Silver Bullet",
+          (short) 278
+        },
+        {
+          "Throwing Knife",
+          (short) 279
+        },
+        {
+          "Spear",
+          (short) 280
+        },
+        {
+          "Blowpipe",
+          (short) 281
+        },
+        {
+          "Glowstick",
+          (short) 282
+        },
+        {
+          "Seed",
+          (short) 283
+        },
+        {
+          "Wooden Boomerang",
+          (short) 284
+        },
+        {
+          "Aglet",
+          (short) 285
+        },
+        {
+          "Sticky Glowstick",
+          (short) 286
+        },
+        {
+          "Poisoned Knife",
+          (short) 287
+        },
+        {
+          "Obsidian Skin Potion",
+          (short) 288
+        },
+        {
+          "Regeneration Potion",
+          (short) 289
+        },
+        {
+          "Swiftness Potion",
+          (short) 290
+        },
+        {
+          "Gills Potion",
+          (short) 291
+        },
+        {
+          "Ironskin Potion",
+          (short) 292
+        },
+        {
+          "Mana Regeneration Potion",
+          (short) 293
+        },
+        {
+          "Magic Power Potion",
+          (short) 294
+        },
+        {
+          "Featherfall Potion",
+          (short) 295
+        },
+        {
+          "Spelunker Potion",
+          (short) 296
+        },
+        {
+          "Invisibility Potion",
+          (short) 297
+        },
+        {
+          "Shine Potion",
+          (short) 298
+        },
+        {
+          "Night Owl Potion",
+          (short) 299
+        },
+        {
+          "Battle Potion",
+          (short) 300
+        },
+        {
+          "Thorns Potion",
+          (short) 301
+        },
+        {
+          "Water Walking Potion",
+          (short) 302
+        },
+        {
+          "Archery Potion",
+          (short) 303
+        },
+        {
+          "Hunter Potion",
+          (short) 304
+        },
+        {
+          "Gravitation Potion",
+          (short) 305
+        },
+        {
+          "Gold Chest",
+          (short) 306
+        },
+        {
+          "Daybloom Seeds",
+          (short) 307
+        },
+        {
+          "Moonglow Seeds",
+          (short) 308
+        },
+        {
+          "Blinkroot Seeds",
+          (short) 309
+        },
+        {
+          "Deathweed Seeds",
+          (short) 310
+        },
+        {
+          "Waterleaf Seeds",
+          (short) 311
+        },
+        {
+          "Fireblossom Seeds",
+          (short) 312
+        },
+        {
+          "Daybloom",
+          (short) 313
+        },
+        {
+          "Moonglow",
+          (short) 314
+        },
+        {
+          "Blinkroot",
+          (short) 315
+        },
+        {
+          "Deathweed",
+          (short) 316
+        },
+        {
+          "Waterleaf",
+          (short) 317
+        },
+        {
+          "Fireblossom",
+          (short) 318
+        },
+        {
+          "Shark Fin",
+          (short) 319
+        },
+        {
+          "Feather",
+          (short) 320
+        },
+        {
+          "Tombstone",
+          (short) 321
+        },
+        {
+          "Mime Mask",
+          (short) 322
+        },
+        {
+          "Antlion Mandible",
+          (short) 323
+        },
+        {
+          "Illegal Gun Parts",
+          (short) 324
+        },
+        {
+          "The Doctor's Shirt",
+          (short) 325
+        },
+        {
+          "The Doctor's Pants",
+          (short) 326
+        },
+        {
+          "Golden Key",
+          (short) 327
+        },
+        {
+          "Shadow Chest",
+          (short) 328
+        },
+        {
+          "Shadow Key",
+          (short) 329
+        },
+        {
+          "Obsidian Brick Wall",
+          (short) 330
+        },
+        {
+          "Jungle Spores",
+          (short) 331
+        },
+        {
+          "Loom",
+          (short) 332
+        },
+        {
+          "Piano",
+          (short) 333
+        },
+        {
+          "Dresser",
+          (short) 334
+        },
+        {
+          "Bench",
+          (short) 335
+        },
+        {
+          "Bathtub",
+          (short) 336
+        },
+        {
+          "Red Banner",
+          (short) 337
+        },
+        {
+          "Green Banner",
+          (short) 338
+        },
+        {
+          "Blue Banner",
+          (short) 339
+        },
+        {
+          "Yellow Banner",
+          (short) 340
+        },
+        {
+          "Lamp Post",
+          (short) 341
+        },
+        {
+          "Tiki Torch",
+          (short) 342
+        },
+        {
+          "Barrel",
+          (short) 343
+        },
+        {
+          "Chinese Lantern",
+          (short) 344
+        },
+        {
+          "Cooking Pot",
+          (short) 345
+        },
+        {
+          "Safe",
+          (short) 346
+        },
+        {
+          "Skull Lantern",
+          (short) 347
+        },
+        {
+          "Trash Can",
+          (short) 348
+        },
+        {
+          "Candelabra",
+          (short) 349
+        },
+        {
+          "Pink Vase",
+          (short) 350
+        },
+        {
+          "Mug",
+          (short) 351
+        },
+        {
+          "Keg",
+          (short) 352
+        },
+        {
+          "Ale",
+          (short) 353
+        },
+        {
+          "Bookcase",
+          (short) 354
+        },
+        {
+          "Throne",
+          (short) 355
+        },
+        {
+          "Bowl",
+          (short) 356
+        },
+        {
+          "Bowl of Soup",
+          (short) 357
+        },
+        {
+          "Toilet",
+          (short) 358
+        },
+        {
+          "Grandfather Clock",
+          (short) 359
+        },
+        {
+          "Armor Statue",
+          (short) 360
+        },
+        {
+          "Goblin Battle Standard",
+          (short) 361
+        },
+        {
+          "Tattered Cloth",
+          (short) 362
+        },
+        {
+          "Sawmill",
+          (short) 363
+        },
+        {
+          "Cobalt Ore",
+          (short) 364
+        },
+        {
+          "Mythril Ore",
+          (short) 365
+        },
+        {
+          "Adamantite Ore",
+          (short) 366
+        },
+        {
+          "Pwnhammer",
+          (short) 367
+        },
+        {
+          "Excalibur",
+          (short) 368
+        },
+        {
+          "Hallowed Seeds",
+          (short) 369
+        },
+        {
+          "Ebonsand Block",
+          (short) 370
+        },
+        {
+          "Cobalt Hat",
+          (short) 371
+        },
+        {
+          "Cobalt Helmet",
+          (short) 372
+        },
+        {
+          "Cobalt Mask",
+          (short) 373
+        },
+        {
+          "Cobalt Breastplate",
+          (short) 374
+        },
+        {
+          "Cobalt Leggings",
+          (short) 375
+        },
+        {
+          "Mythril Hood",
+          (short) 376
+        },
+        {
+          "Mythril Helmet",
+          (short) 377
+        },
+        {
+          "Mythril Hat",
+          (short) 378
+        },
+        {
+          "Mythril Chainmail",
+          (short) 379
+        },
+        {
+          "Mythril Greaves",
+          (short) 380
+        },
+        {
+          "Cobalt Bar",
+          (short) 381
+        },
+        {
+          "Mythril Bar",
+          (short) 382
+        },
+        {
+          "Cobalt Chainsaw",
+          (short) 383
+        },
+        {
+          "Mythril Chainsaw",
+          (short) 384
+        },
+        {
+          "Cobalt Drill",
+          (short) 385
+        },
+        {
+          "Mythril Drill",
+          (short) 386
+        },
+        {
+          "Adamantite Chainsaw",
+          (short) 387
+        },
+        {
+          "Adamantite Drill",
+          (short) 388
+        },
+        {
+          "Dao of Pow",
+          (short) 389
+        },
+        {
+          "Mythril Halberd",
+          (short) 390
+        },
+        {
+          "Adamantite Bar",
+          (short) 391
+        },
+        {
+          "Glass Wall",
+          (short) 392
+        },
+        {
+          "Compass",
+          (short) 393
+        },
+        {
+          "Diving Gear",
+          (short) 394
+        },
+        {
+          "GPS",
+          (short) 395
+        },
+        {
+          "Obsidian Horseshoe",
+          (short) 396
+        },
+        {
+          "Obsidian Shield",
+          (short) 397
+        },
+        {
+          "Tinkerer's Workshop",
+          (short) 398
+        },
+        {
+          "Cloud in a Balloon",
+          (short) 399
+        },
+        {
+          "Adamantite Headgear",
+          (short) 400
+        },
+        {
+          "Adamantite Helmet",
+          (short) 401
+        },
+        {
+          "Adamantite Mask",
+          (short) 402
+        },
+        {
+          "Adamantite Breastplate",
+          (short) 403
+        },
+        {
+          "Adamantite Leggings",
+          (short) 404
+        },
+        {
+          "Spectre Boots",
+          (short) 405
+        },
+        {
+          "Adamantite Glaive",
+          (short) 406
+        },
+        {
+          "Toolbelt",
+          (short) 407
+        },
+        {
+          "Pearlsand Block",
+          (short) 408
+        },
+        {
+          "Pearlstone Block",
+          (short) 409
+        },
+        {
+          "Mining Shirt",
+          (short) 410
+        },
+        {
+          "Mining Pants",
+          (short) 411
+        },
+        {
+          "Pearlstone Brick",
+          (short) 412
+        },
+        {
+          "Iridescent Brick",
+          (short) 413
+        },
+        {
+          "Mudstone Brick",
+          (short) 414
+        },
+        {
+          "Cobalt Brick",
+          (short) 415
+        },
+        {
+          "Mythril Brick",
+          (short) 416
+        },
+        {
+          "Pearlstone Brick Wall",
+          (short) 417
+        },
+        {
+          "Iridescent Brick Wall",
+          (short) 418
+        },
+        {
+          "Mudstone Brick Wall",
+          (short) 419
+        },
+        {
+          "Cobalt Brick Wall",
+          (short) 420
+        },
+        {
+          "Mythril Brick Wall",
+          (short) 421
+        },
+        {
+          "Holy Water",
+          (short) 422
+        },
+        {
+          "Unholy Water",
+          (short) 423
+        },
+        {
+          "Silt Block",
+          (short) 424
+        },
+        {
+          "Fairy Bell",
+          (short) 425
+        },
+        {
+          "Breaker Blade",
+          (short) 426
+        },
+        {
+          "Blue Torch",
+          (short) 427
+        },
+        {
+          "Red Torch",
+          (short) 428
+        },
+        {
+          "Green Torch",
+          (short) 429
+        },
+        {
+          "Purple Torch",
+          (short) 430
+        },
+        {
+          "White Torch",
+          (short) 431
+        },
+        {
+          "Yellow Torch",
+          (short) 432
+        },
+        {
+          "Demon Torch",
+          (short) 433
+        },
+        {
+          "Clockwork Assault Rifle",
+          (short) 434
+        },
+        {
+          "Cobalt Repeater",
+          (short) 435
+        },
+        {
+          "Mythril Repeater",
+          (short) 436
+        },
+        {
+          "Dual Hook",
+          (short) 437
+        },
+        {
+          "Star Statue",
+          (short) 438
+        },
+        {
+          "Sword Statue",
+          (short) 439
+        },
+        {
+          "Slime Statue",
+          (short) 440
+        },
+        {
+          "Goblin Statue",
+          (short) 441
+        },
+        {
+          "Shield Statue",
+          (short) 442
+        },
+        {
+          "Bat Statue",
+          (short) 443
+        },
+        {
+          "Fish Statue",
+          (short) 444
+        },
+        {
+          "Bunny Statue",
+          (short) 445
+        },
+        {
+          "Skeleton Statue",
+          (short) 446
+        },
+        {
+          "Reaper Statue",
+          (short) 447
+        },
+        {
+          "Woman Statue",
+          (short) 448
+        },
+        {
+          "Imp Statue",
+          (short) 449
+        },
+        {
+          "Gargoyle Statue",
+          (short) 450
+        },
+        {
+          "Gloom Statue",
+          (short) 451
+        },
+        {
+          "Hornet Statue",
+          (short) 452
+        },
+        {
+          "Bomb Statue",
+          (short) 453
+        },
+        {
+          "Crab Statue",
+          (short) 454
+        },
+        {
+          "Hammer Statue",
+          (short) 455
+        },
+        {
+          "Potion Statue",
+          (short) 456
+        },
+        {
+          "Spear Statue",
+          (short) 457
+        },
+        {
+          "Cross Statue",
+          (short) 458
+        },
+        {
+          "Jellyfish Statue",
+          (short) 459
+        },
+        {
+          "Bow Statue",
+          (short) 460
+        },
+        {
+          "Boomerang Statue",
+          (short) 461
+        },
+        {
+          "Boot Statue",
+          (short) 462
+        },
+        {
+          "Chest Statue",
+          (short) 463
+        },
+        {
+          "Bird Statue",
+          (short) 464
+        },
+        {
+          "Axe Statue",
+          (short) 465
+        },
+        {
+          "Corrupt Statue",
+          (short) 466
+        },
+        {
+          "Tree Statue",
+          (short) 467
+        },
+        {
+          "Anvil Statue",
+          (short) 468
+        },
+        {
+          "Pickaxe Statue",
+          (short) 469
+        },
+        {
+          "Mushroom Statue",
+          (short) 470
+        },
+        {
+          "Eyeball Statue",
+          (short) 471
+        },
+        {
+          "Pillar Statue",
+          (short) 472
+        },
+        {
+          "Heart Statue",
+          (short) 473
+        },
+        {
+          "Pot Statue",
+          (short) 474
+        },
+        {
+          "Sunflower Statue",
+          (short) 475
+        },
+        {
+          "King Statue",
+          (short) 476
+        },
+        {
+          "Queen Statue",
+          (short) 477
+        },
+        {
+          "Piranha Statue",
+          (short) 478
+        },
+        {
+          "Planked Wall",
+          (short) 479
+        },
+        {
+          "Wooden Beam",
+          (short) 480
+        },
+        {
+          "Adamantite Repeater",
+          (short) 481
+        },
+        {
+          "Adamantite Sword",
+          (short) 482
+        },
+        {
+          "Cobalt Sword",
+          (short) 483
+        },
+        {
+          "Mythril Sword",
+          (short) 484
+        },
+        {
+          "Moon Charm",
+          (short) 485
+        },
+        {
+          "Ruler",
+          (short) 486
+        },
+        {
+          "Crystal Ball",
+          (short) 487
+        },
+        {
+          "Disco Ball",
+          (short) 488
+        },
+        {
+          "Sorcerer Emblem",
+          (short) 489
+        },
+        {
+          "Warrior Emblem",
+          (short) 490
+        },
+        {
+          "Ranger Emblem",
+          (short) 491
+        },
+        {
+          "Demon Wings",
+          (short) 492
+        },
+        {
+          "Angel Wings",
+          (short) 493
+        },
+        {
+          "Magical Harp",
+          (short) 494
+        },
+        {
+          "Rainbow Rod",
+          (short) 495
+        },
+        {
+          "Ice Rod",
+          (short) 496
+        },
+        {
+          "Neptune's Shell",
+          (short) 497
+        },
+        {
+          "Mannequin",
+          (short) 498
+        },
+        {
+          "Greater Healing Potion",
+          (short) 499
+        },
+        {
+          "Greater Mana Potion",
+          (short) 500
+        },
+        {
+          "Pixie Dust",
+          (short) 501
+        },
+        {
+          "Crystal Shard",
+          (short) 502
+        },
+        {
+          "Clown Hat",
+          (short) 503
+        },
+        {
+          "Clown Shirt",
+          (short) 504
+        },
+        {
+          "Clown Pants",
+          (short) 505
+        },
+        {
+          "Flamethrower",
+          (short) 506
+        },
+        {
+          "Bell",
+          (short) 507
+        },
+        {
+          "Harp",
+          (short) 508
+        },
+        {
+          "Red Wrench",
+          (short) 509
+        },
+        {
+          "Wire Cutter",
+          (short) 510
+        },
+        {
+          "Active Stone Block",
+          (short) 511
+        },
+        {
+          "Inactive Stone Block",
+          (short) 512
+        },
+        {
+          "Lever",
+          (short) 513
+        },
+        {
+          "Laser Rifle",
+          (short) 514
+        },
+        {
+          "Crystal Bullet",
+          (short) 515
+        },
+        {
+          "Holy Arrow",
+          (short) 516
+        },
+        {
+          "Magic Dagger",
+          (short) 517
+        },
+        {
+          "Crystal Storm",
+          (short) 518
+        },
+        {
+          "Cursed Flames",
+          (short) 519
+        },
+        {
+          "Soul of Light",
+          (short) 520
+        },
+        {
+          "Soul of Night",
+          (short) 521
+        },
+        {
+          "Cursed Flame",
+          (short) 522
+        },
+        {
+          "Cursed Torch",
+          (short) 523
+        },
+        {
+          "Adamantite Forge",
+          (short) 524
+        },
+        {
+          "Mythril Anvil",
+          (short) 525
+        },
+        {
+          "Unicorn Horn",
+          (short) 526
+        },
+        {
+          "Dark Shard",
+          (short) 527
+        },
+        {
+          "Light Shard",
+          (short) 528
+        },
+        {
+          "Red Pressure Plate",
+          (short) 529
+        },
+        {
+          "Wire",
+          (short) 530
+        },
+        {
+          "Spell Tome",
+          (short) 531
+        },
+        {
+          "Star Cloak",
+          (short) 532
+        },
+        {
+          "Megashark",
+          (short) 533
+        },
+        {
+          "Shotgun",
+          (short) 534
+        },
+        {
+          "Philosopher's Stone",
+          (short) 535
+        },
+        {
+          "Titan Glove",
+          (short) 536
+        },
+        {
+          "Cobalt Naginata",
+          (short) 537
+        },
+        {
+          "Switch",
+          (short) 538
+        },
+        {
+          "Dart Trap",
+          (short) 539
+        },
+        {
+          "Boulder",
+          (short) 540
+        },
+        {
+          "Green Pressure Plate",
+          (short) 541
+        },
+        {
+          "Gray Pressure Plate",
+          (short) 542
+        },
+        {
+          "Brown Pressure Plate",
+          (short) 543
+        },
+        {
+          "Mechanical Eye",
+          (short) 544
+        },
+        {
+          "Cursed Arrow",
+          (short) 545
+        },
+        {
+          "Cursed Bullet",
+          (short) 546
+        },
+        {
+          "Soul of Fright",
+          (short) 547
+        },
+        {
+          "Soul of Might",
+          (short) 548
+        },
+        {
+          "Soul of Sight",
+          (short) 549
+        },
+        {
+          "Gungnir",
+          (short) 550
+        },
+        {
+          "Hallowed Plate Mail",
+          (short) 551
+        },
+        {
+          "Hallowed Greaves",
+          (short) 552
+        },
+        {
+          "Hallowed Helmet",
+          (short) 553
+        },
+        {
+          "Cross Necklace",
+          (short) 554
+        },
+        {
+          "Mana Flower",
+          (short) 555
+        },
+        {
+          "Mechanical Worm",
+          (short) 556
+        },
+        {
+          "Mechanical Skull",
+          (short) 557
+        },
+        {
+          "Hallowed Headgear",
+          (short) 558
+        },
+        {
+          "Hallowed Mask",
+          (short) 559
+        },
+        {
+          "Slime Crown",
+          (short) 560
+        },
+        {
+          "Light Disc",
+          (short) 561
+        },
+        {
+          "Music Box (Overworld Day)",
+          (short) 562
+        },
+        {
+          "Music Box (Eerie)",
+          (short) 563
+        },
+        {
+          "Music Box (Night)",
+          (short) 564
+        },
+        {
+          "Music Box (Title)",
+          (short) 565
+        },
+        {
+          "Music Box (Underground)",
+          (short) 566
+        },
+        {
+          "Music Box (Boss 1)",
+          (short) 567
+        },
+        {
+          "Music Box (Jungle)",
+          (short) 568
+        },
+        {
+          "Music Box (Corruption)",
+          (short) 569
+        },
+        {
+          "Music Box (Underground Corruption)",
+          (short) 570
+        },
+        {
+          "Music Box (The Hallow)",
+          (short) 571
+        },
+        {
+          "Music Box (Boss 2)",
+          (short) 572
+        },
+        {
+          "Music Box (Underground Hallow)",
+          (short) 573
+        },
+        {
+          "Music Box (Boss 3)",
+          (short) 574
+        },
+        {
+          "Soul of Flight",
+          (short) 575
+        },
+        {
+          "Music Box",
+          (short) 576
+        },
+        {
+          "Demonite Brick",
+          (short) 577
+        },
+        {
+          "Hallowed Repeater",
+          (short) 578
+        },
+        {
+          "Drax",
+          (short) 579
+        },
+        {
+          "Explosives",
+          (short) 580
+        },
+        {
+          "Inlet Pump",
+          (short) 581
+        },
+        {
+          "Outlet Pump",
+          (short) 582
+        },
+        {
+          "1 Second Timer",
+          (short) 583
+        },
+        {
+          "3 Second Timer",
+          (short) 584
+        },
+        {
+          "5 Second Timer",
+          (short) 585
+        },
+        {
+          "Candy Cane Block",
+          (short) 586
+        },
+        {
+          "Candy Cane Wall",
+          (short) 587
+        },
+        {
+          "Santa Hat",
+          (short) 588
+        },
+        {
+          "Santa Shirt",
+          (short) 589
+        },
+        {
+          "Santa Pants",
+          (short) 590
+        },
+        {
+          "Green Candy Cane Block",
+          (short) 591
+        },
+        {
+          "Green Candy Cane Wall",
+          (short) 592
+        },
+        {
+          "Snow Block",
+          (short) 593
+        },
+        {
+          "Snow Brick",
+          (short) 594
+        },
+        {
+          "Snow Brick Wall",
+          (short) 595
+        },
+        {
+          "Blue Light",
+          (short) 596
+        },
+        {
+          "Red Light",
+          (short) 597
+        },
+        {
+          "Green Light",
+          (short) 598
+        },
+        {
+          "Blue Present",
+          (short) 599
+        },
+        {
+          "Green Present",
+          (short) 600
+        },
+        {
+          "Yellow Present",
+          (short) 601
+        },
+        {
+          "Snow Globe",
+          (short) 602
+        },
+        {
+          "Carrot",
+          (short) 603
+        },
+        {
+          "Yellow Phasesaber",
+          (short) 3769
+        },
+        {
+          "White Phasesaber",
+          (short) 3768
+        },
+        {
+          "Purple Phasesaber",
+          (short) 3767
+        },
+        {
+          "Green Phasesaber",
+          (short) 3766
+        },
+        {
+          "Red Phasesaber",
+          (short) 3765
+        },
+        {
+          "Blue Phasesaber",
+          (short) 3764
+        },
+        {
+          "Platinum Bow",
+          (short) 3480
+        },
+        {
+          "Platinum Hammer",
+          (short) 3481
+        },
+        {
+          "Platinum Axe",
+          (short) 3482
+        },
+        {
+          "Platinum Shortsword",
+          (short) 3483
+        },
+        {
+          "Platinum Broadsword",
+          (short) 3484
+        },
+        {
+          "Platinum Pickaxe",
+          (short) 3485
+        },
+        {
+          "Tungsten Bow",
+          (short) 3486
+        },
+        {
+          "Tungsten Hammer",
+          (short) 3487
+        },
+        {
+          "Tungsten Axe",
+          (short) 3488
+        },
+        {
+          "Tungsten Shortsword",
+          (short) 3489
+        },
+        {
+          "Tungsten Broadsword",
+          (short) 3490
+        },
+        {
+          "Tungsten Pickaxe",
+          (short) 3491
+        },
+        {
+          "Lead Bow",
+          (short) 3492
+        },
+        {
+          "Lead Hammer",
+          (short) 3493
+        },
+        {
+          "Lead Axe",
+          (short) 3494
+        },
+        {
+          "Lead Shortsword",
+          (short) 3495
+        },
+        {
+          "Lead Broadsword",
+          (short) 3496
+        },
+        {
+          "Lead Pickaxe",
+          (short) 3497
+        },
+        {
+          "Tin Bow",
+          (short) 3498
+        },
+        {
+          "Tin Hammer",
+          (short) 3499
+        },
+        {
+          "Tin Axe",
+          (short) 3500
+        },
+        {
+          "Tin Shortsword",
+          (short) 3501
+        },
+        {
+          "Tin Broadsword",
+          (short) 3502
+        },
+        {
+          "Tin Pickaxe",
+          (short) 3503
+        },
+        {
+          "Copper Bow",
+          (short) 3504
+        },
+        {
+          "Copper Hammer",
+          (short) 3505
+        },
+        {
+          "Copper Axe",
+          (short) 3506
+        },
+        {
+          "Copper Shortsword",
+          (short) 3507
+        },
+        {
+          "Copper Broadsword",
+          (short) 3508
+        },
+        {
+          "Copper Pickaxe",
+          (short) 3509
+        },
+        {
+          "Silver Bow",
+          (short) 3510
+        },
+        {
+          "Silver Hammer",
+          (short) 3511
+        },
+        {
+          "Silver Axe",
+          (short) 3512
+        },
+        {
+          "Silver Shortsword",
+          (short) 3513
+        },
+        {
+          "Silver Broadsword",
+          (short) 3514
+        },
+        {
+          "Silver Pickaxe",
+          (short) 3515
+        },
+        {
+          "Gold Bow",
+          (short) 3516
+        },
+        {
+          "Gold Hammer",
+          (short) 3517
+        },
+        {
+          "Gold Axe",
+          (short) 3518
+        },
+        {
+          "Gold Shortsword",
+          (short) 3519
+        },
+        {
+          "Gold Broadsword",
+          (short) 3520
+        },
+        {
+          "Gold Pickaxe",
+          (short) 3521
+        }
+      };
+    }
+
+    public static short FromNetId(short id)
+    {
+      switch (id)
+      {
+        case -48:
+          return 3480;
+        case -47:
+          return 3481;
+        case -46:
+          return 3482;
+        case -45:
+          return 3483;
+        case -44:
+          return 3484;
+        case -43:
+          return 3485;
+        case -42:
+          return 3486;
+        case -41:
+          return 3487;
+        case -40:
+          return 3488;
+        case -39:
+          return 3489;
+        case -38:
+          return 3490;
+        case -37:
+          return 3491;
+        case -36:
+          return 3492;
+        case -35:
+          return 3493;
+        case -34:
+          return 3494;
+        case -33:
+          return 3495;
+        case -32:
+          return 3496;
+        case -31:
+          return 3497;
+        case -30:
+          return 3498;
+        case -29:
+          return 3499;
+        case -28:
+          return 3500;
+        case -27:
+          return 3501;
+        case -26:
+          return 3502;
+        case -25:
+          return 3503;
+        case -24:
+          return 3769;
+        case -23:
+          return 3768;
+        case -22:
+          return 3767;
+        case -21:
+          return 3766;
+        case -20:
+          return 3765;
+        case -19:
+          return 3764;
+        case -18:
+          return 3504;
+        case -17:
+          return 3505;
+        case -16:
+          return 3506;
+        case -15:
+          return 3507;
+        case -14:
+          return 3508;
+        case -13:
+          return 3509;
+        case -12:
+          return 3510;
+        case -11:
+          return 3511;
+        case -10:
+          return 3512;
+        case -9:
+          return 3513;
+        case -8:
+          return 3514;
+        case -7:
+          return 3515;
+        case -6:
+          return 3516;
+        case -5:
+          return 3517;
+        case -4:
+          return 3518;
+        case -3:
+          return 3519;
+        case -2:
+          return 3520;
+        case -1:
+          return 3521;
+        default:
+          return id;
+      }
+    }
+
+    public static short FromLegacyName(string name, int release)
+    {
+      if (ItemID._legacyItemLookup == null)
+        ItemID._legacyItemLookup = ItemID.GenerateLegacyItemDictionary();
+      if (release <= 4)
+      {
+        if (name == "Cobalt Helmet")
+          name = "Jungle Hat";
+        else if (name == "Cobalt Breastplate")
+          name = "Jungle Shirt";
+        else if (name == "Cobalt Greaves")
+          name = "Jungle Pants";
+      }
+      if (release <= 13 && name == "Jungle Rose")
+        name = "Jungle Spores";
+      if (release <= 20)
+      {
+        if (name == "Gills potion")
+          name = "Gills Potion";
+        else if (name == "Thorn Chakrum")
+          name = "Thorn Chakram";
+        else if (name == "Ball 'O Hurt")
+          name = "Ball O' Hurt";
+      }
+      if (release <= 41 && name == "Iron Chain")
+        name = "Chain";
+      if (release <= 44 && name == "Orb of Light")
+        name = "Shadow Orb";
+      if (release <= 46)
+      {
+        if (name == "Black Dye")
+          name = "Black Thread";
+        if (name == "Green Dye")
+          name = "Green Thread";
+      }
+      short num;
+      if (ItemID._legacyItemLookup.TryGetValue(name, out num))
+        return num;
+      return 0;
+    }
 
     public struct BannerEffect
     {
@@ -3930,13 +6780,13 @@ namespace Terraria.ID
 
     public class Sets
     {
-      public static SetFactory Factory = new SetFactory(3884);
+      public static SetFactory Factory = new SetFactory(3930);
       private static ItemID.BannerEffect DD2BannerEffect = ItemID.BannerEffect.None;
       public static ItemID.BannerEffect[] BannerStrength = ItemID.Sets.Factory.CreateCustomSet<ItemID.BannerEffect>(new ItemID.BannerEffect(1f), (object) (short) 3838, (object) ItemID.Sets.DD2BannerEffect, (object) (short) 3845, (object) ItemID.Sets.DD2BannerEffect, (object) (short) 3837, (object) ItemID.Sets.DD2BannerEffect, (object) (short) 3844, (object) ItemID.Sets.DD2BannerEffect, (object) (short) 3843, (object) ItemID.Sets.DD2BannerEffect, (object) (short) 3839, (object) ItemID.Sets.DD2BannerEffect, (object) (short) 3840, (object) ItemID.Sets.DD2BannerEffect, (object) (short) 3842, (object) ItemID.Sets.DD2BannerEffect, (object) (short) 3841, (object) ItemID.Sets.DD2BannerEffect, (object) (short) 3846, (object) ItemID.Sets.DD2BannerEffect);
       public static int[] KillsToBanner = ItemID.Sets.Factory.CreateIntSet(50, 3838, 1000, 3845, 200, 3837, 500, 3844, 200, 3843, 50, 3839, 200, 3840, 100, 3842, 200, 3841, 100, 3846, 50);
       public static bool[] CanFishInLava = ItemID.Sets.Factory.CreateBoolSet(2422);
-      public static int[] TextureCopyLoad = ItemID.Sets.Factory.CreateIntSet(-1, 3665, 48, 3666, 306, 3667, 328, 3668, 625, 3669, 626, 3670, 627, 3671, 680, 3672, 681, 3673, 831, 3674, 838, 3675, 914, 3676, 952, 3677, 1142, 3678, 1298, 3679, 1528, 3680, 1529, 3681, 1530, 3682, 1531, 3683, 1532, 3684, 2230, 3685, 2249, 3686, 2250, 3687, 2526, 3688, 2544, 3689, 2559, 3690, 2574, 3691, 2612, 3692, 2613, 3693, 2614, 3694, 2615, 3695, 2616, 3696, 2617, 3697, 2618, 3698, 2619, 3699, 2620, 3700, 2748, 3701, 2814, 3703, 3125, 3702, 3180, 3704, 3181, 3705, 1111, 3706, 1112);
-      public static bool[] TrapSigned = ItemID.Sets.Factory.CreateBoolSet(0 != 0, 3665, 3666, 3667, 3668, 3669, 3670, 3671, 3672, 3673, 3674, 3675, 3676, 3677, 3678, 3679, 3680, 3681, 3682, 3683, 3684, 3685, 3686, 3687, 3688, 3689, 3690, 3691, 3692, 3693, 3694, 3695, 3696, 3697, 3698, 3699, 3700, 3701, 3703, 3702, 3704, 3705, 3706);
+      public static int[] TextureCopyLoad = ItemID.Sets.Factory.CreateIntSet(-1, 3665, 48, 3666, 306, 3667, 328, 3668, 625, 3669, 626, 3670, 627, 3671, 680, 3672, 681, 3673, 831, 3674, 838, 3675, 914, 3676, 952, 3677, 1142, 3678, 1298, 3679, 1528, 3680, 1529, 3681, 1530, 3682, 1531, 3683, 1532, 3684, 2230, 3685, 2249, 3686, 2250, 3687, 2526, 3688, 2544, 3689, 2559, 3690, 2574, 3691, 2612, 3692, 2613, 3693, 2614, 3694, 2615, 3695, 2616, 3696, 2617, 3697, 2618, 3698, 2619, 3699, 2620, 3700, 2748, 3701, 2814, 3703, 3125, 3702, 3180, 3704, 3181, 3705, 3665, 3706, 3665);
+      public static bool[] TrapSigned = ItemID.Sets.Factory.CreateBoolSet(false, 3665, 3666, 3667, 3668, 3669, 3670, 3671, 3672, 3673, 3674, 3675, 3676, 3677, 3678, 3679, 3680, 3681, 3682, 3683, 3684, 3685, 3686, 3687, 3688, 3689, 3690, 3691, 3692, 3693, 3694, 3695, 3696, 3697, 3698, 3699, 3700, 3701, 3703, 3702, 3704, 3705, 3706, 3886, 3887);
       public static bool[] Deprecated = ItemID.Sets.Factory.CreateBoolSet(2784, 2783, 2785, 2782, 2774, 2773, 2775, 2772, 2779, 2778, 2780, 2777, 3464, 3463, 3465, 3462, 3341, 3342, 3343, 3340, 3344, 3345, 3346, 3273, 2881, 3750, 3847, 3848, 3849, 3850, 3851, 3850, 3861, 3862);
       public static bool[] NeverShiny = ItemID.Sets.Factory.CreateBoolSet(71, 72, 73, 74);
       public static bool[] ItemIconPulse = ItemID.Sets.Factory.CreateBoolSet(520, 521, 575, 549, 548, 547, 3456, 3457, 3458, 3459, 3580, 3581);

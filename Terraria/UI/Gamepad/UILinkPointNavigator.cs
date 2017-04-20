@@ -1,8 +1,8 @@
 ﻿// Decompiled with JetBrains decompiler
 // Type: Terraria.UI.Gamepad.UILinkPointNavigator
-// Assembly: Terraria, Version=1.3.4.4, Culture=neutral, PublicKeyToken=null
-// MVID: DEE50102-BCC2-472F-987B-153E892583F1
-// Assembly location: E:\Steam\SteamApps\common\Terraria\Terraria.exe
+// Assembly: Terraria, Version=1.3.5.1, Culture=neutral, PublicKeyToken=null
+// MVID: DF0400F4-EE47-4864-BE80-932EDB02D8A6
+// Assembly location: F:\Steam\steamapps\common\Terraria\Terraria.exe
 
 using Microsoft.Xna.Framework;
 using System;
@@ -157,9 +157,9 @@ namespace Terraria.UI.Gamepad
         UILinkPointNavigator.PageRightCD = 0;
       bool flag5 = flag3 && UILinkPointNavigator.PageLeftCD == 0;
       bool flag6 = flag4 && UILinkPointNavigator.PageRightCD == 0;
-      if ((double) UILinkPointNavigator.LastInput.X != (double) navigatorDirections.X)
+      if (UILinkPointNavigator.LastInput.X != navigatorDirections.X)
         UILinkPointNavigator.XCooldown = 0;
-      if ((double) UILinkPointNavigator.LastInput.Y != (double) navigatorDirections.Y)
+      if (UILinkPointNavigator.LastInput.Y != navigatorDirections.Y)
         UILinkPointNavigator.YCooldown = 0;
       if (UILinkPointNavigator.XCooldown > 0)
         --UILinkPointNavigator.XCooldown;
@@ -171,27 +171,27 @@ namespace Terraria.UI.Gamepad
       if (flag6)
         UILinkPointNavigator.PageRightCD = 16;
       UILinkPointNavigator.Pages[UILinkPointNavigator.CurrentPage].Update();
-      int num = 10;
+      int num1 = 10;
       if (!Main.gameMenu && Main.playerInventory && (!Main.ingameOptionsWindow && !Main.inFancyUI) && (UILinkPointNavigator.CurrentPage == 0 || UILinkPointNavigator.CurrentPage == 4 || (UILinkPointNavigator.CurrentPage == 2 || UILinkPointNavigator.CurrentPage == 1)))
-        num = PlayerInput.CurrentProfile.InventoryMoveCD;
-      if ((double) navigatorDirections.X == -1.0 && UILinkPointNavigator.XCooldown == 0)
+        num1 = PlayerInput.CurrentProfile.InventoryMoveCD;
+      if (navigatorDirections.X == -1.0 && UILinkPointNavigator.XCooldown == 0)
       {
-        UILinkPointNavigator.XCooldown = num;
+        UILinkPointNavigator.XCooldown = num1;
         UILinkPointNavigator.Pages[UILinkPointNavigator.CurrentPage].TravelLeft();
       }
-      if ((double) navigatorDirections.X == 1.0 && UILinkPointNavigator.XCooldown == 0)
+      if (navigatorDirections.X == 1.0 && UILinkPointNavigator.XCooldown == 0)
       {
-        UILinkPointNavigator.XCooldown = num;
+        UILinkPointNavigator.XCooldown = num1;
         UILinkPointNavigator.Pages[UILinkPointNavigator.CurrentPage].TravelRight();
       }
-      if ((double) navigatorDirections.Y == -1.0 && UILinkPointNavigator.YCooldown == 0)
+      if (navigatorDirections.Y == -1.0 && UILinkPointNavigator.YCooldown == 0)
       {
-        UILinkPointNavigator.YCooldown = num;
+        UILinkPointNavigator.YCooldown = num1;
         UILinkPointNavigator.Pages[UILinkPointNavigator.CurrentPage].TravelUp();
       }
-      if ((double) navigatorDirections.Y == 1.0 && UILinkPointNavigator.YCooldown == 0)
+      if (navigatorDirections.Y == 1.0 && UILinkPointNavigator.YCooldown == 0)
       {
-        UILinkPointNavigator.YCooldown = num;
+        UILinkPointNavigator.YCooldown = num1;
         UILinkPointNavigator.Pages[UILinkPointNavigator.CurrentPage].TravelDown();
       }
       UILinkPointNavigator.XCooldown = UILinkPointNavigator.YCooldown = Math.Max(UILinkPointNavigator.XCooldown, UILinkPointNavigator.YCooldown);
@@ -202,16 +202,18 @@ namespace Terraria.UI.Gamepad
       if (PlayerInput.Triggers.Current.UsedMovementKey)
       {
         Vector2 position = UILinkPointNavigator.Points[UILinkPointNavigator.CurrentPoint].Position;
-        Vector2 vector2_1 = new Vector2((float) PlayerInput.MouseX, (float) PlayerInput.MouseY);
-        float amount = 0.3f;
+        Vector2 vector2_1;
+        // ISSUE: explicit reference operation
+        ((Vector2) @vector2_1).\u002Ector((float) PlayerInput.MouseX, (float) PlayerInput.MouseY);
+        float num2 = 0.3f;
         if (PlayerInput.InvisibleGamepadInMenus)
-          amount = 1f;
-        Vector2 vector2_2 = Vector2.Lerp(vector2_1, position, amount);
+          num2 = 1f;
+        Vector2 vector2_2 = Vector2.Lerp(vector2_1, position, num2);
         if (Main.gameMenu)
         {
-          if ((double) Math.Abs(vector2_2.X - position.X) <= 5.0)
+          if ((double) Math.Abs((float) (vector2_2.X - position.X)) <= 5.0)
             vector2_2.X = position.X;
-          if ((double) Math.Abs(vector2_2.Y - position.Y) <= 5.0)
+          if ((double) Math.Abs((float) (vector2_2.Y - position.Y)) <= 5.0)
             vector2_2.Y = position.Y;
         }
         PlayerInput.MouseX = (int) vector2_2.X;
@@ -242,7 +244,7 @@ namespace Terraria.UI.Gamepad
 
     public static void SetPosition(int ID, Vector2 Position)
     {
-      UILinkPointNavigator.Points[ID].Position = Position;
+      UILinkPointNavigator.Points[ID].Position = Vector2.op_Multiply(Position, Main.UIScale);
     }
 
     public static void RegisterPage(UILinkPage page, int ID, bool automatedDefault = true)

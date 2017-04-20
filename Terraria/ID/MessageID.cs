@@ -1,8 +1,10 @@
 ﻿// Decompiled with JetBrains decompiler
 // Type: Terraria.ID.MessageID
-// Assembly: Terraria, Version=1.3.4.4, Culture=neutral, PublicKeyToken=null
-// MVID: DEE50102-BCC2-472F-987B-153E892583F1
-// Assembly location: E:\Steam\SteamApps\common\Terraria\Terraria.exe
+// Assembly: Terraria, Version=1.3.5.1, Culture=neutral, PublicKeyToken=null
+// MVID: DF0400F4-EE47-4864-BE80-932EDB02D8A6
+// Assembly location: F:\Steam\steamapps\common\Terraria\Terraria.exe
+
+using System;
 
 namespace Terraria.ID
 {
@@ -10,12 +12,12 @@ namespace Terraria.ID
   {
     public const byte NeverCalled = 0;
     public const byte Unknown1 = 1;
-    public const byte Unknown2 = 2;
+    public const byte Kick = 2;
     public const byte Unknown3 = 3;
     public const byte SyncPlayer = 4;
     public const byte SyncEquipment = 5;
     public const byte Unknown6 = 6;
-    public const byte Unknown7 = 7;
+    public const byte WorldData = 7;
     public const byte Unknown8 = 8;
     public const byte Unknown9 = 9;
     public const byte TileSection = 10;
@@ -33,7 +35,9 @@ namespace Terraria.ID
     public const byte Unknown22 = 22;
     public const byte Unknown23 = 23;
     public const byte Unknown24 = 24;
+    [Obsolete("Deprecated. Use NetTextModule instead.")]
     public const byte Unknown25 = 25;
+    [Obsolete("Deprecated.")]
     public const byte Unknown26 = 26;
     public const byte Unknown27 = 27;
     public const byte Unknown28 = 28;
@@ -52,11 +56,13 @@ namespace Terraria.ID
     public const byte Unknown41 = 41;
     public const byte Unknown42 = 42;
     public const byte Unknown43 = 43;
+    [Obsolete("Deprecated.")]
     public const byte Unknown44 = 44;
     public const byte Unknown45 = 45;
     public const byte Unknown46 = 46;
     public const byte Unknown47 = 47;
-    public const byte Unknown48 = 48;
+    [Obsolete("Deprecated. Use NetLiquidModule instead.")]
+    public const byte LiquidUpdate = 48;
     public const byte Unknown49 = 49;
     public const byte Unknown50 = 50;
     public const byte Unknown51 = 51;
@@ -64,7 +70,7 @@ namespace Terraria.ID
     public const byte Unknown53 = 53;
     public const byte Unknown54 = 54;
     public const byte Unknown55 = 55;
-    public const byte Unknown56 = 56;
+    public const byte SyncNPCName = 56;
     public const byte Unknown57 = 57;
     public const byte Unknown58 = 58;
     public const byte Unknown59 = 59;

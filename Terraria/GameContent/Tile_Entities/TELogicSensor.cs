@@ -1,8 +1,8 @@
 ﻿// Decompiled with JetBrains decompiler
 // Type: Terraria.GameContent.Tile_Entities.TELogicSensor
-// Assembly: Terraria, Version=1.3.4.4, Culture=neutral, PublicKeyToken=null
-// MVID: DEE50102-BCC2-472F-987B-153E892583F1
-// Assembly location: E:\Steam\SteamApps\common\Terraria\Terraria.exe
+// Assembly: Terraria, Version=1.3.5.1, Culture=neutral, PublicKeyToken=null
+// MVID: DF0400F4-EE47-4864-BE80-932EDB02D8A6
+// Assembly location: F:\Steam\steamapps\common\Terraria\Terraria.exe
 
 using Microsoft.Xna.Framework;
 using System;
@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using System.IO;
 using Terraria.DataStructures;
 using Terraria.ID;
+using Terraria.Localization;
 
 namespace Terraria.GameContent.Tile_Entities
 {
@@ -43,7 +44,7 @@ namespace Terraria.GameContent.Tile_Entities
         return;
       int number = TELogicSensor.Place(x, y);
       ((TELogicSensor) TileEntity.ByID[number]).FigureCheckState();
-      NetMessage.SendData(86, -1, -1, "", number, (float) x, (float) y, 0.0f, 0, 0, 0);
+      NetMessage.SendData(86, -1, -1, (NetworkText) null, number, (float) x, (float) y, 0.0f, 0, 0, 0);
     }
 
     private static void UpdateStartInternal()
@@ -177,13 +178,20 @@ namespace Terraria.GameContent.Tile_Entities
           return !Main.dayTime;
         case TELogicSensor.LogicCheckType.PlayerAbove:
           bool flag1 = false;
-          Rectangle rectangle = new Rectangle(x * 16 - 32 - 1, y * 16 - 160 - 1, 82, 162);
-          foreach (KeyValuePair<int, Rectangle> keyValuePair in TELogicSensor.playerBox)
+          Rectangle rectangle1;
+          // ISSUE: explicit reference operation
+          ((Rectangle) @rectangle1).\u002Ector(x * 16 - 32 - 1, y * 16 - 160 - 1, 82, 162);
+          using (Dictionary<int, Rectangle>.Enumerator enumerator = TELogicSensor.playerBox.GetEnumerator())
           {
-            if (keyValuePair.Value.Intersects(rectangle))
+            while (enumerator.MoveNext())
             {
-              flag1 = true;
-              break;
+              Rectangle rectangle2 = enumerator.Current.Value;
+              // ISSUE: explicit reference operation
+              if (((Rectangle) @rectangle2).Intersects(rectangle1))
+              {
+                flag1 = true;
+                break;
+              }
             }
           }
           return flag1;
@@ -282,7 +290,7 @@ namespace Terraria.GameContent.Tile_Entities
       if (Main.netMode == 1)
       {
         NetMessage.SendTileSquare(Main.myPlayer, x, y, 1, TileChangeType.None);
-        NetMessage.SendData(87, -1, -1, "", x, (float) y, 2f, 0.0f, 0, 0, 0);
+        NetMessage.SendData(87, -1, -1, (NetworkText) null, x, (float) y, 2f, 0.0f, 0, 0, 0);
         return -1;
       }
       int index = TELogicSensor.Place(x, y);

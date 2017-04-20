@@ -1,16 +1,1979 @@
 ﻿// Decompiled with JetBrains decompiler
 // Type: Terraria.ID.NPCID
-// Assembly: Terraria, Version=1.3.4.4, Culture=neutral, PublicKeyToken=null
-// MVID: DEE50102-BCC2-472F-987B-153E892583F1
-// Assembly location: E:\Steam\SteamApps\common\Terraria\Terraria.exe
+// Assembly: Terraria, Version=1.3.5.1, Culture=neutral, PublicKeyToken=null
+// MVID: DF0400F4-EE47-4864-BE80-932EDB02D8A6
+// Assembly location: F:\Steam\steamapps\common\Terraria\Terraria.exe
 
 using Microsoft.Xna.Framework;
 using System.Collections.Generic;
 
 namespace Terraria.ID
 {
-  public static class NPCID
+  public class NPCID
   {
+    private static readonly int[] NetIdMap = new int[65]
+    {
+      81,
+      81,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      6,
+      6,
+      31,
+      31,
+      77,
+      42,
+      42,
+      176,
+      176,
+      176,
+      176,
+      173,
+      173,
+      183,
+      183,
+      3,
+      3,
+      132,
+      132,
+      186,
+      186,
+      187,
+      187,
+      188,
+      188,
+      189,
+      189,
+      190,
+      191,
+      192,
+      193,
+      194,
+      2,
+      200,
+      200,
+      21,
+      21,
+      201,
+      201,
+      202,
+      202,
+      203,
+      203,
+      223,
+      223,
+      231,
+      231,
+      232,
+      232,
+      233,
+      233,
+      234,
+      234,
+      235,
+      235
+    };
+    private static readonly Dictionary<string, int> LegacyNameToIdMap = new Dictionary<string, int>()
+    {
+      {
+        "Slimeling",
+        -1
+      },
+      {
+        "Slimer2",
+        -2
+      },
+      {
+        "Green Slime",
+        -3
+      },
+      {
+        "Pinky",
+        -4
+      },
+      {
+        "Baby Slime",
+        -5
+      },
+      {
+        "Black Slime",
+        -6
+      },
+      {
+        "Purple Slime",
+        -7
+      },
+      {
+        "Red Slime",
+        -8
+      },
+      {
+        "Yellow Slime",
+        -9
+      },
+      {
+        "Jungle Slime",
+        -10
+      },
+      {
+        "Little Eater",
+        -11
+      },
+      {
+        "Big Eater",
+        -12
+      },
+      {
+        "Short Bones",
+        -13
+      },
+      {
+        "Big Boned",
+        -14
+      },
+      {
+        "Heavy Skeleton",
+        -15
+      },
+      {
+        "Little Stinger",
+        -16
+      },
+      {
+        "Big Stinger",
+        -17
+      },
+      {
+        "Tiny Moss Hornet",
+        -18
+      },
+      {
+        "Little Moss Hornet",
+        -19
+      },
+      {
+        "Big Moss Hornet",
+        -20
+      },
+      {
+        "Giant Moss Hornet",
+        -21
+      },
+      {
+        "Little Crimera",
+        -22
+      },
+      {
+        "Big Crimera",
+        -23
+      },
+      {
+        "Little Crimslime",
+        -24
+      },
+      {
+        "Big Crimslime",
+        -25
+      },
+      {
+        "Small Zombie",
+        -26
+      },
+      {
+        "Big Zombie",
+        -27
+      },
+      {
+        "Small Bald Zombie",
+        -28
+      },
+      {
+        "Big Bald Zombie",
+        -29
+      },
+      {
+        "Small Pincushion Zombie",
+        -30
+      },
+      {
+        "Big Pincushion Zombie",
+        -31
+      },
+      {
+        "Small Slimed Zombie",
+        -32
+      },
+      {
+        "Big Slimed Zombie",
+        -33
+      },
+      {
+        "Small Swamp Zombie",
+        -34
+      },
+      {
+        "Big Swamp Zombie",
+        -35
+      },
+      {
+        "Small Twiggy Zombie",
+        -36
+      },
+      {
+        "Big Twiggy Zombie",
+        -37
+      },
+      {
+        "Cataract Eye 2",
+        -38
+      },
+      {
+        "Sleepy Eye 2",
+        -39
+      },
+      {
+        "Dialated Eye 2",
+        -40
+      },
+      {
+        "Green Eye 2",
+        -41
+      },
+      {
+        "Purple Eye 2",
+        -42
+      },
+      {
+        "Demon Eye 2",
+        -43
+      },
+      {
+        "Small Female Zombie",
+        -44
+      },
+      {
+        "Big Female Zombie",
+        -45
+      },
+      {
+        "Small Skeleton",
+        -46
+      },
+      {
+        "Big Skeleton",
+        -47
+      },
+      {
+        "Small Headache Skeleton",
+        -48
+      },
+      {
+        "Big Headache Skeleton",
+        -49
+      },
+      {
+        "Small Misassembled Skeleton",
+        -50
+      },
+      {
+        "Big Misassembled Skeleton",
+        -51
+      },
+      {
+        "Small Pantless Skeleton",
+        -52
+      },
+      {
+        "Big Pantless Skeleton",
+        -53
+      },
+      {
+        "Small Rain Zombie",
+        -54
+      },
+      {
+        "Big Rain Zombie",
+        -55
+      },
+      {
+        "Little Hornet Fatty",
+        -56
+      },
+      {
+        "Big Hornet Fatty",
+        -57
+      },
+      {
+        "Little Hornet Honey",
+        -58
+      },
+      {
+        "Big Hornet Honey",
+        -59
+      },
+      {
+        "Little Hornet Leafy",
+        -60
+      },
+      {
+        "Big Hornet Leafy",
+        -61
+      },
+      {
+        "Little Hornet Spikey",
+        -62
+      },
+      {
+        "Big Hornet Spikey",
+        -63
+      },
+      {
+        "Little Hornet Stingy",
+        -64
+      },
+      {
+        "Big Hornet Stingy",
+        -65
+      },
+      {
+        "Blue Slime",
+        1
+      },
+      {
+        "Demon Eye",
+        2
+      },
+      {
+        "Zombie",
+        3
+      },
+      {
+        "Eye of Cthulhu",
+        4
+      },
+      {
+        "Servant of Cthulhu",
+        5
+      },
+      {
+        "Eater of Souls",
+        6
+      },
+      {
+        "Devourer",
+        7
+      },
+      {
+        "Giant Worm",
+        10
+      },
+      {
+        "Eater of Worlds",
+        13
+      },
+      {
+        "Mother Slime",
+        16
+      },
+      {
+        "Merchant",
+        17
+      },
+      {
+        "Nurse",
+        18
+      },
+      {
+        "Arms Dealer",
+        19
+      },
+      {
+        "Dryad",
+        20
+      },
+      {
+        "Skeleton",
+        21
+      },
+      {
+        "Guide",
+        22
+      },
+      {
+        "Meteor Head",
+        23
+      },
+      {
+        "Fire Imp",
+        24
+      },
+      {
+        "Burning Sphere",
+        25
+      },
+      {
+        "Goblin Peon",
+        26
+      },
+      {
+        "Goblin Thief",
+        27
+      },
+      {
+        "Goblin Warrior",
+        28
+      },
+      {
+        "Goblin Sorcerer",
+        29
+      },
+      {
+        "Chaos Ball",
+        30
+      },
+      {
+        "Angry Bones",
+        31
+      },
+      {
+        "Dark Caster",
+        32
+      },
+      {
+        "Water Sphere",
+        33
+      },
+      {
+        "Cursed Skull",
+        34
+      },
+      {
+        "Skeletron",
+        35
+      },
+      {
+        "Old Man",
+        37
+      },
+      {
+        "Demolitionist",
+        38
+      },
+      {
+        "Bone Serpent",
+        39
+      },
+      {
+        "Hornet",
+        42
+      },
+      {
+        "Man Eater",
+        43
+      },
+      {
+        "Undead Miner",
+        44
+      },
+      {
+        "Tim",
+        45
+      },
+      {
+        "Bunny",
+        46
+      },
+      {
+        "Corrupt Bunny",
+        47
+      },
+      {
+        "Harpy",
+        48
+      },
+      {
+        "Cave Bat",
+        49
+      },
+      {
+        "King Slime",
+        50
+      },
+      {
+        "Jungle Bat",
+        51
+      },
+      {
+        "Doctor Bones",
+        52
+      },
+      {
+        "The Groom",
+        53
+      },
+      {
+        "Clothier",
+        54
+      },
+      {
+        "Goldfish",
+        55
+      },
+      {
+        "Snatcher",
+        56
+      },
+      {
+        "Corrupt Goldfish",
+        57
+      },
+      {
+        "Piranha",
+        58
+      },
+      {
+        "Lava Slime",
+        59
+      },
+      {
+        "Hellbat",
+        60
+      },
+      {
+        "Vulture",
+        61
+      },
+      {
+        "Demon",
+        62
+      },
+      {
+        "Blue Jellyfish",
+        63
+      },
+      {
+        "Pink Jellyfish",
+        64
+      },
+      {
+        "Shark",
+        65
+      },
+      {
+        "Voodoo Demon",
+        66
+      },
+      {
+        "Crab",
+        67
+      },
+      {
+        "Dungeon Guardian",
+        68
+      },
+      {
+        "Antlion",
+        69
+      },
+      {
+        "Spike Ball",
+        70
+      },
+      {
+        "Dungeon Slime",
+        71
+      },
+      {
+        "Blazing Wheel",
+        72
+      },
+      {
+        "Goblin Scout",
+        73
+      },
+      {
+        "Bird",
+        74
+      },
+      {
+        "Pixie",
+        75
+      },
+      {
+        "Armored Skeleton",
+        77
+      },
+      {
+        "Mummy",
+        78
+      },
+      {
+        "Dark Mummy",
+        79
+      },
+      {
+        "Light Mummy",
+        80
+      },
+      {
+        "Corrupt Slime",
+        81
+      },
+      {
+        "Wraith",
+        82
+      },
+      {
+        "Cursed Hammer",
+        83
+      },
+      {
+        "Enchanted Sword",
+        84
+      },
+      {
+        "Mimic",
+        85
+      },
+      {
+        "Unicorn",
+        86
+      },
+      {
+        "Wyvern",
+        87
+      },
+      {
+        "Giant Bat",
+        93
+      },
+      {
+        "Corruptor",
+        94
+      },
+      {
+        "Digger",
+        95
+      },
+      {
+        "World Feeder",
+        98
+      },
+      {
+        "Clinger",
+        101
+      },
+      {
+        "Angler Fish",
+        102
+      },
+      {
+        "Green Jellyfish",
+        103
+      },
+      {
+        "Werewolf",
+        104
+      },
+      {
+        "Bound Goblin",
+        105
+      },
+      {
+        "Bound Wizard",
+        106
+      },
+      {
+        "Goblin Tinkerer",
+        107
+      },
+      {
+        "Wizard",
+        108
+      },
+      {
+        "Clown",
+        109
+      },
+      {
+        "Skeleton Archer",
+        110
+      },
+      {
+        "Goblin Archer",
+        111
+      },
+      {
+        "Vile Spit",
+        112
+      },
+      {
+        "Wall of Flesh",
+        113
+      },
+      {
+        "The Hungry",
+        115
+      },
+      {
+        "Leech",
+        117
+      },
+      {
+        "Chaos Elemental",
+        120
+      },
+      {
+        "Slimer",
+        121
+      },
+      {
+        "Gastropod",
+        122
+      },
+      {
+        "Bound Mechanic",
+        123
+      },
+      {
+        "Mechanic",
+        124
+      },
+      {
+        "Retinazer",
+        125
+      },
+      {
+        "Spazmatism",
+        126
+      },
+      {
+        "Skeletron Prime",
+        (int) sbyte.MaxValue
+      },
+      {
+        "Prime Cannon",
+        128
+      },
+      {
+        "Prime Saw",
+        129
+      },
+      {
+        "Prime Vice",
+        130
+      },
+      {
+        "Prime Laser",
+        131
+      },
+      {
+        "Wandering Eye",
+        133
+      },
+      {
+        "The Destroyer",
+        134
+      },
+      {
+        "Illuminant Bat",
+        137
+      },
+      {
+        "Illuminant Slime",
+        138
+      },
+      {
+        "Probe",
+        139
+      },
+      {
+        "Possessed Armor",
+        140
+      },
+      {
+        "Toxic Sludge",
+        141
+      },
+      {
+        "Santa Claus",
+        142
+      },
+      {
+        "Snowman Gangsta",
+        143
+      },
+      {
+        "Mister Stabby",
+        144
+      },
+      {
+        "Snow Balla",
+        145
+      },
+      {
+        "Ice Slime",
+        147
+      },
+      {
+        "Penguin",
+        148
+      },
+      {
+        "Ice Bat",
+        150
+      },
+      {
+        "Lava Bat",
+        151
+      },
+      {
+        "Giant Flying Fox",
+        152
+      },
+      {
+        "Giant Tortoise",
+        153
+      },
+      {
+        "Ice Tortoise",
+        154
+      },
+      {
+        "Wolf",
+        155
+      },
+      {
+        "Red Devil",
+        156
+      },
+      {
+        "Arapaima",
+        157
+      },
+      {
+        "Vampire",
+        158
+      },
+      {
+        "Truffle",
+        160
+      },
+      {
+        "Zombie Eskimo",
+        161
+      },
+      {
+        "Frankenstein",
+        162
+      },
+      {
+        "Black Recluse",
+        163
+      },
+      {
+        "Wall Creeper",
+        164
+      },
+      {
+        "Swamp Thing",
+        166
+      },
+      {
+        "Undead Viking",
+        167
+      },
+      {
+        "Corrupt Penguin",
+        168
+      },
+      {
+        "Ice Elemental",
+        169
+      },
+      {
+        "Pigron",
+        170
+      },
+      {
+        "Rune Wizard",
+        172
+      },
+      {
+        "Crimera",
+        173
+      },
+      {
+        "Herpling",
+        174
+      },
+      {
+        "Angry Trapper",
+        175
+      },
+      {
+        "Moss Hornet",
+        176
+      },
+      {
+        "Derpling",
+        177
+      },
+      {
+        "Steampunker",
+        178
+      },
+      {
+        "Crimson Axe",
+        179
+      },
+      {
+        "Face Monster",
+        181
+      },
+      {
+        "Floaty Gross",
+        182
+      },
+      {
+        "Crimslime",
+        183
+      },
+      {
+        "Spiked Ice Slime",
+        184
+      },
+      {
+        "Snow Flinx",
+        185
+      },
+      {
+        "Lost Girl",
+        195
+      },
+      {
+        "Nymph",
+        196
+      },
+      {
+        "Armored Viking",
+        197
+      },
+      {
+        "Lihzahrd",
+        198
+      },
+      {
+        "Spiked Jungle Slime",
+        204
+      },
+      {
+        "Moth",
+        205
+      },
+      {
+        "Icy Merman",
+        206
+      },
+      {
+        "Dye Trader",
+        207
+      },
+      {
+        "Party Girl",
+        208
+      },
+      {
+        "Cyborg",
+        209
+      },
+      {
+        "Bee",
+        210
+      },
+      {
+        "Pirate Deckhand",
+        212
+      },
+      {
+        "Pirate Corsair",
+        213
+      },
+      {
+        "Pirate Deadeye",
+        214
+      },
+      {
+        "Pirate Crossbower",
+        215
+      },
+      {
+        "Pirate Captain",
+        216
+      },
+      {
+        "Cochineal Beetle",
+        217
+      },
+      {
+        "Cyan Beetle",
+        218
+      },
+      {
+        "Lac Beetle",
+        219
+      },
+      {
+        "Sea Snail",
+        220
+      },
+      {
+        "Squid",
+        221
+      },
+      {
+        "Queen Bee",
+        222
+      },
+      {
+        "Raincoat Zombie",
+        223
+      },
+      {
+        "Flying Fish",
+        224
+      },
+      {
+        "Umbrella Slime",
+        225
+      },
+      {
+        "Flying Snake",
+        226
+      },
+      {
+        "Painter",
+        227
+      },
+      {
+        "Witch Doctor",
+        228
+      },
+      {
+        "Pirate",
+        229
+      },
+      {
+        "Jungle Creeper",
+        236
+      },
+      {
+        "Blood Crawler",
+        239
+      },
+      {
+        "Blood Feeder",
+        241
+      },
+      {
+        "Blood Jelly",
+        242
+      },
+      {
+        "Ice Golem",
+        243
+      },
+      {
+        "Rainbow Slime",
+        244
+      },
+      {
+        "Golem",
+        245
+      },
+      {
+        "Golem Head",
+        246
+      },
+      {
+        "Golem Fist",
+        247
+      },
+      {
+        "Angry Nimbus",
+        250
+      },
+      {
+        "Eyezor",
+        251
+      },
+      {
+        "Parrot",
+        252
+      },
+      {
+        "Reaper",
+        253
+      },
+      {
+        "Spore Zombie",
+        254
+      },
+      {
+        "Fungo Fish",
+        256
+      },
+      {
+        "Anomura Fungus",
+        257
+      },
+      {
+        "Mushi Ladybug",
+        258
+      },
+      {
+        "Fungi Bulb",
+        259
+      },
+      {
+        "Giant Fungi Bulb",
+        260
+      },
+      {
+        "Fungi Spore",
+        261
+      },
+      {
+        "Plantera",
+        262
+      },
+      {
+        "Plantera's Hook",
+        263
+      },
+      {
+        "Plantera's Tentacle",
+        264
+      },
+      {
+        "Spore",
+        265
+      },
+      {
+        "Brain of Cthulhu",
+        266
+      },
+      {
+        "Creeper",
+        267
+      },
+      {
+        "Ichor Sticker",
+        268
+      },
+      {
+        "Rusty Armored Bones",
+        269
+      },
+      {
+        "Blue Armored Bones",
+        273
+      },
+      {
+        "Hell Armored Bones",
+        277
+      },
+      {
+        "Ragged Caster",
+        281
+      },
+      {
+        "Necromancer",
+        283
+      },
+      {
+        "Diabolist",
+        285
+      },
+      {
+        "Bone Lee",
+        287
+      },
+      {
+        "Dungeon Spirit",
+        288
+      },
+      {
+        "Giant Cursed Skull",
+        289
+      },
+      {
+        "Paladin",
+        290
+      },
+      {
+        "Skeleton Sniper",
+        291
+      },
+      {
+        "Tactical Skeleton",
+        292
+      },
+      {
+        "Skeleton Commando",
+        293
+      },
+      {
+        "Blue Jay",
+        297
+      },
+      {
+        "Cardinal",
+        298
+      },
+      {
+        "Squirrel",
+        299
+      },
+      {
+        "Mouse",
+        300
+      },
+      {
+        "Raven",
+        301
+      },
+      {
+        "Slime",
+        302
+      },
+      {
+        "Hoppin' Jack",
+        304
+      },
+      {
+        "Scarecrow",
+        305
+      },
+      {
+        "Headless Horseman",
+        315
+      },
+      {
+        "Ghost",
+        316
+      },
+      {
+        "Mourning Wood",
+        325
+      },
+      {
+        "Splinterling",
+        326
+      },
+      {
+        "Pumpking",
+        327
+      },
+      {
+        "Hellhound",
+        329
+      },
+      {
+        "Poltergeist",
+        330
+      },
+      {
+        "Zombie Elf",
+        338
+      },
+      {
+        "Present Mimic",
+        341
+      },
+      {
+        "Gingerbread Man",
+        342
+      },
+      {
+        "Yeti",
+        343
+      },
+      {
+        "Everscream",
+        344
+      },
+      {
+        "Ice Queen",
+        345
+      },
+      {
+        "Santa",
+        346
+      },
+      {
+        "Elf Copter",
+        347
+      },
+      {
+        "Nutcracker",
+        348
+      },
+      {
+        "Elf Archer",
+        350
+      },
+      {
+        "Krampus",
+        351
+      },
+      {
+        "Flocko",
+        352
+      },
+      {
+        "Stylist",
+        353
+      },
+      {
+        "Webbed Stylist",
+        354
+      },
+      {
+        "Firefly",
+        355
+      },
+      {
+        "Butterfly",
+        356
+      },
+      {
+        "Worm",
+        357
+      },
+      {
+        "Lightning Bug",
+        358
+      },
+      {
+        "Snail",
+        359
+      },
+      {
+        "Glowing Snail",
+        360
+      },
+      {
+        "Frog",
+        361
+      },
+      {
+        "Duck",
+        362
+      },
+      {
+        "Scorpion",
+        366
+      },
+      {
+        "Traveling Merchant",
+        368
+      },
+      {
+        "Angler",
+        369
+      },
+      {
+        "Duke Fishron",
+        370
+      },
+      {
+        "Detonating Bubble",
+        371
+      },
+      {
+        "Sharkron",
+        372
+      },
+      {
+        "Truffle Worm",
+        374
+      },
+      {
+        "Sleeping Angler",
+        376
+      },
+      {
+        "Grasshopper",
+        377
+      },
+      {
+        "Chattering Teeth Bomb",
+        378
+      },
+      {
+        "Blue Cultist Archer",
+        379
+      },
+      {
+        "White Cultist Archer",
+        380
+      },
+      {
+        "Brain Scrambler",
+        381
+      },
+      {
+        "Ray Gunner",
+        382
+      },
+      {
+        "Martian Officer",
+        383
+      },
+      {
+        "Bubble Shield",
+        384
+      },
+      {
+        "Gray Grunt",
+        385
+      },
+      {
+        "Martian Engineer",
+        386
+      },
+      {
+        "Tesla Turret",
+        387
+      },
+      {
+        "Martian Drone",
+        388
+      },
+      {
+        "Gigazapper",
+        389
+      },
+      {
+        "Scutlix Gunner",
+        390
+      },
+      {
+        "Scutlix",
+        391
+      },
+      {
+        "Martian Saucer",
+        392
+      },
+      {
+        "Martian Saucer Turret",
+        393
+      },
+      {
+        "Martian Saucer Cannon",
+        394
+      },
+      {
+        "Moon Lord",
+        396
+      },
+      {
+        "Moon Lord's Hand",
+        397
+      },
+      {
+        "Moon Lord's Core",
+        398
+      },
+      {
+        "Martian Probe",
+        399
+      },
+      {
+        "Milkyway Weaver",
+        402
+      },
+      {
+        "Star Cell",
+        405
+      },
+      {
+        "Flow Invader",
+        407
+      },
+      {
+        "Twinkle Popper",
+        409
+      },
+      {
+        "Twinkle",
+        410
+      },
+      {
+        "Stargazer",
+        411
+      },
+      {
+        "Crawltipede",
+        412
+      },
+      {
+        "Drakomire",
+        415
+      },
+      {
+        "Drakomire Rider",
+        416
+      },
+      {
+        "Sroller",
+        417
+      },
+      {
+        "Corite",
+        418
+      },
+      {
+        "Selenian",
+        419
+      },
+      {
+        "Nebula Floater",
+        420
+      },
+      {
+        "Brain Suckler",
+        421
+      },
+      {
+        "Vortex Pillar",
+        422
+      },
+      {
+        "Evolution Beast",
+        423
+      },
+      {
+        "Predictor",
+        424
+      },
+      {
+        "Storm Diver",
+        425
+      },
+      {
+        "Alien Queen",
+        426
+      },
+      {
+        "Alien Hornet",
+        427
+      },
+      {
+        "Alien Larva",
+        428
+      },
+      {
+        "Vortexian",
+        429
+      },
+      {
+        "Mysterious Tablet",
+        437
+      },
+      {
+        "Lunatic Devote",
+        438
+      },
+      {
+        "Lunatic Cultist",
+        439
+      },
+      {
+        "Tax Collector",
+        441
+      },
+      {
+        "Gold Bird",
+        442
+      },
+      {
+        "Gold Bunny",
+        443
+      },
+      {
+        "Gold Butterfly",
+        444
+      },
+      {
+        "Gold Frog",
+        445
+      },
+      {
+        "Gold Grasshopper",
+        446
+      },
+      {
+        "Gold Mouse",
+        447
+      },
+      {
+        "Gold Worm",
+        448
+      },
+      {
+        "Phantasm Dragon",
+        454
+      },
+      {
+        "Butcher",
+        460
+      },
+      {
+        "Creature from the Deep",
+        461
+      },
+      {
+        "Fritz",
+        462
+      },
+      {
+        "Nailhead",
+        463
+      },
+      {
+        "Crimtane Bunny",
+        464
+      },
+      {
+        "Crimtane Goldfish",
+        465
+      },
+      {
+        "Psycho",
+        466
+      },
+      {
+        "Deadly Sphere",
+        467
+      },
+      {
+        "Dr. Man Fly",
+        468
+      },
+      {
+        "The Possessed",
+        469
+      },
+      {
+        "Vicious Penguin",
+        470
+      },
+      {
+        "Goblin Summoner",
+        471
+      },
+      {
+        "Shadowflame Apparation",
+        472
+      },
+      {
+        "Corrupt Mimic",
+        473
+      },
+      {
+        "Crimson Mimic",
+        474
+      },
+      {
+        "Hallowed Mimic",
+        475
+      },
+      {
+        "Jungle Mimic",
+        476
+      },
+      {
+        "Mothron",
+        477
+      },
+      {
+        "Mothron Egg",
+        478
+      },
+      {
+        "Baby Mothron",
+        479
+      },
+      {
+        "Medusa",
+        480
+      },
+      {
+        "Hoplite",
+        481
+      },
+      {
+        "Granite Golem",
+        482
+      },
+      {
+        "Granite Elemental",
+        483
+      },
+      {
+        "Enchanted Nightcrawler",
+        484
+      },
+      {
+        "Grubby",
+        485
+      },
+      {
+        "Sluggy",
+        486
+      },
+      {
+        "Buggy",
+        487
+      },
+      {
+        "Target Dummy",
+        488
+      },
+      {
+        "Blood Zombie",
+        489
+      },
+      {
+        "Drippler",
+        490
+      },
+      {
+        "Stardust Pillar",
+        493
+      },
+      {
+        "Crawdad",
+        494
+      },
+      {
+        "Giant Shelly",
+        496
+      },
+      {
+        "Salamander",
+        498
+      },
+      {
+        "Nebula Pillar",
+        507
+      },
+      {
+        "Antlion Charger",
+        508
+      },
+      {
+        "Antlion Swarmer",
+        509
+      },
+      {
+        "Dune Splicer",
+        510
+      },
+      {
+        "Tomb Crawler",
+        513
+      },
+      {
+        "Solar Flare",
+        516
+      },
+      {
+        "Solar Pillar",
+        517
+      },
+      {
+        "Drakanian",
+        518
+      },
+      {
+        "Solar Fragment",
+        519
+      },
+      {
+        "Martian Walker",
+        520
+      },
+      {
+        "Ancient Vision",
+        521
+      },
+      {
+        "Ancient Light",
+        522
+      },
+      {
+        "Ancient Doom",
+        523
+      },
+      {
+        "Ghoul",
+        524
+      },
+      {
+        "Vile Ghoul",
+        525
+      },
+      {
+        "Tainted Ghoul",
+        526
+      },
+      {
+        "Dreamer Ghoul",
+        527
+      },
+      {
+        "Lamia",
+        528
+      },
+      {
+        "Sand Poacher",
+        530
+      },
+      {
+        "Basilisk",
+        532
+      },
+      {
+        "Desert Spirit",
+        533
+      },
+      {
+        "Tortured Soul",
+        534
+      },
+      {
+        "Spiked Slime",
+        535
+      },
+      {
+        "The Bride",
+        536
+      },
+      {
+        "Sand Slime",
+        537
+      },
+      {
+        "Red Squirrel",
+        538
+      },
+      {
+        "Gold Squirrel",
+        539
+      },
+      {
+        "Sand Elemental",
+        541
+      },
+      {
+        "Sand Shark",
+        542
+      },
+      {
+        "Bone Biter",
+        543
+      },
+      {
+        "Flesh Reaver",
+        544
+      },
+      {
+        "Crystal Thresher",
+        545
+      },
+      {
+        "Angry Tumbler",
+        546
+      },
+      {
+        "???",
+        547
+      },
+      {
+        "Eternia Crystal",
+        548
+      },
+      {
+        "Mysterious Portal",
+        549
+      },
+      {
+        "Tavernkeep",
+        550
+      },
+      {
+        "Betsy",
+        551
+      },
+      {
+        "Etherian Goblin",
+        552
+      },
+      {
+        "Etherian Goblin Bomber",
+        555
+      },
+      {
+        "Etherian Wyvern",
+        558
+      },
+      {
+        "Etherian Javelin Thrower",
+        561
+      },
+      {
+        "Dark Mage",
+        564
+      },
+      {
+        "Old One's Skeleton",
+        566
+      },
+      {
+        "Wither Beast",
+        568
+      },
+      {
+        "Drakin",
+        570
+      },
+      {
+        "Kobold",
+        572
+      },
+      {
+        "Kobold Glider",
+        574
+      },
+      {
+        "Ogre",
+        576
+      },
+      {
+        "Etherian Lightning Bug",
+        578
+      }
+    };
     public const short BigHornetStingy = -65;
     public const short LittleHornetStingy = -64;
     public const short BigHornetSpikey = -63;
@@ -624,7 +2587,7 @@ namespace Terraria.ID
     public const short SandsharkHallow = 545;
     public const short Tumbleweed = 546;
     public const short DD2AttackerTest = 547;
-    public const short DD2Crystal = 548;
+    public const short DD2EterniaCrystal = 548;
     public const short DD2LanePortal = 549;
     public const short DD2Bartender = 550;
     public const short DD2Betsy = 551;
@@ -658,6 +2621,21 @@ namespace Terraria.ID
     public const short BartenderUnconscious = 579;
     public const short Count = 580;
 
+    public static int FromLegacyName(string name)
+    {
+      int num;
+      if (NPCID.LegacyNameToIdMap.TryGetValue(name, out num))
+        return num;
+      return 0;
+    }
+
+    public static int FromNetId(int id)
+    {
+      if (id < 0)
+        return NPCID.NetIdMap[-id - 1];
+      return id;
+    }
+
     public static class Sets
     {
       public static SetFactory Factory = new SetFactory(580);
@@ -683,7 +2661,7 @@ namespace Terraria.ID
       public static int[] AttackAverageChance = NPCID.Sets.Factory.CreateIntSet(1, 38, 40, 17, 30, 107, 60, 19, 30, 22, 30, 124, 30, 228, 50, 178, 50, 18, 60, 229, 40, 209, 30, 54, 30, 108, 30, 160, 60, 20, 60, 369, 50, 453, 30, 368, 40, 207, 1, 227, 30, 208, 50, 142, 50, 441, 1, 353, 1, 550, 40);
       public static int[] AttackType = NPCID.Sets.Factory.CreateIntSet(-1, 38, 0, 17, 0, 107, 0, 19, 1, 22, 1, 124, 0, 228, 1, 178, 1, 18, 0, 229, 1, 209, 1, 54, 2, 108, 2, 160, 2, 20, 2, 369, 0, 453, 0, 368, 1, 207, 3, 227, 1, 208, 0, 142, 0, 441, 3, 353, 3, 550, 0);
       public static int[] PrettySafe = NPCID.Sets.Factory.CreateIntSet(-1, 19, 300, 22, 200, 124, 200, 228, 300, 178, 300, 229, 300, 209, 300, 54, 100, 108, 100, 160, 100, 20, 200, 368, 200, 227, 200);
-      public static Color[] MagicAuraColor = NPCID.Sets.Factory.CreateCustomSet<Color>(Color.White, (object) (short) 54, (object) new Color(100, 4, 227, (int) sbyte.MaxValue), (object) (short) 108, (object) new Color((int) byte.MaxValue, 80, 60, (int) sbyte.MaxValue), (object) (short) 160, (object) new Color(40, 80, (int) byte.MaxValue, (int) sbyte.MaxValue), (object) (short) 20, (object) new Color(40, (int) byte.MaxValue, 80, (int) sbyte.MaxValue));
+      public static Color[] MagicAuraColor = NPCID.Sets.Factory.CreateCustomSet<Color>(Color.get_White(), (object) (short) 54, (object) new Color(100, 4, 227, (int) sbyte.MaxValue), (object) (short) 108, (object) new Color((int) byte.MaxValue, 80, 60, (int) sbyte.MaxValue), (object) (short) 160, (object) new Color(40, 80, (int) byte.MaxValue, (int) sbyte.MaxValue), (object) (short) 20, (object) new Color(40, (int) byte.MaxValue, 80, (int) sbyte.MaxValue));
       public static List<int> Skeletons = new List<int>()
       {
         77,
@@ -717,7 +2695,7 @@ namespace Terraria.ID
         44
       };
       public static int[] BossHeadTextures = NPCID.Sets.Factory.CreateIntSet(-1, 4, 0, 13, 2, 344, 3, 370, 4, 246, 5, 249, 5, 345, 6, 50, 7, 396, 8, 395, 9, 325, 10, 262, 11, 327, 13, 222, 14, 125, 15, 126, 16, 346, 17, (int) sbyte.MaxValue, 18, 35, 19, 68, 19, 113, 22, 266, 23, 439, 24, 440, 24, 134, 25, 491, 26, 517, 27, 422, 28, 507, 29, 493, 30, 549, 35, 564, 32, 565, 32, 576, 33, 577, 33, 551, 34, 548, 36);
-      public static bool[] ExcludedFromDeathTally = NPCID.Sets.Factory.CreateBoolSet(0 != 0, 121, 384, 406);
+      public static bool[] ExcludedFromDeathTally = NPCID.Sets.Factory.CreateBoolSet(false, 121, 384, 406);
       public static bool[] TechnicallyABoss = NPCID.Sets.Factory.CreateBoolSet(517, 422, 507, 493, 399);
       public static bool[] MustAlwaysDraw = NPCID.Sets.Factory.CreateBoolSet(113, 114, 115, 116, 126, 125);
       public static int[] ExtraTextureCount = NPCID.Sets.Factory.CreateIntSet(0, 38, 1, 17, 1, 107, 0, 19, 0, 22, 0, 124, 1, 228, 0, 178, 1, 18, 1, 229, 1, 209, 1, 54, 1, 108, 1, 160, 0, 20, 0, 369, 1, 453, 1, 368, 1, 207, 1, 227, 1, 208, 0, 142, 1, 441, 1, 353, 1, 550, 0);

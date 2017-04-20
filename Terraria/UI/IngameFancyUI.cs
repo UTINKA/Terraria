@@ -1,14 +1,15 @@
 ﻿// Decompiled with JetBrains decompiler
 // Type: Terraria.UI.IngameFancyUI
-// Assembly: Terraria, Version=1.3.4.4, Culture=neutral, PublicKeyToken=null
-// MVID: DEE50102-BCC2-472F-987B-153E892583F1
-// Assembly location: E:\Steam\SteamApps\common\Terraria\Terraria.exe
+// Assembly: Terraria, Version=1.3.5.1, Culture=neutral, PublicKeyToken=null
+// MVID: DF0400F4-EE47-4864-BE80-932EDB02D8A6
+// Assembly location: F:\Steam\steamapps\common\Terraria\Terraria.exe
 
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using Terraria.Achievements;
 using Terraria.GameContent.UI.States;
+using Terraria.GameInput;
 using Terraria.Localization;
 using Terraria.UI.Gamepad;
 
@@ -78,9 +79,11 @@ namespace Terraria.UI
           Player player = Main.player[Main.myPlayer];
           Main.npcChatText = Main.chest[player.chest].name;
           if ((int) Main.tile[player.chestX, player.chestY].type == 21)
-            Main.defaultChestName = Lang.chestType[(int) Main.tile[player.chestX, player.chestY].frameX / 36];
+            Main.defaultChestName = Lang.chestType[(int) Main.tile[player.chestX, player.chestY].frameX / 36].Value;
+          if ((int) Main.tile[player.chestX, player.chestY].type == 467)
+            Main.defaultChestName = Lang.chestType2[(int) Main.tile[player.chestX, player.chestY].frameX / 36].Value;
           if ((int) Main.tile[player.chestX, player.chestY].type == 88)
-            Main.defaultChestName = Lang.dresserType[(int) Main.tile[player.chestX, player.chestY].frameX / 54];
+            Main.defaultChestName = Lang.dresserType[(int) Main.tile[player.chestX, player.chestY].frameX / 54].Value;
           if (Main.npcChatText == "")
             Main.npcChatText = Main.defaultChestName;
           Main.editChest = true;
@@ -141,7 +144,7 @@ namespace Terraria.UI
       {
         if (!Main.inFancyUI)
           Main.InGameUI.SetState((UIState) null);
-        if (Main.screenWidth >= 1705)
+        if (Main.screenWidth >= 1705 || !PlayerInput.UsingGamepad)
           flag = true;
       }
       if (!Main.gameMenu)

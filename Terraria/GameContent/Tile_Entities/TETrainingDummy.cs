@@ -1,8 +1,8 @@
 ﻿// Decompiled with JetBrains decompiler
 // Type: Terraria.GameContent.Tile_Entities.TETrainingDummy
-// Assembly: Terraria, Version=1.3.4.4, Culture=neutral, PublicKeyToken=null
-// MVID: DEE50102-BCC2-472F-987B-153E892583F1
-// Assembly location: E:\Steam\SteamApps\common\Terraria\Terraria.exe
+// Assembly: Terraria, Version=1.3.5.1, Culture=neutral, PublicKeyToken=null
+// MVID: DF0400F4-EE47-4864-BE80-932EDB02D8A6
+// Assembly location: F:\Steam\steamapps\common\Terraria\Terraria.exe
 
 using Microsoft.Xna.Framework;
 using System;
@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using System.IO;
 using Terraria.DataStructures;
 using Terraria.ID;
+using Terraria.Localization;
 
 namespace Terraria.GameContent.Tile_Entities
 {
@@ -45,10 +46,13 @@ namespace Terraria.GameContent.Tile_Entities
 
     public override void Update()
     {
-      Rectangle rectangle = new Rectangle(0, 0, 32, 48);
-      rectangle.Inflate(1600, 1600);
-      int x = rectangle.X;
-      int y = rectangle.Y;
+      Rectangle rectangle1;
+      // ISSUE: explicit reference operation
+      ((Rectangle) @rectangle1).\u002Ector(0, 0, 32, 48);
+      // ISSUE: explicit reference operation
+      ((Rectangle) @rectangle1).Inflate(1600, 1600);
+      int x = (int) rectangle1.X;
+      int y = (int) rectangle1.Y;
       if (this.npc != -1)
       {
         if (Main.npc[this.npc].active && Main.npc[this.npc].type == 488 && ((double) Main.npc[this.npc].ai[0] == (double) this.Position.X && (double) Main.npc[this.npc].ai[1] == (double) this.Position.Y))
@@ -58,15 +62,20 @@ namespace Terraria.GameContent.Tile_Entities
       else
       {
         TETrainingDummy.FillPlayerHitboxes();
-        rectangle.X = (int) this.Position.X * 16 + x;
-        rectangle.Y = (int) this.Position.Y * 16 + y;
+        rectangle1.X = (__Null) ((int) this.Position.X * 16 + x);
+        rectangle1.Y = (__Null) ((int) this.Position.Y * 16 + y);
         bool flag = false;
-        foreach (KeyValuePair<int, Rectangle> keyValuePair in TETrainingDummy.playerBox)
+        using (Dictionary<int, Rectangle>.Enumerator enumerator = TETrainingDummy.playerBox.GetEnumerator())
         {
-          if (keyValuePair.Value.Intersects(rectangle))
+          while (enumerator.MoveNext())
           {
-            flag = true;
-            break;
+            Rectangle rectangle2 = enumerator.Current.Value;
+            // ISSUE: explicit reference operation
+            if (((Rectangle) @rectangle2).Intersects(rectangle1))
+            {
+              flag = true;
+              break;
+            }
           }
         }
         if (!flag)
@@ -108,7 +117,7 @@ namespace Terraria.GameContent.Tile_Entities
       if (Main.netMode != 1)
         return TETrainingDummy.Place(x - 1, y - 2);
       NetMessage.SendTileSquare(Main.myPlayer, x - 1, y - 1, 3, TileChangeType.None);
-      NetMessage.SendData(87, -1, -1, "", x - 1, (float) (y - 2), 0.0f, 0.0f, 0, 0, 0);
+      NetMessage.SendData(87, -1, -1, (NetworkText) null, x - 1, (float) (y - 2), 0.0f, 0.0f, 0, 0, 0);
       return -1;
     }
 
@@ -148,7 +157,7 @@ namespace Terraria.GameContent.Tile_Entities
       this.npc = index;
       if (Main.netMode == 1)
         return;
-      NetMessage.SendData(86, -1, -1, "", this.ID, (float) this.Position.X, (float) this.Position.Y, 0.0f, 0, 0, 0);
+      NetMessage.SendData(86, -1, -1, (NetworkText) null, this.ID, (float) this.Position.X, (float) this.Position.Y, 0.0f, 0, 0, 0);
     }
 
     public void Deactivate()
@@ -158,7 +167,7 @@ namespace Terraria.GameContent.Tile_Entities
       this.npc = -1;
       if (Main.netMode == 1)
         return;
-      NetMessage.SendData(86, -1, -1, "", this.ID, (float) this.Position.X, (float) this.Position.Y, 0.0f, 0, 0, 0);
+      NetMessage.SendData(86, -1, -1, (NetworkText) null, this.ID, (float) this.Position.X, (float) this.Position.Y, 0.0f, 0, 0, 0);
     }
 
     public override string ToString()

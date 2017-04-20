@@ -1,8 +1,8 @@
 ﻿// Decompiled with JetBrains decompiler
 // Type: Terraria.Liquid
-// Assembly: Terraria, Version=1.3.4.4, Culture=neutral, PublicKeyToken=null
-// MVID: DEE50102-BCC2-472F-987B-153E892583F1
-// Assembly location: E:\Steam\SteamApps\common\Terraria\Terraria.exe
+// Assembly: Terraria, Version=1.3.5.1, Culture=neutral, PublicKeyToken=null
+// MVID: DF0400F4-EE47-4864-BE80-932EDB02D8A6
+// Assembly location: F:\Steam\steamapps\common\Terraria\Terraria.exe
 
 using Microsoft.Xna.Framework;
 using System;
@@ -40,6 +40,8 @@ namespace Terraria
 
     public static void NetSendLiquid(int x, int y)
     {
+      if (WorldGen.gen)
+        return;
       lock (Liquid._netChangeSet)
         Liquid._netChangeSet.Add((x & (int) ushort.MaxValue) << 16 | y & (int) ushort.MaxValue);
     }
@@ -75,12 +77,12 @@ namespace Terraria
         if (verbose > 0)
         {
           float num2 = (float) (maxY - index1) / (float) (maxY - minY + 1) / (float) verbose;
-          Main.statusText = Lang.gen[27] + " " + (object) (int) ((double) num2 * 100.0 + 1.0) + "%";
+          Main.statusText = Lang.gen[27].Value + " " + (object) (int) ((double) num2 * 100.0 + 1.0) + "%";
         }
         else if (verbose < 0)
         {
           float num2 = (float) (maxY - index1) / (float) (maxY - minY + 1) / (float) -verbose;
-          Main.statusText = Lang.gen[18] + " " + (object) (int) ((double) num2 * 100.0 + 1.0) + "%";
+          Main.statusText = Lang.gen[18].Value + " " + (object) (int) ((double) num2 * 100.0 + 1.0) + "%";
         }
         for (int index2 = 0; index2 < 2; ++index2)
         {
@@ -717,7 +719,7 @@ namespace Terraria
           Liquid.stuckAmount = Liquid.numLiquid;
         }
       }
-      if (Main.netMode != 2 || Liquid._netChangeSet.Count <= 0)
+      if (WorldGen.gen || Main.netMode != 2 || Liquid._netChangeSet.Count <= 0)
         return;
       Utils.Swap<HashSet<int>>(ref Liquid._netChangeSet, ref Liquid._swapNetChangeSet);
       NetManager.Instance.Broadcast(NetLiquidModule.Serialize(Liquid._swapNetChangeSet), -1);
@@ -759,7 +761,7 @@ namespace Terraria
         WorldGen.KillTile(x, y, false, false, false);
         if (Main.netMode != 2)
           return;
-        NetMessage.SendData(17, -1, -1, "", 0, (float) x, (float) y, 0.0f, 0, 0, 0);
+        NetMessage.SendData(17, -1, -1, (NetworkText) null, 0, (float) x, (float) y, 0.0f, 0, 0, 0);
       }
     }
 
@@ -797,7 +799,7 @@ namespace Terraria
         {
           WorldGen.KillTile(x, y, false, false, false);
           if (Main.netMode == 2)
-            NetMessage.SendData(17, -1, -1, "", 0, (float) x, (float) y, 0.0f, 0, 0, 0);
+            NetMessage.SendData(17, -1, -1, (NetworkText) null, 0, (float) x, (float) y, 0.0f, 0, 0, 0);
         }
         if (tile5.active())
           return;
@@ -824,13 +826,13 @@ namespace Terraria
         {
           WorldGen.KillTile(x, y + 1, false, false, false);
           if (Main.netMode == 2)
-            NetMessage.SendData(17, -1, -1, "", 0, (float) x, (float) (y + 1), 0.0f, 0, 0, 0);
+            NetMessage.SendData(17, -1, -1, (NetworkText) null, 0, (float) x, (float) (y + 1), 0.0f, 0, 0, 0);
         }
         else if (tile4.active() && Main.tileObsidianKill[(int) tile4.type])
         {
           WorldGen.KillTile(x, y + 1, false, false, false);
           if (Main.netMode == 2)
-            NetMessage.SendData(17, -1, -1, "", 0, (float) x, (float) (y + 1), 0.0f, 0, 0, 0);
+            NetMessage.SendData(17, -1, -1, (NetworkText) null, 0, (float) x, (float) (y + 1), 0.0f, 0, 0, 0);
         }
         if (tile4.active() && !flag)
           return;
@@ -897,7 +899,7 @@ namespace Terraria
         {
           WorldGen.KillTile(x, y, false, false, false);
           if (Main.netMode == 2)
-            NetMessage.SendData(17, -1, -1, "", 0, (float) x, (float) y, 0.0f, 0, 0, 0);
+            NetMessage.SendData(17, -1, -1, (NetworkText) null, 0, (float) x, (float) y, 0.0f, 0, 0, 0);
         }
         if (tile5.active())
           return;
@@ -921,13 +923,13 @@ namespace Terraria
         {
           WorldGen.KillTile(x, y + 1, false, false, false);
           if (Main.netMode == 2)
-            NetMessage.SendData(17, -1, -1, "", 0, (float) x, (float) (y + 1), 0.0f, 0, 0, 0);
+            NetMessage.SendData(17, -1, -1, (NetworkText) null, 0, (float) x, (float) (y + 1), 0.0f, 0, 0, 0);
         }
         else if (tile4.active() && Main.tileObsidianKill[(int) tile4.type])
         {
           WorldGen.KillTile(x, y + 1, false, false, false);
           if (Main.netMode == 2)
-            NetMessage.SendData(17, -1, -1, "", 0, (float) x, (float) (y + 1), 0.0f, 0, 0, 0);
+            NetMessage.SendData(17, -1, -1, (NetworkText) null, 0, (float) x, (float) (y + 1), 0.0f, 0, 0, 0);
         }
         if (tile4.active())
           return;

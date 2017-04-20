@@ -1,8 +1,8 @@
 ﻿// Decompiled with JetBrains decompiler
 // Type: Terraria.ID.ArmorIDs
-// Assembly: Terraria, Version=1.3.4.4, Culture=neutral, PublicKeyToken=null
-// MVID: DEE50102-BCC2-472F-987B-153E892583F1
-// Assembly location: E:\Steam\SteamApps\common\Terraria\Terraria.exe
+// Assembly: Terraria, Version=1.3.5.1, Culture=neutral, PublicKeyToken=null
+// MVID: DF0400F4-EE47-4864-BE80-932EDB02D8A6
+// Assembly location: F:\Steam\steamapps\common\Terraria\Terraria.exe
 
 using System.Collections.Generic;
 
@@ -224,7 +224,9 @@ namespace Terraria.ID
       public const int ApprenticeDark = 211;
       public const int RedRidingHuntress = 212;
       public const int ShinobiInfiltrator = 213;
-      public const int Count = 214;
+      public const int ArkhalisHat = 214;
+      public const int LeinforsHat = 215;
+      public const int Count = 216;
     }
 
     public class Body
@@ -377,12 +379,14 @@ namespace Terraria.ID
       public const int ApprenticeDark = 205;
       public const int RedRidingHuntress = 206;
       public const int ShinobiInfiltrator = 207;
-      public const int Count = 208;
+      public const int ArkhalisShirt = 208;
+      public const int LeinforsShirt = 209;
+      public const int Count = 210;
 
       public class Sets
       {
-        public static SetFactory Factory = new SetFactory(208);
-        public static bool[] NeedsToDrawArm = ArmorIDs.Body.Sets.Factory.CreateBoolSet(0 != 0, 200, 202, 201, 203, 195, 205, 207, 206);
+        public static SetFactory Factory = new SetFactory(210);
+        public static bool[] NeedsToDrawArm = ArmorIDs.Body.Sets.Factory.CreateBoolSet(false, 200, 202, 201, 203, 195, 205, 207, 206);
       }
     }
 
@@ -517,11 +521,15 @@ namespace Terraria.ID
       public const int RedRidingHuntress = 154;
       public const int RedRidingHuntress_Male = 155;
       public const int ShinobiInfiltrator = 156;
-      public const int Count = 157;
+      public const int ArkhalisPants_Male = 157;
+      public const int ArkhalisPants_Female = 158;
+      public const int LeinforsPants = 159;
+      public const int LeinforsPantsCoat = 160;
+      public const int Count = 161;
 
       public class Sets
       {
-        public static SetFactory Factory = new SetFactory(157);
+        public static SetFactory Factory = new SetFactory(161);
         public static List<int> MannequinIncompatible = new List<int>();
       }
     }
@@ -677,7 +685,9 @@ namespace Terraria.ID
       public const sbyte SkiphssPaws = 35;
       public const sbyte LokisWings = 36;
       public const sbyte BetsyWings = 37;
-      public const int Count = 38;
+      public const sbyte ArkhalisWings = 38;
+      public const sbyte LeinforsWings = 39;
+      public const int Count = 40;
     }
 
     public class Shield

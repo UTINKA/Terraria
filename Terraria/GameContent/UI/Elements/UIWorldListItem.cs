@@ -1,17 +1,17 @@
 ﻿// Decompiled with JetBrains decompiler
 // Type: Terraria.GameContent.UI.Elements.UIWorldListItem
-// Assembly: Terraria, Version=1.3.4.4, Culture=neutral, PublicKeyToken=null
-// MVID: DEE50102-BCC2-472F-987B-153E892583F1
-// Assembly location: E:\Steam\SteamApps\common\Terraria\Terraria.exe
+// Assembly: Terraria, Version=1.3.5.1, Culture=neutral, PublicKeyToken=null
+// MVID: DF0400F4-EE47-4864-BE80-932EDB02D8A6
+// Assembly location: F:\Steam\steamapps\common\Terraria\Terraria.exe
 
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using ReLogic.OS;
 using Terraria.Graphics;
 using Terraria.IO;
 using Terraria.Localization;
 using Terraria.Social;
 using Terraria.UI;
-using Terraria.Utilities;
 
 namespace Terraria.GameContent.UI.Elements
 {
@@ -42,20 +42,9 @@ namespace Terraria.GameContent.UI.Elements
 
     public UIWorldListItem(WorldFileData data, int snapPointIndex)
     {
-      this.BorderColor = new Color(89, 116, 213) * 0.7f;
-      this._dividerTexture = TextureManager.Load("Images/UI/Divider");
-      this._innerPanelTexture = TextureManager.Load("Images/UI/InnerPanelBackground");
-      this._buttonCloudActiveTexture = TextureManager.Load("Images/UI/ButtonCloudActive");
-      this._buttonCloudInactiveTexture = TextureManager.Load("Images/UI/ButtonCloudInactive");
-      this._buttonFavoriteActiveTexture = TextureManager.Load("Images/UI/ButtonFavoriteActive");
-      this._buttonFavoriteInactiveTexture = TextureManager.Load("Images/UI/ButtonFavoriteInactive");
-      this._buttonPlayTexture = TextureManager.Load("Images/UI/ButtonPlay");
-      this._buttonSeedTexture = TextureManager.Load("Images/UI/ButtonSeed");
-      this._buttonDeleteTexture = TextureManager.Load("Images/UI/ButtonDelete");
-      this.Height.Set(96f, 0.0f);
-      this.Width.Set(0.0f, 1f);
-      this.SetPadding(6f);
       this._data = data;
+      this.LoadTextures();
+      this.InitializeAppearance();
       this._worldIcon = new UIImage(this.GetIcon());
       this._worldIcon.Left.Set(4f, 0.0f);
       this._worldIcon.OnDoubleClick += new UIElement.MouseEvent(this.PlayGame);
@@ -127,6 +116,27 @@ namespace Terraria.GameContent.UI.Elements
       uiImageButton1.SetSnapPoint("Play", snapPointIndex, new Vector2?(), new Vector2?());
       uiImageButton2.SetSnapPoint("Favorite", snapPointIndex, new Vector2?(), new Vector2?());
       uiImageButton4.SetSnapPoint("Delete", snapPointIndex, new Vector2?(), new Vector2?());
+    }
+
+    private void LoadTextures()
+    {
+      this._dividerTexture = TextureManager.Load("Images/UI/Divider");
+      this._innerPanelTexture = TextureManager.Load("Images/UI/InnerPanelBackground");
+      this._buttonCloudActiveTexture = TextureManager.Load("Images/UI/ButtonCloudActive");
+      this._buttonCloudInactiveTexture = TextureManager.Load("Images/UI/ButtonCloudInactive");
+      this._buttonFavoriteActiveTexture = TextureManager.Load("Images/UI/ButtonFavoriteActive");
+      this._buttonFavoriteInactiveTexture = TextureManager.Load("Images/UI/ButtonFavoriteInactive");
+      this._buttonPlayTexture = TextureManager.Load("Images/UI/ButtonPlay");
+      this._buttonSeedTexture = TextureManager.Load("Images/UI/ButtonSeed");
+      this._buttonDeleteTexture = TextureManager.Load("Images/UI/ButtonDelete");
+    }
+
+    private void InitializeAppearance()
+    {
+      this.Height.Set(96f, 0.0f);
+      this.Width.Set(0.0f, 1f);
+      this.SetPadding(6f);
+      this.BorderColor = Color.op_Multiply(new Color(89, 116, 213), 0.7f);
     }
 
     private Texture2D GetIcon()
@@ -238,7 +248,7 @@ namespace Terraria.GameContent.UI.Elements
 
     private void SeedButtonClick(UIMouseEvent evt, UIElement listeningElement)
     {
-      PlatformUtilities.SetClipboard(this._data.SeedText);
+      ((Platform) Platform.Current).set_Clipboard(this._data.SeedText);
       this._buttonLabel.SetText(Language.GetTextValue("UI.SeedCopied"));
     }
 
@@ -266,15 +276,15 @@ namespace Terraria.GameContent.UI.Elements
     public override void MouseOut(UIMouseEvent evt)
     {
       base.MouseOut(evt);
-      this.BackgroundColor = new Color(63, 82, 151) * 0.7f;
-      this.BorderColor = new Color(89, 116, 213) * 0.7f;
+      this.BackgroundColor = Color.op_Multiply(new Color(63, 82, 151), 0.7f);
+      this.BorderColor = Color.op_Multiply(new Color(89, 116, 213), 0.7f);
     }
 
     private void DrawPanel(SpriteBatch spriteBatch, Vector2 position, float width)
     {
-      spriteBatch.Draw(this._innerPanelTexture, position, new Rectangle?(new Rectangle(0, 0, 8, this._innerPanelTexture.Height)), Color.White);
-      spriteBatch.Draw(this._innerPanelTexture, new Vector2(position.X + 8f, position.Y), new Rectangle?(new Rectangle(8, 0, 8, this._innerPanelTexture.Height)), Color.White, 0.0f, Vector2.Zero, new Vector2((float) (((double) width - 16.0) / 8.0), 1f), SpriteEffects.None, 0.0f);
-      spriteBatch.Draw(this._innerPanelTexture, new Vector2((float) ((double) position.X + (double) width - 8.0), position.Y), new Rectangle?(new Rectangle(16, 0, 8, this._innerPanelTexture.Height)), Color.White);
+      spriteBatch.Draw(this._innerPanelTexture, position, new Rectangle?(new Rectangle(0, 0, 8, this._innerPanelTexture.get_Height())), Color.get_White());
+      spriteBatch.Draw(this._innerPanelTexture, new Vector2((float) (position.X + 8.0), (float) position.Y), new Rectangle?(new Rectangle(8, 0, 8, this._innerPanelTexture.get_Height())), Color.get_White(), 0.0f, Vector2.get_Zero(), new Vector2((float) (((double) width - 16.0) / 8.0), 1f), (SpriteEffects) 0, 0.0f);
+      spriteBatch.Draw(this._innerPanelTexture, new Vector2((float) (position.X + (double) width - 8.0), (float) position.Y), new Rectangle?(new Rectangle(16, 0, 8, this._innerPanelTexture.get_Height())), Color.get_White());
     }
 
     protected override void DrawSelf(SpriteBatch spriteBatch)
@@ -282,32 +292,54 @@ namespace Terraria.GameContent.UI.Elements
       base.DrawSelf(spriteBatch);
       CalculatedStyle innerDimensions = this.GetInnerDimensions();
       CalculatedStyle dimensions = this._worldIcon.GetDimensions();
-      float x1 = dimensions.X + dimensions.Width;
-      Color color = this._data.IsValid ? Color.White : Color.Red;
-      Utils.DrawBorderString(spriteBatch, this._data.Name, new Vector2(x1 + 6f, dimensions.Y - 2f), color, 1f, 0.0f, 0.0f, -1);
-      spriteBatch.Draw(this._dividerTexture, new Vector2(x1, innerDimensions.Y + 21f), new Rectangle?(), Color.White, 0.0f, Vector2.Zero, new Vector2((float) (((double) this.GetDimensions().X + (double) this.GetDimensions().Width - (double) x1) / 8.0), 1f), SpriteEffects.None, 0.0f);
-      Vector2 position = new Vector2(x1 + 6f, innerDimensions.Y + 29f);
-      float width1 = 80f;
+      float num1 = dimensions.X + dimensions.Width;
+      Color color = this._data.IsValid ? Color.get_White() : Color.get_Red();
+      Utils.DrawBorderString(spriteBatch, this._data.Name, new Vector2(num1 + 6f, dimensions.Y - 2f), color, 1f, 0.0f, 0.0f, -1);
+      spriteBatch.Draw(this._dividerTexture, new Vector2(num1, innerDimensions.Y + 21f), new Rectangle?(), Color.get_White(), 0.0f, Vector2.get_Zero(), new Vector2((float) (((double) this.GetDimensions().X + (double) this.GetDimensions().Width - (double) num1) / 8.0), 1f), (SpriteEffects) 0, 0.0f);
+      Vector2 position;
+      // ISSUE: explicit reference operation
+      ((Vector2) @position).\u002Ector(num1 + 6f, innerDimensions.Y + 29f);
+      float width1 = 100f;
       this.DrawPanel(spriteBatch, position, width1);
       string text = this._data.IsExpertMode ? Language.GetTextValue("UI.Expert") : Language.GetTextValue("UI.Normal");
-      float x2 = Main.fontMouseText.MeasureString(text).X;
-      float x3 = (float) ((double) width1 * 0.5 - (double) x2 * 0.5);
-      Utils.DrawBorderString(spriteBatch, text, position + new Vector2(x3, 3f), this._data.IsExpertMode ? new Color(217, 143, 244) : Color.White, 1f, 0.0f, 0.0f, -1);
-      position.X += width1 + 5f;
-      float width2 = 140f;
+      float x1 = (float) Main.fontMouseText.MeasureString(text).X;
+      float num2 = (float) ((double) width1 * 0.5 - (double) x1 * 0.5);
+      Utils.DrawBorderString(spriteBatch, text, Vector2.op_Addition(position, new Vector2(num2, 3f)), this._data.IsExpertMode ? new Color(217, 143, 244) : Color.get_White(), 1f, 0.0f, 0.0f, -1);
+      // ISSUE: explicit reference operation
+      // ISSUE: variable of a reference type
+      Vector2& local1 = @position;
+      // ISSUE: explicit reference operation
+      double num3 = (^local1).X + ((double) width1 + 5.0);
+      // ISSUE: explicit reference operation
+      (^local1).X = (__Null) num3;
+      float width2 = 150f;
+      if (!GameCulture.English.IsActive)
+        width2 += 40f;
       this.DrawPanel(spriteBatch, position, width2);
       string textValue1 = Language.GetTextValue("UI.WorldSizeFormat", (object) this._data.WorldSizeName);
-      float x4 = Main.fontMouseText.MeasureString(textValue1).X;
-      float x5 = (float) ((double) width2 * 0.5 - (double) x4 * 0.5);
-      Utils.DrawBorderString(spriteBatch, textValue1, position + new Vector2(x5, 3f), Color.White, 1f, 0.0f, 0.0f, -1);
-      position.X += width2 + 5f;
-      float width3 = innerDimensions.X + innerDimensions.Width - position.X;
+      float x2 = (float) Main.fontMouseText.MeasureString(textValue1).X;
+      float num4 = (float) ((double) width2 * 0.5 - (double) x2 * 0.5);
+      Utils.DrawBorderString(spriteBatch, textValue1, Vector2.op_Addition(position, new Vector2(num4, 3f)), Color.get_White(), 1f, 0.0f, 0.0f, -1);
+      // ISSUE: explicit reference operation
+      // ISSUE: variable of a reference type
+      Vector2& local2 = @position;
+      // ISSUE: explicit reference operation
+      double num5 = (^local2).X + ((double) width2 + 5.0);
+      // ISSUE: explicit reference operation
+      (^local2).X = (__Null) num5;
+      float width3 = (float) ((double) innerDimensions.X + (double) innerDimensions.Width - position.X);
       this.DrawPanel(spriteBatch, position, width3);
-      string textValue2 = Language.GetTextValue("UI.WorldCreatedFormat", (object) this._data.CreationTime.ToString("d MMMM yyyy"));
-      float x6 = Main.fontMouseText.MeasureString(textValue2).X;
-      float x7 = (float) ((double) width3 * 0.5 - (double) x6 * 0.5);
-      Utils.DrawBorderString(spriteBatch, textValue2, position + new Vector2(x7, 3f), Color.White, 1f, 0.0f, 0.0f, -1);
-      position.X += width3 + 5f;
+      string textValue2 = Language.GetTextValue("UI.WorldCreatedFormat", !GameCulture.English.IsActive ? (object) this._data.CreationTime.ToShortDateString() : (object) this._data.CreationTime.ToString("d MMMM yyyy"));
+      float x3 = (float) Main.fontMouseText.MeasureString(textValue2).X;
+      float num6 = (float) ((double) width3 * 0.5 - (double) x3 * 0.5);
+      Utils.DrawBorderString(spriteBatch, textValue2, Vector2.op_Addition(position, new Vector2(num6, 3f)), Color.get_White(), 1f, 0.0f, 0.0f, -1);
+      // ISSUE: explicit reference operation
+      // ISSUE: variable of a reference type
+      Vector2& local3 = @position;
+      // ISSUE: explicit reference operation
+      double num7 = (^local3).X + ((double) width3 + 5.0);
+      // ISSUE: explicit reference operation
+      (^local3).X = (__Null) num7;
     }
   }
 }

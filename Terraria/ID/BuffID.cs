@@ -1,12 +1,12 @@
 ﻿// Decompiled with JetBrains decompiler
 // Type: Terraria.ID.BuffID
-// Assembly: Terraria, Version=1.3.4.4, Culture=neutral, PublicKeyToken=null
-// MVID: DEE50102-BCC2-472F-987B-153E892583F1
-// Assembly location: E:\Steam\SteamApps\common\Terraria\Terraria.exe
+// Assembly: Terraria, Version=1.3.5.1, Culture=neutral, PublicKeyToken=null
+// MVID: DF0400F4-EE47-4864-BE80-932EDB02D8A6
+// Assembly location: F:\Steam\steamapps\common\Terraria\Terraria.exe
 
 namespace Terraria.ID
 {
-  public static class BuffID
+  public class BuffID
   {
     public const int ObsidianSkin = 1;
     public const int Regeneration = 2;
@@ -134,6 +134,7 @@ namespace Terraria.ID
     public const int Warmth = 124;
     public const int HornetMinion = 125;
     public const int ImpMinion = 126;
+    public const int ZephyrFish = 127;
     public const int BunnyMount = 128;
     public const int PigronMount = 129;
     public const int SlimeMount = 130;

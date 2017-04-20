@@ -1,8 +1,8 @@
 ﻿// Decompiled with JetBrains decompiler
 // Type: Terraria.GameContent.UI.States.UIAchievementsMenu
-// Assembly: Terraria, Version=1.3.4.4, Culture=neutral, PublicKeyToken=null
-// MVID: DEE50102-BCC2-472F-987B-153E892583F1
-// Assembly location: E:\Steam\SteamApps\common\Terraria\Terraria.exe
+// Assembly: Terraria, Version=1.3.5.1, Culture=neutral, PublicKeyToken=null
+// MVID: DF0400F4-EE47-4864-BE80-932EDB02D8A6
+// Assembly location: F:\Steam\steamapps\common\Terraria\Terraria.exe
 
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -25,12 +25,18 @@ namespace Terraria.GameContent.UI.States
     private UIElement _backpanel;
     private UIElement _outerContainer;
 
-    public override void OnInitialize()
+    public void InitializePage()
     {
+      this.RemoveAllChildren();
+      this._categoryButtons.Clear();
+      this._achievementElements.Clear();
+      this._achievementsList = (UIList) null;
+      bool largeForOtherLanguages = true;
+      int num = largeForOtherLanguages.ToInt() * 100;
       UIElement element1 = new UIElement();
       element1.Width.Set(0.0f, 0.8f);
-      element1.MaxWidth.Set(800f, 0.0f);
-      element1.MinWidth.Set(600f, 0.0f);
+      element1.MaxWidth.Set(800f + (float) num, 0.0f);
+      element1.MinWidth.Set(600f + (float) num, 0.0f);
       element1.Top.Set(220f, 0.0f);
       element1.Height.Set(-220f, 1f);
       element1.HAlign = 0.5f;
@@ -39,7 +45,7 @@ namespace Terraria.GameContent.UI.States
       UIPanel uiPanel = new UIPanel();
       uiPanel.Width.Set(0.0f, 1f);
       uiPanel.Height.Set(-110f, 1f);
-      uiPanel.BackgroundColor = new Color(33, 43, 79) * 0.8f;
+      uiPanel.BackgroundColor = Color.op_Multiply(new Color(33, 43, 79), 0.8f);
       uiPanel.PaddingTop = 0.0f;
       element1.Append((UIElement) uiPanel);
       this._achievementsList = new UIList();
@@ -68,7 +74,7 @@ namespace Terraria.GameContent.UI.States
       List<Achievement> achievementsList = Main.Achievements.CreateAchievementsList();
       for (int index = 0; index < achievementsList.Count; ++index)
       {
-        UIAchievementListItem achievementListItem = new UIAchievementListItem(achievementsList[index]);
+        UIAchievementListItem achievementListItem = new UIAchievementListItem(achievementsList[index], largeForOtherLanguages);
         this._achievementsList.Add((UIElement) achievementListItem);
         this._achievementElements.Add(achievementListItem);
       }
@@ -125,13 +131,13 @@ namespace Terraria.GameContent.UI.States
               textValue = Language.GetTextValue("Achievements.NoCategory");
               break;
           }
-          float x = Main.fontMouseText.MeasureString(textValue).X;
-          Vector2 vector2 = new Vector2((float) Main.mouseX, (float) Main.mouseY) + new Vector2(16f);
-          if ((double) vector2.Y > (double) (Main.screenHeight - 30))
-            vector2.Y = (float) (Main.screenHeight - 30);
-          if ((double) vector2.X > (double) Main.screenWidth - (double) x)
-            vector2.X = (float) (Main.screenWidth - 460);
-          Utils.DrawBorderStringFourWay(spriteBatch, Main.fontMouseText, textValue, vector2.X, vector2.Y, new Color((int) Main.mouseTextColor, (int) Main.mouseTextColor, (int) Main.mouseTextColor, (int) Main.mouseTextColor), Color.Black, Vector2.Zero, 1f);
+          float x = (float) Main.fontMouseText.MeasureString(textValue).X;
+          Vector2 vector2 = Vector2.op_Addition(new Vector2((float) Main.mouseX, (float) Main.mouseY), new Vector2(16f));
+          if (vector2.Y > (double) (Main.screenHeight - 30))
+            vector2.Y = (__Null) (double) (Main.screenHeight - 30);
+          if (vector2.X > (double) Main.screenWidth - (double) x)
+            vector2.X = (__Null) (double) (Main.screenWidth - 460);
+          Utils.DrawBorderStringFourWay(spriteBatch, Main.fontMouseText, textValue, (float) vector2.X, (float) vector2.Y, new Color((int) Main.mouseTextColor, (int) Main.mouseTextColor, (int) Main.mouseTextColor, (int) Main.mouseTextColor), Color.get_Black(), Vector2.get_Zero(), 1f);
           break;
         }
       }
@@ -163,7 +169,7 @@ namespace Terraria.GameContent.UI.States
 
     private void FadedMouseOut(UIMouseEvent evt, UIElement listeningElement)
     {
-      ((UIPanel) evt.Target).BackgroundColor = new Color(63, 82, 151) * 0.8f;
+      ((UIPanel) evt.Target).BackgroundColor = Color.op_Multiply(new Color(63, 82, 151), 0.8f);
     }
 
     private void FilterList(UIMouseEvent evt, UIElement listeningElement)
@@ -179,6 +185,7 @@ namespace Terraria.GameContent.UI.States
 
     public override void OnActivate()
     {
+      this.InitializePage();
       if (Main.gameMenu)
       {
         this._outerContainer.Top.Set(220f, 0.0f);
@@ -198,28 +205,40 @@ namespace Terraria.GameContent.UI.States
     private void SetupGamepadPoints(SpriteBatch spriteBatch)
     {
       UILinkPointNavigator.Shortcuts.BackButtonCommand = 3;
-      int ID1 = 3000;
-      UILinkPointNavigator.SetPosition(ID1, this._backpanel.GetInnerDimensions().ToRectangle().Center.ToVector2());
-      UILinkPointNavigator.SetPosition(ID1 + 1, this._outerContainer.GetInnerDimensions().ToRectangle().Center.ToVector2());
-      int index1 = ID1;
+      int num = 3000;
+      int ID1 = num;
+      Rectangle rectangle1 = this._backpanel.GetInnerDimensions().ToRectangle();
+      // ISSUE: explicit reference operation
+      Vector2 vector2_1 = ((Rectangle) @rectangle1).get_Center().ToVector2();
+      UILinkPointNavigator.SetPosition(ID1, vector2_1);
+      int ID2 = num + 1;
+      Rectangle rectangle2 = this._outerContainer.GetInnerDimensions().ToRectangle();
+      // ISSUE: explicit reference operation
+      Vector2 vector2_2 = ((Rectangle) @rectangle2).get_Center().ToVector2();
+      UILinkPointNavigator.SetPosition(ID2, vector2_2);
+      int index1 = num;
       UILinkPoint point1 = UILinkPointNavigator.Points[index1];
       point1.Unlink();
       point1.Up = index1 + 1;
-      int ID2 = index1 + 1;
-      UILinkPoint point2 = UILinkPointNavigator.Points[ID2];
+      int index2 = index1 + 1;
+      UILinkPoint point2 = UILinkPointNavigator.Points[index2];
       point2.Unlink();
-      point2.Up = ID2 + 1;
-      point2.Down = ID2 - 1;
-      for (int index2 = 0; index2 < this._categoryButtons.Count; ++index2)
+      point2.Up = index2 + 1;
+      point2.Down = index2 - 1;
+      for (int index3 = 0; index3 < this._categoryButtons.Count; ++index3)
       {
-        ++ID2;
-        UILinkPointNavigator.Shortcuts.FANCYUI_HIGHEST_INDEX = ID2;
-        UILinkPointNavigator.SetPosition(ID2, this._categoryButtons[index2].GetInnerDimensions().ToRectangle().Center.ToVector2());
-        UILinkPoint point3 = UILinkPointNavigator.Points[ID2];
+        ++index2;
+        UILinkPointNavigator.Shortcuts.FANCYUI_HIGHEST_INDEX = index2;
+        int ID3 = index2;
+        Rectangle rectangle3 = this._categoryButtons[index3].GetInnerDimensions().ToRectangle();
+        // ISSUE: explicit reference operation
+        Vector2 vector2_3 = ((Rectangle) @rectangle3).get_Center().ToVector2();
+        UILinkPointNavigator.SetPosition(ID3, vector2_3);
+        UILinkPoint point3 = UILinkPointNavigator.Points[index2];
         point3.Unlink();
-        point3.Left = index2 == 0 ? -3 : ID2 - 1;
-        point3.Right = index2 == this._categoryButtons.Count - 1 ? -4 : ID2 + 1;
-        point3.Down = ID1;
+        point3.Left = index3 == 0 ? -3 : index2 - 1;
+        point3.Right = index3 == this._categoryButtons.Count - 1 ? -4 : index2 + 1;
+        point3.Down = num;
       }
     }
   }

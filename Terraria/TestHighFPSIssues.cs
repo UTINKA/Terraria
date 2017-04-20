@@ -1,8 +1,8 @@
 ﻿// Decompiled with JetBrains decompiler
 // Type: Terraria.TestHighFPSIssues
-// Assembly: Terraria, Version=1.3.4.4, Culture=neutral, PublicKeyToken=null
-// MVID: DEE50102-BCC2-472F-987B-153E892583F1
-// Assembly location: E:\Steam\SteamApps\common\Terraria\Terraria.exe
+// Assembly: Terraria, Version=1.3.5.1, Culture=neutral, PublicKeyToken=null
+// MVID: DF0400F4-EE47-4864-BE80-932EDB02D8A6
+// Assembly location: F:\Steam\steamapps\common\Terraria\Terraria.exe
 
 using Microsoft.Xna.Framework;
 using System.Collections.Generic;
@@ -23,7 +23,7 @@ namespace Terraria
 
     public static void TapUpdate(GameTime gt)
     {
-      TestHighFPSIssues._tapUpdates.Add(gt.TotalGameTime.TotalMilliseconds);
+      TestHighFPSIssues._tapUpdates.Add(gt.get_TotalGameTime().TotalMilliseconds);
       TestHighFPSIssues.conD = 0;
       --TestHighFPSIssues.race;
       if (++TestHighFPSIssues.conU <= TestHighFPSIssues.conUH)
@@ -33,12 +33,12 @@ namespace Terraria
 
     public static void TapUpdateEnd(GameTime gt)
     {
-      TestHighFPSIssues._tapUpdateEnds.Add(gt.TotalGameTime.TotalMilliseconds);
+      TestHighFPSIssues._tapUpdateEnds.Add(gt.get_TotalGameTime().TotalMilliseconds);
     }
 
     public static void TapDraw(GameTime gt)
     {
-      TestHighFPSIssues._tapDraws.Add(gt.TotalGameTime.TotalMilliseconds);
+      TestHighFPSIssues._tapDraws.Add(gt.get_TotalGameTime().TotalMilliseconds);
       TestHighFPSIssues.conU = 0;
       ++TestHighFPSIssues.race;
       if (++TestHighFPSIssues.conD <= TestHighFPSIssues.conDH)
@@ -55,7 +55,7 @@ namespace Terraria
         TestHighFPSIssues.conUH = num;
         TestHighFPSIssues.race = num;
       }
-      double num1 = gt.TotalGameTime.TotalMilliseconds - 5000.0;
+      double num1 = gt.get_TotalGameTime().TotalMilliseconds - 5000.0;
       while (TestHighFPSIssues._tapUpdates.Count > 0 && TestHighFPSIssues._tapUpdates[0] < num1)
         TestHighFPSIssues._tapUpdates.RemoveAt(0);
       while (TestHighFPSIssues._tapDraws.Count > 0 && TestHighFPSIssues._tapDraws[0] < num1)

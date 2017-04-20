@@ -1,19 +1,25 @@
 ﻿// Decompiled with JetBrains decompiler
 // Type: Terraria.Program
-// Assembly: Terraria, Version=1.3.4.4, Culture=neutral, PublicKeyToken=null
-// MVID: DEE50102-BCC2-472F-987B-153E892583F1
-// Assembly location: E:\Steam\SteamApps\common\Terraria\Terraria.exe
+// Assembly: Terraria, Version=1.3.5.1, Culture=neutral, PublicKeyToken=null
+// MVID: DF0400F4-EE47-4864-BE80-932EDB02D8A6
+// Assembly location: F:\Steam\steamapps\common\Terraria\Terraria.exe
 
+using ReLogic.IO;
+using ReLogic.OS;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Reflection;
 using System.Runtime.CompilerServices;
+using System.Runtime.ExceptionServices;
+using System.Text;
 using System.Threading;
 using System.Windows.Forms;
 using Terraria.Initializers;
 using Terraria.Localization;
 using Terraria.Social;
+using Terraria.Utilities;
 
 namespace Terraria
 {
@@ -98,18 +104,75 @@ namespace Terraria
       Program.ForceLoadAssembly(assembly, initializeStaticMembers);
     }
 
-    public static void LaunchGame(string[] args)
+    private static void SetupLogging()
     {
+      if (Program.LaunchParameters.ContainsKey("-logfile"))
+      {
+        string launchParameter = Program.LaunchParameters["-logfile"];
+        ConsoleOutputMirror.ToFile(launchParameter == null || launchParameter.Trim() == "" ? Path.Combine(Main.SavePath, "Logs", string.Format("Log_{0}.log", (object) DateTime.Now.ToString("yyyyMMddHHmmssfff"))) : Path.Combine(launchParameter, string.Format("Log_{0}.log", (object) DateTime.Now.ToString("yyyyMMddHHmmssfff"))));
+      }
+      if (!Program.LaunchParameters.ContainsKey("-logerrors"))
+        return;
+      Program.HookAllExceptions();
+    }
+
+    private static void HookAllExceptions()
+    {
+      bool useMiniDumps = Program.LaunchParameters.ContainsKey("-minidump");
+      bool useFullDumps = Program.LaunchParameters.ContainsKey("-fulldump");
+      Console.WriteLine("Error Logging Enabled.");
+      CrashDump.Options dumpOptions = CrashDump.Options.WithFullMemory;
+      if (useFullDumps)
+        Console.WriteLine("Full Dump logs enabled.");
+      AppDomain.CurrentDomain.FirstChanceException += (EventHandler<FirstChanceExceptionEventArgs>) ((sender, exceptionArgs) =>
+      {
+        Console.Write("================\r\n" + string.Format("{0}: First-Chance Exception\r\nCulture: {1}\r\nException: {2}\r\n", (object) DateTime.Now, (object) Thread.CurrentThread.CurrentCulture.Name, (object) exceptionArgs.Exception.ToString()) + "================\r\n\r\n");
+        if (!useMiniDumps)
+          return;
+        CrashDump.WriteException(CrashDump.Options.WithIndirectlyReferencedMemory, Path.Combine(Main.SavePath, "Dumps"));
+      });
+      AppDomain.CurrentDomain.UnhandledException += (UnhandledExceptionEventHandler) ((sender, exceptionArgs) =>
+      {
+        Console.Write("================\r\n" + string.Format("{0}: Unhandled Exception\r\nCulture: {1}\r\nException: {2}\r\n", (object) DateTime.Now, (object) Thread.CurrentThread.CurrentCulture.Name, (object) exceptionArgs.ExceptionObject.ToString()) + "================\r\n");
+        if (!useFullDumps)
+          return;
+        CrashDump.WriteException(dumpOptions, Path.Combine(Main.SavePath, "Dumps"));
+      });
+    }
+
+    private static void InitializeConsoleOutput()
+    {
+      if (Debugger.IsAttached)
+        return;
+      try
+      {
+        Console.OutputEncoding = Encoding.UTF8;
+        Console.InputEncoding = Encoding.UTF8;
+      }
+      catch
+      {
+      }
+    }
+
+    public static void LaunchGame(string[] args, bool monoArgs = false)
+    {
+      if (monoArgs)
+        args = Utils.ConvertMonoArgsToDotNet(args);
+      if (Platform.get_IsOSX())
+        Main.OnEngineLoad += (Action) (() => Main.instance.set_IsMouseVisible(false));
       Program.LaunchParameters = Utils.ParseArguements(args);
       ThreadPool.SetMinThreads(8, 8);
-      LanguageManager.Instance.SetLanguage("English");
+      LanguageManager.Instance.SetLanguage(GameCulture.English);
+      Program.SetupLogging();
       using (Main game = new Main())
       {
         try
         {
+          Program.InitializeConsoleOutput();
+          Lang.InitializeLegacyLocalization();
           SocialAPI.Initialize(new SocialMode?());
           LaunchInitializer.LoadParameters(game);
-          Main.OnEnginePreload += (Action) (() => Program.StartForceLoad());
+          Main.OnEnginePreload += new Action(Program.StartForceLoad);
           game.Run();
         }
         catch (Exception ex)

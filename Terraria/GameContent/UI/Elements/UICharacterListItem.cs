@@ -1,8 +1,8 @@
 ﻿// Decompiled with JetBrains decompiler
 // Type: Terraria.GameContent.UI.Elements.UICharacterListItem
-// Assembly: Terraria, Version=1.3.4.4, Culture=neutral, PublicKeyToken=null
-// MVID: DEE50102-BCC2-472F-987B-153E892583F1
-// Assembly location: E:\Steam\SteamApps\common\Terraria\Terraria.exe
+// Assembly: Terraria, Version=1.3.5.1, Culture=neutral, PublicKeyToken=null
+// MVID: DF0400F4-EE47-4864-BE80-932EDB02D8A6
+// Assembly location: F:\Steam\steamapps\common\Terraria\Terraria.exe
 
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -41,7 +41,7 @@ namespace Terraria.GameContent.UI.Elements
 
     public UICharacterListItem(PlayerFileData data, int snapPointIndex)
     {
-      this.BorderColor = new Color(89, 116, 213) * 0.7f;
+      this.BorderColor = Color.op_Multiply(new Color(89, 116, 213), 0.7f);
       this._dividerTexture = TextureManager.Load("Images/UI/Divider");
       this._innerPanelTexture = TextureManager.Load("Images/UI/InnerPanelBackground");
       this._buttonCloudActiveTexture = TextureManager.Load("Images/UI/ButtonCloudActive");
@@ -225,15 +225,15 @@ namespace Terraria.GameContent.UI.Elements
     public override void MouseOut(UIMouseEvent evt)
     {
       base.MouseOut(evt);
-      this.BackgroundColor = new Color(63, 82, 151) * 0.7f;
-      this.BorderColor = new Color(89, 116, 213) * 0.7f;
+      this.BackgroundColor = Color.op_Multiply(new Color(63, 82, 151), 0.7f);
+      this.BorderColor = Color.op_Multiply(new Color(89, 116, 213), 0.7f);
     }
 
     private void DrawPanel(SpriteBatch spriteBatch, Vector2 position, float width)
     {
-      spriteBatch.Draw(this._innerPanelTexture, position, new Rectangle?(new Rectangle(0, 0, 8, this._innerPanelTexture.Height)), Color.White);
-      spriteBatch.Draw(this._innerPanelTexture, new Vector2(position.X + 8f, position.Y), new Rectangle?(new Rectangle(8, 0, 8, this._innerPanelTexture.Height)), Color.White, 0.0f, Vector2.Zero, new Vector2((float) (((double) width - 16.0) / 8.0), 1f), SpriteEffects.None, 0.0f);
-      spriteBatch.Draw(this._innerPanelTexture, new Vector2((float) ((double) position.X + (double) width - 8.0), position.Y), new Rectangle?(new Rectangle(16, 0, 8, this._innerPanelTexture.Height)), Color.White);
+      spriteBatch.Draw(this._innerPanelTexture, position, new Rectangle?(new Rectangle(0, 0, 8, this._innerPanelTexture.get_Height())), Color.get_White());
+      spriteBatch.Draw(this._innerPanelTexture, new Vector2((float) (position.X + 8.0), (float) position.Y), new Rectangle?(new Rectangle(8, 0, 8, this._innerPanelTexture.get_Height())), Color.get_White(), 0.0f, Vector2.get_Zero(), new Vector2((float) (((double) width - 16.0) / 8.0), 1f), (SpriteEffects) 0, 0.0f);
+      spriteBatch.Draw(this._innerPanelTexture, new Vector2((float) (position.X + (double) width - 8.0), (float) position.Y), new Rectangle?(new Rectangle(16, 0, 8, this._innerPanelTexture.get_Height())), Color.get_White());
     }
 
     protected override void DrawSelf(SpriteBatch spriteBatch)
@@ -241,26 +241,54 @@ namespace Terraria.GameContent.UI.Elements
       base.DrawSelf(spriteBatch);
       CalculatedStyle innerDimensions = this.GetInnerDimensions();
       CalculatedStyle dimensions = this._playerPanel.GetDimensions();
-      float x = dimensions.X + dimensions.Width;
-      Utils.DrawBorderString(spriteBatch, this._data.Name, new Vector2(x + 6f, dimensions.Y - 2f), Color.White, 1f, 0.0f, 0.0f, -1);
-      spriteBatch.Draw(this._dividerTexture, new Vector2(x, innerDimensions.Y + 21f), new Rectangle?(), Color.White, 0.0f, Vector2.Zero, new Vector2((float) (((double) this.GetDimensions().X + (double) this.GetDimensions().Width - (double) x) / 8.0), 1f), SpriteEffects.None, 0.0f);
-      Vector2 vector2 = new Vector2(x + 6f, innerDimensions.Y + 29f);
+      float num1 = dimensions.X + dimensions.Width;
+      Utils.DrawBorderString(spriteBatch, this._data.Name, new Vector2(num1 + 6f, dimensions.Y - 2f), Color.get_White(), 1f, 0.0f, 0.0f, -1);
+      spriteBatch.Draw(this._dividerTexture, new Vector2(num1, innerDimensions.Y + 21f), new Rectangle?(), Color.get_White(), 0.0f, Vector2.get_Zero(), new Vector2((float) (((double) this.GetDimensions().X + (double) this.GetDimensions().Width - (double) num1) / 8.0), 1f), (SpriteEffects) 0, 0.0f);
+      Vector2 vector2;
+      // ISSUE: explicit reference operation
+      ((Vector2) @vector2).\u002Ector(num1 + 6f, innerDimensions.Y + 29f);
       float width1 = 200f;
       Vector2 position1 = vector2;
       this.DrawPanel(spriteBatch, position1, width1);
-      spriteBatch.Draw(Main.heartTexture, position1 + new Vector2(5f, 2f), Color.White);
-      position1.X += 10f + (float) Main.heartTexture.Width;
-      Utils.DrawBorderString(spriteBatch, this._data.Player.statLifeMax.ToString() + " HP", position1 + new Vector2(0.0f, 3f), Color.White, 1f, 0.0f, 0.0f, -1);
-      position1.X += 65f;
-      spriteBatch.Draw(Main.manaTexture, position1 + new Vector2(5f, 2f), Color.White);
-      position1.X += 10f + (float) Main.manaTexture.Width;
-      Utils.DrawBorderString(spriteBatch, this._data.Player.statManaMax.ToString() + " MP", position1 + new Vector2(0.0f, 3f), Color.White, 1f, 0.0f, 0.0f, -1);
-      vector2.X += width1 + 5f;
+      spriteBatch.Draw(Main.heartTexture, Vector2.op_Addition(position1, new Vector2(5f, 2f)), Color.get_White());
+      // ISSUE: explicit reference operation
+      // ISSUE: variable of a reference type
+      Vector2& local1 = @position1;
+      // ISSUE: explicit reference operation
+      double num2 = (^local1).X + (10.0 + (double) Main.heartTexture.get_Width());
+      // ISSUE: explicit reference operation
+      (^local1).X = (__Null) num2;
+      Utils.DrawBorderString(spriteBatch, this._data.Player.statLifeMax.ToString() + " HP", Vector2.op_Addition(position1, new Vector2(0.0f, 3f)), Color.get_White(), 1f, 0.0f, 0.0f, -1);
+      // ISSUE: explicit reference operation
+      // ISSUE: variable of a reference type
+      Vector2& local2 = @position1;
+      // ISSUE: explicit reference operation
+      double num3 = (^local2).X + 65.0;
+      // ISSUE: explicit reference operation
+      (^local2).X = (__Null) num3;
+      spriteBatch.Draw(Main.manaTexture, Vector2.op_Addition(position1, new Vector2(5f, 2f)), Color.get_White());
+      // ISSUE: explicit reference operation
+      // ISSUE: variable of a reference type
+      Vector2& local3 = @position1;
+      // ISSUE: explicit reference operation
+      double num4 = (^local3).X + (10.0 + (double) Main.manaTexture.get_Width());
+      // ISSUE: explicit reference operation
+      (^local3).X = (__Null) num4;
+      Utils.DrawBorderString(spriteBatch, this._data.Player.statManaMax.ToString() + " MP", Vector2.op_Addition(position1, new Vector2(0.0f, 3f)), Color.get_White(), 1f, 0.0f, 0.0f, -1);
+      // ISSUE: explicit reference operation
+      // ISSUE: variable of a reference type
+      Vector2& local4 = @vector2;
+      // ISSUE: explicit reference operation
+      double num5 = (^local4).X + ((double) width1 + 5.0);
+      // ISSUE: explicit reference operation
+      (^local4).X = (__Null) num5;
       Vector2 position2 = vector2;
-      float width2 = 110f;
+      float width2 = 140f;
+      if (GameCulture.Russian.IsActive)
+        width2 = 180f;
       this.DrawPanel(spriteBatch, position2, width2);
       string text1 = "";
-      Color color = Color.White;
+      Color color = Color.get_White();
       switch (this._data.Player.difficulty)
       {
         case 0:
@@ -275,17 +303,23 @@ namespace Terraria.GameContent.UI.Elements
           color = Main.hcColor;
           break;
       }
-      Vector2 pos1 = position2 + new Vector2((float) ((double) width2 * 0.5 - (double) Main.fontMouseText.MeasureString(text1).X * 0.5), 3f);
+      Vector2 pos1 = Vector2.op_Addition(position2, new Vector2((float) ((double) width2 * 0.5 - Main.fontMouseText.MeasureString(text1).X * 0.5), 3f));
       Utils.DrawBorderString(spriteBatch, text1, pos1, color, 1f, 0.0f, 0.0f, -1);
-      vector2.X += width2 + 5f;
+      // ISSUE: explicit reference operation
+      // ISSUE: variable of a reference type
+      Vector2& local5 = @vector2;
+      // ISSUE: explicit reference operation
+      double num6 = (^local5).X + ((double) width2 + 5.0);
+      // ISSUE: explicit reference operation
+      (^local5).X = (__Null) num6;
       Vector2 position3 = vector2;
-      float width3 = innerDimensions.X + innerDimensions.Width - position3.X;
+      float width3 = (float) ((double) innerDimensions.X + (double) innerDimensions.Width - position3.X);
       this.DrawPanel(spriteBatch, position3, width3);
       TimeSpan playTime = this._data.GetPlayTime();
-      int num = playTime.Days * 24 + playTime.Hours;
-      string text2 = (num < 10 ? (object) "0" : (object) "").ToString() + (object) num + playTime.ToString("\\:mm\\:ss");
-      Vector2 pos2 = position3 + new Vector2((float) ((double) width3 * 0.5 - (double) Main.fontMouseText.MeasureString(text2).X * 0.5), 3f);
-      Utils.DrawBorderString(spriteBatch, text2, pos2, Color.White, 1f, 0.0f, 0.0f, -1);
+      int num7 = playTime.Days * 24 + playTime.Hours;
+      string text2 = (num7 < 10 ? (object) "0" : (object) "").ToString() + (object) num7 + playTime.ToString("\\:mm\\:ss");
+      Vector2 pos2 = Vector2.op_Addition(position3, new Vector2((float) ((double) width3 * 0.5 - Main.fontMouseText.MeasureString(text2).X * 0.5), 3f));
+      Utils.DrawBorderString(spriteBatch, text2, pos2, Color.get_White(), 1f, 0.0f, 0.0f, -1);
     }
   }
 }

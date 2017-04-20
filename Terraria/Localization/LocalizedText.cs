@@ -1,8 +1,8 @@
 ﻿// Decompiled with JetBrains decompiler
 // Type: Terraria.Localization.LocalizedText
-// Assembly: Terraria, Version=1.3.4.4, Culture=neutral, PublicKeyToken=null
-// MVID: DEE50102-BCC2-472F-987B-153E892583F1
-// Assembly location: E:\Steam\SteamApps\common\Terraria\Terraria.exe
+// Assembly: Terraria, Version=1.3.5.1, Culture=neutral, PublicKeyToken=null
+// MVID: DF0400F4-EE47-4864-BE80-932EDB02D8A6
+// Assembly location: F:\Steam\steamapps\common\Terraria\Terraria.exe
 
 using System.ComponentModel;
 using System.Text.RegularExpressions;
@@ -11,30 +11,31 @@ namespace Terraria.Localization
 {
   public class LocalizedText
   {
+    public static readonly LocalizedText Empty = new LocalizedText("", "");
     private static Regex _substitutionRegex = new Regex("{(\\?(?:!)?)?([a-zA-Z][\\w\\.]*)}", RegexOptions.Compiled);
-    private string _value = "";
+    public readonly string Key;
 
-    public string Value
+    public string Value { get; private set; }
+
+    internal LocalizedText(string key, string text)
     {
-      get
-      {
-        return this._value;
-      }
+      this.Key = key;
+      this.Value = text;
     }
 
-    internal LocalizedText(string text)
+    public static explicit operator string(LocalizedText text)
     {
-      this._value = text;
+      return text.Value;
     }
 
     internal void SetValue(string text)
     {
-      this._value = text;
+      this.Value = text;
     }
 
     public string FormatWith(object obj)
     {
-      string input = this._value;
+      string input = this.Value;
       PropertyDescriptorCollection properties = TypeDescriptor.GetProperties(obj);
       return LocalizedText._substitutionRegex.Replace(input, (MatchEvaluator) (match =>
       {
@@ -50,7 +51,7 @@ namespace Terraria.Localization
     public bool CanFormatWith(object obj)
     {
       PropertyDescriptorCollection properties = TypeDescriptor.GetProperties(obj);
-      foreach (Match match in LocalizedText._substitutionRegex.Matches(this._value))
+      foreach (Match match in LocalizedText._substitutionRegex.Matches(this.Value))
       {
         string name = match.Groups[2].ToString();
         PropertyDescriptor propertyDescriptor = properties.Find(name, false);
@@ -69,29 +70,39 @@ namespace Terraria.Localization
       return true;
     }
 
+    public NetworkText ToNetworkText()
+    {
+      return NetworkText.FromKey(this.Key);
+    }
+
+    public NetworkText ToNetworkText(params object[] substitutions)
+    {
+      return NetworkText.FromKey(this.Key, substitutions);
+    }
+
     public string Format(object arg0)
     {
-      return string.Format(this._value, arg0);
+      return string.Format(this.Value, arg0);
     }
 
     public string Format(object arg0, object arg1)
     {
-      return string.Format(this._value, arg0, arg1);
+      return string.Format(this.Value, arg0, arg1);
     }
 
     public string Format(object arg0, object arg1, object arg2)
     {
-      return string.Format(this._value, arg0, arg1, arg2);
+      return string.Format(this.Value, arg0, arg1, arg2);
     }
 
     public string Format(params object[] args)
     {
-      return string.Format(this._value, args);
+      return string.Format(this.Value, args);
     }
 
     public override string ToString()
     {
-      return this._value;
+      return this.Value;
     }
   }
 }

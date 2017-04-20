@@ -1,13 +1,14 @@
 ﻿// Decompiled with JetBrains decompiler
 // Type: Terraria.UI.ItemSorting
-// Assembly: Terraria, Version=1.3.4.4, Culture=neutral, PublicKeyToken=null
-// MVID: DEE50102-BCC2-472F-987B-153E892583F1
-// Assembly location: E:\Steam\SteamApps\common\Terraria\Terraria.exe
+// Assembly: Terraria, Version=1.3.5.1, Culture=neutral, PublicKeyToken=null
+// MVID: DF0400F4-EE47-4864-BE80-932EDB02D8A6
+// Assembly location: F:\Steam\steamapps\common\Terraria\Terraria.exe
 
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using Terraria.ID;
+using Terraria.Localization;
 
 namespace Terraria.UI
 {
@@ -61,7 +62,7 @@ namespace Terraria.UI
       itemSortingLayerList.Add(ItemSorting.ItemSortingLayers.LastTilesCommon);
       itemSortingLayerList.Add(ItemSorting.ItemSortingLayers.LastNotTrash);
       itemSortingLayerList.Add(ItemSorting.ItemSortingLayers.LastTrash);
-      for (int type = -48; type < 3884; ++type)
+      for (int type = -48; type < 3930; ++type)
       {
         Item obj = new Item();
         obj.netDefaults(type);
@@ -277,7 +278,7 @@ namespace Terraria.UI
       for (int index = 0; index < 40; ++index)
       {
         if (tupleArray2[index] != tupleArray1[index])
-          NetMessage.SendData(32, -1, -1, "", Main.player[Main.myPlayer].chest, (float) index, 0.0f, 0.0f, 0, 0, 0);
+          NetMessage.SendData(32, -1, -1, (NetworkText) null, Main.player[Main.myPlayer].chest, (float) index, 0.0f, 0.0f, 0, 0, 0);
       }
     }
 
@@ -957,7 +958,7 @@ namespace Terraria.UI
           itemsToSort.Remove(num);
         list.Sort((Comparison<int>) ((x, y) =>
         {
-          int num = string.Compare(inv[x].name, inv[y].name, StringComparison.OrdinalIgnoreCase);
+          int num = string.Compare(inv[x].Name, inv[y].Name, StringComparison.OrdinalIgnoreCase);
           if (num == 0)
             num = inv[y].stack.CompareTo(inv[x].stack);
           if (num == 0)
@@ -979,7 +980,7 @@ namespace Terraria.UI
           itemsToSort.Remove(num);
         list.Sort((Comparison<int>) ((x, y) =>
         {
-          int num = string.Compare(inv[x].name, inv[y].name, StringComparison.OrdinalIgnoreCase);
+          int num = string.Compare(inv[x].Name, inv[y].Name, StringComparison.OrdinalIgnoreCase);
           if (num == 0)
             num = inv[y].stack.CompareTo(inv[x].stack);
           if (num == 0)
@@ -998,7 +999,7 @@ namespace Terraria.UI
         {
           int num = inv[y].rare.CompareTo(inv[x].rare);
           if (num == 0)
-            num = string.Compare(inv[x].name, inv[y].name, StringComparison.OrdinalIgnoreCase);
+            num = string.Compare(inv[x].Name, inv[y].Name, StringComparison.OrdinalIgnoreCase);
           if (num == 0)
             num = inv[y].stack.CompareTo(inv[x].stack);
           if (num == 0)

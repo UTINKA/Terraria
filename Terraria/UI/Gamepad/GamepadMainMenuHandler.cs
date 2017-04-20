@@ -1,8 +1,8 @@
 ﻿// Decompiled with JetBrains decompiler
 // Type: Terraria.UI.Gamepad.GamepadMainMenuHandler
-// Assembly: Terraria, Version=1.3.4.4, Culture=neutral, PublicKeyToken=null
-// MVID: DEE50102-BCC2-472F-987B-153E892583F1
-// Assembly location: E:\Steam\SteamApps\common\Terraria\Terraria.exe
+// Assembly: Terraria, Version=1.3.5.1, Culture=neutral, PublicKeyToken=null
+// MVID: DF0400F4-EE47-4864-BE80-932EDB02D8A6
+// Assembly location: F:\Steam\steamapps\common\Terraria\Terraria.exe
 
 using Microsoft.Xna.Framework;
 using System;
@@ -24,8 +24,8 @@ namespace Terraria.UI.Gamepad
       {
         UILinkPage page = UILinkPointNavigator.Pages[1000];
         page.CurrentPoint = page.DefaultPoint;
-        Vector2 vector2 = new Vector2((float) Math.Cos((double) Main.GlobalTime * 6.28318548202515), (float) Math.Sin((double) Main.GlobalTime * 6.28318548202515 * 2.0)) * new Vector2(30f, 15f) + Vector2.UnitY * 20f;
-        UILinkPointNavigator.SetPosition(2000, new Vector2((float) Main.screenWidth, (float) Main.screenHeight) / 2f + vector2);
+        Vector2 vector2 = Vector2.op_Addition(Vector2.op_Multiply(new Vector2((float) Math.Cos((double) Main.GlobalTime * 6.28318548202515), (float) Math.Sin((double) Main.GlobalTime * 6.28318548202515 * 2.0)), new Vector2(30f, 15f)), Vector2.op_Multiply(Vector2.get_UnitY(), 20f));
+        UILinkPointNavigator.SetPosition(2000, Vector2.op_Addition(Vector2.op_Division(new Vector2((float) Main.screenWidth, (float) Main.screenHeight), 2f), vector2));
       }
       else
       {

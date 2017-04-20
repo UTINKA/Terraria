@@ -1,10 +1,11 @@
 ﻿// Decompiled with JetBrains decompiler
 // Type: Terraria.Initializers.LaunchInitializer
-// Assembly: Terraria, Version=1.3.4.4, Culture=neutral, PublicKeyToken=null
-// MVID: DEE50102-BCC2-472F-987B-153E892583F1
-// Assembly location: E:\Steam\SteamApps\common\Terraria\Terraria.exe
+// Assembly: Terraria, Version=1.3.5.1, Culture=neutral, PublicKeyToken=null
+// MVID: DF0400F4-EE47-4864-BE80-932EDB02D8A6
+// Assembly location: F:\Steam\steamapps\common\Terraria\Terraria.exe
 
 using System.Diagnostics;
+using Terraria.Localization;
 using Terraria.Social;
 
 namespace Terraria.Initializers
@@ -123,47 +124,55 @@ namespace Terraria.Initializers
       string s2;
       int result2;
       if ((s2 = LaunchInitializer.TryParameter(strArray3)) != null && int.TryParse(s2, out result2))
-        Lang.lang = result2;
-      string[] strArray4 = new string[1]{ "-worldname" };
+        LanguageManager.Instance.SetLanguage(result2);
+      string[] strArray4 = new string[1]{ "-language" };
+      string cultureName;
+      if ((cultureName = LaunchInitializer.TryParameter(strArray4)) != null)
+        LanguageManager.Instance.SetLanguage(cultureName);
+      string[] strArray5 = new string[1]{ "-worldname" };
       string world1;
-      if ((world1 = LaunchInitializer.TryParameter(strArray4)) != null)
+      if ((world1 = LaunchInitializer.TryParameter(strArray5)) != null)
         game.SetWorldName(world1);
-      string[] strArray5 = new string[1]{ "-motd" };
+      string[] strArray6 = new string[1]{ "-motd" };
       string newMOTD;
-      if ((newMOTD = LaunchInitializer.TryParameter(strArray5)) != null)
+      if ((newMOTD = LaunchInitializer.TryParameter(strArray6)) != null)
         game.NewMOTD(newMOTD);
-      string[] strArray6 = new string[1]{ "-banlist" };
+      string[] strArray7 = new string[1]{ "-banlist" };
       string str2;
-      if ((str2 = LaunchInitializer.TryParameter(strArray6)) != null)
+      if ((str2 = LaunchInitializer.TryParameter(strArray7)) != null)
         Netplay.BanFilePath = str2;
       if (LaunchInitializer.HasParameter("-autoshutdown"))
         game.EnableAutoShutdown();
       if (LaunchInitializer.HasParameter("-secure"))
         Netplay.spamCheck = true;
-      string[] strArray7 = new string[1]{ "-autocreate" };
+      string[] strArray8 = new string[1]{ "-autocreate" };
       string worldSize;
-      if ((worldSize = LaunchInitializer.TryParameter(strArray7)) != null)
+      if ((worldSize = LaunchInitializer.TryParameter(strArray8)) != null)
         game.autoCreate(worldSize);
       if (LaunchInitializer.HasParameter("-noupnp"))
         Netplay.UseUPNP = false;
       if (LaunchInitializer.HasParameter("-experimental"))
         Main.UseExperimentalFeatures = true;
-      string[] strArray8 = new string[1]{ "-world" };
+      string[] strArray9 = new string[1]{ "-world" };
       string world2;
-      if ((world2 = LaunchInitializer.TryParameter(strArray8)) != null)
+      if ((world2 = LaunchInitializer.TryParameter(strArray9)) != null)
         game.SetWorld(world2, false);
       else if (SocialAPI.Mode == SocialMode.Steam)
       {
-        string[] strArray9 = new string[1]{ "-cloudworld" };
+        string[] strArray10 = new string[1]{ "-cloudworld" };
         string world3;
-        if ((world3 = LaunchInitializer.TryParameter(strArray9)) != null)
+        if ((world3 = LaunchInitializer.TryParameter(strArray10)) != null)
           game.SetWorld(world3, true);
       }
-      string[] strArray10 = new string[1]{ "-config" };
+      string[] strArray11 = new string[1]{ "-config" };
       string configPath;
-      if ((configPath = LaunchInitializer.TryParameter(strArray10)) == null)
+      if ((configPath = LaunchInitializer.TryParameter(strArray11)) != null)
+        game.LoadDedConfig(configPath);
+      string[] strArray12 = new string[1]{ "-seed" };
+      string str3;
+      if ((str3 = LaunchInitializer.TryParameter(strArray12)) == null)
         return;
-      game.LoadDedConfig(configPath);
+      Main.AutogenSeedName = str3;
     }
 
     private static bool HasParameter(params string[] keys)

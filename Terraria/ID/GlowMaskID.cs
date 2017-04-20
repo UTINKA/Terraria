@@ -1,8 +1,8 @@
 ﻿// Decompiled with JetBrains decompiler
 // Type: Terraria.ID.GlowMaskID
-// Assembly: Terraria, Version=1.3.4.4, Culture=neutral, PublicKeyToken=null
-// MVID: DEE50102-BCC2-472F-987B-153E892583F1
-// Assembly location: E:\Steam\SteamApps\common\Terraria\Terraria.exe
+// Assembly: Terraria, Version=1.3.5.1, Culture=neutral, PublicKeyToken=null
+// MVID: DF0400F4-EE47-4864-BE80-932EDB02D8A6
+// Assembly location: F:\Steam\steamapps\common\Terraria\Terraria.exe
 
 namespace Terraria.ID
 {
@@ -254,6 +254,13 @@ namespace Terraria.ID
     public const short ValhallaKnightHead = 242;
     public const short DefendersForge = 243;
     public const short DefendersForgeItem = 244;
-    public const short Count = 245;
+    public const short ArkhalisHat = 245;
+    public const short ArkhalisShirt_Male = 246;
+    public const short ArkhalisShirt_Female = 247;
+    public const short ArkhalisShirt_Arm = 248;
+    public const short ArkhalisPants_Male = 249;
+    public const short ArkhalisPants_Female = 250;
+    public const short ArkhalisWings = 251;
+    public const short Count = 252;
   }
 }

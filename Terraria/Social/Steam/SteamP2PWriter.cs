@@ -1,8 +1,8 @@
 ﻿// Decompiled with JetBrains decompiler
 // Type: Terraria.Social.Steam.SteamP2PWriter
-// Assembly: Terraria, Version=1.3.4.4, Culture=neutral, PublicKeyToken=null
-// MVID: DEE50102-BCC2-472F-987B-153E892583F1
-// Assembly location: E:\Steam\SteamApps\common\Terraria\Terraria.exe
+// Assembly: Terraria, Version=1.3.5.1, Culture=neutral, PublicKeyToken=null
+// MVID: DF0400F4-EE47-4864-BE80-932EDB02D8A6
+// Assembly location: F:\Steam\steamapps\common\Terraria\Terraria.exe
 
 using Steamworks;
 using System;
@@ -28,28 +28,28 @@ namespace Terraria.Social.Steam
     {
       lock (this._lock)
       {
-        Queue<SteamP2PWriter.WriteInformation> local_0;
+        Queue<SteamP2PWriter.WriteInformation> writeInformationQueue;
         if (this._pendingSendData.ContainsKey(user))
-          local_0 = this._pendingSendData[user];
+          writeInformationQueue = this._pendingSendData[user];
         else
-          this._pendingSendData[user] = local_0 = new Queue<SteamP2PWriter.WriteInformation>();
-        int local_1 = length;
-        int local_2 = 0;
-        while (local_1 > 0)
+          this._pendingSendData[user] = writeInformationQueue = new Queue<SteamP2PWriter.WriteInformation>();
+        int val1 = length;
+        int sourceIndex = 0;
+        while (val1 > 0)
         {
-          SteamP2PWriter.WriteInformation local_3;
-          if (local_0.Count == 0 || 1024 - local_0.Peek().Size == 0)
+          SteamP2PWriter.WriteInformation writeInformation;
+          if (writeInformationQueue.Count == 0 || 1024 - writeInformationQueue.Peek().Size == 0)
           {
-            local_3 = this._bufferPool.Count <= 0 ? new SteamP2PWriter.WriteInformation() : new SteamP2PWriter.WriteInformation(this._bufferPool.Dequeue());
-            local_0.Enqueue(local_3);
+            writeInformation = this._bufferPool.Count <= 0 ? new SteamP2PWriter.WriteInformation() : new SteamP2PWriter.WriteInformation(this._bufferPool.Dequeue());
+            writeInformationQueue.Enqueue(writeInformation);
           }
           else
-            local_3 = local_0.Peek();
-          int local_4 = Math.Min(local_1, 1024 - local_3.Size);
-          Array.Copy((Array) data, local_2, (Array) local_3.Data, local_3.Size, local_4);
-          local_3.Size += local_4;
-          local_1 -= local_4;
-          local_2 += local_4;
+            writeInformation = writeInformationQueue.Peek();
+          int length1 = Math.Min(val1, 1024 - writeInformation.Size);
+          Array.Copy((Array) data, sourceIndex, (Array) writeInformation.Data, writeInformation.Size, length1);
+          writeInformation.Size += length1;
+          val1 -= length1;
+          sourceIndex += length1;
         }
       }
     }
@@ -60,15 +60,15 @@ namespace Terraria.Social.Steam
       {
         if (this._pendingSendData.ContainsKey(user))
         {
-          Queue<SteamP2PWriter.WriteInformation> local_0 = this._pendingSendData[user];
-          while (local_0.Count > 0)
-            this._bufferPool.Enqueue(local_0.Dequeue().Data);
+          Queue<SteamP2PWriter.WriteInformation> writeInformationQueue = this._pendingSendData[user];
+          while (writeInformationQueue.Count > 0)
+            this._bufferPool.Enqueue(writeInformationQueue.Dequeue().Data);
         }
         if (!this._pendingSendDataSwap.ContainsKey(user))
           return;
-        Queue<SteamP2PWriter.WriteInformation> local_1 = this._pendingSendDataSwap[user];
-        while (local_1.Count > 0)
-          this._bufferPool.Enqueue(local_1.Dequeue().Data);
+        Queue<SteamP2PWriter.WriteInformation> writeInformationQueue1 = this._pendingSendDataSwap[user];
+        while (writeInformationQueue1.Count > 0)
+          this._bufferPool.Enqueue(writeInformationQueue1.Dequeue().Data);
       }
     }
 

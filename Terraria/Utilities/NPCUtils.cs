@@ -1,8 +1,8 @@
 ﻿// Decompiled with JetBrains decompiler
 // Type: Terraria.Utilities.NPCUtils
-// Assembly: Terraria, Version=1.3.4.4, Culture=neutral, PublicKeyToken=null
-// MVID: DEE50102-BCC2-472F-987B-153E892583F1
-// Assembly location: E:\Steam\SteamApps\common\Terraria\Terraria.exe
+// Assembly: Terraria, Version=1.3.5.1, Culture=neutral, PublicKeyToken=null
+// MVID: DF0400F4-EE47-4864-BE80-932EDB02D8A6
+// Assembly location: F:\Steam\steamapps\common\Terraria\Terraria.exe
 
 using Microsoft.Xna.Framework;
 using System;
@@ -85,9 +85,7 @@ namespace Terraria.Utilities
 
     public static void TargetClosestOldOnesInvasion(NPC searcher, bool faceTarget = true, Vector2? checkPosition = null)
     {
-      NPCUtils.SearchFilters.v2_1 = searcher.Center;
-      NPCUtils.SearchFilters.f_1 = 200f;
-      NPCUtils.TargetSearchResults searchResults = NPCUtils.SearchForTarget(searcher, NPCUtils.TargetSearchFlag.All, new NPCUtils.SearchFilter<Player>(NPCUtils.SearchFilters.OnlyPlayersInCertainDistance), new NPCUtils.SearchFilter<NPC>(NPCUtils.SearchFilters.OnlyCrystal));
+      NPCUtils.TargetSearchResults searchResults = NPCUtils.SearchForTarget(searcher, NPCUtils.TargetSearchFlag.All, NPCUtils.SearchFilters.OnlyPlayersInCertainDistance(searcher.Center, 200f), new NPCUtils.SearchFilter<NPC>(NPCUtils.SearchFilters.OnlyCrystal));
       if (!searchResults.FoundTarget)
         return;
       searcher.target = searchResults.NearestTargetIndex;
@@ -116,9 +114,6 @@ namespace Terraria.Utilities
 
     public static class SearchFilters
     {
-      public static Vector2 v2_1;
-      public static float f_1;
-
       public static bool OnlyCrystal(NPC npc)
       {
         if (npc.type == 548)
@@ -126,11 +121,9 @@ namespace Terraria.Utilities
         return false;
       }
 
-      public static bool OnlyPlayersInCertainDistance(Player player)
+      public static NPCUtils.SearchFilter<Player> OnlyPlayersInCertainDistance(Vector2 position, float maxDistance)
       {
-        if (player.active)
-          return (double) player.Distance(NPCUtils.SearchFilters.v2_1) <= (double) NPCUtils.SearchFilters.f_1;
-        return false;
+        return (NPCUtils.SearchFilter<Player>) (player => (double) player.Distance(position) <= (double) maxDistance);
       }
     }
 
@@ -182,7 +175,7 @@ namespace Terraria.Utilities
             case NPCUtils.TargetType.TankPet:
               return Main.projectile[this.NearestTankOwner.tankPet].Hitbox;
             default:
-              return Rectangle.Empty;
+              return Rectangle.get_Empty();
           }
         }
       }

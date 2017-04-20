@@ -1,8 +1,8 @@
 ﻿// Decompiled with JetBrains decompiler
 // Type: Terraria.GameContent.UI.EmoteBubble
-// Assembly: Terraria, Version=1.3.4.4, Culture=neutral, PublicKeyToken=null
-// MVID: DEE50102-BCC2-472F-987B-153E892583F1
-// Assembly location: E:\Steam\SteamApps\common\Terraria\Terraria.exe
+// Assembly: Terraria, Version=1.3.5.1, Culture=neutral, PublicKeyToken=null
+// MVID: DF0400F4-EE47-4864-BE80-932EDB02D8A6
+// Assembly location: F:\Steam\steamapps\common\Terraria\Terraria.exe
 
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -10,6 +10,7 @@ using System;
 using System.Collections.Generic;
 using Terraria.GameContent.Events;
 using Terraria.ID;
+using Terraria.Localization;
 
 namespace Terraria.GameContent.UI
 {
@@ -42,14 +43,14 @@ namespace Terraria.GameContent.UI
       lock (EmoteBubble.byID)
       {
         EmoteBubble.toClean.Clear();
-        foreach (KeyValuePair<int, EmoteBubble> item_0 in EmoteBubble.byID)
+        foreach (KeyValuePair<int, EmoteBubble> keyValuePair in EmoteBubble.byID)
         {
-          item_0.Value.Update();
-          if (item_0.Value.lifeTime <= 0)
-            EmoteBubble.toClean.Add(item_0.Key);
+          keyValuePair.Value.Update();
+          if (keyValuePair.Value.lifeTime <= 0)
+            EmoteBubble.toClean.Add(keyValuePair.Key);
         }
-        foreach (int item_1 in EmoteBubble.toClean)
-          EmoteBubble.byID.Remove(item_1);
+        foreach (int key in EmoteBubble.toClean)
+          EmoteBubble.byID.Remove(key);
         EmoteBubble.toClean.Clear();
       }
     }
@@ -58,8 +59,8 @@ namespace Terraria.GameContent.UI
     {
       lock (EmoteBubble.byID)
       {
-        foreach (KeyValuePair<int, EmoteBubble> item_0 in EmoteBubble.byID)
-          item_0.Value.Draw(sb);
+        foreach (KeyValuePair<int, EmoteBubble> keyValuePair in EmoteBubble.byID)
+          keyValuePair.Value.Draw(sb);
       }
     }
 
@@ -101,7 +102,7 @@ namespace Terraria.GameContent.UI
       if (Main.netMode == 2)
       {
         Tuple<int, int> tuple = EmoteBubble.SerializeNetAnchor(bubbleAnchor);
-        NetMessage.SendData(91, -1, -1, "", emoteBubble.ID, (float) tuple.Item1, (float) tuple.Item2, (float) time, emoticon, 0, 0);
+        NetMessage.SendData(91, -1, -1, (NetworkText) null, emoteBubble.ID, (float) tuple.Item1, (float) tuple.Item2, (float) time, emoticon, 0, 0);
       }
       return emoteBubble.ID;
     }
@@ -115,7 +116,7 @@ namespace Terraria.GameContent.UI
       if (Main.netMode == 2)
       {
         Tuple<int, int> tuple = EmoteBubble.SerializeNetAnchor(bubbleAnchor);
-        NetMessage.SendData(91, -1, -1, "", emoteBubble.ID, (float) tuple.Item1, (float) tuple.Item2, (float) time, emoteBubble.emote, emoteBubble.metadata, 0);
+        NetMessage.SendData(91, -1, -1, (NetworkText) null, emoteBubble.ID, (float) tuple.Item1, (float) tuple.Item2, (float) time, emoteBubble.emote, emoteBubble.metadata, 0);
       }
       return emoteBubble.ID;
     }
@@ -132,38 +133,40 @@ namespace Terraria.GameContent.UI
 
     private void Draw(SpriteBatch sb)
     {
-      Texture2D texture2D = Main.extraTexture[48];
-      SpriteEffects effect = SpriteEffects.None;
-      Vector2 vector2 = this.GetPosition(out effect);
+      Texture2D tex = Main.extraTexture[48];
+      SpriteEffects effect = (SpriteEffects) 0;
+      Vector2 pos = this.GetPosition(out effect);
       bool flag = this.lifeTime < 6 || this.lifeTimeStart - this.lifeTime < 6;
-      Rectangle rectangle = texture2D.Frame(8, 33, flag ? 0 : 1, 0);
-      Vector2 origin = new Vector2((float) (rectangle.Width / 2), (float) rectangle.Height);
+      Rectangle rectangle = tex.Frame(8, 33, flag ? 0 : 1, 0);
+      Vector2 vector2;
+      // ISSUE: explicit reference operation
+      ((Vector2) @vector2).\u002Ector((float) (rectangle.Width / 2), (float) rectangle.Height);
       if ((double) Main.player[Main.myPlayer].gravDir == -1.0)
       {
-        origin.Y = 0.0f;
-        effect |= SpriteEffects.FlipVertically;
-        vector2 = Main.ReverseGravitySupport(vector2, 0.0f);
+        vector2.Y = (__Null) 0.0;
+        effect = (SpriteEffects) (effect | 2);
+        pos = Main.ReverseGravitySupport(pos, 0.0f);
       }
-      sb.Draw(texture2D, vector2, new Rectangle?(rectangle), Color.White, 0.0f, origin, 1f, effect, 0.0f);
+      sb.Draw(tex, pos, new Rectangle?(rectangle), Color.get_White(), 0.0f, vector2, 1f, effect, 0.0f);
       if (flag)
         return;
       if (this.emote >= 0)
       {
         if (this.emote == 87)
-          effect = SpriteEffects.None;
-        sb.Draw(texture2D, vector2, new Rectangle?(texture2D.Frame(8, 35, this.emote * 2 % 8 + this.frame, 1 + this.emote / 4)), Color.White, 0.0f, origin, 1f, effect, 0.0f);
+          effect = (SpriteEffects) 0;
+        sb.Draw(tex, pos, new Rectangle?(tex.Frame(8, 35, this.emote * 2 % 8 + this.frame, 1 + this.emote / 4)), Color.get_White(), 0.0f, vector2, 1f, effect, 0.0f);
       }
       else
       {
         if (this.emote != -1)
           return;
-        Texture2D texture = Main.npcHeadTexture[this.metadata];
-        float scale = 1f;
-        if ((double) texture.Width / 22.0 > 1.0)
-          scale = 22f / (float) texture.Width;
-        if ((double) texture.Height / 16.0 > 1.0 / (double) scale)
-          scale = 16f / (float) texture.Height;
-        sb.Draw(texture, vector2 + new Vector2(effect.HasFlag((Enum) SpriteEffects.FlipHorizontally) ? 1f : -1f, (float) (-rectangle.Height + 3)), new Rectangle?(), Color.White, 0.0f, new Vector2((float) (texture.Width / 2), 0.0f), scale, effect, 0.0f);
+        Texture2D texture2D = Main.npcHeadTexture[this.metadata];
+        float num = 1f;
+        if ((double) texture2D.get_Width() / 22.0 > 1.0)
+          num = 22f / (float) texture2D.get_Width();
+        if ((double) texture2D.get_Height() / 16.0 > 1.0 / (double) num)
+          num = 16f / (float) texture2D.get_Height();
+        sb.Draw(texture2D, Vector2.op_Addition(pos, new Vector2(((Enum) (object) effect).HasFlag((Enum) (object) (SpriteEffects) 1) ? 1f : -1f, (float) (-rectangle.Height + 3))), new Rectangle?(), Color.get_White(), 0.0f, new Vector2((float) (texture2D.get_Width() / 2), 0.0f), num, effect, 0.0f);
       }
     }
 
@@ -172,17 +175,29 @@ namespace Terraria.GameContent.UI
       switch (this.anchor.type)
       {
         case WorldUIAnchor.AnchorType.Entity:
-          effect = this.anchor.entity.direction == -1 ? SpriteEffects.None : SpriteEffects.FlipHorizontally;
-          return this.anchor.entity.Top + new Vector2((float) (-this.anchor.entity.direction * this.anchor.entity.width) * 0.75f, 2f) - Main.screenPosition;
+          // ISSUE: explicit reference operation
+          // ISSUE: cast to a reference type
+          // ISSUE: explicit reference operation
+          ^(int&) @effect = this.anchor.entity.direction == -1 ? 0 : 1;
+          return Vector2.op_Subtraction(Vector2.op_Addition(this.anchor.entity.Top, new Vector2((float) (-this.anchor.entity.direction * this.anchor.entity.width) * 0.75f, 2f)), Main.screenPosition);
         case WorldUIAnchor.AnchorType.Tile:
-          effect = SpriteEffects.None;
-          return this.anchor.pos - Main.screenPosition + new Vector2(0.0f, (float) (-(double) this.anchor.size.Y / 2.0));
+          // ISSUE: explicit reference operation
+          // ISSUE: cast to a reference type
+          // ISSUE: explicit reference operation
+          ^(int&) @effect = 0;
+          return Vector2.op_Addition(Vector2.op_Subtraction(this.anchor.pos, Main.screenPosition), new Vector2(0.0f, (float) (-this.anchor.size.Y / 2.0)));
         case WorldUIAnchor.AnchorType.Pos:
-          effect = SpriteEffects.None;
-          return this.anchor.pos - Main.screenPosition;
+          // ISSUE: explicit reference operation
+          // ISSUE: cast to a reference type
+          // ISSUE: explicit reference operation
+          ^(int&) @effect = 0;
+          return Vector2.op_Subtraction(this.anchor.pos, Main.screenPosition);
         default:
-          effect = SpriteEffects.None;
-          return new Vector2((float) Main.screenWidth, (float) Main.screenHeight) / 2f;
+          // ISSUE: explicit reference operation
+          // ISSUE: cast to a reference type
+          // ISSUE: explicit reference operation
+          ^(int&) @effect = 0;
+          return Vector2.op_Division(new Vector2((float) Main.screenWidth, (float) Main.screenHeight), 2f);
       }
     }
 
@@ -247,7 +262,7 @@ namespace Terraria.GameContent.UI
         list.Add(4);
         if (plr.ZoneSnow)
           list.Add(98);
-        if ((double) plr.position.X < 4000.0 || (double) plr.position.X > (double) (Main.maxTilesX * 16 - 4000) && (double) plr.position.Y < Main.worldSurface / 16.0)
+        if (plr.position.X < 4000.0 || plr.position.X > (double) (Main.maxTilesX * 16 - 4000) && (double) plr.position.Y < Main.worldSurface / 16.0)
           list.Add(97);
       }
       else
@@ -284,7 +299,7 @@ namespace Terraria.GameContent.UI
 
     private void ProbeDebuffs(List<int> list, Player plr)
     {
-      if ((double) plr.Center.Y > (double) (Main.maxTilesY * 16 - 3200) || plr.onFire || (((NPC) this.anchor.entity).onFire || plr.onFire2))
+      if (plr.Center.Y > (double) (Main.maxTilesY * 16 - 3200) || plr.onFire || (((NPC) this.anchor.entity).onFire || plr.onFire2))
         list.Add(9);
       if (Main.rand.Next(2) == 0)
         list.Add(11);
@@ -327,11 +342,11 @@ namespace Terraria.GameContent.UI
 
     private void ProbeBiomes(List<int> list, Player plr)
     {
-      if ((double) plr.position.Y / 16.0 < Main.worldSurface * 0.45)
+      if (plr.position.Y / 16.0 < Main.worldSurface * 0.45)
         list.Add(22);
-      else if ((double) plr.position.Y / 16.0 > Main.rockLayer + (double) (Main.maxTilesY / 2) - 100.0)
+      else if (plr.position.Y / 16.0 > Main.rockLayer + (double) (Main.maxTilesY / 2) - 100.0)
         list.Add(31);
-      else if ((double) plr.position.Y / 16.0 > Main.rockLayer)
+      else if (plr.position.Y / 16.0 > Main.rockLayer)
         list.Add(30);
       else if (plr.ZoneHoly)
         list.Add(27);
@@ -343,7 +358,7 @@ namespace Terraria.GameContent.UI
         list.Add(24);
       else if (plr.ZoneSnow)
         list.Add(32);
-      else if ((double) plr.position.Y / 16.0 < Main.worldSurface && ((double) plr.position.X < 4000.0 || (double) plr.position.X > (double) (16 * (Main.maxTilesX - 250))))
+      else if (plr.position.Y / 16.0 < Main.worldSurface && (plr.position.X < 4000.0 || plr.position.X > (double) (16 * (Main.maxTilesX - 250))))
         list.Add(29);
       else if (plr.ZoneDesert)
         list.Add(28);

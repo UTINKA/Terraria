@@ -1,9 +1,10 @@
 ﻿// Decompiled with JetBrains decompiler
 // Type: Terraria.World.Generation.StructureMap
-// Assembly: Terraria, Version=1.3.4.4, Culture=neutral, PublicKeyToken=null
-// MVID: DEE50102-BCC2-472F-987B-153E892583F1
-// Assembly location: E:\Steam\SteamApps\common\Terraria\Terraria.exe
+// Assembly: Terraria, Version=1.3.5.1, Culture=neutral, PublicKeyToken=null
+// MVID: DF0400F4-EE47-4864-BE80-932EDB02D8A6
+// Assembly location: F:\Steam\steamapps\common\Terraria\Terraria.exe
 
+using Microsoft.Xna.Framework;
 using System.Collections.Generic;
 using Terraria.ID;
 
@@ -11,26 +12,29 @@ namespace Terraria.World.Generation
 {
   public class StructureMap
   {
-    private List<Microsoft.Xna.Framework.Rectangle> _structures = new List<Microsoft.Xna.Framework.Rectangle>(2048);
+    private List<Rectangle> _structures = new List<Rectangle>(2048);
 
-    public bool CanPlace(Microsoft.Xna.Framework.Rectangle area, int padding = 0)
+    public bool CanPlace(Rectangle area, int padding = 0)
     {
       return this.CanPlace(area, TileID.Sets.GeneralPlacementTiles, padding);
     }
 
-    public bool CanPlace(Microsoft.Xna.Framework.Rectangle area, bool[] validTiles, int padding = 0)
+    public bool CanPlace(Rectangle area, bool[] validTiles, int padding = 0)
     {
       if (area.X < 0 || area.Y < 0 || (area.X + area.Width > Main.maxTilesX - 1 || area.Y + area.Height > Main.maxTilesY - 1))
         return false;
-      Microsoft.Xna.Framework.Rectangle rectangle = new Microsoft.Xna.Framework.Rectangle(area.X - padding, area.Y - padding, area.Width + padding * 2, area.Height + padding * 2);
+      Rectangle rectangle;
+      // ISSUE: explicit reference operation
+      ((Rectangle) @rectangle).\u002Ector(area.X - padding, area.Y - padding, area.Width + padding * 2, area.Height + padding * 2);
       for (int index = 0; index < this._structures.Count; ++index)
       {
-        if (rectangle.Intersects(this._structures[index]))
+        // ISSUE: explicit reference operation
+        if (((Rectangle) @rectangle).Intersects(this._structures[index]))
           return false;
       }
-      for (int x = rectangle.X; x < rectangle.X + rectangle.Width; ++x)
+      for (int x = (int) rectangle.X; x < rectangle.X + rectangle.Width; ++x)
       {
-        for (int y = rectangle.Y; y < rectangle.Y + rectangle.Height; ++y)
+        for (int y = (int) rectangle.Y; y < rectangle.Y + rectangle.Height; ++y)
         {
           if (Main.tile[x, y].active())
           {
@@ -43,9 +47,12 @@ namespace Terraria.World.Generation
       return true;
     }
 
-    public void AddStructure(Microsoft.Xna.Framework.Rectangle area, int padding = 0)
+    public void AddStructure(Rectangle area, int padding = 0)
     {
-      this._structures.Add(new Microsoft.Xna.Framework.Rectangle(area.X - padding, area.Y - padding, area.Width + padding * 2, area.Height + padding * 2));
+      Rectangle rectangle;
+      // ISSUE: explicit reference operation
+      ((Rectangle) @rectangle).\u002Ector(area.X - padding, area.Y - padding, area.Width + padding * 2, area.Height + padding * 2);
+      this._structures.Add(rectangle);
     }
 
     public void Reset()

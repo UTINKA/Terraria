@@ -1,8 +1,8 @@
 ﻿// Decompiled with JetBrains decompiler
 // Type: Terraria.GameContent.UI.Elements.UIImageButton
-// Assembly: Terraria, Version=1.3.4.4, Culture=neutral, PublicKeyToken=null
-// MVID: DEE50102-BCC2-472F-987B-153E892583F1
-// Assembly location: E:\Steam\SteamApps\common\Terraria\Terraria.exe
+// Assembly: Terraria, Version=1.3.5.1, Culture=neutral, PublicKeyToken=null
+// MVID: DF0400F4-EE47-4864-BE80-932EDB02D8A6
+// Assembly location: F:\Steam\steamapps\common\Terraria\Terraria.exe
 
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -19,21 +19,21 @@ namespace Terraria.GameContent.UI.Elements
     public UIImageButton(Texture2D texture)
     {
       this._texture = texture;
-      this.Width.Set((float) this._texture.Width, 0.0f);
-      this.Height.Set((float) this._texture.Height, 0.0f);
+      this.Width.Set((float) this._texture.get_Width(), 0.0f);
+      this.Height.Set((float) this._texture.get_Height(), 0.0f);
     }
 
     public void SetImage(Texture2D texture)
     {
       this._texture = texture;
-      this.Width.Set((float) this._texture.Width, 0.0f);
-      this.Height.Set((float) this._texture.Height, 0.0f);
+      this.Width.Set((float) this._texture.get_Width(), 0.0f);
+      this.Height.Set((float) this._texture.get_Height(), 0.0f);
     }
 
     protected override void DrawSelf(SpriteBatch spriteBatch)
     {
       CalculatedStyle dimensions = this.GetDimensions();
-      spriteBatch.Draw(this._texture, dimensions.Position(), Color.White * (this.IsMouseHovering ? this._visibilityActive : this._visibilityInactive));
+      spriteBatch.Draw(this._texture, dimensions.Position(), Color.op_Multiply(Color.get_White(), this.IsMouseHovering ? this._visibilityActive : this._visibilityInactive));
     }
 
     public override void MouseOver(UIMouseEvent evt)

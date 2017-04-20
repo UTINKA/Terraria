@@ -1,8 +1,8 @@
 ﻿// Decompiled with JetBrains decompiler
 // Type: Terraria.GameContent.UI.States.UIWorldSelect
-// Assembly: Terraria, Version=1.3.4.4, Culture=neutral, PublicKeyToken=null
-// MVID: DEE50102-BCC2-472F-987B-153E892583F1
-// Assembly location: E:\Steam\SteamApps\common\Terraria\Terraria.exe
+// Assembly: Terraria, Version=1.3.5.1, Culture=neutral, PublicKeyToken=null
+// MVID: DF0400F4-EE47-4864-BE80-932EDB02D8A6
+// Assembly location: F:\Steam\steamapps\common\Terraria\Terraria.exe
 
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -31,14 +31,14 @@ namespace Terraria.GameContent.UI.States
     {
       UIElement element = new UIElement();
       element.Width.Set(0.0f, 0.8f);
-      element.MaxWidth.Set(600f, 0.0f);
+      element.MaxWidth.Set(650f, 0.0f);
       element.Top.Set(220f, 0.0f);
       element.Height.Set(-220f, 1f);
       element.HAlign = 0.5f;
       UIPanel uiPanel = new UIPanel();
       uiPanel.Width.Set(0.0f, 1f);
       uiPanel.Height.Set(-110f, 1f);
-      uiPanel.BackgroundColor = new Color(33, 43, 79) * 0.8f;
+      uiPanel.BackgroundColor = Color.op_Multiply(new Color(33, 43, 79), 0.8f);
       element.Append((UIElement) uiPanel);
       this._containerPanel = uiPanel;
       this._worldList = new UIList();
@@ -83,7 +83,7 @@ namespace Terraria.GameContent.UI.States
     {
       Main.PlaySound(10, -1, -1, 1, 1f, 0.0f);
       Main.menuMode = 16;
-      Main.newWorldName = Lang.gen[57] + " " + (object) (Main.WorldList.Count + 1);
+      Main.newWorldName = Lang.gen[57].Value + " " + (object) (Main.WorldList.Count + 1);
     }
 
     private void GoBackClick(UIMouseEvent evt, UIElement listeningElement)
@@ -100,7 +100,7 @@ namespace Terraria.GameContent.UI.States
 
     private void FadedMouseOut(UIMouseEvent evt, UIElement listeningElement)
     {
-      ((UIPanel) evt.Target).BackgroundColor = new Color(63, 82, 151) * 0.7f;
+      ((UIPanel) evt.Target).BackgroundColor = Color.op_Multiply(new Color(63, 82, 151), 0.7f);
     }
 
     public override void OnActivate()
@@ -190,27 +190,35 @@ namespace Terraria.GameContent.UI.States
     private void SetupGamepadPoints(SpriteBatch spriteBatch)
     {
       UILinkPointNavigator.Shortcuts.BackButtonCommand = 2;
-      int ID1 = 3000;
-      UILinkPointNavigator.SetPosition(ID1, this._backPanel.GetInnerDimensions().ToRectangle().Center.ToVector2());
-      UILinkPointNavigator.SetPosition(ID1 + 1, this._newPanel.GetInnerDimensions().ToRectangle().Center.ToVector2());
-      int index1 = ID1;
-      UILinkPoint point1 = UILinkPointNavigator.Points[index1];
+      int index1 = 3000;
+      int ID1 = index1;
+      Rectangle rectangle1 = this._backPanel.GetInnerDimensions().ToRectangle();
+      // ISSUE: explicit reference operation
+      Vector2 vector2_1 = ((Rectangle) @rectangle1).get_Center().ToVector2();
+      UILinkPointNavigator.SetPosition(ID1, vector2_1);
+      int ID2 = index1 + 1;
+      Rectangle rectangle2 = this._newPanel.GetInnerDimensions().ToRectangle();
+      // ISSUE: explicit reference operation
+      Vector2 vector2_2 = ((Rectangle) @rectangle2).get_Center().ToVector2();
+      UILinkPointNavigator.SetPosition(ID2, vector2_2);
+      int index2 = index1;
+      UILinkPoint point1 = UILinkPointNavigator.Points[index2];
       point1.Unlink();
-      point1.Right = index1 + 1;
-      int index2 = ID1 + 1;
-      UILinkPoint point2 = UILinkPointNavigator.Points[index2];
+      point1.Right = index2 + 1;
+      int index3 = index1 + 1;
+      UILinkPoint point2 = UILinkPointNavigator.Points[index3];
       point2.Unlink();
-      point2.Left = index2 - 1;
+      point2.Left = index3 - 1;
       Rectangle clippingRectangle = this._containerPanel.GetClippingRectangle(spriteBatch);
       Vector2 minimum = clippingRectangle.TopLeft();
       Vector2 maximum = clippingRectangle.BottomRight();
       List<SnapPoint> snapPoints = this.GetSnapPoints();
-      for (int index3 = 0; index3 < snapPoints.Count; ++index3)
+      for (int index4 = 0; index4 < snapPoints.Count; ++index4)
       {
-        if (!snapPoints[index3].Position.Between(minimum, maximum))
+        if (!snapPoints[index4].Position.Between(minimum, maximum))
         {
-          snapPoints.Remove(snapPoints[index3]);
-          --index3;
+          snapPoints.Remove(snapPoints[index4]);
+          --index4;
         }
       }
       SnapPoint[,] snapPointArray = new SnapPoint[this._worldList.Count, 5];
@@ -224,37 +232,37 @@ namespace Terraria.GameContent.UI.States
         snapPointArray[snapPoint.ID, 3] = snapPoint;
       foreach (SnapPoint snapPoint in snapPoints.Where<SnapPoint>((Func<SnapPoint, bool>) (a => a.Name == "Delete")))
         snapPointArray[snapPoint.ID, 4] = snapPoint;
-      int ID2 = ID1 + 2;
+      int ID3 = index1 + 2;
       int[] numArray = new int[this._worldList.Count];
-      for (int index3 = 0; index3 < numArray.Length; ++index3)
-        numArray[index3] = -1;
-      for (int index3 = 0; index3 < 5; ++index3)
+      for (int index4 = 0; index4 < numArray.Length; ++index4)
+        numArray[index4] = -1;
+      for (int index4 = 0; index4 < 5; ++index4)
       {
-        int index4 = -1;
-        for (int index5 = 0; index5 < snapPointArray.GetLength(0); ++index5)
+        int index5 = -1;
+        for (int index6 = 0; index6 < snapPointArray.GetLength(0); ++index6)
         {
-          if (snapPointArray[index5, index3] != null)
+          if (snapPointArray[index6, index4] != null)
           {
-            UILinkPoint point3 = UILinkPointNavigator.Points[ID2];
+            UILinkPoint point3 = UILinkPointNavigator.Points[ID3];
             point3.Unlink();
-            UILinkPointNavigator.SetPosition(ID2, snapPointArray[index5, index3].Position);
-            if (index4 != -1)
+            UILinkPointNavigator.SetPosition(ID3, snapPointArray[index6, index4].Position);
+            if (index5 != -1)
             {
-              point3.Up = index4;
-              UILinkPointNavigator.Points[index4].Down = ID2;
+              point3.Up = index5;
+              UILinkPointNavigator.Points[index5].Down = ID3;
             }
-            if (numArray[index5] != -1)
+            if (numArray[index6] != -1)
             {
-              point3.Left = numArray[index5];
-              UILinkPointNavigator.Points[numArray[index5]].Right = ID2;
+              point3.Left = numArray[index6];
+              UILinkPointNavigator.Points[numArray[index6]].Right = ID3;
             }
-            point3.Down = ID1;
-            if (index3 == 0)
-              UILinkPointNavigator.Points[ID1].Up = UILinkPointNavigator.Points[ID1 + 1].Up = ID2;
-            index4 = ID2;
-            numArray[index5] = ID2;
-            UILinkPointNavigator.Shortcuts.FANCYUI_HIGHEST_INDEX = ID2;
-            ++ID2;
+            point3.Down = index1;
+            if (index4 == 0)
+              UILinkPointNavigator.Points[index1].Up = UILinkPointNavigator.Points[index1 + 1].Up = ID3;
+            index5 = ID3;
+            numArray[index6] = ID3;
+            UILinkPointNavigator.Shortcuts.FANCYUI_HIGHEST_INDEX = ID3;
+            ++ID3;
           }
         }
       }

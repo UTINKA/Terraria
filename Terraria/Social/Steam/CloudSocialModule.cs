@@ -1,13 +1,12 @@
 ﻿// Decompiled with JetBrains decompiler
 // Type: Terraria.Social.Steam.CloudSocialModule
-// Assembly: Terraria, Version=1.3.4.4, Culture=neutral, PublicKeyToken=null
-// MVID: DEE50102-BCC2-472F-987B-153E892583F1
-// Assembly location: E:\Steam\SteamApps\common\Terraria\Terraria.exe
+// Assembly: Terraria, Version=1.3.5.1, Culture=neutral, PublicKeyToken=null
+// MVID: DF0400F4-EE47-4864-BE80-932EDB02D8A6
+// Assembly location: F:\Steam\steamapps\common\Terraria\Terraria.exe
 
 using Steamworks;
 using System;
 using System.Collections.Generic;
-using System.Text.RegularExpressions;
 
 namespace Terraria.Social.Steam
 {
@@ -26,22 +25,18 @@ namespace Terraria.Social.Steam
     {
     }
 
-    public override List<string> GetFiles(string matchPattern)
+    public override IEnumerable<string> GetFiles()
     {
       lock (this.ioLock)
       {
-        matchPattern = "^" + matchPattern + "$";
-        List<string> local_0 = new List<string>();
-        int local_1 = SteamRemoteStorage.GetFileCount();
-        Regex local_2 = new Regex(matchPattern, RegexOptions.IgnoreCase | RegexOptions.Compiled);
-        for (int local_4 = 0; local_4 < local_1; ++local_4)
+        int fileCount = SteamRemoteStorage.GetFileCount();
+        List<string> stringList = new List<string>(fileCount);
+        for (int index = 0; index < fileCount; ++index)
         {
-          int local_3;
-          string local_5 = SteamRemoteStorage.GetFileNameAndSize(local_4, ref local_3);
-          if (local_2.Match(local_5).Length > 0)
-            local_0.Add(local_5);
+          int num;
+          stringList.Add(SteamRemoteStorage.GetFileNameAndSize(index, ref num));
         }
-        return local_0;
+        return (IEnumerable<string>) stringList;
       }
     }
 
@@ -49,16 +44,16 @@ namespace Terraria.Social.Steam
     {
       lock (this.ioLock)
       {
-        UGCFileWriteStreamHandle_t local_0 = SteamRemoteStorage.FileWriteStreamOpen(path);
-        uint local_1 = 0;
-        while ((long) local_1 < (long) length)
+        UGCFileWriteStreamHandle_t writeStreamHandleT = SteamRemoteStorage.FileWriteStreamOpen(path);
+        uint num1 = 0;
+        while ((long) num1 < (long) length)
         {
-          int local_2 = (int) Math.Min(1024L, (long) length - (long) local_1);
-          Array.Copy((Array) data, (long) local_1, (Array) this.writeBuffer, 0L, (long) local_2);
-          SteamRemoteStorage.FileWriteStreamWriteChunk(local_0, this.writeBuffer, local_2);
-          local_1 += 1024U;
+          int num2 = (int) Math.Min(1024L, (long) length - (long) num1);
+          Array.Copy((Array) data, (long) num1, (Array) this.writeBuffer, 0L, (long) num2);
+          SteamRemoteStorage.FileWriteStreamWriteChunk(writeStreamHandleT, this.writeBuffer, num2);
+          num1 += 1024U;
         }
-        return SteamRemoteStorage.FileWriteStreamClose(local_0);
+        return SteamRemoteStorage.FileWriteStreamClose(writeStreamHandleT);
       }
     }
 

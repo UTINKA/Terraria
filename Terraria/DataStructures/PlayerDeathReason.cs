@@ -1,10 +1,11 @@
 ﻿// Decompiled with JetBrains decompiler
 // Type: Terraria.DataStructures.PlayerDeathReason
-// Assembly: Terraria, Version=1.3.4.4, Culture=neutral, PublicKeyToken=null
-// MVID: DEE50102-BCC2-472F-987B-153E892583F1
-// Assembly location: E:\Steam\SteamApps\common\Terraria\Terraria.exe
+// Assembly: Terraria, Version=1.3.5.1, Culture=neutral, PublicKeyToken=null
+// MVID: DF0400F4-EE47-4864-BE80-932EDB02D8A6
+// Assembly location: F:\Steam\steamapps\common\Terraria\Terraria.exe
 
 using System.IO;
+using Terraria.Localization;
 
 namespace Terraria.DataStructures
 {
@@ -85,11 +86,11 @@ namespace Terraria.DataStructures
       return playerDeathReason;
     }
 
-    public string GetDeathText()
+    public NetworkText GetDeathText(string deadPlayerName)
     {
       if (this.SourceCustomReason != null)
-        return this.SourceCustomReason;
-      return Lang.deathMsg(this.SourcePlayerIndex, this.SourceNPCIndex, this.SourceProjectileIndex, this.SourceOtherIndex, this.SourceProjectileType, this.SourceItemType);
+        return NetworkText.FromLiteral(this.SourceCustomReason);
+      return Lang.CreateDeathMessage(deadPlayerName, this.SourcePlayerIndex, this.SourceNPCIndex, this.SourceProjectileIndex, this.SourceOtherIndex, this.SourceProjectileType, this.SourceItemType);
     }
 
     public void WriteSelfTo(BinaryWriter writer)

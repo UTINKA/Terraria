@@ -1,8 +1,8 @@
 ﻿// Decompiled with JetBrains decompiler
 // Type: Terraria.Gore
-// Assembly: Terraria, Version=1.3.4.4, Culture=neutral, PublicKeyToken=null
-// MVID: DEE50102-BCC2-472F-987B-153E892583F1
-// Assembly location: E:\Steam\SteamApps\common\Terraria\Terraria.exe
+// Assembly: Terraria, Version=1.3.5.1, Culture=neutral, PublicKeyToken=null
+// MVID: DF0400F4-EE47-4864-BE80-932EDB02D8A6
+// Assembly location: F:\Steam\steamapps\common\Terraria\Terraria.exe
 
 using Microsoft.Xna.Framework;
 using System;
@@ -39,13 +39,33 @@ namespace Terraria
       bool flag = this.type >= 1024 && this.type <= 1026;
       if (this.type >= 276 && this.type <= 282)
       {
-        this.velocity.X *= 0.98f;
-        this.velocity.Y *= 0.98f;
-        if ((double) this.velocity.Y < (double) this.scale)
-          this.velocity.Y += 0.05f;
+        // ISSUE: explicit reference operation
+        // ISSUE: variable of a reference type
+        Vector2& local1 = @this.velocity;
+        // ISSUE: explicit reference operation
+        double num1 = (^local1).X * 0.980000019073486;
+        // ISSUE: explicit reference operation
+        (^local1).X = (__Null) num1;
+        // ISSUE: explicit reference operation
+        // ISSUE: variable of a reference type
+        Vector2& local2 = @this.velocity;
+        // ISSUE: explicit reference operation
+        double num2 = (^local2).Y * 0.980000019073486;
+        // ISSUE: explicit reference operation
+        (^local2).Y = (__Null) num2;
+        if (this.velocity.Y < (double) this.scale)
+        {
+          // ISSUE: explicit reference operation
+          // ISSUE: variable of a reference type
+          Vector2& local3 = @this.velocity;
+          // ISSUE: explicit reference operation
+          double num3 = (^local3).Y + 0.0500000007450581;
+          // ISSUE: explicit reference operation
+          (^local3).Y = (__Null) num3;
+        }
         if ((double) this.velocity.Y > 0.1)
         {
-          if ((double) this.velocity.X > 0.0)
+          if (this.velocity.X > 0.0)
             this.rotation += 0.01f;
           else
             this.rotation -= 0.01f;
@@ -60,7 +80,7 @@ namespace Terraria
           Gore.goreTime = 0;
         }
         this.sticky = false;
-        this.rotation = this.velocity.X * 0.1f;
+        this.rotation = (float) (this.velocity.X * 0.100000001490116);
       }
       else if (this.type >= 706 && this.type <= 717 || this.type == 943)
       {
@@ -69,8 +89,8 @@ namespace Terraria
         ++this.frameCounter;
         if ((int) this.frame <= 4)
         {
-          int x = (int) ((double) this.position.X / 16.0);
-          int y = (int) ((double) this.position.Y / 16.0) - 1;
+          int x = (int) (this.position.X / 16.0);
+          int y = (int) (this.position.Y / 16.0) - 1;
           if (WorldGen.InWorld(x, y, 0) && !Main.tile[x, y].active())
             this.active = false;
           if ((int) this.frame == 0)
@@ -97,7 +117,9 @@ namespace Terraria
             {
               int index = Gore.NewGore(this.position, this.velocity, this.type, 1f);
               Main.gore[index].frame = (byte) 9;
-              Main.gore[index].velocity *= 0.0f;
+              Gore gore = Main.gore[index];
+              Vector2 vector2 = Vector2.op_Multiply(gore.velocity, 0.0f);
+              gore.velocity = vector2;
             }
             if (this.type == 943 && (int) this.frame > 4)
             {
@@ -106,14 +128,14 @@ namespace Terraria
                 Gore gore = Main.gore[Gore.NewGore(this.position, this.velocity, this.type, this.scale)];
                 gore.frameCounter = (byte) 0;
                 gore.frame = (byte) 7;
-                gore.velocity = Vector2.UnitY * 1f;
+                gore.velocity = Vector2.op_Multiply(Vector2.get_UnitY(), 1f);
               }
               if (Main.rand.Next(2) == 0)
               {
                 Gore gore = Main.gore[Gore.NewGore(this.position, this.velocity, this.type, this.scale)];
                 gore.frameCounter = (byte) 0;
                 gore.frame = (byte) 7;
-                gore.velocity = Vector2.UnitY * 2f;
+                gore.velocity = Vector2.op_Multiply(Vector2.get_UnitY(), 2f);
               }
             }
           }
@@ -139,24 +161,50 @@ namespace Terraria
           if (this.type == 716)
           {
             num2 = (int) ((double) num2 * 1.5);
-            this.velocity.Y += 0.175f;
+            // ISSUE: explicit reference operation
+            // ISSUE: variable of a reference type
+            Vector2& local = @this.velocity;
+            // ISSUE: explicit reference operation
+            double num3 = (^local).Y + 0.174999997019768;
+            // ISSUE: explicit reference operation
+            (^local).Y = (__Null) num3;
           }
           else if (this.type == 717)
           {
             num2 *= 2;
-            this.velocity.Y += 0.15f;
+            // ISSUE: explicit reference operation
+            // ISSUE: variable of a reference type
+            Vector2& local = @this.velocity;
+            // ISSUE: explicit reference operation
+            double num3 = (^local).Y + 0.150000005960464;
+            // ISSUE: explicit reference operation
+            (^local).Y = (__Null) num3;
           }
           else if (this.type == 943)
           {
             num2 = (int) ((double) num2 * 1.5);
-            this.velocity.Y += 0.2f;
+            // ISSUE: explicit reference operation
+            // ISSUE: variable of a reference type
+            Vector2& local = @this.velocity;
+            // ISSUE: explicit reference operation
+            double num3 = (^local).Y + 0.200000002980232;
+            // ISSUE: explicit reference operation
+            (^local).Y = (__Null) num3;
           }
           else
-            this.velocity.Y += 0.2f;
+          {
+            // ISSUE: explicit reference operation
+            // ISSUE: variable of a reference type
+            Vector2& local = @this.velocity;
+            // ISSUE: explicit reference operation
+            double num3 = (^local).Y + 0.200000002980232;
+            // ISSUE: explicit reference operation
+            (^local).Y = (__Null) num3;
+          }
           if ((double) this.velocity.Y < 0.5)
-            this.velocity.Y = 0.5f;
-          if ((double) this.velocity.Y > 12.0)
-            this.velocity.Y = 12f;
+            this.velocity.Y = (__Null) 0.5;
+          if (this.velocity.Y > 12.0)
+            this.velocity.Y = (__Null) 12.0;
           if ((int) this.frameCounter >= num2)
           {
             this.frameCounter = (byte) 0;
@@ -171,21 +219,41 @@ namespace Terraria
             num1 *= 2;
           else if (this.type == 717)
             num1 *= 6;
-          this.velocity.Y += 0.1f;
+          // ISSUE: explicit reference operation
+          // ISSUE: variable of a reference type
+          Vector2& local = @this.velocity;
+          // ISSUE: explicit reference operation
+          double num2 = (^local).Y + 0.100000001490116;
+          // ISSUE: explicit reference operation
+          (^local).Y = (__Null) num2;
           if ((int) this.frameCounter >= num1)
           {
             this.frameCounter = (byte) 0;
             ++this.frame;
           }
-          this.velocity *= 0.0f;
+          Gore gore = this;
+          Vector2 vector2 = Vector2.op_Multiply(gore.velocity, 0.0f);
+          gore.velocity = vector2;
           if ((int) this.frame > 14)
             this.active = false;
         }
       }
       else if (this.type == 11 || this.type == 12 || (this.type == 13 || this.type == 61) || (this.type == 62 || this.type == 63 || (this.type == 99 || this.type == 220)) || (this.type == 221 || this.type == 222 || this.type >= 375 && this.type <= 377 || (this.type >= 435 && this.type <= 437 || this.type >= 861 && this.type <= 862)))
       {
-        this.velocity.Y *= 0.98f;
-        this.velocity.X *= 0.98f;
+        // ISSUE: explicit reference operation
+        // ISSUE: variable of a reference type
+        Vector2& local1 = @this.velocity;
+        // ISSUE: explicit reference operation
+        double num1 = (^local1).Y * 0.980000019073486;
+        // ISSUE: explicit reference operation
+        (^local1).Y = (__Null) num1;
+        // ISSUE: explicit reference operation
+        // ISSUE: variable of a reference type
+        Vector2& local2 = @this.velocity;
+        // ISSUE: explicit reference operation
+        double num2 = (^local2).X * 0.980000019073486;
+        // ISSUE: explicit reference operation
+        (^local2).X = (__Null) num2;
         this.scale -= 0.007f;
         if ((double) this.scale < 0.1)
         {
@@ -195,8 +263,20 @@ namespace Terraria
       }
       else if (this.type == 16 || this.type == 17)
       {
-        this.velocity.Y *= 0.98f;
-        this.velocity.X *= 0.98f;
+        // ISSUE: explicit reference operation
+        // ISSUE: variable of a reference type
+        Vector2& local1 = @this.velocity;
+        // ISSUE: explicit reference operation
+        double num1 = (^local1).Y * 0.980000019073486;
+        // ISSUE: explicit reference operation
+        (^local1).Y = (__Null) num1;
+        // ISSUE: explicit reference operation
+        // ISSUE: variable of a reference type
+        Vector2& local2 = @this.velocity;
+        // ISSUE: explicit reference operation
+        double num2 = (^local2).X * 0.980000019073486;
+        // ISSUE: explicit reference operation
+        (^local2).X = (__Null) num2;
         this.scale -= 0.01f;
         if ((double) this.scale < 0.1)
         {
@@ -207,13 +287,25 @@ namespace Terraria
       else if (this.type == 331)
       {
         this.alpha += 5;
-        this.velocity.Y *= 0.95f;
-        this.velocity.X *= 0.95f;
-        this.rotation = this.velocity.X * 0.1f;
+        // ISSUE: explicit reference operation
+        // ISSUE: variable of a reference type
+        Vector2& local1 = @this.velocity;
+        // ISSUE: explicit reference operation
+        double num1 = (^local1).Y * 0.949999988079071;
+        // ISSUE: explicit reference operation
+        (^local1).Y = (__Null) num1;
+        // ISSUE: explicit reference operation
+        // ISSUE: variable of a reference type
+        Vector2& local2 = @this.velocity;
+        // ISSUE: explicit reference operation
+        double num2 = (^local2).X * 0.949999988079071;
+        // ISSUE: explicit reference operation
+        (^local2).X = (__Null) num2;
+        this.rotation = (float) (this.velocity.X * 0.100000001490116);
       }
       else if (GoreID.Sets.SpecialAI[this.type] == 3)
       {
-        if ((int) ++this.frameCounter >= 8 && (double) this.velocity.Y > 0.200000002980232)
+        if ((int) ++this.frameCounter >= 8 && this.velocity.Y > 0.200000002980232)
         {
           this.frameCounter = (byte) 0;
           int num = (int) this.frame / 4;
@@ -226,11 +318,25 @@ namespace Terraria
         if (this.type >= 907 && this.type <= 909)
         {
           this.rotation = 0.0f;
-          this.velocity.X *= 0.98f;
-          if ((double) this.velocity.Y > 0.0 && (double) this.velocity.Y < 1.0 / 1000.0)
-            this.velocity.Y = (float) ((double) Main.rand.NextFloat() * -3.0 - 0.5);
-          if ((double) this.velocity.Y > -1.0)
-            this.velocity.Y -= 0.1f;
+          // ISSUE: explicit reference operation
+          // ISSUE: variable of a reference type
+          Vector2& local1 = @this.velocity;
+          // ISSUE: explicit reference operation
+          double num1 = (^local1).X * 0.980000019073486;
+          // ISSUE: explicit reference operation
+          (^local1).X = (__Null) num1;
+          if (this.velocity.Y > 0.0 && this.velocity.Y < 1.0 / 1000.0)
+            this.velocity.Y = (__Null) ((double) Main.rand.NextFloat() * -3.0 - 0.5);
+          if (this.velocity.Y > -1.0)
+          {
+            // ISSUE: explicit reference operation
+            // ISSUE: variable of a reference type
+            Vector2& local2 = @this.velocity;
+            // ISSUE: explicit reference operation
+            double num2 = (^local2).Y - 0.100000001490116;
+            // ISSUE: explicit reference operation
+            (^local2).Y = (__Null) num2;
+          }
           if ((double) this.scale < 1.0)
             this.scale += 0.1f;
           if ((int) ++this.frameCounter >= 8)
@@ -241,13 +347,27 @@ namespace Terraria
           }
         }
         else if (this.type < 411 || this.type > 430)
-          this.velocity.Y += 0.2f;
+        {
+          // ISSUE: explicit reference operation
+          // ISSUE: variable of a reference type
+          Vector2& local = @this.velocity;
+          // ISSUE: explicit reference operation
+          double num = (^local).Y + 0.200000002980232;
+          // ISSUE: explicit reference operation
+          (^local).Y = (__Null) num;
+        }
       }
-      this.rotation += this.velocity.X * 0.1f;
+      this.rotation += (float) (this.velocity.X * 0.100000001490116);
       if (this.type >= 580 && this.type <= 582)
       {
         this.rotation = 0.0f;
-        this.velocity.X *= 0.95f;
+        // ISSUE: explicit reference operation
+        // ISSUE: variable of a reference type
+        Vector2& local = @this.velocity;
+        // ISSUE: explicit reference operation
+        double num = (^local).X * 0.949999988079071;
+        // ISSUE: explicit reference operation
+        (^local).X = (__Null) num;
       }
       if (GoreID.Sets.SpecialAI[this.type] == 2)
       {
@@ -259,25 +379,31 @@ namespace Terraria
           this.alpha = 0;
         if (this.alpha > (int) byte.MaxValue)
           this.timeLeft = 0;
-        this.velocity.X = (float) (((double) this.velocity.X * 50.0 + (double) Main.windSpeed * 2.0 + (double) Main.rand.Next(-10, 11) * 0.100000001490116) / 51.0);
+        this.velocity.X = (__Null) ((this.velocity.X * 50.0 + (double) Main.windSpeed * 2.0 + (double) Main.rand.Next(-10, 11) * 0.100000001490116) / 51.0);
         float num1 = 0.0f;
-        if ((double) this.velocity.X < 0.0)
-          num1 = this.velocity.X * 0.2f;
-        this.velocity.Y = (float) (((double) this.velocity.Y * 50.0 - 0.349999994039536 + (double) num1 + (double) Main.rand.Next(-10, 11) * 0.200000002980232) / 51.0);
-        this.rotation = this.velocity.X * 0.6f;
+        if (this.velocity.X < 0.0)
+          num1 = (float) (this.velocity.X * 0.200000002980232);
+        this.velocity.Y = (__Null) ((this.velocity.Y * 50.0 - 0.349999994039536 + (double) num1 + (double) Main.rand.Next(-10, 11) * 0.200000002980232) / 51.0);
+        this.rotation = (float) (this.velocity.X * 0.600000023841858);
         float num2 = -1f;
         if (Main.goreLoaded[this.type])
         {
-          Rectangle rectangle1 = new Rectangle((int) this.position.X, (int) this.position.Y, (int) ((double) Main.goreTexture[this.type].Width * (double) this.scale), (int) ((double) Main.goreTexture[this.type].Height * (double) this.scale));
+          Rectangle rectangle1;
+          // ISSUE: explicit reference operation
+          ((Rectangle) @rectangle1).\u002Ector((int) this.position.X, (int) this.position.Y, (int) ((double) Main.goreTexture[this.type].get_Width() * (double) this.scale), (int) ((double) Main.goreTexture[this.type].get_Height() * (double) this.scale));
           for (int index = 0; index < (int) byte.MaxValue; ++index)
           {
             if (Main.player[index].active && !Main.player[index].dead)
             {
-              Rectangle rectangle2 = new Rectangle((int) Main.player[index].position.X, (int) Main.player[index].position.Y, Main.player[index].width, Main.player[index].height);
-              if (rectangle1.Intersects(rectangle2))
+              Rectangle rectangle2;
+              // ISSUE: explicit reference operation
+              ((Rectangle) @rectangle2).\u002Ector((int) Main.player[index].position.X, (int) Main.player[index].position.Y, Main.player[index].width, Main.player[index].height);
+              // ISSUE: explicit reference operation
+              if (((Rectangle) @rectangle1).Intersects(rectangle2))
               {
                 this.timeLeft = 0;
-                num2 = Main.player[index].velocity.Length();
+                // ISSUE: explicit reference operation
+                num2 = ((Vector2) @Main.player[index].velocity).Length();
                 break;
               }
             }
@@ -297,16 +423,18 @@ namespace Terraria
           this.alpha = (int) byte.MaxValue;
           if (Main.goreLoaded[this.type] && (double) num2 != -1.0)
           {
-            float num3 = (float) ((double) Main.goreTexture[this.type].Width * (double) this.scale * 0.800000011920929);
-            float x = this.position.X;
-            float y = this.position.Y;
-            float num4 = (float) Main.goreTexture[this.type].Width * this.scale;
-            float num5 = (float) Main.goreTexture[this.type].Height * this.scale;
+            float num3 = (float) ((double) Main.goreTexture[this.type].get_Width() * (double) this.scale * 0.800000011920929);
+            float x = (float) this.position.X;
+            float y = (float) this.position.Y;
+            float num4 = (float) Main.goreTexture[this.type].get_Width() * this.scale;
+            float num5 = (float) Main.goreTexture[this.type].get_Height() * this.scale;
             int Type = 31;
             for (int index1 = 0; (double) index1 < (double) num3; ++index1)
             {
-              int index2 = Dust.NewDust(new Vector2(x, y), (int) num4, (int) num5, Type, 0.0f, 0.0f, 0, new Color(), 1f);
-              Main.dust[index2].velocity *= (float) ((1.0 + (double) num2) / 3.0);
+              int index2 = Dust.NewDust(new Vector2(x, y), (int) num4, (int) num5, Type, 0.0f, 0.0f, 0, (Color) null, 1f);
+              Dust dust = Main.dust[index2];
+              Vector2 vector2 = Vector2.op_Multiply(dust.velocity, (float) ((1.0 + (double) num2) / 3.0));
+              dust.velocity = vector2;
               Main.dust[index2].noGravity = true;
               Main.dust[index2].alpha = 100;
               Main.dust[index2].scale = this.scale;
@@ -317,22 +445,27 @@ namespace Terraria
       if (this.type >= 411 && this.type <= 430)
       {
         this.alpha = 50;
-        this.velocity.X = (float) (((double) this.velocity.X * 50.0 + (double) Main.windSpeed * 2.0 + (double) Main.rand.Next(-10, 11) * 0.100000001490116) / 51.0);
-        this.velocity.Y = (float) (((double) this.velocity.Y * 50.0 - 0.25 + (double) Main.rand.Next(-10, 11) * 0.200000002980232) / 51.0);
-        this.rotation = this.velocity.X * 0.3f;
+        this.velocity.X = (__Null) ((this.velocity.X * 50.0 + (double) Main.windSpeed * 2.0 + (double) Main.rand.Next(-10, 11) * 0.100000001490116) / 51.0);
+        this.velocity.Y = (__Null) ((this.velocity.Y * 50.0 - 0.25 + (double) Main.rand.Next(-10, 11) * 0.200000002980232) / 51.0);
+        this.rotation = (float) (this.velocity.X * 0.300000011920929);
         if (Main.goreLoaded[this.type])
         {
-          Rectangle rectangle1 = new Rectangle((int) this.position.X, (int) this.position.Y, (int) ((double) Main.goreTexture[this.type].Width * (double) this.scale), (int) ((double) Main.goreTexture[this.type].Height * (double) this.scale));
+          Rectangle rectangle1;
+          // ISSUE: explicit reference operation
+          ((Rectangle) @rectangle1).\u002Ector((int) this.position.X, (int) this.position.Y, (int) ((double) Main.goreTexture[this.type].get_Width() * (double) this.scale), (int) ((double) Main.goreTexture[this.type].get_Height() * (double) this.scale));
           for (int index = 0; index < (int) byte.MaxValue; ++index)
           {
             if (Main.player[index].active && !Main.player[index].dead)
             {
-              Rectangle rectangle2 = new Rectangle((int) Main.player[index].position.X, (int) Main.player[index].position.Y, Main.player[index].width, Main.player[index].height);
-              if (rectangle1.Intersects(rectangle2))
+              Rectangle rectangle2;
+              // ISSUE: explicit reference operation
+              ((Rectangle) @rectangle2).\u002Ector((int) Main.player[index].position.X, (int) Main.player[index].position.Y, Main.player[index].width, Main.player[index].height);
+              // ISSUE: explicit reference operation
+              if (((Rectangle) @rectangle1).Intersects(rectangle2))
                 this.timeLeft = 0;
             }
           }
-          if (Collision.SolidCollision(this.position, (int) ((double) Main.goreTexture[this.type].Width * (double) this.scale), (int) ((double) Main.goreTexture[this.type].Height * (double) this.scale)))
+          if (Collision.SolidCollision(this.position, (int) ((double) Main.goreTexture[this.type].get_Width() * (double) this.scale), (int) ((double) Main.goreTexture[this.type].get_Height() * (double) this.scale)))
             this.timeLeft = 0;
         }
         if (this.timeLeft > 0)
@@ -349,11 +482,11 @@ namespace Terraria
           this.alpha = (int) byte.MaxValue;
           if (Main.goreLoaded[this.type])
           {
-            float num1 = (float) ((double) Main.goreTexture[this.type].Width * (double) this.scale * 0.800000011920929);
-            float x = this.position.X;
-            float y = this.position.Y;
-            float num2 = (float) Main.goreTexture[this.type].Width * this.scale;
-            float num3 = (float) Main.goreTexture[this.type].Height * this.scale;
+            float num1 = (float) ((double) Main.goreTexture[this.type].get_Width() * (double) this.scale * 0.800000011920929);
+            float x = (float) this.position.X;
+            float y = (float) this.position.Y;
+            float num2 = (float) Main.goreTexture[this.type].get_Width() * this.scale;
+            float num3 = (float) Main.goreTexture[this.type].get_Height() * this.scale;
             int Type = 176;
             if (this.type >= 416 && this.type <= 420)
               Type = 177;
@@ -363,7 +496,7 @@ namespace Terraria
               Type = 179;
             for (int index1 = 0; (double) index1 < (double) num1; ++index1)
             {
-              int index2 = Dust.NewDust(new Vector2(x, y), (int) num2, (int) num3, Type, 0.0f, 0.0f, 0, new Color(), 1f);
+              int index2 = Dust.NewDust(new Vector2(x, y), (int) num2, (int) num3, Type, 0.0f, 0.0f, 0, (Color) null, 1f);
               Main.dust[index2].noGravity = true;
               Main.dust[index2].alpha = 100;
               Main.dust[index2].scale = this.scale;
@@ -379,11 +512,11 @@ namespace Terraria
           {
             float num1 = 0.6f;
             float num2 = (int) this.frame != 0 ? ((int) this.frame != 1 ? ((int) this.frame != 2 ? ((int) this.frame != 3 ? ((int) this.frame != 4 ? ((int) this.frame != 5 ? ((int) this.frame != 6 ? ((int) this.frame > 9 ? ((int) this.frame != 10 ? ((int) this.frame != 11 ? ((int) this.frame != 12 ? ((int) this.frame != 13 ? ((int) this.frame != 14 ? 0.0f : num1 * 0.1f) : num1 * 0.2f) : num1 * 0.3f) : num1 * 0.4f) : num1 * 0.5f) : num1 * 0.5f) : num1 * 0.2f) : num1 * 0.4f) : num1 * 0.5f) : num1 * 0.4f) : num1 * 0.3f) : num1 * 0.2f) : num1 * 0.1f;
-            Lighting.AddLight(this.position + new Vector2(8f, 8f), 1f * num2, 0.5f * num2, 0.1f * num2);
+            Lighting.AddLight(Vector2.op_Addition(this.position, new Vector2(8f, 8f)), 1f * num2, 0.5f * num2, 0.1f * num2);
           }
           Vector2 velocity = this.velocity;
           this.velocity = Collision.TileCollision(this.position, this.velocity, 16, 14, false, false, 1);
-          if (this.velocity != velocity)
+          if (Vector2.op_Inequality(this.velocity, velocity))
           {
             if ((int) this.frame < 10)
             {
@@ -393,7 +526,7 @@ namespace Terraria
                 Main.PlaySound(39, (int) this.position.X + 8, (int) this.position.Y + 8, Main.rand.Next(2), 1f, 0.0f);
             }
           }
-          else if (Collision.WetCollision(this.position + this.velocity, 16, 14))
+          else if (Collision.WetCollision(Vector2.op_Addition(this.position, this.velocity), 16, 14))
           {
             if ((int) this.frame < 10)
             {
@@ -401,14 +534,16 @@ namespace Terraria
               this.frameCounter = (byte) 0;
               if (this.type != 716 && this.type != 717 && this.type != 943)
                 Main.PlaySound(39, (int) this.position.X + 8, (int) this.position.Y + 8, 2, 1f, 0.0f);
-              ((WaterShaderData) Filters.Scene["WaterDistortion"].GetShader()).QueueRipple(this.position + new Vector2(8f, 8f), 1f, RippleShape.Square, 0.0f);
+              ((WaterShaderData) Filters.Scene["WaterDistortion"].GetShader()).QueueRipple(Vector2.op_Addition(this.position, new Vector2(8f, 8f)), 1f, RippleShape.Square, 0.0f);
             }
-            int index1 = (int) ((double) this.position.X + 8.0) / 16;
-            int index2 = (int) ((double) this.position.Y + 14.0) / 16;
+            int index1 = (int) (this.position.X + 8.0) / 16;
+            int index2 = (int) (this.position.Y + 14.0) / 16;
             if (Main.tile[index1, index2] != null && (int) Main.tile[index1, index2].liquid > 0)
             {
-              this.velocity *= 0.0f;
-              this.position.Y = (float) (index2 * 16 - (int) Main.tile[index1, index2].liquid / 16);
+              Gore gore = this;
+              Vector2 vector2 = Vector2.op_Multiply(gore.velocity, 0.0f);
+              gore.velocity = vector2;
+              this.position.Y = (__Null) (double) (index2 * 16 - (int) Main.tile[index1, index2].liquid / 16);
             }
           }
         }
@@ -417,22 +552,38 @@ namespace Terraria
           int num1 = 32;
           if (Main.goreLoaded[this.type])
           {
-            num1 = Main.goreTexture[this.type].Width;
-            if (Main.goreTexture[this.type].Height < num1)
-              num1 = Main.goreTexture[this.type].Height;
+            num1 = Main.goreTexture[this.type].get_Width();
+            if (Main.goreTexture[this.type].get_Height() < num1)
+              num1 = Main.goreTexture[this.type].get_Height();
           }
           if (flag)
             num1 = 4;
           int num2 = (int) ((double) num1 * 0.899999976158142);
           this.velocity = Collision.TileCollision(this.position, this.velocity, (int) ((double) num2 * (double) this.scale), (int) ((double) num2 * (double) this.scale), false, false, 1);
-          if ((double) this.velocity.Y == 0.0)
+          if (this.velocity.Y == 0.0)
           {
             if (flag)
-              this.velocity.X *= 0.94f;
+            {
+              // ISSUE: explicit reference operation
+              // ISSUE: variable of a reference type
+              Vector2& local = @this.velocity;
+              // ISSUE: explicit reference operation
+              double num3 = (^local).X * 0.939999997615814;
+              // ISSUE: explicit reference operation
+              (^local).X = (__Null) num3;
+            }
             else
-              this.velocity.X *= 0.97f;
+            {
+              // ISSUE: explicit reference operation
+              // ISSUE: variable of a reference type
+              Vector2& local = @this.velocity;
+              // ISSUE: explicit reference operation
+              double num3 = (^local).X * 0.970000028610229;
+              // ISSUE: explicit reference operation
+              (^local).X = (__Null) num3;
+            }
             if ((double) this.velocity.X > -0.01 && (double) this.velocity.X < 0.01)
-              this.velocity.X = 0.0f;
+              this.velocity.X = (__Null) 0.0;
           }
           if (this.timeLeft > 0)
             this.timeLeft -= GoreID.Sets.DisappearSpeed[this.type];
@@ -447,9 +598,9 @@ namespace Terraria
         int num1 = 32;
         if (Main.goreLoaded[this.type])
         {
-          num1 = Main.goreTexture[this.type].Width;
-          if (Main.goreTexture[this.type].Height < num1)
-            num1 = Main.goreTexture[this.type].Height;
+          num1 = Main.goreTexture[this.type].get_Width();
+          if (Main.goreTexture[this.type].get_Height() < num1)
+            num1 = Main.goreTexture[this.type].get_Height();
         }
         int num2 = (int) ((double) num1 * 0.899999976158142);
         Vector4 vector4 = Collision.SlopeCollision(this.position, this.velocity, num2, num2, 0.0f, true);
@@ -460,21 +611,29 @@ namespace Terraria
       }
       if (GoreID.Sets.SpecialAI[this.type] == 1)
       {
-        if ((double) this.velocity.Y < 0.0)
+        if (this.velocity.Y < 0.0)
         {
-          Vector2 Velocity = new Vector2(this.velocity.X, 0.6f);
+          Vector2 Velocity;
+          // ISSUE: explicit reference operation
+          ((Vector2) @Velocity).\u002Ector((float) this.velocity.X, 0.6f);
           int num1 = 32;
           if (Main.goreLoaded[this.type])
           {
-            num1 = Main.goreTexture[this.type].Width;
-            if (Main.goreTexture[this.type].Height < num1)
-              num1 = Main.goreTexture[this.type].Height;
+            num1 = Main.goreTexture[this.type].get_Width();
+            if (Main.goreTexture[this.type].get_Height() < num1)
+              num1 = Main.goreTexture[this.type].get_Height();
           }
           int num2 = (int) ((double) num1 * 0.899999976158142);
           Vector2 vector2 = Collision.TileCollision(this.position, Velocity, (int) ((double) num2 * (double) this.scale), (int) ((double) num2 * (double) this.scale), false, false, 1);
-          vector2.X *= 0.97f;
+          // ISSUE: explicit reference operation
+          // ISSUE: variable of a reference type
+          Vector2& local = @vector2;
+          // ISSUE: explicit reference operation
+          double num3 = (^local).X * 0.970000028610229;
+          // ISSUE: explicit reference operation
+          (^local).X = (__Null) num3;
           if ((double) vector2.X > -0.01 && (double) vector2.X < 0.01)
-            vector2.X = 0.0f;
+            vector2.X = (__Null) 0.0;
           if (this.timeLeft > 0)
             --this.timeLeft;
           else
@@ -483,20 +642,31 @@ namespace Terraria
         }
         else
         {
-          this.velocity.Y += (float) Math.PI / 60f;
-          Vector2 Velocity = new Vector2(Vector2.UnitY.RotatedBy((double) this.velocity.Y, new Vector2()).X * 2f, Math.Abs(Vector2.UnitY.RotatedBy((double) this.velocity.Y, new Vector2()).Y) * 3f) * 2f;
-          int num = 32;
+          // ISSUE: explicit reference operation
+          // ISSUE: variable of a reference type
+          Vector2& local = @this.velocity;
+          // ISSUE: explicit reference operation
+          double num1 = (^local).Y + 0.0523598790168762;
+          // ISSUE: explicit reference operation
+          (^local).Y = (__Null) num1;
+          Vector2 vector2_1;
+          // ISSUE: explicit reference operation
+          ((Vector2) @vector2_1).\u002Ector((float) (Vector2.get_UnitY().RotatedBy((double) this.velocity.Y, (Vector2) null).X * 2.0), Math.Abs((float) Vector2.get_UnitY().RotatedBy((double) this.velocity.Y, (Vector2) null).Y) * 3f);
+          Vector2 Velocity = Vector2.op_Multiply(vector2_1, 2f);
+          int num2 = 32;
           if (Main.goreLoaded[this.type])
           {
-            num = Main.goreTexture[this.type].Width;
-            if (Main.goreTexture[this.type].Height < num)
-              num = Main.goreTexture[this.type].Height;
+            num2 = Main.goreTexture[this.type].get_Width();
+            if (Main.goreTexture[this.type].get_Height() < num2)
+              num2 = Main.goreTexture[this.type].get_Height();
           }
-          Vector2 vector2 = Velocity;
-          Vector2 v = Collision.TileCollision(this.position, Velocity, (int) ((double) num * (double) this.scale), (int) ((double) num * (double) this.scale), false, false, 1);
-          if (v != vector2)
-            this.velocity.Y = -1f;
-          this.position += v;
+          Vector2 vector2_2 = Velocity;
+          Vector2 v = Collision.TileCollision(this.position, Velocity, (int) ((double) num2 * (double) this.scale), (int) ((double) num2 * (double) this.scale), false, false, 1);
+          if (Vector2.op_Inequality(v, vector2_2))
+            this.velocity.Y = (__Null) -1.0;
+          Gore gore = this;
+          Vector2 vector2_3 = Vector2.op_Addition(gore.position, v);
+          gore.position = vector2_3;
           this.rotation = v.ToRotation() + 3.141593f;
           if (this.timeLeft > 0)
             --this.timeLeft;
@@ -506,21 +676,29 @@ namespace Terraria
       }
       else if (GoreID.Sets.SpecialAI[this.type] == 3)
       {
-        if ((double) this.velocity.Y < 0.0)
+        if (this.velocity.Y < 0.0)
         {
-          Vector2 Velocity = new Vector2(this.velocity.X, -0.2f);
+          Vector2 Velocity;
+          // ISSUE: explicit reference operation
+          ((Vector2) @Velocity).\u002Ector((float) this.velocity.X, -0.2f);
           int num1 = 8;
           if (Main.goreLoaded[this.type])
           {
-            num1 = Main.goreTexture[this.type].Width;
-            if (Main.goreTexture[this.type].Height < num1)
-              num1 = Main.goreTexture[this.type].Height;
+            num1 = Main.goreTexture[this.type].get_Width();
+            if (Main.goreTexture[this.type].get_Height() < num1)
+              num1 = Main.goreTexture[this.type].get_Height();
           }
           int num2 = (int) ((double) num1 * 0.899999976158142);
           Vector2 vector2 = Collision.TileCollision(this.position, Velocity, (int) ((double) num2 * (double) this.scale), (int) ((double) num2 * (double) this.scale), false, false, 1);
-          vector2.X *= 0.94f;
+          // ISSUE: explicit reference operation
+          // ISSUE: variable of a reference type
+          Vector2& local = @vector2;
+          // ISSUE: explicit reference operation
+          double num3 = (^local).X * 0.939999997615814;
+          // ISSUE: explicit reference operation
+          (^local).X = (__Null) num3;
           if ((double) vector2.X > -0.01 && (double) vector2.X < 0.01)
-            vector2.X = 0.0f;
+            vector2.X = (__Null) 0.0;
           if (this.timeLeft > 0)
             this.timeLeft -= GoreID.Sets.DisappearSpeed[this.type];
           else
@@ -529,20 +707,30 @@ namespace Terraria
         }
         else
         {
-          this.velocity.Y += (float) Math.PI / 180f;
-          Vector2 Velocity = new Vector2(Vector2.UnitY.RotatedBy((double) this.velocity.Y, new Vector2()).X * 1f, Math.Abs(Vector2.UnitY.RotatedBy((double) this.velocity.Y, new Vector2()).Y) * 1f);
-          int num = 8;
+          // ISSUE: explicit reference operation
+          // ISSUE: variable of a reference type
+          Vector2& local = @this.velocity;
+          // ISSUE: explicit reference operation
+          double num1 = (^local).Y + Math.PI / 180.0;
+          // ISSUE: explicit reference operation
+          (^local).Y = (__Null) num1;
+          Vector2 Velocity;
+          // ISSUE: explicit reference operation
+          ((Vector2) @Velocity).\u002Ector((float) (Vector2.get_UnitY().RotatedBy((double) this.velocity.Y, (Vector2) null).X * 1.0), Math.Abs((float) Vector2.get_UnitY().RotatedBy((double) this.velocity.Y, (Vector2) null).Y) * 1f);
+          int num2 = 8;
           if (Main.goreLoaded[this.type])
           {
-            num = Main.goreTexture[this.type].Width;
-            if (Main.goreTexture[this.type].Height < num)
-              num = Main.goreTexture[this.type].Height;
+            num2 = Main.goreTexture[this.type].get_Width();
+            if (Main.goreTexture[this.type].get_Height() < num2)
+              num2 = Main.goreTexture[this.type].get_Height();
           }
-          Vector2 vector2 = Velocity;
-          Vector2 v = Collision.TileCollision(this.position, Velocity, (int) ((double) num * (double) this.scale), (int) ((double) num * (double) this.scale), false, false, 1);
-          if (v != vector2)
-            this.velocity.Y = -1f;
-          this.position += v;
+          Vector2 vector2_1 = Velocity;
+          Vector2 v = Collision.TileCollision(this.position, Velocity, (int) ((double) num2 * (double) this.scale), (int) ((double) num2 * (double) this.scale), false, false, 1);
+          if (Vector2.op_Inequality(v, vector2_1))
+            this.velocity.Y = (__Null) -1.0;
+          Gore gore = this;
+          Vector2 vector2_2 = Vector2.op_Addition(gore.position, v);
+          gore.position = vector2_2;
           this.rotation = v.ToRotation() + 1.570796f;
           if (this.timeLeft > 0)
             this.timeLeft -= GoreID.Sets.DisappearSpeed[this.type];
@@ -551,7 +739,11 @@ namespace Terraria
         }
       }
       else
-        this.position += this.velocity;
+      {
+        Gore gore = this;
+        Vector2 vector2 = Vector2.op_Addition(gore.position, this.velocity);
+        gore.position = vector2;
+      }
       if (this.alpha >= (int) byte.MaxValue)
         this.active = false;
       if ((double) this.light <= 0.0)
@@ -570,9 +762,9 @@ namespace Terraria
         R *= 0.3f;
       }
       if (Main.goreLoaded[this.type])
-        Lighting.AddLight((int) (((double) this.position.X + (double) Main.goreTexture[this.type].Width * (double) this.scale / 2.0) / 16.0), (int) (((double) this.position.Y + (double) Main.goreTexture[this.type].Height * (double) this.scale / 2.0) / 16.0), R, G, B);
+        Lighting.AddLight((int) ((this.position.X + (double) Main.goreTexture[this.type].get_Width() * (double) this.scale / 2.0) / 16.0), (int) ((this.position.Y + (double) Main.goreTexture[this.type].get_Height() * (double) this.scale / 2.0) / 16.0), R, G, B);
       else
-        Lighting.AddLight((int) (((double) this.position.X + 32.0 * (double) this.scale / 2.0) / 16.0), (int) (((double) this.position.Y + 32.0 * (double) this.scale / 2.0) / 16.0), R, G, B);
+        Lighting.AddLight((int) ((this.position.X + 32.0 * (double) this.scale / 2.0) / 16.0), (int) ((this.position.Y + 32.0 * (double) this.scale / 2.0) / 16.0), R, G, B);
     }
 
     public static Gore NewGorePerfect(Vector2 Position, Vector2 Velocity, int Type, float Scale = 1f)
@@ -612,8 +804,20 @@ namespace Terraria
       Main.gore[index1].light = 0.0f;
       Main.gore[index1].position = Position;
       Main.gore[index1].velocity = Velocity;
-      Main.gore[index1].velocity.Y -= (float) Main.rand.Next(10, 31) * 0.1f;
-      Main.gore[index1].velocity.X += (float) Main.rand.Next(-20, 21) * 0.1f;
+      // ISSUE: explicit reference operation
+      // ISSUE: variable of a reference type
+      Vector2& local1 = @Main.gore[index1].velocity;
+      // ISSUE: explicit reference operation
+      double num1 = (^local1).Y - (double) Main.rand.Next(10, 31) * 0.100000001490116;
+      // ISSUE: explicit reference operation
+      (^local1).Y = (__Null) num1;
+      // ISSUE: explicit reference operation
+      // ISSUE: variable of a reference type
+      Vector2& local2 = @Main.gore[index1].velocity;
+      // ISSUE: explicit reference operation
+      double num2 = (^local2).X + (double) Main.rand.Next(-20, 21) * 0.100000001490116;
+      // ISSUE: explicit reference operation
+      (^local2).X = (__Null) num2;
       Main.gore[index1].type = Type;
       Main.gore[index1].active = true;
       Main.gore[index1].alpha = 0;
@@ -623,7 +827,9 @@ namespace Terraria
       {
         Main.gore[index1].type = Main.rand.Next(11, 14);
         Main.gore[index1].scale = (float) ((double) Main.rand.NextFloat() * 0.5 + 0.5);
-        Main.gore[index1].velocity /= 2f;
+        Gore gore = Main.gore[index1];
+        Vector2 vector2 = Vector2.op_Division(gore.velocity, 2f);
+        gore.velocity = vector2;
       }
       if (Gore.goreTime == 0 || Type == 11 || (Type == 12 || Type == 13) || (Type == 16 || Type == 17 || (Type == 61 || Type == 62)) || (Type == 63 || Type == 99 || (Type == 220 || Type == 221) || (Type == 222 || Type == 435 || (Type == 436 || Type == 437))) || Type >= 861 && Type <= 862)
         Main.gore[index1].sticky = false;
@@ -662,12 +868,24 @@ namespace Terraria
         Main.gore[index1].velocity = new Vector2((float) (((double) Main.rand.NextFloat() - 0.5) * 3.0), Main.rand.NextFloat() * 6.283185f);
       if (Type >= 411 && Type <= 430 && Main.goreLoaded[Type])
       {
-        Main.gore[index1].position.X = Position.X - (float) (Main.goreTexture[Type].Width / 2) * Scale;
-        Main.gore[index1].position.Y = Position.Y - (float) Main.goreTexture[Type].Height * Scale;
-        Main.gore[index1].velocity.Y *= (float) Main.rand.Next(90, 150) * 0.01f;
-        Main.gore[index1].velocity.X *= (float) Main.rand.Next(40, 90) * 0.01f;
-        int num = Main.rand.Next(4) * 5;
-        Main.gore[index1].type += num;
+        Main.gore[index1].position.X = (__Null) (Position.X - (double) (Main.goreTexture[Type].get_Width() / 2) * (double) Scale);
+        Main.gore[index1].position.Y = (__Null) (Position.Y - (double) Main.goreTexture[Type].get_Height() * (double) Scale);
+        // ISSUE: explicit reference operation
+        // ISSUE: variable of a reference type
+        Vector2& local3 = @Main.gore[index1].velocity;
+        // ISSUE: explicit reference operation
+        double num3 = (^local3).Y * ((double) Main.rand.Next(90, 150) * 0.00999999977648258);
+        // ISSUE: explicit reference operation
+        (^local3).Y = (__Null) num3;
+        // ISSUE: explicit reference operation
+        // ISSUE: variable of a reference type
+        Vector2& local4 = @Main.gore[index1].velocity;
+        // ISSUE: explicit reference operation
+        double num4 = (^local4).X * ((double) Main.rand.Next(40, 90) * 0.00999999977648258);
+        // ISSUE: explicit reference operation
+        (^local4).X = (__Null) num4;
+        int num5 = Main.rand.Next(4) * 5;
+        Main.gore[index1].type += num5;
         Main.gore[index1].timeLeft = Main.rand.Next(Gore.goreTime / 2, Gore.goreTime * 2);
         Main.gore[index1].sticky = true;
         if (Gore.goreTime == 0)
@@ -688,8 +906,8 @@ namespace Terraria
         {
           Main.gore[index1].alpha = 150;
           Main.gore[index1].velocity = Velocity;
-          Main.gore[index1].position.X = Position.X - (float) (Main.goreTexture[Type].Width / 2) * Scale;
-          Main.gore[index1].position.Y = Position.Y - (float) ((double) Main.goreTexture[Type].Height * (double) Scale / 2.0);
+          Main.gore[index1].position.X = (__Null) (Position.X - (double) (Main.goreTexture[Type].get_Width() / 2) * (double) Scale);
+          Main.gore[index1].position.Y = (__Null) (Position.Y - (double) Main.goreTexture[Type].get_Height() * (double) Scale / 2.0);
           Main.gore[index1].timeLeft = Main.rand.Next(Gore.goreTime / 2, Gore.goreTime + 1);
         }
       }
@@ -699,14 +917,17 @@ namespace Terraria
     public Color GetAlpha(Color newColor)
     {
       float num1 = (float) ((int) byte.MaxValue - this.alpha) / (float) byte.MaxValue;
-      int r;
-      int g;
-      int b;
+      int num2;
+      int num3;
+      int num4;
       if (this.type == 16 || this.type == 17)
       {
-        r = (int) newColor.R;
-        g = (int) newColor.G;
-        b = (int) newColor.B;
+        // ISSUE: explicit reference operation
+        num2 = (int) ((Color) @newColor).get_R();
+        // ISSUE: explicit reference operation
+        num3 = (int) ((Color) @newColor).get_G();
+        // ISSUE: explicit reference operation
+        num4 = (int) ((Color) @newColor).get_B();
       }
       else
       {
@@ -714,21 +935,25 @@ namespace Terraria
           return new Color((int) byte.MaxValue, (int) byte.MaxValue, (int) byte.MaxValue, 200);
         if (this.type >= 570 && this.type <= 572)
         {
-          byte num2 = (byte) ((int) byte.MaxValue - this.alpha);
-          return new Color((int) num2, (int) num2, (int) num2, (int) num2 / 2);
+          byte num5 = (byte) ((int) byte.MaxValue - this.alpha);
+          return new Color((int) num5, (int) num5, (int) num5, (int) num5 / 2);
         }
         if (this.type == 331)
           return new Color((int) byte.MaxValue, (int) byte.MaxValue, (int) byte.MaxValue, 50);
-        r = (int) ((double) newColor.R * (double) num1);
-        g = (int) ((double) newColor.G * (double) num1);
-        b = (int) ((double) newColor.B * (double) num1);
+        // ISSUE: explicit reference operation
+        num2 = (int) ((double) ((Color) @newColor).get_R() * (double) num1);
+        // ISSUE: explicit reference operation
+        num3 = (int) ((double) ((Color) @newColor).get_G() * (double) num1);
+        // ISSUE: explicit reference operation
+        num4 = (int) ((double) ((Color) @newColor).get_B() * (double) num1);
       }
-      int a = (int) newColor.A - this.alpha;
-      if (a < 0)
-        a = 0;
-      if (a > (int) byte.MaxValue)
-        a = (int) byte.MaxValue;
-      return new Color(r, g, b, a);
+      // ISSUE: explicit reference operation
+      int num6 = (int) ((Color) @newColor).get_A() - this.alpha;
+      if (num6 < 0)
+        num6 = 0;
+      if (num6 > (int) byte.MaxValue)
+        num6 = (int) byte.MaxValue;
+      return new Color(num2, num3, num4, num6);
     }
   }
 }

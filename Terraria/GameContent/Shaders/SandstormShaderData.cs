@@ -1,8 +1,8 @@
 ﻿// Decompiled with JetBrains decompiler
 // Type: Terraria.GameContent.Shaders.SandstormShaderData
-// Assembly: Terraria, Version=1.3.4.4, Culture=neutral, PublicKeyToken=null
-// MVID: DEE50102-BCC2-472F-987B-153E892583F1
-// Assembly location: E:\Steam\SteamApps\common\Terraria\Terraria.exe
+// Assembly: Terraria, Version=1.3.5.1, Culture=neutral, PublicKeyToken=null
+// MVID: DF0400F4-EE47-4864-BE80-932EDB02D8A6
+// Assembly location: F:\Steam\steamapps\common\Terraria\Terraria.exe
 
 using Microsoft.Xna.Framework;
 using Terraria.Graphics.Shaders;
@@ -11,7 +11,7 @@ namespace Terraria.GameContent.Shaders
 {
   public class SandstormShaderData : ScreenShaderData
   {
-    private Vector2 _texturePosition = Vector2.Zero;
+    private Vector2 _texturePosition = Vector2.get_Zero();
 
     public SandstormShaderData(string passName)
       : base(passName)
@@ -20,13 +20,30 @@ namespace Terraria.GameContent.Shaders
 
     public override void Update(GameTime gameTime)
     {
-      Vector2 vector2 = new Vector2(-Main.windSpeed, -1f) * new Vector2(20f, 0.1f);
-      vector2.Normalize();
-      Vector2 direction = vector2 * new Vector2(2f, 0.2f);
+      Vector2 vector2_1 = Vector2.op_Multiply(new Vector2(-Main.windSpeed, -1f), new Vector2(20f, 0.1f));
+      // ISSUE: explicit reference operation
+      ((Vector2) @vector2_1).Normalize();
+      Vector2 direction = Vector2.op_Multiply(vector2_1, new Vector2(2f, 0.2f));
       if (!Main.gamePaused && Main.hasFocus)
-        this._texturePosition += direction * (float) gameTime.ElapsedGameTime.TotalSeconds;
-      this._texturePosition.X %= 10f;
-      this._texturePosition.Y %= 10f;
+      {
+        SandstormShaderData sandstormShaderData = this;
+        Vector2 vector2_2 = Vector2.op_Addition(sandstormShaderData._texturePosition, Vector2.op_Multiply(direction, (float) gameTime.get_ElapsedGameTime().TotalSeconds));
+        sandstormShaderData._texturePosition = vector2_2;
+      }
+      // ISSUE: explicit reference operation
+      // ISSUE: variable of a reference type
+      Vector2& local1 = @this._texturePosition;
+      // ISSUE: explicit reference operation
+      double num1 = (^local1).X % 10.0;
+      // ISSUE: explicit reference operation
+      (^local1).X = (__Null) num1;
+      // ISSUE: explicit reference operation
+      // ISSUE: variable of a reference type
+      Vector2& local2 = @this._texturePosition;
+      // ISSUE: explicit reference operation
+      double num2 = (^local2).Y % 10.0;
+      // ISSUE: explicit reference operation
+      (^local2).Y = (__Null) num2;
       this.UseDirection(direction);
       base.Update(gameTime);
     }

@@ -1,8 +1,8 @@
 ﻿// Decompiled with JetBrains decompiler
 // Type: Terraria.ItemText
-// Assembly: Terraria, Version=1.3.4.4, Culture=neutral, PublicKeyToken=null
-// MVID: DEE50102-BCC2-472F-987B-153E892583F1
-// Assembly location: E:\Steam\SteamApps\common\Terraria\Terraria.exe
+// Assembly: Terraria, Version=1.3.5.1, Culture=neutral, PublicKeyToken=null
+// MVID: DF0400F4-EE47-4864-BE80-932EDB02D8A6
+// Assembly location: F:\Steam\steamapps\common\Terraria\Terraria.exe
 
 using Microsoft.Xna.Framework;
 using Terraria.Localization;
@@ -29,21 +29,29 @@ namespace Terraria
     public int coinValue;
     public bool expert;
 
+    public static float TargetScale
+    {
+      get
+      {
+        return Main.UIScale / (float) Main.GameViewMatrix.Zoom.X;
+      }
+    }
+
     public static void NewText(Item newItem, int stack, bool noStack = false, bool longText = false)
     {
       bool flag = newItem.type >= 71 && newItem.type <= 74;
-      if (!Main.showItemText || newItem.name == null || (!newItem.active || Main.netMode == 2))
+      if (!Main.showItemText || newItem.Name == null || (!newItem.active || Main.netMode == 2))
         return;
       for (int index = 0; index < 20; ++index)
       {
         if (Main.itemText[index].active && (Main.itemText[index].name == newItem.AffixName() || flag && Main.itemText[index].coinText) && (!Main.itemText[index].NoStack && !noStack))
         {
-          string text1 = newItem.name + " (" + (object) (Main.itemText[index].stack + stack) + ")";
-          string text2 = newItem.name;
+          string str1 = newItem.Name + " (" + (object) (Main.itemText[index].stack + stack) + ")";
+          string str2 = newItem.Name;
           if (Main.itemText[index].stack > 1)
-            text2 = text2 + " (" + (object) Main.itemText[index].stack + ")";
-          Main.fontMouseText.MeasureString(text2);
-          Vector2 vector2 = Main.fontMouseText.MeasureString(text1);
+            str2 = str2 + " (" + (object) Main.itemText[index].stack + ")";
+          Main.fontMouseText.MeasureString(str2);
+          Vector2 vector2 = Main.fontMouseText.MeasureString(str1);
           if (Main.itemText[index].lifeTime < 0)
             Main.itemText[index].scale = 1f;
           if (Main.itemText[index].lifeTime < 60)
@@ -91,9 +99,9 @@ namespace Terraria
           Main.itemText[index].stack += stack;
           Main.itemText[index].scale = 0.0f;
           Main.itemText[index].rotation = 0.0f;
-          Main.itemText[index].position.X = (float) ((double) newItem.position.X + (double) newItem.width * 0.5 - (double) vector2.X * 0.5);
-          Main.itemText[index].position.Y = (float) ((double) newItem.position.Y + (double) newItem.height * 0.25 - (double) vector2.Y * 0.5);
-          Main.itemText[index].velocity.Y = -7f;
+          Main.itemText[index].position.X = (__Null) (newItem.position.X + (double) newItem.width * 0.5 - vector2.X * 0.5);
+          Main.itemText[index].position.Y = (__Null) (newItem.position.Y + (double) newItem.height * 0.25 - vector2.Y * 0.5);
+          Main.itemText[index].velocity.Y = (__Null) -7.0;
           if (!Main.itemText[index].coinText)
             return;
           Main.itemText[index].stack = 1;
@@ -123,19 +131,19 @@ namespace Terraria
       }
       if (index1 < 0)
         return;
-      string text = newItem.AffixName();
+      string str = newItem.AffixName();
       if (stack > 1)
-        text = text + " (" + (object) stack + ")";
-      Vector2 vector2_1 = Main.fontMouseText.MeasureString(text);
+        str = str + " (" + (object) stack + ")";
+      Vector2 vector2_1 = Main.fontMouseText.MeasureString(str);
       Main.itemText[index1].alpha = 1f;
       Main.itemText[index1].alphaDir = -1;
       Main.itemText[index1].active = true;
       Main.itemText[index1].scale = 0.0f;
       Main.itemText[index1].NoStack = noStack;
       Main.itemText[index1].rotation = 0.0f;
-      Main.itemText[index1].position.X = (float) ((double) newItem.position.X + (double) newItem.width * 0.5 - (double) vector2_1.X * 0.5);
-      Main.itemText[index1].position.Y = (float) ((double) newItem.position.Y + (double) newItem.height * 0.25 - (double) vector2_1.Y * 0.5);
-      Main.itemText[index1].color = Color.White;
+      Main.itemText[index1].position.X = (__Null) (newItem.position.X + (double) newItem.width * 0.5 - vector2_1.X * 0.5);
+      Main.itemText[index1].position.Y = (__Null) (newItem.position.Y + (double) newItem.height * 0.25 - vector2_1.Y * 0.5);
+      Main.itemText[index1].color = Color.get_White();
       if (newItem.rare == 1)
         Main.itemText[index1].color = new Color(150, 150, (int) byte.MaxValue);
       else if (newItem.rare == 2)
@@ -165,7 +173,7 @@ namespace Terraria
       Main.itemText[index1].expert = newItem.expert;
       Main.itemText[index1].name = newItem.AffixName();
       Main.itemText[index1].stack = stack;
-      Main.itemText[index1].velocity.Y = -7f;
+      Main.itemText[index1].velocity.Y = (__Null) -7.0;
       Main.itemText[index1].lifeTime = 60;
       if (longText)
         Main.itemText[index1].lifeTime *= 5;
@@ -320,6 +328,7 @@ namespace Terraria
     {
       if (!this.active)
         return;
+      float targetScale = ItemText.TargetScale;
       this.alpha += (float) this.alphaDir * 0.01f;
       if ((double) this.alpha <= 0.7)
       {
@@ -334,61 +343,116 @@ namespace Terraria
       if (this.expert && this.expert)
         this.color = new Color((int) (byte) Main.DiscoR, (int) (byte) Main.DiscoG, (int) (byte) Main.DiscoB, (int) Main.mouseTextColor);
       bool flag = false;
-      string text1 = this.name;
+      string str1 = this.name;
       if (this.stack > 1)
-        text1 = text1 + " (" + (object) this.stack + ")";
-      Vector2 vector2_1 = Main.fontMouseText.MeasureString(text1) * this.scale;
-      vector2_1.Y *= 0.8f;
-      Rectangle rectangle1 = new Rectangle((int) ((double) this.position.X - (double) vector2_1.X / 2.0), (int) ((double) this.position.Y - (double) vector2_1.Y / 2.0), (int) vector2_1.X, (int) vector2_1.Y);
+        str1 = str1 + " (" + (object) this.stack + ")";
+      Vector2 vector2_1 = Vector2.op_Multiply(Main.fontMouseText.MeasureString(str1), this.scale);
+      // ISSUE: explicit reference operation
+      // ISSUE: variable of a reference type
+      Vector2& local1 = @vector2_1;
+      // ISSUE: explicit reference operation
+      double num1 = (^local1).Y * 0.800000011920929;
+      // ISSUE: explicit reference operation
+      (^local1).Y = (__Null) num1;
+      Rectangle rectangle1;
+      // ISSUE: explicit reference operation
+      ((Rectangle) @rectangle1).\u002Ector((int) (this.position.X - vector2_1.X / 2.0), (int) (this.position.Y - vector2_1.Y / 2.0), (int) vector2_1.X, (int) vector2_1.Y);
       for (int index = 0; index < 20; ++index)
       {
         if (Main.itemText[index].active && index != whoAmI)
         {
-          string text2 = Main.itemText[index].name;
+          string str2 = Main.itemText[index].name;
           if (Main.itemText[index].stack > 1)
-            text2 = text2 + " (" + (object) Main.itemText[index].stack + ")";
-          Vector2 vector2_2 = Main.fontMouseText.MeasureString(text2);
-          vector2_2 *= Main.itemText[index].scale;
-          vector2_2.Y *= 0.8f;
-          Rectangle rectangle2 = new Rectangle((int) ((double) Main.itemText[index].position.X - (double) vector2_2.X / 2.0), (int) ((double) Main.itemText[index].position.Y - (double) vector2_2.Y / 2.0), (int) vector2_2.X, (int) vector2_2.Y);
-          if (rectangle1.Intersects(rectangle2) && ((double) this.position.Y < (double) Main.itemText[index].position.Y || (double) this.position.Y == (double) Main.itemText[index].position.Y && whoAmI < index))
+            str2 = str2 + " (" + (object) Main.itemText[index].stack + ")";
+          Vector2 vector2_2 = Main.fontMouseText.MeasureString(str2);
+          vector2_2 = Vector2.op_Multiply(vector2_2, Main.itemText[index].scale);
+          // ISSUE: explicit reference operation
+          // ISSUE: variable of a reference type
+          Vector2& local2 = @vector2_2;
+          // ISSUE: explicit reference operation
+          double num2 = (^local2).Y * 0.800000011920929;
+          // ISSUE: explicit reference operation
+          (^local2).Y = (__Null) num2;
+          Rectangle rectangle2;
+          // ISSUE: explicit reference operation
+          ((Rectangle) @rectangle2).\u002Ector((int) (Main.itemText[index].position.X - vector2_2.X / 2.0), (int) (Main.itemText[index].position.Y - vector2_2.Y / 2.0), (int) vector2_2.X, (int) vector2_2.Y);
+          // ISSUE: explicit reference operation
+          if (((Rectangle) @rectangle1).Intersects(rectangle2) && (this.position.Y < Main.itemText[index].position.Y || this.position.Y == Main.itemText[index].position.Y && whoAmI < index))
           {
             flag = true;
-            int num = ItemText.numActive;
-            if (num > 3)
-              num = 3;
-            Main.itemText[index].lifeTime = ItemText.activeTime + 15 * num;
-            this.lifeTime = ItemText.activeTime + 15 * num;
+            int num3 = ItemText.numActive;
+            if (num3 > 3)
+              num3 = 3;
+            Main.itemText[index].lifeTime = ItemText.activeTime + 15 * num3;
+            this.lifeTime = ItemText.activeTime + 15 * num3;
           }
         }
       }
       if (!flag)
       {
-        this.velocity.Y *= 0.86f;
-        if ((double) this.scale == 1.0)
-          this.velocity.Y *= 0.4f;
+        // ISSUE: explicit reference operation
+        // ISSUE: variable of a reference type
+        Vector2& local2 = @this.velocity;
+        // ISSUE: explicit reference operation
+        double num2 = (^local2).Y * 0.860000014305115;
+        // ISSUE: explicit reference operation
+        (^local2).Y = (__Null) num2;
+        if ((double) this.scale == (double) targetScale)
+        {
+          // ISSUE: explicit reference operation
+          // ISSUE: variable of a reference type
+          Vector2& local3 = @this.velocity;
+          // ISSUE: explicit reference operation
+          double num3 = (^local3).Y * 0.400000005960464;
+          // ISSUE: explicit reference operation
+          (^local3).Y = (__Null) num3;
+        }
       }
-      else if ((double) this.velocity.Y > -6.0)
-        this.velocity.Y -= 0.2f;
+      else if (this.velocity.Y > -6.0)
+      {
+        // ISSUE: explicit reference operation
+        // ISSUE: variable of a reference type
+        Vector2& local2 = @this.velocity;
+        // ISSUE: explicit reference operation
+        double num2 = (^local2).Y - 0.200000002980232;
+        // ISSUE: explicit reference operation
+        (^local2).Y = (__Null) num2;
+      }
       else
-        this.velocity.Y *= 0.86f;
-      this.velocity.X *= 0.93f;
-      this.position += this.velocity;
+      {
+        // ISSUE: explicit reference operation
+        // ISSUE: variable of a reference type
+        Vector2& local2 = @this.velocity;
+        // ISSUE: explicit reference operation
+        double num2 = (^local2).Y * 0.860000014305115;
+        // ISSUE: explicit reference operation
+        (^local2).Y = (__Null) num2;
+      }
+      // ISSUE: explicit reference operation
+      // ISSUE: variable of a reference type
+      Vector2& local4 = @this.velocity;
+      // ISSUE: explicit reference operation
+      double num4 = (^local4).X * 0.930000007152557;
+      // ISSUE: explicit reference operation
+      (^local4).X = (__Null) num4;
+      ItemText itemText = this;
+      Vector2 vector2_3 = Vector2.op_Addition(itemText.position, this.velocity);
+      itemText.position = vector2_3;
       --this.lifeTime;
       if (this.lifeTime <= 0)
       {
-        this.scale -= 0.03f;
-        if ((double) this.scale < 0.1)
+        this.scale -= 0.03f * targetScale;
+        if ((double) this.scale < 0.1 * (double) targetScale)
           this.active = false;
         this.lifeTime = 0;
       }
       else
       {
-        if ((double) this.scale < 1.0)
-          this.scale += 0.1f;
-        if ((double) this.scale <= 1.0)
+        if ((double) this.scale < (double) targetScale)
+          this.scale += 0.1f * targetScale;
+        if ((double) this.scale <= (double) targetScale)
           return;
-        this.scale = 1f;
+        this.scale = targetScale;
       }
     }
 

@@ -1,8 +1,8 @@
 ﻿// Decompiled with JetBrains decompiler
 // Type: Terraria.Localization.Language
-// Assembly: Terraria, Version=1.3.4.4, Culture=neutral, PublicKeyToken=null
-// MVID: DEE50102-BCC2-472F-987B-153E892583F1
-// Assembly location: E:\Steam\SteamApps\common\Terraria\Terraria.exe
+// Assembly: Terraria, Version=1.3.5.1, Culture=neutral, PublicKeyToken=null
+// MVID: DF0400F4-EE47-4864-BE80-932EDB02D8A6
+// Assembly location: F:\Steam\steamapps\common\Terraria\Terraria.exe
 
 using System.Text.RegularExpressions;
 using Terraria.Utilities;
@@ -11,6 +11,14 @@ namespace Terraria.Localization
 {
   public static class Language
   {
+    public static GameCulture ActiveCulture
+    {
+      get
+      {
+        return LanguageManager.Instance.ActiveCulture;
+      }
+    }
+
     public static LocalizedText GetText(string key)
     {
       return LanguageManager.Instance.GetText(key);
@@ -64,6 +72,11 @@ namespace Terraria.Localization
     public static LocalizedText[] FindAll(LanguageSearchFilter filter)
     {
       return LanguageManager.Instance.FindAll(filter);
+    }
+
+    public static LocalizedText SelectRandom(LanguageSearchFilter filter, UnifiedRandom random = null)
+    {
+      return LanguageManager.Instance.SelectRandom(filter, random);
     }
 
     public static LocalizedText RandomFromCategory(string categoryName, UnifiedRandom random = null)

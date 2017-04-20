@@ -1,8 +1,8 @@
 ﻿// Decompiled with JetBrains decompiler
 // Type: Terraria.UI.AchievementCompleteUI
-// Assembly: Terraria, Version=1.3.4.4, Culture=neutral, PublicKeyToken=null
-// MVID: DEE50102-BCC2-472F-987B-153E892583F1
-// Assembly location: E:\Steam\SteamApps\common\Terraria\Terraria.exe
+// Assembly: Terraria, Version=1.3.5.1, Culture=neutral, PublicKeyToken=null
+// MVID: DF0400F4-EE47-4864-BE80-932EDB02D8A6
+// Assembly location: F:\Steam\steamapps\common\Terraria\Terraria.exe
 
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -32,14 +32,14 @@ namespace Terraria.UI
 
     public static void Draw(SpriteBatch sb)
     {
-      float y = (float) (Main.screenHeight - 40);
+      float num = (float) (Main.screenHeight - 40);
       if (PlayerInput.UsingGamepad)
-        y -= 25f;
-      Vector2 center = new Vector2((float) (Main.screenWidth / 2), y);
+        num -= 25f;
+      Vector2 center = new Vector2((float) (Main.screenWidth / 2), num);
       foreach (AchievementCompleteUI.DrawCache cach in AchievementCompleteUI.caches)
       {
         AchievementCompleteUI.DrawAchievement(sb, ref center, cach);
-        if ((double) center.Y < -100.0)
+        if (center.Y < -100.0)
           break;
       }
     }
@@ -77,19 +77,22 @@ namespace Terraria.UI
       {
         string title = ach.Title;
         Vector2 center1 = center;
-        Vector2 vector2 = Main.fontItemStack.MeasureString(title);
-        float num = ach.Scale * 1.1f;
-        Rectangle rectangle = Utils.CenteredRectangle(center1, (vector2 + new Vector2(58f, 10f)) * num);
+        Vector2 vector2_1 = Main.fontItemStack.MeasureString(title);
+        float num1 = ach.Scale * 1.1f;
+        Rectangle rectangle = Utils.CenteredRectangle(center1, Vector2.op_Multiply(Vector2.op_Addition(vector2_1, new Vector2(58f, 10f)), num1));
         Vector2 mouseScreen = Main.MouseScreen;
-        bool flag = rectangle.Contains(mouseScreen.ToPoint());
-        Color c = flag ? new Color(64, 109, 164) * 0.75f : new Color(64, 109, 164) * 0.5f;
+        // ISSUE: explicit reference operation
+        bool flag = ((Rectangle) @rectangle).Contains(mouseScreen.ToPoint());
+        Color c = flag ? Color.op_Multiply(new Color(64, 109, 164), 0.75f) : Color.op_Multiply(new Color(64, 109, 164), 0.5f);
         Utils.DrawInvBG(sb, rectangle, c);
-        float scale = num * 0.3f;
-        Color color = new Color((int) Main.mouseTextColor, (int) Main.mouseTextColor, (int) Main.mouseTextColor / 5, (int) Main.mouseTextColor);
-        Vector2 position = rectangle.Right() - Vector2.UnitX * num * (float) (12.0 + (double) scale * (double) ach.Frame.Width);
-        sb.Draw(AchievementCompleteUI.AchievementsTexture, position, new Rectangle?(ach.Frame), Color.White * alpha, 0.0f, new Vector2(0.0f, (float) (ach.Frame.Height / 2)), scale, SpriteEffects.None, 0.0f);
-        sb.Draw(AchievementCompleteUI.AchievementsTextureBorder, position, new Rectangle?(), Color.White * alpha, 0.0f, new Vector2(0.0f, (float) (ach.Frame.Height / 2)), scale, SpriteEffects.None, 0.0f);
-        Utils.DrawBorderString(sb, title, position - Vector2.UnitX * 10f, color * alpha, num * 0.9f, 1f, 0.4f, -1);
+        float num2 = num1 * 0.3f;
+        Color color;
+        // ISSUE: explicit reference operation
+        ((Color) @color).\u002Ector((int) Main.mouseTextColor, (int) Main.mouseTextColor, (int) Main.mouseTextColor / 5, (int) Main.mouseTextColor);
+        Vector2 vector2_2 = Vector2.op_Subtraction(rectangle.Right(), Vector2.op_Multiply(Vector2.op_Multiply(Vector2.get_UnitX(), num1), (float) (12.0 + (double) num2 * (double) (float) ach.Frame.Width)));
+        sb.Draw(AchievementCompleteUI.AchievementsTexture, vector2_2, new Rectangle?(ach.Frame), Color.op_Multiply(Color.get_White(), alpha), 0.0f, new Vector2(0.0f, (float) (ach.Frame.Height / 2)), num2, (SpriteEffects) 0, 0.0f);
+        sb.Draw(AchievementCompleteUI.AchievementsTextureBorder, vector2_2, new Rectangle?(), Color.op_Multiply(Color.get_White(), alpha), 0.0f, new Vector2(0.0f, (float) (ach.Frame.Height / 2)), num2, (SpriteEffects) 0, 0.0f);
+        Utils.DrawBorderString(sb, title, Vector2.op_Subtraction(vector2_2, Vector2.op_Multiply(Vector2.get_UnitX(), 10f)), Color.op_Multiply(color, alpha), num1 * 0.9f, 1f, 0.4f, -1);
         if (flag && !PlayerInput.IgnoreMouseInterface)
         {
           Main.player[Main.myPlayer].mouseInterface = true;
@@ -157,7 +160,13 @@ namespace Terraria.UI
 
       public void ApplyHeight(ref Vector2 v)
       {
-        v.Y -= 50f * this.Alpha;
+        // ISSUE: explicit reference operation
+        // ISSUE: variable of a reference type
+        Vector2& local = @v;
+        // ISSUE: explicit reference operation
+        double num = (^local).Y - 50.0 * (double) this.Alpha;
+        // ISSUE: explicit reference operation
+        (^local).Y = (__Null) num;
       }
     }
   }

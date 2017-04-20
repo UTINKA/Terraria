@@ -1,8 +1,8 @@
 ﻿// Decompiled with JetBrains decompiler
 // Type: Terraria.Initializers.UILinksInitializer
-// Assembly: Terraria, Version=1.3.4.4, Culture=neutral, PublicKeyToken=null
-// MVID: DEE50102-BCC2-472F-987B-153E892583F1
-// Assembly location: E:\Steam\SteamApps\common\Terraria\Terraria.exe
+// Assembly: Terraria, Version=1.3.5.1, Culture=neutral, PublicKeyToken=null
+// MVID: DF0400F4-EE47-4864-BE80-932EDB02D8A6
+// Assembly location: F:\Steam\steamapps\common\Terraria\Terraria.exe
 
 using Microsoft.Xna.Framework;
 using System;
@@ -24,19 +24,19 @@ namespace Terraria.Initializers
 
     public static float HandleSlider(float currentValue, float min, float max, float deadZone = 0.2f, float sensitivity = 0.5f)
     {
-      float x = PlayerInput.GamepadThumbstickLeft.X;
+      float x = (float) PlayerInput.GamepadThumbstickLeft.X;
       float num = (double) x < -(double) deadZone || (double) x > (double) deadZone ? MathHelper.Lerp(0.0f, sensitivity / 60f, (float) (((double) Math.Abs(x) - (double) deadZone) / (1.0 - (double) deadZone))) * (float) Math.Sign(x) : 0.0f;
       return MathHelper.Clamp((float) (((double) currentValue - (double) min) / ((double) max - (double) min)) + num, 0.0f, 1f) * (max - min) + min;
     }
 
     public static void Load()
     {
-      Func<string> func1 = (Func<string>) (() => PlayerInput.BuildCommand(Lang.misc[53], 0 != 0, PlayerInput.ProfileGamepadUI.KeyStatus["MouseLeft"]));
+      Func<string> func1 = (Func<string>) (() => PlayerInput.BuildCommand(Lang.misc[53].Value, false, PlayerInput.ProfileGamepadUI.KeyStatus["MouseLeft"]));
       UILinkPage page1 = new UILinkPage();
       page1.UpdateEvent += (Action) (() => PlayerInput.GamepadAllowScrolling = true);
       for (int index = 0; index < 20; ++index)
         page1.LinkMap.Add(2000 + index, new UILinkPoint(2000 + index, true, -3, -4, -1, -2));
-      page1.OnSpecialInteracts += (Func<string>) (() => PlayerInput.BuildCommand(Lang.misc[53], 0 != 0, PlayerInput.ProfileGamepadUI.KeyStatus["MouseLeft"]) + PlayerInput.BuildCommand(Lang.misc[82], 1 != 0, PlayerInput.ProfileGamepadUI.KeyStatus["Inventory"]));
+      page1.OnSpecialInteracts += (Func<string>) (() => PlayerInput.BuildCommand(Lang.misc[53].Value, false, PlayerInput.ProfileGamepadUI.KeyStatus["MouseLeft"]) + PlayerInput.BuildCommand(Lang.misc[82].Value, true, PlayerInput.ProfileGamepadUI.KeyStatus["Inventory"]));
       page1.UpdateEvent += (Action) (() =>
       {
         if (PlayerInput.Triggers.JustPressed.Inventory)
@@ -62,7 +62,7 @@ namespace Terraria.Initializers
       cp1.LinkMap.Add(2501, new UILinkPoint(2501, true, 2500, 2502, -1, -2));
       cp1.LinkMap.Add(2502, new UILinkPoint(2502, true, 2501, -4, -1, -2));
       cp1.UpdateEvent += (Action) (() => cp1.LinkMap[2501].Right = UILinkPointNavigator.Shortcuts.NPCCHAT_ButtonsRight ? 2502 : -4);
-      cp1.OnSpecialInteracts += (Func<string>) (() => PlayerInput.BuildCommand(Lang.misc[53], 0 != 0, PlayerInput.ProfileGamepadUI.KeyStatus["MouseLeft"]) + PlayerInput.BuildCommand(Lang.misc[56], 1 != 0, PlayerInput.ProfileGamepadUI.KeyStatus["Inventory"]));
+      cp1.OnSpecialInteracts += (Func<string>) (() => PlayerInput.BuildCommand(Lang.misc[53].Value, false, PlayerInput.ProfileGamepadUI.KeyStatus["MouseLeft"]) + PlayerInput.BuildCommand(Lang.misc[56].Value, true, PlayerInput.ProfileGamepadUI.KeyStatus["Inventory"]));
       cp1.IsValidEvent += (Func<bool>) (() =>
       {
         if (Main.player[Main.myPlayer].talkNPC != -1 || Main.player[Main.myPlayer].sign != -1)
@@ -83,7 +83,7 @@ namespace Terraria.Initializers
       });
       UILinkPointNavigator.RegisterPage(cp1, 1003, true);
       UILinkPage cp2 = new UILinkPage();
-      cp2.OnSpecialInteracts += (Func<string>) (() => PlayerInput.BuildCommand(Lang.misc[56], 0 != 0, PlayerInput.ProfileGamepadUI.KeyStatus["Inventory"]) + PlayerInput.BuildCommand(Lang.misc[64], 1 != 0, PlayerInput.ProfileGamepadUI.KeyStatus["HotbarMinus"], PlayerInput.ProfileGamepadUI.KeyStatus["HotbarPlus"]));
+      cp2.OnSpecialInteracts += (Func<string>) (() => PlayerInput.BuildCommand(Lang.misc[56].Value, false, PlayerInput.ProfileGamepadUI.KeyStatus["Inventory"]) + PlayerInput.BuildCommand(Lang.misc[64].Value, true, PlayerInput.ProfileGamepadUI.KeyStatus["HotbarMinus"], PlayerInput.ProfileGamepadUI.KeyStatus["HotbarPlus"]));
       Func<string> func2 = (Func<string>) (() =>
       {
         int currentPoint = UILinkPointNavigator.CurrentPoint;
@@ -178,7 +178,7 @@ namespace Terraria.Initializers
       cp2.PageOnRight = 2;
       UILinkPointNavigator.RegisterPage(cp2, 0, true);
       UILinkPage cp3 = new UILinkPage();
-      cp3.OnSpecialInteracts += (Func<string>) (() => PlayerInput.BuildCommand(Lang.misc[56], 0 != 0, PlayerInput.ProfileGamepadUI.KeyStatus["Inventory"]) + PlayerInput.BuildCommand(Lang.misc[64], 1 != 0, PlayerInput.ProfileGamepadUI.KeyStatus["HotbarMinus"], PlayerInput.ProfileGamepadUI.KeyStatus["HotbarPlus"]));
+      cp3.OnSpecialInteracts += (Func<string>) (() => PlayerInput.BuildCommand(Lang.misc[56].Value, false, PlayerInput.ProfileGamepadUI.KeyStatus["Inventory"]) + PlayerInput.BuildCommand(Lang.misc[64].Value, true, PlayerInput.ProfileGamepadUI.KeyStatus["HotbarMinus"], PlayerInput.ProfileGamepadUI.KeyStatus["HotbarPlus"]));
       Func<string> func4 = (Func<string>) (() =>
       {
         int currentPoint = UILinkPointNavigator.CurrentPoint;
@@ -218,7 +218,7 @@ namespace Terraria.Initializers
       cp3.PageOnRight = 2;
       UILinkPointNavigator.RegisterPage(cp3, 1, true);
       UILinkPage cp4 = new UILinkPage();
-      cp4.OnSpecialInteracts += (Func<string>) (() => PlayerInput.BuildCommand(Lang.misc[56], 0 != 0, PlayerInput.ProfileGamepadUI.KeyStatus["Inventory"]) + PlayerInput.BuildCommand(Lang.misc[64], 1 != 0, PlayerInput.ProfileGamepadUI.KeyStatus["HotbarMinus"], PlayerInput.ProfileGamepadUI.KeyStatus["HotbarPlus"]));
+      cp4.OnSpecialInteracts += (Func<string>) (() => PlayerInput.BuildCommand(Lang.misc[56].Value, false, PlayerInput.ProfileGamepadUI.KeyStatus["Inventory"]) + PlayerInput.BuildCommand(Lang.misc[64].Value, true, PlayerInput.ProfileGamepadUI.KeyStatus["HotbarMinus"], PlayerInput.ProfileGamepadUI.KeyStatus["HotbarPlus"]));
       Func<string> func5 = (Func<string>) (() =>
       {
         int currentPoint = UILinkPointNavigator.CurrentPoint;
@@ -257,7 +257,7 @@ namespace Terraria.Initializers
       cp4.PageOnRight = 8;
       UILinkPointNavigator.RegisterPage(cp4, 2, true);
       UILinkPage cp5 = new UILinkPage();
-      cp5.OnSpecialInteracts += (Func<string>) (() => PlayerInput.BuildCommand(Lang.misc[56], 0 != 0, PlayerInput.ProfileGamepadUI.KeyStatus["Inventory"]) + PlayerInput.BuildCommand(Lang.misc[64], 1 != 0, PlayerInput.ProfileGamepadUI.KeyStatus["HotbarMinus"], PlayerInput.ProfileGamepadUI.KeyStatus["HotbarPlus"]));
+      cp5.OnSpecialInteracts += (Func<string>) (() => PlayerInput.BuildCommand(Lang.misc[56].Value, false, PlayerInput.ProfileGamepadUI.KeyStatus["Inventory"]) + PlayerInput.BuildCommand(Lang.misc[64].Value, true, PlayerInput.ProfileGamepadUI.KeyStatus["HotbarMinus"], PlayerInput.ProfileGamepadUI.KeyStatus["HotbarPlus"]));
       Func<string> func6 = (Func<string>) (() =>
       {
         int slot = UILinkPointNavigator.CurrentPoint - 100;
@@ -343,7 +343,7 @@ namespace Terraria.Initializers
       cp5.PageOnRight = 8;
       UILinkPointNavigator.RegisterPage(cp5, 3, true);
       UILinkPage page2 = new UILinkPage();
-      page2.OnSpecialInteracts += (Func<string>) (() => PlayerInput.BuildCommand(Lang.misc[56], 0 != 0, PlayerInput.ProfileGamepadUI.KeyStatus["Inventory"]) + PlayerInput.BuildCommand(Lang.misc[64], 1 != 0, PlayerInput.ProfileGamepadUI.KeyStatus["HotbarMinus"], PlayerInput.ProfileGamepadUI.KeyStatus["HotbarPlus"]));
+      page2.OnSpecialInteracts += (Func<string>) (() => PlayerInput.BuildCommand(Lang.misc[56].Value, false, PlayerInput.ProfileGamepadUI.KeyStatus["Inventory"]) + PlayerInput.BuildCommand(Lang.misc[64].Value, true, PlayerInput.ProfileGamepadUI.KeyStatus["HotbarMinus"], PlayerInput.ProfileGamepadUI.KeyStatus["HotbarPlus"]));
       Func<string> func8 = (Func<string>) (() =>
       {
         int slot = UILinkPointNavigator.CurrentPoint - 400;
@@ -410,7 +410,7 @@ namespace Terraria.Initializers
         return false;
       });
       UILinkPage page3 = new UILinkPage();
-      page3.OnSpecialInteracts += (Func<string>) (() => PlayerInput.BuildCommand(Lang.misc[56], 0 != 0, PlayerInput.ProfileGamepadUI.KeyStatus["Inventory"]) + PlayerInput.BuildCommand(Lang.misc[64], 1 != 0, PlayerInput.ProfileGamepadUI.KeyStatus["HotbarMinus"], PlayerInput.ProfileGamepadUI.KeyStatus["HotbarPlus"]));
+      page3.OnSpecialInteracts += (Func<string>) (() => PlayerInput.BuildCommand(Lang.misc[56].Value, false, PlayerInput.ProfileGamepadUI.KeyStatus["Inventory"]) + PlayerInput.BuildCommand(Lang.misc[64].Value, true, PlayerInput.ProfileGamepadUI.KeyStatus["HotbarMinus"], PlayerInput.ProfileGamepadUI.KeyStatus["HotbarPlus"]));
       Func<string> func9 = (Func<string>) (() =>
       {
         int slot = UILinkPointNavigator.CurrentPoint - 2700;
@@ -444,10 +444,10 @@ namespace Terraria.Initializers
       UILinkPage cp6 = new UILinkPage();
       cp6.LinkMap.Add(303, new UILinkPoint(303, true, 304, 304, 40, -2));
       cp6.LinkMap.Add(304, new UILinkPoint(304, true, 303, 303, 40, -2));
-      cp6.OnSpecialInteracts += (Func<string>) (() => PlayerInput.BuildCommand(Lang.misc[56], 0 != 0, PlayerInput.ProfileGamepadUI.KeyStatus["Inventory"]) + PlayerInput.BuildCommand(Lang.misc[64], 1 != 0, PlayerInput.ProfileGamepadUI.KeyStatus["HotbarMinus"], PlayerInput.ProfileGamepadUI.KeyStatus["HotbarPlus"]));
+      cp6.OnSpecialInteracts += (Func<string>) (() => PlayerInput.BuildCommand(Lang.misc[56].Value, false, PlayerInput.ProfileGamepadUI.KeyStatus["Inventory"]) + PlayerInput.BuildCommand(Lang.misc[64].Value, true, PlayerInput.ProfileGamepadUI.KeyStatus["HotbarMinus"], PlayerInput.ProfileGamepadUI.KeyStatus["HotbarPlus"]));
       Func<string> func10 = (Func<string>) (() => ItemSlot.GetGamepadInstructions(ref Main.reforgeItem, 5));
       cp6.LinkMap[303].OnSpecialInteracts += func10;
-      cp6.LinkMap[304].OnSpecialInteracts += (Func<string>) (() => Lang.misc[53]);
+      cp6.LinkMap[304].OnSpecialInteracts += (Func<string>) (() => Lang.misc[53].Value);
       cp6.UpdateEvent += (Action) (() =>
       {
         if (Main.reforgeItem.type > 0)
@@ -479,19 +479,19 @@ namespace Terraria.Initializers
           Point tileCoordinates = Main.player[Main.myPlayer].Center.ToTileCoordinates();
           if (UILinkPointNavigator.CurrentPoint == 600)
           {
-            if (WorldGen.MoveNPC(tileCoordinates.X, tileCoordinates.Y, -1))
-              Main.NewText(Lang.inter[39], byte.MaxValue, (byte) 240, (byte) 20, false);
+            if (WorldGen.MoveTownNPC((int) tileCoordinates.X, (int) tileCoordinates.Y, -1))
+              Main.NewText(Lang.inter[39].Value, byte.MaxValue, (byte) 240, (byte) 20, false);
             Main.PlaySound(12, -1, -1, 1, 1f, 0.0f);
           }
-          else if (WorldGen.MoveNPC(tileCoordinates.X, tileCoordinates.Y, UILinkPointNavigator.Shortcuts.NPCS_LastHovered))
+          else if (WorldGen.MoveTownNPC((int) tileCoordinates.X, (int) tileCoordinates.Y, UILinkPointNavigator.Shortcuts.NPCS_LastHovered))
           {
-            WorldGen.moveRoom(tileCoordinates.X, tileCoordinates.Y, UILinkPointNavigator.Shortcuts.NPCS_LastHovered);
+            WorldGen.moveRoom((int) tileCoordinates.X, (int) tileCoordinates.Y, UILinkPointNavigator.Shortcuts.NPCS_LastHovered);
             Main.PlaySound(12, -1, -1, 1, 1f, 0.0f);
           }
         }
         if (PlayerInput.Triggers.JustPressed.SmartSelect)
           UILinkPointNavigator.Shortcuts.NPCS_IconsDisplay = !UILinkPointNavigator.Shortcuts.NPCS_IconsDisplay;
-        return PlayerInput.BuildCommand(Lang.misc[56], 0 != 0, PlayerInput.ProfileGamepadUI.KeyStatus["Inventory"]) + PlayerInput.BuildCommand(Lang.misc[64], 0 != 0, PlayerInput.ProfileGamepadUI.KeyStatus["HotbarMinus"], PlayerInput.ProfileGamepadUI.KeyStatus["HotbarPlus"]) + PlayerInput.BuildCommand(Lang.misc[70], 0 != 0, PlayerInput.ProfileGamepadUI.KeyStatus["Grapple"]) + PlayerInput.BuildCommand(Lang.misc[69], 1 != 0, PlayerInput.ProfileGamepadUI.KeyStatus["SmartSelect"]);
+        return PlayerInput.BuildCommand(Lang.misc[56].Value, false, PlayerInput.ProfileGamepadUI.KeyStatus["Inventory"]) + PlayerInput.BuildCommand(Lang.misc[64].Value, false, PlayerInput.ProfileGamepadUI.KeyStatus["HotbarMinus"], PlayerInput.ProfileGamepadUI.KeyStatus["HotbarPlus"]) + PlayerInput.BuildCommand(Lang.misc[70].Value, false, PlayerInput.ProfileGamepadUI.KeyStatus["Grapple"]) + PlayerInput.BuildCommand(Lang.misc[69].Value, true, PlayerInput.ProfileGamepadUI.KeyStatus["SmartSelect"]);
       });
       for (int index = 600; index <= 650; ++index)
       {
@@ -523,7 +523,7 @@ namespace Terraria.Initializers
       cp7.PageOnRight = 8;
       UILinkPointNavigator.RegisterPage(cp7, 6, true);
       UILinkPage cp8 = new UILinkPage();
-      cp8.OnSpecialInteracts += (Func<string>) (() => PlayerInput.BuildCommand(Lang.misc[56], 0 != 0, PlayerInput.ProfileGamepadUI.KeyStatus["Inventory"]) + PlayerInput.BuildCommand(Lang.misc[64], 1 != 0, PlayerInput.ProfileGamepadUI.KeyStatus["HotbarMinus"], PlayerInput.ProfileGamepadUI.KeyStatus["HotbarPlus"]));
+      cp8.OnSpecialInteracts += (Func<string>) (() => PlayerInput.BuildCommand(Lang.misc[56].Value, false, PlayerInput.ProfileGamepadUI.KeyStatus["Inventory"]) + PlayerInput.BuildCommand(Lang.misc[64].Value, true, PlayerInput.ProfileGamepadUI.KeyStatus["HotbarMinus"], PlayerInput.ProfileGamepadUI.KeyStatus["HotbarPlus"]));
       Func<string> func11 = (Func<string>) (() =>
       {
         int slot = UILinkPointNavigator.CurrentPoint - 180;
@@ -608,7 +608,7 @@ namespace Terraria.Initializers
       cp8.PageOnRight = 8;
       UILinkPointNavigator.RegisterPage(cp8, 7, true);
       UILinkPage cp9 = new UILinkPage();
-      cp9.OnSpecialInteracts += (Func<string>) (() => PlayerInput.BuildCommand(Lang.misc[56], 0 != 0, PlayerInput.ProfileGamepadUI.KeyStatus["Inventory"]) + PlayerInput.BuildCommand(Lang.misc[64], 1 != 0, PlayerInput.ProfileGamepadUI.KeyStatus["HotbarMinus"], PlayerInput.ProfileGamepadUI.KeyStatus["HotbarPlus"]));
+      cp9.OnSpecialInteracts += (Func<string>) (() => PlayerInput.BuildCommand(Lang.misc[56].Value, false, PlayerInput.ProfileGamepadUI.KeyStatus["Inventory"]) + PlayerInput.BuildCommand(Lang.misc[64].Value, true, PlayerInput.ProfileGamepadUI.KeyStatus["HotbarMinus"], PlayerInput.ProfileGamepadUI.KeyStatus["HotbarPlus"]));
       cp9.LinkMap.Add(305, new UILinkPoint(305, true, 306, -4, 308, -2));
       cp9.LinkMap.Add(306, new UILinkPoint(306, true, 307, 305, 308, -2));
       cp9.LinkMap.Add(307, new UILinkPoint(307, true, -3, 306, 308, -2));
@@ -651,7 +651,7 @@ namespace Terraria.Initializers
       cp9.PageOnRight = 0;
       UILinkPointNavigator.RegisterPage(cp9, 8, true);
       UILinkPage cp10 = new UILinkPage();
-      cp10.OnSpecialInteracts += (Func<string>) (() => PlayerInput.BuildCommand(Lang.misc[56], 0 != 0, PlayerInput.ProfileGamepadUI.KeyStatus["Inventory"]) + PlayerInput.BuildCommand(Lang.misc[64], 1 != 0, PlayerInput.ProfileGamepadUI.KeyStatus["HotbarMinus"], PlayerInput.ProfileGamepadUI.KeyStatus["HotbarPlus"]));
+      cp10.OnSpecialInteracts += (Func<string>) (() => PlayerInput.BuildCommand(Lang.misc[56].Value, false, PlayerInput.ProfileGamepadUI.KeyStatus["Inventory"]) + PlayerInput.BuildCommand(Lang.misc[64].Value, true, PlayerInput.ProfileGamepadUI.KeyStatus["HotbarMinus"], PlayerInput.ProfileGamepadUI.KeyStatus["HotbarPlus"]));
       Func<string> func17 = (Func<string>) (() => ItemSlot.GetGamepadInstructions(ref Main.guideItem, 7));
       Func<string> HandleItem2 = (Func<string>) (() =>
       {
@@ -714,7 +714,7 @@ namespace Terraria.Initializers
         }
         else if (Main.mouseItem.type > 0 && Main.mouseItem.maxStack == 1 && ItemSlot.Equippable(ref Main.mouseItem, 0))
         {
-          str += PlayerInput.BuildCommand(Lang.misc[67], 0 != 0, PlayerInput.ProfileGamepadUI.KeyStatus["Grapple"]);
+          str += PlayerInput.BuildCommand(Lang.misc[67].Value, false, PlayerInput.ProfileGamepadUI.KeyStatus["Grapple"]);
           if (PlayerInput.Triggers.JustPressed.Grapple)
           {
             ItemSlot.SwapEquip(ref Main.mouseItem, 0);
@@ -726,14 +726,14 @@ namespace Terraria.Initializers
         if (flag2 || Main.mouseItem.type == Main.recipe[Main.availableRecipe[Main.focusRecipe]].createItem.type && Main.mouseItem.stack < Main.mouseItem.maxStack)
         {
           if (flag2)
-            str += PlayerInput.BuildCommand(Lang.misc[72], 0 != 0, PlayerInput.ProfileGamepadUI.KeyStatus["MouseLeft"], PlayerInput.ProfileGamepadUI.KeyStatus["MouseRight"]);
+            str += PlayerInput.BuildCommand(Lang.misc[72].Value, false, PlayerInput.ProfileGamepadUI.KeyStatus["MouseLeft"], PlayerInput.ProfileGamepadUI.KeyStatus["MouseRight"]);
           else
-            str += PlayerInput.BuildCommand(Lang.misc[72], 0 != 0, PlayerInput.ProfileGamepadUI.KeyStatus["MouseLeft"]);
+            str += PlayerInput.BuildCommand(Lang.misc[72].Value, false, PlayerInput.ProfileGamepadUI.KeyStatus["MouseLeft"]);
         }
         if (!flag2 && Main.mouseItem.type == Main.recipe[Main.availableRecipe[Main.focusRecipe]].createItem.type && Main.mouseItem.stack < Main.mouseItem.maxStack)
-          str += PlayerInput.BuildCommand(Lang.misc[93], 0 != 0, PlayerInput.ProfileGamepadUI.KeyStatus["MouseRight"]);
+          str += PlayerInput.BuildCommand(Lang.misc[93].Value, false, PlayerInput.ProfileGamepadUI.KeyStatus["MouseRight"]);
         if (flag1)
-          str += PlayerInput.BuildCommand(Lang.misc[71], 0 != 0, PlayerInput.ProfileGamepadUI.KeyStatus["Grapple"]);
+          str += PlayerInput.BuildCommand(Lang.misc[71].Value, false, PlayerInput.ProfileGamepadUI.KeyStatus["Grapple"]);
         return str + HandleItem2();
       });
       cp10.ReachEndEvent += (Action<int, int>) ((current, next) =>
@@ -791,7 +791,7 @@ namespace Terraria.Initializers
       cp10.PageOnRight = 0;
       UILinkPointNavigator.RegisterPage(cp10, 9, true);
       UILinkPage cp11 = new UILinkPage();
-      cp11.OnSpecialInteracts += (Func<string>) (() => PlayerInput.BuildCommand(Lang.misc[56], 0 != 0, PlayerInput.ProfileGamepadUI.KeyStatus["Inventory"]) + PlayerInput.BuildCommand(Lang.misc[64], 1 != 0, PlayerInput.ProfileGamepadUI.KeyStatus["HotbarMinus"], PlayerInput.ProfileGamepadUI.KeyStatus["HotbarPlus"]));
+      cp11.OnSpecialInteracts += (Func<string>) (() => PlayerInput.BuildCommand(Lang.misc[56].Value, false, PlayerInput.ProfileGamepadUI.KeyStatus["Inventory"]) + PlayerInput.BuildCommand(Lang.misc[64].Value, true, PlayerInput.ProfileGamepadUI.KeyStatus["HotbarMinus"], PlayerInput.ProfileGamepadUI.KeyStatus["HotbarPlus"]));
       for (int index1 = 700; index1 < 1500; ++index1)
       {
         UILinkPoint uiLinkPoint = new UILinkPoint(index1, true, index1, index1, index1, index1);
@@ -820,9 +820,9 @@ namespace Terraria.Initializers
               }
             }
           }
-          string str2 = str1 + PlayerInput.BuildCommand(Lang.misc[73], (!flag ? 1 : 0) != 0, PlayerInput.ProfileGamepadUI.KeyStatus["MouseLeft"]);
+          string str2 = str1 + PlayerInput.BuildCommand(Lang.misc[73].Value, (!flag ? 1 : 0) != 0, PlayerInput.ProfileGamepadUI.KeyStatus["MouseLeft"]);
           if (flag)
-            str2 += PlayerInput.BuildCommand(Lang.misc[71], 1 != 0, PlayerInput.ProfileGamepadUI.KeyStatus["Grapple"]);
+            str2 += PlayerInput.BuildCommand(Lang.misc[71].Value, true, PlayerInput.ProfileGamepadUI.KeyStatus["Grapple"]);
           return str2;
         });
         cp11.LinkMap.Add(index1, uiLinkPoint);
@@ -885,11 +885,11 @@ namespace Terraria.Initializers
       cp11.PageOnRight = 9;
       UILinkPointNavigator.RegisterPage(cp11, 10, true);
       UILinkPage cp12 = new UILinkPage();
-      cp12.OnSpecialInteracts += (Func<string>) (() => PlayerInput.BuildCommand(Lang.misc[56], 0 != 0, PlayerInput.ProfileGamepadUI.KeyStatus["Inventory"]) + PlayerInput.BuildCommand(Lang.misc[64], 1 != 0, PlayerInput.ProfileGamepadUI.KeyStatus["HotbarMinus"], PlayerInput.ProfileGamepadUI.KeyStatus["HotbarPlus"]));
+      cp12.OnSpecialInteracts += (Func<string>) (() => PlayerInput.BuildCommand(Lang.misc[56].Value, false, PlayerInput.ProfileGamepadUI.KeyStatus["Inventory"]) + PlayerInput.BuildCommand(Lang.misc[64].Value, true, PlayerInput.ProfileGamepadUI.KeyStatus["HotbarMinus"], PlayerInput.ProfileGamepadUI.KeyStatus["HotbarPlus"]));
       for (int index = 2605; index < 2620; ++index)
       {
         UILinkPoint uiLinkPoint = new UILinkPoint(index, true, index, index, index, index);
-        uiLinkPoint.OnSpecialInteracts += (Func<string>) (() => PlayerInput.BuildCommand(Lang.misc[73], 1 != 0, PlayerInput.ProfileGamepadUI.KeyStatus["MouseLeft"]));
+        uiLinkPoint.OnSpecialInteracts += (Func<string>) (() => PlayerInput.BuildCommand(Lang.misc[73].Value, true, PlayerInput.ProfileGamepadUI.KeyStatus["MouseLeft"]));
         cp12.LinkMap.Add(index, uiLinkPoint);
       }
       cp12.UpdateEvent += (Action) (() =>
@@ -928,7 +928,7 @@ namespace Terraria.Initializers
       cp12.PageOnRight = 12;
       UILinkPointNavigator.RegisterPage(cp12, 11, true);
       UILinkPage page4 = new UILinkPage();
-      page4.OnSpecialInteracts += (Func<string>) (() => PlayerInput.BuildCommand(Lang.misc[56], 0 != 0, PlayerInput.ProfileGamepadUI.KeyStatus["Inventory"]) + PlayerInput.BuildCommand(Lang.misc[64], 1 != 0, PlayerInput.ProfileGamepadUI.KeyStatus["HotbarMinus"], PlayerInput.ProfileGamepadUI.KeyStatus["HotbarPlus"]));
+      page4.OnSpecialInteracts += (Func<string>) (() => PlayerInput.BuildCommand(Lang.misc[56].Value, false, PlayerInput.ProfileGamepadUI.KeyStatus["Inventory"]) + PlayerInput.BuildCommand(Lang.misc[64].Value, true, PlayerInput.ProfileGamepadUI.KeyStatus["HotbarMinus"], PlayerInput.ProfileGamepadUI.KeyStatus["HotbarPlus"]));
       page4.LinkMap.Add(2600, new UILinkPoint(2600, true, -3, -4, -1, 2601));
       page4.LinkMap.Add(2601, new UILinkPoint(2601, true, -3, -4, 2600, 2602));
       page4.LinkMap.Add(2602, new UILinkPoint(2602, true, -3, -4, 2601, 2603));
@@ -938,7 +938,7 @@ namespace Terraria.Initializers
       {
         Vector3 hsl = Main.rgbToHsl(Main.selColor);
         float interfaceDeadzoneX = PlayerInput.CurrentProfile.InterfaceDeadzoneX;
-        float x = PlayerInput.GamepadThumbstickLeft.X;
+        float x = (float) PlayerInput.GamepadThumbstickLeft.X;
         float num = (double) x < -(double) interfaceDeadzoneX || (double) x > (double) interfaceDeadzoneX ? MathHelper.Lerp(0.0f, 0.008333334f, (float) (((double) Math.Abs(x) - (double) interfaceDeadzoneX) / (1.0 - (double) interfaceDeadzoneX))) * (float) Math.Sign(x) : 0.0f;
         int currentPoint = UILinkPointNavigator.CurrentPoint;
         if (currentPoint == 2600)
@@ -947,7 +947,7 @@ namespace Terraria.Initializers
           Main.sBar = MathHelper.Clamp(Main.sBar + num, 0.0f, 1f);
         if (currentPoint == 2602)
           Main.lBar = MathHelper.Clamp(Main.lBar + num, 0.15f, 1f);
-        Vector3.Clamp(hsl, Vector3.Zero, Vector3.One);
+        Vector3.Clamp(hsl, Vector3.get_Zero(), Vector3.get_One());
         if ((double) num == 0.0)
           return;
         if (Main.hairWindow)
@@ -965,13 +965,13 @@ namespace Terraria.Initializers
         cp13.LinkMap.Add(2900 + index, new UILinkPoint(2900 + index, true, -3, -4, -1, -2));
         cp13.LinkMap[2900 + index].OnSpecialInteracts += func1;
       }
-      cp13.OnSpecialInteracts += (Func<string>) (() => PlayerInput.BuildCommand(Lang.misc[56], 0 != 0, PlayerInput.ProfileGamepadUI.KeyStatus["Inventory"]) + PlayerInput.BuildCommand(Lang.misc[64], 1 != 0, PlayerInput.ProfileGamepadUI.KeyStatus["HotbarMinus"], PlayerInput.ProfileGamepadUI.KeyStatus["HotbarPlus"]));
+      cp13.OnSpecialInteracts += (Func<string>) (() => PlayerInput.BuildCommand(Lang.misc[56].Value, false, PlayerInput.ProfileGamepadUI.KeyStatus["Inventory"]) + PlayerInput.BuildCommand(Lang.misc[64].Value, true, PlayerInput.ProfileGamepadUI.KeyStatus["HotbarMinus"], PlayerInput.ProfileGamepadUI.KeyStatus["HotbarPlus"]));
       cp13.TravelEvent += (Action) (() =>
       {
         if (UILinkPointNavigator.CurrentPage != cp13.ID)
           return;
         int num = cp13.CurrentPoint - 2900;
-        if (num >= 2)
+        if (num >= 4)
           return;
         IngameOptions.category = num;
       });
@@ -990,7 +990,7 @@ namespace Terraria.Initializers
         cp13.LinkMap[2900].Up = 2900 + num1 - 1;
         cp13.LinkMap[2900 + num1 - 1].Down = 2900;
         int num2 = cp13.CurrentPoint - 2900;
-        if (num2 >= 2 || !PlayerInput.Triggers.JustPressed.MouseLeft)
+        if (num2 >= 4 || !PlayerInput.Triggers.JustPressed.MouseLeft)
           return;
         IngameOptions.category = num2;
         UILinkPointNavigator.ChangePage(1002);
@@ -1016,7 +1016,7 @@ namespace Terraria.Initializers
         cp14.LinkMap.Add(2930 + index, new UILinkPoint(2930 + index, true, -3, -4, -1, -2));
         cp14.LinkMap[2930 + index].OnSpecialInteracts += func1;
       }
-      cp14.OnSpecialInteracts += (Func<string>) (() => PlayerInput.BuildCommand(Lang.misc[56], 0 != 0, PlayerInput.ProfileGamepadUI.KeyStatus["Inventory"]) + PlayerInput.BuildCommand(Lang.misc[64], 1 != 0, PlayerInput.ProfileGamepadUI.KeyStatus["HotbarMinus"], PlayerInput.ProfileGamepadUI.KeyStatus["HotbarPlus"]));
+      cp14.OnSpecialInteracts += (Func<string>) (() => PlayerInput.BuildCommand(Lang.misc[56].Value, false, PlayerInput.ProfileGamepadUI.KeyStatus["Inventory"]) + PlayerInput.BuildCommand(Lang.misc[64].Value, true, PlayerInput.ProfileGamepadUI.KeyStatus["HotbarMinus"], PlayerInput.ProfileGamepadUI.KeyStatus["HotbarPlus"]));
       cp14.UpdateEvent += (Action) (() =>
       {
         int num1 = UILinkPointNavigator.Shortcuts.INGAMEOPTIONS_BUTTONS_RIGHT;
@@ -1039,7 +1039,7 @@ namespace Terraria.Initializers
       cp14.CanEnterEvent += (Func<bool>) (() => Main.ingameOptionsWindow);
       UILinkPointNavigator.RegisterPage(cp14, 1002, true);
       UILinkPage cp15 = new UILinkPage();
-      cp15.OnSpecialInteracts += (Func<string>) (() => PlayerInput.BuildCommand(Lang.misc[56], 0 != 0, PlayerInput.ProfileGamepadUI.KeyStatus["Inventory"]) + PlayerInput.BuildCommand(Lang.misc[64], 1 != 0, PlayerInput.ProfileGamepadUI.KeyStatus["HotbarMinus"], PlayerInput.ProfileGamepadUI.KeyStatus["HotbarPlus"]));
+      cp15.OnSpecialInteracts += (Func<string>) (() => PlayerInput.BuildCommand(Lang.misc[56].Value, false, PlayerInput.ProfileGamepadUI.KeyStatus["Inventory"]) + PlayerInput.BuildCommand(Lang.misc[64].Value, true, PlayerInput.ProfileGamepadUI.KeyStatus["HotbarMinus"], PlayerInput.ProfileGamepadUI.KeyStatus["HotbarPlus"]));
       for (int index = 1550; index < 1558; ++index)
       {
         UILinkPoint uiLinkPoint = new UILinkPoint(index, true, -3, -4, -1, -2);
@@ -1118,7 +1118,7 @@ namespace Terraria.Initializers
       cp15.PageOnRight = 8;
       UILinkPointNavigator.RegisterPage(cp15, 16, true);
       UILinkPage cp16 = new UILinkPage();
-      cp16.OnSpecialInteracts += (Func<string>) (() => PlayerInput.BuildCommand(Lang.misc[56], 0 != 0, PlayerInput.ProfileGamepadUI.KeyStatus["Inventory"]) + PlayerInput.BuildCommand(Lang.misc[64], 1 != 0, PlayerInput.ProfileGamepadUI.KeyStatus["HotbarMinus"], PlayerInput.ProfileGamepadUI.KeyStatus["HotbarPlus"]));
+      cp16.OnSpecialInteracts += (Func<string>) (() => PlayerInput.BuildCommand(Lang.misc[56].Value, false, PlayerInput.ProfileGamepadUI.KeyStatus["Inventory"]) + PlayerInput.BuildCommand(Lang.misc[64].Value, true, PlayerInput.ProfileGamepadUI.KeyStatus["HotbarMinus"], PlayerInput.ProfileGamepadUI.KeyStatus["HotbarPlus"]));
       for (int index = 1558; index < 1570; ++index)
       {
         UILinkPoint uiLinkPoint = new UILinkPoint(index, true, -3, -4, -1, -2);
@@ -1167,7 +1167,7 @@ namespace Terraria.Initializers
       cp16.PageOnRight = 8;
       UILinkPointNavigator.RegisterPage(cp16, 17, true);
       UILinkPage cp17 = new UILinkPage();
-      cp17.OnSpecialInteracts += (Func<string>) (() => PlayerInput.BuildCommand(Lang.misc[56], 0 != 0, PlayerInput.ProfileGamepadUI.KeyStatus["Inventory"]) + PlayerInput.BuildCommand(Lang.misc[64], 1 != 0, PlayerInput.ProfileGamepadUI.KeyStatus["HotbarMinus"], PlayerInput.ProfileGamepadUI.KeyStatus["HotbarPlus"]));
+      cp17.OnSpecialInteracts += (Func<string>) (() => PlayerInput.BuildCommand(Lang.misc[56].Value, false, PlayerInput.ProfileGamepadUI.KeyStatus["Inventory"]) + PlayerInput.BuildCommand(Lang.misc[64].Value, true, PlayerInput.ProfileGamepadUI.KeyStatus["HotbarMinus"], PlayerInput.ProfileGamepadUI.KeyStatus["HotbarPlus"]));
       for (int index = 4000; index < 4010; ++index)
       {
         UILinkPoint uiLinkPoint = new UILinkPoint(index, true, -3, -4, -1, -2);
@@ -1219,7 +1219,7 @@ namespace Terraria.Initializers
       cp17.PageOnRight = 8;
       UILinkPointNavigator.RegisterPage(cp17, 18, true);
       UILinkPage page5 = new UILinkPage();
-      page5.OnSpecialInteracts += (Func<string>) (() => PlayerInput.BuildCommand(Lang.misc[56], 0 != 0, PlayerInput.ProfileGamepadUI.KeyStatus["Inventory"]) + PlayerInput.BuildCommand(Lang.misc[64], 1 != 0, PlayerInput.ProfileGamepadUI.KeyStatus["HotbarMinus"], PlayerInput.ProfileGamepadUI.KeyStatus["HotbarPlus"]));
+      page5.OnSpecialInteracts += (Func<string>) (() => PlayerInput.BuildCommand(Lang.misc[56].Value, false, PlayerInput.ProfileGamepadUI.KeyStatus["Inventory"]) + PlayerInput.BuildCommand(Lang.misc[64].Value, true, PlayerInput.ProfileGamepadUI.KeyStatus["HotbarMinus"], PlayerInput.ProfileGamepadUI.KeyStatus["HotbarPlus"]));
       page5.LinkMap.Add(2806, new UILinkPoint(2806, true, 2805, 2807, -1, 2808));
       page5.LinkMap.Add(2807, new UILinkPoint(2807, true, 2806, -4, -1, 2809));
       page5.LinkMap.Add(2808, new UILinkPoint(2808, true, 2805, 2809, 2806, -2));
@@ -1238,7 +1238,7 @@ namespace Terraria.Initializers
       page5.PageOnRight = 15;
       UILinkPointNavigator.RegisterPage(page5, 14, true);
       UILinkPage page6 = new UILinkPage();
-      page6.OnSpecialInteracts += (Func<string>) (() => PlayerInput.BuildCommand(Lang.misc[56], 0 != 0, PlayerInput.ProfileGamepadUI.KeyStatus["Inventory"]) + PlayerInput.BuildCommand(Lang.misc[64], 1 != 0, PlayerInput.ProfileGamepadUI.KeyStatus["HotbarMinus"], PlayerInput.ProfileGamepadUI.KeyStatus["HotbarPlus"]));
+      page6.OnSpecialInteracts += (Func<string>) (() => PlayerInput.BuildCommand(Lang.misc[56].Value, false, PlayerInput.ProfileGamepadUI.KeyStatus["Inventory"]) + PlayerInput.BuildCommand(Lang.misc[64].Value, true, PlayerInput.ProfileGamepadUI.KeyStatus["HotbarMinus"], PlayerInput.ProfileGamepadUI.KeyStatus["HotbarPlus"]));
       page6.LinkMap.Add(2800, new UILinkPoint(2800, true, -3, -4, -1, 2801));
       page6.LinkMap.Add(2801, new UILinkPoint(2801, true, -3, -4, 2800, 2802));
       page6.LinkMap.Add(2802, new UILinkPoint(2802, true, -3, -4, 2801, 2803));
@@ -1253,7 +1253,7 @@ namespace Terraria.Initializers
       {
         Vector3 hsl = Main.rgbToHsl(Main.selColor);
         float interfaceDeadzoneX = PlayerInput.CurrentProfile.InterfaceDeadzoneX;
-        float x = PlayerInput.GamepadThumbstickLeft.X;
+        float x = (float) PlayerInput.GamepadThumbstickLeft.X;
         float num = (double) x < -(double) interfaceDeadzoneX || (double) x > (double) interfaceDeadzoneX ? MathHelper.Lerp(0.0f, 0.008333334f, (float) (((double) Math.Abs(x) - (double) interfaceDeadzoneX) / (1.0 - (double) interfaceDeadzoneX))) * (float) Math.Sign(x) : 0.0f;
         int currentPoint = UILinkPointNavigator.CurrentPoint;
         if (currentPoint == 2800)
@@ -1262,7 +1262,7 @@ namespace Terraria.Initializers
           Main.sBar = MathHelper.Clamp(Main.sBar + num, 0.0f, 1f);
         if (currentPoint == 2802)
           Main.lBar = MathHelper.Clamp(Main.lBar + num, 0.15f, 1f);
-        Vector3.Clamp(hsl, Vector3.Zero, Vector3.One);
+        Vector3.Clamp(hsl, Vector3.get_Zero(), Vector3.get_One());
         if ((double) num == 0.0)
           return;
         if (Main.clothesWindow)
@@ -1297,7 +1297,7 @@ namespace Terraria.Initializers
       cp18.UpdateEvent += (Action) (() => PlayerInput.GamepadAllowScrolling = true);
       for (int index = 0; index < 200; ++index)
         cp18.LinkMap.Add(3000 + index, new UILinkPoint(3000 + index, true, -3, -4, -1, -2));
-      cp18.OnSpecialInteracts += (Func<string>) (() => PlayerInput.BuildCommand(Lang.misc[53], 0 != 0, PlayerInput.ProfileGamepadUI.KeyStatus["MouseLeft"]) + PlayerInput.BuildCommand(Lang.misc[82], 0 != 0, PlayerInput.ProfileGamepadUI.KeyStatus["Inventory"]) + UILinksInitializer.FancyUISpecialInstructions());
+      cp18.OnSpecialInteracts += (Func<string>) (() => PlayerInput.BuildCommand(Lang.misc[53].Value, false, PlayerInput.ProfileGamepadUI.KeyStatus["MouseLeft"]) + PlayerInput.BuildCommand(Lang.misc[82].Value, false, PlayerInput.ProfileGamepadUI.KeyStatus["Inventory"]) + UILinksInitializer.FancyUISpecialInstructions());
       cp18.UpdateEvent += (Action) (() =>
       {
         if (PlayerInput.Triggers.JustPressed.Inventory)
@@ -1319,8 +1319,8 @@ namespace Terraria.Initializers
       });
       UILinkPointNavigator.RegisterPage(cp18, 1004, true);
       UILinkPage cp19 = new UILinkPage();
-      cp19.OnSpecialInteracts += (Func<string>) (() => PlayerInput.BuildCommand(Lang.misc[56], 0 != 0, PlayerInput.ProfileGamepadUI.KeyStatus["Inventory"]) + PlayerInput.BuildCommand(Lang.misc[64], 0 != 0, PlayerInput.ProfileGamepadUI.KeyStatus["HotbarMinus"], PlayerInput.ProfileGamepadUI.KeyStatus["HotbarPlus"]));
-      Func<string> func18 = (Func<string>) (() => PlayerInput.BuildCommand(Lang.misc[94], 0 != 0, PlayerInput.ProfileGamepadUI.KeyStatus["MouseLeft"]));
+      cp19.OnSpecialInteracts += (Func<string>) (() => PlayerInput.BuildCommand(Lang.misc[56].Value, false, PlayerInput.ProfileGamepadUI.KeyStatus["Inventory"]) + PlayerInput.BuildCommand(Lang.misc[64].Value, false, PlayerInput.ProfileGamepadUI.KeyStatus["HotbarMinus"], PlayerInput.ProfileGamepadUI.KeyStatus["HotbarPlus"]));
+      Func<string> func18 = (Func<string>) (() => PlayerInput.BuildCommand(Lang.misc[94].Value, false, PlayerInput.ProfileGamepadUI.KeyStatus["MouseLeft"]));
       for (int index = 9000; index <= 9050; ++index)
       {
         UILinkPoint uiLinkPoint = new UILinkPoint(index, true, index + 10, index - 10, index - 1, index + 1);
@@ -1393,18 +1393,18 @@ namespace Terraria.Initializers
       {
         if (PlayerInput.Triggers.JustPressed.HotbarMinus)
           UIVirtualKeyboard.CycleSymbols();
-        string str2 = str1 + PlayerInput.BuildCommand(Lang.menu[235], 0 != 0, PlayerInput.ProfileGamepadUI.KeyStatus["HotbarMinus"]);
+        string str2 = str1 + PlayerInput.BuildCommand(Lang.menu[235].Value, false, PlayerInput.ProfileGamepadUI.KeyStatus["HotbarMinus"]);
         if (PlayerInput.Triggers.JustPressed.MouseRight)
           UIVirtualKeyboard.BackSpace();
-        string str3 = str2 + PlayerInput.BuildCommand(Lang.menu[236], 0 != 0, PlayerInput.ProfileGamepadUI.KeyStatus["MouseRight"]);
+        string str3 = str2 + PlayerInput.BuildCommand(Lang.menu[236].Value, false, PlayerInput.ProfileGamepadUI.KeyStatus["MouseRight"]);
         if (PlayerInput.Triggers.JustPressed.SmartCursor)
           UIVirtualKeyboard.Write(" ");
-        str1 = str3 + PlayerInput.BuildCommand(Lang.menu[238], 0 != 0, PlayerInput.ProfileGamepadUI.KeyStatus["SmartCursor"]);
+        str1 = str3 + PlayerInput.BuildCommand(Lang.menu[238].Value, false, PlayerInput.ProfileGamepadUI.KeyStatus["SmartCursor"]);
         if (UIVirtualKeyboard.CanSubmit)
         {
           if (PlayerInput.Triggers.JustPressed.HotbarPlus)
             UIVirtualKeyboard.Submit();
-          str1 += PlayerInput.BuildCommand(Lang.menu[237], 0 != 0, PlayerInput.ProfileGamepadUI.KeyStatus["HotbarPlus"]);
+          str1 += PlayerInput.BuildCommand(Lang.menu[237].Value, false, PlayerInput.ProfileGamepadUI.KeyStatus["HotbarPlus"]);
         }
       }
       return str1;
@@ -1456,12 +1456,10 @@ namespace Terraria.Initializers
               Main.player[Main.myPlayer].shoeColor = Main.selColor = Main.hslToRgb(Main.hBar, Main.sBar, Main.lBar);
               break;
             case 25:
-              Main.mouseColor = Main.selColor = Main.hslToRgb(Main.hBar, Main.sBar, Main.lBar);
+              Main.mouseColorSlider.Hue = num1;
               break;
             case 252:
-              Color rgb1 = Main.hslToRgb(Main.hBar, Main.sBar, Main.lBar);
-              rgb1.A = (byte) ((double) Main.aBar * (double) byte.MaxValue);
-              Main.MouseBorderColor = Main.selColor = rgb1;
+              Main.mouseBorderColorSlider.Hue = num1;
               break;
           }
           Main.PlaySound(12, -1, -1, 1, 1f, 0.0f);
@@ -1495,12 +1493,10 @@ namespace Terraria.Initializers
               Main.player[Main.myPlayer].shoeColor = Main.selColor = Main.hslToRgb(Main.hBar, Main.sBar, Main.lBar);
               break;
             case 25:
-              Main.mouseColor = Main.selColor = Main.hslToRgb(Main.hBar, Main.sBar, Main.lBar);
+              Main.mouseColorSlider.Saturation = num2;
               break;
             case 252:
-              Color rgb2 = Main.hslToRgb(Main.hBar, Main.sBar, Main.lBar);
-              rgb2.A = (byte) ((double) Main.aBar * (double) byte.MaxValue);
-              Main.MouseBorderColor = Main.selColor = rgb2;
+              Main.mouseBorderColorSlider.Saturation = num2;
               break;
           }
           Main.PlaySound(12, -1, -1, 1, 1f, 0.0f);
@@ -1537,12 +1533,10 @@ namespace Terraria.Initializers
               Main.player[Main.myPlayer].shoeColor = Main.selColor = Main.hslToRgb(Main.hBar, Main.sBar, Main.lBar);
               break;
             case 25:
-              Main.mouseColor = Main.selColor = Main.hslToRgb(Main.hBar, Main.sBar, Main.lBar);
+              Main.mouseColorSlider.Luminance = num3;
               break;
             case 252:
-              Color rgb3 = Main.hslToRgb(Main.hBar, Main.sBar, Main.lBar);
-              rgb3.A = (byte) ((double) Main.aBar * (double) byte.MaxValue);
-              Main.MouseBorderColor = Main.selColor = rgb3;
+              Main.mouseBorderColorSlider.Luminance = num3;
               break;
           }
           Main.PlaySound(12, -1, -1, 1, 1f, 0.0f);
@@ -1552,38 +1546,8 @@ namespace Terraria.Initializers
           float num4 = Main.aBar = UILinksInitializer.HandleSlider(aBar, 0.0f, 1f, PlayerInput.CurrentProfile.InterfaceDeadzoneX, 0.5f);
           if ((double) aBar == (double) num4)
             break;
-          switch (Main.menuMode)
-          {
-            case 17:
-              Main.player[Main.myPlayer].hairColor = Main.selColor = Main.hslToRgb(Main.hBar, Main.sBar, Main.lBar);
-              break;
-            case 18:
-              Main.player[Main.myPlayer].eyeColor = Main.selColor = Main.hslToRgb(Main.hBar, Main.sBar, Main.lBar);
-              break;
-            case 19:
-              Main.player[Main.myPlayer].skinColor = Main.selColor = Main.hslToRgb(Main.hBar, Main.sBar, Main.lBar);
-              break;
-            case 21:
-              Main.player[Main.myPlayer].shirtColor = Main.selColor = Main.hslToRgb(Main.hBar, Main.sBar, Main.lBar);
-              break;
-            case 22:
-              Main.player[Main.myPlayer].underShirtColor = Main.selColor = Main.hslToRgb(Main.hBar, Main.sBar, Main.lBar);
-              break;
-            case 23:
-              Main.player[Main.myPlayer].pantsColor = Main.selColor = Main.hslToRgb(Main.hBar, Main.sBar, Main.lBar);
-              break;
-            case 24:
-              Main.player[Main.myPlayer].shoeColor = Main.selColor = Main.hslToRgb(Main.hBar, Main.sBar, Main.lBar);
-              break;
-            case 25:
-              Main.mouseColor = Main.selColor = Main.hslToRgb(Main.hBar, Main.sBar, Main.lBar);
-              break;
-            case 252:
-              Color rgb4 = Main.hslToRgb(Main.hBar, Main.sBar, Main.lBar);
-              rgb4.A = (byte) ((double) Main.aBar * (double) byte.MaxValue);
-              Main.MouseBorderColor = Main.selColor = rgb4;
-              break;
-          }
+          if (Main.menuMode == 252)
+            Main.mouseBorderColorSlider.Alpha = num4;
           Main.PlaySound(12, -1, -1, 1, 1f, 0.0f);
           break;
         case 9:
@@ -1607,6 +1571,13 @@ namespace Terraria.Initializers
           if (Main.PendingPlayer.hair >= 0)
             break;
           Main.PendingPlayer.hair = num5 - 1;
+          break;
+        case 10:
+          Main.GameZoomTarget = UILinksInitializer.HandleSlider(Main.GameZoomTarget, 1f, 2f, PlayerInput.CurrentProfile.InterfaceDeadzoneX, 0.35f);
+          break;
+        case 11:
+          Main.UIScale = UILinksInitializer.HandleSlider(Main.UIScaleWanted, 1f, 2f, PlayerInput.CurrentProfile.InterfaceDeadzoneX, 0.35f);
+          Main.temporaryGUIScaleSlider = Main.UIScaleWanted;
           break;
       }
     }

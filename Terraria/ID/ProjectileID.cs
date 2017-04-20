@@ -1,8 +1,8 @@
 ﻿// Decompiled with JetBrains decompiler
 // Type: Terraria.ID.ProjectileID
-// Assembly: Terraria, Version=1.3.4.4, Culture=neutral, PublicKeyToken=null
-// MVID: DEE50102-BCC2-472F-987B-153E892583F1
-// Assembly location: E:\Steam\SteamApps\common\Terraria\Terraria.exe
+// Assembly: Terraria, Version=1.3.5.1, Culture=neutral, PublicKeyToken=null
+// MVID: DF0400F4-EE47-4864-BE80-932EDB02D8A6
+// Assembly location: F:\Steam\steamapps\common\Terraria\Terraria.exe
 
 namespace Terraria.ID
 {
@@ -730,7 +730,7 @@ namespace Terraria.ID
       public static float[] YoyosLifeTimeMultiplier = ProjectileID.Sets.Factory.CreateFloatSet(-1f, 541f, 3f, 548f, 5f, 542f, 7f, 543f, 6f, 544f, 8f, 534f, 9f, 564f, 11f, 545f, 13f, 563f, 10f, 562f, 8f, 553f, 12f, 546f, 16f, 552f, 15f, 549f, 14f);
       public static float[] YoyosMaximumRange = ProjectileID.Sets.Factory.CreateFloatSet(200f, 541f, 130f, 548f, 170f, 542f, 195f, 543f, 207f, 544f, 215f, 534f, 220f, 564f, 225f, 545f, 235f, 562f, 235f, 563f, 250f, 546f, 275f, 552f, 270f, 553f, 275f, 547f, 280f, 549f, 290f, 554f, 340f, 550f, 370f, 551f, 370f, 555f, 360f, 603f, 400f);
       public static float[] YoyosTopSpeed = ProjectileID.Sets.Factory.CreateFloatSet(10f, 541f, 9f, 548f, 11f, 542f, 12.5f, 543f, 12f, 544f, 13f, 534f, 13f, 564f, 14f, 545f, 14f, 562f, 15f, 563f, 12f, 546f, 17f, 552f, 14f, 553f, 15f, 547f, 17f, 549f, 16f, 554f, 16f, 550f, 16f, 551f, 16f, 555f, 16.5f, 603f, 17.5f);
-      public static bool[] CanDistortWater = ProjectileID.Sets.Factory.CreateBoolSet(1 != 0, 7, 8, 152, 151, 150, 493, 494);
+      public static bool[] CanDistortWater = ProjectileID.Sets.Factory.CreateBoolSet(true, 7, 8, 152, 151, 150, 493, 494);
       public static bool[] MinionShot = ProjectileID.Sets.Factory.CreateBoolSet(374, 376, 389, 195, 385, 433, 614);
       public static bool[] SentryShot = ProjectileID.Sets.Factory.CreateBoolSet(680, 664, 666, 668, 694, 695, 696, 644, 642, 378, 379, 309);
       public static bool?[] ForcePlateDetection = ProjectileID.Sets.Factory.CreateCustomSet<bool?>(new bool?(), (object) (short) 397, (object) true, (object) (short) 37, (object) true, (object) (short) 470, (object) true, (object) (short) 53, (object) true, (object) (short) 519, (object) true, (object) (short) 171, (object) true, (object) (short) 505, (object) true, (object) (short) 475, (object) true, (object) (short) 506, (object) true, (object) (short) 186, (object) true, (object) (short) 80, (object) true, (object) (short) 40, (object) true, (object) (short) 241, (object) true, (object) (short) 411, (object) true, (object) (short) 56, (object) true, (object) (short) 413, (object) true, (object) (short) 67, (object) true, (object) (short) 414, (object) true, (object) (short) 31, (object) true, (object) (short) 412, (object) true, (object) (short) 17, (object) true, (object) (short) 166, (object) true, (object) (short) 109, (object) true, (object) (short) 354, (object) true, (object) (short) 65, (object) true, (object) (short) 68, (object) true, (object) (short) 42, (object) true, (object) (short) 99, (object) false, (object) (short) 655, (object) false);

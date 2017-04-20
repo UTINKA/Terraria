@@ -1,8 +1,8 @@
 ﻿// Decompiled with JetBrains decompiler
 // Type: Terraria.GameContent.UI.Elements.UICharacter
-// Assembly: Terraria, Version=1.3.4.4, Culture=neutral, PublicKeyToken=null
-// MVID: DEE50102-BCC2-472F-987B-153E892583F1
-// Assembly location: E:\Steam\SteamApps\common\Terraria\Terraria.exe
+// Assembly: Terraria, Version=1.3.5.1, Culture=neutral, PublicKeyToken=null
+// MVID: DF0400F4-EE47-4864-BE80-932EDB02D8A6
+// Assembly location: F:\Steam\steamapps\common\Terraria\Terraria.exe
 
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -29,11 +29,11 @@ namespace Terraria.GameContent.UI.Elements
     protected override void DrawSelf(SpriteBatch spriteBatch)
     {
       CalculatedStyle dimensions = this.GetDimensions();
-      spriteBatch.Draw(this._texture, dimensions.Position(), Color.White);
-      Vector2 vector2 = dimensions.Position() + new Vector2(dimensions.Width * 0.5f - (float) (this._player.width >> 1), dimensions.Height * 0.5f - (float) (this._player.height >> 1));
+      spriteBatch.Draw(this._texture, dimensions.Position(), Color.get_White());
+      Vector2 vector2 = Vector2.op_Addition(dimensions.Position(), new Vector2(dimensions.Width * 0.5f - (float) (this._player.width >> 1), dimensions.Height * 0.5f - (float) (this._player.height >> 1)));
       Item obj = this._player.inventory[this._player.selectedItem];
       this._player.inventory[this._player.selectedItem] = UICharacter._blankItem;
-      Main.instance.DrawPlayer(this._player, vector2 + Main.screenPosition, 0.0f, Vector2.Zero, 0.0f);
+      Main.instance.DrawPlayer(this._player, Vector2.op_Addition(vector2, Main.screenPosition), 0.0f, Vector2.get_Zero(), 0.0f);
       this._player.inventory[this._player.selectedItem] = obj;
     }
   }

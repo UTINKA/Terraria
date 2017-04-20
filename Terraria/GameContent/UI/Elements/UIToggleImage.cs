@@ -1,8 +1,8 @@
 ﻿// Decompiled with JetBrains decompiler
 // Type: Terraria.GameContent.UI.Elements.UIToggleImage
-// Assembly: Terraria, Version=1.3.4.4, Culture=neutral, PublicKeyToken=null
-// MVID: DEE50102-BCC2-472F-987B-153E892583F1
-// Assembly location: E:\Steam\SteamApps\common\Terraria\Terraria.exe
+// Assembly: Terraria, Version=1.3.5.1, Culture=neutral, PublicKeyToken=null
+// MVID: DF0400F4-EE47-4864-BE80-932EDB02D8A6
+// Assembly location: F:\Steam\steamapps\common\Terraria\Terraria.exe
 
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -12,8 +12,8 @@ namespace Terraria.GameContent.UI.Elements
 {
   public class UIToggleImage : UIElement
   {
-    private Point _onTextureOffset = Point.Zero;
-    private Point _offTextureOffset = Point.Zero;
+    private Point _onTextureOffset = Point.get_Zero();
+    private Point _offTextureOffset = Point.get_Zero();
     private Texture2D _onTexture;
     private Texture2D _offTexture;
     private int _drawWidth;
@@ -43,20 +43,20 @@ namespace Terraria.GameContent.UI.Elements
     protected override void DrawSelf(SpriteBatch spriteBatch)
     {
       CalculatedStyle dimensions = this.GetDimensions();
-      Texture2D texture;
+      Texture2D texture2D;
       Point point;
       if (this._isOn)
       {
-        texture = this._onTexture;
+        texture2D = this._onTexture;
         point = this._onTextureOffset;
       }
       else
       {
-        texture = this._offTexture;
+        texture2D = this._offTexture;
         point = this._offTextureOffset;
       }
-      Color color = this.IsMouseHovering ? Color.White : Color.Silver;
-      spriteBatch.Draw(texture, new Rectangle((int) dimensions.X, (int) dimensions.Y, this._drawWidth, this._drawHeight), new Rectangle?(new Rectangle(point.X, point.Y, this._drawWidth, this._drawHeight)), color);
+      Color color = this.IsMouseHovering ? Color.get_White() : Color.get_Silver();
+      spriteBatch.Draw(texture2D, new Rectangle((int) dimensions.X, (int) dimensions.Y, this._drawWidth, this._drawHeight), new Rectangle?(new Rectangle((int) point.X, (int) point.Y, this._drawWidth, this._drawHeight)), color);
     }
 
     public override void Click(UIMouseEvent evt)

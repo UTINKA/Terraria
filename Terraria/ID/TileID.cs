@@ -1,8 +1,8 @@
 ﻿// Decompiled with JetBrains decompiler
 // Type: Terraria.ID.TileID
-// Assembly: Terraria, Version=1.3.4.4, Culture=neutral, PublicKeyToken=null
-// MVID: DEE50102-BCC2-472F-987B-153E892583F1
-// Assembly location: E:\Steam\SteamApps\common\Terraria\Terraria.exe
+// Assembly: Terraria, Version=1.3.5.1, Culture=neutral, PublicKeyToken=null
+// MVID: DF0400F4-EE47-4864-BE80-932EDB02D8A6
+// Assembly location: F:\Steam\steamapps\common\Terraria\Terraria.exe
 
 namespace Terraria.ID
 {
@@ -475,11 +475,14 @@ namespace Terraria.ID
     public const ushort WarTable = 464;
     public const ushort WarTableBanner = 465;
     public const ushort ElderCrystalStand = 466;
-    public const ushort Count = 467;
+    public const ushort Containers2 = 467;
+    public const ushort FakeContainers2 = 468;
+    public const ushort Tables2 = 469;
+    public const ushort Count = 470;
 
     public static class Sets
     {
-      public static SetFactory Factory = new SetFactory(467);
+      public static SetFactory Factory = new SetFactory(470);
       public static bool[] Platforms = TileID.Sets.Factory.CreateBoolSet(19, 427, 435, 436, 437, 438, 439);
       public static bool[] DrawsWalls = TileID.Sets.Factory.CreateBoolSet(10, 54, 138, 388, 191, 137, 328, 162, 387, 48, 232, (int) sbyte.MaxValue, 459);
       public static ushort[] GemsparkFramingTypes = TileID.Sets.Factory.CreateUshortSet((ushort) 0, (ushort) 265, (ushort) 265, (ushort) 258, (ushort) 258, (ushort) 264, (ushort) 264, (ushort) 257, (ushort) 257, (ushort) 267, (ushort) 267, (ushort) 260, (ushort) 260, (ushort) 266, (ushort) 266, (ushort) 259, (ushort) 259, (ushort) 263, (ushort) 263, (ushort) 256, (ushort) 256, (ushort) 262, (ushort) 262, (ushort) byte.MaxValue, (ushort) byte.MaxValue, (ushort) 268, (ushort) 268, (ushort) 261, (ushort) 261, (ushort) 385, (ushort) 385, (ushort) 446, (ushort) 446, (ushort) 447, (ushort) 447, (ushort) 448, (ushort) 448);
@@ -491,7 +494,7 @@ namespace Terraria.ID
         422
       });
       public static bool[] TileInteractRead = TileID.Sets.Factory.CreateBoolSet(55, 85, 425);
-      public static bool[] HasOutlines = TileID.Sets.Factory.CreateBoolSet(10, 11, 21, 29, 55, 79, 85, 88, 97, 104, 125, 132, 136, 139, 144, 207, 209, 212, 215, 216, 237, 287, 335, 338, 354, 356, 377, 386, 387, 388, 389, 410, 411, 425, 441, 455);
+      public static bool[] HasOutlines = TileID.Sets.Factory.CreateBoolSet(10, 11, 21, 29, 55, 79, 85, 88, 97, 104, 125, 132, 136, 139, 144, 207, 209, 212, 215, 216, 237, 287, 335, 338, 354, 356, 377, 386, 387, 388, 389, 410, 411, 425, 441, 455, 463, 467, 468);
       public static bool[] AllTiles = TileID.Sets.Factory.CreateBoolSet(true, new int[0]);
       public static bool[] Mud = TileID.Sets.Factory.CreateBoolSet(59);
       public static bool[] Snow = TileID.Sets.Factory.CreateBoolSet(147);
@@ -510,8 +513,18 @@ namespace Terraria.ID
         384,
         192
       });
-      public static bool[] GeneralPlacementTiles = TileID.Sets.Factory.CreateBoolSet(1 != 0, 225, 41, 43, 44, 226, 203, 112, 25, 70, 151, 21, 31, 12);
-      public static bool[] CanBeClearedDuringGeneration = TileID.Sets.Factory.CreateBoolSet(1 != 0, 396, 400, 401, 397, 398, 399, 404, 368, 367);
+      public static bool[] GeneralPlacementTiles = TileID.Sets.Factory.CreateBoolSet(true, 225, 41, 43, 44, 226, 203, 112, 25, 70, 151, 21, 31, 467, 12);
+      public static bool[] BasicChest = TileID.Sets.Factory.CreateBoolSet(new int[2]
+      {
+        21,
+        467
+      });
+      public static bool[] BasicChestFake = TileID.Sets.Factory.CreateBoolSet(new int[2]
+      {
+        441,
+        468
+      });
+      public static bool[] CanBeClearedDuringGeneration = TileID.Sets.Factory.CreateBoolSet(true, 396, 400, 401, 397, 398, 399, 404, 368, 367);
       public static bool[] Corrupt = TileID.Sets.Factory.CreateBoolSet(23, 25, 112, 163, 398, 400);
       public static bool[] Hallow = TileID.Sets.Factory.CreateBoolSet(109, 117, 116, 164, 402, 403, 115);
       public static bool[] Crimson = TileID.Sets.Factory.CreateBoolSet(199, 203, 234, 200, 399, 401, 205);
@@ -522,10 +535,12 @@ namespace Terraria.ID
         387
       });
       public static bool[] NotReallySolid = TileID.Sets.Factory.CreateBoolSet(387, 388, 10);
+      public static bool[] NeedsGrassFraming = TileID.Sets.Factory.CreateBoolSet();
+      public static int[] NeedsGrassFramingDirt = TileID.Sets.Factory.CreateIntSet(0);
       public static bool[] ChecksForMerge = TileID.Sets.Factory.CreateBoolSet(0, 2, 60, 70, 199, 109, 57, 58, 75, 76, 147, 161, 164, 163, 200, 162, 189, 196, 224, 191, 383, 211, 225, 59, 226, 396, 397, 398, 399, 402, 400, 401, 403, 404, 234, 112, 407);
       public static bool[] FramesOnKillWall = TileID.Sets.Factory.CreateBoolSet(440, 240, 241, 242, 245, 246, 4, 136, 334, 132, 55, 395, 425, 440);
-      public static bool[] AvoidedByNPCs = TileID.Sets.Factory.CreateBoolSet(21, 55, 85, 395, 88, 463, 334, 29, 97, 99, 356, 425, 440, 209, 441);
-      public static bool[] InteractibleByNPCs = TileID.Sets.Factory.CreateBoolSet(17, 77, 133, 12, 26, 35, 36, 55, 395, 21, 29, 97, 88, 99, 463, 33, 372, 174, 49, 100, 173, 78, 79, 94, 96, 101, 50, 103, 282, 106, 114, 125, 171, 172, 207, 215, 220, 219, 244, 228, 237, 247, 128, 269, 354, 355, 377, 287, 378, 390, 302, 405, 406, 411, 425, 209, 441, 452, 454, 455, 457, 462);
+      public static bool[] AvoidedByNPCs = TileID.Sets.Factory.CreateBoolSet(21, 467, 55, 85, 395, 88, 463, 334, 29, 97, 99, 356, 425, 440, 209, 441, 468);
+      public static bool[] InteractibleByNPCs = TileID.Sets.Factory.CreateBoolSet(17, 77, 133, 12, 26, 35, 36, 55, 395, 21, 467, 29, 97, 88, 99, 463, 33, 372, 174, 49, 100, 173, 78, 79, 94, 96, 101, 50, 103, 282, 106, 114, 125, 171, 172, 207, 215, 220, 219, 244, 228, 237, 247, 128, 269, 354, 355, 377, 287, 378, 390, 302, 405, 406, 411, 425, 209, 441, 468, 452, 454, 455, 457, 462);
       public static bool[] HousingWalls = TileID.Sets.Factory.CreateBoolSet(11, 389, 386);
       public static bool[] BreakableWhenPlacing = TileID.Sets.Factory.CreateBoolSet(324, 186, 187, 185, 165);
       public static int[] TouchDamageVines = TileID.Sets.Factory.CreateIntSet(0, 32, 10, 69, 17, 80, 6, 352, 10);
@@ -534,11 +549,7 @@ namespace Terraria.ID
       public static int[] TouchDamageOther = TileID.Sets.Factory.CreateIntSet(0, 48, 40, 232, 60);
       public static bool[] Falling = TileID.Sets.Factory.CreateBoolSet(53, 234, 112, 116, 224, 123);
       public static bool[] Ore = TileID.Sets.Factory.CreateBoolSet(7, 166, 6, 167, 9, 168, 8, 169, 22, 204, 37, 58, 107, 221, 108, 222, 111, 223, 211);
-      public static bool[] ForceObsidianKill = TileID.Sets.Factory.CreateBoolSet(new int[2]
-      {
-        21,
-        88
-      });
+      public static bool[] ForceObsidianKill = TileID.Sets.Factory.CreateBoolSet(21, 467, 88);
 
       public static class Conversion
       {
@@ -566,7 +577,7 @@ namespace Terraria.ID
           89,
           102
         };
-        public static int[] CountsAsTable = new int[9]
+        public static int[] CountsAsTable = new int[10]
         {
           14,
           18,
@@ -576,7 +587,8 @@ namespace Terraria.ID
           101,
           354,
           355,
-          464
+          464,
+          469
         };
         public static int[] CountsAsTorch = new int[20]
         {

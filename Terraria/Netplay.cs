@@ -1,8 +1,8 @@
 ﻿// Decompiled with JetBrains decompiler
 // Type: Terraria.Netplay
-// Assembly: Terraria, Version=1.3.4.4, Culture=neutral, PublicKeyToken=null
-// MVID: DEE50102-BCC2-472F-987B-153E892583F1
-// Assembly location: E:\Steam\SteamApps\common\Terraria\Terraria.exe
+// Assembly: Terraria, Version=1.3.5.1, Culture=neutral, PublicKeyToken=null
+// MVID: DF0400F4-EE47-4864-BE80-932EDB02D8A6
+// Assembly location: F:\Steam\steamapps\common\Terraria\Terraria.exe
 
 using System;
 using System.IO;
@@ -36,6 +36,7 @@ namespace Terraria
     public const int NetBufferSize = 1024;
     public static IPAddress ServerIP;
     public static ISocket TcpListener;
+    private static Thread ServerThread;
     public static string portForwardIP;
     public static int portForwardPort;
     public static bool portForwardOpen;
@@ -227,7 +228,7 @@ namespace Terraria
             {
               Main.statusText = Language.GetTextValue("Net.FoundServer");
               Netplay.Connection.State = 1;
-              NetMessage.SendData(1, -1, -1, "", 0, 0.0f, 0.0f, 0.0f, 0, 0, 0);
+              NetMessage.SendData(1, -1, -1, (NetworkText) null, 0, 0.0f, 0.0f, 0.0f, 0, 0, 0);
             }
             if (Netplay.Connection.State == 2 && num1 != Netplay.Connection.State)
               Main.statusText = Language.GetTextValue("Net.SendingPlayerData");
@@ -248,13 +249,13 @@ namespace Terraria
             if (Netplay.Connection.State == 5 && Main.loadMapLock)
             {
               float num2 = (float) Main.loadMapLastX / (float) Main.maxTilesX;
-              Main.statusText = Lang.gen[68] + " " + (object) (int) ((double) num2 * 100.0 + 1.0) + "%";
+              Main.statusText = Lang.gen[68].Value + " " + (object) (int) ((double) num2 * 100.0 + 1.0) + "%";
             }
             else if (Netplay.Connection.State == 5 && WorldGen.worldCleared)
             {
               Netplay.Connection.State = 6;
               Main.player[Main.myPlayer].FindSpawn();
-              NetMessage.SendData(8, -1, -1, "", Main.player[Main.myPlayer].SpawnX, (float) Main.player[Main.myPlayer].SpawnY, 0.0f, 0.0f, 0, 0, 0);
+              NetMessage.SendData(8, -1, -1, (NetworkText) null, Main.player[Main.myPlayer].SpawnX, (float) Main.player[Main.myPlayer].SpawnY, 0.0f, 0.0f, 0, 0, 0);
             }
             if (Netplay.Connection.State == 6 && num1 != Netplay.Connection.State)
               Main.statusText = Language.GetTextValue("Net.RequestingTileData");
@@ -382,7 +383,7 @@ namespace Terraria
       Main.myPlayer = (int) byte.MaxValue;
       Netplay.ServerIP = IPAddress.Any;
       Main.menuMode = 14;
-      Main.statusText = Lang.menu[8];
+      Main.statusText = Lang.menu[8].Value;
       Main.netMode = 2;
       Netplay.disconnect = false;
       for (int index = 0; index < 256; ++index)
@@ -577,7 +578,8 @@ namespace Terraria
 
     public static void StartServer()
     {
-      ThreadPool.QueueUserWorkItem(new WaitCallback(Netplay.ServerLoop), (object) 1);
+      Netplay.ServerThread = new Thread(new ParameterizedThreadStart(Netplay.ServerLoop));
+      Netplay.ServerThread.Start();
     }
 
     public static bool SetRemoteIP(string remoteAddress)
