@@ -1,4 +1,4 @@
-![terraria 1.3.4.4](http://img.shields.io/badge/terraria-1.3.4.4-red.svg)
+![terraria 1.3.5.1](http://img.shields.io/badge/terraria-1.3.5.1-red.svg)
 Terraria source code
 =====
 This repo contains the decompiled source of the Terraria.exe binary, from version 1.3.4.4.
