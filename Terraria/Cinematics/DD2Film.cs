@@ -1,7 +1,7 @@
 ﻿// Decompiled with JetBrains decompiler
 // Type: Terraria.Cinematics.DD2Film
 // Assembly: Terraria, Version=1.3.5.1, Culture=neutral, PublicKeyToken=null
-// MVID: DF0400F4-EE47-4864-BE80-932EDB02D8A6
+// MVID: E90A5A2F-CD10-4A2C-9D2A-6B036D4E8877
 // Assembly location: F:\Steam\steamapps\common\Terraria\Terraria.exe
 
 using Microsoft.Xna.Framework;
@@ -123,7 +123,7 @@ namespace Terraria.Cinematics
           (short) 46,
           (short) 299,
           (short) 538
-        }), Vector2.op_Addition(this._startPoint, new Vector2((float) (((double) num - 0.25) * 400.0 + (double) Main.rand.NextFloat() * 50.0 - 25.0), 0.0f)));
+        }), this._startPoint + new Vector2((float) (((double) num - 0.25) * 400.0 + (double) Main.rand.NextFloat() * 50.0 - 25.0), 0.0f));
         npc.ai[0] = 0.0f;
         npc.ai[1] = 600f;
         this._critters.Add(npc);
@@ -137,7 +137,7 @@ namespace Terraria.Cinematics
         NPC npc = Main.npc[index2];
         npc.ai[0] = (float) ((double) Main.rand.NextFloat() * 4.0 - 2.0);
         npc.ai[1] = (float) ((double) Main.rand.NextFloat() * 4.0 - 2.0);
-        npc.velocity.X = (__Null) ((double) Main.rand.NextFloat() * 4.0 - 2.0);
+        npc.velocity.X = (float) ((double) Main.rand.NextFloat() * 4.0 - 2.0);
         this._critters.Add(npc);
       }
     }
@@ -153,20 +153,8 @@ namespace Terraria.Cinematics
       {
         if (evt.Frame == 20)
         {
-          // ISSUE: explicit reference operation
-          // ISSUE: variable of a reference type
-          Vector2& local1 = @this._dryad.velocity;
-          // ISSUE: explicit reference operation
-          double num1 = (^local1).Y - 7.0;
-          // ISSUE: explicit reference operation
-          (^local1).Y = (__Null) num1;
-          // ISSUE: explicit reference operation
-          // ISSUE: variable of a reference type
-          Vector2& local2 = @this._dryad.velocity;
-          // ISSUE: explicit reference operation
-          double num2 = (^local2).X - 8.0;
-          // ISSUE: explicit reference operation
-          (^local2).X = (__Null) num2;
+          this._dryad.velocity.Y -= 7f;
+          this._dryad.velocity.X -= 8f;
           Main.PlaySound(3, (int) this._dryad.Center.X, (int) this._dryad.Center.Y, 1, 1f, 0.0f);
         }
         if (evt.Frame >= 20)
@@ -212,52 +200,34 @@ namespace Terraria.Cinematics
         return;
       if (evt.IsFirstFrame)
         Main.PlaySound(SoundID.DD2_EtherianPortalDryadTouch, this._dryad.Center);
-      float num1 = Math.Max(0.0f, (float) (evt.Frame - 7) / (float) (evt.Duration - 7));
-      this._dryad.color = new Color(Vector3.Lerp(Vector3.get_One(), new Vector3(0.5f, 0.0f, 0.8f), num1));
-      this._dryad.Opacity = 1f - num1;
-      this._dryad.rotation += (float) (0.0500000007450581 * ((double) num1 * 4.0 + 1.0));
-      this._dryad.scale = 1f - num1;
-      if (this._dryad.position.X < this._portal.Right.X)
+      float amount = Math.Max(0.0f, (float) (evt.Frame - 7) / (float) (evt.Duration - 7));
+      this._dryad.color = new Color(Vector3.Lerp(Vector3.One, new Vector3(0.5f, 0.0f, 0.8f), amount));
+      this._dryad.Opacity = 1f - amount;
+      this._dryad.rotation += (float) (0.0500000007450581 * ((double) amount * 4.0 + 1.0));
+      this._dryad.scale = 1f - amount;
+      if ((double) this._dryad.position.X < (double) this._portal.Right.X)
       {
-        // ISSUE: explicit reference operation
-        // ISSUE: variable of a reference type
-        Vector2& local1 = @this._dryad.velocity;
-        // ISSUE: explicit reference operation
-        double num2 = (^local1).X * 0.949999988079071;
-        // ISSUE: explicit reference operation
-        (^local1).X = (__Null) num2;
-        // ISSUE: explicit reference operation
-        // ISSUE: variable of a reference type
-        Vector2& local2 = @this._dryad.velocity;
-        // ISSUE: explicit reference operation
-        double num3 = (^local2).Y * 0.550000011920929;
-        // ISSUE: explicit reference operation
-        (^local2).Y = (__Null) num3;
+        this._dryad.velocity.X *= 0.95f;
+        this._dryad.velocity.Y *= 0.55f;
       }
-      int num4 = (int) (6.0 * (double) num1);
-      Vector2 size = this._dryad.Size;
-      // ISSUE: explicit reference operation
-      float num5 = ((Vector2) @size).Length() / 2f / 20f;
-      for (int index = 0; index < num4; ++index)
+      int num1 = (int) (6.0 * (double) amount);
+      float num2 = this._dryad.Size.Length() / 2f / 20f;
+      for (int index = 0; index < num1; ++index)
       {
         if (Main.rand.Next(5) == 0)
         {
-          Dust dust1 = Dust.NewDustDirect(this._dryad.position, this._dryad.width, this._dryad.height, 27, (float) (this._dryad.velocity.X * 1.0), 0.0f, 100, (Color) null, 1f);
-          dust1.scale = 0.55f;
-          dust1.fadeIn = 0.7f;
-          Dust dust2 = dust1;
-          Vector2 vector2_1 = Vector2.op_Multiply(dust2.velocity, 0.1f * num5);
-          dust2.velocity = vector2_1;
-          Dust dust3 = dust1;
-          Vector2 vector2_2 = Vector2.op_Addition(dust3.velocity, this._dryad.velocity);
-          dust3.velocity = vector2_2;
+          Dust dust = Dust.NewDustDirect(this._dryad.position, this._dryad.width, this._dryad.height, 27, this._dryad.velocity.X * 1f, 0.0f, 100, new Color(), 1f);
+          dust.scale = 0.55f;
+          dust.fadeIn = 0.7f;
+          dust.velocity *= 0.1f * num2;
+          dust.velocity += this._dryad.velocity;
         }
       }
     }
 
     private void CreatePortal(FrameEventData evt)
     {
-      this._portal = this.PlaceNPCOnGround(549, Vector2.op_Addition(this._startPoint, new Vector2(-240f, 0.0f)));
+      this._portal = this.PlaceNPCOnGround(549, this._startPoint + new Vector2(-240f, 0.0f));
       this._portal.immortal = true;
     }
 
@@ -322,7 +292,7 @@ namespace Terraria.Cinematics
         return;
       this._ogre.ai[0] = 0.0f;
       this._ogre.ai[1] = 0.0f;
-      this._ogre.velocity = Vector2.get_Zero();
+      this._ogre.velocity = Vector2.Zero;
     }
 
     private void DryadAttack(FrameEventData evt)
@@ -355,7 +325,7 @@ namespace Terraria.Cinematics
       Main.NewText("DD2Film: Begin", byte.MaxValue, byte.MaxValue, byte.MaxValue, false);
       Main.dayTime = true;
       Main.time = 27000.0;
-      this._startPoint = Vector2.op_Addition(Main.screenPosition, new Vector2((float) Main.mouseX, (float) Main.mouseY - 32f));
+      this._startPoint = Main.screenPosition + new Vector2((float) Main.mouseX, (float) Main.mouseY - 32f);
       base.OnBegin();
     }
 

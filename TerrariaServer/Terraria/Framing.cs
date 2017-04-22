@@ -1,7 +1,7 @@
 ﻿// Decompiled with JetBrains decompiler
 // Type: Terraria.Framing
 // Assembly: TerrariaServer, Version=1.3.5.1, Culture=neutral, PublicKeyToken=null
-// MVID: 880A80AC-FC6C-4F43-ABDD-E2472DA66CB5
+// MVID: C2103E81-0935-4BEA-9E98-4159FC80C2BB
 // Assembly location: F:\Steam\steamapps\common\Terraria\TerrariaServer.exe
 
 using Microsoft.Xna.Framework;
@@ -323,13 +323,13 @@ namespace Terraria
 
     public static Tile GetTileSafely(Vector2 position)
     {
-      position = Vector2.op_Division(position, 16f);
+      position /= 16f;
       return Framing.GetTileSafely((int) position.X, (int) position.Y);
     }
 
     public static Tile GetTileSafely(Point pt)
     {
-      return Framing.GetTileSafely((int) pt.X, (int) pt.Y);
+      return Framing.GetTileSafely(pt.X, pt.Y);
     }
 
     public static Tile GetTileSafely(Point16 pt)

@@ -1,7 +1,7 @@
 ﻿// Decompiled with JetBrains decompiler
 // Type: Terraria.World.Generation.Modifiers
 // Assembly: Terraria, Version=1.3.5.1, Culture=neutral, PublicKeyToken=null
-// MVID: DF0400F4-EE47-4864-BE80-932EDB02D8A6
+// MVID: E90A5A2F-CD10-4A2C-9D2A-6B036D4E8877
 // Assembly location: F:\Steam\steamapps\common\Terraria\Terraria.exe
 
 using Microsoft.Xna.Framework;
@@ -74,13 +74,8 @@ namespace Terraria.World.Generation
 
       public override bool Apply(Point origin, int x, int y, params object[] args)
       {
-        Vector2 vector2_1;
-        // ISSUE: explicit reference operation
-        ((Vector2) @vector2_1).\u002Ector((float) origin.X, (float) origin.Y);
-        Vector2 vector2_2;
-        // ISSUE: explicit reference operation
-        ((Vector2) @vector2_2).\u002Ector((float) x, (float) y);
-        if (GenBase._random.NextDouble() > (double) Math.Max(0.0f, Math.Min(1f, (float) (((double) Vector2.Distance(vector2_2, vector2_1) - (double) this._innerRadius) / ((double) this._outerRadius - (double) this._innerRadius)))))
+        Vector2 vector2 = new Vector2((float) origin.X, (float) origin.Y);
+        if (GenBase._random.NextDouble() > (double) Math.Max(0.0f, Math.Min(1f, (float) (((double) Vector2.Distance(new Vector2((float) x, (float) y), vector2) - (double) this._innerRadius) / ((double) this._outerRadius - (double) this._innerRadius)))))
           return this.UnitApply(origin, x, y, args);
         return this.Fail();
       }

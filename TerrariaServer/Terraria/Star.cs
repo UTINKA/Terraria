@@ -1,7 +1,7 @@
 ﻿// Decompiled with JetBrains decompiler
 // Type: Terraria.Star
 // Assembly: TerrariaServer, Version=1.3.5.1, Culture=neutral, PublicKeyToken=null
-// MVID: 880A80AC-FC6C-4F43-ABDD-E2472DA66CB5
+// MVID: C2103E81-0935-4BEA-9E98-4159FC80C2BB
 // Assembly location: F:\Steam\steamapps\common\Terraria\TerrariaServer.exe
 
 using Microsoft.Xna.Framework;
@@ -25,8 +25,8 @@ namespace Terraria
       for (int index = 0; index < Main.numStars; ++index)
       {
         Main.star[index] = new Star();
-        Main.star[index].position.X = (__Null) (double) Main.rand.Next(-12, Main.screenWidth + 1);
-        Main.star[index].position.Y = (__Null) (double) Main.rand.Next(-12, Main.screenHeight);
+        Main.star[index].position.X = (float) Main.rand.Next(-12, Main.screenWidth + 1);
+        Main.star[index].position.Y = (float) Main.rand.Next(-12, Main.screenHeight);
         Main.star[index].rotation = (float) Main.rand.Next(628) * 0.01f;
         Main.star[index].scale = (float) Main.rand.Next(50, 120) * 0.01f;
         Main.star[index].type = Main.rand.Next(0, 5);

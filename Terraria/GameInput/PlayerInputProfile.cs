@@ -1,7 +1,7 @@
 ﻿// Decompiled with JetBrains decompiler
 // Type: Terraria.GameInput.PlayerInputProfile
 // Assembly: Terraria, Version=1.3.5.1, Culture=neutral, PublicKeyToken=null
-// MVID: DF0400F4-EE47-4864-BE80-932EDB02D8A6
+// MVID: E90A5A2F-CD10-4A2C-9D2A-6B036D4E8877
 // Assembly location: F:\Steam\steamapps\common\Terraria\Terraria.exe
 
 using Microsoft.Xna.Framework.Input;
@@ -128,7 +128,7 @@ namespace Terraria.GameInput
     {
       Dictionary<string, object> dictionary1 = new Dictionary<string, object>();
       Dictionary<string, object> dictionary2 = new Dictionary<string, object>();
-      dictionary1.Add("Last Launched Version", (object) 192);
+      dictionary1.Add("Last Launched Version", (object) 193);
       dictionary2.Add("Edittable", (object) this.AllowEditting);
       dictionary2.Add("Gamepad - HotbarRadialHoldTime", (object) this.HotbarRadialHoldTimeRequired);
       dictionary2.Add("Gamepad - LeftThumbstickDeadzoneX", (object) this.LeftThumbstickDeadzoneX);
@@ -301,15 +301,15 @@ namespace Terraria.GameInput
 
     public bool UsingDpadHotbar()
     {
-      if (this.InputModes[InputMode.XBoxGamepad].KeyStatus["DpadRadial1"].Contains(((object) (Buttons) 1).ToString()) && this.InputModes[InputMode.XBoxGamepad].KeyStatus["DpadRadial2"].Contains(((object) (Buttons) 8).ToString()) && (this.InputModes[InputMode.XBoxGamepad].KeyStatus["DpadRadial3"].Contains(((object) (Buttons) 2).ToString()) && this.InputModes[InputMode.XBoxGamepad].KeyStatus["DpadRadial4"].Contains(((object) (Buttons) 4).ToString())) && (this.InputModes[InputMode.XBoxGamepadUI].KeyStatus["DpadRadial1"].Contains(((object) (Buttons) 1).ToString()) && this.InputModes[InputMode.XBoxGamepadUI].KeyStatus["DpadRadial2"].Contains(((object) (Buttons) 8).ToString()) && this.InputModes[InputMode.XBoxGamepadUI].KeyStatus["DpadRadial3"].Contains(((object) (Buttons) 2).ToString())))
-        return this.InputModes[InputMode.XBoxGamepadUI].KeyStatus["DpadRadial4"].Contains(((object) (Buttons) 4).ToString());
+      if (this.InputModes[InputMode.XBoxGamepad].KeyStatus["DpadRadial1"].Contains(Buttons.DPadUp.ToString()) && this.InputModes[InputMode.XBoxGamepad].KeyStatus["DpadRadial2"].Contains(Buttons.DPadRight.ToString()) && (this.InputModes[InputMode.XBoxGamepad].KeyStatus["DpadRadial3"].Contains(Buttons.DPadDown.ToString()) && this.InputModes[InputMode.XBoxGamepad].KeyStatus["DpadRadial4"].Contains(Buttons.DPadLeft.ToString())) && (this.InputModes[InputMode.XBoxGamepadUI].KeyStatus["DpadRadial1"].Contains(Buttons.DPadUp.ToString()) && this.InputModes[InputMode.XBoxGamepadUI].KeyStatus["DpadRadial2"].Contains(Buttons.DPadRight.ToString()) && this.InputModes[InputMode.XBoxGamepadUI].KeyStatus["DpadRadial3"].Contains(Buttons.DPadDown.ToString())))
+        return this.InputModes[InputMode.XBoxGamepadUI].KeyStatus["DpadRadial4"].Contains(Buttons.DPadLeft.ToString());
       return false;
     }
 
     public bool UsingDpadMovekeys()
     {
-      if (this.InputModes[InputMode.XBoxGamepad].KeyStatus["DpadSnap1"].Contains(((object) (Buttons) 1).ToString()) && this.InputModes[InputMode.XBoxGamepad].KeyStatus["DpadSnap2"].Contains(((object) (Buttons) 8).ToString()) && (this.InputModes[InputMode.XBoxGamepad].KeyStatus["DpadSnap3"].Contains(((object) (Buttons) 2).ToString()) && this.InputModes[InputMode.XBoxGamepad].KeyStatus["DpadSnap4"].Contains(((object) (Buttons) 4).ToString())) && (this.InputModes[InputMode.XBoxGamepadUI].KeyStatus["DpadSnap1"].Contains(((object) (Buttons) 1).ToString()) && this.InputModes[InputMode.XBoxGamepadUI].KeyStatus["DpadSnap2"].Contains(((object) (Buttons) 8).ToString()) && this.InputModes[InputMode.XBoxGamepadUI].KeyStatus["DpadSnap3"].Contains(((object) (Buttons) 2).ToString())))
-        return this.InputModes[InputMode.XBoxGamepadUI].KeyStatus["DpadSnap4"].Contains(((object) (Buttons) 4).ToString());
+      if (this.InputModes[InputMode.XBoxGamepad].KeyStatus["DpadSnap1"].Contains(Buttons.DPadUp.ToString()) && this.InputModes[InputMode.XBoxGamepad].KeyStatus["DpadSnap2"].Contains(Buttons.DPadRight.ToString()) && (this.InputModes[InputMode.XBoxGamepad].KeyStatus["DpadSnap3"].Contains(Buttons.DPadDown.ToString()) && this.InputModes[InputMode.XBoxGamepad].KeyStatus["DpadSnap4"].Contains(Buttons.DPadLeft.ToString())) && (this.InputModes[InputMode.XBoxGamepadUI].KeyStatus["DpadSnap1"].Contains(Buttons.DPadUp.ToString()) && this.InputModes[InputMode.XBoxGamepadUI].KeyStatus["DpadSnap2"].Contains(Buttons.DPadRight.ToString()) && this.InputModes[InputMode.XBoxGamepadUI].KeyStatus["DpadSnap3"].Contains(Buttons.DPadDown.ToString())))
+        return this.InputModes[InputMode.XBoxGamepadUI].KeyStatus["DpadSnap4"].Contains(Buttons.DPadLeft.ToString());
       return false;
     }
   }

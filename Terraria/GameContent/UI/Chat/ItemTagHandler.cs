@@ -1,7 +1,7 @@
 ﻿// Decompiled with JetBrains decompiler
 // Type: Terraria.GameContent.UI.Chat.ItemTagHandler
 // Assembly: Terraria, Version=1.3.5.1, Culture=neutral, PublicKeyToken=null
-// MVID: DF0400F4-EE47-4864-BE80-932EDB02D8A6
+// MVID: E90A5A2F-CD10-4A2C-9D2A-6B036D4E8877
 // Assembly location: F:\Steam\steamapps\common\Terraria\Terraria.exe
 
 using Microsoft.Xna.Framework;
@@ -92,7 +92,7 @@ namespace Terraria.GameContent.UI.Chat
         Main.instance.MouseText(this._item.Name, this._item.rare, (byte) 0, -1, -1, -1, -1);
       }
 
-      public override bool UniqueDraw(bool justCheckingString, out Vector2 size, SpriteBatch spriteBatch, Vector2 position = null, Color color = null, float scale = 1f)
+      public override bool UniqueDraw(bool justCheckingString, out Vector2 size, SpriteBatch spriteBatch, Vector2 position = default (Vector2), Color color = default (Color), float scale = 1f)
       {
         float num1 = 1f;
         float num2 = 1f;
@@ -107,14 +107,14 @@ namespace Terraria.GameContent.UI.Chat
         float num4 = num1 * num3;
         if ((double) num4 > 0.75)
           num4 = 0.75f;
-        if (!justCheckingString && Color.op_Inequality(color, Color.get_Black()))
+        if (!justCheckingString && color != Color.Black)
         {
           float inventoryScale = Main.inventoryScale;
           Main.inventoryScale = scale * num4;
-          ItemSlot.Draw(spriteBatch, ref this._item, 14, Vector2.op_Subtraction(position, Vector2.op_Multiply(Vector2.op_Multiply(new Vector2(10f), scale), num4)), Color.get_White());
+          ItemSlot.Draw(spriteBatch, ref this._item, 14, position - new Vector2(10f) * scale * num4, Color.White);
           Main.inventoryScale = inventoryScale;
         }
-        size = Vector2.op_Multiply(Vector2.op_Multiply(new Vector2(32f), scale), num4);
+        size = new Vector2(32f) * scale * num4;
         return true;
       }
 

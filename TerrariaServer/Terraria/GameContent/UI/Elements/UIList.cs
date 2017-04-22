@@ -1,7 +1,7 @@
 ﻿// Decompiled with JetBrains decompiler
 // Type: Terraria.GameContent.UI.Elements.UIList
 // Assembly: TerrariaServer, Version=1.3.5.1, Culture=neutral, PublicKeyToken=null
-// MVID: 880A80AC-FC6C-4F43-ABDD-E2472DA66CB5
+// MVID: C2103E81-0935-4BEA-9E98-4159FC80C2BB
 // Assembly location: F:\Steam\steamapps\common\Terraria\TerrariaServer.exe
 
 using Microsoft.Xna.Framework;
@@ -157,15 +157,11 @@ namespace Terraria.GameContent.UI.Elements
       protected override void DrawChildren(SpriteBatch spriteBatch)
       {
         Vector2 position1 = this.Parent.GetDimensions().Position();
-        Vector2 dimensions1;
-        // ISSUE: explicit reference operation
-        ((Vector2) @dimensions1).\u002Ector(this.Parent.GetDimensions().Width, this.Parent.GetDimensions().Height);
+        Vector2 dimensions1 = new Vector2(this.Parent.GetDimensions().Width, this.Parent.GetDimensions().Height);
         foreach (UIElement element in this.Elements)
         {
           Vector2 position2 = element.GetDimensions().Position();
-          Vector2 dimensions2;
-          // ISSUE: explicit reference operation
-          ((Vector2) @dimensions2).\u002Ector(element.GetDimensions().Width, element.GetDimensions().Height);
+          Vector2 dimensions2 = new Vector2(element.GetDimensions().Width, element.GetDimensions().Height);
           if (Collision.CheckAABBvAABBCollision(position1, dimensions1, position2, dimensions2))
             element.Draw(spriteBatch);
         }

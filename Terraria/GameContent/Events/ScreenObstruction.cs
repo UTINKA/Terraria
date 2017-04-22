@@ -1,7 +1,7 @@
 ﻿// Decompiled with JetBrains decompiler
 // Type: Terraria.GameContent.Events.ScreenObstruction
 // Assembly: Terraria, Version=1.3.5.1, Culture=neutral, PublicKeyToken=null
-// MVID: DF0400F4-EE47-4864-BE80-932EDB02D8A6
+// MVID: E90A5A2F-CD10-4A2C-9D2A-6B036D4E8877
 // Assembly location: F:\Steam\steamapps\common\Terraria\Terraria.exe
 
 using Microsoft.Xna.Framework;
@@ -15,44 +15,34 @@ namespace Terraria.GameContent.Events
 
     public static void Update()
     {
-      float num1 = 0.0f;
-      float num2 = 0.1f;
+      float num = 0.0f;
+      float amount = 0.1f;
       if (Main.player[Main.myPlayer].headcovered)
       {
-        num1 = 0.95f;
-        num2 = 0.3f;
+        num = 0.95f;
+        amount = 0.3f;
       }
-      ScreenObstruction.screenObstruction = MathHelper.Lerp(ScreenObstruction.screenObstruction, num1, num2);
+      ScreenObstruction.screenObstruction = MathHelper.Lerp(ScreenObstruction.screenObstruction, num, amount);
     }
 
     public static void Draw(SpriteBatch spriteBatch)
     {
       if ((double) ScreenObstruction.screenObstruction == 0.0)
         return;
-      Color color = Color.op_Multiply(Color.get_Black(), ScreenObstruction.screenObstruction);
-      int width = Main.extraTexture[49].get_Width();
+      Color color = Color.Black * ScreenObstruction.screenObstruction;
+      int width = Main.extraTexture[49].Width;
       int num = 10;
       Rectangle rect = Main.player[Main.myPlayer].getRect();
-      // ISSUE: explicit reference operation
-      ((Rectangle) @rect).Inflate((width - rect.Width) / 2, (width - rect.Height) / 2 + num / 2);
-      // ISSUE: explicit reference operation
-      ((Rectangle) @rect).Offset(-(int) Main.screenPosition.X, -(int) Main.screenPosition.Y + (int) Main.player[Main.myPlayer].gfxOffY - num);
-      // ISSUE: explicit reference operation
-      // ISSUE: explicit reference operation
-      Rectangle rectangle1 = Rectangle.Union(new Rectangle(0, 0, 1, 1), new Rectangle(((Rectangle) @rect).get_Right() - 1, ((Rectangle) @rect).get_Top() - 1, 1, 1));
-      // ISSUE: explicit reference operation
-      // ISSUE: explicit reference operation
-      Rectangle rectangle2 = Rectangle.Union(new Rectangle(Main.screenWidth - 1, 0, 1, 1), new Rectangle(((Rectangle) @rect).get_Right(), ((Rectangle) @rect).get_Bottom() - 1, 1, 1));
-      // ISSUE: explicit reference operation
-      // ISSUE: explicit reference operation
-      Rectangle rectangle3 = Rectangle.Union(new Rectangle(Main.screenWidth - 1, Main.screenHeight - 1, 1, 1), new Rectangle(((Rectangle) @rect).get_Left(), ((Rectangle) @rect).get_Bottom(), 1, 1));
-      // ISSUE: explicit reference operation
-      // ISSUE: explicit reference operation
-      Rectangle rectangle4 = Rectangle.Union(new Rectangle(0, Main.screenHeight - 1, 1, 1), new Rectangle(((Rectangle) @rect).get_Left() - 1, ((Rectangle) @rect).get_Top(), 1, 1));
-      spriteBatch.Draw(Main.magicPixel, rectangle1, new Rectangle?(new Rectangle(0, 0, 1, 1)), color);
-      spriteBatch.Draw(Main.magicPixel, rectangle2, new Rectangle?(new Rectangle(0, 0, 1, 1)), color);
-      spriteBatch.Draw(Main.magicPixel, rectangle3, new Rectangle?(new Rectangle(0, 0, 1, 1)), color);
-      spriteBatch.Draw(Main.magicPixel, rectangle4, new Rectangle?(new Rectangle(0, 0, 1, 1)), color);
+      rect.Inflate((width - rect.Width) / 2, (width - rect.Height) / 2 + num / 2);
+      rect.Offset(-(int) Main.screenPosition.X, -(int) Main.screenPosition.Y + (int) Main.player[Main.myPlayer].gfxOffY - num);
+      Rectangle destinationRectangle1 = Rectangle.Union(new Rectangle(0, 0, 1, 1), new Rectangle(rect.Right - 1, rect.Top - 1, 1, 1));
+      Rectangle destinationRectangle2 = Rectangle.Union(new Rectangle(Main.screenWidth - 1, 0, 1, 1), new Rectangle(rect.Right, rect.Bottom - 1, 1, 1));
+      Rectangle destinationRectangle3 = Rectangle.Union(new Rectangle(Main.screenWidth - 1, Main.screenHeight - 1, 1, 1), new Rectangle(rect.Left, rect.Bottom, 1, 1));
+      Rectangle destinationRectangle4 = Rectangle.Union(new Rectangle(0, Main.screenHeight - 1, 1, 1), new Rectangle(rect.Left - 1, rect.Top, 1, 1));
+      spriteBatch.Draw(Main.magicPixel, destinationRectangle1, new Rectangle?(new Rectangle(0, 0, 1, 1)), color);
+      spriteBatch.Draw(Main.magicPixel, destinationRectangle2, new Rectangle?(new Rectangle(0, 0, 1, 1)), color);
+      spriteBatch.Draw(Main.magicPixel, destinationRectangle3, new Rectangle?(new Rectangle(0, 0, 1, 1)), color);
+      spriteBatch.Draw(Main.magicPixel, destinationRectangle4, new Rectangle?(new Rectangle(0, 0, 1, 1)), color);
       spriteBatch.Draw(Main.extraTexture[49], rect, color);
     }
   }

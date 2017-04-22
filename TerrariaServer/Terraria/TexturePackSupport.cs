@@ -1,7 +1,7 @@
 ﻿// Decompiled with JetBrains decompiler
 // Type: Terraria.TexturePackSupport
 // Assembly: TerrariaServer, Version=1.3.5.1, Culture=neutral, PublicKeyToken=null
-// MVID: 880A80AC-FC6C-4F43-ABDD-E2472DA66CB5
+// MVID: C2103E81-0935-4BEA-9E98-4159FC80C2BB
 // Assembly location: F:\Steam\steamapps\common\Terraria\TerrariaServer.exe
 
 using Ionic.Zip;
@@ -45,14 +45,11 @@ namespace Terraria
     public static Texture2D FromStreamSlow(GraphicsDevice graphicsDevice, Stream stream)
     {
       Texture2D texture2D = Texture2D.FromStream(graphicsDevice, stream);
-      Color[] colorArray = new Color[texture2D.get_Width() * texture2D.get_Height()];
-      texture2D.GetData<Color>((M0[]) colorArray);
-      for (int index = 0; index != colorArray.Length; ++index)
-      {
-        // ISSUE: explicit reference operation
-        colorArray[index] = Color.FromNonPremultiplied(((Color) @colorArray[index]).ToVector4());
-      }
-      texture2D.SetData<Color>((M0[]) colorArray);
+      Color[] data = new Color[texture2D.Width * texture2D.Height];
+      texture2D.GetData<Color>(data);
+      for (int index = 0; index != data.Length; ++index)
+        data[index] = Color.FromNonPremultiplied(data[index].ToVector4());
+      texture2D.SetData<Color>(data);
       return texture2D;
     }
 

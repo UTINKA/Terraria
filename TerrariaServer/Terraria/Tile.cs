@@ -1,7 +1,7 @@
 ﻿// Decompiled with JetBrains decompiler
 // Type: Terraria.Tile
 // Assembly: TerrariaServer, Version=1.3.5.1, Culture=neutral, PublicKeyToken=null
-// MVID: 880A80AC-FC6C-4F43-ABDD-E2472DA66CB5
+// MVID: C2103E81-0935-4BEA-9E98-4159FC80C2BB
 // Assembly location: F:\Steam\steamapps\common\Terraria\TerrariaServer.exe
 
 using Microsoft.Xna.Framework;
@@ -200,11 +200,7 @@ namespace Terraria
       if (!this.inActive())
         return oldColor;
       double num = 0.4;
-      // ISSUE: explicit reference operation
-      // ISSUE: explicit reference operation
-      // ISSUE: explicit reference operation
-      // ISSUE: explicit reference operation
-      return new Color((int) (byte) (num * (double) ((Color) @oldColor).get_R()), (int) (byte) (num * (double) ((Color) @oldColor).get_G()), (int) (byte) (num * (double) ((Color) @oldColor).get_B()), (int) ((Color) @oldColor).get_A());
+      return new Color((int) (byte) (num * (double) oldColor.R), (int) (byte) (num * (double) oldColor.G), (int) (byte) (num * (double) oldColor.B), (int) oldColor.A);
     }
 
     public bool topSlope()

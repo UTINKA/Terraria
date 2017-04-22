@@ -1,7 +1,7 @@
 ﻿// Decompiled with JetBrains decompiler
 // Type: Terraria.GameContent.UI.Elements.UIKeybindingListItem
 // Assembly: Terraria, Version=1.3.5.1, Culture=neutral, PublicKeyToken=null
-// MVID: DF0400F4-EE47-4864-BE80-932EDB02D8A6
+// MVID: E90A5A2F-CD10-4A2C-9D2A-6B036D4E8877
 // Assembly location: F:\Steam\steamapps\common\Terraria\Terraria.exe
 
 using Microsoft.Xna.Framework;
@@ -45,56 +45,30 @@ namespace Terraria.GameContent.UI.Elements
       base.DrawSelf(spriteBatch);
       CalculatedStyle dimensions = this.GetDimensions();
       float num2 = dimensions.Width + 1f;
-      Vector2 vector2;
-      // ISSUE: explicit reference operation
-      ((Vector2) @vector2).\u002Ector(dimensions.X, dimensions.Y);
+      Vector2 vector2 = new Vector2(dimensions.X, dimensions.Y);
       bool flag = PlayerInput.ListeningTrigger == this._keybind;
-      Vector2 baseScale;
-      // ISSUE: explicit reference operation
-      ((Vector2) @baseScale).\u002Ector(0.8f);
-      Color baseColor = Color.Lerp(flag ? Color.get_Gold() : (this.IsMouseHovering ? Color.get_White() : Color.get_Silver()), Color.get_White(), this.IsMouseHovering ? 0.5f : 0.0f);
+      Vector2 baseScale = new Vector2(0.8f);
+      Color baseColor = Color.Lerp(flag ? Color.Gold : (this.IsMouseHovering ? Color.White : Color.Silver), Color.White, this.IsMouseHovering ? 0.5f : 0.0f);
       Color color = this.IsMouseHovering ? this._color : this._color.MultiplyRGBA(new Color(180, 180, 180));
       Vector2 position = vector2;
       Utils.DrawSettingsPanel(spriteBatch, position, num2, color);
-      // ISSUE: explicit reference operation
-      // ISSUE: variable of a reference type
-      Vector2& local1 = @position;
-      // ISSUE: explicit reference operation
-      double num3 = (^local1).X + 8.0;
-      // ISSUE: explicit reference operation
-      (^local1).X = (__Null) num3;
-      // ISSUE: explicit reference operation
-      // ISSUE: variable of a reference type
-      Vector2& local2 = @position;
-      // ISSUE: explicit reference operation
-      double num4 = (^local2).Y + (2.0 + (double) num1);
-      // ISSUE: explicit reference operation
-      (^local2).Y = (__Null) num4;
-      ChatManager.DrawColorCodedStringWithShadow(spriteBatch, Main.fontItemStack, this.GetFriendlyName(), position, baseColor, 0.0f, Vector2.get_Zero(), baseScale, num2, 2f);
-      // ISSUE: explicit reference operation
-      // ISSUE: variable of a reference type
-      Vector2& local3 = @position;
-      // ISSUE: explicit reference operation
-      double num5 = (^local3).X - 17.0;
-      // ISSUE: explicit reference operation
-      (^local3).X = (__Null) num5;
+      position.X += 8f;
+      position.Y += 2f + num1;
+      ChatManager.DrawColorCodedStringWithShadow(spriteBatch, Main.fontItemStack, this.GetFriendlyName(), position, baseColor, 0.0f, Vector2.Zero, baseScale, num2, 2f);
+      position.X -= 17f;
       string text = this.GenInput(PlayerInput.CurrentProfile.InputModes[this._inputmode].KeyStatus[this._keybind]);
       if (string.IsNullOrEmpty(text))
       {
         text = Lang.menu[195].Value;
         if (!flag)
-        {
-          // ISSUE: explicit reference operation
-          ((Color) @baseColor).\u002Ector(80, 80, 80);
-        }
+          baseColor = new Color(80, 80, 80);
       }
       Vector2 stringSize = ChatManager.GetStringSize(Main.fontItemStack, text, baseScale, -1f);
-      // ISSUE: explicit reference operation
-      ((Vector2) @position).\u002Ector((float) ((double) dimensions.X + (double) dimensions.Width - stringSize.X - 10.0), dimensions.Y + 2f + num1);
+      position = new Vector2((float) ((double) dimensions.X + (double) dimensions.Width - (double) stringSize.X - 10.0), dimensions.Y + 2f + num1);
       if (this._inputmode == InputMode.XBoxGamepad || this._inputmode == InputMode.XBoxGamepadUI)
-        position = Vector2.op_Addition(position, new Vector2(0.0f, -3f));
+        position += new Vector2(0.0f, -3f);
       GlyphTagHandler.GlyphsScale = 0.85f;
-      ChatManager.DrawColorCodedStringWithShadow(spriteBatch, Main.fontItemStack, text, position, baseColor, 0.0f, Vector2.get_Zero(), baseScale, num2, 2f);
+      ChatManager.DrawColorCodedStringWithShadow(spriteBatch, Main.fontItemStack, text, position, baseColor, 0.0f, Vector2.Zero, baseScale, num2, 2f);
       GlyphTagHandler.GlyphsScale = 1f;
     }
 

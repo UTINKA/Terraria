@@ -1,7 +1,7 @@
 ﻿// Decompiled with JetBrains decompiler
 // Type: Terraria.Graphics.Shaders.MiscShaderData
 // Assembly: Terraria, Version=1.3.5.1, Culture=neutral, PublicKeyToken=null
-// MVID: DF0400F4-EE47-4864-BE80-932EDB02D8A6
+// MVID: E90A5A2F-CD10-4A2C-9D2A-6B036D4E8877
 // Assembly location: F:\Steam\steamapps\common\Terraria\Terraria.exe
 
 using Microsoft.Xna.Framework;
@@ -12,8 +12,8 @@ namespace Terraria.Graphics.Shaders
 {
   public class MiscShaderData : ShaderData
   {
-    private Vector3 _uColor = Vector3.get_One();
-    private Vector3 _uSecondaryColor = Vector3.get_One();
+    private Vector3 _uColor = Vector3.One;
+    private Vector3 _uSecondaryColor = Vector3.One;
     private float _uSaturation = 1f;
     private float _uOpacity = 1f;
     private Ref<Texture2D> _uImage;
@@ -25,30 +25,27 @@ namespace Terraria.Graphics.Shaders
 
     public virtual void Apply(DrawData? drawData = null)
     {
-      this.Shader.get_Parameters().get_Item("uColor").SetValue(this._uColor);
-      this.Shader.get_Parameters().get_Item("uSaturation").SetValue(this._uSaturation);
-      this.Shader.get_Parameters().get_Item("uSecondaryColor").SetValue(this._uSecondaryColor);
-      this.Shader.get_Parameters().get_Item("uTime").SetValue(Main.GlobalTime);
-      this.Shader.get_Parameters().get_Item("uOpacity").SetValue(this._uOpacity);
+      this.Shader.Parameters["uColor"].SetValue(this._uColor);
+      this.Shader.Parameters["uSaturation"].SetValue(this._uSaturation);
+      this.Shader.Parameters["uSecondaryColor"].SetValue(this._uSecondaryColor);
+      this.Shader.Parameters["uTime"].SetValue(Main.GlobalTime);
+      this.Shader.Parameters["uOpacity"].SetValue(this._uOpacity);
       if (drawData.HasValue)
       {
         DrawData drawData1 = drawData.Value;
-        Vector4 zero = Vector4.get_Zero();
+        Vector4 vector4 = Vector4.Zero;
         if (drawData.Value.sourceRect.HasValue)
-        {
-          // ISSUE: explicit reference operation
-          ((Vector4) @zero).\u002Ector((float) drawData1.sourceRect.Value.X, (float) drawData1.sourceRect.Value.Y, (float) drawData1.sourceRect.Value.Width, (float) drawData1.sourceRect.Value.Height);
-        }
-        this.Shader.get_Parameters().get_Item("uSourceRect").SetValue(zero);
-        this.Shader.get_Parameters().get_Item("uWorldPosition").SetValue(Vector2.op_Addition(Main.screenPosition, drawData1.position));
-        this.Shader.get_Parameters().get_Item("uImageSize0").SetValue(new Vector2((float) drawData1.texture.get_Width(), (float) drawData1.texture.get_Height()));
+          vector4 = new Vector4((float) drawData1.sourceRect.Value.X, (float) drawData1.sourceRect.Value.Y, (float) drawData1.sourceRect.Value.Width, (float) drawData1.sourceRect.Value.Height);
+        this.Shader.Parameters["uSourceRect"].SetValue(vector4);
+        this.Shader.Parameters["uWorldPosition"].SetValue(Main.screenPosition + drawData1.position);
+        this.Shader.Parameters["uImageSize0"].SetValue(new Vector2((float) drawData1.texture.Width, (float) drawData1.texture.Height));
       }
       else
-        this.Shader.get_Parameters().get_Item("uSourceRect").SetValue(new Vector4(0.0f, 0.0f, 4f, 4f));
+        this.Shader.Parameters["uSourceRect"].SetValue(new Vector4(0.0f, 0.0f, 4f, 4f));
       if (this._uImage != null)
       {
-        Main.graphics.get_GraphicsDevice().get_Textures().set_Item(1, (Texture) this._uImage.Value);
-        this.Shader.get_Parameters().get_Item("uImageSize1").SetValue(new Vector2((float) this._uImage.Value.get_Width(), (float) this._uImage.Value.get_Height()));
+        Main.graphics.GraphicsDevice.Textures[1] = (Texture) this._uImage.Value;
+        this.Shader.Parameters["uImageSize1"].SetValue(new Vector2((float) this._uImage.Value.Width, (float) this._uImage.Value.Height));
       }
       this.Apply();
     }
@@ -60,8 +57,7 @@ namespace Terraria.Graphics.Shaders
 
     public MiscShaderData UseColor(Color color)
     {
-      // ISSUE: explicit reference operation
-      return this.UseColor(((Color) @color).ToVector3());
+      return this.UseColor(color.ToVector3());
     }
 
     public MiscShaderData UseColor(Vector3 color)
@@ -89,8 +85,7 @@ namespace Terraria.Graphics.Shaders
 
     public MiscShaderData UseSecondaryColor(Color color)
     {
-      // ISSUE: explicit reference operation
-      return this.UseSecondaryColor(((Color) @color).ToVector3());
+      return this.UseSecondaryColor(color.ToVector3());
     }
 
     public MiscShaderData UseSecondaryColor(Vector3 color)

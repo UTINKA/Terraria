@@ -4,7 +4,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{0C946AC4-60B2-4511-9FE7-F758B26EED00}</ProjectGuid>
+    <ProjectGuid>{B6B9340A-97D0-46AE-BE3F-76A82FF7EA79}</ProjectGuid>
     <OutputType>Exe</OutputType>
     <AssemblyName>TerrariaServer</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
@@ -35,12 +35,20 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
+    <Reference Include="Microsoft.Xna.Framework.Graphics" />
+    <Reference Include="Microsoft.Xna.Framework" />
+    <Reference Include="Microsoft.Xna.Framework.Game" />
     <Reference Include="System.Core" />
+    <Reference Include="Microsoft.Xna.Framework.Xact" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="NATUPNPLib\UPnPNAT.cs" />
+    <Compile Include="NATUPNPLib\IStaticPortMappingCollection.cs" />
+    <Compile Include="NATUPNPLib\IUPnPNAT.cs" />
+    <Compile Include="NATUPNPLib\IStaticPortMapping.cs" />
     <Compile Include="Extensions\EnumerationExtensions.cs" />
     <Compile Include="Terraria\TileObject.cs" />
     <Compile Include="Terraria\Lang.cs" />
@@ -473,10 +481,6 @@
     <Compile Include="Terraria\Map\MapHelper.cs" />
     <Compile Include="Terraria\Map\WorldMap.cs" />
     <Compile Include="Terraria\Properties\Settings.cs" />
-    <Compile Include="NATUPNPLib\UPnPNAT.cs" />
-    <Compile Include="NATUPNPLib\IStaticPortMappingCollection.cs" />
-    <Compile Include="NATUPNPLib\IUPnPNAT.cs" />
-    <Compile Include="NATUPNPLib\IStaticPortMapping.cs" />
     <Compile Include="AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

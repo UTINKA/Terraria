@@ -1,7 +1,7 @@
 ﻿// Decompiled with JetBrains decompiler
 // Type: Terraria.Graphics.Shaders.HairShaderDataSet
 // Assembly: TerrariaServer, Version=1.3.5.1, Culture=neutral, PublicKeyToken=null
-// MVID: 880A80AC-FC6C-4F43-ABDD-E2472DA66CB5
+// MVID: C2103E81-0935-4BEA-9E98-4159FC80C2BB
 // Assembly location: F:\Steam\steamapps\common\Terraria\TerrariaServer.exe
 
 using Microsoft.Xna.Framework;
@@ -31,16 +31,14 @@ namespace Terraria.Graphics.Shaders
       if ((int) shaderId != 0 && (int) shaderId <= (int) this._shaderDataCount)
         this._shaderData[(int) shaderId - 1].Apply(player, drawData);
       else
-        Main.pixelShader.get_CurrentTechnique().get_Passes().get_Item(0).Apply();
+        Main.pixelShader.CurrentTechnique.Passes[0].Apply();
     }
 
     public Color GetColor(short shaderId, Player player, Color lightColor)
     {
       if ((int) shaderId != 0 && (int) shaderId <= (int) this._shaderDataCount)
         return this._shaderData[(int) shaderId - 1].GetColor(player, lightColor);
-      // ISSUE: explicit reference operation
-      // ISSUE: explicit reference operation
-      return new Color(Vector4.op_Multiply(((Color) @lightColor).ToVector4(), ((Color) @player.hairColor).ToVector4()));
+      return new Color(lightColor.ToVector4() * player.hairColor.ToVector4());
     }
 
     public HairShaderData GetShaderFromItemId(int type)

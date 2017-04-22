@@ -1,7 +1,7 @@
 ﻿// Decompiled with JetBrains decompiler
 // Type: Terraria.GameContent.Events.DD2Event
 // Assembly: TerrariaServer, Version=1.3.5.1, Culture=neutral, PublicKeyToken=null
-// MVID: 880A80AC-FC6C-4F43-ABDD-E2472DA66CB5
+// MVID: C2103E81-0935-4BEA-9E98-4159FC80C2BB
 // Assembly location: F:\Steam\steamapps\common\Terraria\TerrariaServer.exe
 
 using Microsoft.Xna.Framework;
@@ -28,7 +28,7 @@ namespace Terraria.GameContent.Events
     private static bool _downedOgreT2 = false;
     private static bool _spawnedBetsyT3 = false;
     public static bool Ongoing = false;
-    public static Rectangle ArenaHitbox = (Rectangle) null;
+    public static Microsoft.Xna.Framework.Rectangle ArenaHitbox = new Microsoft.Xna.Framework.Rectangle();
     private static int _arenaHitboxingCooldown = 0;
     public static int OngoingDifficulty = 0;
     private static List<Vector2> _deadGoblinSpots = new List<Vector2>();
@@ -135,7 +135,7 @@ namespace Terraria.GameContent.Events
       DD2Event.DownedInvasionT2 = num != 0;
       DD2Event.DownedInvasionT1 = num != 0;
       DD2Event.Ongoing = false;
-      DD2Event.ArenaHitbox = (Rectangle) null;
+      DD2Event.ArenaHitbox = new Microsoft.Xna.Framework.Rectangle();
       DD2Event._arenaHitboxingCooldown = 0;
       DD2Event._timeLeftUntilSpawningBegins = 0;
     }
@@ -469,39 +469,13 @@ namespace Terraria.GameContent.Events
       Tile tileSafely = Framing.GetTileSafely(x, y);
       if (!tileSafely.active() || (int) tileSafely.type != 466)
         return;
-      Point point;
-      // ISSUE: explicit reference operation
-      ((Point) @point).\u002Ector(x * 16, y * 16);
-      // ISSUE: explicit reference operation
-      // ISSUE: variable of a reference type
-      Point& local1 = @point;
-      // ISSUE: explicit reference operation
-      int num1 = (^local1).X - (int) tileSafely.frameX / 18 * 16;
-      // ISSUE: explicit reference operation
-      (^local1).X = (__Null) num1;
-      // ISSUE: explicit reference operation
-      // ISSUE: variable of a reference type
-      Point& local2 = @point;
-      // ISSUE: explicit reference operation
-      int num2 = (^local2).Y - (int) tileSafely.frameY / 18 * 16;
-      // ISSUE: explicit reference operation
-      (^local2).Y = (__Null) num2;
-      // ISSUE: explicit reference operation
-      // ISSUE: variable of a reference type
-      Point& local3 = @point;
-      // ISSUE: explicit reference operation
-      int num3 = (^local3).X + 40;
-      // ISSUE: explicit reference operation
-      (^local3).X = (__Null) num3;
-      // ISSUE: explicit reference operation
-      // ISSUE: variable of a reference type
-      Point& local4 = @point;
-      // ISSUE: explicit reference operation
-      int num4 = (^local4).Y + 64;
-      // ISSUE: explicit reference operation
-      (^local4).Y = (__Null) num4;
+      Point point = new Point(x * 16, y * 16);
+      point.X -= (int) tileSafely.frameX / 18 * 16;
+      point.Y -= (int) tileSafely.frameY / 18 * 16;
+      point.X += 40;
+      point.Y += 64;
       DD2Event.StartInvasion(-1);
-      NPC.NewNPC((int) point.X, (int) point.Y, 548, 0, 0.0f, 0.0f, 0.0f, 0.0f, (int) byte.MaxValue);
+      NPC.NewNPC(point.X, point.Y, 548, 0, 0.0f, 0.0f, 0.0f, 0.0f, (int) byte.MaxValue);
       DD2Event.DropStarterCrystals();
     }
 
@@ -516,20 +490,11 @@ namespace Terraria.GameContent.Events
     public static void FailureMessage(int client)
     {
       LocalizedText text = Language.GetText("DungeonDefenders2.BartenderWarning");
-      Color color;
-      // ISSUE: explicit reference operation
-      ((Color) @color).\u002Ector((int) byte.MaxValue, (int) byte.MaxValue, 0);
+      Color color = new Color((int) byte.MaxValue, (int) byte.MaxValue, 0);
       if (Main.netMode == 2)
-      {
         NetMessage.SendChatMessageToClient(NetworkText.FromKey(text.Key), color, client);
-      }
       else
-      {
-        // ISSUE: explicit reference operation
-        // ISSUE: explicit reference operation
-        // ISSUE: explicit reference operation
-        Main.NewText(text.Value, ((Color) @color).get_R(), ((Color) @color).get_G(), ((Color) @color).get_B(), false);
-      }
+        Main.NewText(text.Value, color.R, color.G, color.B, false);
     }
 
     public static void WipeEntities()
@@ -585,16 +550,13 @@ namespace Terraria.GameContent.Events
     public static bool CanRaiseGoblinsHere(Vector2 spot)
     {
       int num = 0;
-      using (List<Vector2>.Enumerator enumerator = DD2Event._deadGoblinSpots.GetEnumerator())
+      foreach (Vector2 deadGoblinSpot in DD2Event._deadGoblinSpots)
       {
-        while (enumerator.MoveNext())
+        if ((double) Vector2.DistanceSquared(deadGoblinSpot, spot) <= 640000.0)
         {
-          if ((double) Vector2.DistanceSquared(enumerator.Current, spot) <= 640000.0)
-          {
-            ++num;
-            if (num >= 3)
-              return true;
-          }
+          ++num;
+          if (num >= 3)
+            return true;
         }
       }
       return false;
@@ -603,46 +565,27 @@ namespace Terraria.GameContent.Events
     public static void RaiseGoblins(Vector2 spot)
     {
       List<Vector2> vector2List = new List<Vector2>();
-      using (List<Vector2>.Enumerator enumerator = DD2Event._deadGoblinSpots.GetEnumerator())
+      foreach (Vector2 deadGoblinSpot in DD2Event._deadGoblinSpots)
       {
-        while (enumerator.MoveNext())
-        {
-          Vector2 current = enumerator.Current;
-          if ((double) Vector2.DistanceSquared(current, spot) <= 722500.0)
-            vector2List.Add(current);
-        }
+        if ((double) Vector2.DistanceSquared(deadGoblinSpot, spot) <= 722500.0)
+          vector2List.Add(deadGoblinSpot);
       }
-      using (List<Vector2>.Enumerator enumerator = vector2List.GetEnumerator())
+      foreach (Vector2 vector2 in vector2List)
+        DD2Event._deadGoblinSpots.Remove(vector2);
+      int num = 0;
+      foreach (Vector2 vec in vector2List)
       {
-        while (enumerator.MoveNext())
+        Point tileCoordinates = vec.ToTileCoordinates();
+        tileCoordinates.X += Main.rand.Next(-15, 16);
+        Point result;
+        if (WorldUtils.Find(tileCoordinates, Searches.Chain((GenSearch) new Searches.Down(50), (GenCondition) new Conditions.IsSolid()), out result))
         {
-          Vector2 current = enumerator.Current;
-          DD2Event._deadGoblinSpots.Remove(current);
-        }
-      }
-      int num1 = 0;
-      using (List<Vector2>.Enumerator enumerator = vector2List.GetEnumerator())
-      {
-        while (enumerator.MoveNext())
-        {
-          Point tileCoordinates = enumerator.Current.ToTileCoordinates();
-          // ISSUE: explicit reference operation
-          // ISSUE: variable of a reference type
-          Point& local = @tileCoordinates;
-          // ISSUE: explicit reference operation
-          int num2 = (^local).X + Main.rand.Next(-15, 16);
-          // ISSUE: explicit reference operation
-          (^local).X = (__Null) num2;
-          Point result;
-          if (WorldUtils.Find(tileCoordinates, Searches.Chain((GenSearch) new Searches.Down(50), (GenCondition) new Conditions.IsSolid()), out result))
-          {
-            if (DD2Event.OngoingDifficulty == 3)
-              NPC.NewNPC(result.X * 16 + 8, result.Y * 16, 567, 0, 0.0f, 0.0f, 0.0f, 0.0f, (int) byte.MaxValue);
-            else
-              NPC.NewNPC(result.X * 16 + 8, result.Y * 16, 566, 0, 0.0f, 0.0f, 0.0f, 0.0f, (int) byte.MaxValue);
-            if (++num1 >= 8)
-              break;
-          }
+          if (DD2Event.OngoingDifficulty == 3)
+            NPC.NewNPC(result.X * 16 + 8, result.Y * 16, 567, 0, 0.0f, 0.0f, 0.0f, 0.0f, (int) byte.MaxValue);
+          else
+            NPC.NewNPC(result.X * 16 + 8, result.Y * 16, 566, 0, 0.0f, 0.0f, 0.0f, 0.0f, (int) byte.MaxValue);
+          if (++num >= 8)
+            break;
         }
       }
     }
@@ -656,44 +599,39 @@ namespace Terraria.GameContent.Events
       else
       {
         DD2Event._arenaHitboxingCooldown = 60;
-        Vector2 vector2_1;
-        // ISSUE: explicit reference operation
-        ((Vector2) @vector2_1).\u002Ector(float.MaxValue, float.MaxValue);
-        Vector2 vector2_2;
-        // ISSUE: explicit reference operation
-        ((Vector2) @vector2_2).\u002Ector(0.0f, 0.0f);
+        Vector2 vector2_1 = new Vector2(float.MaxValue, float.MaxValue);
+        Vector2 vector2_2 = new Vector2(0.0f, 0.0f);
         for (int index = 0; index < 200; ++index)
         {
           NPC npc = Main.npc[index];
           if (npc.active && (npc.type == 549 || npc.type == 548))
           {
             Vector2 vector2_3 = npc.TopLeft;
-            if (vector2_1.X > vector2_3.X)
+            if ((double) vector2_1.X > (double) vector2_3.X)
               vector2_1.X = vector2_3.X;
-            if (vector2_1.Y > vector2_3.Y)
+            if ((double) vector2_1.Y > (double) vector2_3.Y)
               vector2_1.Y = vector2_3.Y;
             vector2_3 = npc.BottomRight;
-            if (vector2_2.X < vector2_3.X)
+            if ((double) vector2_2.X < (double) vector2_3.X)
               vector2_2.X = vector2_3.X;
-            if (vector2_2.Y < vector2_3.Y)
+            if ((double) vector2_2.Y < (double) vector2_3.Y)
               vector2_2.Y = vector2_3.Y;
           }
         }
-        Vector2 vector2_4 = Vector2.op_Multiply(new Vector2(16f, 16f), 50f);
-        vector2_1 = Vector2.op_Subtraction(vector2_1, vector2_4);
-        vector2_2 = Vector2.op_Addition(vector2_2, vector2_4);
-        Vector2 vector2_5 = Vector2.op_Subtraction(vector2_2, vector2_1);
-        DD2Event.ArenaHitbox.X = (__Null) (int) vector2_1.X;
-        DD2Event.ArenaHitbox.Y = (__Null) (int) vector2_1.Y;
-        DD2Event.ArenaHitbox.Width = (__Null) (int) vector2_5.X;
-        DD2Event.ArenaHitbox.Height = (__Null) (int) vector2_5.Y;
+        Vector2 vector2_4 = new Vector2(16f, 16f) * 50f;
+        vector2_1 -= vector2_4;
+        vector2_2 += vector2_4;
+        Vector2 vector2_5 = vector2_2 - vector2_1;
+        DD2Event.ArenaHitbox.X = (int) vector2_1.X;
+        DD2Event.ArenaHitbox.Y = (int) vector2_1.Y;
+        DD2Event.ArenaHitbox.Width = (int) vector2_5.X;
+        DD2Event.ArenaHitbox.Height = (int) vector2_5.Y;
       }
     }
 
     public static bool ShouldBlockBuilding(Vector2 worldPosition)
     {
-      // ISSUE: explicit reference operation
-      return ((Rectangle) @DD2Event.ArenaHitbox).Contains(worldPosition.ToPoint());
+      return DD2Event.ArenaHitbox.Contains(worldPosition.ToPoint());
     }
 
     public static void DropMedals(int numberOfMedals)
@@ -803,13 +741,11 @@ namespace Terraria.GameContent.Events
     {
       if (DD2Event._spawnedBetsyT3 || NPC.AnyNPCs(551))
         return;
-      Vector2 center;
-      // ISSUE: explicit reference operation
-      ((Vector2) @center).\u002Ector(1f, 1f);
+      Vector2 Position = new Vector2(1f, 1f);
       int firstNpc = NPC.FindFirstNPC(548);
       if (firstNpc != -1)
-        center = Main.npc[firstNpc].Center;
-      NPC.SpawnOnPlayer((int) Player.FindClosest(center, 1, 1), 551);
+        Position = Main.npc[firstNpc].Center;
+      NPC.SpawnOnPlayer((int) Player.FindClosest(Position, 1, 1), 551);
       DD2Event._spawnedBetsyT3 = true;
     }
 

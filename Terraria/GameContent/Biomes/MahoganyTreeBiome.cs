@@ -1,7 +1,7 @@
 ﻿// Decompiled with JetBrains decompiler
 // Type: Terraria.GameContent.Biomes.MahoganyTreeBiome
 // Assembly: Terraria, Version=1.3.5.1, Culture=neutral, PublicKeyToken=null
-// MVID: DF0400F4-EE47-4864-BE80-932EDB02D8A6
+// MVID: E90A5A2F-CD10-4A2C-9D2A-6B036D4E8877
 // Assembly location: F:\Steam\steamapps\common\Terraria\Terraria.exe
 
 using Microsoft.Xna.Framework;
@@ -17,10 +17,10 @@ namespace Terraria.GameContent.Biomes
     public override bool Place(Point origin, StructureMap structures)
     {
       Point result1;
-      if (!WorldUtils.Find(new Point(origin.X - 3, (int) origin.Y), Searches.Chain((GenSearch) new Searches.Down(200), new Conditions.IsSolid().AreaAnd(6, 1)), out result1))
+      if (!WorldUtils.Find(new Point(origin.X - 3, origin.Y), Searches.Chain((GenSearch) new Searches.Down(200), new Conditions.IsSolid().AreaAnd(6, 1)), out result1))
         return false;
       Point result2;
-      if (!WorldUtils.Find(new Point((int) result1.X, result1.Y - 5), Searches.Chain((GenSearch) new Searches.Up(120), new Conditions.IsSolid().AreaOr(6, 1)), out result2) || result1.Y - 5 - result2.Y > 60 || (result1.Y - result2.Y < 30 || !structures.CanPlace(new Rectangle(result1.X - 30, result1.Y - 60, 60, 90), 0)))
+      if (!WorldUtils.Find(new Point(result1.X, result1.Y - 5), Searches.Chain((GenSearch) new Searches.Up(120), new Conditions.IsSolid().AreaOr(6, 1)), out result2) || result1.Y - 5 - result2.Y > 60 || (result1.Y - result2.Y < 30 || !structures.CanPlace(new Microsoft.Xna.Framework.Rectangle(result1.X - 30, result1.Y - 60, 60, 90), 0)))
         return false;
       Dictionary<ushort, int> resultsOutput = new Dictionary<ushort, int>();
       WorldUtils.Gen(new Point(result1.X - 25, result1.Y - 25), (GenShape) new Shapes.Rectangle(50, 50), (GenAction) new Actions.TileScanner(new ushort[4]
@@ -67,16 +67,17 @@ namespace Terraria.GameContent.Biomes
       int num11 = (int) (Math.Sin((double) num3 / 12.0 * num6 * 3.14159274101257) * num7);
       WorldUtils.Gen(new Point(result1.X + 6 + num11, result1.Y - num4), (GenShape) new ShapeBranch(-0.685398185253143, (double) GenBase._random.Next(16, 22)).OutputEndpoints(endpoints), Actions.Chain((GenAction) new Actions.SetTile((ushort) 383, false, true), (GenAction) new Actions.SetFrames(true)));
       WorldUtils.Gen(new Point(result1.X + num11, result1.Y - num4), (GenShape) new ShapeBranch(-2.45619455575943, (double) GenBase._random.Next(16, 22)).OutputEndpoints(endpoints), Actions.Chain((GenAction) new Actions.SetTile((ushort) 383, false, true), (GenAction) new Actions.SetFrames(true)));
-      using (List<Point>.Enumerator enumerator = endpoints.GetEnumerator())
+      foreach (Point origin1 in endpoints)
       {
-        while (enumerator.MoveNext())
-          WorldUtils.Gen(enumerator.Current, (GenShape) new Shapes.Circle(4), Actions.Chain((GenAction) new Modifiers.Blotches(4, 2, 0.3), (GenAction) new Modifiers.SkipTiles(new ushort[1]
-          {
-            (ushort) 383
-          }), (GenAction) new Modifiers.SkipWalls(new byte[1]
-          {
-            (byte) 78
-          }), (GenAction) new Actions.SetTile((ushort) 384, false, true), (GenAction) new Actions.SetFrames(true)));
+        Shapes.Circle circle = new Shapes.Circle(4);
+        GenAction action = Actions.Chain((GenAction) new Modifiers.Blotches(4, 2, 0.3), (GenAction) new Modifiers.SkipTiles(new ushort[1]
+        {
+          (ushort) 383
+        }), (GenAction) new Modifiers.SkipWalls(new byte[1]
+        {
+          (byte) 78
+        }), (GenAction) new Actions.SetTile((ushort) 384, false, true), (GenAction) new Actions.SetFrames(true));
+        WorldUtils.Gen(origin1, (GenShape) circle, action);
       }
       for (int index = 0; index < 4; ++index)
       {
@@ -84,7 +85,7 @@ namespace Terraria.GameContent.Biomes
         WorldUtils.Gen(result1, (GenShape) new ShapeRoot(angle, (float) GenBase._random.Next(40, 60), 4f, 1f), (GenAction) new Actions.SetTile((ushort) 383, true, true));
       }
       WorldGen.AddBuriedChest(result1.X + 3, result1.Y - 1, GenBase._random.Next(4) == 0 ? 0 : WorldGen.GetNextJungleChestItem(), false, 10);
-      structures.AddStructure(new Rectangle(result1.X - 30, result1.Y - 30, 60, 60), 0);
+      structures.AddStructure(new Microsoft.Xna.Framework.Rectangle(result1.X - 30, result1.Y - 30, 60, 60), 0);
       return true;
     }
   }

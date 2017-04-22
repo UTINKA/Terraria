@@ -1,7 +1,7 @@
 ﻿// Decompiled with JetBrains decompiler
 // Type: Terraria.GameContent.Generation.ShapeFloodFill
 // Assembly: TerrariaServer, Version=1.3.5.1, Culture=neutral, PublicKeyToken=null
-// MVID: 880A80AC-FC6C-4F43-ABDD-E2472DA66CB5
+// MVID: C2103E81-0935-4BEA-9E98-4159FC80C2BB
 // Assembly location: F:\Steam\steamapps\common\Terraria\TerrariaServer.exe
 
 using Microsoft.Xna.Framework;
@@ -29,24 +29,24 @@ namespace Terraria.GameContent.Generation
       while (pointQueue.Count > 0 && maximumActions > 0)
       {
         Point point = pointQueue.Dequeue();
-        if (!point16Set.Contains(new Point16((int) point.X, (int) point.Y)) && this.UnitApply(action, origin, (int) point.X, (int) point.Y))
+        if (!point16Set.Contains(new Point16(point.X, point.Y)) && this.UnitApply(action, origin, point.X, point.Y))
         {
           point16Set.Add(new Point16(point));
           --maximumActions;
           if (point.X + 1 < Main.maxTilesX - 1)
-            pointQueue.Enqueue(new Point(point.X + 1, (int) point.Y));
+            pointQueue.Enqueue(new Point(point.X + 1, point.Y));
           if (point.X - 1 >= 1)
-            pointQueue.Enqueue(new Point(point.X - 1, (int) point.Y));
+            pointQueue.Enqueue(new Point(point.X - 1, point.Y));
           if (point.Y + 1 < Main.maxTilesY - 1)
-            pointQueue.Enqueue(new Point((int) point.X, point.Y + 1));
+            pointQueue.Enqueue(new Point(point.X, point.Y + 1));
           if (point.Y - 1 >= 1)
-            pointQueue.Enqueue(new Point((int) point.X, point.Y - 1));
+            pointQueue.Enqueue(new Point(point.X, point.Y - 1));
         }
       }
       while (pointQueue.Count > 0)
       {
         Point point = pointQueue.Dequeue();
-        if (!point16Set.Contains(new Point16((int) point.X, (int) point.Y)))
+        if (!point16Set.Contains(new Point16(point.X, point.Y)))
         {
           pointQueue.Enqueue(point);
           break;

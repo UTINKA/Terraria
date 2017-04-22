@@ -1,7 +1,7 @@
 ﻿// Decompiled with JetBrains decompiler
 // Type: Terraria.Program
 // Assembly: Terraria, Version=1.3.5.1, Culture=neutral, PublicKeyToken=null
-// MVID: DF0400F4-EE47-4864-BE80-932EDB02D8A6
+// MVID: E90A5A2F-CD10-4A2C-9D2A-6B036D4E8877
 // Assembly location: F:\Steam\steamapps\common\Terraria\Terraria.exe
 
 using ReLogic.IO;
@@ -146,8 +146,8 @@ namespace Terraria
         return;
       try
       {
-        Console.OutputEncoding = Encoding.UTF8;
-        Console.InputEncoding = Encoding.UTF8;
+        Console.OutputEncoding = Encoding.Unicode;
+        Console.InputEncoding = Encoding.Unicode;
       }
       catch
       {
@@ -159,7 +159,7 @@ namespace Terraria
       if (monoArgs)
         args = Utils.ConvertMonoArgsToDotNet(args);
       if (Platform.get_IsOSX())
-        Main.OnEngineLoad += (Action) (() => Main.instance.set_IsMouseVisible(false));
+        Main.OnEngineLoad += (Action) (() => Main.instance.IsMouseVisible = false);
       Program.LaunchParameters = Utils.ParseArguements(args);
       ThreadPool.SetMinThreads(8, 8);
       LanguageManager.Instance.SetLanguage(GameCulture.English);

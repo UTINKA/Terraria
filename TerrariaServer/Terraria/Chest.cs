@@ -1,7 +1,7 @@
 ﻿// Decompiled with JetBrains decompiler
 // Type: Terraria.Chest
 // Assembly: TerrariaServer, Version=1.3.5.1, Culture=neutral, PublicKeyToken=null
-// MVID: 880A80AC-FC6C-4F43-ABDD-E2472DA66CB5
+// MVID: C2103E81-0935-4BEA-9E98-4159FC80C2BB
 // Assembly location: F:\Steam\steamapps\common\Terraria\TerrariaServer.exe
 
 using Microsoft.Xna.Framework;
@@ -186,50 +186,42 @@ namespace Terraria
       {
         bool flag1 = false;
         bool flag2 = false;
-        if (Main.chest[i] != null && !Chest.IsPlayerInChest(i) && !Chest.isLocked(Main.chest[i].x, Main.chest[i].y))
+        if (Main.chest[i] != null && !Chest.IsPlayerInChest(i) && !Chest.isLocked(Main.chest[i].x, Main.chest[i].y) && (double) (new Vector2((float) (Main.chest[i].x * 16 + 16), (float) (Main.chest[i].y * 16 + 16)) - position).Length() < 200.0)
         {
-          Vector2 vector2_1;
-          // ISSUE: explicit reference operation
-          ((Vector2) @vector2_1).\u002Ector((float) (Main.chest[i].x * 16 + 16), (float) (Main.chest[i].y * 16 + 16));
-          Vector2 vector2_2 = Vector2.op_Subtraction(vector2_1, position);
-          // ISSUE: explicit reference operation
-          if ((double) ((Vector2) @vector2_2).Length() < 200.0)
+          for (int index = 0; index < Main.chest[i].item.Length; ++index)
           {
-            for (int index = 0; index < Main.chest[i].item.Length; ++index)
+            if (Main.chest[i].item[index].type > 0 && Main.chest[i].item[index].stack > 0)
             {
-              if (Main.chest[i].item[index].type > 0 && Main.chest[i].item[index].stack > 0)
+              if (item.IsTheSameAs(Main.chest[i].item[index]))
               {
-                if (item.IsTheSameAs(Main.chest[i].item[index]))
+                flag1 = true;
+                int num = Main.chest[i].item[index].maxStack - Main.chest[i].item[index].stack;
+                if (num > 0)
                 {
-                  flag1 = true;
-                  int num = Main.chest[i].item[index].maxStack - Main.chest[i].item[index].stack;
-                  if (num > 0)
+                  if (num > item.stack)
+                    num = item.stack;
+                  item.stack -= num;
+                  Main.chest[i].item[index].stack += num;
+                  if (item.stack <= 0)
                   {
-                    if (num > item.stack)
-                      num = item.stack;
-                    item.stack -= num;
-                    Main.chest[i].item[index].stack += num;
-                    if (item.stack <= 0)
-                    {
-                      item.SetDefaults(0, false);
-                      return item;
-                    }
+                    item.SetDefaults(0, false);
+                    return item;
                   }
                 }
               }
-              else
-                flag2 = true;
             }
-            if (flag1 && flag2 && item.stack > 0)
+            else
+              flag2 = true;
+          }
+          if (flag1 && flag2 && item.stack > 0)
+          {
+            for (int index = 0; index < Main.chest[i].item.Length; ++index)
             {
-              for (int index = 0; index < Main.chest[i].item.Length; ++index)
+              if (Main.chest[i].item[index].type == 0 || Main.chest[i].item[index].stack == 0)
               {
-                if (Main.chest[i].item[index].type == 0 || Main.chest[i].item[index].stack == 0)
-                {
-                  Main.chest[i].item[index] = item.Clone();
-                  item.SetDefaults(0, false);
-                  return item;
-                }
+                Main.chest[i].item[index] = item.Clone();
+                item.SetDefaults(0, false);
+                return item;
               }
             }
           }
@@ -287,7 +279,7 @@ namespace Terraria
         {
           Main.tile[index1, index2].frameX -= num;
           for (int index3 = 0; index3 < 4; ++index3)
-            Dust.NewDust(new Vector2((float) (index1 * 16), (float) (index2 * 16)), 16, 16, Type, 0.0f, 0.0f, 0, (Color) null, 1f);
+            Dust.NewDust(new Vector2((float) (index1 * 16), (float) (index2 * 16)), 16, 16, Type, 0.0f, 0.0f, 0, new Color(), 1f);
         }
       }
       return true;
@@ -1825,12 +1817,12 @@ namespace Terraria
           this.item[index1].SetDefaults(1493, false);
           ++index1;
         }
-        if (Main.player[Main.myPlayer].position.Y / 16.0 < Main.worldSurface * 0.349999994039536)
+        if ((double) Main.player[Main.myPlayer].position.Y / 16.0 < Main.worldSurface * 0.349999994039536)
         {
           this.item[index1].SetDefaults(1485, false);
           ++index1;
         }
-        if (Main.player[Main.myPlayer].position.Y / 16.0 < Main.worldSurface * 0.349999994039536 && Main.hardMode)
+        if ((double) Main.player[Main.myPlayer].position.Y / 16.0 < Main.worldSurface * 0.349999994039536 && Main.hardMode)
         {
           this.item[index1].SetDefaults(1494, false);
           ++index1;
@@ -1944,8 +1936,8 @@ namespace Terraria
         int index6 = index5 + 1;
         this.item[index6].SetDefaults(2434, false);
         index1 = index6 + 1;
-        int num = (int) ((Main.screenPosition.X + (double) (Main.screenWidth / 2)) / 16.0);
-        if (Main.screenPosition.Y / 16.0 < Main.worldSurface + 10.0 && (num < 380 || num > Main.maxTilesX - 380))
+        int num = (int) (((double) Main.screenPosition.X + (double) (Main.screenWidth / 2)) / 16.0);
+        if ((double) Main.screenPosition.Y / 16.0 < Main.worldSurface + 10.0 && (num < 380 || num > Main.maxTilesX - 380))
         {
           this.item[index1].SetDefaults(1180, false);
           ++index1;

@@ -1,7 +1,7 @@
 ﻿// Decompiled with JetBrains decompiler
 // Type: Terraria.World.Generation.Shapes
 // Assembly: TerrariaServer, Version=1.3.5.1, Culture=neutral, PublicKeyToken=null
-// MVID: 880A80AC-FC6C-4F43-ABDD-E2472DA66CB5
+// MVID: C2103E81-0935-4BEA-9E98-4159FC80C2BB
 // Assembly location: F:\Steam\steamapps\common\Terraria\TerrariaServer.exe
 
 using Microsoft.Xna.Framework;
@@ -131,9 +131,9 @@ namespace Terraria.World.Generation
 
       public override bool Perform(Point origin, GenAction action)
       {
-        for (int x = (int) origin.X; x < origin.X + this._width; ++x)
+        for (int x = origin.X; x < origin.X + this._width; ++x)
         {
-          for (int y = (int) origin.Y; y < origin.Y + this._height; ++y)
+          for (int y = origin.Y; y < origin.Y + this._height; ++y)
           {
             if (!this.UnitApply(action, origin, x, y) && this._quitOnFail)
               return false;
@@ -151,15 +151,13 @@ namespace Terraria.World.Generation
       public Tail(float width, Vector2 endOffset)
       {
         this._width = width * 16f;
-        this._endOffset = Vector2.op_Multiply(endOffset, 16f);
+        this._endOffset = endOffset * 16f;
       }
 
       public override bool Perform(Point origin, GenAction action)
       {
-        Vector2 start;
-        // ISSUE: explicit reference operation
-        ((Vector2) @start).\u002Ector((float) (origin.X << 4), (float) (origin.Y << 4));
-        return Utils.PlotTileTale(start, Vector2.op_Addition(start, this._endOffset), this._width, (Utils.PerLinePoint) ((x, y) =>
+        Vector2 start = new Vector2((float) (origin.X << 4), (float) (origin.Y << 4));
+        return Utils.PlotTileTale(start, start + this._endOffset, this._width, (Utils.PerLinePoint) ((x, y) =>
         {
           if (!this.UnitApply(action, origin, x, y))
             return !this._quitOnFail;

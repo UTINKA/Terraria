@@ -1,7 +1,7 @@
 ﻿// Decompiled with JetBrains decompiler
 // Type: Terraria.GameContent.Tile_Entities.TETrainingDummy
 // Assembly: TerrariaServer, Version=1.3.5.1, Culture=neutral, PublicKeyToken=null
-// MVID: 880A80AC-FC6C-4F43-ABDD-E2472DA66CB5
+// MVID: C2103E81-0935-4BEA-9E98-4159FC80C2BB
 // Assembly location: F:\Steam\steamapps\common\Terraria\TerrariaServer.exe
 
 using Microsoft.Xna.Framework;
@@ -46,13 +46,10 @@ namespace Terraria.GameContent.Tile_Entities
 
     public override void Update()
     {
-      Rectangle rectangle1;
-      // ISSUE: explicit reference operation
-      ((Rectangle) @rectangle1).\u002Ector(0, 0, 32, 48);
-      // ISSUE: explicit reference operation
-      ((Rectangle) @rectangle1).Inflate(1600, 1600);
-      int x = (int) rectangle1.X;
-      int y = (int) rectangle1.Y;
+      Rectangle rectangle = new Rectangle(0, 0, 32, 48);
+      rectangle.Inflate(1600, 1600);
+      int x = rectangle.X;
+      int y = rectangle.Y;
       if (this.npc != -1)
       {
         if (Main.npc[this.npc].active && Main.npc[this.npc].type == 488 && ((double) Main.npc[this.npc].ai[0] == (double) this.Position.X && (double) Main.npc[this.npc].ai[1] == (double) this.Position.Y))
@@ -62,20 +59,15 @@ namespace Terraria.GameContent.Tile_Entities
       else
       {
         TETrainingDummy.FillPlayerHitboxes();
-        rectangle1.X = (__Null) ((int) this.Position.X * 16 + x);
-        rectangle1.Y = (__Null) ((int) this.Position.Y * 16 + y);
+        rectangle.X = (int) this.Position.X * 16 + x;
+        rectangle.Y = (int) this.Position.Y * 16 + y;
         bool flag = false;
-        using (Dictionary<int, Rectangle>.Enumerator enumerator = TETrainingDummy.playerBox.GetEnumerator())
+        foreach (KeyValuePair<int, Rectangle> keyValuePair in TETrainingDummy.playerBox)
         {
-          while (enumerator.MoveNext())
+          if (keyValuePair.Value.Intersects(rectangle))
           {
-            Rectangle rectangle2 = enumerator.Current.Value;
-            // ISSUE: explicit reference operation
-            if (((Rectangle) @rectangle2).Intersects(rectangle1))
-            {
-              flag = true;
-              break;
-            }
+            flag = true;
+            break;
           }
         }
         if (!flag)

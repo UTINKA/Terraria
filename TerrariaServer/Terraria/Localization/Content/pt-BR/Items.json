@@ -4016,7 +4016,8 @@
 		"LeinforsAccessory": "Shampoo de Luxo de Leinfors",
 		"GraniteGolemBanner": "Bandeira do Golem de Granito",
 		"RavagerScorpionBanner": "Bandeira do Caçador de Areia",
-		"MusicBoxDD2": "Caixinha de Música (Exército do Ancião)"
+		"MusicBoxDD2": "Caixinha de Música (Exército do Ancião)",
+		"BossBagBetsy": "{$ItemName.SkeletronBossBag}"
 	},
 	"ItemTooltip": {
 		"ShadowGreaves": "7% de aumento na velocidade do ataque físico",

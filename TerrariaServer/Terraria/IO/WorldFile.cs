@@ -1,7 +1,7 @@
 ﻿// Decompiled with JetBrains decompiler
 // Type: Terraria.IO.WorldFile
 // Assembly: TerrariaServer, Version=1.3.5.1, Culture=neutral, PublicKeyToken=null
-// MVID: 880A80AC-FC6C-4F43-ABDD-E2472DA66CB5
+// MVID: C2103E81-0935-4BEA-9E98-4159FC80C2BB
 // Assembly location: F:\Steam\steamapps\common\Terraria\TerrariaServer.exe
 
 using Microsoft.Xna.Framework;
@@ -344,7 +344,7 @@ namespace Terraria.IO
     {
       Main.WorldFileMetadata = FileMetadata.FromCurrentSettings(FileType.World);
       int versionNumber = WorldFile.versionNumber;
-      if (versionNumber > 192)
+      if (versionNumber > 193)
         return 1;
       Main.worldName = fileIO.ReadString();
       Main.worldID = fileIO.ReadInt32();
@@ -713,8 +713,8 @@ namespace Terraria.IO
           Main.npc[index].SetDefaults(NPCID.FromLegacyName(fileIO.ReadString()), -1f);
         if (versionNumber >= 83)
           Main.npc[index].GivenName = fileIO.ReadString();
-        Main.npc[index].position.X = (__Null) (double) fileIO.ReadSingle();
-        Main.npc[index].position.Y = (__Null) (double) fileIO.ReadSingle();
+        Main.npc[index].position.X = fileIO.ReadSingle();
+        Main.npc[index].position.Y = fileIO.ReadSingle();
         Main.npc[index].homeless = fileIO.ReadBoolean();
         Main.npc[index].homeTileX = fileIO.ReadInt32();
         Main.npc[index].homeTileY = fileIO.ReadInt32();
@@ -783,7 +783,7 @@ namespace Terraria.IO
     {
       short num1 = 470;
       short num2 = 10;
-      writer.Write(192);
+      writer.Write(193);
       Main.WorldFileMetadata.IncrementAndWrite(writer);
       writer.Write(num2);
       for (int index = 0; index < (int) num2; ++index)
@@ -812,7 +812,7 @@ namespace Terraria.IO
     private static int SaveHeaderPointers(BinaryWriter writer, int[] pointers)
     {
       writer.BaseStream.Position = 0L;
-      writer.Write(192);
+      writer.Write(193);
       writer.BaseStream.Position += 20L;
       writer.Write((short) pointers.Length);
       for (int index = 0; index < pointers.Length; ++index)
@@ -1223,8 +1223,8 @@ namespace Terraria.IO
           writer.Write(npc.active);
           writer.Write(npc.netID);
           writer.Write(npc.GivenName);
-          writer.Write((float) npc.position.X);
-          writer.Write((float) npc.position.Y);
+          writer.Write(npc.position.X);
+          writer.Write(npc.position.Y);
           writer.Write(npc.homeless);
           writer.Write(npc.homeTileX);
           writer.Write(npc.homeTileY);
@@ -1817,8 +1817,8 @@ namespace Terraria.IO
         else
           npc.SetDefaults(NPCID.FromLegacyName(reader.ReadString()), -1f);
         npc.GivenName = reader.ReadString();
-        npc.position.X = (__Null) (double) reader.ReadSingle();
-        npc.position.Y = (__Null) (double) reader.ReadSingle();
+        npc.position.X = reader.ReadSingle();
+        npc.position.Y = reader.ReadSingle();
         npc.homeless = reader.ReadBoolean();
         npc.homeTileX = reader.ReadInt32();
         npc.homeTileY = reader.ReadInt32();
@@ -1850,7 +1850,7 @@ namespace Terraria.IO
       {
         Stream baseStream = fileIO.BaseStream;
         int num1 = fileIO.ReadInt32();
-        if (num1 == 0 || num1 > 192)
+        if (num1 == 0 || num1 > 193)
           return false;
         baseStream.Position = 0L;
         bool[] importance;
@@ -2042,7 +2042,7 @@ namespace Terraria.IO
             int num1 = binaryReader.ReadInt32();
             if (num1 > 0)
             {
-              if (num1 <= 192)
+              if (num1 <= 193)
               {
                 if (num1 <= 87)
                 {
@@ -2085,7 +2085,7 @@ namespace Terraria.IO
               binaryReader.BaseStream.Position += 20L;
             if (num1 >= 112)
             {
-              if (num1 <= 192)
+              if (num1 <= 193)
               {
                 int num2 = (int) binaryReader.ReadInt16();
                 fileStream.Position = (long) binaryReader.ReadInt32();
@@ -2136,7 +2136,7 @@ namespace Terraria.IO
               worldFileData.Metadata = FileMetadata.Read(reader, FileType.World);
             else
               worldFileData.Metadata = FileMetadata.FromCurrentSettings(FileType.World);
-            if (num1 <= 192)
+            if (num1 <= 193)
             {
               int num2 = (int) reader.ReadInt16();
               input.Position = (long) reader.ReadInt32();
@@ -2236,7 +2236,7 @@ namespace Terraria.IO
       worldFileData.CreationTime = DateTime.Now;
       worldFileData.Metadata = FileMetadata.FromCurrentSettings(FileType.World);
       worldFileData.SetFavorite(false, true);
-      worldFileData.WorldGeneratorVersion = 824633720833UL;
+      worldFileData.WorldGeneratorVersion = 828928688129UL;
       worldFileData.UniqueId = Guid.NewGuid();
       if (Main.DefaultSeed == "")
         worldFileData.SetSeedToRandom();
@@ -2362,14 +2362,10 @@ namespace Terraria.IO
     private static int SaveWeightedPressurePlates(BinaryWriter writer)
     {
       writer.Write(PressurePlateHelper.PressurePlatesPressed.Count);
-      using (Dictionary<Point, bool[]>.Enumerator enumerator = PressurePlateHelper.PressurePlatesPressed.GetEnumerator())
+      foreach (KeyValuePair<Point, bool[]> keyValuePair in PressurePlateHelper.PressurePlatesPressed)
       {
-        while (enumerator.MoveNext())
-        {
-          KeyValuePair<Point, bool[]> current = enumerator.Current;
-          writer.Write((int) current.Key.X);
-          writer.Write((int) current.Key.Y);
-        }
+        writer.Write(keyValuePair.Key.X);
+        writer.Write(keyValuePair.Key.Y);
       }
       return (int) writer.BaseStream.Position;
     }
@@ -2381,9 +2377,7 @@ namespace Terraria.IO
       int num = reader.ReadInt32();
       for (int index = 0; index < num; ++index)
       {
-        Point key;
-        // ISSUE: explicit reference operation
-        ((Point) @key).\u002Ector(reader.ReadInt32(), reader.ReadInt32());
+        Point key = new Point(reader.ReadInt32(), reader.ReadInt32());
         PressurePlateHelper.PressurePlatesPressed.Add(key, new bool[(int) byte.MaxValue]);
       }
     }

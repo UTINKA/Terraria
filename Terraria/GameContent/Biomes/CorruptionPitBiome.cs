@@ -1,7 +1,7 @@
 ﻿// Decompiled with JetBrains decompiler
 // Type: Terraria.GameContent.Biomes.CorruptionPitBiome
 // Assembly: Terraria, Version=1.3.5.1, Culture=neutral, PublicKeyToken=null
-// MVID: DF0400F4-EE47-4864-BE80-932EDB02D8A6
+// MVID: E90A5A2F-CD10-4A2C-9D2A-6B036D4E8877
 // Assembly location: F:\Steam\steamapps\common\Terraria\Terraria.exe
 
 using Microsoft.Xna.Framework;
@@ -16,12 +16,12 @@ namespace Terraria.GameContent.Biomes
 
     public override bool Place(Point origin, StructureMap structures)
     {
-      if (WorldGen.SolidTile((int) origin.X, (int) origin.Y) && (int) GenBase._tiles[(int) origin.X, (int) origin.Y].wall == 3)
+      if (WorldGen.SolidTile(origin.X, origin.Y) && (int) GenBase._tiles[origin.X, origin.Y].wall == 3)
         return false;
       if (!WorldUtils.Find(origin, Searches.Chain((GenSearch) new Searches.Down(100), (GenCondition) new Conditions.IsSolid()), out origin))
         return false;
       Point result;
-      if (!WorldUtils.Find(new Point(origin.X - 4, (int) origin.Y), Searches.Chain((GenSearch) new Searches.Down(5), new Conditions.IsTile(new ushort[1]
+      if (!WorldUtils.Find(new Point(origin.X - 4, origin.Y), Searches.Chain((GenSearch) new Searches.Down(5), new Conditions.IsTile(new ushort[1]
       {
         (ushort) 25
       }).AreaAnd(8, 1)), out result))
@@ -38,7 +38,7 @@ namespace Terraria.GameContent.Biomes
       ShapeData data2 = new ShapeData(shapeData1);
       shapeData1.Subtract(shapeData2, origin, origin);
       data2.Subtract(shapeData1, origin, origin);
-      Rectangle bounds = ShapeData.GetBounds(origin, data1, shapeData2);
+      Microsoft.Xna.Framework.Rectangle bounds = ShapeData.GetBounds(origin, data1, shapeData2);
       if (!structures.CanPlace(bounds, CorruptionPitBiome.ValidTiles, 2))
         return false;
       WorldUtils.Gen(origin, (GenShape) new ModShapes.All(data1), Actions.Chain((GenAction) new Actions.SetTile((ushort) 25, true, true), (GenAction) new Actions.PlaceWall((byte) 3, true)));

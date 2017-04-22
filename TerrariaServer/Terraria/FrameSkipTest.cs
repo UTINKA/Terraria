@@ -1,7 +1,7 @@
 ﻿// Decompiled with JetBrains decompiler
 // Type: Terraria.FrameSkipTest
 // Assembly: TerrariaServer, Version=1.3.5.1, Culture=neutral, PublicKeyToken=null
-// MVID: 880A80AC-FC6C-4F43-ABDD-E2472DA66CB5
+// MVID: C2103E81-0935-4BEA-9E98-4159FC80C2BB
 // Assembly location: F:\Steam\steamapps\common\Terraria\TerrariaServer.exe
 
 using Microsoft.Xna.Framework;
@@ -22,19 +22,19 @@ namespace Terraria
 
     public static void Update(GameTime gameTime)
     {
-      Thread.Sleep((int) MathHelper.Clamp((1f / 60f - (float) gameTime.get_ElapsedGameTime().TotalSeconds) * 1000f + 1f, 0.0f, 1000f));
+      Thread.Sleep((int) MathHelper.Clamp((1f / 60f - (float) gameTime.ElapsedGameTime.TotalSeconds) * 1000f + 1f, 0.0f, 1000f));
     }
 
     public static void CheckReset(GameTime gameTime)
     {
-      if (FrameSkipTest.LastRecordedSecondNumber == gameTime.get_TotalGameTime().Seconds)
+      if (FrameSkipTest.LastRecordedSecondNumber == gameTime.TotalGameTime.Seconds)
         return;
       FrameSkipTest.DeltaSamples.Add(FrameSkipTest.DeltasThisSecond / FrameSkipTest.CallsThisSecond);
       if (FrameSkipTest.DeltaSamples.Count > 5)
         FrameSkipTest.DeltaSamples.RemoveAt(0);
       FrameSkipTest.CallsThisSecond = 0.0f;
       FrameSkipTest.DeltasThisSecond = 0.0f;
-      FrameSkipTest.LastRecordedSecondNumber = gameTime.get_TotalGameTime().Seconds;
+      FrameSkipTest.LastRecordedSecondNumber = gameTime.TotalGameTime.Seconds;
     }
 
     public static void UpdateServerTest()

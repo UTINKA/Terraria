@@ -1,7 +1,7 @@
 ﻿// Decompiled with JetBrains decompiler
 // Type: Terraria.WorldSections
 // Assembly: TerrariaServer, Version=1.3.5.1, Culture=neutral, PublicKeyToken=null
-// MVID: 880A80AC-FC6C-4F43-ABDD-E2472DA66CB5
+// MVID: C2103E81-0935-4BEA-9E98-4159FC80C2BB
 // Assembly location: F:\Steam\steamapps\common\Terraria\TerrariaServer.exe
 
 using Microsoft.Xna.Framework;
@@ -151,7 +151,7 @@ namespace Terraria
       int num1 = 0;
       int num2 = 0;
       Vector2 vector2 = this.prevMap.centerPos;
-      playerPos = Vector2.op_Multiply(playerPos, 1f / 16f);
+      playerPos *= 1f / 16f;
       int sectionX = Netplay.GetSectionX((int) playerPos.X);
       int sectionY = Netplay.GetSectionY((int) playerPos.Y);
       int num3 = Netplay.GetSectionX((int) vector2.X);
@@ -174,8 +174,8 @@ namespace Terraria
         num1 = this.prevMap.xDir;
         num2 = this.prevMap.yDir;
       }
-      int num6 = (int) (playerPos.X - ((double) num3 + 0.5) * 200.0);
-      int num7 = (int) (playerPos.Y - ((double) num4 + 0.5) * 150.0);
+      int num6 = (int) ((double) playerPos.X - ((double) num3 + 0.5) * 200.0);
+      int num7 = (int) ((double) playerPos.Y - ((double) num4 + 0.5) * 150.0);
       if (num1 == 0)
       {
         num1 = num6 <= 0 ? 1 : -1;
@@ -193,8 +193,8 @@ namespace Terraria
             flag2 = true;
             x = num3;
             y = num4;
-            num6 = (int) (vector2.X - ((double) num3 + 0.5) * 200.0);
-            num7 = (int) (vector2.Y - ((double) num4 + 0.5) * 150.0);
+            num6 = (int) ((double) vector2.X - ((double) num3 + 0.5) * 200.0);
+            num7 = (int) ((double) vector2.Y - ((double) num4 + 0.5) * 150.0);
             num1 = num6 <= 0 ? 1 : -1;
             num2 = num7 <= 0 ? 1 : -1;
             num5 = 4;
@@ -281,7 +281,7 @@ label_14:
       int num1 = 0;
       int num2 = 0;
       Vector2 vector2 = this.prevFrame.centerPos;
-      playerPos = Vector2.op_Multiply(playerPos, 1f / 16f);
+      playerPos *= 1f / 16f;
       int sectionX = Netplay.GetSectionX((int) playerPos.X);
       int sectionY = Netplay.GetSectionY((int) playerPos.Y);
       int num3 = Netplay.GetSectionX((int) vector2.X);
@@ -304,8 +304,8 @@ label_14:
         num1 = this.prevFrame.xDir;
         num2 = this.prevFrame.yDir;
       }
-      int num6 = (int) (playerPos.X - ((double) num3 + 0.5) * 200.0);
-      int num7 = (int) (playerPos.Y - ((double) num4 + 0.5) * 150.0);
+      int num6 = (int) ((double) playerPos.X - ((double) num3 + 0.5) * 200.0);
+      int num7 = (int) ((double) playerPos.Y - ((double) num4 + 0.5) * 150.0);
       if (num1 == 0)
       {
         num1 = num6 <= 0 ? 1 : -1;
@@ -323,8 +323,8 @@ label_14:
             flag2 = true;
             x = num3;
             y = num4;
-            num6 = (int) (vector2.X - ((double) num3 + 0.5) * 200.0);
-            num7 = (int) (vector2.Y - ((double) num4 + 0.5) * 150.0);
+            num6 = (int) ((double) vector2.X - ((double) num3 + 0.5) * 200.0);
+            num7 = (int) ((double) vector2.Y - ((double) num4 + 0.5) * 150.0);
             num1 = num6 <= 0 ? 1 : -1;
             num2 = num7 <= 0 ? 1 : -1;
             num5 = 4;

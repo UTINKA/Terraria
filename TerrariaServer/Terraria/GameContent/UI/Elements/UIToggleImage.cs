@@ -1,7 +1,7 @@
 ﻿// Decompiled with JetBrains decompiler
 // Type: Terraria.GameContent.UI.Elements.UIToggleImage
 // Assembly: TerrariaServer, Version=1.3.5.1, Culture=neutral, PublicKeyToken=null
-// MVID: 880A80AC-FC6C-4F43-ABDD-E2472DA66CB5
+// MVID: C2103E81-0935-4BEA-9E98-4159FC80C2BB
 // Assembly location: F:\Steam\steamapps\common\Terraria\TerrariaServer.exe
 
 using Microsoft.Xna.Framework;
@@ -12,8 +12,8 @@ namespace Terraria.GameContent.UI.Elements
 {
   public class UIToggleImage : UIElement
   {
-    private Point _onTextureOffset = Point.get_Zero();
-    private Point _offTextureOffset = Point.get_Zero();
+    private Point _onTextureOffset = Point.Zero;
+    private Point _offTextureOffset = Point.Zero;
     private Texture2D _onTexture;
     private Texture2D _offTexture;
     private int _drawWidth;
@@ -43,20 +43,20 @@ namespace Terraria.GameContent.UI.Elements
     protected override void DrawSelf(SpriteBatch spriteBatch)
     {
       CalculatedStyle dimensions = this.GetDimensions();
-      Texture2D texture2D;
+      Texture2D texture;
       Point point;
       if (this._isOn)
       {
-        texture2D = this._onTexture;
+        texture = this._onTexture;
         point = this._onTextureOffset;
       }
       else
       {
-        texture2D = this._offTexture;
+        texture = this._offTexture;
         point = this._offTextureOffset;
       }
-      Color color = this.IsMouseHovering ? Color.get_White() : Color.get_Silver();
-      spriteBatch.Draw(texture2D, new Rectangle((int) dimensions.X, (int) dimensions.Y, this._drawWidth, this._drawHeight), new Rectangle?(new Rectangle((int) point.X, (int) point.Y, this._drawWidth, this._drawHeight)), color);
+      Color color = this.IsMouseHovering ? Color.White : Color.Silver;
+      spriteBatch.Draw(texture, new Rectangle((int) dimensions.X, (int) dimensions.Y, this._drawWidth, this._drawHeight), new Rectangle?(new Rectangle(point.X, point.Y, this._drawWidth, this._drawHeight)), color);
     }
 
     public override void Click(UIMouseEvent evt)

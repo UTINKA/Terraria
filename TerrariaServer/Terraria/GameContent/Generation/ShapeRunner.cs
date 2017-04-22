@@ -1,7 +1,7 @@
 ﻿// Decompiled with JetBrains decompiler
 // Type: Terraria.GameContent.Generation.ShapeRunner
 // Assembly: TerrariaServer, Version=1.3.5.1, Culture=neutral, PublicKeyToken=null
-// MVID: 880A80AC-FC6C-4F43-ABDD-E2472DA66CB5
+// MVID: C2103E81-0935-4BEA-9E98-4159FC80C2BB
 // Assembly location: F:\Steam\steamapps\common\Terraria\TerrariaServer.exe
 
 using Microsoft.Xna.Framework;
@@ -28,10 +28,8 @@ namespace Terraria.GameContent.Generation
       float num1 = (float) this._steps;
       float steps = (float) this._steps;
       double num2 = (double) this._startStrength;
-      Vector2 vector2_1;
-      // ISSUE: explicit reference operation
-      ((Vector2) @vector2_1).\u002Ector((float) origin.X, (float) origin.Y);
-      Vector2 vector2_2 = Vector2.op_Equality(this._startVelocity, Vector2.get_Zero()) ? Utils.RandomVector2(GenBase._random, -1f, 1f) : this._startVelocity;
+      Vector2 vector2_1 = new Vector2((float) origin.X, (float) origin.Y);
+      Vector2 vector2_2 = this._startVelocity == Vector2.Zero ? Utils.RandomVector2(GenBase._random, -1f, 1f) : this._startVelocity;
       while ((double) num1 > 0.0 && num2 > 0.0)
       {
         num2 = (double) this._startStrength * ((double) num1 / (double) steps);
@@ -44,19 +42,19 @@ namespace Terraria.GameContent.Generation
         {
           for (int y = num5; y < num7; ++y)
           {
-            if ((double) Math.Abs((float) x - (float) vector2_1.X) + (double) Math.Abs((float) y - (float) vector2_1.Y) < num2 * 0.5 * (1.0 + (double) GenBase._random.Next(-10, 11) * 0.015))
+            if ((double) Math.Abs((float) x - vector2_1.X) + (double) Math.Abs((float) y - vector2_1.Y) < num2 * 0.5 * (1.0 + (double) GenBase._random.Next(-10, 11) * 0.015))
               this.UnitApply(action, origin, x, y);
           }
         }
         int num8 = (int) (num2 / 50.0) + 1;
         num1 = num3 - (float) num8;
-        vector2_1 = Vector2.op_Addition(vector2_1, vector2_2);
+        vector2_1 += vector2_2;
         for (int index = 0; index < num8; ++index)
         {
-          vector2_1 = Vector2.op_Addition(vector2_1, vector2_2);
-          vector2_2 = Vector2.op_Addition(vector2_2, Utils.RandomVector2(GenBase._random, -0.5f, 0.5f));
+          vector2_1 += vector2_2;
+          vector2_2 += Utils.RandomVector2(GenBase._random, -0.5f, 0.5f);
         }
-        vector2_2 = Vector2.Clamp(Vector2.op_Addition(vector2_2, Utils.RandomVector2(GenBase._random, -0.5f, 0.5f)), Vector2.op_UnaryNegation(Vector2.get_One()), Vector2.get_One());
+        vector2_2 = Vector2.Clamp(vector2_2 + Utils.RandomVector2(GenBase._random, -0.5f, 0.5f), -Vector2.One, Vector2.One);
       }
       return true;
     }

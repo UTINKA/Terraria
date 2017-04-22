@@ -1,7 +1,7 @@
 ﻿// Decompiled with JetBrains decompiler
 // Type: Terraria.GameContent.Skies.MoonLordSky
 // Assembly: TerrariaServer, Version=1.3.5.1, Culture=neutral, PublicKeyToken=null
-// MVID: 880A80AC-FC6C-4F43-ABDD-E2472DA66CB5
+// MVID: C2103E81-0935-4BEA-9E98-4159FC80C2BB
 // Assembly location: F:\Steam\steamapps\common\Terraria\TerrariaServer.exe
 
 using Microsoft.Xna.Framework;
@@ -38,8 +38,7 @@ namespace Terraria.GameContent.Skies
     public override Color OnTileColor(Color inColor)
     {
       float intensity = this.GetIntensity();
-      // ISSUE: explicit reference operation
-      return new Color(Vector4.Lerp(new Vector4(0.5f, 0.8f, 1f, 1f), ((Color) @inColor).ToVector4(), 1f - intensity));
+      return new Color(Vector4.Lerp(new Vector4(0.5f, 0.8f, 1f, 1f), inColor.ToVector4(), 1f - intensity));
     }
 
     private bool UpdateMoonLordIndex()
@@ -64,7 +63,7 @@ namespace Terraria.GameContent.Skies
       if ((double) maxDepth < 0.0 || (double) minDepth >= 0.0)
         return;
       float intensity = this.GetIntensity();
-      spriteBatch.Draw(Main.blackTileTexture, new Rectangle(0, 0, Main.screenWidth, Main.screenHeight), Color.op_Multiply(Color.get_Black(), intensity));
+      spriteBatch.Draw(Main.blackTileTexture, new Rectangle(0, 0, Main.screenWidth, Main.screenHeight), Color.Black * intensity);
     }
 
     public override float GetCloudAlpha()

@@ -1,7 +1,7 @@
 ﻿// Decompiled with JetBrains decompiler
 // Type: Terraria.HitTile
 // Assembly: Terraria, Version=1.3.5.1, Culture=neutral, PublicKeyToken=null
-// MVID: DF0400F4-EE47-4864-BE80-932EDB02D8A6
+// MVID: E90A5A2F-CD10-4A2C-9D2A-6B036D4E8877
 // Assembly location: F:\Steam\steamapps\common\Terraria\Terraria.exe
 
 using Microsoft.Xna.Framework;
@@ -77,7 +77,7 @@ namespace Terraria
       hitTileObject.damage += damageAmount;
       hitTileObject.timeToLive = 60;
       hitTileObject.animationTimeElapsed = 0;
-      hitTileObject.animationDirection = Vector2.op_Multiply((Main.rand.NextFloat() * 6.283185f).ToRotationVector2(), 2f);
+      hitTileObject.animationDirection = (Main.rand.NextFloat() * 6.283185f).ToRotationVector2() * 2f;
       if (tileId == this.bufferLocation)
       {
         this.bufferLocation = this.order[20];
@@ -187,12 +187,10 @@ namespace Terraria
       if (!Main.SettingsEnabled_MinersWobble)
         return;
       int num1 = 1;
-      Vector2 zero1;
-      // ISSUE: explicit reference operation
-      ((Vector2) @zero1).\u002Ector((float) Main.offScreenRange);
+      Vector2 vector2_1 = new Vector2((float) Main.offScreenRange);
       if (Main.drawToScreen)
-        zero1 = Vector2.get_Zero();
-      zero1 = Vector2.get_Zero();
+        vector2_1 = Vector2.Zero;
+      vector2_1 = Vector2.Zero;
       for (int index = 0; index < this.data.Length; ++index)
       {
         if (this.data[index].type == num1)
@@ -242,46 +240,38 @@ namespace Terraria
                     num2 = 1;
                   else if (damage >= 20)
                     num2 = 0;
-                  Rectangle rectangle;
-                  // ISSUE: explicit reference operation
-                  ((Rectangle) @rectangle).\u002Ector(this.data[index].crackStyle * 18, num2 * 18, 16, 16);
-                  // ISSUE: explicit reference operation
-                  ((Rectangle) @rectangle).Inflate(-2, -2);
+                  Rectangle rectangle = new Rectangle(this.data[index].crackStyle * 18, num2 * 18, 16, 16);
+                  rectangle.Inflate(-2, -2);
                   if (flag3)
-                    rectangle.X = (__Null) ((4 + this.data[index].crackStyle / 2) * 18);
+                    rectangle.X = (4 + this.data[index].crackStyle / 2) * 18;
                   int animationTimeElapsed = this.data[index].animationTimeElapsed;
                   if ((double) animationTimeElapsed < 10.0)
                   {
                     float num3 = (float) animationTimeElapsed / 10f;
                     float num4 = 1f;
                     Color color1 = Lighting.GetColor(x, y);
-                    float num5 = 0.0f;
-                    Vector2 zero2 = Vector2.get_Zero();
-                    float num6 = num3;
-                    float num7 = 0.5f;
-                    float num8 = num6 % num7 * (1f / num7);
-                    if ((int) ((double) num6 / (double) num7) % 2 == 1)
-                      num8 = 1f - num8;
-                    num4 = (float) ((double) num8 * 0.449999988079071 + 1.0);
+                    float rotation = 0.0f;
+                    Vector2 zero = Vector2.Zero;
+                    float num5 = num3;
+                    float num6 = 0.5f;
+                    float num7 = num5 % num6 * (1f / num6);
+                    if ((int) ((double) num5 / (double) num6) % 2 == 1)
+                      num7 = 1f - num7;
+                    num4 = (float) ((double) num7 * 0.449999988079071 + 1.0);
                     Tile tileSafely = Framing.GetTileSafely(x, y);
                     Tile tile = tileSafely;
-                    Texture2D texture2D = !Main.canDrawColorTile(tileSafely.type, (int) tileSafely.color()) ? Main.tileTexture[(int) tileSafely.type] : (Texture2D) Main.tileAltTexture[(int) tileSafely.type, (int) tileSafely.color()];
-                    Vector2 vector2_1;
-                    // ISSUE: explicit reference operation
-                    ((Vector2) @vector2_1).\u002Ector(8f);
-                    Vector2 vector2_2;
-                    // ISSUE: explicit reference operation
-                    ((Vector2) @vector2_2).\u002Ector(1f);
-                    float num9 = (float) ((double) num8 * 0.200000002980232 + 1.0);
-                    float num10 = 1f - num8;
-                    float num11 = 1f;
-                    Color color2 = Color.op_Multiply(color1, (float) ((double) num11 * (double) num11 * 0.800000011920929));
-                    Vector2 vector2_3 = Vector2.op_Multiply(num9, vector2_2);
-                    Vector2 vector2_4 = Vector2.op_Addition(Vector2.op_Addition(Vector2.op_Addition(new Vector2((float) (x * 16 - (int) Main.screenPosition.X), (float) (y * 16 - (int) Main.screenPosition.Y)), zero1), vector2_1), zero2).Floor();
-                    spriteBatch.Draw(texture2D, vector2_4, new Rectangle?(new Rectangle((int) tile.frameX, (int) tile.frameY, 16, 16)), color2, num5, vector2_1, vector2_3, (SpriteEffects) 0, 0.0f);
-                    // ISSUE: explicit reference operation
-                    ((Color) @color2).set_A((byte) 180);
-                    spriteBatch.Draw(Main.tileCrackTexture, vector2_4, new Rectangle?(rectangle), color2, num5, vector2_1, vector2_3, (SpriteEffects) 0, 0.0f);
+                    Texture2D texture = !Main.canDrawColorTile(tileSafely.type, (int) tileSafely.color()) ? Main.tileTexture[(int) tileSafely.type] : (Texture2D) Main.tileAltTexture[(int) tileSafely.type, (int) tileSafely.color()];
+                    Vector2 origin = new Vector2(8f);
+                    Vector2 vector2_2 = new Vector2(1f);
+                    float num8 = (float) ((double) num7 * 0.200000002980232 + 1.0);
+                    float num9 = 1f - num7;
+                    float num10 = 1f;
+                    Color color2 = color1 * (float) ((double) num10 * (double) num10 * 0.800000011920929);
+                    Vector2 scale = num8 * vector2_2;
+                    Vector2 position = (new Vector2((float) (x * 16 - (int) Main.screenPosition.X), (float) (y * 16 - (int) Main.screenPosition.Y)) + vector2_1 + origin + zero).Floor();
+                    spriteBatch.Draw(texture, position, new Rectangle?(new Rectangle((int) tile.frameX, (int) tile.frameY, 16, 16)), color2, rotation, origin, scale, SpriteEffects.None, 0.0f);
+                    color2.A = (byte) 180;
+                    spriteBatch.Draw(Main.tileCrackTexture, position, new Rectangle?(rectangle), color2, rotation, origin, scale, SpriteEffects.None, 0.0f);
                   }
                 }
               }

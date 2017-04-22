@@ -1,7 +1,7 @@
 ﻿// Decompiled with JetBrains decompiler
 // Type: Terraria.DeprecatedClassLeftInForLoading
 // Assembly: Terraria, Version=1.3.5.1, Culture=neutral, PublicKeyToken=null
-// MVID: DF0400F4-EE47-4864-BE80-932EDB02D8A6
+// MVID: E90A5A2F-CD10-4A2C-9D2A-6B036D4E8877
 // Assembly location: F:\Steam\steamapps\common\Terraria\Terraria.exe
 
 using Microsoft.Xna.Framework;
@@ -31,13 +31,10 @@ namespace Terraria
     {
       Dictionary<int, Rectangle> dictionary = new Dictionary<int, Rectangle>();
       bool flag1 = false;
-      Rectangle rectangle1;
-      // ISSUE: explicit reference operation
-      ((Rectangle) @rectangle1).\u002Ector(0, 0, 32, 48);
-      // ISSUE: explicit reference operation
-      ((Rectangle) @rectangle1).Inflate(1600, 1600);
-      int x = (int) rectangle1.X;
-      int y = (int) rectangle1.Y;
+      Rectangle rectangle = new Rectangle(0, 0, 32, 48);
+      rectangle.Inflate(1600, 1600);
+      int x = rectangle.X;
+      int y = rectangle.Y;
       for (int index1 = 0; index1 < 1000; ++index1)
       {
         if (DeprecatedClassLeftInForLoading.dummies[index1] != null)
@@ -59,20 +56,15 @@ namespace Terraria
               }
               flag1 = true;
             }
-            rectangle1.X = (__Null) ((int) DeprecatedClassLeftInForLoading.dummies[index1].x * 16 + x);
-            rectangle1.Y = (__Null) ((int) DeprecatedClassLeftInForLoading.dummies[index1].y * 16 + y);
+            rectangle.X = (int) DeprecatedClassLeftInForLoading.dummies[index1].x * 16 + x;
+            rectangle.Y = (int) DeprecatedClassLeftInForLoading.dummies[index1].y * 16 + y;
             bool flag2 = false;
-            using (Dictionary<int, Rectangle>.Enumerator enumerator = dictionary.GetEnumerator())
+            foreach (KeyValuePair<int, Rectangle> keyValuePair in dictionary)
             {
-              while (enumerator.MoveNext())
+              if (keyValuePair.Value.Intersects(rectangle))
               {
-                Rectangle rectangle2 = enumerator.Current.Value;
-                // ISSUE: explicit reference operation
-                if (((Rectangle) @rectangle2).Intersects(rectangle1))
-                {
-                  flag2 = true;
-                  break;
-                }
+                flag2 = true;
+                break;
               }
             }
             if (flag2)

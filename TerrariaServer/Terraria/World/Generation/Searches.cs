@@ -1,7 +1,7 @@
 ﻿// Decompiled with JetBrains decompiler
 // Type: Terraria.World.Generation.Searches
 // Assembly: TerrariaServer, Version=1.3.5.1, Culture=neutral, PublicKeyToken=null
-// MVID: 880A80AC-FC6C-4F43-ABDD-E2472DA66CB5
+// MVID: C2103E81-0935-4BEA-9E98-4159FC80C2BB
 // Assembly location: F:\Steam\steamapps\common\Terraria\TerrariaServer.exe
 
 using Microsoft.Xna.Framework;
@@ -28,8 +28,8 @@ namespace Terraria.World.Generation
       {
         for (int index = 0; index < this._maxDistance; ++index)
         {
-          if (this.Check(origin.X - index, (int) origin.Y))
-            return new Point(origin.X - index, (int) origin.Y);
+          if (this.Check(origin.X - index, origin.Y))
+            return new Point(origin.X - index, origin.Y);
         }
         return GenSearch.NOT_FOUND;
       }
@@ -48,8 +48,8 @@ namespace Terraria.World.Generation
       {
         for (int index = 0; index < this._maxDistance; ++index)
         {
-          if (this.Check(origin.X + index, (int) origin.Y))
-            return new Point(origin.X + index, (int) origin.Y);
+          if (this.Check(origin.X + index, origin.Y))
+            return new Point(origin.X + index, origin.Y);
         }
         return GenSearch.NOT_FOUND;
       }
@@ -68,8 +68,8 @@ namespace Terraria.World.Generation
       {
         for (int index = 0; index < this._maxDistance; ++index)
         {
-          if (this.Check((int) origin.X, origin.Y + index))
-            return new Point((int) origin.X, origin.Y + index);
+          if (this.Check(origin.X, origin.Y + index))
+            return new Point(origin.X, origin.Y + index);
         }
         return GenSearch.NOT_FOUND;
       }
@@ -88,8 +88,8 @@ namespace Terraria.World.Generation
       {
         for (int index = 0; index < this._maxDistance; ++index)
         {
-          if (this.Check((int) origin.X, origin.Y - index))
-            return new Point((int) origin.X, origin.Y - index);
+          if (this.Check(origin.X, origin.Y - index))
+            return new Point(origin.X, origin.Y - index);
         }
         return GenSearch.NOT_FOUND;
       }

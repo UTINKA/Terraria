@@ -1,7 +1,7 @@
 ﻿// Decompiled with JetBrains decompiler
 // Type: Terraria.Graphics.Shaders.HairShaderData
 // Assembly: TerrariaServer, Version=1.3.5.1, Culture=neutral, PublicKeyToken=null
-// MVID: 880A80AC-FC6C-4F43-ABDD-E2472DA66CB5
+// MVID: C2103E81-0935-4BEA-9E98-4159FC80C2BB
 // Assembly location: F:\Steam\steamapps\common\Terraria\TerrariaServer.exe
 
 using Microsoft.Xna.Framework;
@@ -12,8 +12,8 @@ namespace Terraria.Graphics.Shaders
 {
   public class HairShaderData : ShaderData
   {
-    protected Vector3 _uColor = Vector3.get_One();
-    protected Vector3 _uSecondaryColor = Vector3.get_One();
+    protected Vector3 _uColor = Vector3.One;
+    protected Vector3 _uSecondaryColor = Vector3.One;
     protected float _uSaturation = 1f;
     protected float _uOpacity = 1f;
     protected Ref<Texture2D> _uImage;
@@ -36,38 +36,33 @@ namespace Terraria.Graphics.Shaders
     {
       if (this._shaderDisabled)
         return;
-      this.Shader.get_Parameters().get_Item("uColor").SetValue(this._uColor);
-      this.Shader.get_Parameters().get_Item("uSaturation").SetValue(this._uSaturation);
-      this.Shader.get_Parameters().get_Item("uSecondaryColor").SetValue(this._uSecondaryColor);
-      this.Shader.get_Parameters().get_Item("uTime").SetValue(Main.GlobalTime);
-      this.Shader.get_Parameters().get_Item("uOpacity").SetValue(this._uOpacity);
+      this.Shader.Parameters["uColor"].SetValue(this._uColor);
+      this.Shader.Parameters["uSaturation"].SetValue(this._uSaturation);
+      this.Shader.Parameters["uSecondaryColor"].SetValue(this._uSecondaryColor);
+      this.Shader.Parameters["uTime"].SetValue(Main.GlobalTime);
+      this.Shader.Parameters["uOpacity"].SetValue(this._uOpacity);
       if (drawData.HasValue)
       {
         DrawData drawData1 = drawData.Value;
-        Vector4 vector4;
-        // ISSUE: explicit reference operation
-        ((Vector4) @vector4).\u002Ector((float) drawData1.sourceRect.Value.X, (float) drawData1.sourceRect.Value.Y, (float) drawData1.sourceRect.Value.Width, (float) drawData1.sourceRect.Value.Height);
-        this.Shader.get_Parameters().get_Item("uSourceRect").SetValue(vector4);
-        this.Shader.get_Parameters().get_Item("uWorldPosition").SetValue(Vector2.op_Addition(Main.screenPosition, drawData1.position));
-        this.Shader.get_Parameters().get_Item("uImageSize0").SetValue(new Vector2((float) drawData1.texture.get_Width(), (float) drawData1.texture.get_Height()));
+        this.Shader.Parameters["uSourceRect"].SetValue(new Vector4((float) drawData1.sourceRect.Value.X, (float) drawData1.sourceRect.Value.Y, (float) drawData1.sourceRect.Value.Width, (float) drawData1.sourceRect.Value.Height));
+        this.Shader.Parameters["uWorldPosition"].SetValue(Main.screenPosition + drawData1.position);
+        this.Shader.Parameters["uImageSize0"].SetValue(new Vector2((float) drawData1.texture.Width, (float) drawData1.texture.Height));
       }
       else
-        this.Shader.get_Parameters().get_Item("uSourceRect").SetValue(new Vector4(0.0f, 0.0f, 4f, 4f));
+        this.Shader.Parameters["uSourceRect"].SetValue(new Vector4(0.0f, 0.0f, 4f, 4f));
       if (this._uImage != null)
       {
-        Main.graphics.get_GraphicsDevice().get_Textures().set_Item(1, (Texture) this._uImage.Value);
-        this.Shader.get_Parameters().get_Item("uImageSize1").SetValue(new Vector2((float) this._uImage.Value.get_Width(), (float) this._uImage.Value.get_Height()));
+        Main.graphics.GraphicsDevice.Textures[1] = (Texture) this._uImage.Value;
+        this.Shader.Parameters["uImageSize1"].SetValue(new Vector2((float) this._uImage.Value.Width, (float) this._uImage.Value.Height));
       }
       if (player != null)
-        this.Shader.get_Parameters().get_Item("uDirection").SetValue((float) player.direction);
+        this.Shader.Parameters["uDirection"].SetValue((float) player.direction);
       this.Apply();
     }
 
     public virtual Color GetColor(Player player, Color lightColor)
     {
-      // ISSUE: explicit reference operation
-      // ISSUE: explicit reference operation
-      return new Color(Vector4.op_Multiply(((Color) @lightColor).ToVector4(), ((Color) @player.hairColor).ToVector4()));
+      return new Color(lightColor.ToVector4() * player.hairColor.ToVector4());
     }
 
     public HairShaderData UseColor(float r, float g, float b)
@@ -77,8 +72,7 @@ namespace Terraria.Graphics.Shaders
 
     public HairShaderData UseColor(Color color)
     {
-      // ISSUE: explicit reference operation
-      return this.UseColor(((Color) @color).ToVector3());
+      return this.UseColor(color.ToVector3());
     }
 
     public HairShaderData UseColor(Vector3 color)
@@ -106,8 +100,7 @@ namespace Terraria.Graphics.Shaders
 
     public HairShaderData UseSecondaryColor(Color color)
     {
-      // ISSUE: explicit reference operation
-      return this.UseSecondaryColor(((Color) @color).ToVector3());
+      return this.UseSecondaryColor(color.ToVector3());
     }
 
     public HairShaderData UseSecondaryColor(Vector3 color)

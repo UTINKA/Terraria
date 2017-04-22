@@ -1,7 +1,7 @@
 ﻿// Decompiled with JetBrains decompiler
 // Type: Terraria.TileObject
 // Assembly: Terraria, Version=1.3.5.1, Culture=neutral, PublicKeyToken=null
-// MVID: DF0400F4-EE47-4864-BE80-932EDB02D8A6
+// MVID: E90A5A2F-CD10-4A2C-9D2A-6B036D4E8877
 // Assembly location: F:\Steam\steamapps\common\Terraria\Terraria.exe
 
 using Microsoft.Xna.Framework;
@@ -184,101 +184,51 @@ namespace Terraria
           int num9 = y - (int) tileData2.Origin.Y;
           if (num8 < 5 || num8 + tileData2.Width > Main.maxTilesX - 5 || (num9 < 5 || num9 + tileData2.Height > Main.maxTilesY - 5))
             return false;
-          Rectangle rectangle;
-          // ISSUE: explicit reference operation
-          ((Rectangle) @rectangle).\u002Ector(0, 0, tileData2.Width, tileData2.Height);
+          Rectangle rectangle = new Rectangle(0, 0, tileData2.Width, tileData2.Height);
           int X = 0;
           int Y = 0;
           if (tileData2.AnchorTop.tileCount != 0)
           {
-            if (rectangle.Y == null)
+            if (rectangle.Y == 0)
             {
-              rectangle.Y = (__Null) -1;
-              // ISSUE: explicit reference operation
-              // ISSUE: variable of a reference type
-              Rectangle& local = @rectangle;
-              // ISSUE: explicit reference operation
-              int num10 = (^local).Height + 1;
-              // ISSUE: explicit reference operation
-              (^local).Height = (__Null) num10;
+              rectangle.Y = -1;
+              ++rectangle.Height;
               ++Y;
             }
             int checkStart = tileData2.AnchorTop.checkStart;
             if (checkStart < rectangle.X)
             {
-              // ISSUE: explicit reference operation
-              // ISSUE: variable of a reference type
-              Rectangle& local = @rectangle;
-              // ISSUE: explicit reference operation
-              int num10 = (^local).Width + (rectangle.X - checkStart);
-              // ISSUE: explicit reference operation
-              (^local).Width = (__Null) num10;
+              rectangle.Width += rectangle.X - checkStart;
               X += rectangle.X - checkStart;
-              rectangle.X = (__Null) checkStart;
+              rectangle.X = checkStart;
             }
-            int num11 = checkStart + tileData2.AnchorTop.tileCount - 1;
-            int num12 = rectangle.X + rectangle.Width - 1;
-            if (num11 > num12)
-            {
-              // ISSUE: explicit reference operation
-              // ISSUE: variable of a reference type
-              Rectangle& local = @rectangle;
-              // ISSUE: explicit reference operation
-              int num10 = (^local).Width + (num11 - num12);
-              // ISSUE: explicit reference operation
-              (^local).Width = (__Null) num10;
-            }
+            int num10 = checkStart + tileData2.AnchorTop.tileCount - 1;
+            int num11 = rectangle.X + rectangle.Width - 1;
+            if (num10 > num11)
+              rectangle.Width += num10 - num11;
           }
           if (tileData2.AnchorBottom.tileCount != 0)
           {
             if (rectangle.Y + rectangle.Height == tileData2.Height)
-            {
-              // ISSUE: explicit reference operation
-              // ISSUE: variable of a reference type
-              Rectangle& local = @rectangle;
-              // ISSUE: explicit reference operation
-              int num10 = (^local).Height + 1;
-              // ISSUE: explicit reference operation
-              (^local).Height = (__Null) num10;
-            }
+              ++rectangle.Height;
             int checkStart = tileData2.AnchorBottom.checkStart;
             if (checkStart < rectangle.X)
             {
-              // ISSUE: explicit reference operation
-              // ISSUE: variable of a reference type
-              Rectangle& local = @rectangle;
-              // ISSUE: explicit reference operation
-              int num10 = (^local).Width + (rectangle.X - checkStart);
-              // ISSUE: explicit reference operation
-              (^local).Width = (__Null) num10;
+              rectangle.Width += rectangle.X - checkStart;
               X += rectangle.X - checkStart;
-              rectangle.X = (__Null) checkStart;
+              rectangle.X = checkStart;
             }
-            int num11 = checkStart + tileData2.AnchorBottom.tileCount - 1;
-            int num12 = rectangle.X + rectangle.Width - 1;
-            if (num11 > num12)
-            {
-              // ISSUE: explicit reference operation
-              // ISSUE: variable of a reference type
-              Rectangle& local = @rectangle;
-              // ISSUE: explicit reference operation
-              int num10 = (^local).Width + (num11 - num12);
-              // ISSUE: explicit reference operation
-              (^local).Width = (__Null) num10;
-            }
+            int num10 = checkStart + tileData2.AnchorBottom.tileCount - 1;
+            int num11 = rectangle.X + rectangle.Width - 1;
+            if (num10 > num11)
+              rectangle.Width += num10 - num11;
           }
           if (tileData2.AnchorLeft.tileCount != 0)
           {
-            if (rectangle.X == null)
+            if (rectangle.X == 0)
             {
-              rectangle.X = (__Null) -1;
-              // ISSUE: explicit reference operation
-              // ISSUE: variable of a reference type
-              Rectangle& local = @rectangle;
-              // ISSUE: explicit reference operation
-              int num10 = (^local).Width + 1;
-              // ISSUE: explicit reference operation
-              (^local).Width = (__Null) num10;
+              rectangle.X = -1;
+              ++rectangle.Width;
               ++X;
             }
             int checkStart = tileData2.AnchorLeft.checkStart;
@@ -286,72 +236,36 @@ namespace Terraria
               --checkStart;
             if (checkStart < rectangle.Y)
             {
-              // ISSUE: explicit reference operation
-              // ISSUE: variable of a reference type
-              Rectangle& local = @rectangle;
-              // ISSUE: explicit reference operation
-              int num10 = (^local).Width + (rectangle.Y - checkStart);
-              // ISSUE: explicit reference operation
-              (^local).Width = (__Null) num10;
+              rectangle.Width += rectangle.Y - checkStart;
               Y += rectangle.Y - checkStart;
-              rectangle.Y = (__Null) checkStart;
+              rectangle.Y = checkStart;
             }
-            int num11 = checkStart + tileData2.AnchorLeft.tileCount - 1;
+            int num10 = checkStart + tileData2.AnchorLeft.tileCount - 1;
             if ((tileData2.AnchorLeft.type & AnchorType.Tree) == AnchorType.Tree)
-              num11 += 2;
-            int num12 = rectangle.Y + rectangle.Height - 1;
-            if (num11 > num12)
-            {
-              // ISSUE: explicit reference operation
-              // ISSUE: variable of a reference type
-              Rectangle& local = @rectangle;
-              // ISSUE: explicit reference operation
-              int num10 = (^local).Height + (num11 - num12);
-              // ISSUE: explicit reference operation
-              (^local).Height = (__Null) num10;
-            }
+              num10 += 2;
+            int num11 = rectangle.Y + rectangle.Height - 1;
+            if (num10 > num11)
+              rectangle.Height += num10 - num11;
           }
           if (tileData2.AnchorRight.tileCount != 0)
           {
             if (rectangle.X + rectangle.Width == tileData2.Width)
-            {
-              // ISSUE: explicit reference operation
-              // ISSUE: variable of a reference type
-              Rectangle& local = @rectangle;
-              // ISSUE: explicit reference operation
-              int num10 = (^local).Width + 1;
-              // ISSUE: explicit reference operation
-              (^local).Width = (__Null) num10;
-            }
+              ++rectangle.Width;
             int checkStart = tileData2.AnchorLeft.checkStart;
             if ((tileData2.AnchorRight.type & AnchorType.Tree) == AnchorType.Tree)
               --checkStart;
             if (checkStart < rectangle.Y)
             {
-              // ISSUE: explicit reference operation
-              // ISSUE: variable of a reference type
-              Rectangle& local = @rectangle;
-              // ISSUE: explicit reference operation
-              int num10 = (^local).Width + (rectangle.Y - checkStart);
-              // ISSUE: explicit reference operation
-              (^local).Width = (__Null) num10;
+              rectangle.Width += rectangle.Y - checkStart;
               Y += rectangle.Y - checkStart;
-              rectangle.Y = (__Null) checkStart;
+              rectangle.Y = checkStart;
             }
-            int num11 = checkStart + tileData2.AnchorRight.tileCount - 1;
+            int num10 = checkStart + tileData2.AnchorRight.tileCount - 1;
             if ((tileData2.AnchorRight.type & AnchorType.Tree) == AnchorType.Tree)
-              num11 += 2;
-            int num12 = rectangle.Y + rectangle.Height - 1;
-            if (num11 > num12)
-            {
-              // ISSUE: explicit reference operation
-              // ISSUE: variable of a reference type
-              Rectangle& local = @rectangle;
-              // ISSUE: explicit reference operation
-              int num10 = (^local).Height + (num11 - num12);
-              // ISSUE: explicit reference operation
-              (^local).Height = (__Null) num10;
-            }
+              num10 += 2;
+            int num11 = rectangle.Y + rectangle.Height - 1;
+            if (num10 > num11)
+              rectangle.Height += num10 - num11;
           }
           if (onlyCheck)
           {
@@ -360,14 +274,14 @@ namespace Terraria
             TileObject.objectPreview.Type = (ushort) type;
             TileObject.objectPreview.Style = (short) style;
             TileObject.objectPreview.Alternate = alternate;
-            TileObject.objectPreview.Size = new Point16((int) rectangle.Width, (int) rectangle.Height);
+            TileObject.objectPreview.Size = new Point16(rectangle.Width, rectangle.Height);
             TileObject.objectPreview.ObjectStart = new Point16(X, Y);
             TileObject.objectPreview.Coordinates = new Point16(num8 - X, num9 - Y);
           }
-          float num13 = 0.0f;
-          float num14 = (float) (tileData2.Width * tileData2.Height);
+          float num12 = 0.0f;
+          float num13 = (float) (tileData2.Width * tileData2.Height);
+          float num14 = 0.0f;
           float num15 = 0.0f;
-          float num16 = 0.0f;
           for (int index1 = 0; index1 < tileData2.Width; ++index1)
           {
             for (int index2 = 0; index2 < tileData2.Height; ++index2)
@@ -377,11 +291,11 @@ namespace Terraria
               bool flag3 = false;
               if (tileData2.AnchorWall)
               {
-                ++num16;
+                ++num15;
                 if (!tileData2.isValidWallAnchor((int) tileSafely.wall))
                   flag3 = true;
                 else
-                  ++num15;
+                  ++num14;
               }
               bool flag4 = false;
               if (tileSafely.active() && !Main.tileCut[(int) tileSafely.type])
@@ -395,14 +309,14 @@ namespace Terraria
               {
                 if (onlyCheck)
                   TileObject.objectPreview[index1 + X, index2 + Y] = 1;
-                ++num13;
+                ++num12;
               }
             }
           }
           AnchorData anchorBottom = tileData2.AnchorBottom;
           if (anchorBottom.tileCount != 0)
           {
-            num16 += (float) anchorBottom.tileCount;
+            num15 += (float) anchorBottom.tileCount;
             int height = tileData2.Height;
             for (int index = 0; index < anchorBottom.tileCount; ++index)
             {
@@ -450,14 +364,14 @@ namespace Terraria
               {
                 if (onlyCheck)
                   TileObject.objectPreview[num10 + X, height + Y] = 1;
-                ++num15;
+                ++num14;
               }
             }
           }
           AnchorData anchorTop = tileData2.AnchorTop;
           if (anchorTop.tileCount != 0)
           {
-            num16 += (float) anchorTop.tileCount;
+            num15 += (float) anchorTop.tileCount;
             int num10 = -1;
             for (int index = 0; index < anchorTop.tileCount; ++index)
             {
@@ -494,14 +408,14 @@ namespace Terraria
               {
                 if (onlyCheck)
                   TileObject.objectPreview[num11 + X, num10 + Y] = 1;
-                ++num15;
+                ++num14;
               }
             }
           }
           AnchorData anchorRight = tileData2.AnchorRight;
           if (anchorRight.tileCount != 0)
           {
-            num16 += (float) anchorRight.tileCount;
+            num15 += (float) anchorRight.tileCount;
             int width = tileData2.Width;
             for (int index = 0; index < anchorRight.tileCount; ++index)
             {
@@ -527,11 +441,11 @@ namespace Terraria
                   flag2 = true;
                   if (index == 0)
                   {
-                    ++num16;
+                    ++num15;
                     Tile tileSafely2 = Framing.GetTileSafely(num8 + width, num9 + num10 - 1);
                     if (tileSafely2.nactive() && (int) tileSafely2.type == 5)
                     {
-                      ++num15;
+                      ++num14;
                       if (onlyCheck)
                         TileObject.objectPreview[width + X, num10 + Y - 1] = 1;
                     }
@@ -540,11 +454,11 @@ namespace Terraria
                   }
                   if (index == anchorRight.tileCount - 1)
                   {
-                    ++num16;
+                    ++num15;
                     Tile tileSafely2 = Framing.GetTileSafely(num8 + width, num9 + num10 + 1);
                     if (tileSafely2.nactive() && (int) tileSafely2.type == 5)
                     {
-                      ++num15;
+                      ++num14;
                       if (onlyCheck)
                         TileObject.objectPreview[width + X, num10 + Y + 1] = 1;
                     }
@@ -566,14 +480,14 @@ namespace Terraria
               {
                 if (onlyCheck)
                   TileObject.objectPreview[width + X, num10 + Y] = 1;
-                ++num15;
+                ++num14;
               }
             }
           }
           AnchorData anchorLeft = tileData2.AnchorLeft;
           if (anchorLeft.tileCount != 0)
           {
-            num16 += (float) anchorLeft.tileCount;
+            num15 += (float) anchorLeft.tileCount;
             int num10 = -1;
             for (int index = 0; index < anchorLeft.tileCount; ++index)
             {
@@ -599,11 +513,11 @@ namespace Terraria
                   flag2 = true;
                   if (index == 0)
                   {
-                    ++num16;
+                    ++num15;
                     Tile tileSafely2 = Framing.GetTileSafely(num8 + num10, num9 + num11 - 1);
                     if (tileSafely2.nactive() && (int) tileSafely2.type == 5)
                     {
-                      ++num15;
+                      ++num14;
                       if (onlyCheck)
                         TileObject.objectPreview[num10 + X, num11 + Y - 1] = 1;
                     }
@@ -612,11 +526,11 @@ namespace Terraria
                   }
                   if (index == anchorLeft.tileCount - 1)
                   {
-                    ++num16;
+                    ++num15;
                     Tile tileSafely2 = Framing.GetTileSafely(num8 + num10, num9 + num11 + 1);
                     if (tileSafely2.nactive() && (int) tileSafely2.type == 5)
                     {
-                      ++num15;
+                      ++num14;
                       if (onlyCheck)
                         TileObject.objectPreview[num10 + X, num11 + Y + 1] = 1;
                     }
@@ -638,7 +552,7 @@ namespace Terraria
               {
                 if (onlyCheck)
                   TileObject.objectPreview[num10 + X, num11 + Y] = 1;
-                ++num15;
+                ++num14;
               }
             }
           }
@@ -651,19 +565,19 @@ namespace Terraria
             }
             if (tileData2.HookCheck.hook(x, y, type, style, dir) == tileData2.HookCheck.badReturn && tileData2.HookCheck.badResponse == 0)
             {
-              num15 = 0.0f;
-              num13 = 0.0f;
+              num14 = 0.0f;
+              num12 = 0.0f;
               TileObject.objectPreview.AllInvalid();
             }
           }
-          float num17 = num15 / num16;
-          float num18 = num13 / num14;
-          if ((double) num18 == 1.0 && (double) num16 == 0.0)
+          float num16 = num14 / num15;
+          float num17 = num12 / num13;
+          if ((double) num17 == 1.0 && (double) num15 == 0.0)
           {
+            num16 = 1f;
             num17 = 1f;
-            num18 = 1f;
           }
-          if ((double) num17 == 1.0 && (double) num18 == 1.0)
+          if ((double) num16 == 1.0 && (double) num17 == 1.0)
           {
             num5 = 1f;
             num6 = 1f;
@@ -671,17 +585,17 @@ namespace Terraria
             tileObjectData = tileData2;
             break;
           }
-          if ((double) num17 > (double) num5 || (double) num17 == (double) num5 && (double) num18 > (double) num6)
+          if ((double) num16 > (double) num5 || (double) num16 == (double) num5 && (double) num17 > (double) num6)
           {
             TileObjectPreviewData.placementCache.CopyFrom(TileObject.objectPreview);
-            num5 = num17;
-            num6 = num18;
+            num5 = num16;
+            num6 = num17;
             tileObjectData = tileData2;
             num7 = alternate;
           }
         }
       }
-      int num19 = -1;
+      int num18 = -1;
       if (flag1)
       {
         if (TileObjectPreviewData.randomCache == null)
@@ -700,7 +614,7 @@ namespace Terraria
         }
         else
           flag2 = true;
-        num19 = !flag2 ? TileObjectPreviewData.randomCache.Random : Main.rand.Next(tileData1.RandomStyleRange);
+        num18 = !flag2 ? TileObjectPreviewData.randomCache.Random : Main.rand.Next(tileData1.RandomStyleRange);
       }
       if (onlyCheck)
       {
@@ -709,7 +623,7 @@ namespace Terraria
           TileObject.objectPreview.CopyFrom(TileObjectPreviewData.placementCache);
           alternate = num7;
         }
-        TileObject.objectPreview.Random = num19;
+        TileObject.objectPreview.Random = num18;
         if (tileData1.RandomStyleRange > 0)
           TileObjectPreviewData.randomCache.CopyFrom(TileObject.objectPreview);
       }
@@ -720,7 +634,7 @@ namespace Terraria
         objectData.type = type;
         objectData.style = style;
         objectData.alternate = alternate;
-        objectData.random = num19;
+        objectData.random = num18;
       }
       if ((double) num5 == 1.0)
         return (double) num6 == 1.0;
@@ -730,7 +644,7 @@ namespace Terraria
     public static void DrawPreview(SpriteBatch sb, TileObjectPreviewData op, Vector2 position)
     {
       Point16 coordinates = op.Coordinates;
-      Texture2D texture2D = Main.tileTexture[(int) op.Type];
+      Texture2D texture = Main.tileTexture[(int) op.Type];
       TileObjectData tileData = TileObjectData.GetTileData((int) op.Type, (int) op.Style, op.Alternate);
       int placementStyle = tileData.CalculatePlacementStyle((int) op.Style, op.Alternate, op.Random);
       int num1 = 0;
@@ -754,39 +668,37 @@ namespace Terraria
       }
       for (int index1 = 0; index1 < (int) op.Size.X; ++index1)
       {
-        int num4 = num2 + (index1 - (int) op.ObjectStart.X) * (tileData.CoordinateWidth + tileData.CoordinatePadding);
-        int num5 = num3;
+        int x = num2 + (index1 - (int) op.ObjectStart.X) * (tileData.CoordinateWidth + tileData.CoordinatePadding);
+        int y = num3;
         for (int index2 = 0; index2 < (int) op.Size.Y; ++index2)
         {
           int i = (int) coordinates.X + index1;
-          int num6 = (int) coordinates.Y + index2;
-          if (index2 == 0 && tileData.DrawStepDown != 0 && WorldGen.SolidTile(Framing.GetTileSafely(i, num6 - 1)))
+          int num4 = (int) coordinates.Y + index2;
+          if (index2 == 0 && tileData.DrawStepDown != 0 && WorldGen.SolidTile(Framing.GetTileSafely(i, num4 - 1)))
             drawYoffset += tileData.DrawStepDown;
           Color color1;
           switch (op[index1, index2])
           {
             case 1:
-              color1 = Color.get_White();
+              color1 = Color.White;
               break;
             case 2:
-              color1 = Color.op_Multiply(Color.get_Red(), 0.7f);
+              color1 = Color.Red * 0.7f;
               break;
             default:
               continue;
           }
-          Color color2 = Color.op_Multiply(color1, 0.5f);
+          Color color2 = color1 * 0.5f;
           if (index1 >= (int) op.ObjectStart.X && index1 < (int) op.ObjectStart.X + tileData.Width && (index2 >= (int) op.ObjectStart.Y && index2 < (int) op.ObjectStart.Y + tileData.Height))
           {
-            SpriteEffects spriteEffects = (SpriteEffects) 0;
+            SpriteEffects effects = SpriteEffects.None;
             if (tileData.DrawFlipHorizontal && index1 % 2 == 1)
-              spriteEffects = (SpriteEffects) (spriteEffects | 1);
+              effects |= SpriteEffects.FlipHorizontally;
             if (tileData.DrawFlipVertical && index2 % 2 == 1)
-              spriteEffects = (SpriteEffects) (spriteEffects | 2);
-            Rectangle rectangle;
-            // ISSUE: explicit reference operation
-            ((Rectangle) @rectangle).\u002Ector(num4, num5, tileData.CoordinateWidth, tileData.CoordinateHeights[index2 - (int) op.ObjectStart.Y]);
-            sb.Draw(texture2D, new Vector2((float) (i * 16 - (int) (position.X + (double) (tileData.CoordinateWidth - 16) / 2.0)), (float) (num6 * 16 - (int) position.Y + drawYoffset)), new Rectangle?(rectangle), color2, 0.0f, Vector2.get_Zero(), 1f, spriteEffects, 0.0f);
-            num5 += tileData.CoordinateHeights[index2 - (int) op.ObjectStart.Y] + tileData.CoordinatePadding;
+              effects |= SpriteEffects.FlipVertically;
+            Rectangle rectangle = new Rectangle(x, y, tileData.CoordinateWidth, tileData.CoordinateHeights[index2 - (int) op.ObjectStart.Y]);
+            sb.Draw(texture, new Vector2((float) (i * 16 - (int) ((double) position.X + (double) (tileData.CoordinateWidth - 16) / 2.0)), (float) (num4 * 16 - (int) position.Y + drawYoffset)), new Rectangle?(rectangle), color2, 0.0f, Vector2.Zero, 1f, effects, 0.0f);
+            y += tileData.CoordinateHeights[index2 - (int) op.ObjectStart.Y] + tileData.CoordinatePadding;
           }
         }
       }

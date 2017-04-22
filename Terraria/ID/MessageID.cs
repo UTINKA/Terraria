@@ -1,7 +1,7 @@
 ﻿// Decompiled with JetBrains decompiler
 // Type: Terraria.ID.MessageID
 // Assembly: Terraria, Version=1.3.5.1, Culture=neutral, PublicKeyToken=null
-// MVID: DF0400F4-EE47-4864-BE80-932EDB02D8A6
+// MVID: E90A5A2F-CD10-4A2C-9D2A-6B036D4E8877
 // Assembly location: F:\Steam\steamapps\common\Terraria\Terraria.exe
 
 using System;
@@ -94,8 +94,8 @@ namespace Terraria.ID
     public const byte TemporaryAnimation = 77;
     public const byte InvasionProgressReport = 78;
     public const byte PlaceObject = 79;
-    public const byte SyncPLayerChestIndex = 80;
-    public const byte ServerCombatText = 81;
+    public const byte SyncPlayerChestIndex = 80;
+    public const byte CombatTextInt = 81;
     public const byte NetModules = 82;
     public const byte NPCKillCountDeathTally = 83;
     public const byte PlayerStealth = 84;
@@ -133,6 +133,7 @@ namespace Terraria.ID
     public const byte CrystalInvasionSendWaitTime = 116;
     public const byte PlayerHurtV2 = 117;
     public const byte PlayerDeathV2 = 118;
-    public const byte Count = 119;
+    public const byte CombatTextString = 119;
+    public const byte Count = 120;
   }
 }

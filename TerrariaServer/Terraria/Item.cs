@@ -1,7 +1,7 @@
 ﻿// Decompiled with JetBrains decompiler
 // Type: Terraria.Item
 // Assembly: TerrariaServer, Version=1.3.5.1, Culture=neutral, PublicKeyToken=null
-// MVID: 880A80AC-FC6C-4F43-ABDD-E2472DA66CB5
+// MVID: C2103E81-0935-4BEA-9E98-4159FC80C2BB
 // Assembly location: F:\Steam\steamapps\common\Terraria\TerrariaServer.exe
 
 using Microsoft.Xna.Framework;
@@ -39059,7 +39059,7 @@ namespace Terraria
       this.legSlot = -1;
       this.headSlot = -1;
       this.potion = false;
-      this.color = (Color) null;
+      this.color = new Color();
       this.glowMask = (short) -1;
       this.consumable = false;
       this.createTile = -1;
@@ -39106,12 +39106,11 @@ namespace Terraria
       switch (this.type)
       {
         case 3822:
-          return Color.op_Multiply(Color.Lerp(Color.get_White(), newColor, 0.5f), (float) (((double) byte.MaxValue - (double) this.alpha) / (double) byte.MaxValue));
+          return Color.Lerp(Color.White, newColor, 0.5f) * (float) (((double) byte.MaxValue - (double) this.alpha) / (double) byte.MaxValue);
         case 3858:
         case 3065:
         case 75:
-          // ISSUE: explicit reference operation
-          return new Color((int) byte.MaxValue, (int) byte.MaxValue, (int) byte.MaxValue, (int) ((Color) @newColor).get_A() - this.alpha);
+          return new Color((int) byte.MaxValue, (int) byte.MaxValue, (int) byte.MaxValue, (int) newColor.A - this.alpha);
         case 3522:
         case 2782:
         case 2783:
@@ -39159,10 +39158,7 @@ namespace Terraria
         case 1446:
         case 1506:
         case 1507:
-          // ISSUE: explicit reference operation
-          // ISSUE: explicit reference operation
-          // ISSUE: explicit reference operation
-          return new Color((int) ((Color) @newColor).get_R(), (int) ((Color) @newColor).get_G(), (int) ((Color) @newColor).get_B(), (int) Main.gFade);
+          return new Color((int) newColor.R, (int) newColor.G, (int) newColor.B, (int) Main.gFade);
         case 1572:
           return new Color(200, 200, (int) byte.MaxValue, 125);
         case 1508:
@@ -39190,58 +39186,46 @@ namespace Terraria
         case 201:
         case 202:
         case 203:
-          return Color.get_White();
+          return Color.White;
         case 51:
           return new Color((int) byte.MaxValue, (int) byte.MaxValue, (int) byte.MaxValue, 0);
         default:
-          float num1 = (float) ((int) byte.MaxValue - this.alpha) / (float) byte.MaxValue;
-          // ISSUE: explicit reference operation
-          int num2 = (int) ((double) ((Color) @newColor).get_R() * (double) num1);
-          // ISSUE: explicit reference operation
-          int num3 = (int) ((double) ((Color) @newColor).get_G() * (double) num1);
-          // ISSUE: explicit reference operation
-          int num4 = (int) ((double) ((Color) @newColor).get_B() * (double) num1);
-          // ISSUE: explicit reference operation
-          int num5 = (int) ((Color) @newColor).get_A() - this.alpha;
-          if (num5 < 0)
-            num5 = 0;
-          if (num5 > (int) byte.MaxValue)
-            num5 = (int) byte.MaxValue;
-          return new Color(num2, num3, num4, num5);
+          float num = (float) ((int) byte.MaxValue - this.alpha) / (float) byte.MaxValue;
+          int r = (int) ((double) newColor.R * (double) num);
+          int g = (int) ((double) newColor.G * (double) num);
+          int b = (int) ((double) newColor.B * (double) num);
+          int a = (int) newColor.A - this.alpha;
+          if (a < 0)
+            a = 0;
+          if (a > (int) byte.MaxValue)
+            a = (int) byte.MaxValue;
+          return new Color(r, g, b, a);
       }
     }
 
     public Color GetColor(Color newColor)
     {
-      // ISSUE: explicit reference operation
-      // ISSUE: explicit reference operation
-      int num1 = (int) ((Color) @this.color).get_R() - ((int) byte.MaxValue - (int) ((Color) @newColor).get_R());
-      // ISSUE: explicit reference operation
-      // ISSUE: explicit reference operation
-      int num2 = (int) ((Color) @this.color).get_G() - ((int) byte.MaxValue - (int) ((Color) @newColor).get_G());
-      // ISSUE: explicit reference operation
-      // ISSUE: explicit reference operation
-      int num3 = (int) ((Color) @this.color).get_B() - ((int) byte.MaxValue - (int) ((Color) @newColor).get_B());
-      // ISSUE: explicit reference operation
-      // ISSUE: explicit reference operation
-      int num4 = (int) ((Color) @this.color).get_A() - ((int) byte.MaxValue - (int) ((Color) @newColor).get_A());
-      if (num1 < 0)
-        num1 = 0;
-      if (num1 > (int) byte.MaxValue)
-        num1 = (int) byte.MaxValue;
-      if (num2 < 0)
-        num2 = 0;
-      if (num2 > (int) byte.MaxValue)
-        num2 = (int) byte.MaxValue;
-      if (num3 < 0)
-        num3 = 0;
-      if (num3 > (int) byte.MaxValue)
-        num3 = (int) byte.MaxValue;
-      if (num4 < 0)
-        num4 = 0;
-      if (num4 > (int) byte.MaxValue)
-        num4 = (int) byte.MaxValue;
-      return new Color(num1, num2, num3, num4);
+      int r = (int) this.color.R - ((int) byte.MaxValue - (int) newColor.R);
+      int g = (int) this.color.G - ((int) byte.MaxValue - (int) newColor.G);
+      int b = (int) this.color.B - ((int) byte.MaxValue - (int) newColor.B);
+      int a = (int) this.color.A - ((int) byte.MaxValue - (int) newColor.A);
+      if (r < 0)
+        r = 0;
+      if (r > (int) byte.MaxValue)
+        r = (int) byte.MaxValue;
+      if (g < 0)
+        g = 0;
+      if (g > (int) byte.MaxValue)
+        g = (int) byte.MaxValue;
+      if (b < 0)
+        b = 0;
+      if (b > (int) byte.MaxValue)
+        b = (int) byte.MaxValue;
+      if (a < 0)
+        a = 0;
+      if (a > (int) byte.MaxValue)
+        a = (int) byte.MaxValue;
+      return new Color(r, g, b, a);
     }
 
     public static bool MechSpawn(float x, float y, int type)
@@ -39254,11 +39238,9 @@ namespace Terraria
         if (Main.item[index].active && Main.item[index].type == type)
         {
           ++num1;
-          Vector2 vector2;
-          // ISSUE: explicit reference operation
-          ((Vector2) @vector2).\u002Ector(x, y);
-          float num4 = (float) (Main.item[index].position.X - vector2.X);
-          float num5 = (float) (Main.item[index].position.Y - vector2.Y);
+          Vector2 vector2 = new Vector2(x, y);
+          float num4 = Main.item[index].position.X - vector2.X;
+          float num5 = Main.item[index].position.Y - vector2.Y;
           float num6 = (float) Math.Sqrt((double) num4 * (double) num4 + (double) num5 * (double) num5);
           if ((double) num6 < 300.0)
             ++num2;
@@ -39304,13 +39286,13 @@ namespace Terraria
         float num1 = 7f;
         if (Main.netMode == 1)
         {
-          int index1 = (int) (this.position.X + (double) (this.width / 2)) / 16;
-          int index2 = (int) (this.position.Y + (double) (this.height / 2)) / 16;
+          int index1 = (int) ((double) this.position.X + (double) (this.width / 2)) / 16;
+          int index2 = (int) ((double) this.position.Y + (double) (this.height / 2)) / 16;
           if (index1 >= 0 && index2 >= 0 && (index1 < Main.maxTilesX && index2 < Main.maxTilesY) && Main.tile[index1, index2] == null)
           {
             gravity = 0.0f;
-            this.velocity.X = (__Null) 0.0;
-            this.velocity.Y = (__Null) 0.0;
+            this.velocity.X = 0.0f;
+            this.velocity.Y = 0.0f;
           }
         }
         if (this.honeyWet)
@@ -39330,7 +39312,7 @@ namespace Terraria
         if (this.keepTime > 0)
           --this.keepTime;
         this.isBeingGrabbed = this.beingGrabbed;
-        Vector2 vector2_1 = Vector2.op_Multiply(this.velocity, 0.5f);
+        Vector2 vector2_1 = this.velocity * 0.5f;
         if (!this.beingGrabbed)
         {
           bool flag1 = true;
@@ -39349,10 +39331,10 @@ namespace Terraria
           {
             for (int number = i + 1; number < 400; ++number)
             {
-              if (Main.item[number].active && Main.item[number].type == this.type && (Main.item[number].stack > 0 && Main.item[number].owner == this.owner) && (double) (Math.Abs((float) (this.position.X + (double) (this.width / 2) - (Main.item[number].position.X + (double) (Main.item[number].width / 2)))) + Math.Abs((float) (this.position.Y + (double) (this.height / 2) - (Main.item[number].position.Y + (double) (Main.item[number].height / 2))))) < 30.0)
+              if (Main.item[number].active && Main.item[number].type == this.type && (Main.item[number].stack > 0 && Main.item[number].owner == this.owner) && (double) (Math.Abs((float) ((double) this.position.X + (double) (this.width / 2) - ((double) Main.item[number].position.X + (double) (Main.item[number].width / 2)))) + Math.Abs((float) ((double) this.position.Y + (double) (this.height / 2) - ((double) Main.item[number].position.Y + (double) (Main.item[number].height / 2))))) < 30.0)
               {
-                this.position = Vector2.op_Division(Vector2.op_Addition(this.position, Main.item[number].position), 2f);
-                this.velocity = Vector2.op_Division(Vector2.op_Addition(this.velocity, Main.item[number].velocity), 2f);
+                this.position = (this.position + Main.item[number].position) / 2f;
+                this.velocity = (this.velocity + Main.item[number].velocity) / 2f;
                 int num2 = Main.item[number].stack;
                 if (num2 > this.maxStack - this.stack)
                   num2 = this.maxStack - this.stack;
@@ -39373,9 +39355,7 @@ namespace Terraria
           }
           if (Main.netMode != 2 && Main.expertMode && (this.owner == Main.myPlayer && this.type >= 71) && this.type <= 74)
           {
-            Rectangle rectangle1;
-            // ISSUE: explicit reference operation
-            ((Rectangle) @rectangle1).\u002Ector((int) this.position.X, (int) this.position.Y, this.width, this.height);
+            Rectangle rectangle1 = new Rectangle((int) this.position.X, (int) this.position.Y, this.width, this.height);
             for (int index1 = 0; index1 < 200; ++index1)
             {
               if (Main.npc[index1].active && Main.npc[index1].lifeMax > 5 && (!Main.npc[index1].friendly && !Main.npc[index1].immortal) && !Main.npc[index1].dontTakeDamage)
@@ -39397,11 +39377,8 @@ namespace Terraria
                   index2 = -1;
                 if ((double) extraValue < (double) num3)
                 {
-                  Rectangle rectangle2;
-                  // ISSUE: explicit reference operation
-                  ((Rectangle) @rectangle2).\u002Ector((int) Main.npc[index1].position.X, (int) Main.npc[index1].position.Y, Main.npc[index1].width, Main.npc[index1].height);
-                  // ISSUE: explicit reference operation
-                  if (((Rectangle) @rectangle1).Intersects(rectangle2))
+                  Rectangle rectangle2 = new Rectangle((int) Main.npc[index1].position.X, (int) Main.npc[index1].position.Y, Main.npc[index1].width, Main.npc[index1].height);
+                  if (rectangle1.Intersects(rectangle2))
                   {
                     float num4 = (float) Main.rand.Next(50, 76) * 0.01f;
                     if (this.type == 71)
@@ -39424,7 +39401,7 @@ namespace Terraria
                     if (Main.netMode == 0)
                       Main.npc[number].moneyPing(this.position);
                     else
-                      NetMessage.SendData(92, -1, -1, (NetworkText) null, number, number2, (float) this.position.X, (float) this.position.Y, 0, 0, 0);
+                      NetMessage.SendData(92, -1, -1, (NetworkText) null, number, number2, this.position.X, this.position.Y, 0, 0, 0);
                     if (this.stack <= 0)
                     {
                       this.SetDefaults(0, false);
@@ -39438,45 +39415,21 @@ namespace Terraria
           }
           if (ItemID.Sets.ItemNoGravity[this.type])
           {
-            // ISSUE: explicit reference operation
-            // ISSUE: variable of a reference type
-            Vector2& local1 = @this.velocity;
-            // ISSUE: explicit reference operation
-            double num2 = (^local1).X * 0.949999988079071;
-            // ISSUE: explicit reference operation
-            (^local1).X = (__Null) num2;
+            this.velocity.X *= 0.95f;
             if ((double) this.velocity.X < 0.1 && (double) this.velocity.X > -0.1)
-              this.velocity.X = (__Null) 0.0;
-            // ISSUE: explicit reference operation
-            // ISSUE: variable of a reference type
-            Vector2& local2 = @this.velocity;
-            // ISSUE: explicit reference operation
-            double num3 = (^local2).Y * 0.949999988079071;
-            // ISSUE: explicit reference operation
-            (^local2).Y = (__Null) num3;
+              this.velocity.X = 0.0f;
+            this.velocity.Y *= 0.95f;
             if ((double) this.velocity.Y < 0.1 && (double) this.velocity.Y > -0.1)
-              this.velocity.Y = (__Null) 0.0;
+              this.velocity.Y = 0.0f;
           }
           else
           {
-            // ISSUE: explicit reference operation
-            // ISSUE: variable of a reference type
-            Vector2& local1 = @this.velocity;
-            // ISSUE: explicit reference operation
-            double num2 = (^local1).Y + (double) gravity;
-            // ISSUE: explicit reference operation
-            (^local1).Y = (__Null) num2;
-            if (this.velocity.Y > (double) num1)
-              this.velocity.Y = (__Null) (double) num1;
-            // ISSUE: explicit reference operation
-            // ISSUE: variable of a reference type
-            Vector2& local2 = @this.velocity;
-            // ISSUE: explicit reference operation
-            double num3 = (^local2).X * 0.949999988079071;
-            // ISSUE: explicit reference operation
-            (^local2).X = (__Null) num3;
+            this.velocity.Y += gravity;
+            if ((double) this.velocity.Y > (double) num1)
+              this.velocity.Y = num1;
+            this.velocity.X *= 0.95f;
             if ((double) this.velocity.X < 0.1 && (double) this.velocity.X > -0.1)
-              this.velocity.X = (__Null) 0.0;
+              this.velocity.X = 0.0f;
           }
           bool flag2 = Collision.LavaCollision(this.position, this.width, this.height);
           if (flag2)
@@ -39497,21 +39450,9 @@ namespace Terraria
                   {
                     for (int index1 = 0; index1 < 5; ++index1)
                     {
-                      int index2 = Dust.NewDust(new Vector2((float) (this.position.X - 6.0), (float) (this.position.Y + (double) (this.height / 2) - 8.0)), this.width + 12, 24, 152, 0.0f, 0.0f, 0, (Color) null, 1f);
-                      // ISSUE: explicit reference operation
-                      // ISSUE: variable of a reference type
-                      Vector2& local1 = @Main.dust[index2].velocity;
-                      // ISSUE: explicit reference operation
-                      double num2 = (^local1).Y - 1.0;
-                      // ISSUE: explicit reference operation
-                      (^local1).Y = (__Null) num2;
-                      // ISSUE: explicit reference operation
-                      // ISSUE: variable of a reference type
-                      Vector2& local2 = @Main.dust[index2].velocity;
-                      // ISSUE: explicit reference operation
-                      double num3 = (^local2).X * 2.5;
-                      // ISSUE: explicit reference operation
-                      (^local2).X = (__Null) num3;
+                      int index2 = Dust.NewDust(new Vector2(this.position.X - 6f, (float) ((double) this.position.Y + (double) (this.height / 2) - 8.0)), this.width + 12, 24, 152, 0.0f, 0.0f, 0, new Color(), 1f);
+                      --Main.dust[index2].velocity.Y;
+                      Main.dust[index2].velocity.X *= 2.5f;
                       Main.dust[index2].scale = 1.3f;
                       Main.dust[index2].alpha = 100;
                       Main.dust[index2].noGravity = true;
@@ -39522,21 +39463,9 @@ namespace Terraria
                   {
                     for (int index1 = 0; index1 < 10; ++index1)
                     {
-                      int index2 = Dust.NewDust(new Vector2((float) (this.position.X - 6.0), (float) (this.position.Y + (double) (this.height / 2) - 8.0)), this.width + 12, 24, Dust.dustWater(), 0.0f, 0.0f, 0, (Color) null, 1f);
-                      // ISSUE: explicit reference operation
-                      // ISSUE: variable of a reference type
-                      Vector2& local1 = @Main.dust[index2].velocity;
-                      // ISSUE: explicit reference operation
-                      double num2 = (^local1).Y - 4.0;
-                      // ISSUE: explicit reference operation
-                      (^local1).Y = (__Null) num2;
-                      // ISSUE: explicit reference operation
-                      // ISSUE: variable of a reference type
-                      Vector2& local2 = @Main.dust[index2].velocity;
-                      // ISSUE: explicit reference operation
-                      double num3 = (^local2).X * 2.5;
-                      // ISSUE: explicit reference operation
-                      (^local2).X = (__Null) num3;
+                      int index2 = Dust.NewDust(new Vector2(this.position.X - 6f, (float) ((double) this.position.Y + (double) (this.height / 2) - 8.0)), this.width + 12, 24, Dust.dustWater(), 0.0f, 0.0f, 0, new Color(), 1f);
+                      Main.dust[index2].velocity.Y -= 4f;
+                      Main.dust[index2].velocity.X *= 2.5f;
                       Main.dust[index2].scale *= 0.8f;
                       Main.dust[index2].alpha = 100;
                       Main.dust[index2].noGravity = true;
@@ -39548,21 +39477,9 @@ namespace Terraria
                 {
                   for (int index1 = 0; index1 < 5; ++index1)
                   {
-                    int index2 = Dust.NewDust(new Vector2((float) (this.position.X - 6.0), (float) (this.position.Y + (double) (this.height / 2) - 8.0)), this.width + 12, 24, 35, 0.0f, 0.0f, 0, (Color) null, 1f);
-                    // ISSUE: explicit reference operation
-                    // ISSUE: variable of a reference type
-                    Vector2& local1 = @Main.dust[index2].velocity;
-                    // ISSUE: explicit reference operation
-                    double num2 = (^local1).Y - 1.5;
-                    // ISSUE: explicit reference operation
-                    (^local1).Y = (__Null) num2;
-                    // ISSUE: explicit reference operation
-                    // ISSUE: variable of a reference type
-                    Vector2& local2 = @Main.dust[index2].velocity;
-                    // ISSUE: explicit reference operation
-                    double num3 = (^local2).X * 2.5;
-                    // ISSUE: explicit reference operation
-                    (^local2).X = (__Null) num3;
+                    int index2 = Dust.NewDust(new Vector2(this.position.X - 6f, (float) ((double) this.position.Y + (double) (this.height / 2) - 8.0)), this.width + 12, 24, 35, 0.0f, 0.0f, 0, new Color(), 1f);
+                    Main.dust[index2].velocity.Y -= 1.5f;
+                    Main.dust[index2].velocity.X *= 2.5f;
                     Main.dust[index2].scale = 1.3f;
                     Main.dust[index2].alpha = 100;
                     Main.dust[index2].noGravity = true;
@@ -39591,9 +39508,9 @@ namespace Terraria
             {
               Vector2 velocity = this.velocity;
               this.velocity = Collision.TileCollision(this.position, this.velocity, this.width, this.height, false, false, 1);
-              if (this.velocity.X != velocity.X)
+              if ((double) this.velocity.X != (double) velocity.X)
                 vector2_1.X = this.velocity.X;
-              if (this.velocity.Y != velocity.Y)
+              if ((double) this.velocity.Y != (double) velocity.Y)
                 vector2_1.Y = this.velocity.Y;
             }
           }
@@ -39639,72 +39556,72 @@ namespace Terraria
           if (this.type == 3191)
           {
             float num2 = (float) Main.rand.Next(90, 111) * 0.01f * (float) (((double) Main.essScale + 0.5) / 2.0);
-            Lighting.AddLight((int) ((this.position.X + (double) (this.width / 2)) / 16.0), (int) ((this.position.Y + (double) (this.height / 2)) / 16.0), 0.3f * num2, 0.1f * num2, 0.25f * num2);
+            Lighting.AddLight((int) (((double) this.position.X + (double) (this.width / 2)) / 16.0), (int) (((double) this.position.Y + (double) (this.height / 2)) / 16.0), 0.3f * num2, 0.1f * num2, 0.25f * num2);
           }
           else if (this.type == 520 || this.type == 3454)
           {
             float num2 = (float) Main.rand.Next(90, 111) * 0.01f * Main.essScale;
-            Lighting.AddLight((int) ((this.position.X + (double) (this.width / 2)) / 16.0), (int) ((this.position.Y + (double) (this.height / 2)) / 16.0), 0.5f * num2, 0.1f * num2, 0.25f * num2);
+            Lighting.AddLight((int) (((double) this.position.X + (double) (this.width / 2)) / 16.0), (int) (((double) this.position.Y + (double) (this.height / 2)) / 16.0), 0.5f * num2, 0.1f * num2, 0.25f * num2);
           }
           else if (this.type == 521 || this.type == 3455)
           {
             float num2 = (float) Main.rand.Next(90, 111) * 0.01f * Main.essScale;
-            Lighting.AddLight((int) ((this.position.X + (double) (this.width / 2)) / 16.0), (int) ((this.position.Y + (double) (this.height / 2)) / 16.0), 0.25f * num2, 0.1f * num2, 0.5f * num2);
+            Lighting.AddLight((int) (((double) this.position.X + (double) (this.width / 2)) / 16.0), (int) (((double) this.position.Y + (double) (this.height / 2)) / 16.0), 0.25f * num2, 0.1f * num2, 0.5f * num2);
           }
           else if (this.type == 547 || this.type == 3453)
           {
             float num2 = (float) Main.rand.Next(90, 111) * 0.01f * Main.essScale;
-            Lighting.AddLight((int) ((this.position.X + (double) (this.width / 2)) / 16.0), (int) ((this.position.Y + (double) (this.height / 2)) / 16.0), 0.5f * num2, 0.3f * num2, 0.05f * num2);
+            Lighting.AddLight((int) (((double) this.position.X + (double) (this.width / 2)) / 16.0), (int) (((double) this.position.Y + (double) (this.height / 2)) / 16.0), 0.5f * num2, 0.3f * num2, 0.05f * num2);
           }
           else if (this.type == 548)
           {
             float num2 = (float) Main.rand.Next(90, 111) * 0.01f * Main.essScale;
-            Lighting.AddLight((int) ((this.position.X + (double) (this.width / 2)) / 16.0), (int) ((this.position.Y + (double) (this.height / 2)) / 16.0), 0.1f * num2, 0.1f * num2, 0.6f * num2);
+            Lighting.AddLight((int) (((double) this.position.X + (double) (this.width / 2)) / 16.0), (int) (((double) this.position.Y + (double) (this.height / 2)) / 16.0), 0.1f * num2, 0.1f * num2, 0.6f * num2);
           }
           else if (this.type == 575)
           {
             float num2 = (float) Main.rand.Next(90, 111) * 0.01f * Main.essScale;
-            Lighting.AddLight((int) ((this.position.X + (double) (this.width / 2)) / 16.0), (int) ((this.position.Y + (double) (this.height / 2)) / 16.0), 0.1f * num2, 0.3f * num2, 0.5f * num2);
+            Lighting.AddLight((int) (((double) this.position.X + (double) (this.width / 2)) / 16.0), (int) (((double) this.position.Y + (double) (this.height / 2)) / 16.0), 0.1f * num2, 0.3f * num2, 0.5f * num2);
           }
           else if (this.type == 549)
           {
             float num2 = (float) Main.rand.Next(90, 111) * 0.01f * Main.essScale;
-            Lighting.AddLight((int) ((this.position.X + (double) (this.width / 2)) / 16.0), (int) ((this.position.Y + (double) (this.height / 2)) / 16.0), 0.1f * num2, 0.5f * num2, 0.2f * num2);
+            Lighting.AddLight((int) (((double) this.position.X + (double) (this.width / 2)) / 16.0), (int) (((double) this.position.Y + (double) (this.height / 2)) / 16.0), 0.1f * num2, 0.5f * num2, 0.2f * num2);
           }
           else if (this.type == 58 || this.type == 1734 || this.type == 1867)
           {
             float num2 = (float) Main.rand.Next(90, 111) * 0.01f * (Main.essScale * 0.5f);
-            Lighting.AddLight((int) ((this.position.X + (double) (this.width / 2)) / 16.0), (int) ((this.position.Y + (double) (this.height / 2)) / 16.0), 0.5f * num2, 0.1f * num2, 0.1f * num2);
+            Lighting.AddLight((int) (((double) this.position.X + (double) (this.width / 2)) / 16.0), (int) (((double) this.position.Y + (double) (this.height / 2)) / 16.0), 0.5f * num2, 0.1f * num2, 0.1f * num2);
           }
           else if (this.type == 184 || this.type == 1735 || this.type == 1868)
           {
             float num2 = (float) Main.rand.Next(90, 111) * 0.01f * (Main.essScale * 0.5f);
-            Lighting.AddLight((int) ((this.position.X + (double) (this.width / 2)) / 16.0), (int) ((this.position.Y + (double) (this.height / 2)) / 16.0), 0.1f * num2, 0.1f * num2, 0.5f * num2);
+            Lighting.AddLight((int) (((double) this.position.X + (double) (this.width / 2)) / 16.0), (int) (((double) this.position.Y + (double) (this.height / 2)) / 16.0), 0.1f * num2, 0.1f * num2, 0.5f * num2);
           }
           else if (this.type == 522)
           {
             float num2 = (float) Main.rand.Next(90, 111) * 0.01f * (Main.essScale * 0.2f);
-            Lighting.AddLight((int) ((this.position.X + (double) (this.width / 2)) / 16.0), (int) ((this.position.Y + (double) (this.height / 2)) / 16.0), 0.5f * num2, 1f * num2, 0.1f * num2);
+            Lighting.AddLight((int) (((double) this.position.X + (double) (this.width / 2)) / 16.0), (int) (((double) this.position.Y + (double) (this.height / 2)) / 16.0), 0.5f * num2, 1f * num2, 0.1f * num2);
           }
           else if (this.type == 1332)
           {
             float num2 = (float) Main.rand.Next(90, 111) * 0.01f * (Main.essScale * 0.2f);
-            Lighting.AddLight((int) ((this.position.X + (double) (this.width / 2)) / 16.0), (int) ((this.position.Y + (double) (this.height / 2)) / 16.0), 1f * num2, 1f * num2, 0.1f * num2);
+            Lighting.AddLight((int) (((double) this.position.X + (double) (this.width / 2)) / 16.0), (int) (((double) this.position.Y + (double) (this.height / 2)) / 16.0), 1f * num2, 1f * num2, 0.1f * num2);
           }
           else if (this.type == 3456)
-            Lighting.AddLight(this.Center, Vector3.op_Multiply(new Vector3(0.2f, 0.4f, 0.5f), Main.essScale));
+            Lighting.AddLight(this.Center, new Vector3(0.2f, 0.4f, 0.5f) * Main.essScale);
           else if (this.type == 3457)
-            Lighting.AddLight(this.Center, Vector3.op_Multiply(new Vector3(0.4f, 0.2f, 0.5f), Main.essScale));
+            Lighting.AddLight(this.Center, new Vector3(0.4f, 0.2f, 0.5f) * Main.essScale);
           else if (this.type == 3458)
-            Lighting.AddLight(this.Center, Vector3.op_Multiply(new Vector3(0.5f, 0.4f, 0.2f), Main.essScale));
+            Lighting.AddLight(this.Center, new Vector3(0.5f, 0.4f, 0.2f) * Main.essScale);
           else if (this.type == 3459)
-            Lighting.AddLight(this.Center, Vector3.op_Multiply(new Vector3(0.2f, 0.2f, 0.5f), Main.essScale));
+            Lighting.AddLight(this.Center, new Vector3(0.2f, 0.2f, 0.5f) * Main.essScale);
           if (this.type == 75 && Main.dayTime)
           {
             for (int index = 0; index < 10; ++index)
-              Dust.NewDust(this.position, this.width, this.height, 15, (float) this.velocity.X, (float) this.velocity.Y, 150, (Color) null, 1.2f);
+              Dust.NewDust(this.position, this.width, this.height, 15, this.velocity.X, this.velocity.Y, 150, new Color(), 1.2f);
             for (int index = 0; index < 3; ++index)
-              Gore.NewGore(this.position, new Vector2((float) this.velocity.X, (float) this.velocity.Y), Main.rand.Next(16, 18), 1f);
+              Gore.NewGore(this.position, new Vector2(this.velocity.X, this.velocity.Y), Main.rand.Next(16, 18), 1f);
             this.active = false;
             this.type = 0;
             this.stack = 0;
@@ -39716,17 +39633,9 @@ namespace Terraria
             int num2 = Main.rand.Next(18, 24);
             for (int index1 = 0; index1 < num2; ++index1)
             {
-              int index2 = Dust.NewDust(this.Center, 0, 0, 61, 0.0f, 0.0f, 0, (Color) null, 1.7f);
-              Dust dust = Main.dust[index2];
-              Vector2 vector2_2 = Vector2.op_Multiply(dust.velocity, 8f);
-              dust.velocity = vector2_2;
-              // ISSUE: explicit reference operation
-              // ISSUE: variable of a reference type
-              Vector2& local = @Main.dust[index2].velocity;
-              // ISSUE: explicit reference operation
-              double num3 = (^local).Y - 1.0;
-              // ISSUE: explicit reference operation
-              (^local).Y = (__Null) num3;
+              int index2 = Dust.NewDust(this.Center, 0, 0, 61, 0.0f, 0.0f, 0, new Color(), 1.7f);
+              Main.dust[index2].velocity *= 8f;
+              --Main.dust[index2].velocity.Y;
               Main.dust[index2].position = Vector2.Lerp(Main.dust[index2].position, this.Center, 0.5f);
               Main.dust[index2].noGravity = true;
               Main.dust[index2].noLight = true;
@@ -39745,69 +39654,67 @@ namespace Terraria
           if (Main.rand.Next(6) == 0)
           {
             int index = Dust.NewDust(this.position, this.width, this.height, 55, 0.0f, 0.0f, 200, this.color, 1f);
-            Dust dust = Main.dust[index];
-            Vector2 vector2_2 = Vector2.op_Multiply(dust.velocity, 0.3f);
-            dust.velocity = vector2_2;
+            Main.dust[index].velocity *= 0.3f;
             Main.dust[index].scale *= 0.5f;
           }
         }
         else if (this.type == 3822)
           Lighting.AddLight(this.Center, 0.1f, 0.3f, 0.1f);
         else if (this.type == 1970)
-          Lighting.AddLight((int) ((this.position.X + (double) (this.width / 2)) / 16.0), (int) ((this.position.Y + (double) (this.height / 2)) / 16.0), 0.75f, 0.0f, 0.75f);
+          Lighting.AddLight((int) (((double) this.position.X + (double) (this.width / 2)) / 16.0), (int) (((double) this.position.Y + (double) (this.height / 2)) / 16.0), 0.75f, 0.0f, 0.75f);
         else if (this.type == 1972)
-          Lighting.AddLight((int) ((this.position.X + (double) (this.width / 2)) / 16.0), (int) ((this.position.Y + (double) (this.height / 2)) / 16.0), 0.0f, 0.0f, 0.75f);
+          Lighting.AddLight((int) (((double) this.position.X + (double) (this.width / 2)) / 16.0), (int) (((double) this.position.Y + (double) (this.height / 2)) / 16.0), 0.0f, 0.0f, 0.75f);
         else if (this.type == 1971)
-          Lighting.AddLight((int) ((this.position.X + (double) (this.width / 2)) / 16.0), (int) ((this.position.Y + (double) (this.height / 2)) / 16.0), 0.75f, 0.75f, 0.0f);
+          Lighting.AddLight((int) (((double) this.position.X + (double) (this.width / 2)) / 16.0), (int) (((double) this.position.Y + (double) (this.height / 2)) / 16.0), 0.75f, 0.75f, 0.0f);
         else if (this.type == 1973)
-          Lighting.AddLight((int) ((this.position.X + (double) (this.width / 2)) / 16.0), (int) ((this.position.Y + (double) (this.height / 2)) / 16.0), 0.0f, 0.75f, 0.0f);
+          Lighting.AddLight((int) (((double) this.position.X + (double) (this.width / 2)) / 16.0), (int) (((double) this.position.Y + (double) (this.height / 2)) / 16.0), 0.0f, 0.75f, 0.0f);
         else if (this.type == 1974)
-          Lighting.AddLight((int) ((this.position.X + (double) (this.width / 2)) / 16.0), (int) ((this.position.Y + (double) (this.height / 2)) / 16.0), 0.75f, 0.0f, 0.0f);
+          Lighting.AddLight((int) (((double) this.position.X + (double) (this.width / 2)) / 16.0), (int) (((double) this.position.Y + (double) (this.height / 2)) / 16.0), 0.75f, 0.0f, 0.0f);
         else if (this.type == 1975)
-          Lighting.AddLight((int) ((this.position.X + (double) (this.width / 2)) / 16.0), (int) ((this.position.Y + (double) (this.height / 2)) / 16.0), 0.75f, 0.75f, 0.75f);
+          Lighting.AddLight((int) (((double) this.position.X + (double) (this.width / 2)) / 16.0), (int) (((double) this.position.Y + (double) (this.height / 2)) / 16.0), 0.75f, 0.75f, 0.75f);
         else if (this.type == 1976)
-          Lighting.AddLight((int) ((this.position.X + (double) (this.width / 2)) / 16.0), (int) ((this.position.Y + (double) (this.height / 2)) / 16.0), 0.75f, 0.375f, 0.0f);
+          Lighting.AddLight((int) (((double) this.position.X + (double) (this.width / 2)) / 16.0), (int) (((double) this.position.Y + (double) (this.height / 2)) / 16.0), 0.75f, 0.375f, 0.0f);
         else if (this.type == 2679)
-          Lighting.AddLight((int) ((this.position.X + (double) (this.width / 2)) / 16.0), (int) ((this.position.Y + (double) (this.height / 2)) / 16.0), 0.6f, 0.0f, 0.6f);
+          Lighting.AddLight((int) (((double) this.position.X + (double) (this.width / 2)) / 16.0), (int) (((double) this.position.Y + (double) (this.height / 2)) / 16.0), 0.6f, 0.0f, 0.6f);
         else if (this.type == 2687)
-          Lighting.AddLight((int) ((this.position.X + (double) (this.width / 2)) / 16.0), (int) ((this.position.Y + (double) (this.height / 2)) / 16.0), 0.0f, 0.0f, 0.6f);
+          Lighting.AddLight((int) (((double) this.position.X + (double) (this.width / 2)) / 16.0), (int) (((double) this.position.Y + (double) (this.height / 2)) / 16.0), 0.0f, 0.0f, 0.6f);
         else if (this.type == 2689)
-          Lighting.AddLight((int) ((this.position.X + (double) (this.width / 2)) / 16.0), (int) ((this.position.Y + (double) (this.height / 2)) / 16.0), 0.6f, 0.6f, 0.0f);
+          Lighting.AddLight((int) (((double) this.position.X + (double) (this.width / 2)) / 16.0), (int) (((double) this.position.Y + (double) (this.height / 2)) / 16.0), 0.6f, 0.6f, 0.0f);
         else if (this.type == 2683)
-          Lighting.AddLight((int) ((this.position.X + (double) (this.width / 2)) / 16.0), (int) ((this.position.Y + (double) (this.height / 2)) / 16.0), 0.0f, 0.6f, 0.0f);
+          Lighting.AddLight((int) (((double) this.position.X + (double) (this.width / 2)) / 16.0), (int) (((double) this.position.Y + (double) (this.height / 2)) / 16.0), 0.0f, 0.6f, 0.0f);
         else if (this.type == 2685)
-          Lighting.AddLight((int) ((this.position.X + (double) (this.width / 2)) / 16.0), (int) ((this.position.Y + (double) (this.height / 2)) / 16.0), 0.6f, 0.0f, 0.0f);
+          Lighting.AddLight((int) (((double) this.position.X + (double) (this.width / 2)) / 16.0), (int) (((double) this.position.Y + (double) (this.height / 2)) / 16.0), 0.6f, 0.0f, 0.0f);
         else if (this.type == 2681)
-          Lighting.AddLight((int) ((this.position.X + (double) (this.width / 2)) / 16.0), (int) ((this.position.Y + (double) (this.height / 2)) / 16.0), 0.6f, 0.6f, 0.6f);
+          Lighting.AddLight((int) (((double) this.position.X + (double) (this.width / 2)) / 16.0), (int) (((double) this.position.Y + (double) (this.height / 2)) / 16.0), 0.6f, 0.6f, 0.6f);
         else if (this.type == 2677)
-          Lighting.AddLight((int) ((this.position.X + (double) (this.width / 2)) / 16.0), (int) ((this.position.Y + (double) (this.height / 2)) / 16.0), 0.6f, 0.375f, 0.0f);
+          Lighting.AddLight((int) (((double) this.position.X + (double) (this.width / 2)) / 16.0), (int) (((double) this.position.Y + (double) (this.height / 2)) / 16.0), 0.6f, 0.375f, 0.0f);
         else if (this.type == 8 || this.type == 105)
         {
           if (!this.wet)
-            Lighting.AddLight((int) ((this.position.X + (double) (this.width / 2)) / 16.0), (int) ((this.position.Y + (double) (this.height / 2)) / 16.0), 1f, 0.95f, 0.8f);
+            Lighting.AddLight((int) (((double) this.position.X + (double) (this.width / 2)) / 16.0), (int) (((double) this.position.Y + (double) (this.height / 2)) / 16.0), 1f, 0.95f, 0.8f);
         }
         else if (this.type == 2701)
-          Lighting.AddLight((int) ((this.position.X + (double) (this.width / 2)) / 16.0), (int) ((this.position.Y + (double) (this.height / 2)) / 16.0), 0.7f, 0.65f, 0.55f);
+          Lighting.AddLight((int) (((double) this.position.X + (double) (this.width / 2)) / 16.0), (int) (((double) this.position.Y + (double) (this.height / 2)) / 16.0), 0.7f, 0.65f, 0.55f);
         else if (this.type == 523)
-          Lighting.AddLight((int) ((this.position.X + (double) (this.width / 2)) / 16.0), (int) ((this.position.Y + (double) (this.height / 2)) / 16.0), 0.85f, 1f, 0.7f);
+          Lighting.AddLight((int) (((double) this.position.X + (double) (this.width / 2)) / 16.0), (int) (((double) this.position.Y + (double) (this.height / 2)) / 16.0), 0.85f, 1f, 0.7f);
         else if (this.type == 974)
         {
           if (!this.wet)
-            Lighting.AddLight((int) ((this.position.X + (double) (this.width / 2)) / 16.0), (int) ((this.position.Y + (double) (this.height / 2)) / 16.0), 0.7f, 0.85f, 1f);
+            Lighting.AddLight((int) (((double) this.position.X + (double) (this.width / 2)) / 16.0), (int) (((double) this.position.Y + (double) (this.height / 2)) / 16.0), 0.7f, 0.85f, 1f);
         }
         else if (this.type == 1333)
-          Lighting.AddLight((int) ((this.position.X + (double) (this.width / 2)) / 16.0), (int) ((this.position.Y + (double) (this.height / 2)) / 16.0), 1.25f, 1.25f, 0.8f);
+          Lighting.AddLight((int) (((double) this.position.X + (double) (this.width / 2)) / 16.0), (int) (((double) this.position.Y + (double) (this.height / 2)) / 16.0), 1.25f, 1.25f, 0.8f);
         else if (this.type == 3045)
-          Lighting.AddLight((int) ((this.position.X + (double) (this.width / 2)) / 16.0), (int) ((this.position.Y + (double) (this.height / 2)) / 16.0), (float) Main.DiscoR / (float) byte.MaxValue, (float) Main.DiscoG / (float) byte.MaxValue, (float) Main.DiscoB / (float) byte.MaxValue);
+          Lighting.AddLight((int) (((double) this.position.X + (double) (this.width / 2)) / 16.0), (int) (((double) this.position.Y + (double) (this.height / 2)) / 16.0), (float) Main.DiscoR / (float) byte.MaxValue, (float) Main.DiscoG / (float) byte.MaxValue, (float) Main.DiscoB / (float) byte.MaxValue);
         else if (this.type == 3004)
-          Lighting.AddLight((int) ((this.position.X + (double) (this.width / 2)) / 16.0), (int) ((this.position.Y + (double) (this.height / 2)) / 16.0), 0.95f, 0.65f, 1.3f);
+          Lighting.AddLight((int) (((double) this.position.X + (double) (this.width / 2)) / 16.0), (int) (((double) this.position.Y + (double) (this.height / 2)) / 16.0), 0.95f, 0.65f, 1.3f);
         else if (this.type == 2274)
         {
           float R = 0.75f;
           float G = 1.35f;
           float B = 1.5f;
           if (!this.wet)
-            Lighting.AddLight((int) ((this.position.X + (double) (this.width / 2)) / 16.0), (int) ((this.position.Y + (double) (this.height / 2)) / 16.0), R, G, B);
+            Lighting.AddLight((int) (((double) this.position.X + (double) (this.width / 2)) / 16.0), (int) (((double) this.position.Y + (double) (this.height / 2)) / 16.0), R, G, B);
         }
         else if (this.type >= 427 && this.type <= 432)
         {
@@ -39853,47 +39760,47 @@ namespace Terraria
               G = 0.9f;
               B = 0.0f;
             }
-            Lighting.AddLight((int) ((this.position.X + (double) (this.width / 2)) / 16.0), (int) ((this.position.Y + (double) (this.height / 2)) / 16.0), R, G, B);
+            Lighting.AddLight((int) (((double) this.position.X + (double) (this.width / 2)) / 16.0), (int) (((double) this.position.Y + (double) (this.height / 2)) / 16.0), R, G, B);
           }
         }
         else if (this.type == 2777 || this.type == 2778 || (this.type == 2779 || this.type == 2780) || (this.type == 2781 || this.type == 2760 || (this.type == 2761 || this.type == 2762)) || this.type == 3524)
-          Lighting.AddLight((int) ((this.position.X + (double) (this.width / 2)) / 16.0), (int) ((this.position.Y + (double) (this.height / 2)) / 16.0), 0.4f, 0.16f, 0.36f);
+          Lighting.AddLight((int) (((double) this.position.X + (double) (this.width / 2)) / 16.0), (int) (((double) this.position.Y + (double) (this.height / 2)) / 16.0), 0.4f, 0.16f, 0.36f);
         else if (this.type == 2772 || this.type == 2773 || (this.type == 2774 || this.type == 2775) || (this.type == 2776 || this.type == 2757 || (this.type == 2758 || this.type == 2759)) || this.type == 3523)
-          Lighting.AddLight((int) ((this.position.X + (double) (this.width / 2)) / 16.0), (int) ((this.position.Y + (double) (this.height / 2)) / 16.0), 0.0f, 0.36f, 0.4f);
+          Lighting.AddLight((int) (((double) this.position.X + (double) (this.width / 2)) / 16.0), (int) (((double) this.position.Y + (double) (this.height / 2)) / 16.0), 0.0f, 0.36f, 0.4f);
         else if (this.type == 2782 || this.type == 2783 || (this.type == 2784 || this.type == 2785) || (this.type == 2786 || this.type == 2763 || (this.type == 2764 || this.type == 2765)) || this.type == 3522)
-          Lighting.AddLight((int) ((this.position.X + (double) (this.width / 2)) / 16.0), (int) ((this.position.Y + (double) (this.height / 2)) / 16.0), 0.5f, 0.25f, 0.05f);
+          Lighting.AddLight((int) (((double) this.position.X + (double) (this.width / 2)) / 16.0), (int) (((double) this.position.Y + (double) (this.height / 2)) / 16.0), 0.5f, 0.25f, 0.05f);
         else if (this.type == 3462 || this.type == 3463 || (this.type == 3464 || this.type == 3465) || (this.type == 3466 || this.type == 3381 || (this.type == 3382 || this.type == 3383)) || this.type == 3525)
           Lighting.AddLight(this.Center, 0.3f, 0.3f, 0.2f);
         else if (this.type == 41)
         {
           if (!this.wet)
-            Lighting.AddLight((int) ((this.position.X + (double) this.width) / 16.0), (int) ((this.position.Y + (double) (this.height / 2)) / 16.0), 1f, 0.75f, 0.55f);
+            Lighting.AddLight((int) (((double) this.position.X + (double) this.width) / 16.0), (int) (((double) this.position.Y + (double) (this.height / 2)) / 16.0), 1f, 0.75f, 0.55f);
         }
         else if (this.type == 988)
         {
           if (!this.wet)
-            Lighting.AddLight((int) ((this.position.X + (double) this.width) / 16.0), (int) ((this.position.Y + (double) (this.height / 2)) / 16.0), 0.35f, 0.65f, 1f);
+            Lighting.AddLight((int) (((double) this.position.X + (double) this.width) / 16.0), (int) (((double) this.position.Y + (double) (this.height / 2)) / 16.0), 0.35f, 0.65f, 1f);
         }
         else if (this.type == 282)
-          Lighting.AddLight((int) ((this.position.X + (double) this.width) / 16.0), (int) ((this.position.Y + (double) (this.height / 2)) / 16.0), 0.7f, 1f, 0.8f);
+          Lighting.AddLight((int) (((double) this.position.X + (double) this.width) / 16.0), (int) (((double) this.position.Y + (double) (this.height / 2)) / 16.0), 0.7f, 1f, 0.8f);
         else if (this.type == 286)
-          Lighting.AddLight((int) ((this.position.X + (double) this.width) / 16.0), (int) ((this.position.Y + (double) (this.height / 2)) / 16.0), 0.7f, 0.8f, 1f);
+          Lighting.AddLight((int) (((double) this.position.X + (double) this.width) / 16.0), (int) (((double) this.position.Y + (double) (this.height / 2)) / 16.0), 0.7f, 0.8f, 1f);
         else if (this.type == 3112)
-          Lighting.AddLight((int) ((this.position.X + (double) this.width) / 16.0), (int) ((this.position.Y + (double) (this.height / 2)) / 16.0), 1f, 0.6f, 0.85f);
+          Lighting.AddLight((int) (((double) this.position.X + (double) this.width) / 16.0), (int) (((double) this.position.Y + (double) (this.height / 2)) / 16.0), 1f, 0.6f, 0.85f);
         else if (this.type == 3002)
-          Lighting.AddLight((int) ((this.position.X + (double) this.width) / 16.0), (int) ((this.position.Y + (double) (this.height / 2)) / 16.0), 1.05f, 0.95f, 0.55f);
+          Lighting.AddLight((int) (((double) this.position.X + (double) this.width) / 16.0), (int) (((double) this.position.Y + (double) (this.height / 2)) / 16.0), 1.05f, 0.95f, 0.55f);
         else if (this.type == 331)
-          Lighting.AddLight((int) ((this.position.X + (double) this.width) / 16.0), (int) ((this.position.Y + (double) (this.height / 2)) / 16.0), 0.55f, 0.75f, 0.6f);
+          Lighting.AddLight((int) (((double) this.position.X + (double) this.width) / 16.0), (int) (((double) this.position.Y + (double) (this.height / 2)) / 16.0), 0.55f, 0.75f, 0.6f);
         else if (this.type == 183)
-          Lighting.AddLight((int) ((this.position.X + (double) this.width) / 16.0), (int) ((this.position.Y + (double) (this.height / 2)) / 16.0), 0.15f, 0.45f, 0.9f);
+          Lighting.AddLight((int) (((double) this.position.X + (double) this.width) / 16.0), (int) (((double) this.position.Y + (double) (this.height / 2)) / 16.0), 0.15f, 0.45f, 0.9f);
         else if (this.type == 75)
-          Lighting.AddLight((int) ((this.position.X + (double) this.width) / 16.0), (int) ((this.position.Y + (double) (this.height / 2)) / 16.0), 0.8f, 0.7f, 0.1f);
+          Lighting.AddLight((int) (((double) this.position.X + (double) this.width) / 16.0), (int) (((double) this.position.Y + (double) (this.height / 2)) / 16.0), 0.8f, 0.7f, 0.1f);
         if (this.type == 75)
         {
           if (Main.rand.Next(25) == 0)
-            Dust.NewDust(this.position, this.width, this.height, 58, (float) (this.velocity.X * 0.5), (float) (this.velocity.Y * 0.5), 150, (Color) null, 1.2f);
+            Dust.NewDust(this.position, this.width, this.height, 58, this.velocity.X * 0.5f, this.velocity.Y * 0.5f, 150, new Color(), 1.2f);
           if (Main.rand.Next(50) == 0)
-            Gore.NewGore(this.position, new Vector2((float) (this.velocity.X * 0.200000002980232), (float) (this.velocity.Y * 0.200000002980232)), Main.rand.Next(16, 18), 1f);
+            Gore.NewGore(this.position, new Vector2(this.velocity.X * 0.2f, this.velocity.Y * 0.2f), Main.rand.Next(16, 18), 1f);
         }
         if (this.spawnTime < 2147483646)
         {
@@ -39913,13 +39820,13 @@ namespace Terraria
         if (this.wet)
         {
           Item obj = this;
-          Vector2 vector2_2 = Vector2.op_Addition(obj.position, vector2_1);
+          Vector2 vector2_2 = obj.position + vector2_1;
           obj.position = vector2_2;
         }
         else
         {
           Item obj = this;
-          Vector2 vector2_2 = Vector2.op_Addition(obj.position, this.velocity);
+          Vector2 vector2_2 = obj.position + this.velocity;
           obj.position = vector2_2;
         }
         if (this.noGrabDelay <= 0)
@@ -40006,21 +39913,21 @@ namespace Terraria
       Main.item[index1] = new Item();
       Main.item[index1].SetDefaults(Type, false);
       Main.item[index1].Prefix(pfix);
-      Main.item[index1].position.X = (__Null) (double) (X + Width / 2 - Main.item[index1].width / 2);
-      Main.item[index1].position.Y = (__Null) (double) (Y + Height / 2 - Main.item[index1].height / 2);
+      Main.item[index1].position.X = (float) (X + Width / 2 - Main.item[index1].width / 2);
+      Main.item[index1].position.Y = (float) (Y + Height / 2 - Main.item[index1].height / 2);
       Main.item[index1].wet = Collision.WetCollision(Main.item[index1].position, Main.item[index1].width, Main.item[index1].height);
-      Main.item[index1].velocity.X = (__Null) ((double) Main.rand.Next(-30, 31) * 0.100000001490116);
-      Main.item[index1].velocity.Y = (__Null) ((double) Main.rand.Next(-40, -15) * 0.100000001490116);
+      Main.item[index1].velocity.X = (float) Main.rand.Next(-30, 31) * 0.1f;
+      Main.item[index1].velocity.Y = (float) Main.rand.Next(-40, -15) * 0.1f;
       if (Type == 859)
       {
         Item obj = Main.item[index1];
-        Vector2 vector2 = Vector2.op_Multiply(obj.velocity, 0.0f);
+        Vector2 vector2 = obj.velocity * 0.0f;
         obj.velocity = vector2;
       }
       if (Type == 520 || Type == 521 || Main.item[index1].type >= 0 && ItemID.Sets.NebulaPickup[Main.item[index1].type])
       {
-        Main.item[index1].velocity.X = (__Null) ((double) Main.rand.Next(-30, 31) * 0.100000001490116);
-        Main.item[index1].velocity.Y = (__Null) ((double) Main.rand.Next(-30, 31) * 0.100000001490116);
+        Main.item[index1].velocity.X = (float) Main.rand.Next(-30, 31) * 0.1f;
+        Main.item[index1].velocity.Y = (float) Main.rand.Next(-30, 31) * 0.1f;
       }
       Main.item[index1].active = true;
       Main.item[index1].spawnTime = 0;
@@ -40051,7 +39958,7 @@ namespace Terraria
       {
         if (this.ownIgnore != index && Main.player[index].active && Main.player[index].ItemSpace(Main.item[whoAmI]))
         {
-          float num2 = Math.Abs((float) (Main.player[index].position.X + (double) (Main.player[index].width / 2) - this.position.X) - (float) (this.width / 2)) + Math.Abs((float) (Main.player[index].position.Y + (double) (Main.player[index].height / 2) - this.position.Y) - (float) this.height);
+          float num2 = Math.Abs(Main.player[index].position.X + (float) (Main.player[index].width / 2) - this.position.X - (float) (this.width / 2)) + Math.Abs(Main.player[index].position.Y + (float) (Main.player[index].height / 2) - this.position.Y - (float) this.height);
           if (Main.player[index].manaMagnet && (this.type == 184 || this.type == 1735 || this.type == 1868))
             num2 -= (float) Item.manaGrabRange;
           if (Main.player[index].lifeMagnet && (this.type == 58 || this.type == 1734 || this.type == 1867))

@@ -1,7 +1,7 @@
 ﻿// Decompiled with JetBrains decompiler
 // Type: Terraria.DataStructures.DrawData
 // Assembly: TerrariaServer, Version=1.3.5.1, Culture=neutral, PublicKeyToken=null
-// MVID: 880A80AC-FC6C-4F43-ABDD-E2472DA66CB5
+// MVID: C2103E81-0935-4BEA-9E98-4159FC80C2BB
 // Assembly location: F:\Steam\steamapps\common\Terraria\TerrariaServer.exe
 
 using Microsoft.Xna.Framework;
@@ -30,12 +30,12 @@ namespace Terraria.DataStructures
       this.texture = texture;
       this.position = position;
       this.color = color;
-      this.destinationRectangle = (Rectangle) null;
+      this.destinationRectangle = new Rectangle();
       this.sourceRect = DrawData.nullRectangle;
       this.rotation = 0.0f;
-      this.origin = Vector2.get_Zero();
-      this.scale = Vector2.get_One();
-      this.effect = (SpriteEffects) 0;
+      this.origin = Vector2.Zero;
+      this.scale = Vector2.One;
+      this.effect = SpriteEffects.None;
       this.shader = 0;
       this.ignorePlayerRotation = false;
       this.useDestinationRectangle = false;
@@ -46,12 +46,12 @@ namespace Terraria.DataStructures
       this.texture = texture;
       this.position = position;
       this.color = color;
-      this.destinationRectangle = (Rectangle) null;
+      this.destinationRectangle = new Rectangle();
       this.sourceRect = sourceRect;
       this.rotation = 0.0f;
-      this.origin = Vector2.get_Zero();
-      this.scale = Vector2.get_One();
-      this.effect = (SpriteEffects) 0;
+      this.origin = Vector2.Zero;
+      this.scale = Vector2.One;
+      this.effect = SpriteEffects.None;
       this.shader = 0;
       this.ignorePlayerRotation = false;
       this.useDestinationRectangle = false;
@@ -67,7 +67,7 @@ namespace Terraria.DataStructures
       this.origin = origin;
       this.scale = new Vector2(scale, scale);
       this.effect = effect;
-      this.destinationRectangle = (Rectangle) null;
+      this.destinationRectangle = new Rectangle();
       this.shader = 0;
       this.ignorePlayerRotation = false;
       this.useDestinationRectangle = false;
@@ -83,7 +83,7 @@ namespace Terraria.DataStructures
       this.origin = origin;
       this.scale = scale;
       this.effect = effect;
-      this.destinationRectangle = (Rectangle) null;
+      this.destinationRectangle = new Rectangle();
       this.shader = 0;
       this.ignorePlayerRotation = false;
       this.useDestinationRectangle = false;
@@ -94,12 +94,12 @@ namespace Terraria.DataStructures
       this.texture = texture;
       this.destinationRectangle = destinationRectangle;
       this.color = color;
-      this.position = Vector2.get_Zero();
+      this.position = Vector2.Zero;
       this.sourceRect = DrawData.nullRectangle;
       this.rotation = 0.0f;
-      this.origin = Vector2.get_Zero();
-      this.scale = Vector2.get_One();
-      this.effect = (SpriteEffects) 0;
+      this.origin = Vector2.Zero;
+      this.scale = Vector2.One;
+      this.effect = SpriteEffects.None;
       this.shader = 0;
       this.ignorePlayerRotation = false;
       this.useDestinationRectangle = false;
@@ -110,12 +110,12 @@ namespace Terraria.DataStructures
       this.texture = texture;
       this.destinationRectangle = destinationRectangle;
       this.color = color;
-      this.position = Vector2.get_Zero();
+      this.position = Vector2.Zero;
       this.sourceRect = sourceRect;
       this.rotation = 0.0f;
-      this.origin = Vector2.get_Zero();
-      this.scale = Vector2.get_One();
-      this.effect = (SpriteEffects) 0;
+      this.origin = Vector2.Zero;
+      this.scale = Vector2.One;
+      this.effect = SpriteEffects.None;
       this.shader = 0;
       this.ignorePlayerRotation = false;
       this.useDestinationRectangle = false;
@@ -130,8 +130,8 @@ namespace Terraria.DataStructures
       this.rotation = rotation;
       this.origin = origin;
       this.effect = effect;
-      this.position = Vector2.get_Zero();
-      this.scale = Vector2.get_One();
+      this.position = Vector2.Zero;
+      this.scale = Vector2.One;
       this.shader = 0;
       this.ignorePlayerRotation = false;
       this.useDestinationRectangle = false;

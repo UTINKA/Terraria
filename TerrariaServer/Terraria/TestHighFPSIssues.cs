@@ -1,7 +1,7 @@
 ﻿// Decompiled with JetBrains decompiler
 // Type: Terraria.TestHighFPSIssues
 // Assembly: TerrariaServer, Version=1.3.5.1, Culture=neutral, PublicKeyToken=null
-// MVID: 880A80AC-FC6C-4F43-ABDD-E2472DA66CB5
+// MVID: C2103E81-0935-4BEA-9E98-4159FC80C2BB
 // Assembly location: F:\Steam\steamapps\common\Terraria\TerrariaServer.exe
 
 using Microsoft.Xna.Framework;
@@ -23,7 +23,7 @@ namespace Terraria
 
     public static void TapUpdate(GameTime gt)
     {
-      TestHighFPSIssues._tapUpdates.Add(gt.get_TotalGameTime().TotalMilliseconds);
+      TestHighFPSIssues._tapUpdates.Add(gt.TotalGameTime.TotalMilliseconds);
       TestHighFPSIssues.conD = 0;
       --TestHighFPSIssues.race;
       if (++TestHighFPSIssues.conU <= TestHighFPSIssues.conUH)
@@ -33,12 +33,12 @@ namespace Terraria
 
     public static void TapUpdateEnd(GameTime gt)
     {
-      TestHighFPSIssues._tapUpdateEnds.Add(gt.get_TotalGameTime().TotalMilliseconds);
+      TestHighFPSIssues._tapUpdateEnds.Add(gt.TotalGameTime.TotalMilliseconds);
     }
 
     public static void TapDraw(GameTime gt)
     {
-      TestHighFPSIssues._tapDraws.Add(gt.get_TotalGameTime().TotalMilliseconds);
+      TestHighFPSIssues._tapDraws.Add(gt.TotalGameTime.TotalMilliseconds);
       TestHighFPSIssues.conU = 0;
       ++TestHighFPSIssues.race;
       if (++TestHighFPSIssues.conD <= TestHighFPSIssues.conDH)
@@ -55,7 +55,7 @@ namespace Terraria
         TestHighFPSIssues.conUH = num;
         TestHighFPSIssues.race = num;
       }
-      double num1 = gt.get_TotalGameTime().TotalMilliseconds - 5000.0;
+      double num1 = gt.TotalGameTime.TotalMilliseconds - 5000.0;
       while (TestHighFPSIssues._tapUpdates.Count > 0 && TestHighFPSIssues._tapUpdates[0] < num1)
         TestHighFPSIssues._tapUpdates.RemoveAt(0);
       while (TestHighFPSIssues._tapDraws.Count > 0 && TestHighFPSIssues._tapDraws[0] < num1)

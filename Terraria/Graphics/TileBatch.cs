@@ -1,7 +1,7 @@
 ﻿// Decompiled with JetBrains decompiler
 // Type: Terraria.Graphics.TileBatch
 // Assembly: Terraria, Version=1.3.5.1, Culture=neutral, PublicKeyToken=null
-// MVID: DF0400F4-EE47-4864-BE80-932EDB02D8A6
+// MVID: E90A5A2F-CD10-4A2C-9D2A-6B036D4E8877
 // Assembly location: F:\Steam\steamapps\common\Terraria\Terraria.exe
 
 using Microsoft.Xna.Framework;
@@ -48,13 +48,13 @@ namespace Terraria.Graphics
 
     private void Allocate()
     {
-      if (this._vertexBuffer == null || ((GraphicsResource) this._vertexBuffer).get_IsDisposed())
+      if (this._vertexBuffer == null || this._vertexBuffer.IsDisposed)
       {
-        this._vertexBuffer = new DynamicVertexBuffer(this._graphicsDevice, typeof (VertexPositionColorTexture), 8192, (BufferUsage) 1);
+        this._vertexBuffer = new DynamicVertexBuffer(this._graphicsDevice, typeof (VertexPositionColorTexture), 8192, BufferUsage.WriteOnly);
         this._vertexBufferPosition = 0;
-        this._vertexBuffer.add_ContentLost((EventHandler<EventArgs>) ((sender, e) => this._vertexBufferPosition = 0));
+        this._vertexBuffer.ContentLost += (EventHandler<EventArgs>) ((sender, e) => this._vertexBufferPosition = 0);
       }
-      if (this._indexBuffer != null && !((GraphicsResource) this._indexBuffer).get_IsDisposed())
+      if (this._indexBuffer != null && !this._indexBuffer.IsDisposed)
         return;
       if (this._fallbackIndexData == null)
       {
@@ -69,31 +69,31 @@ namespace Terraria.Graphics
           this._fallbackIndexData[index * 6 + 5] = (short) (index * 4 + 3);
         }
       }
-      this._indexBuffer = new DynamicIndexBuffer(this._graphicsDevice, typeof (short), 12288, (BufferUsage) 1);
-      ((IndexBuffer) this._indexBuffer).SetData<short>((M0[]) this._fallbackIndexData);
-      this._indexBuffer.add_ContentLost((EventHandler<EventArgs>) ((sender, e) => ((IndexBuffer) this._indexBuffer).SetData<short>((M0[]) this._fallbackIndexData)));
+      this._indexBuffer = new DynamicIndexBuffer(this._graphicsDevice, typeof (short), 12288, BufferUsage.WriteOnly);
+      this._indexBuffer.SetData<short>(this._fallbackIndexData);
+      this._indexBuffer.ContentLost += (EventHandler<EventArgs>) ((sender, e) => this._indexBuffer.SetData<short>(this._fallbackIndexData));
     }
 
     private void FlushRenderState()
     {
       this.Allocate();
       this._graphicsDevice.SetVertexBuffer((VertexBuffer) this._vertexBuffer);
-      this._graphicsDevice.set_Indices((IndexBuffer) this._indexBuffer);
-      this._graphicsDevice.get_SamplerStates().set_Item(0, (SamplerState) SamplerState.PointClamp);
+      this._graphicsDevice.Indices = (IndexBuffer) this._indexBuffer;
+      this._graphicsDevice.SamplerStates[0] = SamplerState.PointClamp;
     }
 
     public void Dispose()
     {
       if (this._vertexBuffer != null)
-        ((GraphicsResource) this._vertexBuffer).Dispose();
+        this._vertexBuffer.Dispose();
       if (this._indexBuffer == null)
         return;
-      ((GraphicsResource) this._indexBuffer).Dispose();
+      this._indexBuffer.Dispose();
     }
 
     public void Begin(Matrix transformation)
     {
-      this._spriteBatch.Begin((SpriteSortMode) 0, (BlendState) null, (SamplerState) null, (DepthStencilState) null, (RasterizerState) null, (Effect) null, transformation);
+      this._spriteBatch.Begin(SpriteSortMode.Deferred, (BlendState) null, (SamplerState) null, (DepthStencilState) null, (RasterizerState) null, (Effect) null, transformation);
       this._spriteBatch.End();
     }
 
@@ -105,42 +105,45 @@ namespace Terraria.Graphics
 
     public void Draw(Texture2D texture, Vector2 position, VertexColors colors)
     {
-      Vector4 destination = (Vector4) null;
-      destination.X = position.X;
-      destination.Y = position.Y;
-      destination.Z = (__Null) 1.0;
-      destination.W = (__Null) 1.0;
-      this.InternalDraw(texture, ref destination, true, ref TileBatch._nullRectangle, ref colors, ref TileBatch._vector2Zero, (SpriteEffects) 0, 0.0f);
+      this.InternalDraw(texture, ref new Vector4()
+      {
+        X = position.X,
+        Y = position.Y,
+        Z = 1f,
+        W = 1f
+      }, true, ref TileBatch._nullRectangle, ref colors, ref TileBatch._vector2Zero, SpriteEffects.None, 0.0f);
     }
 
     public void Draw(Texture2D texture, Vector2 position, Rectangle? sourceRectangle, VertexColors colors, Vector2 origin, float scale, SpriteEffects effects)
     {
-      Vector4 destination = (Vector4) null;
-      destination.X = position.X;
-      destination.Y = position.Y;
-      destination.Z = (__Null) (double) scale;
-      destination.W = (__Null) (double) scale;
-      this.InternalDraw(texture, ref destination, true, ref sourceRectangle, ref colors, ref origin, effects, 0.0f);
+      this.InternalDraw(texture, ref new Vector4()
+      {
+        X = position.X,
+        Y = position.Y,
+        Z = scale,
+        W = scale
+      }, true, ref sourceRectangle, ref colors, ref origin, effects, 0.0f);
     }
 
     public void Draw(Texture2D texture, Vector4 destination, VertexColors colors)
     {
-      this.InternalDraw(texture, ref destination, false, ref TileBatch._nullRectangle, ref colors, ref TileBatch._vector2Zero, (SpriteEffects) 0, 0.0f);
+      this.InternalDraw(texture, ref destination, false, ref TileBatch._nullRectangle, ref colors, ref TileBatch._vector2Zero, SpriteEffects.None, 0.0f);
     }
 
     public void Draw(Texture2D texture, Vector2 position, VertexColors colors, Vector2 scale)
     {
-      Vector4 destination = (Vector4) null;
-      destination.X = position.X;
-      destination.Y = position.Y;
-      destination.Z = scale.X;
-      destination.W = scale.Y;
-      this.InternalDraw(texture, ref destination, true, ref TileBatch._nullRectangle, ref colors, ref TileBatch._vector2Zero, (SpriteEffects) 0, 0.0f);
+      this.InternalDraw(texture, ref new Vector4()
+      {
+        X = position.X,
+        Y = position.Y,
+        Z = scale.X,
+        W = scale.Y
+      }, true, ref TileBatch._nullRectangle, ref colors, ref TileBatch._vector2Zero, SpriteEffects.None, 0.0f);
     }
 
     public void Draw(Texture2D texture, Vector4 destination, Rectangle? sourceRectangle, VertexColors colors)
     {
-      this.InternalDraw(texture, ref destination, false, ref sourceRectangle, ref colors, ref TileBatch._vector2Zero, (SpriteEffects) 0, 0.0f);
+      this.InternalDraw(texture, ref destination, false, ref sourceRectangle, ref colors, ref TileBatch._vector2Zero, SpriteEffects.None, 0.0f);
     }
 
     public void Draw(Texture2D texture, Vector4 destination, Rectangle? sourceRectangle, VertexColors colors, Vector2 origin, SpriteEffects effects, float rotation)
@@ -150,12 +153,13 @@ namespace Terraria.Graphics
 
     public void Draw(Texture2D texture, Rectangle destinationRectangle, Rectangle? sourceRectangle, VertexColors colors)
     {
-      Vector4 destination = (Vector4) null;
-      destination.X = (__Null) (double) (float) destinationRectangle.X;
-      destination.Y = (__Null) (double) (float) destinationRectangle.Y;
-      destination.Z = (__Null) (double) (float) destinationRectangle.Width;
-      destination.W = (__Null) (double) (float) destinationRectangle.Height;
-      this.InternalDraw(texture, ref destination, false, ref sourceRectangle, ref colors, ref TileBatch._vector2Zero, (SpriteEffects) 0, 0.0f);
+      this.InternalDraw(texture, ref new Vector4()
+      {
+        X = (float) destinationRectangle.X,
+        Y = (float) destinationRectangle.Y,
+        Z = (float) destinationRectangle.Width,
+        W = (float) destinationRectangle.Height
+      }, false, ref sourceRectangle, ref colors, ref TileBatch._vector2Zero, SpriteEffects.None, 0.0f);
     }
 
     private static short[] CreateIndexData()
@@ -179,15 +183,15 @@ namespace Terraria.Graphics
         Array.Resize<TileBatch.SpriteData>(ref this._spriteDataQueue, this._spriteDataQueue.Length << 1);
       fixed (TileBatch.SpriteData* spriteDataPtr = &this._spriteDataQueue[this._queuedSpriteCount])
       {
-        float z = (float) destination.Z;
-        float w = (float) destination.W;
+        float z = destination.Z;
+        float w = destination.W;
         if (sourceRectangle.HasValue)
         {
           Rectangle rectangle = sourceRectangle.Value;
-          spriteDataPtr->Source.X = (__Null) (double) (float) rectangle.X;
-          spriteDataPtr->Source.Y = (__Null) (double) (float) rectangle.Y;
-          spriteDataPtr->Source.Z = (__Null) (double) (float) rectangle.Width;
-          spriteDataPtr->Source.W = (__Null) (double) (float) rectangle.Height;
+          spriteDataPtr->Source.X = (float) rectangle.X;
+          spriteDataPtr->Source.Y = (float) rectangle.Y;
+          spriteDataPtr->Source.Z = (float) rectangle.Width;
+          spriteDataPtr->Source.W = (float) rectangle.Height;
           if (scaleDestination)
           {
             z *= (float) rectangle.Width;
@@ -196,12 +200,12 @@ namespace Terraria.Graphics
         }
         else
         {
-          float width = (float) texture.get_Width();
-          float height = (float) texture.get_Height();
-          spriteDataPtr->Source.X = (__Null) 0.0;
-          spriteDataPtr->Source.Y = (__Null) 0.0;
-          spriteDataPtr->Source.Z = (__Null) (double) width;
-          spriteDataPtr->Source.W = (__Null) (double) height;
+          float width = (float) texture.Width;
+          float height = (float) texture.Height;
+          spriteDataPtr->Source.X = 0.0f;
+          spriteDataPtr->Source.Y = 0.0f;
+          spriteDataPtr->Source.Z = width;
+          spriteDataPtr->Source.W = height;
           if (scaleDestination)
           {
             z *= width;
@@ -210,8 +214,8 @@ namespace Terraria.Graphics
         }
         spriteDataPtr->Destination.X = destination.X;
         spriteDataPtr->Destination.Y = destination.Y;
-        spriteDataPtr->Destination.Z = (__Null) (double) z;
-        spriteDataPtr->Destination.W = (__Null) (double) w;
+        spriteDataPtr->Destination.Z = z;
+        spriteDataPtr->Destination.W = w;
         spriteDataPtr->Origin.X = origin.X;
         spriteDataPtr->Origin.Y = origin.Y;
         spriteDataPtr->Effects = effects;
@@ -252,12 +256,12 @@ namespace Terraria.Graphics
 
     private unsafe void RenderBatch(Texture2D texture, TileBatch.SpriteData[] sprites, int offset, int count)
     {
-      this._graphicsDevice.get_Textures().set_Item(0, (Texture) texture);
-      float num1 = 1f / (float) texture.get_Width();
-      float num2 = 1f / (float) texture.get_Height();
+      this._graphicsDevice.Textures[0] = (Texture) texture;
+      float num1 = 1f / (float) texture.Width;
+      float num2 = 1f / (float) texture.Height;
       while (count > 0)
       {
-        SetDataOptions setDataOptions = (SetDataOptions) 2;
+        SetDataOptions options = SetDataOptions.NoOverwrite;
         int num3 = count;
         if (num3 > 2048 - this._vertexBufferPosition)
         {
@@ -265,7 +269,7 @@ namespace Terraria.Graphics
           if (num3 < 256)
           {
             this._vertexBufferPosition = 0;
-            setDataOptions = (SetDataOptions) 1;
+            options = SetDataOptions.Discard;
             num3 = count;
             if (num3 > 2048)
               num3 = 2048;
@@ -290,51 +294,36 @@ namespace Terraria.Graphics
                 num4 = 1f;
                 num5 = 0.0f;
               }
-              float num6 = (float) (spriteDataPtr2->Origin.X / spriteDataPtr2->Source.Z);
-              float num7 = (float) (spriteDataPtr2->Origin.Y / spriteDataPtr2->Source.W);
-              positionColorTexturePtr2->Color = (__Null) spriteDataPtr2->Colors.TopLeftColor;
-              positionColorTexturePtr2[1].Color = (__Null) spriteDataPtr2->Colors.TopRightColor;
-              positionColorTexturePtr2[2].Color = (__Null) spriteDataPtr2->Colors.BottomRightColor;
-              positionColorTexturePtr2[3].Color = (__Null) spriteDataPtr2->Colors.BottomLeftColor;
+              float num6 = spriteDataPtr2->Origin.X / spriteDataPtr2->Source.Z;
+              float num7 = spriteDataPtr2->Origin.Y / spriteDataPtr2->Source.W;
+              positionColorTexturePtr2->Color = spriteDataPtr2->Colors.TopLeftColor;
+              positionColorTexturePtr2[1].Color = spriteDataPtr2->Colors.TopRightColor;
+              positionColorTexturePtr2[2].Color = spriteDataPtr2->Colors.BottomRightColor;
+              positionColorTexturePtr2[3].Color = spriteDataPtr2->Colors.BottomLeftColor;
               for (int index2 = 0; index2 < 4; ++index2)
               {
                 float num8 = TileBatch.CORNER_OFFSET_X[index2];
                 float num9 = TileBatch.CORNER_OFFSET_Y[index2];
-                float num10 = (float) (((double) num8 - (double) num6) * spriteDataPtr2->Destination.Z);
-                float num11 = (float) (((double) num9 - (double) num7) * spriteDataPtr2->Destination.W);
-                float num12 = (float) (spriteDataPtr2->Destination.X + (double) num10 * (double) num4 - (double) num11 * (double) num5);
-                float num13 = (float) (spriteDataPtr2->Destination.Y + (double) num10 * (double) num5 + (double) num11 * (double) num4);
-                if ((spriteDataPtr2->Effects & 2) != null)
+                float num10 = (num8 - num6) * spriteDataPtr2->Destination.Z;
+                float num11 = (num9 - num7) * spriteDataPtr2->Destination.W;
+                float num12 = (float) ((double) spriteDataPtr2->Destination.X + (double) num10 * (double) num4 - (double) num11 * (double) num5);
+                float num13 = (float) ((double) spriteDataPtr2->Destination.Y + (double) num10 * (double) num5 + (double) num11 * (double) num4);
+                if ((spriteDataPtr2->Effects & SpriteEffects.FlipVertically) != SpriteEffects.None)
                   num8 = 1f - num8;
-                if ((spriteDataPtr2->Effects & 1) != null)
+                if ((spriteDataPtr2->Effects & SpriteEffects.FlipHorizontally) != SpriteEffects.None)
                   num9 = 1f - num9;
-                // ISSUE: explicit reference operation
-                // ISSUE: cast to a reference type
-                // ISSUE: explicit reference operation
-                (^(Vector3&) @positionColorTexturePtr2->Position).X = (__Null) (double) num12;
-                // ISSUE: explicit reference operation
-                // ISSUE: cast to a reference type
-                // ISSUE: explicit reference operation
-                (^(Vector3&) @positionColorTexturePtr2->Position).Y = (__Null) (double) num13;
-                // ISSUE: explicit reference operation
-                // ISSUE: cast to a reference type
-                // ISSUE: explicit reference operation
-                (^(Vector3&) @positionColorTexturePtr2->Position).Z = (__Null) 0.0;
-                // ISSUE: explicit reference operation
-                // ISSUE: cast to a reference type
-                // ISSUE: explicit reference operation
-                (^(Vector2&) @positionColorTexturePtr2->TextureCoordinate).X = (__Null) ((spriteDataPtr2->Source.X + (double) num8 * spriteDataPtr2->Source.Z) * (double) num1);
-                // ISSUE: explicit reference operation
-                // ISSUE: cast to a reference type
-                // ISSUE: explicit reference operation
-                (^(Vector2&) @positionColorTexturePtr2->TextureCoordinate).Y = (__Null) ((spriteDataPtr2->Source.Y + (double) num9 * spriteDataPtr2->Source.W) * (double) num2);
+                positionColorTexturePtr2->Position.X = num12;
+                positionColorTexturePtr2->Position.Y = num13;
+                positionColorTexturePtr2->Position.Z = 0.0f;
+                positionColorTexturePtr2->TextureCoordinate.X = (spriteDataPtr2->Source.X + num8 * spriteDataPtr2->Source.Z) * num1;
+                positionColorTexturePtr2->TextureCoordinate.Y = (spriteDataPtr2->Source.Y + num9 * spriteDataPtr2->Source.W) * num2;
                 ++positionColorTexturePtr2;
               }
               ++spriteDataPtr2;
             }
           }
-        this._vertexBuffer.SetData<VertexPositionColorTexture>(this._vertexBufferPosition * sizeof (VertexPositionColorTexture) * 4, (M0[]) this._vertices, 0, num3 * 4, sizeof (VertexPositionColorTexture), setDataOptions);
-        this._graphicsDevice.DrawIndexedPrimitives((PrimitiveType) 0, 0, this._vertexBufferPosition * 4, num3 * 4, this._vertexBufferPosition * 6, num3 * 2);
+        this._vertexBuffer.SetData<VertexPositionColorTexture>(this._vertexBufferPosition * sizeof (VertexPositionColorTexture) * 4, this._vertices, 0, num3 * 4, sizeof (VertexPositionColorTexture), options);
+        this._graphicsDevice.DrawIndexedPrimitives(PrimitiveType.TriangleList, 0, this._vertexBufferPosition * 4, num3 * 4, this._vertexBufferPosition * 6, num3 * 2);
         this._vertexBufferPosition += num3;
         offset += num3;
         count -= num3;

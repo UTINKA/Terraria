@@ -1,7 +1,7 @@
 ﻿// Decompiled with JetBrains decompiler
 // Type: Terraria.NetMessage
 // Assembly: Terraria, Version=1.3.5.1, Culture=neutral, PublicKeyToken=null
-// MVID: DF0400F4-EE47-4864-BE80-932EDB02D8A6
+// MVID: E90A5A2F-CD10-4A2C-9D2A-6B036D4E8877
 // Assembly location: F:\Steam\steamapps\common\Terraria\Terraria.exe
 
 using Ionic.Zlib;
@@ -70,7 +70,7 @@ namespace Terraria
         switch (msgType)
         {
           case 1:
-            writer.Write("Terraria" + (object) 192);
+            writer.Write("Terraria" + (object) 193);
             break;
           case 2:
             text.Serialize(writer);
@@ -266,7 +266,7 @@ namespace Terraria
             BitsByte bitsByte11 = (BitsByte) (byte) 0;
             bitsByte11[0] = player3.pulley;
             bitsByte11[1] = player3.pulley && (int) player3.pulleyDir == 2;
-            bitsByte11[2] = Vector2.op_Inequality(player3.velocity, Vector2.get_Zero());
+            bitsByte11[2] = player3.velocity != Vector2.Zero;
             bitsByte11[3] = player3.vortexStealthActive;
             bitsByte11[4] = (double) player3.gravDir == 1.0;
             bitsByte11[5] = player3.shieldRaised;
@@ -765,10 +765,10 @@ namespace Terraria
           case 81:
             writer.Write(number2);
             writer.Write(number3);
-            Color c = (Color) null;
-            // ISSUE: explicit reference operation
-            ((Color) @c).set_PackedValue((uint) number);
-            writer.WriteRGB(c);
+            writer.WriteRGB(new Color()
+            {
+              PackedValue = (uint) number
+            });
             writer.Write((int) number4);
             break;
           case 83:
@@ -811,10 +811,7 @@ namespace Terraria
             writer.Write((byte) bitsByte17);
             Item obj4 = Main.item[number];
             if (bitsByte17[0])
-            {
-              // ISSUE: explicit reference operation
-              writer.Write(((Color) @obj4.color).get_PackedValue());
-            }
+              writer.Write(obj4.color.PackedValue);
             if (bitsByte17[1])
               writer.Write((ushort) obj4.damage);
             if (bitsByte17[2])
@@ -936,11 +933,8 @@ namespace Terraria
             writer.Write((double) number3 == 1.0);
             break;
           case 106:
-            HalfVector2 halfVector2;
-            // ISSUE: explicit reference operation
-            ((HalfVector2) @halfVector2).\u002Ector((float) number, number2);
-            // ISSUE: explicit reference operation
-            writer.Write(((HalfVector2) @halfVector2).get_PackedValue());
+            HalfVector2 halfVector2 = new HalfVector2((float) number, number2);
+            writer.Write(halfVector2.PackedValue);
             break;
           case 107:
             writer.Write((byte) number2);
@@ -1002,6 +996,15 @@ namespace Terraria
             writer.Write((short) number2);
             writer.Write((byte) ((double) number3 + 1.0));
             writer.Write((byte) number4);
+            break;
+          case 119:
+            writer.Write(number2);
+            writer.Write(number3);
+            writer.WriteRGB(new Color()
+            {
+              PackedValue = (uint) number
+            });
+            text.Serialize(writer);
             break;
         }
         int position2 = (int) writer.BaseStream.Position;
@@ -1090,36 +1093,11 @@ namespace Terraria
                 {
                   Rectangle rect1 = Main.player[index1].getRect();
                   Rectangle rect2 = npc3.getRect();
-                  // ISSUE: explicit reference operation
-                  // ISSUE: variable of a reference type
-                  Rectangle& local1 = @rect2;
-                  // ISSUE: explicit reference operation
-                  int num6 = (^local1).X - 2500;
-                  // ISSUE: explicit reference operation
-                  (^local1).X = (__Null) num6;
-                  // ISSUE: explicit reference operation
-                  // ISSUE: variable of a reference type
-                  Rectangle& local2 = @rect2;
-                  // ISSUE: explicit reference operation
-                  int num7 = (^local2).Y - 2500;
-                  // ISSUE: explicit reference operation
-                  (^local2).Y = (__Null) num7;
-                  // ISSUE: explicit reference operation
-                  // ISSUE: variable of a reference type
-                  Rectangle& local3 = @rect2;
-                  // ISSUE: explicit reference operation
-                  int num17 = (^local3).Width + 5000;
-                  // ISSUE: explicit reference operation
-                  (^local3).Width = (__Null) num17;
-                  // ISSUE: explicit reference operation
-                  // ISSUE: variable of a reference type
-                  Rectangle& local4 = @rect2;
-                  // ISSUE: explicit reference operation
-                  int num18 = (^local4).Height + 5000;
-                  // ISSUE: explicit reference operation
-                  (^local4).Height = (__Null) num18;
-                  // ISSUE: explicit reference operation
-                  if (((Rectangle) @rect1).Intersects(rect2))
+                  rect2.X -= 2500;
+                  rect2.Y -= 2500;
+                  rect2.Width += 5000;
+                  rect2.Height += 5000;
+                  if (rect1.Intersects(rect2))
                     flag3 = true;
                 }
                 else
@@ -1161,36 +1139,11 @@ namespace Terraria
                 {
                   Rectangle rect1 = Main.player[index1].getRect();
                   Rectangle rect2 = npc3.getRect();
-                  // ISSUE: explicit reference operation
-                  // ISSUE: variable of a reference type
-                  Rectangle& local1 = @rect2;
-                  // ISSUE: explicit reference operation
-                  int num6 = (^local1).X - 3000;
-                  // ISSUE: explicit reference operation
-                  (^local1).X = (__Null) num6;
-                  // ISSUE: explicit reference operation
-                  // ISSUE: variable of a reference type
-                  Rectangle& local2 = @rect2;
-                  // ISSUE: explicit reference operation
-                  int num7 = (^local2).Y - 3000;
-                  // ISSUE: explicit reference operation
-                  (^local2).Y = (__Null) num7;
-                  // ISSUE: explicit reference operation
-                  // ISSUE: variable of a reference type
-                  Rectangle& local3 = @rect2;
-                  // ISSUE: explicit reference operation
-                  int num17 = (^local3).Width + 6000;
-                  // ISSUE: explicit reference operation
-                  (^local3).Width = (__Null) num17;
-                  // ISSUE: explicit reference operation
-                  // ISSUE: variable of a reference type
-                  Rectangle& local4 = @rect2;
-                  // ISSUE: explicit reference operation
-                  int num18 = (^local4).Height + 6000;
-                  // ISSUE: explicit reference operation
-                  (^local4).Height = (__Null) num18;
-                  // ISSUE: explicit reference operation
-                  if (((Rectangle) @rect1).Intersects(rect2))
+                  rect2.X -= 3000;
+                  rect2.Y -= 3000;
+                  rect2.Width += 6000;
+                  rect2.Height += 6000;
+                  if (rect1.Intersects(rect2))
                     flag3 = true;
                 }
                 if (flag3)
@@ -1254,36 +1207,11 @@ namespace Terraria
                 {
                   Rectangle rect1 = Main.player[index1].getRect();
                   Rectangle rect2 = projectile2.getRect();
-                  // ISSUE: explicit reference operation
-                  // ISSUE: variable of a reference type
-                  Rectangle& local1 = @rect2;
-                  // ISSUE: explicit reference operation
-                  int num6 = (^local1).X - 5000;
-                  // ISSUE: explicit reference operation
-                  (^local1).X = (__Null) num6;
-                  // ISSUE: explicit reference operation
-                  // ISSUE: variable of a reference type
-                  Rectangle& local2 = @rect2;
-                  // ISSUE: explicit reference operation
-                  int num7 = (^local2).Y - 5000;
-                  // ISSUE: explicit reference operation
-                  (^local2).Y = (__Null) num7;
-                  // ISSUE: explicit reference operation
-                  // ISSUE: variable of a reference type
-                  Rectangle& local3 = @rect2;
-                  // ISSUE: explicit reference operation
-                  int num17 = (^local3).Width + 10000;
-                  // ISSUE: explicit reference operation
-                  (^local3).Width = (__Null) num17;
-                  // ISSUE: explicit reference operation
-                  // ISSUE: variable of a reference type
-                  Rectangle& local4 = @rect2;
-                  // ISSUE: explicit reference operation
-                  int num18 = (^local4).Height + 10000;
-                  // ISSUE: explicit reference operation
-                  (^local4).Height = (__Null) num18;
-                  // ISSUE: explicit reference operation
-                  if (((Rectangle) @rect1).Intersects(rect2))
+                  rect2.X -= 5000;
+                  rect2.Y -= 5000;
+                  rect2.Width += 10000;
+                  rect2.Height += 10000;
+                  if (rect1.Intersects(rect2))
                     flag3 = true;
                 }
                 if (flag3)
@@ -1985,8 +1913,8 @@ namespace Terraria
         {
           if (Main.npc[number2].active && Main.npc[number2].townNPC)
           {
-            int sectionX1 = Netplay.GetSectionX((int) (Main.npc[number2].position.X / 16.0));
-            int sectionY1 = Netplay.GetSectionY((int) (Main.npc[number2].position.Y / 16.0));
+            int sectionX1 = Netplay.GetSectionX((int) ((double) Main.npc[number2].position.X / 16.0));
+            int sectionY1 = Netplay.GetSectionY((int) ((double) Main.npc[number2].position.Y / 16.0));
             if (sectionX1 == sectionX && sectionY1 == sectionY)
               NetMessage.SendData(23, whoAmi, -1, (NetworkText) null, number2, 0.0f, 0.0f, 0.0f, 0, 0, 0);
           }
@@ -2061,10 +1989,8 @@ namespace Terraria
         {
           if (!flag && Main.npc[number].type == 368)
             flag = true;
-          int num = 0;
-          if (Main.npc[number].homeless)
-            num = 1;
-          NetMessage.SendData(60, plr, -1, (NetworkText) null, number, (float) Main.npc[number].homeTileX, (float) Main.npc[number].homeTileY, (float) num, 0, 0, 0);
+          byte householdStatus = WorldGen.TownManager.GetHouseholdStatus(Main.npc[number]);
+          NetMessage.SendData(60, plr, -1, (NetworkText) null, number, (float) Main.npc[number].homeTileX, (float) Main.npc[number].homeTileY, (float) householdStatus, 0, 0, 0);
         }
       }
       if (!flag)

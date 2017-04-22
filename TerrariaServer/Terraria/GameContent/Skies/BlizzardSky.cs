@@ -1,7 +1,7 @@
 ﻿// Decompiled with JetBrains decompiler
 // Type: Terraria.GameContent.Skies.BlizzardSky
 // Assembly: TerrariaServer, Version=1.3.5.1, Culture=neutral, PublicKeyToken=null
-// MVID: 880A80AC-FC6C-4F43-ABDD-E2472DA66CB5
+// MVID: C2103E81-0935-4BEA-9E98-4159FC80C2BB
 // Assembly location: F:\Steam\steamapps\common\Terraria\TerrariaServer.exe
 
 using Microsoft.Xna.Framework;
@@ -29,7 +29,7 @@ namespace Terraria.GameContent.Skies
         return;
       if (this._isLeaving)
       {
-        this._opacity -= (float) gameTime.get_ElapsedGameTime().TotalSeconds;
+        this._opacity -= (float) gameTime.ElapsedGameTime.TotalSeconds;
         if ((double) this._opacity >= 0.0)
           return;
         this._isActive = false;
@@ -37,7 +37,7 @@ namespace Terraria.GameContent.Skies
       }
       else
       {
-        this._opacity += (float) gameTime.get_ElapsedGameTime().TotalSeconds;
+        this._opacity += (float) gameTime.ElapsedGameTime.TotalSeconds;
         if ((double) this._opacity <= 1.0)
           return;
         this._opacity = 1f;
@@ -49,8 +49,7 @@ namespace Terraria.GameContent.Skies
       if ((double) minDepth >= 1.0 && (double) maxDepth != 3.40282346638529E+38)
         return;
       float num = Math.Min(1f, Main.cloudAlpha * 2f);
-      // ISSUE: explicit reference operation
-      Color color = Color.op_Multiply(Color.op_Multiply(Color.op_Multiply(new Color(Vector4.op_Multiply(new Vector4(1f), ((Color) @Main.bgColor).ToVector4())), this._opacity), 0.7f), num);
+      Color color = new Color(new Vector4(1f) * Main.bgColor.ToVector4()) * this._opacity * 0.7f * num;
       spriteBatch.Draw(Main.magicPixel, new Rectangle(0, 0, Main.screenWidth, Main.screenHeight), color);
     }
 

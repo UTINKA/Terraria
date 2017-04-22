@@ -1,7 +1,7 @@
 ﻿// Decompiled with JetBrains decompiler
 // Type: Terraria.UI.UIElement
 // Assembly: Terraria, Version=1.3.5.1, Culture=neutral, PublicKeyToken=null
-// MVID: DF0400F4-EE47-4864-BE80-932EDB02D8A6
+// MVID: E90A5A2F-CD10-4A2C-9D2A-6B036D4E8877
 // Assembly location: F:\Steam\steamapps\common\Terraria\Terraria.exe
 
 using Microsoft.Xna.Framework;
@@ -71,10 +71,11 @@ namespace Terraria.UI
     {
       if (UIElement._overflowHiddenRasterizerState != null)
         return;
-      RasterizerState rasterizerState = new RasterizerState();
-      rasterizerState.set_CullMode((CullMode) 0);
-      rasterizerState.set_ScissorTestEnable(true);
-      UIElement._overflowHiddenRasterizerState = rasterizerState;
+      UIElement._overflowHiddenRasterizerState = new RasterizerState()
+      {
+        CullMode = CullMode.None,
+        ScissorTestEnable = true
+      };
     }
 
     public void SetSnapPoint(string name, int id, Vector2? anchor = null, Vector2? offset = null)
@@ -82,7 +83,7 @@ namespace Terraria.UI
       if (!anchor.HasValue)
         anchor = new Vector2?(new Vector2(0.5f));
       if (!offset.HasValue)
-        offset = new Vector2?(Vector2.get_Zero());
+        offset = new Vector2?(Vector2.Zero);
       this._snapPoint = new SnapPoint(name, id, anchor.Value, offset.Value);
     }
 
@@ -136,16 +137,16 @@ namespace Terraria.UI
     {
       bool overflowHidden = this.OverflowHidden;
       bool useImmediateMode = this._useImmediateMode;
-      RasterizerState rasterizerState = ((GraphicsResource) spriteBatch).get_GraphicsDevice().get_RasterizerState();
-      Rectangle scissorRectangle = ((GraphicsResource) spriteBatch).get_GraphicsDevice().get_ScissorRectangle();
-      SamplerState anisotropicClamp = (SamplerState) SamplerState.AnisotropicClamp;
+      RasterizerState rasterizerState = spriteBatch.GraphicsDevice.RasterizerState;
+      Rectangle scissorRectangle = spriteBatch.GraphicsDevice.ScissorRectangle;
+      SamplerState anisotropicClamp = SamplerState.AnisotropicClamp;
       if (useImmediateMode)
       {
         spriteBatch.End();
-        spriteBatch.Begin((SpriteSortMode) 1, (BlendState) BlendState.AlphaBlend, anisotropicClamp, (DepthStencilState) DepthStencilState.None, UIElement._overflowHiddenRasterizerState, (Effect) null, Main.UIScaleMatrix);
+        spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, anisotropicClamp, DepthStencilState.None, UIElement._overflowHiddenRasterizerState, (Effect) null, Main.UIScaleMatrix);
         this.DrawSelf(spriteBatch);
         spriteBatch.End();
-        spriteBatch.Begin((SpriteSortMode) 0, (BlendState) BlendState.AlphaBlend, anisotropicClamp, (DepthStencilState) DepthStencilState.None, UIElement._overflowHiddenRasterizerState, (Effect) null, Main.UIScaleMatrix);
+        spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, anisotropicClamp, DepthStencilState.None, UIElement._overflowHiddenRasterizerState, (Effect) null, Main.UIScaleMatrix);
       }
       else
         this.DrawSelf(spriteBatch);
@@ -153,15 +154,15 @@ namespace Terraria.UI
       {
         spriteBatch.End();
         Rectangle clippingRectangle = this.GetClippingRectangle(spriteBatch);
-        ((GraphicsResource) spriteBatch).get_GraphicsDevice().set_ScissorRectangle(clippingRectangle);
-        spriteBatch.Begin((SpriteSortMode) 0, (BlendState) BlendState.AlphaBlend, anisotropicClamp, (DepthStencilState) DepthStencilState.None, UIElement._overflowHiddenRasterizerState, (Effect) null, Main.UIScaleMatrix);
+        spriteBatch.GraphicsDevice.ScissorRectangle = clippingRectangle;
+        spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, anisotropicClamp, DepthStencilState.None, UIElement._overflowHiddenRasterizerState, (Effect) null, Main.UIScaleMatrix);
       }
       this.DrawChildren(spriteBatch);
       if (!overflowHidden)
         return;
       spriteBatch.End();
-      ((GraphicsResource) spriteBatch).get_GraphicsDevice().set_ScissorRectangle(scissorRectangle);
-      spriteBatch.Begin((SpriteSortMode) 0, (BlendState) BlendState.AlphaBlend, anisotropicClamp, (DepthStencilState) DepthStencilState.None, rasterizerState, (Effect) null, Main.UIScaleMatrix);
+      spriteBatch.GraphicsDevice.ScissorRectangle = scissorRectangle;
+      spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, anisotropicClamp, DepthStencilState.None, rasterizerState, (Effect) null, Main.UIScaleMatrix);
     }
 
     public virtual void Update(GameTime gameTime)
@@ -172,25 +173,17 @@ namespace Terraria.UI
 
     public Rectangle GetClippingRectangle(SpriteBatch spriteBatch)
     {
-      Vector2 vector2_1;
-      // ISSUE: explicit reference operation
-      ((Vector2) @vector2_1).\u002Ector(this._innerDimensions.X, this._innerDimensions.Y);
-      Vector2 vector2_2 = Vector2.op_Addition(new Vector2(this._innerDimensions.Width, this._innerDimensions.Height), vector2_1);
-      Vector2 vector2_3 = Vector2.Transform(vector2_1, Main.UIScaleMatrix);
-      Vector2 vector2_4 = Vector2.Transform(vector2_2, Main.UIScaleMatrix);
-      Rectangle rectangle;
-      // ISSUE: explicit reference operation
-      ((Rectangle) @rectangle).\u002Ector((int) vector2_3.X, (int) vector2_3.Y, (int) (vector2_4.X - vector2_3.X), (int) (vector2_4.Y - vector2_3.Y));
-      Viewport viewport1 = ((GraphicsResource) spriteBatch).get_GraphicsDevice().get_Viewport();
-      // ISSUE: explicit reference operation
-      int width = ((Viewport) @viewport1).get_Width();
-      Viewport viewport2 = ((GraphicsResource) spriteBatch).get_GraphicsDevice().get_Viewport();
-      // ISSUE: explicit reference operation
-      int height = ((Viewport) @viewport2).get_Height();
-      rectangle.X = (__Null) Utils.Clamp<int>((int) rectangle.X, 0, width);
-      rectangle.Y = (__Null) Utils.Clamp<int>((int) rectangle.Y, 0, height);
-      rectangle.Width = (__Null) Utils.Clamp<int>((int) rectangle.Width, 0, width - rectangle.X);
-      rectangle.Height = (__Null) Utils.Clamp<int>((int) rectangle.Height, 0, height - rectangle.Y);
+      Vector2 position1 = new Vector2(this._innerDimensions.X, this._innerDimensions.Y);
+      Vector2 position2 = new Vector2(this._innerDimensions.Width, this._innerDimensions.Height) + position1;
+      Vector2 vector2_1 = Vector2.Transform(position1, Main.UIScaleMatrix);
+      Vector2 vector2_2 = Vector2.Transform(position2, Main.UIScaleMatrix);
+      Rectangle rectangle = new Rectangle((int) vector2_1.X, (int) vector2_1.Y, (int) ((double) vector2_2.X - (double) vector2_1.X), (int) ((double) vector2_2.Y - (double) vector2_1.Y));
+      int width = spriteBatch.GraphicsDevice.Viewport.Width;
+      int height = spriteBatch.GraphicsDevice.Viewport.Height;
+      rectangle.X = Utils.Clamp<int>(rectangle.X, 0, width);
+      rectangle.Y = Utils.Clamp<int>(rectangle.Y, 0, height);
+      rectangle.Width = Utils.Clamp<int>(rectangle.Width, 0, width - rectangle.X);
+      rectangle.Height = Utils.Clamp<int>(rectangle.Height, 0, height - rectangle.Y);
       return rectangle;
     }
 
@@ -213,12 +206,12 @@ namespace Terraria.UI
       CalculatedStyle calculatedStyle2;
       calculatedStyle2.X = this.Left.GetValue(calculatedStyle1.Width) + calculatedStyle1.X;
       calculatedStyle2.Y = this.Top.GetValue(calculatedStyle1.Height) + calculatedStyle1.Y;
-      float num1 = this.MinWidth.GetValue(calculatedStyle1.Width);
-      float num2 = this.MaxWidth.GetValue(calculatedStyle1.Width);
-      float num3 = this.MinHeight.GetValue(calculatedStyle1.Height);
-      float num4 = this.MaxHeight.GetValue(calculatedStyle1.Height);
-      calculatedStyle2.Width = MathHelper.Clamp(this.Width.GetValue(calculatedStyle1.Width), num1, num2);
-      calculatedStyle2.Height = MathHelper.Clamp(this.Height.GetValue(calculatedStyle1.Height), num3, num4);
+      float min1 = this.MinWidth.GetValue(calculatedStyle1.Width);
+      float max1 = this.MaxWidth.GetValue(calculatedStyle1.Width);
+      float min2 = this.MinHeight.GetValue(calculatedStyle1.Height);
+      float max2 = this.MaxHeight.GetValue(calculatedStyle1.Height);
+      calculatedStyle2.Width = MathHelper.Clamp(this.Width.GetValue(calculatedStyle1.Width), min1, max1);
+      calculatedStyle2.Height = MathHelper.Clamp(this.Height.GetValue(calculatedStyle1.Height), min2, max2);
       calculatedStyle2.Width += this.MarginLeft + this.MarginRight;
       calculatedStyle2.Height += this.MarginTop + this.MarginBottom;
       calculatedStyle2.X += (float) ((double) calculatedStyle1.Width * (double) this.HAlign - (double) calculatedStyle2.Width * (double) this.HAlign);
@@ -257,8 +250,8 @@ namespace Terraria.UI
 
     public virtual bool ContainsPoint(Vector2 point)
     {
-      if (point.X > (double) this._dimensions.X && point.Y > (double) this._dimensions.Y && point.X < (double) this._dimensions.X + (double) this._dimensions.Width)
-        return point.Y < (double) this._dimensions.Y + (double) this._dimensions.Height;
+      if ((double) point.X > (double) this._dimensions.X && (double) point.Y > (double) this._dimensions.Y && (double) point.X < (double) this._dimensions.X + (double) this._dimensions.Width)
+        return (double) point.Y < (double) this._dimensions.Y + (double) this._dimensions.Height;
       return false;
     }
 

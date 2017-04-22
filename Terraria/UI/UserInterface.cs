@@ -1,7 +1,7 @@
 ﻿// Decompiled with JetBrains decompiler
 // Type: Terraria.UI.UserInterface
 // Assembly: Terraria, Version=1.3.5.1, Culture=neutral, PublicKeyToken=null
-// MVID: DF0400F4-EE47-4864-BE80-932EDB02D8A6
+// MVID: E90A5A2F-CD10-4A2C-9D2A-6B036D4E8877
 // Assembly location: F:\Steam\steamapps\common\Terraria\Terraria.exe
 
 using Microsoft.Xna.Framework;
@@ -81,7 +81,7 @@ namespace Terraria.UI
       this.MousePosition = new Vector2((float) Main.mouseX, (float) Main.mouseY);
       bool flag1 = Main.mouseLeft && Main.hasFocus;
       UIElement target = Main.hasFocus ? this._currentState.GetElementAt(this.MousePosition) : (UIElement) null;
-      this._clickDisabledTimeRemaining = Math.Max(0.0, this._clickDisabledTimeRemaining - time.get_ElapsedGameTime().TotalMilliseconds);
+      this._clickDisabledTimeRemaining = Math.Max(0.0, this._clickDisabledTimeRemaining - time.ElapsedGameTime.TotalMilliseconds);
       bool flag2 = this._clickDisabledTimeRemaining > 0.0;
       if (target != this._lastElementHover)
       {
@@ -95,12 +95,12 @@ namespace Terraria.UI
       {
         this._lastElementDown = target;
         target.MouseDown(new UIMouseEvent(target, this.MousePosition));
-        if (this._lastElementClicked == target && time.get_TotalGameTime().TotalMilliseconds - this._lastMouseDownTime < 500.0)
+        if (this._lastElementClicked == target && time.TotalGameTime.TotalMilliseconds - this._lastMouseDownTime < 500.0)
         {
           target.DoubleClick(new UIMouseEvent(target, this.MousePosition));
           this._lastElementClicked = (UIElement) null;
         }
-        this._lastMouseDownTime = time.get_TotalGameTime().TotalMilliseconds;
+        this._lastMouseDownTime = time.TotalGameTime.TotalMilliseconds;
       }
       else if (!flag1 && this._wasMouseDown && (this._lastElementDown != null && !flag2))
       {

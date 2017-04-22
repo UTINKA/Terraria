@@ -1,7 +1,7 @@
 ﻿// Decompiled with JetBrains decompiler
 // Type: Terraria.ID.Colors
 // Assembly: TerrariaServer, Version=1.3.5.1, Culture=neutral, PublicKeyToken=null
-// MVID: 880A80AC-FC6C-4F43-ABDD-E2472DA66CB5
+// MVID: C2103E81-0935-4BEA-9E98-4159FC80C2BB
 // Assembly location: F:\Steam\steamapps\common\Terraria\TerrariaServer.exe
 
 using Microsoft.Xna.Framework;
@@ -12,7 +12,7 @@ namespace Terraria.ID
   {
     public static readonly Color RarityAmber = new Color((int) byte.MaxValue, 175, 0);
     public static readonly Color RarityTrash = new Color(130, 130, 130);
-    public static readonly Color RarityNormal = Color.get_White();
+    public static readonly Color RarityNormal = Color.White;
     public static readonly Color RarityBlue = new Color(150, 150, (int) byte.MaxValue);
     public static readonly Color RarityGreen = new Color(150, (int) byte.MaxValue, 150);
     public static readonly Color RarityOrange = new Color((int) byte.MaxValue, 200, 150);
@@ -39,8 +39,8 @@ namespace Terraria.ID
       new Color(36, 60, 148),
       new Color(65, 59, 101),
       new Color(200, 0, 0),
-      (Color) null,
-      (Color) null,
+      new Color(),
+      new Color(),
       new Color(177, 54, 79),
       new Color((int) byte.MaxValue, 156, 12),
       new Color(91, 34, 104),
@@ -71,7 +71,7 @@ namespace Terraria.ID
     {
       get
       {
-        Color color = Color.get_Transparent();
+        Color color = Color.Transparent;
         bool flag = true;
         for (int index = 0; index < 11; ++index)
         {
@@ -92,7 +92,7 @@ namespace Terraria.ID
 
     public static Color AlphaDarken(Color input)
     {
-      return Color.op_Multiply(input, (float) Main.mouseTextColor / (float) byte.MaxValue);
+      return input * ((float) Main.mouseTextColor / (float) byte.MaxValue);
     }
   }
 }

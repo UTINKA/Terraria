@@ -1,7 +1,7 @@
 ﻿// Decompiled with JetBrains decompiler
 // Type: Terraria.Initializers.UILinksInitializer
 // Assembly: TerrariaServer, Version=1.3.5.1, Culture=neutral, PublicKeyToken=null
-// MVID: 880A80AC-FC6C-4F43-ABDD-E2472DA66CB5
+// MVID: C2103E81-0935-4BEA-9E98-4159FC80C2BB
 // Assembly location: F:\Steam\steamapps\common\Terraria\TerrariaServer.exe
 
 using Microsoft.Xna.Framework;
@@ -24,7 +24,7 @@ namespace Terraria.Initializers
 
     public static float HandleSlider(float currentValue, float min, float max, float deadZone = 0.2f, float sensitivity = 0.5f)
     {
-      float x = (float) PlayerInput.GamepadThumbstickLeft.X;
+      float x = PlayerInput.GamepadThumbstickLeft.X;
       float num = (double) x < -(double) deadZone || (double) x > (double) deadZone ? MathHelper.Lerp(0.0f, sensitivity / 60f, (float) (((double) Math.Abs(x) - (double) deadZone) / (1.0 - (double) deadZone))) * (float) Math.Sign(x) : 0.0f;
       return MathHelper.Clamp((float) (((double) currentValue - (double) min) / ((double) max - (double) min)) + num, 0.0f, 1f) * (max - min) + min;
     }
@@ -479,13 +479,13 @@ namespace Terraria.Initializers
           Point tileCoordinates = Main.player[Main.myPlayer].Center.ToTileCoordinates();
           if (UILinkPointNavigator.CurrentPoint == 600)
           {
-            if (WorldGen.MoveTownNPC((int) tileCoordinates.X, (int) tileCoordinates.Y, -1))
+            if (WorldGen.MoveTownNPC(tileCoordinates.X, tileCoordinates.Y, -1))
               Main.NewText(Lang.inter[39].Value, byte.MaxValue, (byte) 240, (byte) 20, false);
             Main.PlaySound(12, -1, -1, 1, 1f, 0.0f);
           }
-          else if (WorldGen.MoveTownNPC((int) tileCoordinates.X, (int) tileCoordinates.Y, UILinkPointNavigator.Shortcuts.NPCS_LastHovered))
+          else if (WorldGen.MoveTownNPC(tileCoordinates.X, tileCoordinates.Y, UILinkPointNavigator.Shortcuts.NPCS_LastHovered))
           {
-            WorldGen.moveRoom((int) tileCoordinates.X, (int) tileCoordinates.Y, UILinkPointNavigator.Shortcuts.NPCS_LastHovered);
+            WorldGen.moveRoom(tileCoordinates.X, tileCoordinates.Y, UILinkPointNavigator.Shortcuts.NPCS_LastHovered);
             Main.PlaySound(12, -1, -1, 1, 1f, 0.0f);
           }
         }
@@ -938,7 +938,7 @@ namespace Terraria.Initializers
       {
         Vector3 hsl = Main.rgbToHsl(Main.selColor);
         float interfaceDeadzoneX = PlayerInput.CurrentProfile.InterfaceDeadzoneX;
-        float x = (float) PlayerInput.GamepadThumbstickLeft.X;
+        float x = PlayerInput.GamepadThumbstickLeft.X;
         float num = (double) x < -(double) interfaceDeadzoneX || (double) x > (double) interfaceDeadzoneX ? MathHelper.Lerp(0.0f, 0.008333334f, (float) (((double) Math.Abs(x) - (double) interfaceDeadzoneX) / (1.0 - (double) interfaceDeadzoneX))) * (float) Math.Sign(x) : 0.0f;
         int currentPoint = UILinkPointNavigator.CurrentPoint;
         if (currentPoint == 2600)
@@ -947,7 +947,7 @@ namespace Terraria.Initializers
           Main.sBar = MathHelper.Clamp(Main.sBar + num, 0.0f, 1f);
         if (currentPoint == 2602)
           Main.lBar = MathHelper.Clamp(Main.lBar + num, 0.15f, 1f);
-        Vector3.Clamp(hsl, Vector3.get_Zero(), Vector3.get_One());
+        Vector3.Clamp(hsl, Vector3.Zero, Vector3.One);
         if ((double) num == 0.0)
           return;
         if (Main.hairWindow)
@@ -1253,7 +1253,7 @@ namespace Terraria.Initializers
       {
         Vector3 hsl = Main.rgbToHsl(Main.selColor);
         float interfaceDeadzoneX = PlayerInput.CurrentProfile.InterfaceDeadzoneX;
-        float x = (float) PlayerInput.GamepadThumbstickLeft.X;
+        float x = PlayerInput.GamepadThumbstickLeft.X;
         float num = (double) x < -(double) interfaceDeadzoneX || (double) x > (double) interfaceDeadzoneX ? MathHelper.Lerp(0.0f, 0.008333334f, (float) (((double) Math.Abs(x) - (double) interfaceDeadzoneX) / (1.0 - (double) interfaceDeadzoneX))) * (float) Math.Sign(x) : 0.0f;
         int currentPoint = UILinkPointNavigator.CurrentPoint;
         if (currentPoint == 2800)
@@ -1262,7 +1262,7 @@ namespace Terraria.Initializers
           Main.sBar = MathHelper.Clamp(Main.sBar + num, 0.0f, 1f);
         if (currentPoint == 2802)
           Main.lBar = MathHelper.Clamp(Main.lBar + num, 0.15f, 1f);
-        Vector3.Clamp(hsl, Vector3.get_Zero(), Vector3.get_One());
+        Vector3.Clamp(hsl, Vector3.Zero, Vector3.One);
         if ((double) num == 0.0)
           return;
         if (Main.clothesWindow)

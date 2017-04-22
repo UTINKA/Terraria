@@ -1,7 +1,7 @@
 ﻿// Decompiled with JetBrains decompiler
 // Type: Terraria.Graphics.Effects.OverlayManager
 // Assembly: Terraria, Version=1.3.5.1, Culture=neutral, PublicKeyToken=null
-// MVID: DF0400F4-EE47-4864-BE80-932EDB02D8A6
+// MVID: E90A5A2F-CD10-4A2C-9D2A-6B036D4E8877
 // Assembly location: F:\Steam\steamapps\common\Terraria\Terraria.exe
 
 using Microsoft.Xna.Framework;
@@ -57,7 +57,7 @@ namespace Terraria.Graphics.Effects
           switch (overlay.Mode)
           {
             case OverlayMode.FadeIn:
-              overlay.Opacity += (float) (gameTime.get_ElapsedGameTime().TotalSeconds * 1.0);
+              overlay.Opacity += (float) (gameTime.ElapsedGameTime.TotalSeconds * 1.0);
               if ((double) overlay.Opacity >= 1.0)
               {
                 overlay.Opacity = 1f;
@@ -66,10 +66,10 @@ namespace Terraria.Graphics.Effects
               }
               break;
             case OverlayMode.Active:
-              overlay.Opacity = Math.Min(1f, overlay.Opacity + (float) (gameTime.get_ElapsedGameTime().TotalSeconds * 1.0));
+              overlay.Opacity = Math.Min(1f, overlay.Opacity + (float) (gameTime.ElapsedGameTime.TotalSeconds * 1.0));
               break;
             case OverlayMode.FadeOut:
-              overlay.Opacity -= (float) (gameTime.get_ElapsedGameTime().TotalSeconds * 1.0);
+              overlay.Opacity -= (float) (gameTime.ElapsedGameTime.TotalSeconds * 1.0);
               if ((double) overlay.Opacity <= 0.0)
               {
                 overlay.Opacity = 0.0f;
@@ -98,7 +98,7 @@ namespace Terraria.Graphics.Effects
           {
             if (!flag)
             {
-              spriteBatch.Begin((SpriteSortMode) 1, (BlendState) BlendState.AlphaBlend, (SamplerState) SamplerState.LinearClamp, (DepthStencilState) DepthStencilState.Default, (RasterizerState) RasterizerState.CullNone, (Effect) null, Main.Transform);
+              spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, SamplerState.LinearClamp, DepthStencilState.Default, RasterizerState.CullNone, (Effect) null, Main.Transform);
               flag = true;
             }
             overlay.Draw(spriteBatch);

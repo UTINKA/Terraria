@@ -1,7 +1,7 @@
 ﻿// Decompiled with JetBrains decompiler
 // Type: Terraria.MessageBuffer
 // Assembly: Terraria, Version=1.3.5.1, Culture=neutral, PublicKeyToken=null
-// MVID: DF0400F4-EE47-4864-BE80-932EDB02D8A6
+// MVID: E90A5A2F-CD10-4A2C-9D2A-6B036D4E8877
 // Assembly location: F:\Steam\steamapps\common\Terraria\Terraria.exe
 
 using Microsoft.Xna.Framework;
@@ -83,7 +83,7 @@ namespace Terraria
       int bufferStart = start + 1;
       byte num1 = this.readBuffer[start];
       messageType = (int) num1;
-      if ((int) num1 >= 119)
+      if ((int) num1 >= 120)
         return;
       ++Main.rxMsg;
       Main.rxData += length;
@@ -124,7 +124,7 @@ namespace Terraria
             }
             if (Netplay.Clients[this.whoAmI].State != 0)
               break;
-            if (this.reader.ReadString() == "Terraria" + (object) 192)
+            if (this.reader.ReadString() == "Terraria" + (object) 193)
             {
               if (string.IsNullOrEmpty(Netplay.ServerPassword))
               {
@@ -484,10 +484,10 @@ namespace Terraria
               num6 = Main.maxSectionsY - 1;
             int num7 = (num5 - number4) * (num6 - num4);
             List<Point> dontInclude = new List<Point>();
-            for (int index1 = number4; index1 < num5; ++index1)
+            for (int x = number4; x < num5; ++x)
             {
-              for (int index2 = num4; index2 < num6; ++index2)
-                dontInclude.Add(new Point(index1, index2));
+              for (int y2 = num4; y2 < num6; ++y2)
+                dontInclude.Add(new Point(x, y2));
             }
             int num8 = -1;
             int num9 = -1;
@@ -505,13 +505,13 @@ namespace Terraria
                 y1 = 0;
               if (num9 >= Main.maxSectionsY)
                 num9 = Main.maxSectionsY - 1;
-              for (int index1 = num3; index1 < num8; ++index1)
+              for (int x = num3; x < num8; ++x)
               {
-                for (int index2 = y1; index2 < num9; ++index2)
+                for (int y2 = y1; y2 < num9; ++y2)
                 {
-                  if (index1 < number4 || index1 >= num5 || (index2 < num4 || index2 >= num6))
+                  if (x < number4 || x >= num5 || (y2 < num4 || y2 >= num6))
                   {
-                    dontInclude.Add(new Point(index1, index2));
+                    dontInclude.Add(new Point(x, y2));
                     ++num7;
                   }
                 }
@@ -543,7 +543,7 @@ namespace Terraria
               NetMessage.SendData(11, this.whoAmI, -1, (NetworkText) null, num3, (float) y1, (float) (num8 - 1), (float) (num9 - 1), 0, 0, 0);
             }
             for (int index = 0; index < portals.Count; ++index)
-              NetMessage.SendSection(this.whoAmI, (int) portals[index].X, (int) portals[index].Y, true);
+              NetMessage.SendSection(this.whoAmI, portals[index].X, portals[index].Y, true);
             for (int index = 0; index < portalCenters.Count; ++index)
               NetMessage.SendData(11, this.whoAmI, -1, (NetworkText) null, portalCenters[index].X - num10, (float) (portalCenters[index].Y - num10), (float) (portalCenters[index].X + num10 + 1), (float) (portalCenters[index].Y + num10 + 1), 0, 0, 0);
             for (int number6 = 0; number6 < 400; ++number6)
@@ -643,7 +643,7 @@ namespace Terraria
             if (bitsByte10[2])
               player5.velocity = this.reader.ReadVector2();
             else
-              player5.velocity = Vector2.get_Zero();
+              player5.velocity = Vector2.Zero;
             player5.vortexStealthActive = bitsByte10[3];
             player5.gravDir = bitsByte10[4] ? 1f : -1f;
             if (Main.netMode != 2 || Netplay.Clients[this.whoAmI].State != 10)
@@ -1007,7 +1007,7 @@ namespace Terraria
               npc1.SetDefaults(Type1, -1f);
             }
             if ((double) Vector2.DistanceSquared(npc1.position, vector2_3) < 6400.0)
-              npc1.visualOffset = Vector2.op_Subtraction(npc1.position, vector2_3);
+              npc1.visualOffset = npc1.position - vector2_3;
             npc1.position = vector2_3;
             npc1.velocity = vector2_4;
             npc1.target = num25;
@@ -1545,8 +1545,8 @@ namespace Terraria
             if (Main.netMode == 2 && Netplay.spamCheck)
             {
               int whoAmI = this.whoAmI;
-              int num2 = (int) (Main.player[whoAmI].position.X + (double) (Main.player[whoAmI].width / 2));
-              int num47 = (int) (Main.player[whoAmI].position.Y + (double) (Main.player[whoAmI].height / 2));
+              int num2 = (int) ((double) Main.player[whoAmI].position.X + (double) (Main.player[whoAmI].width / 2));
+              int num47 = (int) ((double) Main.player[whoAmI].position.Y + (double) (Main.player[whoAmI].height / 2));
               int num48 = 10;
               int num49 = num2 - num48;
               int num50 = num2 + num48;
@@ -1727,7 +1727,7 @@ namespace Terraria
           case 60:
             int n = (int) this.reader.ReadInt16();
             int x1 = (int) this.reader.ReadInt16();
-            int y2 = (int) this.reader.ReadInt16();
+            int y3 = (int) this.reader.ReadInt16();
             byte num59 = this.reader.ReadByte();
             if (n >= 200)
             {
@@ -1738,15 +1738,23 @@ namespace Terraria
             {
               Main.npc[n].homeless = (int) num59 == 1;
               Main.npc[n].homeTileX = x1;
-              Main.npc[n].homeTileY = y2;
+              Main.npc[n].homeTileY = y3;
+              if ((int) num59 == 1)
+              {
+                WorldGen.TownManager.KickOut(Main.npc[n].type);
+                break;
+              }
+              if ((int) num59 != 2)
+                break;
+              WorldGen.TownManager.SetRoom(Main.npc[n].type, x1, y3);
               break;
             }
-            if ((int) num59 == 0)
+            if ((int) num59 == 1)
             {
               WorldGen.kickOut(n);
               break;
             }
-            WorldGen.moveRoom(x1, y2, n);
+            WorldGen.moveRoom(x1, y3, n);
             break;
           case 61:
             int plr = (int) this.reader.ReadInt16();
@@ -1832,21 +1840,21 @@ namespace Terraria
             break;
           case 63:
             int num61 = (int) this.reader.ReadInt16();
-            int y3 = (int) this.reader.ReadInt16();
+            int y4 = (int) this.reader.ReadInt16();
             byte color3 = this.reader.ReadByte();
-            WorldGen.paintTile(num61, y3, color3, false);
+            WorldGen.paintTile(num61, y4, color3, false);
             if (Main.netMode != 2)
               break;
-            NetMessage.SendData(63, -1, this.whoAmI, (NetworkText) null, num61, (float) y3, (float) color3, 0.0f, 0, 0, 0);
+            NetMessage.SendData(63, -1, this.whoAmI, (NetworkText) null, num61, (float) y4, (float) color3, 0.0f, 0, 0, 0);
             break;
           case 64:
             int num62 = (int) this.reader.ReadInt16();
-            int y4 = (int) this.reader.ReadInt16();
+            int y5 = (int) this.reader.ReadInt16();
             byte color4 = this.reader.ReadByte();
-            WorldGen.paintWall(num62, y4, color4, false);
+            WorldGen.paintWall(num62, y5, color4, false);
             if (Main.netMode != 2)
               break;
-            NetMessage.SendData(64, -1, this.whoAmI, (NetworkText) null, num62, (float) y4, (float) color4, 0.0f, 0, 0, 0);
+            NetMessage.SendData(64, -1, this.whoAmI, (NetworkText) null, num62, (float) y5, (float) color4, 0.0f, 0, 0, 0);
             break;
           case 65:
             BitsByte bitsByte17 = (BitsByte) this.reader.ReadByte();
@@ -1874,19 +1882,17 @@ namespace Terraria
               if (Main.netMode == 2)
               {
                 RemoteClient.CheckSection(this.whoAmI, vector2_7, 1);
-                NetMessage.SendData(65, -1, -1, (NetworkText) null, 0, (float) index23, (float) vector2_7.X, (float) vector2_7.Y, num64, 0, 0);
+                NetMessage.SendData(65, -1, -1, (NetworkText) null, 0, (float) index23, vector2_7.X, vector2_7.Y, num64, 0, 0);
                 int index1 = -1;
                 float num2 = 9999f;
                 for (int index2 = 0; index2 < (int) byte.MaxValue; ++index2)
                 {
                   if (Main.player[index2].active && index2 != this.whoAmI)
                   {
-                    Vector2 vector2_8 = Vector2.op_Subtraction(Main.player[index2].position, Main.player[this.whoAmI].position);
-                    // ISSUE: explicit reference operation
-                    if ((double) ((Vector2) @vector2_8).Length() < (double) num2)
+                    Vector2 vector2_8 = Main.player[index2].position - Main.player[this.whoAmI].position;
+                    if ((double) vector2_8.Length() < (double) num2)
                     {
-                      // ISSUE: explicit reference operation
-                      num2 = ((Vector2) @vector2_8).Length();
+                      num2 = vector2_8.Length();
                       index1 = index2;
                     }
                   }
@@ -1897,7 +1903,7 @@ namespace Terraria
             }
             if (Main.netMode != 2 || num63 != 0)
               break;
-            NetMessage.SendData(65, -1, this.whoAmI, (NetworkText) null, 0, (float) index23, (float) vector2_7.X, (float) vector2_7.Y, num64, 0, 0);
+            NetMessage.SendData(65, -1, this.whoAmI, (NetworkText) null, 0, (float) index23, vector2_7.X, vector2_7.Y, num64, 0, 0);
             break;
           case 66:
             int number27 = (int) this.reader.ReadByte();
@@ -2010,7 +2016,7 @@ namespace Terraria
             break;
           case 79:
             int x2 = (int) this.reader.ReadInt16();
-            int y5 = (int) this.reader.ReadInt16();
+            int y6 = (int) this.reader.ReadInt16();
             short num65 = this.reader.ReadInt16();
             int style2 = (int) this.reader.ReadInt16();
             int num66 = (int) this.reader.ReadByte();
@@ -2019,13 +2025,13 @@ namespace Terraria
             if (Main.netMode == 2)
             {
               ++Netplay.Clients[this.whoAmI].SpamAddBlock;
-              if (!WorldGen.InWorld(x2, y5, 10) || !Netplay.Clients[this.whoAmI].TileSections[Netplay.GetSectionX(x2), Netplay.GetSectionY(y5)])
+              if (!WorldGen.InWorld(x2, y6, 10) || !Netplay.Clients[this.whoAmI].TileSections[Netplay.GetSectionX(x2), Netplay.GetSectionY(y6)])
                 break;
             }
-            WorldGen.PlaceObject(x2, y5, (int) num65, false, style2, num66, random, direction2);
+            WorldGen.PlaceObject(x2, y6, (int) num65, false, style2, num66, random, direction2);
             if (Main.netMode != 2)
               break;
-            NetMessage.SendObjectPlacment(this.whoAmI, x2, y5, (int) num65, style2, num66, random, direction2);
+            NetMessage.SendObjectPlacment(this.whoAmI, x2, y6, (int) num65, style2, num66, random, direction2);
             break;
           case 80:
             if (Main.netMode != 1)
@@ -2108,10 +2114,7 @@ namespace Terraria
             Item obj2 = Main.item[index26];
             BitsByte bitsByte18 = (BitsByte) this.reader.ReadByte();
             if (bitsByte18[0])
-            {
-              // ISSUE: explicit reference operation
-              ((Color) @obj2.color).set_PackedValue(this.reader.ReadUInt32());
-            }
+              obj2.color.PackedValue = this.reader.ReadUInt32();
             if (bitsByte18[1])
               obj2.damage = (int) this.reader.ReadUInt16();
             if (bitsByte18[2])
@@ -2185,24 +2188,24 @@ namespace Terraria
           case 92:
             int number31 = (int) this.reader.ReadInt16();
             float num74 = this.reader.ReadSingle();
-            float number3_1 = this.reader.ReadSingle();
-            float number4_1 = this.reader.ReadSingle();
+            float num75 = this.reader.ReadSingle();
+            float num76 = this.reader.ReadSingle();
             if (number31 < 0 || number31 > 200)
               break;
             if (Main.netMode == 1)
             {
-              Main.npc[number31].moneyPing(new Vector2(number3_1, number4_1));
+              Main.npc[number31].moneyPing(new Vector2(num75, num76));
               Main.npc[number31].extraValue = num74;
               break;
             }
             Main.npc[number31].extraValue += num74;
-            NetMessage.SendData(92, -1, -1, (NetworkText) null, number31, Main.npc[number31].extraValue, number3_1, number4_1, 0, 0, 0);
+            NetMessage.SendData(92, -1, -1, (NetworkText) null, number31, Main.npc[number31].extraValue, num75, num76, 0, 0, 0);
             break;
           case 95:
-            ushort num75 = this.reader.ReadUInt16();
-            if (Main.netMode != 2 || (int) num75 < 0 || (int) num75 >= 1000)
+            ushort num77 = this.reader.ReadUInt16();
+            if (Main.netMode != 2 || (int) num77 < 0 || (int) num77 >= 1000)
               break;
-            Projectile projectile2 = Main.projectile[(int) num75];
+            Projectile projectile2 = Main.projectile[(int) num77];
             if (projectile2.type != 602)
               break;
             projectile2.Kill();
@@ -2214,8 +2217,8 @@ namespace Terraria
             int extraInfo1 = (int) this.reader.ReadInt16();
             Vector2 newPos1 = this.reader.ReadVector2();
             Vector2 vector2_9 = this.reader.ReadVector2();
-            int num76 = extraInfo1 + (extraInfo1 % 2 == 0 ? 1 : -1);
-            player15.lastPortalColorIndex = num76;
+            int num78 = extraInfo1 + (extraInfo1 % 2 == 0 ? 1 : -1);
+            player15.lastPortalColorIndex = num78;
             player15.Teleport(newPos1, 4, extraInfo1);
             player15.velocity = vector2_9;
             break;
@@ -2244,8 +2247,8 @@ namespace Terraria
             int extraInfo2 = (int) this.reader.ReadInt16();
             Vector2 newPos2 = this.reader.ReadVector2();
             Vector2 vector2_10 = this.reader.ReadVector2();
-            int num77 = extraInfo2 + (extraInfo2 % 2 == 0 ? 1 : -1);
-            npc3.lastPortalColorIndex = num77;
+            int num79 = extraInfo2 + (extraInfo2 % 2 == 0 ? 1 : -1);
+            npc3.lastPortalColorIndex = num79;
             npc3.Teleport(newPos2, 4, extraInfo2);
             npc3.velocity = vector2_10;
             break;
@@ -2276,11 +2279,11 @@ namespace Terraria
             break;
           case 102:
             int index29 = (int) this.reader.ReadByte();
-            byte num78 = this.reader.ReadByte();
+            byte num80 = this.reader.ReadByte();
             Vector2 Other = this.reader.ReadVector2();
             if (Main.netMode == 2)
             {
-              NetMessage.SendData(102, -1, -1, (NetworkText) null, this.whoAmI, (float) num78, (float) Other.X, (float) Other.Y, 0, 0, 0);
+              NetMessage.SendData(102, -1, -1, (NetworkText) null, this.whoAmI, (float) num80, Other.X, Other.Y, 0, 0, 0);
               break;
             }
             Player player16 = Main.player[index29];
@@ -2289,22 +2292,18 @@ namespace Terraria
               Player player8 = Main.player[index1];
               if (player8.active && !player8.dead && (player16.team == 0 || player16.team == player8.team) && (double) player8.Distance(Other) < 700.0)
               {
-                Vector2 vector2_8 = Vector2.op_Subtraction(player16.Center, player8.Center);
+                Vector2 vector2_8 = player16.Center - player8.Center;
                 Vector2 vec = Vector2.Normalize(vector2_8);
                 if (!vec.HasNaNs())
                 {
                   int Type4 = 90;
                   float num2 = 0.0f;
                   float num47 = 0.2094395f;
-                  Vector2 spinningpoint;
-                  // ISSUE: explicit reference operation
-                  ((Vector2) @spinningpoint).\u002Ector(0.0f, -8f);
-                  Vector2 vector2_11;
-                  // ISSUE: explicit reference operation
-                  ((Vector2) @vector2_11).\u002Ector(-3f);
+                  Vector2 spinningpoint = new Vector2(0.0f, -8f);
+                  Vector2 vector2_11 = new Vector2(-3f);
                   float num48 = 0.0f;
                   float num49 = 0.005f;
-                  switch (num78)
+                  switch (num80)
                   {
                     case 173:
                       Type4 = 90;
@@ -2316,21 +2315,18 @@ namespace Terraria
                       Type4 = 86;
                       break;
                   }
-                  // ISSUE: explicit reference operation
-                  for (int index2 = 0; (double) index2 < (double) ((Vector2) @vector2_8).Length() / 6.0; ++index2)
+                  for (int index2 = 0; (double) index2 < (double) vector2_8.Length() / 6.0; ++index2)
                   {
-                    Vector2 Position = Vector2.op_Addition(Vector2.op_Addition(Vector2.op_Addition(player8.Center, Vector2.op_Multiply(6f * (float) index2, vec)), spinningpoint.RotatedBy((double) num2, (Vector2) null)), vector2_11);
+                    Vector2 Position = player8.Center + 6f * (float) index2 * vec + spinningpoint.RotatedBy((double) num2, new Vector2()) + vector2_11;
                     num2 += num47;
-                    int index30 = Dust.NewDust(Position, 6, 6, Type4, 0.0f, 0.0f, 100, (Color) null, 1.5f);
+                    int index30 = Dust.NewDust(Position, 6, 6, Type4, 0.0f, 0.0f, 100, new Color(), 1.5f);
                     Main.dust[index30].noGravity = true;
-                    Main.dust[index30].velocity = Vector2.get_Zero();
+                    Main.dust[index30].velocity = Vector2.Zero;
                     Main.dust[index30].fadeIn = (num48 += num49);
-                    Dust dust = Main.dust[index30];
-                    Vector2 vector2_12 = Vector2.op_Addition(dust.velocity, Vector2.op_Multiply(vec, 1.5f));
-                    dust.velocity = vector2_12;
+                    Main.dust[index30].velocity += vec * 1.5f;
                   }
                 }
-                player8.NebulaLevelup((int) num78);
+                player8.NebulaLevelup((int) num80);
               }
             }
             break;
@@ -2345,17 +2341,17 @@ namespace Terraria
             Item[] objArray1 = Main.instance.shop[Main.npcShop].item;
             int index31 = (int) this.reader.ReadByte();
             int type12 = (int) this.reader.ReadInt16();
-            int num79 = (int) this.reader.ReadInt16();
+            int num81 = (int) this.reader.ReadInt16();
             int pre3 = (int) this.reader.ReadByte();
-            int num80 = this.reader.ReadInt32();
+            int num82 = this.reader.ReadInt32();
             BitsByte bitsByte19 = (BitsByte) this.reader.ReadByte();
             if (index31 >= objArray1.Length)
               break;
             objArray1[index31] = new Item();
             objArray1[index31].netDefaults(type12);
-            objArray1[index31].stack = num79;
+            objArray1[index31].stack = num81;
             objArray1[index31].Prefix(pre3);
-            objArray1[index31].value = num80;
+            objArray1[index31].value = num82;
             objArray1[index31].buyOnce = bitsByte19[0];
             break;
           case 105:
@@ -2366,11 +2362,10 @@ namespace Terraria
           case 106:
             if (Main.netMode != 1)
               break;
-            HalfVector2 halfVector2 = (HalfVector2) null;
-            // ISSUE: explicit reference operation
-            ((HalfVector2) @halfVector2).set_PackedValue(this.reader.ReadUInt32());
-            // ISSUE: explicit reference operation
-            Utils.PoofOfSmoke(((HalfVector2) @halfVector2).ToVector2());
+            Utils.PoofOfSmoke(new HalfVector2()
+            {
+              PackedValue = this.reader.ReadUInt32()
+            }.ToVector2());
             break;
           case 107:
             if (Main.netMode != 1)
@@ -2386,38 +2381,38 @@ namespace Terraria
             int Damage2 = (int) this.reader.ReadInt16();
             float KnockBack = this.reader.ReadSingle();
             int x3 = (int) this.reader.ReadInt16();
-            int y6 = (int) this.reader.ReadInt16();
+            int y7 = (int) this.reader.ReadInt16();
             int angle = (int) this.reader.ReadInt16();
             int ammo = (int) this.reader.ReadInt16();
             int owner = (int) this.reader.ReadByte();
             if (owner != Main.myPlayer)
               break;
-            WorldGen.ShootFromCannon(x3, y6, angle, ammo, Damage2, KnockBack, owner);
+            WorldGen.ShootFromCannon(x3, y7, angle, ammo, Damage2, KnockBack, owner);
             break;
           case 109:
             if (Main.netMode != 2)
               break;
-            int num81 = (int) this.reader.ReadInt16();
-            int num82 = (int) this.reader.ReadInt16();
-            int num83 = (int) this.reader.ReadInt16();
-            int num84 = (int) this.reader.ReadInt16();
+            int x4 = (int) this.reader.ReadInt16();
+            int y8 = (int) this.reader.ReadInt16();
+            int x5 = (int) this.reader.ReadInt16();
+            int y9 = (int) this.reader.ReadInt16();
             WiresUI.Settings.MultiToolMode multiToolMode = (WiresUI.Settings.MultiToolMode) this.reader.ReadByte();
             int whoAmI2 = this.whoAmI;
             WiresUI.Settings.MultiToolMode toolMode = WiresUI.Settings.ToolMode;
             WiresUI.Settings.ToolMode = multiToolMode;
-            Wiring.MassWireOperation(new Point(num81, num82), new Point(num83, num84), Main.player[whoAmI2]);
+            Wiring.MassWireOperation(new Point(x4, y8), new Point(x5, y9), Main.player[whoAmI2]);
             WiresUI.Settings.ToolMode = toolMode;
             break;
           case 110:
             if (Main.netMode != 1)
               break;
             int type13 = (int) this.reader.ReadInt16();
-            int num85 = (int) this.reader.ReadInt16();
+            int num83 = (int) this.reader.ReadInt16();
             int index32 = (int) this.reader.ReadByte();
             if (index32 != Main.myPlayer)
               break;
             Player player17 = Main.player[index32];
-            for (int index1 = 0; index1 < num85; ++index1)
+            for (int index1 = 0; index1 < num83; ++index1)
               player17.ConsumeItem(type13, false);
             player17.wireOperationsCooldown = 0;
             break;
@@ -2428,26 +2423,26 @@ namespace Terraria
             break;
           case 112:
             int number33 = (int) this.reader.ReadByte();
-            int x4 = (int) this.reader.ReadInt16();
-            int y7 = (int) this.reader.ReadInt16();
+            int x6 = (int) this.reader.ReadInt16();
+            int y10 = (int) this.reader.ReadInt16();
             int height = (int) this.reader.ReadByte();
-            int num86 = (int) this.reader.ReadInt16();
+            int num84 = (int) this.reader.ReadInt16();
             if (number33 != 1)
               break;
             if (Main.netMode == 1)
-              WorldGen.TreeGrowFX(x4, y7, height, num86);
+              WorldGen.TreeGrowFX(x6, y10, height, num84);
             if (Main.netMode != 2)
               break;
-            NetMessage.SendData((int) num1, -1, -1, (NetworkText) null, number33, (float) x4, (float) y7, (float) height, num86, 0, 0);
+            NetMessage.SendData((int) num1, -1, -1, (NetworkText) null, number33, (float) x6, (float) y10, (float) height, num84, 0, 0);
             break;
           case 113:
-            int x5 = (int) this.reader.ReadInt16();
-            int y8 = (int) this.reader.ReadInt16();
+            int x7 = (int) this.reader.ReadInt16();
+            int y11 = (int) this.reader.ReadInt16();
             if (Main.netMode != 2 || Main.snowMoon || Main.pumpkinMoon)
               break;
-            if (DD2Event.WouldFailSpawningHere(x5, y8))
+            if (DD2Event.WouldFailSpawningHere(x7, y11))
               DD2Event.FailureMessage(this.whoAmI);
-            DD2Event.SummonCrystal(x5, y8);
+            DD2Event.SummonCrystal(x7, y11);
             break;
           case 114:
             if (Main.netMode != 1)
@@ -2473,16 +2468,16 @@ namespace Terraria
             if (Main.netMode == 2 && this.whoAmI != playerTargetIndex1 && (!Main.player[playerTargetIndex1].hostile || !Main.player[this.whoAmI].hostile))
               break;
             PlayerDeathReason playerDeathReason1 = PlayerDeathReason.FromReader(this.reader);
-            int num87 = (int) this.reader.ReadInt16();
-            int num88 = (int) this.reader.ReadByte() - 1;
+            int num85 = (int) this.reader.ReadInt16();
+            int num86 = (int) this.reader.ReadByte() - 1;
             BitsByte bitsByte20 = (BitsByte) this.reader.ReadByte();
             bool flag9 = bitsByte20[0];
             bool pvp1 = bitsByte20[1];
-            int num89 = (int) this.reader.ReadSByte();
-            Main.player[playerTargetIndex1].Hurt(playerDeathReason1, num87, num88, pvp1, true, flag9, num89);
+            int num87 = (int) this.reader.ReadSByte();
+            Main.player[playerTargetIndex1].Hurt(playerDeathReason1, num85, num86, pvp1, true, flag9, num87);
             if (Main.netMode != 2)
               break;
-            NetMessage.SendPlayerHurt(playerTargetIndex1, playerDeathReason1, num87, num88, flag9, pvp1, num89, -1, this.whoAmI);
+            NetMessage.SendPlayerHurt(playerTargetIndex1, playerDeathReason1, num85, num86, flag9, pvp1, num87, -1, this.whoAmI);
             break;
           case 118:
             int playerTargetIndex2 = (int) this.reader.ReadByte();
@@ -2490,12 +2485,17 @@ namespace Terraria
               playerTargetIndex2 = this.whoAmI;
             PlayerDeathReason playerDeathReason2 = PlayerDeathReason.FromReader(this.reader);
             int damage = (int) this.reader.ReadInt16();
-            int num90 = (int) this.reader.ReadByte() - 1;
+            int num88 = (int) this.reader.ReadByte() - 1;
             bool pvp2 = (BitsByte) this.reader.ReadByte()[0];
-            Main.player[playerTargetIndex2].KillMe(playerDeathReason2, (double) damage, num90, pvp2);
+            Main.player[playerTargetIndex2].KillMe(playerDeathReason2, (double) damage, num88, pvp2);
             if (Main.netMode != 2)
               break;
-            NetMessage.SendPlayerDeath(playerTargetIndex2, playerDeathReason2, damage, num90, pvp2, -1, this.whoAmI);
+            NetMessage.SendPlayerDeath(playerTargetIndex2, playerDeathReason2, damage, num88, pvp2, -1, this.whoAmI);
+            break;
+          case 119:
+            if (Main.netMode != 1)
+              break;
+            CombatText.NewText(new Rectangle((int) this.reader.ReadSingle(), (int) this.reader.ReadSingle(), 0, 0), this.reader.ReadRGB(), NetworkText.Deserialize(this.reader).ToString(), false, false);
             break;
         }
       }

@@ -1,7 +1,7 @@
 ﻿// Decompiled with JetBrains decompiler
 // Type: Terraria.Wiring
 // Assembly: Terraria, Version=1.3.5.1, Culture=neutral, PublicKeyToken=null
-// MVID: DF0400F4-EE47-4864-BE80-932EDB02D8A6
+// MVID: E90A5A2F-CD10-4A2C-9D2A-6B036D4E8877
 // Assembly location: F:\Steam\steamapps\common\Terraria\Terraria.exe
 
 using Microsoft.Xna.Framework;
@@ -380,10 +380,10 @@ namespace Terraria
             Wiring._wireList.PushBack(back);
         }
       }
-      Wiring._teleport[0].X = (__Null) -1.0;
-      Wiring._teleport[0].Y = (__Null) -1.0;
-      Wiring._teleport[1].X = (__Null) -1.0;
-      Wiring._teleport[1].Y = (__Null) -1.0;
+      Wiring._teleport[0].X = -1f;
+      Wiring._teleport[0].Y = -1f;
+      Wiring._teleport[1].X = -1f;
+      Wiring._teleport[1].Y = -1f;
       if (Wiring._wireList.Count > 0)
       {
         Wiring._numInPump = 0;
@@ -412,10 +412,10 @@ namespace Terraria
             Wiring._wireList.PushBack(back);
         }
       }
-      Wiring._teleport[0].X = (__Null) -1.0;
-      Wiring._teleport[0].Y = (__Null) -1.0;
-      Wiring._teleport[1].X = (__Null) -1.0;
-      Wiring._teleport[1].Y = (__Null) -1.0;
+      Wiring._teleport[0].X = -1f;
+      Wiring._teleport[0].Y = -1f;
+      Wiring._teleport[1].X = -1f;
+      Wiring._teleport[1].Y = -1f;
       if (Wiring._wireList.Count > 0)
       {
         Wiring._numInPump = 0;
@@ -434,10 +434,10 @@ namespace Terraria
       int num8 = 1;
       int num9 = index4 + num8;
       vector2Array5[index4] = Wiring._teleport[1];
-      Wiring._teleport[0].X = (__Null) -1.0;
-      Wiring._teleport[0].Y = (__Null) -1.0;
-      Wiring._teleport[1].X = (__Null) -1.0;
-      Wiring._teleport[1].Y = (__Null) -1.0;
+      Wiring._teleport[0].X = -1f;
+      Wiring._teleport[0].Y = -1f;
+      Wiring._teleport[1].X = -1f;
+      Wiring._teleport[1].Y = -1f;
       for (int X = left; X < left + width; ++X)
       {
         for (int Y = top; Y < top + height; ++Y)
@@ -466,10 +466,10 @@ namespace Terraria
       int num12 = 1;
       int num13 = index6 + num12;
       vector2Array7[index6] = Wiring._teleport[1];
-      Wiring._teleport[0].X = (__Null) -1.0;
-      Wiring._teleport[0].Y = (__Null) -1.0;
-      Wiring._teleport[1].X = (__Null) -1.0;
-      Wiring._teleport[1].Y = (__Null) -1.0;
+      Wiring._teleport[0].X = -1f;
+      Wiring._teleport[0].Y = -1f;
+      Wiring._teleport[1].X = -1f;
+      Wiring._teleport[1].Y = -1f;
       for (int X = left; X < left + width; ++X)
       {
         for (int Y = top; Y < top + height; ++Y)
@@ -503,7 +503,7 @@ namespace Terraria
       {
         Wiring._teleport[0] = vector2Array1[index9];
         Wiring._teleport[1] = vector2Array1[index9 + 1];
-        if (Wiring._teleport[0].X >= 0.0 && Wiring._teleport[1].X >= 0.0)
+        if ((double) Wiring._teleport[0].X >= 0.0 && (double) Wiring._teleport[1].X >= 0.0)
           Wiring.Teleport();
         index9 += 2;
       }
@@ -663,9 +663,9 @@ namespace Terraria
             Wiring._GatesNext.Enqueue(new Point16(lampX, index1));
             break;
           }
-          Vector2 position = Vector2.op_Subtraction(Vector2.op_Multiply(new Vector2((float) lampX, (float) index1), 16f), new Vector2(10f));
+          Vector2 position = new Vector2((float) lampX, (float) index1) * 16f - new Vector2(10f);
           Utils.PoofOfSmoke(position);
-          NetMessage.SendData(106, -1, -1, (NetworkText) null, (int) position.X, (float) position.Y, 0.0f, 0.0f, 0, 0, 0);
+          NetMessage.SendData(106, -1, -1, (NetworkText) null, (int) position.X, position.Y, 0.0f, 0.0f, 0, 0, 0);
           break;
         }
         if ((int) tile1.type != 419)
@@ -938,7 +938,7 @@ namespace Terraria
         }
         if (Main.AnnouncementBoxDisabled)
           return;
-        Color pink = Color.get_Pink();
+        Color pink = Color.Pink;
         int index = Sign.ReadSign(i1, j1, false);
         if (index == -1 || Main.sign[index] == null || string.IsNullOrWhiteSpace(Main.sign[index].text))
           return;
@@ -952,10 +952,7 @@ namespace Terraria
           {
             if (Main.netMode != 2)
               return;
-            // ISSUE: explicit reference operation
-            // ISSUE: explicit reference operation
-            // ISSUE: explicit reference operation
-            NetMessage.SendData(107, -1, -1, NetworkText.FromLiteral(Main.sign[index].text), (int) byte.MaxValue, (float) ((Color) @pink).get_R(), (float) ((Color) @pink).get_G(), (float) ((Color) @pink).get_B(), 460, 0, 0);
+            NetMessage.SendData(107, -1, -1, NetworkText.FromLiteral(Main.sign[index].text), (int) byte.MaxValue, (float) pink.R, (float) pink.G, (float) pink.B, 460, 0, 0);
           }
         }
         else if (Main.netMode == 0)
@@ -971,12 +968,7 @@ namespace Terraria
           for (int remoteClient = 0; remoteClient < (int) byte.MaxValue; ++remoteClient)
           {
             if (Main.player[remoteClient].active && (double) Main.player[remoteClient].Distance(new Vector2((float) (i1 * 16 + 16), (float) (j1 * 16 + 16))) <= (double) Main.AnnouncementBoxRange)
-            {
-              // ISSUE: explicit reference operation
-              // ISSUE: explicit reference operation
-              // ISSUE: explicit reference operation
-              NetMessage.SendData(107, remoteClient, -1, NetworkText.FromLiteral(Main.sign[index].text), (int) byte.MaxValue, (float) ((Color) @pink).get_R(), (float) ((Color) @pink).get_G(), (float) ((Color) @pink).get_B(), 460, 0, 0);
-            }
+              NetMessage.SendData(107, remoteClient, -1, NetworkText.FromLiteral(Main.sign[index].text), (int) byte.MaxValue, (float) pink.R, (float) pink.G, (float) pink.B, 460, 0, 0);
           }
         }
       }
@@ -1098,37 +1090,21 @@ namespace Terraria
         int Type = 166;
         int Damage = 0;
         float KnockBack = 0.0f;
-        Vector2 vector2;
-        // ISSUE: explicit reference operation
-        ((Vector2) @vector2).\u002Ector((float) ((i1 + 2) * 16 - 8), (float) ((j1 + 2) * 16 - 8));
+        Vector2 vector2 = new Vector2((float) ((i1 + 2) * 16 - 8), (float) ((j1 + 2) * 16 - 8));
         if ((int) tile1.frameX / 54 == 0)
         {
           num7 *= -1f;
-          // ISSUE: explicit reference operation
-          // ISSUE: variable of a reference type
-          Vector2& local = @vector2;
-          // ISSUE: explicit reference operation
-          double num9 = (^local).X - 12.0;
-          // ISSUE: explicit reference operation
-          (^local).X = (__Null) num9;
+          vector2.X -= 12f;
         }
         else
-        {
-          // ISSUE: explicit reference operation
-          // ISSUE: variable of a reference type
-          Vector2& local = @vector2;
-          // ISSUE: explicit reference operation
-          double num9 = (^local).X + 12.0;
-          // ISSUE: explicit reference operation
-          (^local).X = (__Null) num9;
-        }
-        float num10 = num7;
-        float num11 = num8;
-        float num12 = (float) Math.Sqrt((double) num10 * (double) num10 + (double) num11 * (double) num11);
-        float num13 = num6 / num12;
-        float SpeedX = num10 * num13;
-        float SpeedY = num11 * num13;
-        Projectile.NewProjectile((float) vector2.X, (float) vector2.Y, SpeedX, SpeedY, Type, Damage, KnockBack, Wiring.CurrentUser, 0.0f, 0.0f);
+          vector2.X += 12f;
+        float num9 = num7;
+        float num10 = num8;
+        float num11 = (float) Math.Sqrt((double) num9 * (double) num9 + (double) num10 * (double) num10);
+        float num12 = num6 / num11;
+        float SpeedX = num9 * num12;
+        float SpeedY = num10 * num12;
+        Projectile.NewProjectile(vector2.X, vector2.Y, SpeedX, SpeedY, Type, Damage, KnockBack, Wiring.CurrentUser, 0.0f, 0.0f);
       }
       else if (type == 215)
       {
@@ -1239,38 +1215,26 @@ namespace Terraria
       }
       else if (type == 235)
       {
-        int num1 = i - (int) tile1.frameX / 18;
+        int num = i - (int) tile1.frameX / 18;
         if ((int) tile1.wall == 87 && (double) j > Main.worldSurface && !NPC.downedPlantBoss)
           return;
-        if (Wiring._teleport[0].X == -1.0)
+        if ((double) Wiring._teleport[0].X == -1.0)
         {
-          Wiring._teleport[0].X = (__Null) (double) num1;
-          Wiring._teleport[0].Y = (__Null) (double) j;
+          Wiring._teleport[0].X = (float) num;
+          Wiring._teleport[0].Y = (float) j;
           if (!tile1.halfBrick())
             return;
-          // ISSUE: explicit reference operation
-          // ISSUE: variable of a reference type
-          Vector2& local = @Wiring._teleport[0];
-          // ISSUE: explicit reference operation
-          double num2 = (^local).Y + 0.5;
-          // ISSUE: explicit reference operation
-          (^local).Y = (__Null) num2;
+          Wiring._teleport[0].Y += 0.5f;
         }
         else
         {
-          if (Wiring._teleport[0].X == (double) num1 && Wiring._teleport[0].Y == (double) j)
+          if ((double) Wiring._teleport[0].X == (double) num && (double) Wiring._teleport[0].Y == (double) j)
             return;
-          Wiring._teleport[1].X = (__Null) (double) num1;
-          Wiring._teleport[1].Y = (__Null) (double) j;
+          Wiring._teleport[1].X = (float) num;
+          Wiring._teleport[1].Y = (float) j;
           if (!tile1.halfBrick())
             return;
-          // ISSUE: explicit reference operation
-          // ISSUE: variable of a reference type
-          Vector2& local = @Wiring._teleport[1];
-          // ISSUE: explicit reference operation
-          double num2 = (^local).Y + 0.5;
-          // ISSUE: explicit reference operation
-          (^local).Y = (__Null) num2;
+          Wiring._teleport[1].Y += 0.5f;
         }
       }
       else if (type == 4)
@@ -1454,7 +1418,7 @@ namespace Terraria
       else if (type == 137)
       {
         int num1 = (int) tile1.frameY / 18;
-        Vector2 zero = Vector2.get_Zero();
+        Vector2 vector2 = Vector2.Zero;
         float SpeedX = 0.0f;
         float SpeedY = 0.0f;
         int Type = 0;
@@ -1468,8 +1432,7 @@ namespace Terraria
             {
               int num2 = (int) tile1.frameX == 0 ? -1 : ((int) tile1.frameX == 18 ? 1 : 0);
               int num3 = (int) tile1.frameX < 36 ? 0 : ((int) tile1.frameX < 72 ? -1 : 1);
-              // ISSUE: explicit reference operation
-              ((Vector2) @zero).\u002Ector((float) (i * 16 + 8 + 10 * num2), (float) (j * 16 + 9 + num3 * 9));
+              vector2 = new Vector2((float) (i * 16 + 8 + 10 * num2), (float) (j * 16 + 9 + num3 * 9));
               float num4 = 3f;
               if (num1 == 0)
               {
@@ -1502,9 +1465,7 @@ namespace Terraria
               {
                 if (Main.projectile[index].active && Main.projectile[index].type == Type)
                 {
-                  Vector2 vector2 = Vector2.op_Subtraction(new Vector2((float) (i * 16 + 8), (float) (j * 18 + 8)), Main.projectile[index].Center);
-                  // ISSUE: explicit reference operation
-                  float num3 = ((Vector2) @vector2).Length();
+                  float num3 = (new Vector2((float) (i * 16 + 8), (float) (j * 18 + 8)) - Main.projectile[index].Center).Length();
                   if ((double) num3 < 50.0)
                     num2 -= 50;
                   else if ((double) num3 < 100.0)
@@ -1555,8 +1516,7 @@ namespace Terraria
                 }
                 SpeedX = (float) (4 * num3) + (float) Main.rand.Next((num3 == 1 ? 20 : 0) - 20, 21 - (num3 == -1 ? 20 : 0)) * 0.05f;
                 SpeedY = (float) (4 * num4) + (float) Main.rand.Next((num4 == 1 ? 20 : 0) - 20, 21 - (num4 == -1 ? 20 : 0)) * 0.05f;
-                // ISSUE: explicit reference operation
-                ((Vector2) @zero).\u002Ector((float) (i * 16 + 8 + 14 * num3), (float) (j * 16 + 8 + 14 * num4));
+                vector2 = new Vector2((float) (i * 16 + 8 + 14 * num3), (float) (j * 16 + 8 + 14 * num4));
                 break;
               }
               break;
@@ -1591,8 +1551,7 @@ namespace Terraria
               SpeedY = (float) (8 * num3);
               Damage = 60;
               Type = 186;
-              // ISSUE: explicit reference operation
-              ((Vector2) @zero).\u002Ector((float) (i * 16 + 8 + 18 * num2), (float) (j * 16 + 8 + 18 * num3));
+              vector2 = new Vector2((float) (i * 16 + 8 + 18 * num2), (float) (j * 16 + 8 + 18 * num3));
               break;
             }
             break;
@@ -1608,22 +1567,9 @@ namespace Terraria
               SpeedX = (float) (12 * num2);
               Damage = 20;
               Type = 98;
-              // ISSUE: explicit reference operation
-              ((Vector2) @zero).\u002Ector((float) (i * 16 + 8), (float) (j * 16 + 7));
-              // ISSUE: explicit reference operation
-              // ISSUE: variable of a reference type
-              Vector2& local1 = @zero;
-              // ISSUE: explicit reference operation
-              double num3 = (^local1).X + (double) (10 * num2);
-              // ISSUE: explicit reference operation
-              (^local1).X = (__Null) num3;
-              // ISSUE: explicit reference operation
-              // ISSUE: variable of a reference type
-              Vector2& local2 = @zero;
-              // ISSUE: explicit reference operation
-              double num4 = (^local2).Y + 2.0;
-              // ISSUE: explicit reference operation
-              (^local2).Y = (__Null) num4;
+              vector2 = new Vector2((float) (i * 16 + 8), (float) (j * 16 + 7));
+              vector2.X += (float) (10 * num2);
+              vector2.Y += 2f;
               break;
             }
             break;
@@ -1636,22 +1582,9 @@ namespace Terraria
               SpeedX = (float) (12 * num2);
               Damage = 40;
               Type = 184;
-              // ISSUE: explicit reference operation
-              ((Vector2) @zero).\u002Ector((float) (i * 16 + 8), (float) (j * 16 + 7));
-              // ISSUE: explicit reference operation
-              // ISSUE: variable of a reference type
-              Vector2& local1 = @zero;
-              // ISSUE: explicit reference operation
-              double num3 = (^local1).X + (double) (10 * num2);
-              // ISSUE: explicit reference operation
-              (^local1).X = (__Null) num3;
-              // ISSUE: explicit reference operation
-              // ISSUE: variable of a reference type
-              Vector2& local2 = @zero;
-              // ISSUE: explicit reference operation
-              double num4 = (^local2).Y + 2.0;
-              // ISSUE: explicit reference operation
-              (^local2).Y = (__Null) num4;
+              vector2 = new Vector2((float) (i * 16 + 8), (float) (j * 16 + 7));
+              vector2.X += (float) (10 * num2);
+              vector2.Y += 2f;
               break;
             }
             break;
@@ -1664,22 +1597,9 @@ namespace Terraria
               SpeedX = (float) (5 * num2);
               Damage = 40;
               Type = 187;
-              // ISSUE: explicit reference operation
-              ((Vector2) @zero).\u002Ector((float) (i * 16 + 8), (float) (j * 16 + 7));
-              // ISSUE: explicit reference operation
-              // ISSUE: variable of a reference type
-              Vector2& local1 = @zero;
-              // ISSUE: explicit reference operation
-              double num3 = (^local1).X + (double) (10 * num2);
-              // ISSUE: explicit reference operation
-              (^local1).X = (__Null) num3;
-              // ISSUE: explicit reference operation
-              // ISSUE: variable of a reference type
-              Vector2& local2 = @zero;
-              // ISSUE: explicit reference operation
-              double num4 = (^local2).Y + 2.0;
-              // ISSUE: explicit reference operation
-              (^local2).Y = (__Null) num4;
+              vector2 = new Vector2((float) (i * 16 + 8), (float) (j * 16 + 7));
+              vector2.X += (float) (10 * num2);
+              vector2.Y += 2f;
               break;
             }
             break;
@@ -1692,9 +1612,7 @@ namespace Terraria
               {
                 if (Main.projectile[index].active && Main.projectile[index].type == Type)
                 {
-                  Vector2 vector2 = Vector2.op_Subtraction(new Vector2((float) (i * 16 + 8), (float) (j * 18 + 8)), Main.projectile[index].Center);
-                  // ISSUE: explicit reference operation
-                  float num3 = ((Vector2) @vector2).Length();
+                  float num3 = (new Vector2((float) (i * 16 + 8), (float) (j * 18 + 8)) - Main.projectile[index].Center).Length();
                   if ((double) num3 < 50.0)
                     num2 -= 50;
                   else if ((double) num3 < 100.0)
@@ -1722,16 +1640,9 @@ namespace Terraria
                 SpeedX = (float) Main.rand.Next(-20, 21) * 0.05f;
                 SpeedY = (float) (4.0 + (double) Main.rand.Next(0, 21) * 0.0500000007450581);
                 Damage = 40;
-                // ISSUE: explicit reference operation
-                ((Vector2) @zero).\u002Ector((float) (i * 16 + 8), (float) (j * 16 + 16));
-                // ISSUE: explicit reference operation
-                // ISSUE: variable of a reference type
-                Vector2& local = @zero;
-                // ISSUE: explicit reference operation
-                double num3 = (^local).Y + 6.0;
-                // ISSUE: explicit reference operation
-                (^local).Y = (__Null) num3;
-                Projectile.NewProjectile((float) (int) zero.X, (float) (int) zero.Y, SpeedX, SpeedY, Type, Damage, 2f, Main.myPlayer, 0.0f, 0.0f);
+                vector2 = new Vector2((float) (i * 16 + 8), (float) (j * 16 + 16));
+                vector2.Y += 6f;
+                Projectile.NewProjectile((float) (int) vector2.X, (float) (int) vector2.Y, SpeedX, SpeedY, Type, Damage, 2f, Main.myPlayer, 0.0f, 0.0f);
                 break;
               }
               break;
@@ -1744,22 +1655,15 @@ namespace Terraria
               SpeedY = 8f;
               Damage = 60;
               Type = 186;
-              // ISSUE: explicit reference operation
-              ((Vector2) @zero).\u002Ector((float) (i * 16 + 8), (float) (j * 16 + 16));
-              // ISSUE: explicit reference operation
-              // ISSUE: variable of a reference type
-              Vector2& local = @zero;
-              // ISSUE: explicit reference operation
-              double num2 = (^local).Y + 10.0;
-              // ISSUE: explicit reference operation
-              (^local).Y = (__Null) num2;
+              vector2 = new Vector2((float) (i * 16 + 8), (float) (j * 16 + 16));
+              vector2.Y += 10f;
               break;
             }
             break;
         }
         if (Type == 0)
           return;
-        Projectile.NewProjectile((float) (int) zero.X, (float) (int) zero.Y, SpeedX, SpeedY, Type, Damage, 2f, Main.myPlayer, 0.0f, 0.0f);
+        Projectile.NewProjectile((float) (int) vector2.X, (float) (int) vector2.Y, SpeedX, SpeedY, Type, Damage, 2f, Main.myPlayer, 0.0f, 0.0f);
       }
       else if (type == 443)
       {
@@ -1768,26 +1672,24 @@ namespace Terraria
         int j1 = j;
         if (!Wiring.CheckMech(i1, j1, 200))
           return;
-        Vector2.get_Zero();
-        Vector2 zero = Vector2.get_Zero();
+        Vector2 zero = Vector2.Zero;
+        Vector2 vector2_1 = Vector2.Zero;
         int Type = 654;
         int Damage = 20;
-        Vector2 vector2;
+        Vector2 vector2_2;
         if (num < 2)
         {
-          vector2 = Vector2.op_Multiply(new Vector2((float) (i1 + 1), (float) j1), 16f);
-          // ISSUE: explicit reference operation
-          ((Vector2) @zero).\u002Ector(0.0f, -8f);
+          vector2_2 = new Vector2((float) (i1 + 1), (float) j1) * 16f;
+          vector2_1 = new Vector2(0.0f, -8f);
         }
         else
         {
-          vector2 = Vector2.op_Multiply(new Vector2((float) (i1 + 1), (float) (j1 + 1)), 16f);
-          // ISSUE: explicit reference operation
-          ((Vector2) @zero).\u002Ector(0.0f, 8f);
+          vector2_2 = new Vector2((float) (i1 + 1), (float) (j1 + 1)) * 16f;
+          vector2_1 = new Vector2(0.0f, 8f);
         }
         if (Type == 0)
           return;
-        Projectile.NewProjectile((float) (int) vector2.X, (float) (int) vector2.Y, (float) zero.X, (float) zero.Y, Type, Damage, 2f, Main.myPlayer, 0.0f, 0.0f);
+        Projectile.NewProjectile((float) (int) vector2_2.X, (float) (int) vector2_2.Y, vector2_1.X, vector2_1.Y, Type, Damage, 2f, Main.myPlayer, 0.0f, 0.0f);
       }
       else if (type == 139 || type == 35)
         WorldGen.SwitchMB(i, j);
@@ -2027,9 +1929,9 @@ namespace Terraria
           }
           else
           {
-            Vector2 position = Vector2.op_Subtraction(new Vector2((float) (X - 4), (float) (Y - 22)), new Vector2(10f));
+            Vector2 position = new Vector2((float) (X - 4), (float) (Y - 22)) - new Vector2(10f);
             Utils.PoofOfSmoke(position);
-            NetMessage.SendData(106, -1, -1, (NetworkText) null, (int) position.X, (float) position.Y, 0.0f, 0.0f, 0, 0, 0);
+            NetMessage.SendData(106, -1, -1, (NetworkText) null, (int) position.X, position.Y, 0.0f, 0.0f, 0, 0, 0);
           }
         }
         if (index1 <= -1)
@@ -2120,9 +2022,9 @@ namespace Terraria
               }
               else
               {
-                Vector2 position = Vector2.op_Subtraction(new Vector2((float) (X - 4), (float) (Y - 22)), new Vector2(10f));
+                Vector2 position = new Vector2((float) (X - 4), (float) (Y - 22)) - new Vector2(10f);
                 Utils.PoofOfSmoke(position);
-                NetMessage.SendData(106, -1, -1, (NetworkText) null, (int) position.X, (float) position.Y, 0.0f, 0.0f, 0, 0, 0);
+                NetMessage.SendData(106, -1, -1, (NetworkText) null, (int) position.X, position.Y, 0.0f, 0.0f, 0, 0, 0);
               }
             }
           }
@@ -2155,8 +2057,8 @@ namespace Terraria
               if (maxValue > 0)
               {
                 int number = numArray[Main.rand.Next(maxValue)];
-                Main.npc[number].position.X = (__Null) (double) (X - Main.npc[number].width / 2);
-                Main.npc[number].position.Y = (__Null) (double) (Y - Main.npc[number].height - 1);
+                Main.npc[number].position.X = (float) (X - Main.npc[number].width / 2);
+                Main.npc[number].position.Y = (float) (Y - Main.npc[number].height - 1);
                 NetMessage.SendData(23, -1, -1, (NetworkText) null, number, 0.0f, 0.0f, 0.0f, 0, 0, 0);
               }
             }
@@ -2178,8 +2080,8 @@ namespace Terraria
             if (maxValue > 0)
             {
               int number = numArray[Main.rand.Next(maxValue)];
-              Main.npc[number].position.X = (__Null) (double) (X - Main.npc[number].width / 2);
-              Main.npc[number].position.Y = (__Null) (double) (Y - Main.npc[number].height - 1);
+              Main.npc[number].position.X = (float) (X - Main.npc[number].width / 2);
+              Main.npc[number].position.Y = (float) (Y - Main.npc[number].height - 1);
               NetMessage.SendData(23, -1, -1, (NetworkText) null, number, 0.0f, 0.0f, 0.0f, 0, 0, 0);
             }
           }
@@ -2219,41 +2121,35 @@ namespace Terraria
 
     private static void Teleport()
     {
-      if (Wiring._teleport[0].X < Wiring._teleport[1].X + 3.0 && Wiring._teleport[0].X > Wiring._teleport[1].X - 3.0 && (Wiring._teleport[0].Y > Wiring._teleport[1].Y - 3.0 && Wiring._teleport[0].Y < Wiring._teleport[1].Y))
+      if ((double) Wiring._teleport[0].X < (double) Wiring._teleport[1].X + 3.0 && (double) Wiring._teleport[0].X > (double) Wiring._teleport[1].X - 3.0 && ((double) Wiring._teleport[0].Y > (double) Wiring._teleport[1].Y - 3.0 && (double) Wiring._teleport[0].Y < (double) Wiring._teleport[1].Y))
         return;
       Rectangle[] rectangleArray = new Rectangle[2];
-      rectangleArray[0].X = (__Null) (int) (Wiring._teleport[0].X * 16.0);
-      rectangleArray[0].Width = (__Null) 48;
-      rectangleArray[0].Height = (__Null) 48;
-      rectangleArray[0].Y = (__Null) (int) (Wiring._teleport[0].Y * 16.0 - (double) (float) rectangleArray[0].Height);
-      rectangleArray[1].X = (__Null) (int) (Wiring._teleport[1].X * 16.0);
-      rectangleArray[1].Width = (__Null) 48;
-      rectangleArray[1].Height = (__Null) 48;
-      rectangleArray[1].Y = (__Null) (int) (Wiring._teleport[1].Y * 16.0 - (double) (float) rectangleArray[1].Height);
+      rectangleArray[0].X = (int) ((double) Wiring._teleport[0].X * 16.0);
+      rectangleArray[0].Width = 48;
+      rectangleArray[0].Height = 48;
+      rectangleArray[0].Y = (int) ((double) Wiring._teleport[0].Y * 16.0 - (double) rectangleArray[0].Height);
+      rectangleArray[1].X = (int) ((double) Wiring._teleport[1].X * 16.0);
+      rectangleArray[1].Width = 48;
+      rectangleArray[1].Height = 48;
+      rectangleArray[1].Y = (int) ((double) Wiring._teleport[1].Y * 16.0 - (double) rectangleArray[1].Height);
       for (int index1 = 0; index1 < 2; ++index1)
       {
-        Vector2 vector2_1;
-        // ISSUE: explicit reference operation
-        ((Vector2) @vector2_1).\u002Ector((float) (rectangleArray[1].X - rectangleArray[0].X), (float) (rectangleArray[1].Y - rectangleArray[0].Y));
+        Vector2 vector2_1 = new Vector2((float) (rectangleArray[1].X - rectangleArray[0].X), (float) (rectangleArray[1].Y - rectangleArray[0].Y));
         if (index1 == 1)
-        {
-          // ISSUE: explicit reference operation
-          ((Vector2) @vector2_1).\u002Ector((float) (rectangleArray[0].X - rectangleArray[1].X), (float) (rectangleArray[0].Y - rectangleArray[1].Y));
-        }
+          vector2_1 = new Vector2((float) (rectangleArray[0].X - rectangleArray[1].X), (float) (rectangleArray[0].Y - rectangleArray[1].Y));
         if (!Wiring.blockPlayerTeleportationForOneIteration)
         {
           for (int playerIndex = 0; playerIndex < (int) byte.MaxValue; ++playerIndex)
           {
-            // ISSUE: explicit reference operation
-            if (Main.player[playerIndex].active && !Main.player[playerIndex].dead && (!Main.player[playerIndex].teleporting && ((Rectangle) @rectangleArray[index1]).Intersects(Main.player[playerIndex].getRect())))
+            if (Main.player[playerIndex].active && !Main.player[playerIndex].dead && (!Main.player[playerIndex].teleporting && rectangleArray[index1].Intersects(Main.player[playerIndex].getRect())))
             {
-              Vector2 vector2_2 = Vector2.op_Addition(Main.player[playerIndex].position, vector2_1);
+              Vector2 vector2_2 = Main.player[playerIndex].position + vector2_1;
               Main.player[playerIndex].teleporting = true;
               if (Main.netMode == 2)
                 RemoteClient.CheckSection(playerIndex, vector2_2, 1);
               Main.player[playerIndex].Teleport(vector2_2, 0, 0);
               if (Main.netMode == 2)
-                NetMessage.SendData(65, -1, -1, (NetworkText) null, 0, (float) playerIndex, (float) vector2_2.X, (float) vector2_2.Y, 0, 0, 0);
+                NetMessage.SendData(65, -1, -1, (NetworkText) null, 0, (float) playerIndex, vector2_2.X, vector2_2.Y, 0, 0, 0);
             }
           }
         }
@@ -2262,11 +2158,10 @@ namespace Terraria
           if (Main.npc[index2].active && !Main.npc[index2].teleporting && (Main.npc[index2].lifeMax > 5 && !Main.npc[index2].boss) && !Main.npc[index2].noTileCollide)
           {
             int type = Main.npc[index2].type;
-            // ISSUE: explicit reference operation
-            if (!NPCID.Sets.TeleportationImmune[type] && ((Rectangle) @rectangleArray[index1]).Intersects(Main.npc[index2].getRect()))
+            if (!NPCID.Sets.TeleportationImmune[type] && rectangleArray[index1].Intersects(Main.npc[index2].getRect()))
             {
               Main.npc[index2].teleporting = true;
-              Main.npc[index2].Teleport(Vector2.op_Addition(Main.npc[index2].position, vector2_1), 0, 0);
+              Main.npc[index2].Teleport(Main.npc[index2].position + vector2_1, 0, 0);
             }
           }
         }
@@ -2312,12 +2207,12 @@ namespace Terraria
 
     private static void MassWireOperationInner(Point ps, Point pe, Vector2 dropPoint, bool dir, ref int wireCount, ref int actuatorCount)
     {
-      Math.Abs((int) (ps.X - pe.X));
-      Math.Abs((int) (ps.Y - pe.Y));
-      int num1 = Math.Sign((int) (pe.X - ps.X));
-      int num2 = Math.Sign((int) (pe.Y - ps.Y));
+      Math.Abs(ps.X - pe.X);
+      Math.Abs(ps.Y - pe.Y);
+      int num1 = Math.Sign(pe.X - ps.X);
+      int num2 = Math.Sign(pe.Y - ps.Y);
       WiresUI.Settings.MultiToolMode toolMode = WiresUI.Settings.ToolMode;
-      Point pt = (Point) null;
+      Point pt = new Point();
       bool flag1 = false;
       Item.StartCachingType(530);
       Item.StartCachingType(849);
@@ -2328,24 +2223,24 @@ namespace Terraria
       if (flag2)
       {
         pt.X = ps.X;
-        num3 = (int) ps.Y;
-        num4 = (int) pe.Y;
+        num3 = ps.Y;
+        num4 = pe.Y;
         num5 = num2;
       }
       else
       {
         pt.Y = ps.Y;
-        num3 = (int) ps.X;
-        num4 = (int) pe.X;
+        num3 = ps.X;
+        num4 = pe.X;
         num5 = num1;
       }
       int num6 = num3;
       while (num6 != num4 && !flag1)
       {
         if (flag2)
-          pt.Y = (__Null) num6;
+          pt.Y = num6;
         else
-          pt.X = (__Null) num6;
+          pt.X = num6;
         bool? nullable = Wiring.MassWireOperationStep(pt, toolMode, ref wireCount, ref actuatorCount);
         if (nullable.HasValue && !nullable.Value)
         {
@@ -2360,24 +2255,24 @@ namespace Terraria
       if (flag2)
       {
         pt.Y = pe.Y;
-        num7 = (int) ps.X;
-        num8 = (int) pe.X;
+        num7 = ps.X;
+        num8 = pe.X;
         num9 = num1;
       }
       else
       {
         pt.X = pe.X;
-        num7 = (int) ps.Y;
-        num8 = (int) pe.Y;
+        num7 = ps.Y;
+        num8 = pe.Y;
         num9 = num2;
       }
       int num10 = num7;
       while (num10 != num8 && !flag1)
       {
         if (!flag2)
-          pt.Y = (__Null) num10;
+          pt.Y = num10;
         else
-          pt.X = (__Null) num10;
+          pt.X = num10;
         bool? nullable = Wiring.MassWireOperationStep(pt, toolMode, ref wireCount, ref actuatorCount);
         if (nullable.HasValue && !nullable.Value)
         {
@@ -2388,15 +2283,15 @@ namespace Terraria
       }
       if (!flag1)
         Wiring.MassWireOperationStep(pe, toolMode, ref wireCount, ref actuatorCount);
-      Item.DropCache(dropPoint, Vector2.get_Zero(), 530, true);
-      Item.DropCache(dropPoint, Vector2.get_Zero(), 849, true);
+      Item.DropCache(dropPoint, Vector2.Zero, 530, true);
+      Item.DropCache(dropPoint, Vector2.Zero, 849, true);
     }
 
     private static bool? MassWireOperationStep(Point pt, WiresUI.Settings.MultiToolMode mode, ref int wiresLeftToConsume, ref int actuatorsLeftToConstume)
     {
-      if (!WorldGen.InWorld((int) pt.X, (int) pt.Y, 1))
+      if (!WorldGen.InWorld(pt.X, pt.Y, 1))
         return new bool?();
-      Tile tile = Main.tile[(int) pt.X, (int) pt.Y];
+      Tile tile = Main.tile[pt.X, pt.Y];
       if (tile == null)
         return new bool?();
       if (!mode.HasFlag((Enum) WiresUI.Settings.MultiToolMode.Cutter))
@@ -2406,7 +2301,7 @@ namespace Terraria
           if (wiresLeftToConsume <= 0)
             return new bool?(false);
           --wiresLeftToConsume;
-          WorldGen.PlaceWire((int) pt.X, (int) pt.Y);
+          WorldGen.PlaceWire(pt.X, pt.Y);
           NetMessage.SendData(17, -1, -1, (NetworkText) null, 5, (float) pt.X, (float) pt.Y, 0.0f, 0, 0, 0);
         }
         if (mode.HasFlag((Enum) WiresUI.Settings.MultiToolMode.Green) && !tile.wire3())
@@ -2414,7 +2309,7 @@ namespace Terraria
           if (wiresLeftToConsume <= 0)
             return new bool?(false);
           --wiresLeftToConsume;
-          WorldGen.PlaceWire3((int) pt.X, (int) pt.Y);
+          WorldGen.PlaceWire3(pt.X, pt.Y);
           NetMessage.SendData(17, -1, -1, (NetworkText) null, 12, (float) pt.X, (float) pt.Y, 0.0f, 0, 0, 0);
         }
         if (mode.HasFlag((Enum) WiresUI.Settings.MultiToolMode.Blue) && !tile.wire2())
@@ -2422,7 +2317,7 @@ namespace Terraria
           if (wiresLeftToConsume <= 0)
             return new bool?(false);
           --wiresLeftToConsume;
-          WorldGen.PlaceWire2((int) pt.X, (int) pt.Y);
+          WorldGen.PlaceWire2(pt.X, pt.Y);
           NetMessage.SendData(17, -1, -1, (NetworkText) null, 10, (float) pt.X, (float) pt.Y, 0.0f, 0, 0, 0);
         }
         if (mode.HasFlag((Enum) WiresUI.Settings.MultiToolMode.Yellow) && !tile.wire4())
@@ -2430,7 +2325,7 @@ namespace Terraria
           if (wiresLeftToConsume <= 0)
             return new bool?(false);
           --wiresLeftToConsume;
-          WorldGen.PlaceWire4((int) pt.X, (int) pt.Y);
+          WorldGen.PlaceWire4(pt.X, pt.Y);
           NetMessage.SendData(17, -1, -1, (NetworkText) null, 16, (float) pt.X, (float) pt.Y, 0.0f, 0, 0, 0);
         }
         if (mode.HasFlag((Enum) WiresUI.Settings.MultiToolMode.Actuator) && !tile.actuator())
@@ -2438,21 +2333,21 @@ namespace Terraria
           if (actuatorsLeftToConstume <= 0)
             return new bool?(false);
           --actuatorsLeftToConstume;
-          WorldGen.PlaceActuator((int) pt.X, (int) pt.Y);
+          WorldGen.PlaceActuator(pt.X, pt.Y);
           NetMessage.SendData(17, -1, -1, (NetworkText) null, 8, (float) pt.X, (float) pt.Y, 0.0f, 0, 0, 0);
         }
       }
       if (mode.HasFlag((Enum) WiresUI.Settings.MultiToolMode.Cutter))
       {
-        if (mode.HasFlag((Enum) WiresUI.Settings.MultiToolMode.Red) && tile.wire() && WorldGen.KillWire((int) pt.X, (int) pt.Y))
+        if (mode.HasFlag((Enum) WiresUI.Settings.MultiToolMode.Red) && tile.wire() && WorldGen.KillWire(pt.X, pt.Y))
           NetMessage.SendData(17, -1, -1, (NetworkText) null, 6, (float) pt.X, (float) pt.Y, 0.0f, 0, 0, 0);
-        if (mode.HasFlag((Enum) WiresUI.Settings.MultiToolMode.Green) && tile.wire3() && WorldGen.KillWire3((int) pt.X, (int) pt.Y))
+        if (mode.HasFlag((Enum) WiresUI.Settings.MultiToolMode.Green) && tile.wire3() && WorldGen.KillWire3(pt.X, pt.Y))
           NetMessage.SendData(17, -1, -1, (NetworkText) null, 13, (float) pt.X, (float) pt.Y, 0.0f, 0, 0, 0);
-        if (mode.HasFlag((Enum) WiresUI.Settings.MultiToolMode.Blue) && tile.wire2() && WorldGen.KillWire2((int) pt.X, (int) pt.Y))
+        if (mode.HasFlag((Enum) WiresUI.Settings.MultiToolMode.Blue) && tile.wire2() && WorldGen.KillWire2(pt.X, pt.Y))
           NetMessage.SendData(17, -1, -1, (NetworkText) null, 11, (float) pt.X, (float) pt.Y, 0.0f, 0, 0, 0);
-        if (mode.HasFlag((Enum) WiresUI.Settings.MultiToolMode.Yellow) && tile.wire4() && WorldGen.KillWire4((int) pt.X, (int) pt.Y))
+        if (mode.HasFlag((Enum) WiresUI.Settings.MultiToolMode.Yellow) && tile.wire4() && WorldGen.KillWire4(pt.X, pt.Y))
           NetMessage.SendData(17, -1, -1, (NetworkText) null, 17, (float) pt.X, (float) pt.Y, 0.0f, 0, 0, 0);
-        if (mode.HasFlag((Enum) WiresUI.Settings.MultiToolMode.Actuator) && tile.actuator() && WorldGen.KillActuator((int) pt.X, (int) pt.Y))
+        if (mode.HasFlag((Enum) WiresUI.Settings.MultiToolMode.Actuator) && tile.actuator() && WorldGen.KillActuator(pt.X, pt.Y))
           NetMessage.SendData(17, -1, -1, (NetworkText) null, 9, (float) pt.X, (float) pt.Y, 0.0f, 0, 0, 0);
       }
       return new bool?(true);

@@ -1,7 +1,7 @@
 ﻿// Decompiled with JetBrains decompiler
 // Type: Terraria.IO.PlayerFileData
 // Assembly: Terraria, Version=1.3.5.1, Culture=neutral, PublicKeyToken=null
-// MVID: DF0400F4-EE47-4864-BE80-932EDB02D8A6
+// MVID: E90A5A2F-CD10-4A2C-9D2A-6B036D4E8877
 // Assembly location: F:\Steam\steamapps\common\Terraria\Terraria.exe
 
 using System;
@@ -114,7 +114,7 @@ namespace Terraria.IO
 
     public void UpdatePlayTimer()
     {
-      if (Main.instance.get_IsActive() && !Main.gamePaused && (Main.hasFocus && this._isTimerActive))
+      if (Main.instance.IsActive && !Main.gamePaused && (Main.hasFocus && this._isTimerActive))
         this.StartPlayTimer();
       else
         this.PausePlayTimer();

@@ -1,7 +1,7 @@
 ﻿// Decompiled with JetBrains decompiler
 // Type: Terraria.GameContent.Events.BirthdayParty
 // Assembly: TerrariaServer, Version=1.3.5.1, Culture=neutral, PublicKeyToken=null
-// MVID: 880A80AC-FC6C-4F43-ABDD-E2472DA66CB5
+// MVID: C2103E81-0935-4BEA-9E98-4159FC80C2BB
 // Assembly location: F:\Steam\steamapps\common\Terraria\TerrariaServer.exe
 
 using Microsoft.Xna.Framework;
@@ -52,9 +52,7 @@ namespace Terraria.GameContent.Events
       }
       if (!flag)
         return;
-      Color color;
-      // ISSUE: explicit reference operation
-      ((Color) @color).\u002Ector((int) byte.MaxValue, 0, 160);
+      Color color = new Color((int) byte.MaxValue, 0, 160);
       WorldGen.BroadcastText(NetworkText.FromKey(Lang.misc[99].Key), color);
     }
 
@@ -93,9 +91,7 @@ namespace Terraria.GameContent.Events
           intList.Add(index);
         for (int index = 0; index < intList.Count; ++index)
           BirthdayParty.CelebratingNPCs.Add(list[intList[index]].whoAmI);
-        Color color;
-        // ISSUE: explicit reference operation
-        ((Color) @color).\u002Ector((int) byte.MaxValue, 0, 160);
+        Color color = new Color((int) byte.MaxValue, 0, 160);
         if (BirthdayParty.CelebratingNPCs.Count == 3)
           WorldGen.BroadcastText(NetworkText.FromKey("Game.BirthdayParty_3", (object) Main.npc[BirthdayParty.CelebratingNPCs[0]].GetGivenOrTypeNetName(), (object) Main.npc[BirthdayParty.CelebratingNPCs[1]].GetGivenOrTypeNetName(), (object) Main.npc[BirthdayParty.CelebratingNPCs[2]].GetGivenOrTypeNetName()), color);
         else if (BirthdayParty.CelebratingNPCs.Count == 2)
@@ -133,7 +129,7 @@ namespace Terraria.GameContent.Events
         if (Main.netMode != 2)
         {
           if (BirthdayParty.PartyIsUp)
-            SkyManager.Instance.Activate("Party", (Vector2) null);
+            SkyManager.Instance.Activate("Party", new Vector2());
           else
             SkyManager.Instance.Deactivate("Party");
         }
@@ -150,9 +146,7 @@ namespace Terraria.GameContent.Events
             BirthdayParty.GenuineParty = false;
             if (!BirthdayParty.ManualParty)
             {
-              Color color;
-              // ISSUE: explicit reference operation
-              ((Color) @color).\u002Ector((int) byte.MaxValue, 0, 160);
+              Color color = new Color((int) byte.MaxValue, 0, 160);
               WorldGen.BroadcastText(NetworkText.FromKey(Lang.misc[99].Key), color);
               NetMessage.SendData(7, -1, -1, (NetworkText) null, 0, 0.0f, 0.0f, 0.0f, 0, 0, 0);
             }

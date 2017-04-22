@@ -1,7 +1,7 @@
 ﻿// Decompiled with JetBrains decompiler
 // Type: Terraria.Lighting
 // Assembly: Terraria, Version=1.3.5.1, Culture=neutral, PublicKeyToken=null
-// MVID: DF0400F4-EE47-4864-BE80-932EDB02D8A6
+// MVID: E90A5A2F-CD10-4A2C-9D2A-6B036D4E8877
 // Assembly location: F:\Steam\steamapps\common\Terraria\Terraria.exe
 
 using Microsoft.Xna.Framework;
@@ -140,12 +140,9 @@ namespace Terraria
     {
       Main.render = true;
       Lighting.oldSkyColor = Lighting.skyColor;
-      // ISSUE: explicit reference operation
-      float num1 = (float) ((Color) @Main.tileColor).get_R() / (float) byte.MaxValue;
-      // ISSUE: explicit reference operation
-      float num2 = (float) ((Color) @Main.tileColor).get_G() / (float) byte.MaxValue;
-      // ISSUE: explicit reference operation
-      float num3 = (float) ((Color) @Main.tileColor).get_B() / (float) byte.MaxValue;
+      float num1 = (float) Main.tileColor.R / (float) byte.MaxValue;
+      float num2 = (float) Main.tileColor.G / (float) byte.MaxValue;
+      float num3 = (float) Main.tileColor.B / (float) byte.MaxValue;
       Lighting.skyColor = (float) (((double) num1 + (double) num2 + (double) num3) / 3.0);
       if (Lighting.lightMode < 2)
       {
@@ -181,8 +178,8 @@ namespace Terraria
       if (Main.renderCount == 2)
       {
         Vector2 screenPosition = Main.screenPosition;
-        int num6 = (int) Math.Floor(Main.screenPosition.X / 16.0) - Lighting.scrX;
-        int num7 = (int) Math.Floor(Main.screenPosition.Y / 16.0) - Lighting.scrY;
+        int num6 = (int) Math.Floor((double) Main.screenPosition.X / 16.0) - Lighting.scrX;
+        int num7 = (int) Math.Floor((double) Main.screenPosition.Y / 16.0) - Lighting.scrY;
         if (num6 > 16)
           num6 = 0;
         if (num7 > 16)
@@ -246,7 +243,7 @@ namespace Terraria
       }
       else if (!Main.renderNow)
       {
-        int num6 = (int) Math.Floor(Main.screenPosition.X / 16.0) - (int) Math.Floor(screenLastPosition.X / 16.0);
+        int num6 = (int) Math.Floor((double) Main.screenPosition.X / 16.0) - (int) Math.Floor((double) screenLastPosition.X / 16.0);
         if (num6 > 5 || num6 < -5)
           num6 = 0;
         int num7;
@@ -265,7 +262,7 @@ namespace Terraria
           num8 = 0;
           num9 = num4 - num6;
         }
-        int num10 = (int) Math.Floor(Main.screenPosition.Y / 16.0) - (int) Math.Floor(screenLastPosition.Y / 16.0);
+        int num10 = (int) Math.Floor((double) Main.screenPosition.Y / 16.0) - (int) Math.Floor((double) screenLastPosition.Y / 16.0);
         if (num10 > 5 || num10 < -5)
           num10 = 0;
         int num11;
@@ -393,12 +390,9 @@ namespace Terraria
 
     public static void PreRenderPhase()
     {
-      // ISSUE: explicit reference operation
-      float num1 = (float) ((Color) @Main.tileColor).get_R() / (float) byte.MaxValue;
-      // ISSUE: explicit reference operation
-      float num2 = (float) ((Color) @Main.tileColor).get_G() / (float) byte.MaxValue;
-      // ISSUE: explicit reference operation
-      float num3 = (float) ((Color) @Main.tileColor).get_B() / (float) byte.MaxValue;
+      float num1 = (float) Main.tileColor.R / (float) byte.MaxValue;
+      float num2 = (float) Main.tileColor.G / (float) byte.MaxValue;
+      float num3 = (float) Main.tileColor.B / (float) byte.MaxValue;
       Stopwatch stopwatch = new Stopwatch();
       stopwatch.Start();
       int num4 = 0;
@@ -431,7 +425,7 @@ namespace Terraria
           try
           {
             int num8 = (int) Main.screenPosition.Y / 16 - 10;
-            int num9 = (int) (Main.screenPosition.Y + (double) Main.screenHeight) / 16 + 10;
+            int num9 = (int) ((double) Main.screenPosition.Y + (double) Main.screenHeight) / 16 + 10;
             int num10 = (int) Main.npc[Main.wof].position.X / 16;
             int num11 = Main.npc[Main.wof].direction <= 0 ? num10 + 2 : num10 - 3;
             int num12 = num11 + 8;
@@ -997,12 +991,10 @@ namespace Terraria
                                 num10 = 1f;
                                 goto label_424;
                               case 30:
-                                Color rgb1 = Main.hslToRgb((float) ((double) Main.demonTorch * 0.119999997317791 + 0.689999997615814), 1f, 0.75f);
-                                // ISSUE: explicit reference operation
-                                Vector3 vector3_1 = Vector3.op_Multiply(((Color) @rgb1).ToVector3(), 1.2f);
-                                num8 = (float) vector3_1.X;
-                                num9 = (float) vector3_1.Y;
-                                num10 = (float) vector3_1.Z;
+                                Vector3 vector3_1 = Main.hslToRgb((float) ((double) Main.demonTorch * 0.119999997317791 + 0.689999997615814), 1f, 0.75f).ToVector3() * 1.2f;
+                                num8 = vector3_1.X;
+                                num9 = vector3_1.Y;
+                                num10 = vector3_1.Z;
                                 goto label_424;
                               case 0:
                                 num8 = 1f;
@@ -1115,12 +1107,10 @@ namespace Terraria
                                 num10 = 1f;
                                 goto label_424;
                               case 37:
-                                Color rgb2 = Main.hslToRgb((float) ((double) Main.demonTorch * 0.119999997317791 + 0.689999997615814), 1f, 0.75f);
-                                // ISSUE: explicit reference operation
-                                Vector3 vector3_2 = Vector3.op_Multiply(((Color) @rgb2).ToVector3(), 1.2f);
-                                num8 = (float) vector3_2.X;
-                                num9 = (float) vector3_2.Y;
-                                num10 = (float) vector3_2.Z;
+                                Vector3 vector3_2 = Main.hslToRgb((float) ((double) Main.demonTorch * 0.119999997317791 + 0.689999997615814), 1f, 0.75f).ToVector3() * 1.2f;
+                                num8 = vector3_2.X;
+                                num9 = vector3_2.Y;
+                                num10 = vector3_2.Z;
                                 goto label_424;
                               default:
                                 num8 = 1f;
@@ -1248,12 +1238,10 @@ namespace Terraria
                           num10 = 0.9f;
                           goto label_424;
                         case 37:
-                          Color rgb3 = Main.hslToRgb((float) ((double) Main.demonTorch * 0.119999997317791 + 0.689999997615814), 1f, 0.75f);
-                          // ISSUE: explicit reference operation
-                          Vector3 vector3_3 = Vector3.op_Multiply(((Color) @rgb3).ToVector3(), 1.2f);
-                          num8 = (float) vector3_3.X;
-                          num9 = (float) vector3_3.Y;
-                          num10 = (float) vector3_3.Z;
+                          Vector3 vector3_3 = Main.hslToRgb((float) ((double) Main.demonTorch * 0.119999997317791 + 0.689999997615814), 1f, 0.75f).ToVector3() * 1.2f;
+                          num8 = vector3_3.X;
+                          num9 = vector3_3.Y;
+                          num10 = vector3_3.Z;
                           goto label_424;
                         default:
                           num8 = 1f;
@@ -1437,12 +1425,10 @@ namespace Terraria
                                 num10 = 1f;
                                 goto label_424;
                               case 31:
-                                Color rgb4 = Main.hslToRgb((float) ((double) Main.demonTorch * 0.119999997317791 + 0.689999997615814), 1f, 0.75f);
-                                // ISSUE: explicit reference operation
-                                Vector3 vector3_4 = Vector3.op_Multiply(((Color) @rgb4).ToVector3(), 1.2f);
-                                num8 = (float) vector3_4.X;
-                                num9 = (float) vector3_4.Y;
-                                num10 = (float) vector3_4.Z;
+                                Vector3 vector3_4 = Main.hslToRgb((float) ((double) Main.demonTorch * 0.119999997317791 + 0.689999997615814), 1f, 0.75f).ToVector3() * 1.2f;
+                                num8 = vector3_4.X;
+                                num9 = vector3_4.Y;
+                                num10 = vector3_4.Z;
                                 goto label_424;
                               default:
                                 num8 = 1f;
@@ -1741,12 +1727,10 @@ namespace Terraria
                         num10 = 1f;
                         goto label_424;
                       case 31:
-                        Color rgb5 = Main.hslToRgb((float) ((double) Main.demonTorch * 0.119999997317791 + 0.689999997615814), 1f, 0.75f);
-                        // ISSUE: explicit reference operation
-                        Vector3 vector3_5 = Vector3.op_Multiply(((Color) @rgb5).ToVector3(), 1.2f);
-                        num8 = (float) vector3_5.X;
-                        num9 = (float) vector3_5.Y;
-                        num10 = (float) vector3_5.Z;
+                        Vector3 vector3_5 = Main.hslToRgb((float) ((double) Main.demonTorch * 0.119999997317791 + 0.689999997615814), 1f, 0.75f).ToVector3() * 1.2f;
+                        num8 = vector3_5.X;
+                        num9 = vector3_5.Y;
+                        num10 = vector3_5.Z;
                         goto label_424;
                       default:
                         num8 = 1f;
@@ -1841,22 +1825,18 @@ label_351:
                     }
                     else if ((int) tile.frameX == 234 || (int) tile.frameX == 252)
                     {
-                      Color portalColor = PortalHelper.GetPortalColor(Main.myPlayer, 0);
-                      // ISSUE: explicit reference operation
-                      Vector3 vector3 = Vector3.op_Multiply(((Color) @portalColor).ToVector3(), 0.65f);
-                      num8 = (float) vector3.X;
-                      num9 = (float) vector3.Y;
-                      num10 = (float) vector3.Z;
+                      Vector3 vector3 = PortalHelper.GetPortalColor(Main.myPlayer, 0).ToVector3() * 0.65f;
+                      num8 = vector3.X;
+                      num9 = vector3.Y;
+                      num10 = vector3.Z;
                       goto label_424;
                     }
                     else if ((int) tile.frameX == 306 || (int) tile.frameX == 324)
                     {
-                      Color portalColor = PortalHelper.GetPortalColor(Main.myPlayer, 1);
-                      // ISSUE: explicit reference operation
-                      Vector3 vector3 = Vector3.op_Multiply(((Color) @portalColor).ToVector3(), 0.65f);
-                      num8 = (float) vector3.X;
-                      num9 = (float) vector3.Y;
-                      num10 = (float) vector3.Z;
+                      Vector3 vector3 = PortalHelper.GetPortalColor(Main.myPlayer, 1).ToVector3() * 0.65f;
+                      num8 = vector3.X;
+                      num9 = vector3.Y;
+                      num10 = vector3.Z;
                       goto label_424;
                     }
                     else
@@ -2365,8 +2345,8 @@ label_424:
       Lighting.firstToLightY27 = Lighting.firstTileY - Lighting.offScreenTiles2;
       Lighting.lastToLightX27 = Lighting.lastTileX + Lighting.offScreenTiles2;
       Lighting.lastToLightY27 = Lighting.lastTileY + Lighting.offScreenTiles2;
-      Lighting.scrX = (int) Math.Floor(Main.screenPosition.X / 16.0);
-      Lighting.scrY = (int) Math.Floor(Main.screenPosition.Y / 16.0);
+      Lighting.scrX = (int) Math.Floor((double) Main.screenPosition.X / 16.0);
+      Lighting.scrY = (int) Math.Floor((double) Main.screenPosition.Y / 16.0);
       Main.renderCount = 0;
       TimeLogger.LightingTime(0, stopwatch.Elapsed.TotalMilliseconds);
       Lighting.doColors();
@@ -2976,12 +2956,12 @@ label_35:
 
     public static void AddLight(Vector2 position, Vector3 rgb)
     {
-      Lighting.AddLight((int) (position.X / 16.0), (int) (position.Y / 16.0), (float) rgb.X, (float) rgb.Y, (float) rgb.Z);
+      Lighting.AddLight((int) ((double) position.X / 16.0), (int) ((double) position.Y / 16.0), rgb.X, rgb.Y, rgb.Z);
     }
 
     public static void AddLight(Vector2 position, float R, float G, float B)
     {
-      Lighting.AddLight((int) (position.X / 16.0), (int) (position.Y / 16.0), R, G, B);
+      Lighting.AddLight((int) ((double) position.X / 16.0), (int) ((double) position.Y / 16.0), R, G, B);
     }
 
     public static void AddLight(int i, int j, float R, float G, float B)
@@ -3054,27 +3034,21 @@ label_35:
       if (Main.gameMenu)
         return oldColor;
       if (index1 < 0 || index2 < 0 || (index1 >= Main.screenWidth / 16 + Lighting.offScreenTiles * 2 + 10 || index2 >= Main.screenHeight / 16 + Lighting.offScreenTiles * 2 + 10))
-        return Color.get_Black();
-      Color white = Color.get_White();
+        return Color.Black;
+      Color white = Color.White;
       Lighting.LightingState lightingState = Lighting.states[index1][index2];
-      // ISSUE: explicit reference operation
-      int num1 = (int) ((double) ((Color) @oldColor).get_R() * (double) lightingState.r * (double) Lighting.brightness);
-      // ISSUE: explicit reference operation
-      int num2 = (int) ((double) ((Color) @oldColor).get_G() * (double) lightingState.g * (double) Lighting.brightness);
-      // ISSUE: explicit reference operation
-      int num3 = (int) ((double) ((Color) @oldColor).get_B() * (double) lightingState.b * (double) Lighting.brightness);
+      int num1 = (int) ((double) oldColor.R * (double) lightingState.r * (double) Lighting.brightness);
+      int num2 = (int) ((double) oldColor.G * (double) lightingState.g * (double) Lighting.brightness);
+      int num3 = (int) ((double) oldColor.B * (double) lightingState.b * (double) Lighting.brightness);
       if (num1 > (int) byte.MaxValue)
         num1 = (int) byte.MaxValue;
       if (num2 > (int) byte.MaxValue)
         num2 = (int) byte.MaxValue;
       if (num3 > (int) byte.MaxValue)
         num3 = (int) byte.MaxValue;
-      // ISSUE: explicit reference operation
-      ((Color) @white).set_R((byte) num1);
-      // ISSUE: explicit reference operation
-      ((Color) @white).set_G((byte) num2);
-      // ISSUE: explicit reference operation
-      ((Color) @white).set_B((byte) num3);
+      white.R = (byte) num1;
+      white.G = (byte) num2;
+      white.B = (byte) num3;
       return white;
     }
 
@@ -3083,9 +3057,9 @@ label_35:
       int index1 = x - Lighting.firstTileX + Lighting.offScreenTiles;
       int index2 = y - Lighting.firstTileY + Lighting.offScreenTiles;
       if (Main.gameMenu)
-        return Color.get_White();
+        return Color.White;
       if (index1 < 0 || index2 < 0 || (index1 >= Main.screenWidth / 16 + Lighting.offScreenTiles * 2 + 10 || index2 >= Main.screenHeight / 16 + Lighting.offScreenTiles * 2))
-        return Color.get_Black();
+        return Color.Black;
       Lighting.LightingState lightingState = Lighting.states[index1][index2];
       int num1 = (int) ((double) byte.MaxValue * (double) lightingState.r * (double) Lighting.brightness);
       int num2 = (int) ((double) byte.MaxValue * (double) lightingState.g * (double) Lighting.brightness);
@@ -3096,10 +3070,7 @@ label_35:
         num2 = (int) byte.MaxValue;
       if (num3 > (int) byte.MaxValue)
         num3 = (int) byte.MaxValue;
-      Color color;
-      // ISSUE: explicit reference operation
-      ((Color) @color).\u002Ector((int) (byte) num1, (int) (byte) num2, (int) (byte) num3, (int) byte.MaxValue);
-      return color;
+      return new Color((int) (byte) num1, (int) (byte) num2, (int) (byte) num3, (int) byte.MaxValue);
     }
 
     public static void GetColor9Slice(int centerX, int centerY, ref Color[] slices)
@@ -3109,7 +3080,7 @@ label_35:
       if (num1 <= 0 || num2 <= 0 || (num1 >= Main.screenWidth / 16 + Lighting.offScreenTiles * 2 + 10 - 1 || num2 >= Main.screenHeight / 16 + Lighting.offScreenTiles * 2 - 1))
       {
         for (int index = 0; index < 9; ++index)
-          slices[index] = Color.get_Black();
+          slices[index] = Color.Black;
       }
       else
       {
@@ -3139,19 +3110,17 @@ label_35:
 
     public static Vector3 GetSubLight(Vector2 position)
     {
-      Vector2 vector2_1 = Vector2.op_Subtraction(Vector2.op_Division(position, 16f), new Vector2(0.5f, 0.5f));
-      Vector2 vector2_2;
-      // ISSUE: explicit reference operation
-      ((Vector2) @vector2_2).\u002Ector((float) (vector2_1.X % 1.0), (float) (vector2_1.Y % 1.0));
+      Vector2 vector2_1 = position / 16f - new Vector2(0.5f, 0.5f);
+      Vector2 vector2_2 = new Vector2(vector2_1.X % 1f, vector2_1.Y % 1f);
       int index1 = (int) vector2_1.X - Lighting.firstTileX + Lighting.offScreenTiles;
       int index2 = (int) vector2_1.Y - Lighting.firstTileY + Lighting.offScreenTiles;
       if (index1 <= 0 || index2 <= 0 || (index1 >= Main.screenWidth / 16 + Lighting.offScreenTiles * 2 + 10 - 1 || index2 >= Main.screenHeight / 16 + Lighting.offScreenTiles * 2 - 1))
-        return Vector3.get_One();
+        return Vector3.One;
       Vector3 vector3_1 = Lighting.states[index1][index2].ToVector3();
       Vector3 vector3_2 = Lighting.states[index1 + 1][index2].ToVector3();
       Vector3 vector3_3 = Lighting.states[index1][index2 + 1].ToVector3();
       Vector3 vector3_4 = Lighting.states[index1 + 1][index2 + 1].ToVector3();
-      return Vector3.Lerp(Vector3.Lerp(vector3_1, vector3_2, (float) vector2_2.X), Vector3.Lerp(vector3_3, vector3_4, (float) vector2_2.X), (float) vector2_2.Y);
+      return Vector3.Lerp(Vector3.Lerp(vector3_1, vector3_2, vector2_2.X), Vector3.Lerp(vector3_3, vector3_4, vector2_2.X), vector2_2.Y);
     }
 
     public static void GetColor4Slice_New(int centerX, int centerY, out VertexColors vertices, float scale = 1f)
@@ -3160,10 +3129,10 @@ label_35:
       int index2 = centerY - Lighting.firstTileY + Lighting.offScreenTiles;
       if (index1 <= 0 || index2 <= 0 || (index1 >= Main.screenWidth / 16 + Lighting.offScreenTiles * 2 + 10 - 1 || index2 >= Main.screenHeight / 16 + Lighting.offScreenTiles * 2 - 1))
       {
-        vertices.BottomLeftColor = Color.get_Black();
-        vertices.BottomRightColor = Color.get_Black();
-        vertices.TopLeftColor = Color.get_Black();
-        vertices.TopRightColor = Color.get_Black();
+        vertices.BottomLeftColor = Color.Black;
+        vertices.BottomRightColor = Color.Black;
+        vertices.TopLeftColor = Color.Black;
+        vertices.TopRightColor = Color.Black;
       }
       else
       {
@@ -3226,19 +3195,16 @@ label_35:
       int index2 = centerY - Lighting.firstTileY + Lighting.offScreenTiles;
       if (index1 <= 0 || index2 <= 0 || (index1 >= Main.screenWidth / 16 + Lighting.offScreenTiles * 2 + 10 - 1 || index2 >= Main.screenHeight / 16 + Lighting.offScreenTiles * 2 - 1))
       {
-        vertices.BottomLeftColor = Color.get_Black();
-        vertices.BottomRightColor = Color.get_Black();
-        vertices.TopLeftColor = Color.get_Black();
-        vertices.TopRightColor = Color.get_Black();
+        vertices.BottomLeftColor = Color.Black;
+        vertices.BottomRightColor = Color.Black;
+        vertices.TopLeftColor = Color.Black;
+        vertices.TopRightColor = Color.Black;
       }
       else
       {
-        // ISSUE: explicit reference operation
-        float num1 = (float) ((Color) @centerColor).get_R() / (float) byte.MaxValue;
-        // ISSUE: explicit reference operation
-        float num2 = (float) ((Color) @centerColor).get_G() / (float) byte.MaxValue;
-        // ISSUE: explicit reference operation
-        float num3 = (float) ((Color) @centerColor).get_B() / (float) byte.MaxValue;
+        float num1 = (float) centerColor.R / (float) byte.MaxValue;
+        float num2 = (float) centerColor.G / (float) byte.MaxValue;
+        float num3 = (float) centerColor.B / (float) byte.MaxValue;
         Lighting.LightingState lightingState1 = Lighting.states[index1][index2 - 1];
         Lighting.LightingState lightingState2 = Lighting.states[index1][index2 + 1];
         Lighting.LightingState lightingState3 = Lighting.states[index1 - 1][index2];
@@ -3298,7 +3264,7 @@ label_35:
       if (index1 <= 0 || index2 <= 0 || (index1 >= Main.screenWidth / 16 + Lighting.offScreenTiles * 2 + 10 - 1 || index2 >= Main.screenHeight / 16 + Lighting.offScreenTiles * 2 - 1))
       {
         for (int index3 = 0; index3 < 4; ++index3)
-          slices[index3] = Color.get_Black();
+          slices[index3] = Color.Black;
       }
       else
       {
@@ -3422,11 +3388,8 @@ label_35:
       int index1 = x - Lighting.firstTileX + Lighting.offScreenTiles;
       int index2 = y - Lighting.firstTileY + Lighting.offScreenTiles;
       if (index1 < 0 || index2 < 0 || (index1 >= Main.screenWidth / 16 + Lighting.offScreenTiles * 2 + 10 || index2 >= Main.screenHeight / 16 + Lighting.offScreenTiles * 2 + 10))
-        return Color.get_Black();
-      Color color;
-      // ISSUE: explicit reference operation
-      ((Color) @color).\u002Ector(0, 0, 0, (int) (byte) ((double) byte.MaxValue - (double) byte.MaxValue * (double) Lighting.states[index1][index2].r));
-      return color;
+        return Color.Black;
+      return new Color(0, 0, 0, (int) (byte) ((double) byte.MaxValue - (double) byte.MaxValue * (double) Lighting.states[index1][index2].r));
     }
 
     public static float Brightness(int x, int y)

@@ -1,7 +1,7 @@
 ﻿// Decompiled with JetBrains decompiler
 // Type: Terraria.GameContent.UI.CustomCurrencySystem
 // Assembly: TerrariaServer, Version=1.3.5.1, Culture=neutral, PublicKeyToken=null
-// MVID: 880A80AC-FC6C-4F43-ABDD-E2472DA66CB5
+// MVID: C2103E81-0935-4BEA-9E98-4159FC80C2BB
 // Assembly location: F:\Steam\steamapps\common\Terraria\TerrariaServer.exe
 
 using Microsoft.Xna.Framework;
@@ -84,26 +84,22 @@ namespace Terraria.GameContent.UI
         {
           if (num1 >= num2)
           {
-            using (List<Point>.Enumerator enumerator = slotCoins.GetEnumerator())
+            foreach (Point slotCoin in slotCoins)
             {
-              while (enumerator.MoveNext())
+              if (inv[slotCoin.X][slotCoin.Y].type == 74 - index)
               {
-                Point current = enumerator.Current;
-                if (inv[(int) current.X][current.Y].type == 74 - index)
+                long num3 = num1 / num2;
+                dictionary[slotCoin] = inv[slotCoin.X][slotCoin.Y].Clone();
+                if (num3 < (long) inv[slotCoin.X][slotCoin.Y].stack)
                 {
-                  long num3 = num1 / num2;
-                  dictionary[current] = inv[(int) current.X][current.Y].Clone();
-                  if (num3 < (long) inv[(int) current.X][current.Y].stack)
-                  {
-                    inv[(int) current.X][current.Y].stack -= (int) num3;
-                  }
-                  else
-                  {
-                    inv[(int) current.X][current.Y].SetDefaults(0, false);
-                    slotsEmpty.Add(current);
-                  }
-                  num1 -= num2 * (long) (dictionary[current].stack - inv[(int) current.X][current.Y].stack);
+                  inv[slotCoin.X][slotCoin.Y].stack -= (int) num3;
                 }
+                else
+                {
+                  inv[slotCoin.X][slotCoin.Y].SetDefaults(0, false);
+                  slotsEmpty.Add(slotCoin);
+                }
+                num1 -= num2 * (long) (dictionary[slotCoin].stack - inv[slotCoin.X][slotCoin.Y].stack);
               }
             }
           }
@@ -114,9 +110,7 @@ namespace Terraria.GameContent.UI
           if (slotsEmpty.Count > 0)
           {
             slotsEmpty.Sort(new Comparison<Point>(DelegateMethods.CompareYReverse));
-            Point point;
-            // ISSUE: explicit reference operation
-            ((Point) @point).\u002Ector(-1, -1);
+            Point point = new Point(-1, -1);
             for (int index1 = 0; index1 < inv.Count; ++index1)
             {
               long num3 = 10000;
@@ -124,32 +118,28 @@ namespace Terraria.GameContent.UI
               {
                 if (num1 >= num3)
                 {
-                  using (List<Point>.Enumerator enumerator = slotCoins.GetEnumerator())
+                  foreach (Point slotCoin in slotCoins)
                   {
-                    while (enumerator.MoveNext())
+                    if (slotCoin.X == index1 && inv[slotCoin.X][slotCoin.Y].type == 74 - index2 && inv[slotCoin.X][slotCoin.Y].stack >= 1)
                     {
-                      Point current = enumerator.Current;
-                      if (current.X == index1 && inv[(int) current.X][current.Y].type == 74 - index2 && inv[(int) current.X][current.Y].stack >= 1)
+                      List<Point> pointList = slotsEmpty;
+                      if (index1 == 1 && slotEmptyBank.Count > 0)
+                        pointList = slotEmptyBank;
+                      if (index1 == 2 && slotEmptyBank2.Count > 0)
+                        pointList = slotEmptyBank2;
+                      if (index1 == 3 && slotEmptyBank3.Count > 0)
+                        pointList = slotEmptyBank3;
+                      if (--inv[slotCoin.X][slotCoin.Y].stack <= 0)
                       {
-                        List<Point> pointList = slotsEmpty;
-                        if (index1 == 1 && slotEmptyBank.Count > 0)
-                          pointList = slotEmptyBank;
-                        if (index1 == 2 && slotEmptyBank2.Count > 0)
-                          pointList = slotEmptyBank2;
-                        if (index1 == 3 && slotEmptyBank3.Count > 0)
-                          pointList = slotEmptyBank3;
-                        if (--inv[(int) current.X][current.Y].stack <= 0)
-                        {
-                          inv[(int) current.X][current.Y].SetDefaults(0, false);
-                          pointList.Add(current);
-                        }
-                        dictionary[pointList[0]] = inv[(int) pointList[0].X][pointList[0].Y].Clone();
-                        inv[(int) pointList[0].X][pointList[0].Y].SetDefaults(73 - index2, false);
-                        inv[(int) pointList[0].X][pointList[0].Y].stack = 100;
-                        point = pointList[0];
-                        pointList.RemoveAt(0);
-                        break;
+                        inv[slotCoin.X][slotCoin.Y].SetDefaults(0, false);
+                        pointList.Add(slotCoin);
                       }
+                      dictionary[pointList[0]] = inv[pointList[0].X][pointList[0].Y].Clone();
+                      inv[pointList[0].X][pointList[0].Y].SetDefaults(73 - index2, false);
+                      inv[pointList[0].X][pointList[0].Y].stack = 100;
+                      point = pointList[0];
+                      pointList.RemoveAt(0);
+                      break;
                     }
                   }
                 }
@@ -162,32 +152,28 @@ namespace Terraria.GameContent.UI
               {
                 if (point.X == -1 && point.Y == -1)
                 {
-                  using (List<Point>.Enumerator enumerator = slotCoins.GetEnumerator())
+                  foreach (Point slotCoin in slotCoins)
                   {
-                    while (enumerator.MoveNext())
+                    if (slotCoin.X == index1 && inv[slotCoin.X][slotCoin.Y].type == 73 + index2 && inv[slotCoin.X][slotCoin.Y].stack >= 1)
                     {
-                      Point current = enumerator.Current;
-                      if (current.X == index1 && inv[(int) current.X][current.Y].type == 73 + index2 && inv[(int) current.X][current.Y].stack >= 1)
+                      List<Point> pointList = slotsEmpty;
+                      if (index1 == 1 && slotEmptyBank.Count > 0)
+                        pointList = slotEmptyBank;
+                      if (index1 == 2 && slotEmptyBank2.Count > 0)
+                        pointList = slotEmptyBank2;
+                      if (index1 == 3 && slotEmptyBank3.Count > 0)
+                        pointList = slotEmptyBank3;
+                      if (--inv[slotCoin.X][slotCoin.Y].stack <= 0)
                       {
-                        List<Point> pointList = slotsEmpty;
-                        if (index1 == 1 && slotEmptyBank.Count > 0)
-                          pointList = slotEmptyBank;
-                        if (index1 == 2 && slotEmptyBank2.Count > 0)
-                          pointList = slotEmptyBank2;
-                        if (index1 == 3 && slotEmptyBank3.Count > 0)
-                          pointList = slotEmptyBank3;
-                        if (--inv[(int) current.X][current.Y].stack <= 0)
-                        {
-                          inv[(int) current.X][current.Y].SetDefaults(0, false);
-                          pointList.Add(current);
-                        }
-                        dictionary[pointList[0]] = inv[(int) pointList[0].X][pointList[0].Y].Clone();
-                        inv[(int) pointList[0].X][pointList[0].Y].SetDefaults(72 + index2, false);
-                        inv[(int) pointList[0].X][pointList[0].Y].stack = 100;
-                        point = pointList[0];
-                        pointList.RemoveAt(0);
-                        break;
+                        inv[slotCoin.X][slotCoin.Y].SetDefaults(0, false);
+                        pointList.Add(slotCoin);
                       }
+                      dictionary[pointList[0]] = inv[pointList[0].X][pointList[0].Y].Clone();
+                      inv[pointList[0].X][pointList[0].Y].SetDefaults(72 + index2, false);
+                      inv[pointList[0].X][pointList[0].Y].stack = 100;
+                      point = pointList[0];
+                      pointList.RemoveAt(0);
+                      break;
                     }
                   }
                 }
@@ -205,14 +191,8 @@ namespace Terraria.GameContent.UI
           }
           else
           {
-            using (Dictionary<Point, Item>.Enumerator enumerator = dictionary.GetEnumerator())
-            {
-              while (enumerator.MoveNext())
-              {
-                KeyValuePair<Point, Item> current = enumerator.Current;
-                inv[(int) current.Key.X][current.Key.Y] = current.Value.Clone();
-              }
-            }
+            foreach (KeyValuePair<Point, Item> keyValuePair in dictionary)
+              inv[keyValuePair.Key.X][keyValuePair.Key.Y] = keyValuePair.Value.Clone();
             flag = false;
             break;
           }
@@ -242,12 +222,12 @@ namespace Terraria.GameContent.UI
     protected List<Tuple<Point, Item>> ItemCacheCreate(List<Item[]> inventories)
     {
       List<Tuple<Point, Item>> tupleList = new List<Tuple<Point, Item>>();
-      for (int index1 = 0; index1 < inventories.Count; ++index1)
+      for (int x = 0; x < inventories.Count; ++x)
       {
-        for (int index2 = 0; index2 < inventories[index1].Length; ++index2)
+        for (int y = 0; y < inventories[x].Length; ++y)
         {
-          Item obj = inventories[index1][index2];
-          tupleList.Add(new Tuple<Point, Item>(new Point(index1, index2), obj.DeepClone()));
+          Item obj = inventories[x][y];
+          tupleList.Add(new Tuple<Point, Item>(new Point(x, y), obj.DeepClone()));
         }
       }
       return tupleList;
@@ -255,14 +235,8 @@ namespace Terraria.GameContent.UI
 
     protected void ItemCacheRestore(List<Tuple<Point, Item>> cache, List<Item[]> inventories)
     {
-      using (List<Tuple<Point, Item>>.Enumerator enumerator = cache.GetEnumerator())
-      {
-        while (enumerator.MoveNext())
-        {
-          Tuple<Point, Item> current = enumerator.Current;
-          inventories[(int) current.Item1.X][current.Item1.Y] = current.Item2;
-        }
-      }
+      foreach (Tuple<Point, Item> tuple in cache)
+        inventories[tuple.Item1.X][tuple.Item1.Y] = tuple.Item2;
     }
   }
 }

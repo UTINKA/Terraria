@@ -1,7 +1,7 @@
 ﻿// Decompiled with JetBrains decompiler
 // Type: Terraria.GameContent.Biomes.EnchantedSwordBiome
 // Assembly: TerrariaServer, Version=1.3.5.1, Culture=neutral, PublicKeyToken=null
-// MVID: 880A80AC-FC6C-4F43-ABDD-E2472DA66CB5
+// MVID: C2103E81-0935-4BEA-9E98-4159FC80C2BB
 // Assembly location: F:\Steam\steamapps\common\Terraria\TerrariaServer.exe
 
 using Microsoft.Xna.Framework;
@@ -26,28 +26,18 @@ namespace Terraria.GameContent.Biomes
       Point result1;
       bool flag = WorldUtils.Find(origin, Searches.Chain((GenSearch) new Searches.Up(1000), new Conditions.IsSolid().AreaOr(1, 50).Not()), out result1);
       Point result2;
-      if (WorldUtils.Find(origin, Searches.Chain((GenSearch) new Searches.Up((int) (origin.Y - result1.Y)), (GenCondition) new Conditions.IsTile(new ushort[1]
+      if (WorldUtils.Find(origin, Searches.Chain((GenSearch) new Searches.Up(origin.Y - result1.Y), (GenCondition) new Conditions.IsTile(new ushort[1]
       {
         (ushort) 53
       })), out result2) || !flag)
         return false;
-      // ISSUE: explicit reference operation
-      // ISSUE: variable of a reference type
-      Point& local = @result1;
-      // ISSUE: explicit reference operation
-      int num = (^local).Y + 50;
-      // ISSUE: explicit reference operation
-      (^local).Y = (__Null) num;
+      result1.Y += 50;
       ShapeData data1 = new ShapeData();
       ShapeData shapeData = new ShapeData();
-      Point point1;
-      // ISSUE: explicit reference operation
-      ((Point) @point1).\u002Ector((int) origin.X, origin.Y + 20);
-      Point point2;
-      // ISSUE: explicit reference operation
-      ((Point) @point2).\u002Ector((int) origin.X, origin.Y + 30);
+      Point point1 = new Point(origin.X, origin.Y + 20);
+      Point point2 = new Point(origin.X, origin.Y + 30);
       float xScale = (float) (0.800000011920929 + (double) GenBase._random.NextFloat() * 0.5);
-      if (!structures.CanPlace(new Rectangle(point1.X - (int) (20.0 * (double) xScale), point1.Y - 20, (int) (40.0 * (double) xScale), 40), 0) || !structures.CanPlace(new Rectangle((int) origin.X, result1.Y + 10, 1, origin.Y - result1.Y - 9), 2))
+      if (!structures.CanPlace(new Microsoft.Xna.Framework.Rectangle(point1.X - (int) (20.0 * (double) xScale), point1.Y - 20, (int) (40.0 * (double) xScale), 40), 0) || !structures.CanPlace(new Microsoft.Xna.Framework.Rectangle(origin.X, result1.Y + 10, 1, origin.Y - result1.Y - 9), 2))
         return false;
       WorldUtils.Gen(point1, (GenShape) new Shapes.Slime(20, xScale, 1f), Actions.Chain((GenAction) new Modifiers.Blotches(2, 0.4), new Actions.ClearTile(true).Output(data1)));
       WorldUtils.Gen(point2, (GenShape) new Shapes.Mound(14, 14), Actions.Chain((GenAction) new Modifiers.Blotches(2, 1, 0.8), (GenAction) new Actions.SetTile((ushort) 0, false, true), new Actions.SetFrames(true).Output(shapeData)));
@@ -59,20 +49,20 @@ namespace Terraria.GameContent.Biomes
         (ushort) 2
       }), (GenAction) new Modifiers.Offset(0, 1), (GenAction) new ActionVines(3, 5, 52)));
       ShapeData data2 = new ShapeData();
-      WorldUtils.Gen(new Point((int) origin.X, result1.Y + 10), (GenShape) new Shapes.Rectangle(1, origin.Y - result1.Y - 9), Actions.Chain((GenAction) new Modifiers.Blotches(2, 0.2), new Actions.ClearTile(false).Output(data2), (GenAction) new Modifiers.Expand(1), (GenAction) new Modifiers.OnlyTiles(new ushort[1]
+      WorldUtils.Gen(new Point(origin.X, result1.Y + 10), (GenShape) new Shapes.Rectangle(1, origin.Y - result1.Y - 9), Actions.Chain((GenAction) new Modifiers.Blotches(2, 0.2), new Actions.ClearTile(false).Output(data2), (GenAction) new Modifiers.Expand(1), (GenAction) new Modifiers.OnlyTiles(new ushort[1]
       {
         (ushort) 53
       }), new Actions.SetTile((ushort) 397, false, true).Output(data2)));
-      WorldUtils.Gen(new Point((int) origin.X, result1.Y + 10), (GenShape) new ModShapes.All(data2), (GenAction) new Actions.SetFrames(true));
+      WorldUtils.Gen(new Point(origin.X, result1.Y + 10), (GenShape) new ModShapes.All(data2), (GenAction) new Actions.SetFrames(true));
       if (GenBase._random.Next(3) == 0)
-        WorldGen.PlaceTile((int) point2.X, point2.Y - 15, 187, true, false, -1, 17);
+        WorldGen.PlaceTile(point2.X, point2.Y - 15, 187, true, false, -1, 17);
       else
-        WorldGen.PlaceTile((int) point2.X, point2.Y - 15, 186, true, false, -1, 15);
+        WorldGen.PlaceTile(point2.X, point2.Y - 15, 186, true, false, -1, 15);
       WorldUtils.Gen(point2, (GenShape) new ModShapes.All(shapeData), Actions.Chain((GenAction) new Modifiers.Offset(0, -1), (GenAction) new Modifiers.OnlyTiles(new ushort[1]
       {
         (ushort) 2
       }), (GenAction) new Modifiers.Offset(0, -1), (GenAction) new ActionGrass()));
-      structures.AddStructure(new Rectangle(point1.X - (int) (20.0 * (double) xScale), point1.Y - 20, (int) (40.0 * (double) xScale), 40), 4);
+      structures.AddStructure(new Microsoft.Xna.Framework.Rectangle(point1.X - (int) (20.0 * (double) xScale), point1.Y - 20, (int) (40.0 * (double) xScale), 40), 4);
       return true;
     }
   }

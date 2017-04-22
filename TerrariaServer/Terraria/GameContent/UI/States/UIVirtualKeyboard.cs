@@ -1,7 +1,7 @@
 ﻿// Decompiled with JetBrains decompiler
 // Type: Terraria.GameContent.UI.States.UIVirtualKeyboard
 // Assembly: TerrariaServer, Version=1.3.5.1, Culture=neutral, PublicKeyToken=null
-// MVID: 880A80AC-FC6C-4F43-ABDD-E2472DA66CB5
+// MVID: C2103E81-0935-4BEA-9E98-4159FC80C2BB
 // Assembly location: F:\Steam\steamapps\common\Terraria\TerrariaServer.exe
 
 using Microsoft.Xna.Framework;
@@ -128,12 +128,12 @@ namespace Terraria.GameContent.UI.States
       UIPanel mainPanel = new UIPanel();
       mainPanel.Width.Precent = 1f;
       mainPanel.Height.Pixels = 225f;
-      mainPanel.BackgroundColor = Color.op_Multiply(new Color(23, 33, 69), 0.7f);
+      mainPanel.BackgroundColor = new Color(23, 33, 69) * 0.7f;
       element.Append((UIElement) mainPanel);
       float num4 = -79f;
       this._textBox = new UITextBox("", 0.78f, true);
-      this._textBox.BackgroundColor = Color.get_Transparent();
-      this._textBox.BorderColor = Color.get_Transparent();
+      this._textBox.BackgroundColor = Color.Transparent;
+      this._textBox.BorderColor = Color.Transparent;
       this._textBox.HAlign = 0.5f;
       this._textBox.Width.Pixels = num3;
       this._textBox.Top.Pixels = (float) ((double) num4 + (double) maxValue - 10.0) + num1;
@@ -153,8 +153,8 @@ namespace Terraria.GameContent.UI.States
       this._shiftButton.PaddingLeft = 0.0f;
       this._shiftButton.PaddingRight = 0.0f;
       this._shiftButton.PaddingBottom = this._shiftButton.PaddingTop = 0.0f;
-      this._shiftButton.BackgroundColor = Color.op_Multiply(new Color(63, 82, 151), 0.7f);
-      this._shiftButton.BorderColor = Color.op_Multiply(this._internalBorderColor, 0.7f);
+      this._shiftButton.BackgroundColor = new Color(63, 82, 151) * 0.7f;
+      this._shiftButton.BorderColor = this._internalBorderColor * 0.7f;
       this._shiftButton.OnMouseOver += (UIElement.MouseEvent) ((evt, listeningElement) =>
       {
         this._shiftButton.BorderColor = this._internalBorderColorSelected;
@@ -164,10 +164,10 @@ namespace Terraria.GameContent.UI.States
       });
       this._shiftButton.OnMouseOut += (UIElement.MouseEvent) ((evt, listeningElement) =>
       {
-        this._shiftButton.BorderColor = Color.op_Multiply(this._internalBorderColor, 0.7f);
+        this._shiftButton.BorderColor = this._internalBorderColor * 0.7f;
         if (this._keyState == UIVirtualKeyboard.KeyState.Shift)
           return;
-        this._shiftButton.BackgroundColor = Color.op_Multiply(new Color(63, 82, 151), 0.7f);
+        this._shiftButton.BackgroundColor = new Color(63, 82, 151) * 0.7f;
       });
       this._shiftButton.OnClick += (UIElement.MouseEvent) ((evt, listeningElement) =>
       {
@@ -183,8 +183,8 @@ namespace Terraria.GameContent.UI.States
       this._symbolButton = this.CreateKeyboardButton((object) "@%", 1, 4, 1, false);
       this._symbolButton.PaddingLeft = 0.0f;
       this._symbolButton.PaddingRight = 0.0f;
-      this._symbolButton.BackgroundColor = Color.op_Multiply(new Color(63, 82, 151), 0.7f);
-      this._symbolButton.BorderColor = Color.op_Multiply(this._internalBorderColor, 0.7f);
+      this._symbolButton.BackgroundColor = new Color(63, 82, 151) * 0.7f;
+      this._symbolButton.BorderColor = this._internalBorderColor * 0.7f;
       this._symbolButton.OnMouseOver += (UIElement.MouseEvent) ((evt, listeningElement) =>
       {
         this._symbolButton.BorderColor = this._internalBorderColorSelected;
@@ -194,10 +194,10 @@ namespace Terraria.GameContent.UI.States
       });
       this._symbolButton.OnMouseOut += (UIElement.MouseEvent) ((evt, listeningElement) =>
       {
-        this._symbolButton.BorderColor = Color.op_Multiply(this._internalBorderColor, 0.7f);
+        this._symbolButton.BorderColor = this._internalBorderColor * 0.7f;
         if (this._keyState == UIVirtualKeyboard.KeyState.Symbol)
           return;
-        this._symbolButton.BackgroundColor = Color.op_Multiply(new Color(63, 82, 151), 0.7f);
+        this._symbolButton.BackgroundColor = new Color(63, 82, 151) * 0.7f;
       });
       this._symbolButton.OnClick += (UIElement.MouseEvent) ((evt, listeningElement) =>
       {
@@ -237,7 +237,7 @@ namespace Terraria.GameContent.UI.States
       });
       element.Append((UIElement) this._cancelButton);
       this._submitButton2 = new UITextPanel<LocalizedText>(this._edittingSign || this._edittingChest ? Language.GetText("UI.Save") : Language.GetText("UI.Submit"), 0.72f, true);
-      this._submitButton2.TextColor = Color.get_Silver();
+      this._submitButton2.TextColor = Color.Silver;
       this._submitButton2.DrawPanel = false;
       this._submitButton2.Height.Pixels = 60f;
       this._submitButton2.Width.Precent = 0.4f;
@@ -246,12 +246,12 @@ namespace Terraria.GameContent.UI.States
       this._submitButton2.OnMouseOver += (UIElement.MouseEvent) ((a, b) =>
       {
         ((UITextPanel<LocalizedText>) b).TextScale = 0.85f;
-        ((UITextPanel<LocalizedText>) b).TextColor = Color.get_White();
+        ((UITextPanel<LocalizedText>) b).TextColor = Color.White;
       });
       this._submitButton2.OnMouseOut += (UIElement.MouseEvent) ((a, b) =>
       {
         ((UITextPanel<LocalizedText>) b).TextScale = 0.72f;
-        ((UITextPanel<LocalizedText>) b).TextColor = Color.get_Silver();
+        ((UITextPanel<LocalizedText>) b).TextColor = Color.Silver;
       });
       this._submitButton2.Top.Pixels = 50f;
       this._submitButton2.PaddingLeft = 0.0f;
@@ -269,17 +269,17 @@ namespace Terraria.GameContent.UI.States
       });
       this.outerLayer2.Append((UIElement) this._submitButton2);
       this._cancelButton2 = new UITextPanel<LocalizedText>(Language.GetText("UI.Cancel"), 0.72f, true);
-      this._cancelButton2.TextColor = Color.get_Silver();
+      this._cancelButton2.TextColor = Color.Silver;
       this._cancelButton2.DrawPanel = false;
       this._cancelButton2.OnMouseOver += (UIElement.MouseEvent) ((a, b) =>
       {
         ((UITextPanel<LocalizedText>) b).TextScale = 0.85f;
-        ((UITextPanel<LocalizedText>) b).TextColor = Color.get_White();
+        ((UITextPanel<LocalizedText>) b).TextColor = Color.White;
       });
       this._cancelButton2.OnMouseOut += (UIElement.MouseEvent) ((a, b) =>
       {
         ((UITextPanel<LocalizedText>) b).TextScale = 0.72f;
-        ((UITextPanel<LocalizedText>) b).TextColor = Color.get_Silver();
+        ((UITextPanel<LocalizedText>) b).TextColor = Color.Silver;
       });
       this._cancelButton2.Height.Pixels = 60f;
       this._cancelButton2.Width.Precent = 0.4f;
@@ -409,7 +409,7 @@ namespace Terraria.GameContent.UI.States
         if (uiTextPanel1.IsMouseHovering)
           uiTextPanel1.BackgroundColor = new Color(73, 94, 171);
         else
-          uiTextPanel1.BackgroundColor = Color.op_Multiply(new Color(63, 82, 151), 0.7f);
+          uiTextPanel1.BackgroundColor = new Color(63, 82, 151) * 0.7f;
       }
       string str = (string) null;
       UITextPanel<object> uiTextPanel2 = (UITextPanel<object>) null;
@@ -440,20 +440,20 @@ namespace Terraria.GameContent.UI.States
       if (this.Text.Trim().Length > 0 || this._edittingSign || (this._edittingChest || this._allowEmpty))
       {
         this._canSubmit = true;
-        this._submitButton.TextColor = Color.get_White();
+        this._submitButton.TextColor = Color.White;
         if (this._submitButton.IsMouseHovering)
           this._submitButton.BackgroundColor = new Color(73, 94, 171);
         else
-          this._submitButton.BackgroundColor = Color.op_Multiply(new Color(63, 82, 151), 0.7f);
+          this._submitButton.BackgroundColor = new Color(63, 82, 151) * 0.7f;
       }
       else
       {
         this._canSubmit = false;
-        this._submitButton.TextColor = Color.get_Gray();
+        this._submitButton.TextColor = Color.Gray;
         if (this._submitButton.IsMouseHovering)
-          this._submitButton.BackgroundColor = Color.op_Multiply(new Color(180, 60, 60), 0.85f);
+          this._submitButton.BackgroundColor = new Color(180, 60, 60) * 0.85f;
         else
-          this._submitButton.BackgroundColor = Color.op_Multiply(new Color(150, 40, 40), 0.85f);
+          this._submitButton.BackgroundColor = new Color(150, 40, 40) * 0.85f;
       }
     }
 
@@ -461,22 +461,22 @@ namespace Terraria.GameContent.UI.States
     {
       button.PaddingLeft = 0.0f;
       button.PaddingRight = 0.0f;
-      button.BackgroundColor = Color.op_Multiply(new Color(63, 82, 151), 0.7f);
+      button.BackgroundColor = new Color(63, 82, 151) * 0.7f;
       if (!external)
-        button.BorderColor = Color.op_Multiply(this._internalBorderColor, 0.7f);
+        button.BorderColor = this._internalBorderColor * 0.7f;
       button.OnMouseOver += (UIElement.MouseEvent) ((evt, listeningElement) =>
       {
-        ((UIPanel) listeningElement).BackgroundColor = Color.op_Multiply(new Color(73, 94, 171), 0.85f);
+        ((UIPanel) listeningElement).BackgroundColor = new Color(73, 94, 171) * 0.85f;
         if (external)
           return;
-        ((UIPanel) listeningElement).BorderColor = Color.op_Multiply(this._internalBorderColorSelected, 0.85f);
+        ((UIPanel) listeningElement).BorderColor = this._internalBorderColorSelected * 0.85f;
       });
       button.OnMouseOut += (UIElement.MouseEvent) ((evt, listeningElement) =>
       {
-        ((UIPanel) listeningElement).BackgroundColor = Color.op_Multiply(new Color(63, 82, 151), 0.7f);
+        ((UIPanel) listeningElement).BackgroundColor = new Color(63, 82, 151) * 0.7f;
         if (external)
           return;
-        ((UIPanel) listeningElement).BorderColor = Color.op_Multiply(this._internalBorderColor, 0.7f);
+        ((UIPanel) listeningElement).BorderColor = this._internalBorderColor * 0.7f;
       });
     }
 
@@ -554,15 +554,7 @@ namespace Terraria.GameContent.UI.States
         this.SetupGamepadPoints(spriteBatch);
         PlayerInput.WritingText = true;
         Main.instance.HandleIME();
-        Vector2 position;
-        // ISSUE: explicit reference operation
-        // ISSUE: variable of a reference type
-        Vector2& local1 = @position;
-        double num1 = (double) (Main.screenWidth / 2);
-        Rectangle rectangle1 = this._textBox.GetDimensions().ToRectangle();
-        // ISSUE: explicit reference operation
-        double num2 = (double) (((Rectangle) @rectangle1).get_Bottom() + 32);
-        ((Vector2) local1).\u002Ector((float) num1, (float) num2);
+        Vector2 position = new Vector2((float) (Main.screenWidth / 2), (float) (this._textBox.GetDimensions().ToRectangle().Bottom + 32));
         Main.instance.DrawWindowsIMEPanel(position, 0.5f);
         string inputText = Main.GetInputText(this.Text);
         if (this._edittingSign && Main.inputTextEnter)
@@ -598,21 +590,11 @@ namespace Terraria.GameContent.UI.States
           if (this._edittingChest)
             this.CopyTextToChest();
         }
-        // ISSUE: explicit reference operation
-        byte num3 = (byte) (((int) byte.MaxValue + (int) ((Color) @Main.tileColor).get_R() * 2) / 3);
-        Color color;
-        // ISSUE: explicit reference operation
-        ((Color) @color).\u002Ector((int) num3, (int) num3, (int) num3, (int) byte.MaxValue);
-        this._textBox.TextColor = Color.Lerp(Color.get_White(), color, 0.2f);
-        this._label.TextColor = Color.Lerp(Color.get_White(), color, 0.2f);
-        // ISSUE: explicit reference operation
-        // ISSUE: variable of a reference type
-        Vector2& local2 = @position;
-        double num4 = (double) (Main.screenWidth / 2);
-        Rectangle rectangle2 = this._textBox.GetDimensions().ToRectangle();
-        // ISSUE: explicit reference operation
-        double num5 = (double) (((Rectangle) @rectangle2).get_Bottom() + 32);
-        ((Vector2) local2).\u002Ector((float) num4, (float) num5);
+        byte num = (byte) (((int) byte.MaxValue + (int) Main.tileColor.R * 2) / 3);
+        Color color = new Color((int) num, (int) num, (int) num, (int) byte.MaxValue);
+        this._textBox.TextColor = Color.Lerp(Color.White, color, 0.2f);
+        this._label.TextColor = Color.Lerp(Color.White, color, 0.2f);
+        position = new Vector2((float) (Main.screenWidth / 2), (float) (this._textBox.GetDimensions().ToRectangle().Bottom + 32));
         Main.instance.DrawWindowsIMEPanel(position, 0.5f);
       }
     }

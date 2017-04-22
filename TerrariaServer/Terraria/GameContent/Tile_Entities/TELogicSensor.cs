@@ -1,7 +1,7 @@
 ﻿// Decompiled with JetBrains decompiler
 // Type: Terraria.GameContent.Tile_Entities.TELogicSensor
 // Assembly: TerrariaServer, Version=1.3.5.1, Culture=neutral, PublicKeyToken=null
-// MVID: 880A80AC-FC6C-4F43-ABDD-E2472DA66CB5
+// MVID: C2103E81-0935-4BEA-9E98-4159FC80C2BB
 // Assembly location: F:\Steam\steamapps\common\Terraria\TerrariaServer.exe
 
 using Microsoft.Xna.Framework;
@@ -178,20 +178,13 @@ namespace Terraria.GameContent.Tile_Entities
           return !Main.dayTime;
         case TELogicSensor.LogicCheckType.PlayerAbove:
           bool flag1 = false;
-          Rectangle rectangle1;
-          // ISSUE: explicit reference operation
-          ((Rectangle) @rectangle1).\u002Ector(x * 16 - 32 - 1, y * 16 - 160 - 1, 82, 162);
-          using (Dictionary<int, Rectangle>.Enumerator enumerator = TELogicSensor.playerBox.GetEnumerator())
+          Rectangle rectangle = new Rectangle(x * 16 - 32 - 1, y * 16 - 160 - 1, 82, 162);
+          foreach (KeyValuePair<int, Rectangle> keyValuePair in TELogicSensor.playerBox)
           {
-            while (enumerator.MoveNext())
+            if (keyValuePair.Value.Intersects(rectangle))
             {
-              Rectangle rectangle2 = enumerator.Current.Value;
-              // ISSUE: explicit reference operation
-              if (((Rectangle) @rectangle2).Intersects(rectangle1))
-              {
-                flag1 = true;
-                break;
-              }
+              flag1 = true;
+              break;
             }
           }
           return flag1;

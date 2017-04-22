@@ -1,7 +1,7 @@
 ﻿// Decompiled with JetBrains decompiler
 // Type: Terraria.GameContent.TownRoomManager
 // Assembly: TerrariaServer, Version=1.3.5.1, Culture=neutral, PublicKeyToken=null
-// MVID: 880A80AC-FC6C-4F43-ABDD-E2472DA66CB5
+// MVID: C2103E81-0935-4BEA-9E98-4159FC80C2BB
 // Assembly location: F:\Steam\steamapps\common\Terraria\TerrariaServer.exe
 
 using Microsoft.Xna.Framework;
@@ -23,14 +23,10 @@ namespace Terraria.GameContent
 
     public int FindOccupation(Point tilePosition)
     {
-      using (List<Tuple<int, Point>>.Enumerator enumerator = this._roomLocationPairs.GetEnumerator())
+      foreach (Tuple<int, Point> roomLocationPair in this._roomLocationPairs)
       {
-        while (enumerator.MoveNext())
-        {
-          Tuple<int, Point> current = enumerator.Current;
-          if (Point.op_Equality(current.Item2, tilePosition))
-            return current.Item1;
-        }
+        if (roomLocationPair.Item2 == tilePosition)
+          return roomLocationPair.Item1;
       }
       return -1;
     }
@@ -47,16 +43,12 @@ namespace Terraria.GameContent
         roomPosition = new Point(0, 0);
         return false;
       }
-      using (List<Tuple<int, Point>>.Enumerator enumerator = this._roomLocationPairs.GetEnumerator())
+      foreach (Tuple<int, Point> roomLocationPair in this._roomLocationPairs)
       {
-        while (enumerator.MoveNext())
+        if (roomLocationPair.Item1 == npcID)
         {
-          Tuple<int, Point> current = enumerator.Current;
-          if (current.Item1 == npcID)
-          {
-            roomPosition = current.Item2;
-            return true;
-          }
+          roomPosition = roomLocationPair.Item2;
+          return true;
         }
       }
       roomPosition = new Point(0, 0);
@@ -88,28 +80,18 @@ namespace Terraria.GameContent
 
     public void DisplayRooms()
     {
-      using (List<Tuple<int, Point>>.Enumerator enumerator = this._roomLocationPairs.GetEnumerator())
-      {
-        while (enumerator.MoveNext())
-        {
-          Tuple<int, Point> current = enumerator.Current;
-          Dust.QuickDust(current.Item2, Main.hslToRgb((float) ((double) current.Item1 * 0.0500000007450581 % 1.0), 1f, 0.5f));
-        }
-      }
+      foreach (Tuple<int, Point> roomLocationPair in this._roomLocationPairs)
+        Dust.QuickDust(roomLocationPair.Item2, Main.hslToRgb((float) ((double) roomLocationPair.Item1 * 0.0500000007450581 % 1.0), 1f, 0.5f));
     }
 
     public void Save(BinaryWriter writer)
     {
       writer.Write(this._roomLocationPairs.Count);
-      using (List<Tuple<int, Point>>.Enumerator enumerator = this._roomLocationPairs.GetEnumerator())
+      foreach (Tuple<int, Point> roomLocationPair in this._roomLocationPairs)
       {
-        while (enumerator.MoveNext())
-        {
-          Tuple<int, Point> current = enumerator.Current;
-          writer.Write(current.Item1);
-          writer.Write((int) current.Item2.X);
-          writer.Write((int) current.Item2.Y);
-        }
+        writer.Write(roomLocationPair.Item1);
+        writer.Write(roomLocationPair.Item2.X);
+        writer.Write(roomLocationPair.Item2.Y);
       }
     }
 
@@ -120,9 +102,7 @@ namespace Terraria.GameContent
       for (int index1 = 0; index1 < num; ++index1)
       {
         int index2 = reader.ReadInt32();
-        Point point;
-        // ISSUE: explicit reference operation
-        ((Point) @point).\u002Ector(reader.ReadInt32(), reader.ReadInt32());
+        Point point = new Point(reader.ReadInt32(), reader.ReadInt32());
         this._roomLocationPairs.Add(Tuple.Create<int, Point>(index2, point));
         this._hasRoom[index2] = true;
       }
@@ -133,6 +113,16 @@ namespace Terraria.GameContent
       this._roomLocationPairs.Clear();
       for (int index = 0; index < this._hasRoom.Length; ++index)
         this._hasRoom[index] = false;
+    }
+
+    public byte GetHouseholdStatus(NPC n)
+    {
+      byte num = 0;
+      if (n.homeless)
+        num = (byte) 1;
+      else if (this.HasRoomQuick(n.type))
+        num = (byte) 2;
+      return num;
     }
   }
 }

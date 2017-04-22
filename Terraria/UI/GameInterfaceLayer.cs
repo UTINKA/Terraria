@@ -1,7 +1,7 @@
 ﻿// Decompiled with JetBrains decompiler
 // Type: Terraria.UI.GameInterfaceLayer
 // Assembly: Terraria, Version=1.3.5.1, Culture=neutral, PublicKeyToken=null
-// MVID: DF0400F4-EE47-4864-BE80-932EDB02D8A6
+// MVID: E90A5A2F-CD10-4A2C-9D2A-6B036D4E8877
 // Assembly location: F:\Steam\steamapps\common\Terraria\Terraria.exe
 
 using Microsoft.Xna.Framework;
@@ -23,23 +23,23 @@ namespace Terraria.UI
 
     public bool Draw()
     {
-      Matrix matrix;
+      Matrix transformMatrix;
       if (this.ScaleType == InterfaceScaleType.Game)
       {
         PlayerInput.SetZoom_World();
-        matrix = Main.GameViewMatrix.ZoomMatrix;
+        transformMatrix = Main.GameViewMatrix.ZoomMatrix;
       }
       else if (this.ScaleType == InterfaceScaleType.UI)
       {
         PlayerInput.SetZoom_UI();
-        matrix = Main.UIScaleMatrix;
+        transformMatrix = Main.UIScaleMatrix;
       }
       else
       {
         PlayerInput.SetZoom_Unscaled();
-        matrix = Matrix.get_Identity();
+        transformMatrix = Matrix.Identity;
       }
-      Main.spriteBatch.Begin((SpriteSortMode) 0, (BlendState) null, (SamplerState) null, (DepthStencilState) null, (RasterizerState) null, (Effect) null, matrix);
+      Main.spriteBatch.Begin(SpriteSortMode.Deferred, (BlendState) null, (SamplerState) null, (DepthStencilState) null, (RasterizerState) null, (Effect) null, transformMatrix);
       bool flag = this.DrawSelf();
       Main.spriteBatch.End();
       return flag;

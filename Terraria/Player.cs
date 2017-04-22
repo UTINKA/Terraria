@@ -1,7 +1,7 @@
 ﻿// Decompiled with JetBrains decompiler
 // Type: Terraria.Player
 // Assembly: Terraria, Version=1.3.5.1, Culture=neutral, PublicKeyToken=null
-// MVID: DF0400F4-EE47-4864-BE80-932EDB02D8A6
+// MVID: E90A5A2F-CD10-4A2C-9D2A-6B036D4E8877
 // Assembly location: F:\Steam\steamapps\common\Terraria\Terraria.exe
 
 using Microsoft.Xna.Framework;
@@ -111,7 +111,7 @@ namespace Terraria
     public Chest bank = new Chest(true);
     public Chest bank2 = new Chest(true);
     public Chest bank3 = new Chest(true);
-    public Vector2 fullRotationOrigin = Vector2.get_Zero();
+    public Vector2 fullRotationOrigin = Vector2.Zero;
     public int nonTorch = -1;
     public float stepSpeed = 1f;
     public int head = -1;
@@ -140,7 +140,7 @@ namespace Terraria
     public int statLifeMax2 = 100;
     public int statLife = 100;
     public float gravDir = 1f;
-    public Vector2 lastBoost = Vector2.get_Zero();
+    public Vector2 lastBoost = Vector2.Zero;
     public int meleeCrit = 4;
     public int rangedCrit = 4;
     public int magicCrit = 4;
@@ -172,7 +172,7 @@ namespace Terraria
     public float runSlowdown = 0.2f;
     public bool[] adjTile = new bool[470];
     public bool[] oldAdjTile = new bool[470];
-    public Color hairDyeColor = Color.get_Transparent();
+    public Color hairDyeColor = Color.Transparent;
     public Color hairColor = new Color(215, 90, 55);
     public Color skinColor = new Color((int) byte.MaxValue, 125, 90);
     public Color eyeColor = new Color(105, 90, 75);
@@ -195,7 +195,7 @@ namespace Terraria
     public int restorationDelayTime = Item.restorationDelay;
     public int[] ownedProjectileCounts = new int[714];
     public bool[] npcTypeNoAggro = new bool[580];
-    public Vector2 MinionRestTargetPoint = Vector2.get_Zero();
+    public Vector2 MinionRestTargetPoint = Vector2.Zero;
     public int MinionAttackTargetNPC = -1;
     public List<Point> TouchedTiles = new List<Point>();
     private float _stormShaderObstruction = 1f;
@@ -453,10 +453,10 @@ namespace Terraria
     public byte wetSlime;
     public HitTile hitTile;
     public int jump;
-    public Rectangle headFrame;
-    public Rectangle bodyFrame;
-    public Rectangle legFrame;
-    public Rectangle hairFrame;
+    public Microsoft.Xna.Framework.Rectangle headFrame;
+    public Microsoft.Xna.Framework.Rectangle bodyFrame;
+    public Microsoft.Xna.Framework.Rectangle legFrame;
+    public Microsoft.Xna.Framework.Rectangle hairFrame;
     public bool controlLeft;
     public bool controlRight;
     public bool controlUp;
@@ -803,7 +803,7 @@ namespace Terraria
     {
       get
       {
-        return Vector2.op_UnaryNegation(Vector2.get_UnitY());
+        return -Vector2.UnitY;
       }
     }
 
@@ -811,11 +811,11 @@ namespace Terraria
     {
       get
       {
-        return new Vector2((float) this.position.X + (float) (this.width / 2), (float) (this.position.Y + 21.0) + (float) this.mount.PlayerOffsetHitbox);
+        return new Vector2(this.position.X + (float) (this.width / 2), this.position.Y + 21f + (float) this.mount.PlayerOffsetHitbox);
       }
       set
       {
-        this.position = new Vector2((float) value.X - (float) (this.width / 2), (float) (value.Y - 21.0) - (float) this.mount.PlayerOffsetHitbox);
+        this.position = new Vector2(value.X - (float) (this.width / 2), value.Y - 21f - (float) this.mount.PlayerOffsetHitbox);
       }
     }
 
@@ -1210,7 +1210,7 @@ namespace Terraria
     {
       get
       {
-        return Vector2.op_Inequality(this.MinionRestTargetPoint, Vector2.get_Zero());
+        return this.MinionRestTargetPoint != Vector2.Zero;
       }
     }
 
@@ -1237,10 +1237,10 @@ namespace Terraria
       this.width = 20;
       this.height = 42;
       this.name = string.Empty;
-      this.bodyFrame.Width = (__Null) 40;
-      this.bodyFrame.Height = (__Null) 56;
-      this.legFrame.Width = (__Null) 40;
-      this.legFrame.Height = (__Null) 56;
+      this.bodyFrame.Width = 40;
+      this.bodyFrame.Height = 56;
+      this.legFrame.Width = 40;
+      this.legFrame.Height = 56;
       for (int index = 0; index < 59; ++index)
       {
         if (index < this.armor.Length)
@@ -1280,17 +1280,17 @@ namespace Terraria
     public void RotateRelativePoint(ref float x, ref float y)
     {
       Vector2 vector2 = this.RotatedRelativePoint(new Vector2(x, y), true);
-      x = (float) vector2.X;
-      y = (float) vector2.Y;
+      x = vector2.X;
+      y = vector2.Y;
     }
 
     public Vector2 RotatedRelativePoint(Vector2 pos, bool rotateForward = true)
     {
-      Vector2 vector2 = Vector2.op_Addition(this.position, this.fullRotationOrigin);
+      Vector2 vector2 = this.position + this.fullRotationOrigin;
       Matrix rotationZ = Matrix.CreateRotationZ(this.fullRotation * (float) rotateForward.ToInt());
-      pos = Vector2.op_Subtraction(pos, Vector2.op_Addition(this.position, this.fullRotationOrigin));
+      pos -= this.position + this.fullRotationOrigin;
       pos = Vector2.Transform(pos, rotationZ);
-      return Vector2.op_Addition(pos, vector2);
+      return pos + vector2;
     }
 
     public bool TeamChangeAllowed()
@@ -1300,7 +1300,7 @@ namespace Terraria
 
     public void HealEffect(int healAmount, bool broadcast = true)
     {
-      CombatText.NewText(new Rectangle((int) this.position.X, (int) this.position.Y, this.width, this.height), CombatText.HealLife, healAmount, false, false);
+      CombatText.NewText(new Microsoft.Xna.Framework.Rectangle((int) this.position.X, (int) this.position.Y, this.width, this.height), CombatText.HealLife, healAmount, false, false);
       if (!broadcast || Main.netMode != 1 || this.whoAmI != Main.myPlayer)
         return;
       NetMessage.SendData(35, -1, -1, (NetworkText) null, this.whoAmI, (float) healAmount, 0.0f, 0.0f, 0, 0, 0);
@@ -1308,7 +1308,7 @@ namespace Terraria
 
     public void ManaEffect(int manaAmount)
     {
-      CombatText.NewText(new Rectangle((int) this.position.X, (int) this.position.Y, this.width, this.height), CombatText.HealMana, manaAmount, false, false);
+      CombatText.NewText(new Microsoft.Xna.Framework.Rectangle((int) this.position.X, (int) this.position.Y, this.width, this.height), CombatText.HealMana, manaAmount, false, false);
       if (Main.netMode != 1 || this.whoAmI != Main.myPlayer)
         return;
       NetMessage.SendData(43, -1, -1, (NetworkText) null, this.whoAmI, (float) manaAmount, 0.0f, 0.0f, 0, 0, 0);
@@ -1330,7 +1330,7 @@ namespace Terraria
       {
         if (Main.player[index].active && !Main.player[index].dead)
         {
-          float num3 = Math.Abs((float) (Main.player[index].position.X + (double) (Main.player[index].width / 2) - (Position.X + (double) (Width / 2)))) + Math.Abs((float) (Main.player[index].position.Y + (double) (Main.player[index].height / 2) - (Position.Y + (double) (Height / 2))));
+          float num3 = Math.Abs((float) ((double) Main.player[index].position.X + (double) (Main.player[index].width / 2) - ((double) Position.X + (double) (Width / 2)))) + Math.Abs((float) ((double) Main.player[index].position.Y + (double) (Main.player[index].height / 2) - ((double) Position.Y + (double) (Height / 2))));
           if ((double) num2 == -1.0 || (double) num3 < (double) num2)
           {
             num2 = num3;
@@ -1455,10 +1455,10 @@ namespace Terraria
       {
         if (!Main.gamePaused)
         {
-          Player.tileTargetX = (int) (((double) Main.mouseX + Main.screenPosition.X) / 16.0);
-          Player.tileTargetY = (int) (((double) Main.mouseY + Main.screenPosition.Y) / 16.0);
+          Player.tileTargetX = (int) (((double) Main.mouseX + (double) Main.screenPosition.X) / 16.0);
+          Player.tileTargetY = (int) (((double) Main.mouseY + (double) Main.screenPosition.Y) / 16.0);
           if ((double) this.gravDir == -1.0)
-            Player.tileTargetY = (int) ((Main.screenPosition.Y + (double) Main.screenHeight - (double) Main.mouseY) / 16.0);
+            Player.tileTargetY = (int) (((double) Main.screenPosition.Y + (double) Main.screenHeight - (double) Main.mouseY) / 16.0);
         }
         if (this.selectedItem != 58)
           this.oldSelectItem = this.selectedItem;
@@ -1532,8 +1532,8 @@ namespace Terraria
       }
       if (Main.netMode == 0)
         Main.item[number].noGrabDelay = 100;
-      Main.item[number].velocity.Y = (__Null) -2.0;
-      Main.item[number].velocity.X = (__Null) ((double) (4 * this.direction) + this.velocity.X);
+      Main.item[number].velocity.Y = -2f;
+      Main.item[number].velocity.X = (float) (4 * this.direction) + this.velocity.X;
       Main.item[number].favorited = false;
       Main.item[number].newAndShiny = false;
       if ((Main.mouseRight && !this.mouseInterface || !Main.playerInventory) && Main.mouseItem.type > 0)
@@ -1912,25 +1912,25 @@ namespace Terraria
         if (itemToUse != null && itemToUse.mountType != -1 && this.mount.CanMount(itemToUse.mountType, this))
         {
           bool flag = false;
-          List<Point> tilesIn = Collision.GetTilesIn(Vector2.op_Subtraction(this.TopLeft, new Vector2(24f)), Vector2.op_Addition(this.BottomRight, new Vector2(24f)));
+          List<Point> tilesIn = Collision.GetTilesIn(this.TopLeft - new Vector2(24f), this.BottomRight + new Vector2(24f));
           if (tilesIn.Count > 0)
           {
             Point? nullable = new Point?();
-            Rectangle hitbox = this.Hitbox;
+            Microsoft.Xna.Framework.Rectangle hitbox = this.Hitbox;
             for (int index = 0; index < tilesIn.Count; ++index)
             {
               Point point = tilesIn[index];
-              Tile tileSafely = Framing.GetTileSafely((int) point.X, (int) point.Y);
+              Tile tileSafely = Framing.GetTileSafely(point.X, point.Y);
               if (tileSafely.active() && (int) tileSafely.type == 314)
               {
-                Vector2 vector2 = Vector2.op_Addition(Vector2.op_Multiply(tilesIn[index].ToVector2(), 16f), new Vector2(8f));
-                if (!nullable.HasValue || (double) this.Distance(vector2) < (double) this.Distance(Vector2.op_Addition(Vector2.op_Multiply(nullable.Value.ToVector2(), 16f), new Vector2(8f))) && Collision.CanHitLine(this.Center, 0, 0, vector2, 0, 0))
+                Vector2 vector2 = tilesIn[index].ToVector2() * 16f + new Vector2(8f);
+                if (!nullable.HasValue || (double) this.Distance(vector2) < (double) this.Distance(nullable.Value.ToVector2() * 16f + new Vector2(8f)) && Collision.CanHitLine(this.Center, 0, 0, vector2, 0, 0))
                   nullable = new Point?(tilesIn[index]);
               }
             }
             if (nullable.HasValue)
             {
-              this.LaunchMinecartHook((int) nullable.Value.X, (int) nullable.Value.Y);
+              this.LaunchMinecartHook(nullable.Value.X, nullable.Value.Y);
               flag = true;
             }
           }
@@ -1944,33 +1944,33 @@ namespace Terraria
         else
         {
           int num1 = 0;
-          int num2 = (int) (this.position.X / 16.0) - Player.tileRangeX - num1 + 1;
-          int num3 = (int) ((this.position.X + (double) this.width) / 16.0) + Player.tileRangeX + num1 - 1;
-          int num4 = (int) (this.position.Y / 16.0) - Player.tileRangeY - num1 + 1;
-          int num5 = (int) ((this.position.Y + (double) this.height) / 16.0) + Player.tileRangeY + num1 - 2;
+          int num2 = (int) ((double) this.position.X / 16.0) - Player.tileRangeX - num1 + 1;
+          int num3 = (int) (((double) this.position.X + (double) this.width) / 16.0) + Player.tileRangeX + num1 - 1;
+          int num4 = (int) ((double) this.position.Y / 16.0) - Player.tileRangeY - num1 + 1;
+          int num5 = (int) (((double) this.position.Y + (double) this.height) / 16.0) + Player.tileRangeY + num1 - 2;
           int num6 = Utils.Clamp<int>(num2, 10, Main.maxTilesX - 10);
           int num7 = Utils.Clamp<int>(num3, 10, Main.maxTilesX - 10);
           int num8 = Utils.Clamp<int>(num4, 10, Main.maxTilesY - 10);
           int num9 = Utils.Clamp<int>(num5, 10, Main.maxTilesY - 10);
-          List<Point> tilesIn = Collision.GetTilesIn(Vector2.op_Multiply(new Vector2((float) num6, (float) num8), 16f), Vector2.op_Multiply(new Vector2((float) (num7 + 1), (float) (num9 + 1)), 16f));
+          List<Point> tilesIn = Collision.GetTilesIn(new Vector2((float) num6, (float) num8) * 16f, new Vector2((float) (num7 + 1), (float) (num9 + 1)) * 16f);
           if (tilesIn.Count <= 0)
             return;
           Point? nullable = new Point?();
-          Rectangle hitbox = this.Hitbox;
+          Microsoft.Xna.Framework.Rectangle hitbox = this.Hitbox;
           for (int index = 0; index < tilesIn.Count; ++index)
           {
             Point point = tilesIn[index];
-            Tile tileSafely = Framing.GetTileSafely((int) point.X, (int) point.Y);
+            Tile tileSafely = Framing.GetTileSafely(point.X, point.Y);
             if (tileSafely.active() && (int) tileSafely.type == 314)
             {
-              Vector2 vector2 = Vector2.op_Addition(Vector2.op_Multiply(tilesIn[index].ToVector2(), 16f), new Vector2(8f));
-              if (!nullable.HasValue || (double) this.Distance(vector2) < (double) this.Distance(Vector2.op_Addition(Vector2.op_Multiply(nullable.Value.ToVector2(), 16f), new Vector2(8f))) && Collision.CanHitLine(this.Center, 0, 0, vector2, 0, 0))
+              Vector2 vector2 = tilesIn[index].ToVector2() * 16f + new Vector2(8f);
+              if (!nullable.HasValue || (double) this.Distance(vector2) < (double) this.Distance(nullable.Value.ToVector2() * 16f + new Vector2(8f)) && Collision.CanHitLine(this.Center, 0, 0, vector2, 0, 0))
                 nullable = new Point?(tilesIn[index]);
             }
           }
           if (!nullable.HasValue)
             return;
-          this.LaunchMinecartHook((int) nullable.Value.X, (int) nullable.Value.Y);
+          this.LaunchMinecartHook(nullable.Value.X, nullable.Value.Y);
         }
       }
     }
@@ -2203,13 +2203,11 @@ namespace Terraria
             break;
         }
       }
-      Vector2 vector2;
-      // ISSUE: explicit reference operation
-      ((Vector2) @vector2).\u002Ector((float) (this.position.X + (double) this.width * 0.5), (float) (this.position.Y + (double) this.height * 0.5));
-      float f1 = (float) ((double) Main.mouseX + Main.screenPosition.X - vector2.X);
-      float f2 = (float) ((double) Main.mouseY + Main.screenPosition.Y - vector2.Y);
+      Vector2 vector2 = new Vector2(this.position.X + (float) this.width * 0.5f, this.position.Y + (float) this.height * 0.5f);
+      float f1 = (float) Main.mouseX + Main.screenPosition.X - vector2.X;
+      float f2 = (float) Main.mouseY + Main.screenPosition.Y - vector2.Y;
       if ((double) this.gravDir == -1.0)
-        f2 = (float) (Main.screenPosition.Y + (double) Main.screenHeight - (double) Main.mouseY - vector2.Y);
+        f2 = Main.screenPosition.Y + (float) Main.screenHeight - (float) Main.mouseY - vector2.Y;
       float num3 = (float) Math.Sqrt((double) f1 * (double) f1 + (double) f2 * (double) f2);
       float num4;
       if (float.IsNaN(f1) && float.IsNaN(f2) || (double) f1 == 0.0 && (double) f2 == 0.0)
@@ -2222,7 +2220,7 @@ namespace Terraria
         num4 = shootSpeed / num3;
       float SpeedX = f1 * num4;
       float SpeedY = f2 * num4;
-      Projectile.NewProjectile((float) vector2.X, (float) vector2.Y, SpeedX, SpeedY, Type, damage, knockBack, this.whoAmI, 0.0f, 0.0f);
+      Projectile.NewProjectile(vector2.X, vector2.Y, SpeedX, SpeedY, Type, damage, knockBack, this.whoAmI, 0.0f, 0.0f);
     }
 
     public void StatusNPC(int type, int i)
@@ -2374,123 +2372,51 @@ namespace Terraria
         PlayerInput.Triggers.Current.CopyInto(this);
       if (this.controlUp || this.controlJump)
       {
-        if (this.velocity.Y > 0.0)
-        {
-          // ISSUE: explicit reference operation
-          // ISSUE: variable of a reference type
-          Vector2& local = @this.velocity;
-          // ISSUE: explicit reference operation
-          double num = (^local).Y * 0.899999976158142;
-          // ISSUE: explicit reference operation
-          (^local).Y = (__Null) num;
-        }
-        // ISSUE: explicit reference operation
-        // ISSUE: variable of a reference type
-        Vector2& local1 = @this.velocity;
-        // ISSUE: explicit reference operation
-        double num1 = (^local1).Y - 0.100000001490116;
-        // ISSUE: explicit reference operation
-        (^local1).Y = (__Null) num1;
-        if (this.velocity.Y < -3.0)
-          this.velocity.Y = (__Null) -3.0;
+        if ((double) this.velocity.Y > 0.0)
+          this.velocity.Y *= 0.9f;
+        this.velocity.Y -= 0.1f;
+        if ((double) this.velocity.Y < -3.0)
+          this.velocity.Y = -3f;
       }
       else if (this.controlDown)
       {
-        if (this.velocity.Y < 0.0)
-        {
-          // ISSUE: explicit reference operation
-          // ISSUE: variable of a reference type
-          Vector2& local = @this.velocity;
-          // ISSUE: explicit reference operation
-          double num = (^local).Y * 0.899999976158142;
-          // ISSUE: explicit reference operation
-          (^local).Y = (__Null) num;
-        }
-        // ISSUE: explicit reference operation
-        // ISSUE: variable of a reference type
-        Vector2& local1 = @this.velocity;
-        // ISSUE: explicit reference operation
-        double num1 = (^local1).Y + 0.100000001490116;
-        // ISSUE: explicit reference operation
-        (^local1).Y = (__Null) num1;
-        if (this.velocity.Y > 3.0)
-          this.velocity.Y = (__Null) 3.0;
+        if ((double) this.velocity.Y < 0.0)
+          this.velocity.Y *= 0.9f;
+        this.velocity.Y += 0.1f;
+        if ((double) this.velocity.Y > 3.0)
+          this.velocity.Y = 3f;
       }
       else if ((double) this.velocity.Y < -0.1 || (double) this.velocity.Y > 0.1)
-      {
-        // ISSUE: explicit reference operation
-        // ISSUE: variable of a reference type
-        Vector2& local = @this.velocity;
-        // ISSUE: explicit reference operation
-        double num = (^local).Y * 0.899999976158142;
-        // ISSUE: explicit reference operation
-        (^local).Y = (__Null) num;
-      }
+        this.velocity.Y *= 0.9f;
       else
-        this.velocity.Y = (__Null) 0.0;
+        this.velocity.Y = 0.0f;
       if (this.controlLeft && !this.controlRight)
       {
-        if (this.velocity.X > 0.0)
-        {
-          // ISSUE: explicit reference operation
-          // ISSUE: variable of a reference type
-          Vector2& local = @this.velocity;
-          // ISSUE: explicit reference operation
-          double num = (^local).X * 0.899999976158142;
-          // ISSUE: explicit reference operation
-          (^local).X = (__Null) num;
-        }
-        // ISSUE: explicit reference operation
-        // ISSUE: variable of a reference type
-        Vector2& local1 = @this.velocity;
-        // ISSUE: explicit reference operation
-        double num1 = (^local1).X - 0.100000001490116;
-        // ISSUE: explicit reference operation
-        (^local1).X = (__Null) num1;
-        if (this.velocity.X < -3.0)
-          this.velocity.X = (__Null) -3.0;
+        if ((double) this.velocity.X > 0.0)
+          this.velocity.X *= 0.9f;
+        this.velocity.X -= 0.1f;
+        if ((double) this.velocity.X < -3.0)
+          this.velocity.X = -3f;
       }
       else if (this.controlRight && !this.controlLeft)
       {
-        if (this.velocity.X < 0.0)
-        {
-          // ISSUE: explicit reference operation
-          // ISSUE: variable of a reference type
-          Vector2& local = @this.velocity;
-          // ISSUE: explicit reference operation
-          double num = (^local).X * 0.899999976158142;
-          // ISSUE: explicit reference operation
-          (^local).X = (__Null) num;
-        }
-        // ISSUE: explicit reference operation
-        // ISSUE: variable of a reference type
-        Vector2& local1 = @this.velocity;
-        // ISSUE: explicit reference operation
-        double num1 = (^local1).X + 0.100000001490116;
-        // ISSUE: explicit reference operation
-        (^local1).X = (__Null) num1;
-        if (this.velocity.X > 3.0)
-          this.velocity.X = (__Null) 3.0;
+        if ((double) this.velocity.X < 0.0)
+          this.velocity.X *= 0.9f;
+        this.velocity.X += 0.1f;
+        if ((double) this.velocity.X > 3.0)
+          this.velocity.X = 3f;
       }
       else if ((double) this.velocity.X < -0.1 || (double) this.velocity.X > 0.1)
-      {
-        // ISSUE: explicit reference operation
-        // ISSUE: variable of a reference type
-        Vector2& local = @this.velocity;
-        // ISSUE: explicit reference operation
-        double num = (^local).X * 0.899999976158142;
-        // ISSUE: explicit reference operation
-        (^local).X = (__Null) num;
-      }
+        this.velocity.X *= 0.9f;
       else
-        this.velocity.X = (__Null) 0.0;
+        this.velocity.X = 0.0f;
       Player player = this;
-      Vector2 vector2 = Vector2.op_Addition(player.position, this.velocity);
+      Vector2 vector2 = player.position + this.velocity;
       player.position = vector2;
       ++this.ghostFrameCounter;
-      if (this.velocity.X < 0.0)
+      if ((double) this.velocity.X < 0.0)
         this.direction = -1;
-      else if (this.velocity.X > 0.0)
+      else if ((double) this.velocity.X > 0.0)
         this.direction = 1;
       if (this.ghostFrameCounter >= 8)
       {
@@ -2499,49 +2425,48 @@ namespace Terraria
         if (this.ghostFrame >= 4)
           this.ghostFrame = 0;
       }
-      if (this.position.X < (double) Main.leftWorld + (double) (Lighting.offScreenTiles * 16) + 16.0)
+      if ((double) this.position.X < (double) Main.leftWorld + (double) (Lighting.offScreenTiles * 16) + 16.0)
       {
-        this.position.X = (__Null) ((double) Main.leftWorld + (double) (Lighting.offScreenTiles * 16) + 16.0);
-        this.velocity.X = (__Null) 0.0;
+        this.position.X = (float) ((double) Main.leftWorld + (double) (Lighting.offScreenTiles * 16) + 16.0);
+        this.velocity.X = 0.0f;
       }
-      if (this.position.X + (double) this.width > (double) Main.rightWorld - (double) (Lighting.offScreenTiles * 16) - 32.0)
+      if ((double) this.position.X + (double) this.width > (double) Main.rightWorld - (double) (Lighting.offScreenTiles * 16) - 32.0)
       {
-        this.position.X = (__Null) ((double) Main.rightWorld - (double) (Lighting.offScreenTiles * 16) - 32.0 - (double) this.width);
-        this.velocity.X = (__Null) 0.0;
+        this.position.X = (float) ((double) Main.rightWorld - (double) (Lighting.offScreenTiles * 16) - 32.0) - (float) this.width;
+        this.velocity.X = 0.0f;
       }
-      if (this.position.Y < (double) Main.topWorld + (double) (Lighting.offScreenTiles * 16) + 16.0)
+      if ((double) this.position.Y < (double) Main.topWorld + (double) (Lighting.offScreenTiles * 16) + 16.0)
       {
-        this.position.Y = (__Null) ((double) Main.topWorld + (double) (Lighting.offScreenTiles * 16) + 16.0);
+        this.position.Y = (float) ((double) Main.topWorld + (double) (Lighting.offScreenTiles * 16) + 16.0);
         if ((double) this.velocity.Y < -0.1)
-          this.velocity.Y = (__Null) -0.100000001490116;
+          this.velocity.Y = -0.1f;
       }
-      if (this.position.Y <= (double) Main.bottomWorld - (double) (Lighting.offScreenTiles * 16) - 32.0 - (double) this.height)
+      if ((double) this.position.Y <= (double) Main.bottomWorld - (double) (Lighting.offScreenTiles * 16) - 32.0 - (double) this.height)
         return;
-      this.position.Y = (__Null) ((double) Main.bottomWorld - (double) (Lighting.offScreenTiles * 16) - 32.0 - (double) this.height);
-      this.velocity.Y = (__Null) 0.0;
+      this.position.Y = (float) ((double) Main.bottomWorld - (double) (Lighting.offScreenTiles * 16) - 32.0) - (float) this.height;
+      this.velocity.Y = 0.0f;
     }
 
     private void OldInputGhost()
     {
-      // ISSUE: explicit reference operation
-      Keys[] pressedKeys = ((KeyboardState) @Main.keyState).GetPressedKeys();
-      if (Main.blockKey != ((object) (Keys) 0).ToString())
+      Keys[] pressedKeys = Main.keyState.GetPressedKeys();
+      if (Main.blockKey != Keys.None.ToString())
       {
         bool flag = false;
         for (int index = 0; index < pressedKeys.Length; ++index)
         {
-          if (((object) (Keys) (int) pressedKeys[index]).ToString() == Main.blockKey)
+          if (pressedKeys[index].ToString() == Main.blockKey)
           {
-            pressedKeys[index] = (Keys) 0;
+            pressedKeys[index] = Keys.None;
             flag = true;
           }
         }
         if (!flag)
-          Main.blockKey = ((object) (Keys) 0).ToString();
+          Main.blockKey = Keys.None.ToString();
       }
       for (int index = 0; index < pressedKeys.Length; ++index)
       {
-        string str = string.Concat((object) (Keys) (int) pressedKeys[index]);
+        string str = string.Concat((object) pressedKeys[index]);
         if (str == Main.cUp)
           this.controlUp = true;
         if (str == Main.cLeft)
@@ -2574,15 +2499,11 @@ namespace Terraria
           Projectile projectile = Main.projectile[index];
           if (projectile.active && projectile.owner == this.whoAmI && (projectile.type == 613 && (double) projectile.localAI[1] <= 0.0) && Main.rand.Next(2) == 0)
           {
-            Vector2 vector2 = Vector2.op_Subtraction(new Vector2(x, y), projectile.Center);
-            // ISSUE: explicit reference operation
-            if ((double) ((Vector2) @vector2).Length() > 0.0)
-            {
-              // ISSUE: explicit reference operation
-              ((Vector2) @vector2).Normalize();
-            }
-            vector2 = Vector2.op_Multiply(vector2, 20f);
-            Projectile.NewProjectile((float) projectile.Center.X, (float) projectile.Center.Y, (float) vector2.X, (float) vector2.Y, 614, projectile.damage / 3, 0.0f, projectile.owner, 0.0f, (float) victim.whoAmI);
+            Vector2 vector2 = new Vector2(x, y) - projectile.Center;
+            if ((double) vector2.Length() > 0.0)
+              vector2.Normalize();
+            vector2 *= 20f;
+            Projectile.NewProjectile(projectile.Center.X, projectile.Center.Y, vector2.X, vector2.Y, 614, projectile.damage / 3, 0.0f, projectile.owner, 0.0f, (float) victim.whoAmI);
             projectile.localAI[1] = (float) (30 + Main.rand.Next(4) * 10);
           }
         }
@@ -2591,24 +2512,22 @@ namespace Terraria
       {
         this.petalTimer = 20;
         int num1 = 1;
-        if ((double) x < this.position.X + (double) (this.width / 2))
+        if ((double) x < (double) this.position.X + (double) (this.width / 2))
           num1 = -1;
         int direction = this.direction;
-        float x1 = (float) Main.screenPosition.X;
+        float x1 = Main.screenPosition.X;
         if (direction < 0)
           x1 += (float) Main.screenWidth;
-        float Y = (float) Main.screenPosition.Y + (float) Main.rand.Next(Main.screenHeight);
-        Vector2 vector2;
-        // ISSUE: explicit reference operation
-        ((Vector2) @vector2).\u002Ector(x1, Y);
-        float num2 = x - (float) vector2.X;
-        float num3 = y - (float) vector2.Y;
-        float num4 = num2 + (float) Main.rand.Next(-50, 51) * 0.1f;
+        float num2 = Main.screenPosition.Y + (float) Main.rand.Next(Main.screenHeight);
+        Vector2 vector2 = new Vector2(x1, num2);
+        float num3 = x - vector2.X;
+        float num4 = y - vector2.Y;
         float num5 = num3 + (float) Main.rand.Next(-50, 51) * 0.1f;
-        float num6 = 24f / (float) Math.Sqrt((double) num4 * (double) num4 + (double) num5 * (double) num5);
-        float SpeedX = num4 * num6;
-        float SpeedY = num5 * num6;
-        Projectile.NewProjectile(x1, Y, SpeedX, SpeedY, 221, 36, 0.0f, this.whoAmI, 0.0f, 0.0f);
+        float num6 = num4 + (float) Main.rand.Next(-50, 51) * 0.1f;
+        float num7 = 24f / (float) Math.Sqrt((double) num5 * (double) num5 + (double) num6 * (double) num6);
+        float SpeedX = num5 * num7;
+        float SpeedY = num6 * num7;
+        Projectile.NewProjectile(x1, num2, SpeedX, SpeedY, 221, 36, 0.0f, this.whoAmI, 0.0f, 0.0f);
       }
       if (!this.crystalLeaf || this.petalTimer != 0)
         return;
@@ -2619,16 +2538,14 @@ namespace Terraria
         {
           this.petalTimer = 50;
           float num1 = 12f;
-          Vector2 vector2;
-          // ISSUE: explicit reference operation
-          ((Vector2) @vector2).\u002Ector((float) (Main.projectile[index].position.X + (double) this.width * 0.5), (float) (Main.projectile[index].position.Y + (double) this.height * 0.5));
-          float num2 = x - (float) vector2.X;
-          float num3 = y - (float) vector2.Y;
+          Vector2 vector2 = new Vector2(Main.projectile[index].position.X + (float) this.width * 0.5f, Main.projectile[index].position.Y + (float) this.height * 0.5f);
+          float num2 = x - vector2.X;
+          float num3 = y - vector2.Y;
           float num4 = (float) Math.Sqrt((double) num2 * (double) num2 + (double) num3 * (double) num3);
           float num5 = num1 / num4;
           float SpeedX = num2 * num5;
           float SpeedY = num3 * num5;
-          Projectile.NewProjectile((float) (Main.projectile[index].Center.X - 4.0), (float) Main.projectile[index].Center.Y, SpeedX, SpeedY, 227, Player.crystalLeafDamage, (float) Player.crystalLeafKB, this.whoAmI, 0.0f, 0.0f);
+          Projectile.NewProjectile(Main.projectile[index].Center.X - 4f, Main.projectile[index].Center.Y, SpeedX, SpeedY, 227, Player.crystalLeafDamage, (float) Player.crystalLeafKB, this.whoAmI, 0.0f, 0.0f);
           break;
         }
       }
@@ -4690,7 +4607,7 @@ namespace Terraria
           else if (this.buffType[index1] == 10)
             this.invis = true;
           else if (this.buffType[index1] == 11)
-            Lighting.AddLight((int) (this.position.X + (double) (this.width / 2)) / 16, (int) (this.position.Y + (double) (this.height / 2)) / 16, 0.8f, 0.95f, 1f);
+            Lighting.AddLight((int) ((double) this.position.X + (double) (this.width / 2)) / 16, (int) ((double) this.position.Y + (double) (this.height / 2)) / 16, 0.8f, 0.95f, 1f);
           else if (this.buffType[index1] == 12)
             this.nightVision = true;
           else if (this.buffType[index1] == 13)
@@ -4793,7 +4710,7 @@ namespace Terraria
           else if (this.buffType[index1] == 116)
           {
             this.inferno = true;
-            Lighting.AddLight((int) (this.Center.X / 16.0), (int) (this.Center.Y / 16.0), 0.65f, 0.4f, 0.1f);
+            Lighting.AddLight((int) ((double) this.Center.X / 16.0), (int) ((double) this.Center.Y / 16.0), 0.65f, 0.4f, 0.1f);
             int type = 24;
             float num1 = 200f;
             bool flag = this.infernoCounter % 60 == 0;
@@ -5068,7 +4985,7 @@ namespace Terraria
           {
             if ((double) this.statLife <= (double) this.statLifeMax2 * 0.5)
             {
-              Lighting.AddLight((int) (this.Center.X / 16.0), (int) (this.Center.Y / 16.0), 0.1f, 0.2f, 0.45f);
+              Lighting.AddLight((int) ((double) this.Center.X / 16.0), (int) ((double) this.Center.Y / 16.0), 0.1f, 0.2f, 0.45f);
               this.iceBarrier = true;
               this.endurance += 0.25f;
               ++this.iceBarrierFrameCounter;
@@ -5383,7 +5300,7 @@ namespace Terraria
             if (this.ownedProjectileCounts[18] > 0)
               flag = false;
             if (flag && this.whoAmI == Main.myPlayer)
-              Projectile.NewProjectile((float) this.position.X + (float) (this.width / 2), (float) this.position.Y + (float) (this.height / 2), 0.0f, 0.0f, 18, 0, 0.0f, this.whoAmI, 0.0f, 0.0f);
+              Projectile.NewProjectile(this.position.X + (float) (this.width / 2), this.position.Y + (float) (this.height / 2), 0.0f, 0.0f, 18, 0, 0.0f, this.whoAmI, 0.0f, 0.0f);
           }
           else if (this.buffType[index1] == 155)
           {
@@ -5393,7 +5310,7 @@ namespace Terraria
             if (this.ownedProjectileCounts[500] > 0)
               flag = false;
             if (flag && this.whoAmI == Main.myPlayer)
-              Projectile.NewProjectile((float) this.position.X + (float) (this.width / 2), (float) this.position.Y + (float) (this.height / 2), 0.0f, 0.0f, 500, 0, 0.0f, this.whoAmI, 0.0f, 0.0f);
+              Projectile.NewProjectile(this.position.X + (float) (this.width / 2), this.position.Y + (float) (this.height / 2), 0.0f, 0.0f, 500, 0, 0.0f, this.whoAmI, 0.0f, 0.0f);
           }
           else if (this.buffType[index1] == 191)
             this.CommonPetBuffHandle(index1, ref this.companionCube, 653);
@@ -5411,7 +5328,7 @@ namespace Terraria
             if (this.ownedProjectileCounts[650] > 0)
               flag = false;
             if (flag && this.whoAmI == Main.myPlayer)
-              Projectile.NewProjectile((float) this.position.X + (float) (this.width / 2), (float) this.position.Y + (float) (this.height / 2), 0.0f, 0.0f, 650, 0, 0.0f, this.whoAmI, 0.0f, 0.0f);
+              Projectile.NewProjectile(this.position.X + (float) (this.width / 2), this.position.Y + (float) (this.height / 2), 0.0f, 0.0f, 650, 0, 0.0f, this.whoAmI, 0.0f, 0.0f);
           }
           else if (this.buffType[index1] == 27 || this.buffType[index1] == 101 || this.buffType[index1] == 102)
           {
@@ -5435,7 +5352,7 @@ namespace Terraria
             if (this.ownedProjectileCounts[Type] > 0)
               flag = false;
             if (flag && this.whoAmI == Main.myPlayer)
-              Projectile.NewProjectile((float) this.position.X + (float) (this.width / 2), (float) this.position.Y + (float) (this.height / 2), 0.0f, 0.0f, Type, 0, 0.0f, this.whoAmI, 0.0f, 0.0f);
+              Projectile.NewProjectile(this.position.X + (float) (this.width / 2), this.position.Y + (float) (this.height / 2), 0.0f, 0.0f, Type, 0, 0.0f, this.whoAmI, 0.0f, 0.0f);
           }
           else if (this.buffType[index1] == 40)
           {
@@ -5445,7 +5362,7 @@ namespace Terraria
             if (this.ownedProjectileCounts[111] > 0)
               flag = false;
             if (flag && this.whoAmI == Main.myPlayer)
-              Projectile.NewProjectile((float) this.position.X + (float) (this.width / 2), (float) this.position.Y + (float) (this.height / 2), 0.0f, 0.0f, 111, 0, 0.0f, this.whoAmI, 0.0f, 0.0f);
+              Projectile.NewProjectile(this.position.X + (float) (this.width / 2), this.position.Y + (float) (this.height / 2), 0.0f, 0.0f, 111, 0, 0.0f, this.whoAmI, 0.0f, 0.0f);
           }
           else if (this.buffType[index1] == 148)
           {
@@ -5481,14 +5398,14 @@ namespace Terraria
             if (this.ownedProjectileCounts[112] > 0)
               flag = false;
             if (flag && this.whoAmI == Main.myPlayer)
-              Projectile.NewProjectile((float) this.position.X + (float) (this.width / 2), (float) this.position.Y + (float) (this.height / 2), 0.0f, 0.0f, 112, 0, 0.0f, this.whoAmI, 0.0f, 0.0f);
+              Projectile.NewProjectile(this.position.X + (float) (this.width / 2), this.position.Y + (float) (this.height / 2), 0.0f, 0.0f, 112, 0, 0.0f, this.whoAmI, 0.0f, 0.0f);
           }
           else if (this.buffType[index1] == 152)
           {
             this.buffTime[index1] = 18000;
             this.magicLantern = true;
             if (this.ownedProjectileCounts[492] == 0 && this.whoAmI == Main.myPlayer)
-              Projectile.NewProjectile((float) this.position.X + (float) (this.width / 2), (float) this.position.Y + (float) (this.height / 2), 0.0f, 0.0f, 492, 0, 0.0f, this.whoAmI, 0.0f, 0.0f);
+              Projectile.NewProjectile(this.position.X + (float) (this.width / 2), this.position.Y + (float) (this.height / 2), 0.0f, 0.0f, 492, 0, 0.0f, this.whoAmI, 0.0f, 0.0f);
           }
           else if (this.buffType[index1] == 91)
           {
@@ -5498,7 +5415,7 @@ namespace Terraria
             if (this.ownedProjectileCounts[334] > 0)
               flag = false;
             if (flag && this.whoAmI == Main.myPlayer)
-              Projectile.NewProjectile((float) this.position.X + (float) (this.width / 2), (float) this.position.Y + (float) (this.height / 2), 0.0f, 0.0f, 334, 0, 0.0f, this.whoAmI, 0.0f, 0.0f);
+              Projectile.NewProjectile(this.position.X + (float) (this.width / 2), this.position.Y + (float) (this.height / 2), 0.0f, 0.0f, 334, 0, 0.0f, this.whoAmI, 0.0f, 0.0f);
           }
           else if (this.buffType[index1] == 92)
           {
@@ -5508,7 +5425,7 @@ namespace Terraria
             if (this.ownedProjectileCounts[353] > 0)
               flag = false;
             if (flag && this.whoAmI == Main.myPlayer)
-              Projectile.NewProjectile((float) this.position.X + (float) (this.width / 2), (float) this.position.Y + (float) (this.height / 2), 0.0f, 0.0f, 353, 0, 0.0f, this.whoAmI, 0.0f, 0.0f);
+              Projectile.NewProjectile(this.position.X + (float) (this.width / 2), this.position.Y + (float) (this.height / 2), 0.0f, 0.0f, 353, 0, 0.0f, this.whoAmI, 0.0f, 0.0f);
           }
           else if (this.buffType[index1] == 84)
           {
@@ -5518,7 +5435,7 @@ namespace Terraria
             if (this.ownedProjectileCounts[319] > 0)
               flag = false;
             if (flag && this.whoAmI == Main.myPlayer)
-              Projectile.NewProjectile((float) this.position.X + (float) (this.width / 2), (float) this.position.Y + (float) (this.height / 2), 0.0f, 0.0f, 319, 0, 0.0f, this.whoAmI, 0.0f, 0.0f);
+              Projectile.NewProjectile(this.position.X + (float) (this.width / 2), this.position.Y + (float) (this.height / 2), 0.0f, 0.0f, 319, 0, 0.0f, this.whoAmI, 0.0f, 0.0f);
           }
           else if (this.buffType[index1] == 61)
           {
@@ -5528,7 +5445,7 @@ namespace Terraria
             if (this.ownedProjectileCounts[236] > 0)
               flag = false;
             if (flag && this.whoAmI == Main.myPlayer)
-              Projectile.NewProjectile((float) this.position.X + (float) (this.width / 2), (float) this.position.Y + (float) (this.height / 2), 0.0f, 0.0f, 236, 0, 0.0f, this.whoAmI, 0.0f, 0.0f);
+              Projectile.NewProjectile(this.position.X + (float) (this.width / 2), this.position.Y + (float) (this.height / 2), 0.0f, 0.0f, 236, 0, 0.0f, this.whoAmI, 0.0f, 0.0f);
           }
           else if (this.buffType[index1] == 154)
           {
@@ -5538,7 +5455,7 @@ namespace Terraria
             if (this.ownedProjectileCounts[499] > 0)
               flag = false;
             if (flag && this.whoAmI == Main.myPlayer)
-              Projectile.NewProjectile((float) this.position.X + (float) (this.width / 2), (float) this.position.Y + (float) (this.height / 2), 0.0f, 0.0f, 499, 0, 0.0f, this.whoAmI, 0.0f, 0.0f);
+              Projectile.NewProjectile(this.position.X + (float) (this.width / 2), this.position.Y + (float) (this.height / 2), 0.0f, 0.0f, 499, 0, 0.0f, this.whoAmI, 0.0f, 0.0f);
           }
           else if (this.buffType[index1] == 65)
           {
@@ -5548,7 +5465,7 @@ namespace Terraria
             if (this.ownedProjectileCounts[268] > 0)
               flag = false;
             if (flag && this.whoAmI == Main.myPlayer)
-              Projectile.NewProjectile((float) this.position.X + (float) (this.width / 2), (float) this.position.Y + (float) (this.height / 2), 0.0f, 0.0f, 268, 0, 0.0f, this.whoAmI, 0.0f, 0.0f);
+              Projectile.NewProjectile(this.position.X + (float) (this.width / 2), this.position.Y + (float) (this.height / 2), 0.0f, 0.0f, 268, 0, 0.0f, this.whoAmI, 0.0f, 0.0f);
           }
           else if (this.buffType[index1] == 66)
           {
@@ -5558,7 +5475,7 @@ namespace Terraria
             if (this.ownedProjectileCounts[269] > 0)
               flag = false;
             if (flag && this.whoAmI == Main.myPlayer)
-              Projectile.NewProjectile((float) this.position.X + (float) (this.width / 2), (float) this.position.Y + (float) (this.height / 2), 0.0f, 0.0f, 269, 0, 0.0f, this.whoAmI, 0.0f, 0.0f);
+              Projectile.NewProjectile(this.position.X + (float) (this.width / 2), this.position.Y + (float) (this.height / 2), 0.0f, 0.0f, 269, 0, 0.0f, this.whoAmI, 0.0f, 0.0f);
           }
           else if (this.buffType[index1] == 42)
           {
@@ -5568,7 +5485,7 @@ namespace Terraria
             if (this.ownedProjectileCounts[(int) sbyte.MaxValue] > 0)
               flag = false;
             if (flag && this.whoAmI == Main.myPlayer)
-              Projectile.NewProjectile((float) this.position.X + (float) (this.width / 2), (float) this.position.Y + (float) (this.height / 2), 0.0f, 0.0f, (int) sbyte.MaxValue, 0, 0.0f, this.whoAmI, 0.0f, 0.0f);
+              Projectile.NewProjectile(this.position.X + (float) (this.width / 2), this.position.Y + (float) (this.height / 2), 0.0f, 0.0f, (int) sbyte.MaxValue, 0, 0.0f, this.whoAmI, 0.0f, 0.0f);
           }
           else if (this.buffType[index1] == 45)
           {
@@ -5578,7 +5495,7 @@ namespace Terraria
             if (this.ownedProjectileCounts[175] > 0)
               flag = false;
             if (flag && this.whoAmI == Main.myPlayer)
-              Projectile.NewProjectile((float) this.position.X + (float) (this.width / 2), (float) this.position.Y + (float) (this.height / 2), 0.0f, 0.0f, 175, 0, 0.0f, this.whoAmI, 0.0f, 0.0f);
+              Projectile.NewProjectile(this.position.X + (float) (this.width / 2), this.position.Y + (float) (this.height / 2), 0.0f, 0.0f, 175, 0, 0.0f, this.whoAmI, 0.0f, 0.0f);
           }
           else if (this.buffType[index1] == 50)
           {
@@ -5588,7 +5505,7 @@ namespace Terraria
             if (this.ownedProjectileCounts[197] > 0)
               flag = false;
             if (flag && this.whoAmI == Main.myPlayer)
-              Projectile.NewProjectile((float) this.position.X + (float) (this.width / 2), (float) this.position.Y + (float) (this.height / 2), 0.0f, 0.0f, 197, 0, 0.0f, this.whoAmI, 0.0f, 0.0f);
+              Projectile.NewProjectile(this.position.X + (float) (this.width / 2), this.position.Y + (float) (this.height / 2), 0.0f, 0.0f, 197, 0, 0.0f, this.whoAmI, 0.0f, 0.0f);
           }
           else if (this.buffType[index1] == 51)
           {
@@ -5598,7 +5515,7 @@ namespace Terraria
             if (this.ownedProjectileCounts[198] > 0)
               flag = false;
             if (flag && this.whoAmI == Main.myPlayer)
-              Projectile.NewProjectile((float) this.position.X + (float) (this.width / 2), (float) this.position.Y + (float) (this.height / 2), 0.0f, 0.0f, 198, 0, 0.0f, this.whoAmI, 0.0f, 0.0f);
+              Projectile.NewProjectile(this.position.X + (float) (this.width / 2), this.position.Y + (float) (this.height / 2), 0.0f, 0.0f, 198, 0, 0.0f, this.whoAmI, 0.0f, 0.0f);
           }
           else if (this.buffType[index1] == 52)
           {
@@ -5608,7 +5525,7 @@ namespace Terraria
             if (this.ownedProjectileCounts[199] > 0)
               flag = false;
             if (flag && this.whoAmI == Main.myPlayer)
-              Projectile.NewProjectile((float) this.position.X + (float) (this.width / 2), (float) this.position.Y + (float) (this.height / 2), 0.0f, 0.0f, 199, 0, 0.0f, this.whoAmI, 0.0f, 0.0f);
+              Projectile.NewProjectile(this.position.X + (float) (this.width / 2), this.position.Y + (float) (this.height / 2), 0.0f, 0.0f, 199, 0, 0.0f, this.whoAmI, 0.0f, 0.0f);
           }
           else if (this.buffType[index1] == 53)
           {
@@ -5618,7 +5535,7 @@ namespace Terraria
             if (this.ownedProjectileCounts[200] > 0)
               flag = false;
             if (flag && this.whoAmI == Main.myPlayer)
-              Projectile.NewProjectile((float) this.position.X + (float) (this.width / 2), (float) this.position.Y + (float) (this.height / 2), 0.0f, 0.0f, 200, 0, 0.0f, this.whoAmI, 0.0f, 0.0f);
+              Projectile.NewProjectile(this.position.X + (float) (this.width / 2), this.position.Y + (float) (this.height / 2), 0.0f, 0.0f, 200, 0, 0.0f, this.whoAmI, 0.0f, 0.0f);
           }
           else if (this.buffType[index1] == 54)
           {
@@ -5628,7 +5545,7 @@ namespace Terraria
             if (this.ownedProjectileCounts[208] > 0)
               flag = false;
             if (flag && this.whoAmI == Main.myPlayer)
-              Projectile.NewProjectile((float) this.position.X + (float) (this.width / 2), (float) this.position.Y + (float) (this.height / 2), 0.0f, 0.0f, 208, 0, 0.0f, this.whoAmI, 0.0f, 0.0f);
+              Projectile.NewProjectile(this.position.X + (float) (this.width / 2), this.position.Y + (float) (this.height / 2), 0.0f, 0.0f, 208, 0, 0.0f, this.whoAmI, 0.0f, 0.0f);
           }
           else if (this.buffType[index1] == 55)
           {
@@ -5638,7 +5555,7 @@ namespace Terraria
             if (this.ownedProjectileCounts[209] > 0)
               flag = false;
             if (flag && this.whoAmI == Main.myPlayer)
-              Projectile.NewProjectile((float) this.position.X + (float) (this.width / 2), (float) this.position.Y + (float) (this.height / 2), 0.0f, 0.0f, 209, 0, 0.0f, this.whoAmI, 0.0f, 0.0f);
+              Projectile.NewProjectile(this.position.X + (float) (this.width / 2), this.position.Y + (float) (this.height / 2), 0.0f, 0.0f, 209, 0, 0.0f, this.whoAmI, 0.0f, 0.0f);
           }
           else if (this.buffType[index1] == 56)
           {
@@ -5648,7 +5565,7 @@ namespace Terraria
             if (this.ownedProjectileCounts[210] > 0)
               flag = false;
             if (flag && this.whoAmI == Main.myPlayer)
-              Projectile.NewProjectile((float) this.position.X + (float) (this.width / 2), (float) this.position.Y + (float) (this.height / 2), 0.0f, 0.0f, 210, 0, 0.0f, this.whoAmI, 0.0f, 0.0f);
+              Projectile.NewProjectile(this.position.X + (float) (this.width / 2), this.position.Y + (float) (this.height / 2), 0.0f, 0.0f, 210, 0, 0.0f, this.whoAmI, 0.0f, 0.0f);
           }
           else if (this.buffType[index1] == 85)
           {
@@ -5658,7 +5575,7 @@ namespace Terraria
             if (this.ownedProjectileCounts[324] > 0)
               flag = false;
             if (flag && this.whoAmI == Main.myPlayer)
-              Projectile.NewProjectile((float) this.position.X + (float) (this.width / 2), (float) this.position.Y + (float) (this.height / 2), 0.0f, 0.0f, 324, 0, 0.0f, this.whoAmI, 0.0f, 0.0f);
+              Projectile.NewProjectile(this.position.X + (float) (this.width / 2), this.position.Y + (float) (this.height / 2), 0.0f, 0.0f, 324, 0, 0.0f, this.whoAmI, 0.0f, 0.0f);
           }
           else if (this.buffType[index1] == 81)
           {
@@ -5668,7 +5585,7 @@ namespace Terraria
             if (this.ownedProjectileCounts[313] > 0)
               flag = false;
             if (flag && this.whoAmI == Main.myPlayer)
-              Projectile.NewProjectile((float) this.position.X + (float) (this.width / 2), (float) this.position.Y + (float) (this.height / 2), 0.0f, 0.0f, 313, 0, 0.0f, this.whoAmI, 0.0f, 0.0f);
+              Projectile.NewProjectile(this.position.X + (float) (this.width / 2), this.position.Y + (float) (this.height / 2), 0.0f, 0.0f, 313, 0, 0.0f, this.whoAmI, 0.0f, 0.0f);
           }
           else if (this.buffType[index1] == 82)
           {
@@ -5678,7 +5595,7 @@ namespace Terraria
             if (this.ownedProjectileCounts[314] > 0)
               flag = false;
             if (flag && this.whoAmI == Main.myPlayer)
-              Projectile.NewProjectile((float) this.position.X + (float) (this.width / 2), (float) this.position.Y + (float) (this.height / 2), 0.0f, 0.0f, 314, 0, 0.0f, this.whoAmI, 0.0f, 0.0f);
+              Projectile.NewProjectile(this.position.X + (float) (this.width / 2), this.position.Y + (float) (this.height / 2), 0.0f, 0.0f, 314, 0, 0.0f, this.whoAmI, 0.0f, 0.0f);
           }
           else if (this.buffType[index1] == 57)
           {
@@ -5688,7 +5605,7 @@ namespace Terraria
             if (this.ownedProjectileCounts[211] > 0)
               flag = false;
             if (flag && this.whoAmI == Main.myPlayer)
-              Projectile.NewProjectile((float) this.position.X + (float) (this.width / 2), (float) this.position.Y + (float) (this.height / 2), 0.0f, 0.0f, 211, 0, 0.0f, this.whoAmI, 0.0f, 0.0f);
+              Projectile.NewProjectile(this.position.X + (float) (this.width / 2), this.position.Y + (float) (this.height / 2), 0.0f, 0.0f, 211, 0, 0.0f, this.whoAmI, 0.0f, 0.0f);
           }
           else if (this.buffType[index1] == 60)
           {
@@ -5705,7 +5622,7 @@ namespace Terraria
               }
             }
             if (flag && this.whoAmI == Main.myPlayer)
-              Projectile.NewProjectile((float) this.position.X + (float) (this.width / 2), (float) this.position.Y + (float) (this.height / 2), 0.0f, 0.0f, 226, 0, 0.0f, this.whoAmI, 0.0f, 0.0f);
+              Projectile.NewProjectile(this.position.X + (float) (this.width / 2), this.position.Y + (float) (this.height / 2), 0.0f, 0.0f, 226, 0, 0.0f, this.whoAmI, 0.0f, 0.0f);
           }
           else if (this.buffType[index1] == (int) sbyte.MaxValue)
           {
@@ -5715,7 +5632,7 @@ namespace Terraria
             if (this.ownedProjectileCounts[380] > 0)
               flag = false;
             if (flag && this.whoAmI == Main.myPlayer)
-              Projectile.NewProjectile((float) this.position.X + (float) (this.width / 2), (float) this.position.Y + (float) (this.height / 2), 0.0f, 0.0f, 380, 0, 0.0f, this.whoAmI, 0.0f, 0.0f);
+              Projectile.NewProjectile(this.position.X + (float) (this.width / 2), this.position.Y + (float) (this.height / 2), 0.0f, 0.0f, 380, 0, 0.0f, this.whoAmI, 0.0f, 0.0f);
           }
           else if (this.buffType[index1] == 136)
           {
@@ -5725,7 +5642,7 @@ namespace Terraria
             if (this.ownedProjectileCounts[398] > 0)
               flag = false;
             if (flag && this.whoAmI == Main.myPlayer)
-              Projectile.NewProjectile((float) this.position.X + (float) (this.width / 2), (float) this.position.Y + (float) (this.height / 2), 0.0f, 0.0f, 398, 0, 0.0f, this.whoAmI, 0.0f, 0.0f);
+              Projectile.NewProjectile(this.position.X + (float) (this.width / 2), this.position.Y + (float) (this.height / 2), 0.0f, 0.0f, 398, 0, 0.0f, this.whoAmI, 0.0f, 0.0f);
           }
           else if (this.buffType[index1] == 70)
             this.venom = true;
@@ -5777,10 +5694,10 @@ namespace Terraria
           else if (this.buffType[index1] == 149)
           {
             this.webbed = true;
-            if (this.velocity.Y != 0.0)
+            if ((double) this.velocity.Y != 0.0)
               this.velocity = new Vector2(0.0f, 1E-06f);
             else
-              this.velocity = Vector2.get_Zero();
+              this.velocity = Vector2.Zero;
             Player.jumpHeight = 0;
             this.gravity = 0.0f;
             this.moveSpeed = 0.0f;
@@ -5881,7 +5798,7 @@ namespace Terraria
         flag = false;
       if (!flag || this.whoAmI != Main.myPlayer)
         return;
-      Projectile.NewProjectile((float) this.position.X + (float) (this.width / 2), (float) this.position.Y + (float) (this.height / 2), 0.0f, 0.0f, petProjID, 0, 0.0f, this.whoAmI, 0.0f, 0.0f);
+      Projectile.NewProjectile(this.position.X + (float) (this.width / 2), this.position.Y + (float) (this.height / 2), 0.0f, 0.0f, petProjID, 0, 0.0f, this.whoAmI, 0.0f, 0.0f);
     }
 
     public void Counterweight(Vector2 hitPos, int dmg, float kb)
@@ -5908,25 +5825,23 @@ namespace Terraria
       {
         if (index1 < 0)
           return;
-        Vector2 vector2_1 = Vector2.op_Subtraction(hitPos, this.Center);
-        // ISSUE: explicit reference operation
-        ((Vector2) @vector2_1).Normalize();
-        Vector2 vector2_2 = Vector2.op_Multiply(vector2_1, 16f);
-        Projectile.NewProjectile((float) this.Center.X, (float) this.Center.Y, (float) vector2_2.X, (float) vector2_2.Y, Main.projectile[index1].type, Main.projectile[index1].damage, Main.projectile[index1].knockBack, this.whoAmI, 1f, 0.0f);
+        Vector2 vector2_1 = hitPos - this.Center;
+        vector2_1.Normalize();
+        Vector2 vector2_2 = vector2_1 * 16f;
+        Projectile.NewProjectile(this.Center.X, this.Center.Y, vector2_2.X, vector2_2.Y, Main.projectile[index1].type, Main.projectile[index1].damage, Main.projectile[index1].knockBack, this.whoAmI, 1f, 0.0f);
       }
       else
       {
         if (num2 >= num1)
           return;
-        Vector2 vector2_1 = Vector2.op_Subtraction(hitPos, this.Center);
-        // ISSUE: explicit reference operation
-        ((Vector2) @vector2_1).Normalize();
-        Vector2 vector2_2 = Vector2.op_Multiply(vector2_1, 16f);
+        Vector2 vector2_1 = hitPos - this.Center;
+        vector2_1.Normalize();
+        Vector2 vector2_2 = vector2_1 * 16f;
         float KnockBack = (float) (((double) kb + 6.0) / 2.0);
         if (num2 > 0)
-          Projectile.NewProjectile((float) this.Center.X, (float) this.Center.Y, (float) vector2_2.X, (float) vector2_2.Y, this.counterWeight, (int) ((double) dmg * 0.8), KnockBack, this.whoAmI, 1f, 0.0f);
+          Projectile.NewProjectile(this.Center.X, this.Center.Y, vector2_2.X, vector2_2.Y, this.counterWeight, (int) ((double) dmg * 0.8), KnockBack, this.whoAmI, 1f, 0.0f);
         else
-          Projectile.NewProjectile((float) this.Center.X, (float) this.Center.Y, (float) vector2_2.X, (float) vector2_2.Y, this.counterWeight, (int) ((double) dmg * 0.8), KnockBack, this.whoAmI, 0.0f, 0.0f);
+          Projectile.NewProjectile(this.Center.X, this.Center.Y, vector2_2.X, vector2_2.Y, this.counterWeight, (int) ((double) dmg * 0.8), KnockBack, this.whoAmI, 0.0f, 0.0f);
       }
     }
 
@@ -5960,17 +5875,17 @@ namespace Terraria
       int index = 0 + this.bodyFrame.Y / 56;
       if (index >= Main.OffsetsPlayerHeadgear.Length)
         index = 0;
-      Vector2 spinningpoint1 = Vector2.op_Addition(Vector2.op_Addition(Vector2.op_Addition(new Vector2((float) (3 * this.direction - (this.direction == 1 ? 1 : 0)), -11.5f * this.gravDir), Vector2.op_Multiply(Vector2.get_UnitY(), this.gfxOffY)), Vector2.op_Division(this.Size, 2f)), Main.OffsetsPlayerHeadgear[index]);
-      Vector2 spinningpoint2 = Vector2.op_Addition(Vector2.op_Addition(new Vector2((float) (3 * this.shadowDirection[1] - (this.direction == 1 ? 1 : 0)), -11.5f * this.gravDir), Vector2.op_Division(this.Size, 2f)), Main.OffsetsPlayerHeadgear[index]);
-      Vector2 vector2_1 = Vector2.get_Zero();
+      Vector2 spinningpoint1 = new Vector2((float) (3 * this.direction - (this.direction == 1 ? 1 : 0)), -11.5f * this.gravDir) + Vector2.UnitY * this.gfxOffY + this.Size / 2f + Main.OffsetsPlayerHeadgear[index];
+      Vector2 spinningpoint2 = new Vector2((float) (3 * this.shadowDirection[1] - (this.direction == 1 ? 1 : 0)), -11.5f * this.gravDir) + this.Size / 2f + Main.OffsetsPlayerHeadgear[index];
+      Vector2 vector2_1 = Vector2.Zero;
       if (this.mount.Active && this.mount.Cart)
       {
-        int num = Math.Sign((float) this.velocity.X);
+        int num = Math.Sign(this.velocity.X);
         if (num == 0)
           num = this.direction;
-        vector2_1 = new Vector2(MathHelper.Lerp(0.0f, -8f, this.fullRotation / 0.7853982f), MathHelper.Lerp(0.0f, 2f, Math.Abs(this.fullRotation / 0.7853982f))).RotatedBy((double) this.fullRotation, (Vector2) null);
+        vector2_1 = new Vector2(MathHelper.Lerp(0.0f, -8f, this.fullRotation / 0.7853982f), MathHelper.Lerp(0.0f, 2f, Math.Abs(this.fullRotation / 0.7853982f))).RotatedBy((double) this.fullRotation, new Vector2());
         if (num == Math.Sign(this.fullRotation))
-          vector2_1 = Vector2.op_Multiply(vector2_1, MathHelper.Lerp(1f, 0.6f, Math.Abs(this.fullRotation / 0.7853982f)));
+          vector2_1 *= MathHelper.Lerp(1f, 0.6f, Math.Abs(this.fullRotation / 0.7853982f));
       }
       if ((double) this.fullRotation != 0.0)
       {
@@ -5980,67 +5895,53 @@ namespace Terraria
       float num1 = 0.0f;
       if (this.mount.Active)
         num1 = (float) this.mount.PlayerOffset;
-      Vector2 vector2_2 = Vector2.op_Addition(Vector2.op_Addition(this.position, spinningpoint1), vector2_1);
-      Vector2 vector2_3 = Vector2.op_Addition(Vector2.op_Addition(this.oldPosition, spinningpoint2), vector2_1);
-      // ISSUE: explicit reference operation
-      // ISSUE: variable of a reference type
-      Vector2& local1 = @vector2_3;
-      // ISSUE: explicit reference operation
-      double num2 = (^local1).Y - (double) num1 / 2.0;
-      // ISSUE: explicit reference operation
-      (^local1).Y = (__Null) num2;
-      // ISSUE: explicit reference operation
-      // ISSUE: variable of a reference type
-      Vector2& local2 = @vector2_2;
-      // ISSUE: explicit reference operation
-      double num3 = (^local2).Y - (double) num1 / 2.0;
-      // ISSUE: explicit reference operation
-      (^local2).Y = (__Null) num3;
-      float num4 = 1f;
+      Vector2 vector2_2 = this.position + spinningpoint1 + vector2_1;
+      Vector2 vector2_3 = this.oldPosition + spinningpoint2 + vector2_1;
+      vector2_3.Y -= num1 / 2f;
+      vector2_2.Y -= num1 / 2f;
+      float num2 = 1f;
       switch (this.yoraiz0rEye % 10)
       {
         case 1:
           return;
         case 2:
-          num4 = 0.5f;
+          num2 = 0.5f;
           break;
         case 3:
-          num4 = 0.625f;
+          num2 = 0.625f;
           break;
         case 4:
-          num4 = 0.75f;
+          num2 = 0.75f;
           break;
         case 5:
-          num4 = 0.875f;
+          num2 = 0.875f;
           break;
         case 6:
-          num4 = 1f;
+          num2 = 1f;
           break;
         case 7:
-          num4 = 1.1f;
+          num2 = 1.1f;
           break;
       }
       if (this.yoraiz0rEye < 7)
       {
-        Color rgb = Main.hslToRgb((float) Main.rgbToHsl(this.eyeColor).X, 1f, 0.5f);
-        // ISSUE: explicit reference operation
-        DelegateMethods.v3_1 = Vector3.op_Multiply(Vector3.op_Multiply(((Color) @rgb).ToVector3(), 0.5f), num4);
-        if (Vector2.op_Inequality(this.velocity, Vector2.get_Zero()))
-          Utils.PlotTileLine(this.Center, Vector2.op_Addition(this.Center, Vector2.op_Multiply(this.velocity, 2f)), 4f, new Utils.PerLinePoint(DelegateMethods.CastLightOpen));
+        DelegateMethods.v3_1 = Main.hslToRgb(Main.rgbToHsl(this.eyeColor).X, 1f, 0.5f).ToVector3() * 0.5f * num2;
+        if (this.velocity != Vector2.Zero)
+          Utils.PlotTileLine(this.Center, this.Center + this.velocity * 2f, 4f, new Utils.PerLinePoint(DelegateMethods.CastLightOpen));
         else
           Utils.PlotTileLine(this.Left, this.Right, 4f, new Utils.PerLinePoint(DelegateMethods.CastLightOpen));
       }
-      int num5 = (int) Vector2.Distance(vector2_2, vector2_3) / 3 + 1;
+      int num3 = (int) Vector2.Distance(vector2_2, vector2_3) / 3 + 1;
       if ((double) Vector2.Distance(vector2_2, vector2_3) % 3.0 != 0.0)
-        ++num5;
-      for (float num6 = 1f; (double) num6 <= (double) num5; ++num6)
+        ++num3;
+      for (float num4 = 1f; (double) num4 <= (double) num3; ++num4)
       {
-        Dust dust = Main.dust[Dust.NewDust(this.Center, 0, 0, 182, 0.0f, 0.0f, 0, (Color) null, 1f)];
-        dust.position = Vector2.Lerp(vector2_3, vector2_2, num6 / (float) num5);
+        Dust dust = Main.dust[Dust.NewDust(this.Center, 0, 0, 182, 0.0f, 0.0f, 0, new Color(), 1f)];
+        dust.position = Vector2.Lerp(vector2_3, vector2_2, num4 / (float) num3);
         dust.noGravity = true;
-        dust.velocity = Vector2.get_Zero();
+        dust.velocity = Vector2.Zero;
         dust.customData = (object) this;
-        dust.scale = num4;
+        dust.scale = num2;
         dust.shader = GameShaders.Armor.GetSecondaryShader(this.cYorai, this);
       }
     }
@@ -6136,10 +6037,10 @@ namespace Terraria
             this.accDreamCatcher = true;
           if (type == 3619)
             this.InfoAccMechShowWires = true;
-          if (this.armor[index1].type == 3017 && this.whoAmI == Main.myPlayer && (this.velocity.Y == 0.0 && this.grappling[0] == -1))
+          if (this.armor[index1].type == 3017 && this.whoAmI == Main.myPlayer && ((double) this.velocity.Y == 0.0 && this.grappling[0] == -1))
           {
             int index2 = (int) this.Center.X / 16;
-            int tileY = (int) (this.position.Y + (double) this.height - 1.0) / 16;
+            int tileY = (int) ((double) this.position.Y + (double) this.height - 1.0) / 16;
             if (Main.tile[index2, tileY] == null)
               Main.tile[index2, tileY] = new Tile();
             if (!Main.tile[index2, tileY].active() && (int) Main.tile[index2, tileY].liquid == 0 && (Main.tile[index2, tileY + 1] != null && WorldGen.SolidTile(index2, tileY + 1)))
@@ -7377,8 +7278,8 @@ namespace Terraria
                 int player = Main.myPlayer;
                 if (Main.player[player].team == this.team && this.team != 0)
                 {
-                  float num1 = (float) (this.position.X - Main.player[player].position.X);
-                  float num2 = (float) (this.position.Y - Main.player[player].position.Y);
+                  float num1 = this.position.X - Main.player[player].position.X;
+                  float num2 = this.position.Y - Main.player[player].position.Y;
                   if (Math.Sqrt((double) num1 * (double) num1 + (double) num2 * (double) num2) < 800.0)
                     Main.player[player].AddBuff(43, 20, true);
                 }
@@ -7761,7 +7662,7 @@ namespace Terraria
       {
         if ((int) this.armor[index].wingSlot > 0)
         {
-          if (!this.hideVisual[index] || this.velocity.Y != 0.0 && !this.mount.Active)
+          if (!this.hideVisual[index] || (double) this.velocity.Y != 0.0 && !this.mount.Active)
             this.wings = (int) this.armor[index].wingSlot;
           this.wingsLogic = (int) this.armor[index].wingSlot;
         }
@@ -7802,9 +7703,7 @@ namespace Terraria
           if (index != this.whoAmI && Main.player[index].active && (!Main.player[index].dead && Main.player[index].team == this.team) && Main.player[index].team != 0)
           {
             int num = 800;
-            Vector2 vector2 = Vector2.op_Subtraction(Main.player[index].Center, this.Center);
-            // ISSUE: explicit reference operation
-            if ((double) ((Vector2) @vector2).Length() < (double) num)
+            if ((double) (Main.player[index].Center - this.Center).Length() < (double) num)
             {
               if (Main.player[index].accWatch > this.accWatch)
                 this.accWatch = Main.player[index].accWatch;
@@ -7970,72 +7869,40 @@ namespace Terraria
         }
         for (int beetleOrbs = this.beetleOrbs; beetleOrbs < 3; ++beetleOrbs)
         {
-          this.beetlePos[beetleOrbs].X = (__Null) 0.0;
-          this.beetlePos[beetleOrbs].Y = (__Null) 0.0;
+          this.beetlePos[beetleOrbs].X = 0.0f;
+          this.beetlePos[beetleOrbs].Y = 0.0f;
         }
         for (int index = 0; index < this.beetleOrbs; ++index)
         {
-          // ISSUE: explicit reference operation
-          // ISSUE: variable of a reference type
-          Vector2& local1 = @this.beetlePos[index];
-          // ISSUE: explicit reference operation
-          Vector2 vector2_1 = Vector2.op_Addition(^local1, this.beetleVel[index]);
-          // ISSUE: explicit reference operation
-          ^local1 = vector2_1;
-          // ISSUE: explicit reference operation
-          // ISSUE: variable of a reference type
-          Vector2& local2 = @this.beetleVel[index];
-          // ISSUE: explicit reference operation
-          double num1 = (^local2).X + (double) Main.rand.Next(-100, 101) * 0.00499999988824129;
-          // ISSUE: explicit reference operation
-          (^local2).X = (__Null) num1;
-          // ISSUE: explicit reference operation
-          // ISSUE: variable of a reference type
-          Vector2& local3 = @this.beetleVel[index];
-          // ISSUE: explicit reference operation
-          double num2 = (^local3).Y + (double) Main.rand.Next(-100, 101) * 0.00499999988824129;
-          // ISSUE: explicit reference operation
-          (^local3).Y = (__Null) num2;
-          float x1 = (float) this.beetlePos[index].X;
-          float y1 = (float) this.beetlePos[index].Y;
-          float num3 = (float) Math.Sqrt((double) x1 * (double) x1 + (double) y1 * (double) y1);
-          if ((double) num3 > 100.0)
+          this.beetlePos[index] += this.beetleVel[index];
+          this.beetleVel[index].X += (float) Main.rand.Next(-100, 101) * 0.005f;
+          this.beetleVel[index].Y += (float) Main.rand.Next(-100, 101) * 0.005f;
+          float x1 = this.beetlePos[index].X;
+          float y1 = this.beetlePos[index].Y;
+          float num1 = (float) Math.Sqrt((double) x1 * (double) x1 + (double) y1 * (double) y1);
+          if ((double) num1 > 100.0)
           {
-            float num4 = 20f / num3;
-            float num5 = x1 * -num4;
-            float num6 = y1 * -num4;
-            int num7 = 10;
-            this.beetleVel[index].X = (__Null) ((this.beetleVel[index].X * (double) (num7 - 1) + (double) num5) / (double) num7);
-            this.beetleVel[index].Y = (__Null) ((this.beetleVel[index].Y * (double) (num7 - 1) + (double) num6) / (double) num7);
+            float num2 = 20f / num1;
+            float num3 = x1 * -num2;
+            float num4 = y1 * -num2;
+            int num5 = 10;
+            this.beetleVel[index].X = (this.beetleVel[index].X * (float) (num5 - 1) + num3) / (float) num5;
+            this.beetleVel[index].Y = (this.beetleVel[index].Y * (float) (num5 - 1) + num4) / (float) num5;
           }
-          else if ((double) num3 > 30.0)
+          else if ((double) num1 > 30.0)
           {
-            float num4 = 10f / num3;
-            float num5 = x1 * -num4;
-            float num6 = y1 * -num4;
-            int num7 = 20;
-            this.beetleVel[index].X = (__Null) ((this.beetleVel[index].X * (double) (num7 - 1) + (double) num5) / (double) num7);
-            this.beetleVel[index].Y = (__Null) ((this.beetleVel[index].Y * (double) (num7 - 1) + (double) num6) / (double) num7);
+            float num2 = 10f / num1;
+            float num3 = x1 * -num2;
+            float num4 = y1 * -num2;
+            int num5 = 20;
+            this.beetleVel[index].X = (this.beetleVel[index].X * (float) (num5 - 1) + num3) / (float) num5;
+            this.beetleVel[index].Y = (this.beetleVel[index].Y * (float) (num5 - 1) + num4) / (float) num5;
           }
-          float x2 = (float) this.beetleVel[index].X;
-          float y2 = (float) this.beetleVel[index].Y;
+          float x2 = this.beetleVel[index].X;
+          float y2 = this.beetleVel[index].Y;
           if (Math.Sqrt((double) x2 * (double) x2 + (double) y2 * (double) y2) > 2.0)
-          {
-            // ISSUE: explicit reference operation
-            // ISSUE: variable of a reference type
-            Vector2& local4 = @this.beetleVel[index];
-            // ISSUE: explicit reference operation
-            Vector2 vector2_2 = Vector2.op_Multiply(^local4, 0.9f);
-            // ISSUE: explicit reference operation
-            ^local4 = vector2_2;
-          }
-          // ISSUE: explicit reference operation
-          // ISSUE: variable of a reference type
-          Vector2& local5 = @this.beetlePos[index];
-          // ISSUE: explicit reference operation
-          Vector2 vector2_3 = Vector2.op_Subtraction(^local5, Vector2.op_Multiply(this.velocity, 0.25f));
-          // ISSUE: explicit reference operation
-          ^local5 = vector2_3;
+            this.beetleVel[index] *= 0.9f;
+          this.beetlePos[index] -= this.velocity * 0.25f;
         }
       }
       if (this.head == 14 && (this.body >= 58 && this.body <= 63 || this.body == 167))
@@ -8251,14 +8118,12 @@ namespace Terraria
             this.AddBuff(170 + this.solarShields, 5, false);
             for (int index = 0; index < 16; ++index)
             {
-              Dust dust1 = Main.dust[Dust.NewDust(this.position, this.width, this.height, 6, 0.0f, 0.0f, 100, (Color) null, 1f)];
-              dust1.noGravity = true;
-              dust1.scale = 1.7f;
-              dust1.fadeIn = 0.5f;
-              Dust dust2 = dust1;
-              Vector2 vector2 = Vector2.op_Multiply(dust2.velocity, 5f);
-              dust2.velocity = vector2;
-              dust1.shader = GameShaders.Armor.GetSecondaryShader(this.ArmorSetDye(), this);
+              Dust dust = Main.dust[Dust.NewDust(this.position, this.width, this.height, 6, 0.0f, 0.0f, 100, new Color(), 1f)];
+              dust.noGravity = true;
+              dust.scale = 1.7f;
+              dust.fadeIn = 0.5f;
+              dust.velocity *= 5f;
+              dust.shader = GameShaders.Armor.GetSecondaryShader(this.ArmorSetDye(), this);
             }
             this.solarCounter = 0;
           }
@@ -8266,19 +8131,13 @@ namespace Terraria
             this.solarCounter = num;
         }
         for (int solarShields = this.solarShields; solarShields < 3; ++solarShields)
-          this.solarShieldPos[solarShields] = Vector2.get_Zero();
+          this.solarShieldPos[solarShields] = Vector2.Zero;
         for (int index = 0; index < this.solarShields; ++index)
         {
-          // ISSUE: explicit reference operation
-          // ISSUE: variable of a reference type
-          Vector2& local = @this.solarShieldPos[index];
-          // ISSUE: explicit reference operation
-          Vector2 vector2_1 = Vector2.op_Addition(^local, this.solarShieldVel[index]);
-          // ISSUE: explicit reference operation
-          ^local = vector2_1;
-          Vector2 vector2_2 = Vector2.op_Multiply(((float) ((double) this.miscCounter / 100.0 * 6.28318548202515 + (double) index * (6.28318548202515 / (double) this.solarShields))).ToRotationVector2(), 6f);
-          vector2_2.X = (__Null) (double) (this.direction * 20);
-          this.solarShieldVel[index] = Vector2.op_Multiply(Vector2.op_Subtraction(vector2_2, this.solarShieldPos[index]), 0.2f);
+          this.solarShieldPos[index] += this.solarShieldVel[index];
+          Vector2 vector2 = ((float) ((double) this.miscCounter / 100.0 * 6.28318548202515 + (double) index * (6.28318548202515 / (double) this.solarShields))).ToRotationVector2() * 6f;
+          vector2.X = (float) (this.direction * 20);
+          this.solarShieldVel[index] = (vector2 - this.solarShieldPos[index]) * 0.2f;
         }
         if (this.dashDelay >= 0)
         {
@@ -8313,7 +8172,7 @@ namespace Terraria
           if (this.FindBuffIndex(187) == -1)
             this.AddBuff(187, 3600, true);
           if (this.ownedProjectileCounts[623] < 1)
-            Projectile.NewProjectile((float) this.Center.X, (float) this.Center.Y, 0.0f, -1f, 623, 0, 0.0f, Main.myPlayer, 0.0f, 0.0f);
+            Projectile.NewProjectile(this.Center.X, this.Center.Y, 0.0f, -1f, 623, 0, 0.0f, Main.myPlayer, 0.0f, 0.0f);
         }
       }
       else if (this.FindBuffIndex(187) != -1)
@@ -8402,13 +8261,7 @@ namespace Terraria
           return;
         this.shadowCount = 0;
         this.shadowPos[0] = this.position;
-        // ISSUE: explicit reference operation
-        // ISSUE: variable of a reference type
-        Vector2& local = @this.shadowPos[0];
-        // ISSUE: explicit reference operation
-        double num = (^local).Y + (double) this.gfxOffY;
-        // ISSUE: explicit reference operation
-        (^local).Y = (__Null) num;
+        this.shadowPos[0].Y += this.gfxOffY;
         this.shadowRotation[0] = this.fullRotation;
         this.shadowOrigin[0] = this.fullRotationOrigin;
       }
@@ -8422,24 +8275,20 @@ namespace Terraria
       {
         if ((double) Main.rand.Next(100) <= 100.0 * (double) this.teleportTime * 2.0)
         {
-          int index = Dust.NewDust(new Vector2((float) this.getRect().X, (float) this.getRect().Y), (int) this.getRect().Width, (int) this.getRect().Height, 159, 0.0f, 0.0f, 0, (Color) null, 1f);
+          int index = Dust.NewDust(new Vector2((float) this.getRect().X, (float) this.getRect().Y), this.getRect().Width, this.getRect().Height, 159, 0.0f, 0.0f, 0, new Color(), 1f);
           Main.dust[index].scale = this.teleportTime * 1.5f;
           Main.dust[index].noGravity = true;
-          Dust dust = Main.dust[index];
-          Vector2 vector2 = Vector2.op_Multiply(dust.velocity, 1.1f);
-          dust.velocity = vector2;
+          Main.dust[index].velocity *= 1.1f;
         }
       }
       else if (this.teleportStyle == 1)
       {
         if ((double) Main.rand.Next(100) <= 100.0 * (double) this.teleportTime)
         {
-          int index = Dust.NewDust(new Vector2((float) this.getRect().X, (float) this.getRect().Y), (int) this.getRect().Width, (int) this.getRect().Height, 164, 0.0f, 0.0f, 0, (Color) null, 1f);
+          int index = Dust.NewDust(new Vector2((float) this.getRect().X, (float) this.getRect().Y), this.getRect().Width, this.getRect().Height, 164, 0.0f, 0.0f, 0, new Color(), 1f);
           Main.dust[index].scale = this.teleportTime * 1.5f;
           Main.dust[index].noGravity = true;
-          Dust dust = Main.dust[index];
-          Vector2 vector2 = Vector2.op_Multiply(dust.velocity, 1.1f);
-          dust.velocity = vector2;
+          Main.dust[index].velocity *= 1.1f;
         }
       }
       else if (this.teleportStyle == 2)
@@ -8451,7 +8300,7 @@ namespace Terraria
         this.teleportTime -= 0.02f;
         if ((double) Main.rand.Next(100) <= 100.0 * (double) this.teleportTime)
         {
-          Dust dust = Main.dust[Dust.NewDust(this.position, this.width, this.height, 263, 0.0f, 0.0f, 0, (Color) null, 1f)];
+          Dust dust = Main.dust[Dust.NewDust(this.position, this.width, this.height, 263, 0.0f, 0.0f, 0, new Color(), 1f)];
           dust.color = PortalHelper.GetPortalColor(this.lastPortalColorIndex);
           dust.noLight = true;
           dust.noGravity = true;
@@ -8476,7 +8325,7 @@ namespace Terraria
       Tile tileSafely = Framing.GetTileSafely(this.Center);
       if (tileSafely != null)
         this.behindBackWall = (int) tileSafely.wall > 0;
-      if (Main.sandTiles > 1000 && this.Center.Y > 3200.0)
+      if (Main.sandTiles > 1000 && (double) this.Center.Y > 3200.0)
       {
         if (WallID.Sets.Conversion.Sandstone[(int) tileSafely.wall] || WallID.Sets.Conversion.HardenedSand[(int) tileSafely.wall])
           this.ZoneUndergroundDesert = true;
@@ -8503,11 +8352,11 @@ namespace Terraria
       this.ZoneSandstorm = (double) tileCoordinates1.Y <= Main.worldSurface && this.ZoneDesert && !this.ZoneBeach && Sandstorm.Happening;
       this.ZoneTowerSolar = this.ZoneTowerVortex = this.ZoneTowerNebula = this.ZoneTowerStardust = false;
       this.ZoneOldOneArmy = false;
-      Vector2 vector2_1 = Vector2.get_Zero();
-      Vector2 vector2_2 = Vector2.get_Zero();
-      Vector2 vector2_3 = Vector2.get_Zero();
-      Vector2 vector2_4 = Vector2.get_Zero();
-      Vector2.get_Zero();
+      Vector2 vector2_1 = Vector2.Zero;
+      Vector2 vector2_2 = Vector2.Zero;
+      Vector2 vector2_3 = Vector2.Zero;
+      Vector2 vector2_4 = Vector2.Zero;
+      Vector2 zero = Vector2.Zero;
       for (int index = 0; index < 200; ++index)
       {
         if (Main.npc[index].active)
@@ -8554,23 +8403,23 @@ namespace Terraria
       bool flag1 = this.ZoneRain && this.ZoneSnow;
       bool flag2 = tileCoordinates1.Y > Main.maxTilesY - 320;
       bool flag3 = this.ZoneOverworldHeight && (tileCoordinates1.X < 380 || tileCoordinates1.X > Main.maxTilesX - 380);
-      this.ManageSpecialBiomeVisuals("Stardust", this.ZoneTowerStardust, Vector2.op_Subtraction(vector2_4, new Vector2(0.0f, 10f)));
-      this.ManageSpecialBiomeVisuals("Nebula", this.ZoneTowerNebula, Vector2.op_Subtraction(vector2_3, new Vector2(0.0f, 10f)));
-      this.ManageSpecialBiomeVisuals("Vortex", this.ZoneTowerVortex, Vector2.op_Subtraction(vector2_2, new Vector2(0.0f, 10f)));
-      this.ManageSpecialBiomeVisuals("Solar", this.ZoneTowerSolar, Vector2.op_Subtraction(vector2_1, new Vector2(0.0f, 10f)));
-      this.ManageSpecialBiomeVisuals("MoonLord", NPC.AnyNPCs(398), (Vector2) null);
-      this.ManageSpecialBiomeVisuals("BloodMoon", Main.bloodMoon, (Vector2) null);
-      this.ManageSpecialBiomeVisuals("Blizzard", Main.UseStormEffects && flag1, (Vector2) null);
-      this.ManageSpecialBiomeVisuals("HeatDistortion", Main.UseHeatDistortion && (flag2 || (double) tileCoordinates1.Y < Main.worldSurface && this.ZoneDesert && (!flag3 && !Main.raining) && !Filters.Scene["Sandstorm"].IsActive()), (Vector2) null);
+      this.ManageSpecialBiomeVisuals("Stardust", this.ZoneTowerStardust, vector2_4 - new Vector2(0.0f, 10f));
+      this.ManageSpecialBiomeVisuals("Nebula", this.ZoneTowerNebula, vector2_3 - new Vector2(0.0f, 10f));
+      this.ManageSpecialBiomeVisuals("Vortex", this.ZoneTowerVortex, vector2_2 - new Vector2(0.0f, 10f));
+      this.ManageSpecialBiomeVisuals("Solar", this.ZoneTowerSolar, vector2_1 - new Vector2(0.0f, 10f));
+      this.ManageSpecialBiomeVisuals("MoonLord", NPC.AnyNPCs(398), new Vector2());
+      this.ManageSpecialBiomeVisuals("BloodMoon", Main.bloodMoon, new Vector2());
+      this.ManageSpecialBiomeVisuals("Blizzard", Main.UseStormEffects && flag1, new Vector2());
+      this.ManageSpecialBiomeVisuals("HeatDistortion", Main.UseHeatDistortion && (flag2 || (double) tileCoordinates1.Y < Main.worldSurface && this.ZoneDesert && (!flag3 && !Main.raining) && !Filters.Scene["Sandstorm"].IsActive()), new Vector2());
       if (!Filters.Scene["WaterDistortion"].IsActive() && Main.WaveQuality > 0)
-        Filters.Scene.Activate("WaterDistortion", (Vector2) null);
+        Filters.Scene.Activate("WaterDistortion", new Vector2());
       else if (Filters.Scene["WaterDistortion"].IsActive() && Main.WaveQuality == 0)
         Filters.Scene.Deactivate("WaterDistortion");
       if (Filters.Scene["WaterDistortion"].IsActive())
       {
         float num1 = (float) Main.maxTilesX * 0.5f - Math.Abs((float) tileCoordinates1.X - (float) Main.maxTilesX * 0.5f);
         float num2 = 1f + Math.Abs(Main.windSpeed) * 1f + MathHelper.Clamp(Main.maxRaining, 0.0f, 1f) * 1.5f + (float) -((double) MathHelper.Clamp((float) (((double) num1 - 380.0) / 100.0), 0.0f, 1f) * 0.5 - 0.25);
-        float num3 = 1f - MathHelper.Clamp((float) (3.0 * ((double) ((float) (double) tileCoordinates1.Y - (float) Main.worldSurface) / (Main.rockLayer - Main.worldSurface))), 0.0f, 1f);
+        float num3 = 1f - MathHelper.Clamp((float) (3.0 * ((double) ((float) tileCoordinates1.Y - (float) Main.worldSurface) / (Main.rockLayer - Main.worldSurface))), 0.0f, 1f);
         float intensity = MathHelper.Clamp(num2 * num3 + (float) (0.899999976158142 - (double) MathHelper.Clamp((float) (Main.maxTilesY - tileCoordinates1.Y - 200) / 300f, 0.0f, 1f) * 0.899999976158142) + (float) ((1.0 - (double) num3) * 0.75), 0.0f, 2.5f);
         Filters.Scene["WaterDistortion"].GetShader().UseIntensity(intensity);
       }
@@ -8589,9 +8438,8 @@ namespace Terraria
       }
       else if (this.ZoneDesert && !flag3 && (!Main.raining && !flag2))
       {
-        // ISSUE: explicit reference operation
-        Vector3 vector3 = ((Color) @Main.tileColor).ToVector3();
-        float num = (float) ((vector3.X + vector3.Y + vector3.Z) / 3.0);
+        Vector3 vector3 = Main.tileColor.ToVector3();
+        float num = (float) (((double) vector3.X + (double) vector3.Y + (double) vector3.Z) / 3.0);
         float intensity = this._stormShaderObstruction * 4f * Math.Max(0.0f, 0.5f - Main.cloudAlpha) * num;
         Filters.Scene["HeatDistortion"].GetShader().UseIntensity(intensity);
         if ((double) intensity <= 0.0)
@@ -8647,11 +8495,11 @@ namespace Terraria
       if (!this.dead)
       {
         Point tileCoordinates2 = this.Center.ToTileCoordinates();
-        if (WorldGen.InWorld((int) tileCoordinates2.X, (int) tileCoordinates2.Y, 1))
+        if (WorldGen.InWorld(tileCoordinates2.X, tileCoordinates2.Y, 1))
         {
           int num1 = 0;
-          if (Main.tile[(int) tileCoordinates2.X, (int) tileCoordinates2.Y] != null)
-            num1 = (int) Main.tile[(int) tileCoordinates2.X, (int) tileCoordinates2.Y].wall;
+          if (Main.tile[tileCoordinates2.X, tileCoordinates2.Y] != null)
+            num1 = (int) Main.tile[tileCoordinates2.X, tileCoordinates2.Y].wall;
           switch (num1)
           {
             case 62:
@@ -8664,13 +8512,13 @@ namespace Terraria
         }
         if (this._funkytownCheckCD > 0)
           --this._funkytownCheckCD;
-        if (this.position.Y / 16.0 > (double) (Main.maxTilesY - 200))
+        if ((double) this.position.Y / 16.0 > (double) (Main.maxTilesY - 200))
         {
           AchievementsHelper.HandleSpecialEvent(this, 14);
         }
         else
         {
-          if (this._funkytownCheckCD != 0 || this.position.Y / 16.0 >= Main.worldSurface || Main.shroomTiles < 200)
+          if (this._funkytownCheckCD != 0 || (double) this.position.Y / 16.0 >= Main.worldSurface || Main.shroomTiles < 200)
             return;
           AchievementsHelper.HandleSpecialEvent(this, 15);
         }
@@ -8679,7 +8527,7 @@ namespace Terraria
         this._funkytownCheckCD = 100;
     }
 
-    public void ManageSpecialBiomeVisuals(string biomeName, bool inZone, Vector2 activationSource = null)
+    public void ManageSpecialBiomeVisuals(string biomeName, bool inZone, Vector2 activationSource = default (Vector2))
     {
       if (SkyManager.Instance[biomeName] != null && inZone != SkyManager.Instance[biomeName].IsActive())
       {
@@ -8778,60 +8626,18 @@ namespace Terraria
       this.immuneAlpha += 2;
       if (this.immuneAlpha > (int) byte.MaxValue)
         this.immuneAlpha = (int) byte.MaxValue;
-      Player player1 = this;
-      Vector2 vector2_1 = Vector2.op_Addition(player1.headPosition, this.headVelocity);
-      player1.headPosition = vector2_1;
-      Player player2 = this;
-      Vector2 vector2_2 = Vector2.op_Addition(player2.bodyPosition, this.bodyVelocity);
-      player2.bodyPosition = vector2_2;
-      Player player3 = this;
-      Vector2 vector2_3 = Vector2.op_Addition(player3.legPosition, this.legVelocity);
-      player3.legPosition = vector2_3;
-      this.headRotation += (float) (this.headVelocity.X * 0.100000001490116);
-      this.bodyRotation += (float) (this.bodyVelocity.X * 0.100000001490116);
-      this.legRotation += (float) (this.legVelocity.X * 0.100000001490116);
-      // ISSUE: explicit reference operation
-      // ISSUE: variable of a reference type
-      Vector2& local1 = @this.headVelocity;
-      // ISSUE: explicit reference operation
-      double num1 = (^local1).Y + 0.100000001490116;
-      // ISSUE: explicit reference operation
-      (^local1).Y = (__Null) num1;
-      // ISSUE: explicit reference operation
-      // ISSUE: variable of a reference type
-      Vector2& local2 = @this.bodyVelocity;
-      // ISSUE: explicit reference operation
-      double num2 = (^local2).Y + 0.100000001490116;
-      // ISSUE: explicit reference operation
-      (^local2).Y = (__Null) num2;
-      // ISSUE: explicit reference operation
-      // ISSUE: variable of a reference type
-      Vector2& local3 = @this.legVelocity;
-      // ISSUE: explicit reference operation
-      double num3 = (^local3).Y + 0.100000001490116;
-      // ISSUE: explicit reference operation
-      (^local3).Y = (__Null) num3;
-      // ISSUE: explicit reference operation
-      // ISSUE: variable of a reference type
-      Vector2& local4 = @this.headVelocity;
-      // ISSUE: explicit reference operation
-      double num4 = (^local4).X * 0.990000009536743;
-      // ISSUE: explicit reference operation
-      (^local4).X = (__Null) num4;
-      // ISSUE: explicit reference operation
-      // ISSUE: variable of a reference type
-      Vector2& local5 = @this.bodyVelocity;
-      // ISSUE: explicit reference operation
-      double num5 = (^local5).X * 0.990000009536743;
-      // ISSUE: explicit reference operation
-      (^local5).X = (__Null) num5;
-      // ISSUE: explicit reference operation
-      // ISSUE: variable of a reference type
-      Vector2& local6 = @this.legVelocity;
-      // ISSUE: explicit reference operation
-      double num6 = (^local6).X * 0.990000009536743;
-      // ISSUE: explicit reference operation
-      (^local6).X = (__Null) num6;
+      this.headPosition += this.headVelocity;
+      this.bodyPosition += this.bodyVelocity;
+      this.legPosition += this.legVelocity;
+      this.headRotation += this.headVelocity.X * 0.1f;
+      this.bodyRotation += this.bodyVelocity.X * 0.1f;
+      this.legRotation += this.legVelocity.X * 0.1f;
+      this.headVelocity.Y += 0.1f;
+      this.bodyVelocity.Y += 0.1f;
+      this.legVelocity.Y += 0.1f;
+      this.headVelocity.X *= 0.99f;
+      this.bodyVelocity.X *= 0.99f;
+      this.legVelocity.X *= 0.99f;
       for (int index = 0; index < this.npcTypeNoAggro.Length; ++index)
         this.npcTypeNoAggro[index] = false;
       if ((int) this.difficulty == 2)
@@ -8922,9 +8728,9 @@ namespace Terraria
       if (!Main.SmartCursorEnabled)
         return;
       Item obj = this.inventory[this.selectedItem];
-      Vector2 mouse = Vector2.op_Addition(Main.screenPosition, new Vector2((float) Main.mouseX, (float) Main.mouseY));
+      Vector2 mouse = Main.screenPosition + new Vector2((float) Main.mouseX, (float) Main.mouseY);
       if ((double) this.gravDir == -1.0)
-        mouse.Y = (__Null) (Main.screenPosition.Y + (double) Main.screenHeight - (double) Main.mouseY);
+        mouse.Y = Main.screenPosition.Y + (float) Main.screenHeight - (float) Main.mouseY;
       int index1 = Player.tileTargetX;
       int index2 = Player.tileTargetY;
       if (index1 < 10)
@@ -9097,10 +8903,10 @@ label_51:
           }
         }
       }
-      int num2 = (int) (this.position.X / 16.0) - Player.tileRangeX - tileBoost + 1;
-      int num3 = (int) ((this.position.X + (double) this.width) / 16.0) + Player.tileRangeX + tileBoost - 1;
-      int num4 = (int) (this.position.Y / 16.0) - Player.tileRangeY - tileBoost + 1;
-      int num5 = (int) ((this.position.Y + (double) this.height) / 16.0) + Player.tileRangeY + tileBoost - 2;
+      int num2 = (int) ((double) this.position.X / 16.0) - Player.tileRangeX - tileBoost + 1;
+      int num3 = (int) (((double) this.position.X + (double) this.width) / 16.0) + Player.tileRangeX + tileBoost - 1;
+      int num4 = (int) ((double) this.position.Y / 16.0) - Player.tileRangeY - tileBoost + 1;
+      int num5 = (int) (((double) this.position.Y + (double) this.height) / 16.0) + Player.tileRangeY + tileBoost - 2;
       int num6 = Utils.Clamp<int>(num2, 10, Main.maxTilesX - 10);
       int num7 = Utils.Clamp<int>(num3, 10, Main.maxTilesX - 10);
       int num8 = Utils.Clamp<int>(num4, 10, Main.maxTilesY - 10);
@@ -9121,25 +8927,17 @@ label_51:
         Player.SmartCursor_Axe(obj, ref mouse, num6, num7, num8, num9, ref fX, ref fY);
       if (obj.pick > 0 && fX == -1 && fY == -1)
       {
-        if (PlayerInput.UsingGamepad)
-        {
-          Vector2 navigatorDirections = PlayerInput.Triggers.Current.GetNavigatorDirections();
-          Vector2 gamepadThumbstickLeft = PlayerInput.GamepadThumbstickLeft;
-          Vector2 gamepadThumbstickRight = PlayerInput.GamepadThumbstickRight;
-          // ISSUE: explicit reference operation
-          // ISSUE: explicit reference operation
-          if (Vector2.op_Equality(navigatorDirections, Vector2.get_Zero()) && (double) ((Vector2) @gamepadThumbstickLeft).Length() < 0.0500000007450581 && (double) ((Vector2) @gamepadThumbstickRight).Length() < 0.0500000007450581)
-            mouse = Vector2.op_Addition(this.Center, new Vector2((float) (this.direction * 1000), 0.0f));
-        }
-        Vector2 vector2 = Vector2.op_Subtraction(mouse, this.Center);
-        int num10 = Math.Sign((float) vector2.X);
-        int num11 = Math.Sign((float) vector2.Y);
-        if ((double) Math.Abs((float) vector2.X) > (double) Math.Abs((float) vector2.Y) * 3.0)
+        if (PlayerInput.UsingGamepad && (PlayerInput.Triggers.Current.GetNavigatorDirections() == Vector2.Zero && (double) PlayerInput.GamepadThumbstickLeft.Length() < 0.0500000007450581 && (double) PlayerInput.GamepadThumbstickRight.Length() < 0.0500000007450581))
+          mouse = this.Center + new Vector2((float) (this.direction * 1000), 0.0f);
+        Vector2 vector2 = mouse - this.Center;
+        int num10 = Math.Sign(vector2.X);
+        int num11 = Math.Sign(vector2.Y);
+        if ((double) Math.Abs(vector2.X) > (double) Math.Abs(vector2.Y) * 3.0)
         {
           num11 = 0;
           mouse.Y = this.Center.Y;
         }
-        if ((double) Math.Abs((float) vector2.Y) > (double) Math.Abs((float) vector2.X) * 3.0)
+        if ((double) Math.Abs(vector2.Y) > (double) Math.Abs(vector2.X) * 3.0)
         {
           num10 = 0;
           mouse.X = this.Center.X;
@@ -9151,10 +8949,10 @@ label_51:
         int num14 = 1;
         if (num11 == -1 && num10 != 0)
           num14 = -1;
-        int index3 = (int) ((this.position.X + (double) (this.width / 2) + (double) ((this.width / 2 - 1) * num10)) / 16.0);
+        int index3 = (int) (((double) this.position.X + (double) (this.width / 2) + (double) ((this.width / 2 - 1) * num10)) / 16.0);
         int index4 = (int) (((double) this.position.Y + 0.1) / 16.0);
         if (num14 == -1)
-          index4 = (int) ((this.position.Y + (double) this.height - 1.0) / 16.0);
+          index4 = (int) (((double) this.position.Y + (double) this.height - 1.0) / 16.0);
         int num15 = this.width / 16 + (this.width % 16 == 0 ? 0 : 1);
         int num16 = this.height / 16 + (this.height % 16 == 0 ? 0 : 1);
         if (num10 != 0)
@@ -9170,15 +8968,15 @@ label_51:
         {
           for (int index5 = 0; index5 < num15; ++index5)
           {
-            if (Main.tile[(int) (this.position.X / 16.0) + index5, index4] == null)
+            if (Main.tile[(int) ((double) this.position.X / 16.0) + index5, index4] == null)
               return;
-            tupleList1.Add(new Tuple<int, int>((int) (this.position.X / 16.0) + index5, index4));
+            tupleList1.Add(new Tuple<int, int>((int) ((double) this.position.X / 16.0) + index5, index4));
           }
         }
-        int index6 = (int) ((mouse.X + (double) ((this.width / 2 - 1) * num10)) / 16.0);
+        int index6 = (int) (((double) mouse.X + (double) ((this.width / 2 - 1) * num10)) / 16.0);
         int index7 = (int) (((double) mouse.Y + 0.1 - (double) (this.height / 2 + 1)) / 16.0);
         if (num14 == -1)
-          index7 = (int) ((mouse.Y + (double) (this.height / 2) - 1.0) / 16.0);
+          index7 = (int) (((double) mouse.Y + (double) (this.height / 2) - 1.0) / 16.0);
         if ((double) this.gravDir == -1.0 && num11 == 0)
           ++index7;
         if (index7 < 10)
@@ -9200,9 +8998,9 @@ label_51:
         {
           for (int index5 = 0; index5 < num17; ++index5)
           {
-            if (Main.tile[(int) ((mouse.X - (double) (this.width / 2)) / 16.0) + index5, index7] == null)
+            if (Main.tile[(int) (((double) mouse.X - (double) (this.width / 2)) / 16.0) + index5, index7] == null)
               return;
-            tupleList2.Add(new Tuple<int, int>((int) ((mouse.X - (double) (this.width / 2)) / 16.0) + index5, index7));
+            tupleList2.Add(new Tuple<int, int>((int) (((double) mouse.X - (double) (this.width / 2)) / 16.0) + index5, index7));
           }
         }
         List<Tuple<int, int>> tupleList3 = new List<Tuple<int, int>>();
@@ -9242,7 +9040,7 @@ label_51:
           Tuple<int, int> tuple = tupleList3[0];
           for (int index5 = 0; index5 < tupleList3.Count; ++index5)
           {
-            float num20 = Vector2.Distance(Vector2.op_Addition(Vector2.op_Multiply(new Vector2((float) tupleList3[index5].Item1, (float) tupleList3[index5].Item2), 16f), Vector2.op_Multiply(Vector2.get_One(), 8f)), this.Center);
+            float num20 = Vector2.Distance(new Vector2((float) tupleList3[index5].Item1, (float) tupleList3[index5].Item2) * 16f + Vector2.One * 8f, this.Center);
             if ((double) num19 == -1.0 || (double) num20 < (double) num19)
             {
               num19 = num20;
@@ -9345,7 +9143,7 @@ label_51:
           Tuple<int, int> tuple = tupleList[0];
           for (int index3 = 0; index3 < tupleList.Count; ++index3)
           {
-            float num12 = Vector2.Distance(Vector2.op_Addition(Vector2.op_Multiply(new Vector2((float) tupleList[index3].Item1, (float) tupleList[index3].Item2), 16f), Vector2.op_Multiply(Vector2.get_One(), 8f)), mouse);
+            float num12 = Vector2.Distance(new Vector2((float) tupleList[index3].Item1, (float) tupleList[index3].Item2) * 16f + Vector2.One * 8f, mouse);
             if ((double) num11 == -1.0 || (double) num12 < (double) num11)
             {
               num11 = num12;
@@ -9448,7 +9246,7 @@ label_51:
           Tuple<int, int> tuple = tupleList[0];
           for (int index3 = 0; index3 < tupleList.Count; ++index3)
           {
-            float num11 = Vector2.Distance(Vector2.op_Addition(Vector2.op_Multiply(new Vector2((float) tupleList[index3].Item1, (float) tupleList[index3].Item2), 16f), Vector2.op_Multiply(Vector2.get_One(), 8f)), mouse);
+            float num11 = Vector2.Distance(new Vector2((float) tupleList[index3].Item1, (float) tupleList[index3].Item2) * 16f + Vector2.One * 8f, mouse);
             if ((double) num10 == -1.0 || (double) num11 < (double) num10)
             {
               num10 = num11;
@@ -9465,15 +9263,15 @@ label_51:
       }
       if (obj.hammer > 0 && fX == -1 && fY == -1)
       {
-        Vector2 vector2 = Vector2.op_Subtraction(mouse, this.Center);
-        int num10 = Math.Sign((float) vector2.X);
-        int num11 = Math.Sign((float) vector2.Y);
-        if ((double) Math.Abs((float) vector2.X) > (double) Math.Abs((float) vector2.Y) * 3.0)
+        Vector2 vector2 = mouse - this.Center;
+        int num10 = Math.Sign(vector2.X);
+        int num11 = Math.Sign(vector2.Y);
+        if ((double) Math.Abs(vector2.X) > (double) Math.Abs(vector2.Y) * 3.0)
         {
           num11 = 0;
           mouse.Y = this.Center.Y;
         }
-        if ((double) Math.Abs((float) vector2.Y) > (double) Math.Abs((float) vector2.X) * 3.0)
+        if ((double) Math.Abs(vector2.Y) > (double) Math.Abs(vector2.X) * 3.0)
         {
           num10 = 0;
           mouse.X = this.Center.X;
@@ -9485,10 +9283,10 @@ label_51:
         int num14 = 1;
         if (num11 == -1 && num10 != 0)
           num14 = -1;
-        int index3 = (int) ((this.position.X + (double) (this.width / 2) + (double) ((this.width / 2 - 1) * num10)) / 16.0);
+        int index3 = (int) (((double) this.position.X + (double) (this.width / 2) + (double) ((this.width / 2 - 1) * num10)) / 16.0);
         int index4 = (int) (((double) this.position.Y + 0.1) / 16.0);
         if (num14 == -1)
-          index4 = (int) ((this.position.Y + (double) this.height - 1.0) / 16.0);
+          index4 = (int) (((double) this.position.Y + (double) this.height - 1.0) / 16.0);
         int num15 = this.width / 16 + (this.width % 16 == 0 ? 0 : 1);
         int num16 = this.height / 16 + (this.height % 16 == 0 ? 0 : 1);
         if (num10 != 0)
@@ -9504,15 +9302,15 @@ label_51:
         {
           for (int index5 = 0; index5 < num15; ++index5)
           {
-            if (Main.tile[(int) (this.position.X / 16.0) + index5, index4] == null)
+            if (Main.tile[(int) ((double) this.position.X / 16.0) + index5, index4] == null)
               return;
-            tupleList1.Add(new Tuple<int, int>((int) (this.position.X / 16.0) + index5, index4));
+            tupleList1.Add(new Tuple<int, int>((int) ((double) this.position.X / 16.0) + index5, index4));
           }
         }
-        int index6 = (int) ((mouse.X + (double) ((this.width / 2 - 1) * num10)) / 16.0);
+        int index6 = (int) (((double) mouse.X + (double) ((this.width / 2 - 1) * num10)) / 16.0);
         int index7 = (int) (((double) mouse.Y + 0.1 - (double) (this.height / 2 + 1)) / 16.0);
         if (num14 == -1)
-          index7 = (int) ((mouse.Y + (double) (this.height / 2) - 1.0) / 16.0);
+          index7 = (int) (((double) mouse.Y + (double) (this.height / 2) - 1.0) / 16.0);
         if ((double) this.gravDir == -1.0 && num11 == 0)
           ++index7;
         if (index7 < 10)
@@ -9534,9 +9332,9 @@ label_51:
         {
           for (int index5 = 0; index5 < num17; ++index5)
           {
-            if (Main.tile[(int) ((mouse.X - (double) (this.width / 2)) / 16.0) + index5, index7] == null)
+            if (Main.tile[(int) (((double) mouse.X - (double) (this.width / 2)) / 16.0) + index5, index7] == null)
               return;
-            tupleList2.Add(new Tuple<int, int>((int) ((mouse.X - (double) (this.width / 2)) / 16.0) + index5, index7));
+            tupleList2.Add(new Tuple<int, int>((int) (((double) mouse.X - (double) (this.width / 2)) / 16.0) + index5, index7));
           }
         }
         List<Tuple<int, int>> tupleList3 = new List<Tuple<int, int>>();
@@ -9567,7 +9365,7 @@ label_51:
           Tuple<int, int> tuple = tupleList3[0];
           for (int index5 = 0; index5 < tupleList3.Count; ++index5)
           {
-            float num20 = Vector2.Distance(Vector2.op_Addition(Vector2.op_Multiply(new Vector2((float) tupleList3[index5].Item1, (float) tupleList3[index5].Item2), 16f), Vector2.op_Multiply(Vector2.get_One(), 8f)), this.Center);
+            float num20 = Vector2.Distance(new Vector2((float) tupleList3[index5].Item1, (float) tupleList3[index5].Item2) * 16f + Vector2.One * 8f, this.Center);
             if ((double) num19 == -1.0 || (double) num20 < (double) num19)
             {
               num19 = num20;
@@ -9602,7 +9400,7 @@ label_51:
           Tuple<int, int> tuple = tupleList[0];
           for (int index3 = 0; index3 < tupleList.Count; ++index3)
           {
-            float num11 = Vector2.Distance(Vector2.op_Addition(Vector2.op_Multiply(new Vector2((float) tupleList[index3].Item1, (float) tupleList[index3].Item2), 16f), Vector2.op_Multiply(Vector2.get_One(), 8f)), mouse);
+            float num11 = Vector2.Distance(new Vector2((float) tupleList[index3].Item1, (float) tupleList[index3].Item2) * 16f + Vector2.One * 8f, mouse);
             if ((double) num10 == -1.0 || (double) num11 < (double) num10)
             {
               num10 = num11;
@@ -9636,7 +9434,7 @@ label_51:
           Tuple<int, int> tuple = tupleList[0];
           for (int index3 = 0; index3 < tupleList.Count; ++index3)
           {
-            float num11 = Vector2.Distance(Vector2.op_Addition(Vector2.op_Multiply(new Vector2((float) tupleList[index3].Item1, (float) tupleList[index3].Item2), 16f), Vector2.op_Multiply(Vector2.get_One(), 8f)), mouse);
+            float num11 = Vector2.Distance(new Vector2((float) tupleList[index3].Item1, (float) tupleList[index3].Item2) * 16f + Vector2.One * 8f, mouse);
             if ((double) num10 == -1.0 || (double) num11 < (double) num10)
             {
               num10 = num11;
@@ -9669,7 +9467,7 @@ label_51:
           Tuple<int, int> tuple = tupleList[0];
           for (int index3 = 0; index3 < tupleList.Count; ++index3)
           {
-            float num11 = Vector2.Distance(Vector2.op_Addition(Vector2.op_Multiply(new Vector2((float) tupleList[index3].Item1, (float) tupleList[index3].Item2), 16f), Vector2.op_Multiply(Vector2.get_One(), 8f)), mouse);
+            float num11 = Vector2.Distance(new Vector2((float) tupleList[index3].Item1, (float) tupleList[index3].Item2) * 16f + Vector2.One * 8f, mouse);
             if ((double) num10 == -1.0 || (double) num11 < (double) num10)
             {
               num10 = num11;
@@ -9740,7 +9538,7 @@ label_51:
           Tuple<int, int> tuple = tupleList[0];
           for (int index3 = 0; index3 < tupleList.Count; ++index3)
           {
-            float num11 = Vector2.Distance(Vector2.op_Addition(Vector2.op_Multiply(new Vector2((float) tupleList[index3].Item1, (float) tupleList[index3].Item2), 16f), Vector2.op_Multiply(Vector2.get_One(), 8f)), mouse);
+            float num11 = Vector2.Distance(new Vector2((float) tupleList[index3].Item1, (float) tupleList[index3].Item2) * 16f + Vector2.One * 8f, mouse);
             if ((double) num10 == -1.0 || (double) num11 < (double) num10)
             {
               num10 = num11;
@@ -9798,7 +9596,7 @@ label_51:
           {
             if ((!Main.tile[tupleList[index3].Item1, tupleList[index3].Item2 - 1].active() || (int) Main.tile[tupleList[index3].Item1, tupleList[index3].Item2 - 1].type != 314) && (!Main.tile[tupleList[index3].Item1, tupleList[index3].Item2 + 1].active() || (int) Main.tile[tupleList[index3].Item1, tupleList[index3].Item2 + 1].type != 314))
             {
-              float num11 = Vector2.Distance(Vector2.op_Addition(Vector2.op_Multiply(new Vector2((float) tupleList[index3].Item1, (float) tupleList[index3].Item2), 16f), Vector2.op_Multiply(Vector2.get_One(), 8f)), mouse);
+              float num11 = Vector2.Distance(new Vector2((float) tupleList[index3].Item1, (float) tupleList[index3].Item2) * 16f + Vector2.One * 8f, mouse);
               if ((double) num10 == -1.0 || (double) num11 < (double) num10)
               {
                 num10 = num11;
@@ -9845,7 +9643,7 @@ label_51:
           {
             if ((!Main.tile[tupleList[index3].Item1, tupleList[index3].Item2 - 1].active() || (int) Main.tile[tupleList[index3].Item1, tupleList[index3].Item2 - 1].type != 314) && (!Main.tile[tupleList[index3].Item1, tupleList[index3].Item2 + 1].active() || (int) Main.tile[tupleList[index3].Item1, tupleList[index3].Item2 + 1].type != 314))
             {
-              float num11 = Vector2.Distance(Vector2.op_Addition(Vector2.op_Multiply(new Vector2((float) tupleList[index3].Item1, (float) tupleList[index3].Item2), 16f), Vector2.op_Multiply(Vector2.get_One(), 8f)), mouse);
+              float num11 = Vector2.Distance(new Vector2((float) tupleList[index3].Item1, (float) tupleList[index3].Item2) * 16f + Vector2.One * 8f, mouse);
               if ((double) num10 == -1.0 || (double) num11 < (double) num10)
               {
                 num10 = num11;
@@ -9869,7 +9667,7 @@ label_51:
           for (int y = num8; y <= num9; ++y)
           {
             Tile tile = Main.tile[x, y];
-            if ((int) tile.wall == 0 && (!tile.active() || !Main.tileSolid[(int) tile.type] || Main.tileSolidTop[(int) tile.type]) && Collision.CanHitWithCheck(this.position, this.width, this.height, Vector2.op_Multiply(new Vector2((float) x, (float) y), 16f), 16, 16, new Utils.PerLinePoint(DelegateMethods.NotDoorStand)))
+            if ((int) tile.wall == 0 && (!tile.active() || !Main.tileSolid[(int) tile.type] || Main.tileSolidTop[(int) tile.type]) && Collision.CanHitWithCheck(this.position, this.width, this.height, new Vector2((float) x, (float) y) * 16f, 16, 16, new Utils.PerLinePoint(DelegateMethods.NotDoorStand)))
             {
               bool flag2 = false;
               if (Main.tile[x - 1, y].active() || (int) Main.tile[x - 1, y].wall > 0)
@@ -9893,7 +9691,7 @@ label_51:
           Tuple<int, int> tuple = tupleList[0];
           for (int index3 = 0; index3 < tupleList.Count; ++index3)
           {
-            float num11 = Vector2.Distance(Vector2.op_Addition(Vector2.op_Multiply(new Vector2((float) tupleList[index3].Item1, (float) tupleList[index3].Item2), 16f), Vector2.op_Multiply(Vector2.get_One(), 8f)), mouse);
+            float num11 = Vector2.Distance(new Vector2((float) tupleList[index3].Item1, (float) tupleList[index3].Item2) * 16f + Vector2.One * 8f, mouse);
             if ((double) num10 == -1.0 || (double) num11 < (double) num10)
             {
               num10 = num11;
@@ -9949,7 +9747,7 @@ label_51:
           Tuple<int, int> tuple = tupleList[0];
           for (int index3 = 0; index3 < tupleList.Count; ++index3)
           {
-            float num11 = Vector2.Distance(Vector2.op_Addition(Vector2.op_Multiply(new Vector2((float) tupleList[index3].Item1, (float) tupleList[index3].Item2), 16f), Vector2.op_Multiply(Vector2.get_One(), 8f)), mouse);
+            float num11 = Vector2.Distance(new Vector2((float) tupleList[index3].Item1, (float) tupleList[index3].Item2) * 16f + Vector2.One * 8f, mouse);
             if ((double) num10 == -1.0 || (double) num11 < (double) num10)
             {
               num10 = num11;
@@ -9996,7 +9794,7 @@ label_51:
           Tuple<int, int> tuple = tupleList[0];
           for (int index3 = 0; index3 < tupleList.Count; ++index3)
           {
-            float num11 = Vector2.Distance(Vector2.op_Addition(Vector2.op_Multiply(new Vector2((float) tupleList[index3].Item1, (float) tupleList[index3].Item2), 16f), Vector2.op_Multiply(Vector2.get_One(), 8f)), mouse);
+            float num11 = Vector2.Distance(new Vector2((float) tupleList[index3].Item1, (float) tupleList[index3].Item2) * 16f + Vector2.One * 8f, mouse);
             if ((double) num10 == -1.0 || (double) num11 < (double) num10)
             {
               num10 = num11;
@@ -10036,25 +9834,14 @@ label_51:
                   flag2 = false;
               }
             }
-            int num10 = index3 * 16 - 16;
-            int num11 = index4 * 16 - 16;
-            int num12 = 32;
-            int num13 = 32;
-            Rectangle rectangle;
-            // ISSUE: explicit reference operation
-            ((Rectangle) @rectangle).\u002Ector(num10, num11, num12, num13);
+            Microsoft.Xna.Framework.Rectangle rectangle = new Microsoft.Xna.Framework.Rectangle(index3 * 16 - 16, index4 * 16 - 16, 32, 32);
             for (int index5 = 0; index5 < (int) byte.MaxValue; ++index5)
             {
               Player player = Main.player[index5];
-              if (player.active && !player.dead)
+              if (player.active && !player.dead && player.Hitbox.Intersects(rectangle))
               {
-                Rectangle hitbox = player.Hitbox;
-                // ISSUE: explicit reference operation
-                if (((Rectangle) @hitbox).Intersects(rectangle))
-                {
-                  flag2 = false;
-                  break;
-                }
+                flag2 = false;
+                break;
               }
             }
             if (flag2)
@@ -10067,7 +9854,7 @@ label_51:
           Tuple<int, int> tuple = tupleList[0];
           for (int index3 = 0; index3 < tupleList.Count; ++index3)
           {
-            float num11 = Vector2.Distance(Vector2.op_Addition(Vector2.op_Multiply(new Vector2((float) tupleList[index3].Item1, (float) tupleList[index3].Item2), 16f), Vector2.op_Multiply(Vector2.get_One(), 8f)), mouse);
+            float num11 = Vector2.Distance(new Vector2((float) tupleList[index3].Item1, (float) tupleList[index3].Item2) * 16f + Vector2.One * 8f, mouse);
             if ((double) num10 == -1.0 || (double) num11 < (double) num10)
             {
               num10 = num11;
@@ -10124,7 +9911,7 @@ label_51:
           {
             if (Collision.EmptyTile(tupleList[index3].Item1, tupleList[index3].Item2, false))
             {
-              float num11 = Vector2.Distance(Vector2.op_Addition(Vector2.op_Multiply(new Vector2((float) tupleList[index3].Item1, (float) tupleList[index3].Item2), 16f), Vector2.op_Multiply(Vector2.get_One(), 8f)), mouse);
+              float num11 = Vector2.Distance(new Vector2((float) tupleList[index3].Item1, (float) tupleList[index3].Item2) * 16f + Vector2.One * 8f, mouse);
               if ((double) num10 == -1.0 || (double) num11 < (double) num10)
               {
                 num10 = num11;
@@ -10158,7 +9945,7 @@ label_51:
           Tuple<int, int> tuple = tupleList[0];
           for (int index3 = 0; index3 < tupleList.Count; ++index3)
           {
-            float num11 = Vector2.Distance(Vector2.op_Addition(Vector2.op_Multiply(new Vector2((float) tupleList[index3].Item1, (float) tupleList[index3].Item2), 16f), Vector2.op_Multiply(Vector2.get_One(), 8f)), mouse);
+            float num11 = Vector2.Distance(new Vector2((float) tupleList[index3].Item1, (float) tupleList[index3].Item2) * 16f + Vector2.One * 8f, mouse);
             if ((double) num10 == -1.0 || (double) num11 < (double) num10)
             {
               num10 = num11;
@@ -10191,7 +9978,7 @@ label_51:
           Tuple<int, int> tuple = tupleList[0];
           for (int index3 = 0; index3 < tupleList.Count; ++index3)
           {
-            float num11 = Vector2.Distance(Vector2.op_Addition(Vector2.op_Multiply(new Vector2((float) tupleList[index3].Item1, (float) tupleList[index3].Item2), 16f), Vector2.op_Multiply(Vector2.get_One(), 8f)), mouse);
+            float num11 = Vector2.Distance(new Vector2((float) tupleList[index3].Item1, (float) tupleList[index3].Item2) * 16f + Vector2.One * 8f, mouse);
             if ((double) num10 == -1.0 || (double) num11 < (double) num10)
             {
               num10 = num11;
@@ -10224,7 +10011,7 @@ label_51:
           Tuple<int, int> tuple = tupleList[0];
           for (int index3 = 0; index3 < tupleList.Count; ++index3)
           {
-            float num11 = Vector2.Distance(Vector2.op_Addition(Vector2.op_Multiply(new Vector2((float) tupleList[index3].Item1, (float) tupleList[index3].Item2), 16f), Vector2.op_Multiply(Vector2.get_One(), 8f)), mouse);
+            float num11 = Vector2.Distance(new Vector2((float) tupleList[index3].Item1, (float) tupleList[index3].Item2) * 16f + Vector2.One * 8f, mouse);
             if ((double) num10 == -1.0 || (double) num11 < (double) num10)
             {
               num10 = num11;
@@ -10311,21 +10098,21 @@ label_51:
                 if ((uint) type <= 23U)
                 {
                   if ((int) type != 2 && (int) type != 23)
-                    goto label_730;
+                    goto label_728;
                 }
                 else if ((int) type != 53 && (int) type != 60 && (int) type != 109)
-                  goto label_730;
+                  goto label_728;
               }
               else if ((uint) type <= 116U)
               {
                 if ((int) type != 112 && (int) type != 116)
-                  goto label_730;
+                  goto label_728;
               }
               else if ((int) type != 147 && (int) type != 199 && (int) type != 234)
-                goto label_730;
+                goto label_728;
               flag2 = true;
             }
-label_730:
+label_728:
             num10 += 2;
           }
           if (!flag2)
@@ -10340,7 +10127,7 @@ label_730:
           Tuple<int, int> tuple = tupleList1[0];
           for (int index3 = 0; index3 < tupleList1.Count; ++index3)
           {
-            float num11 = Vector2.Distance(Vector2.op_Addition(Vector2.op_Multiply(new Vector2((float) tupleList1[index3].Item1, (float) tupleList1[index3].Item2), 16f), Vector2.op_Multiply(Vector2.get_One(), 8f)), mouse);
+            float num11 = Vector2.Distance(new Vector2((float) tupleList1[index3].Item1, (float) tupleList1[index3].Item2) * 16f + Vector2.One * 8f, mouse);
             if ((double) num10 == -1.0 || (double) num11 < (double) num10)
             {
               num10 = num11;
@@ -10386,7 +10173,7 @@ label_730:
           Tuple<int, int> tuple = tupleList[0];
           for (int index3 = 0; index3 < tupleList.Count; ++index3)
           {
-            float num11 = Vector2.Distance(Vector2.op_Addition(Vector2.op_Multiply(new Vector2((float) tupleList[index3].Item1, (float) tupleList[index3].Item2), 16f), Vector2.op_Multiply(Vector2.get_One(), 8f)), mouse);
+            float num11 = Vector2.Distance(new Vector2((float) tupleList[index3].Item1, (float) tupleList[index3].Item2) * 16f + Vector2.One * 8f, mouse);
             if ((double) num10 == -1.0 || (double) num11 < (double) num10)
             {
               num10 = num11;
@@ -10419,7 +10206,7 @@ label_730:
           Tuple<int, int> tuple = tupleList[0];
           for (int index3 = 0; index3 < tupleList.Count; ++index3)
           {
-            float num11 = Vector2.Distance(Vector2.op_Addition(Vector2.op_Multiply(new Vector2((float) tupleList[index3].Item1, (float) tupleList[index3].Item2), 16f), Vector2.op_Multiply(Vector2.get_One(), 8f)), mouse);
+            float num11 = Vector2.Distance(new Vector2((float) tupleList[index3].Item1, (float) tupleList[index3].Item2) * 16f + Vector2.One * 8f, mouse);
             if ((double) num10 == -1.0 || (double) num11 < (double) num10)
             {
               num10 = num11;
@@ -10488,7 +10275,7 @@ label_730:
           Tuple<int, int> tuple = tupleList[0];
           for (int index3 = 0; index3 < tupleList.Count; ++index3)
           {
-            float num11 = Vector2.Distance(Vector2.op_Addition(Vector2.op_Multiply(new Vector2((float) tupleList[index3].Item1, (float) tupleList[index3].Item2), 16f), Vector2.op_Multiply(Vector2.get_One(), 8f)), mouse);
+            float num11 = Vector2.Distance(new Vector2((float) tupleList[index3].Item1, (float) tupleList[index3].Item2) * 16f + Vector2.One * 8f, mouse);
             if ((double) num10 == -1.0 || (double) num11 < (double) num10)
             {
               num10 = num11;
@@ -10532,7 +10319,7 @@ label_730:
           Tuple<int, int> tuple = tupleList[0];
           for (int index3 = 0; index3 < tupleList.Count; ++index3)
           {
-            float num11 = Vector2.Distance(Vector2.op_Addition(Vector2.op_Multiply(new Vector2((float) tupleList[index3].Item1, (float) tupleList[index3].Item2), 16f), Vector2.op_Multiply(Vector2.get_One(), 8f)), mouse);
+            float num11 = Vector2.Distance(new Vector2((float) tupleList[index3].Item1, (float) tupleList[index3].Item2) * 16f + Vector2.One * 8f, mouse);
             if ((double) num10 == -1.0 || (double) num11 < (double) num10)
             {
               num10 = num11;
@@ -10576,7 +10363,7 @@ label_730:
           {
             if (Collision.EmptyTile(tupleList[index3].Item1, tupleList[index3].Item2, true))
             {
-              float num11 = Vector2.Distance(Vector2.op_Addition(Vector2.op_Multiply(new Vector2((float) tupleList[index3].Item1, (float) tupleList[index3].Item2), 16f), Vector2.op_Multiply(Vector2.get_One(), 8f)), mouse);
+              float num11 = Vector2.Distance(new Vector2((float) tupleList[index3].Item1, (float) tupleList[index3].Item2) * 16f + Vector2.One * 8f, mouse);
               if ((double) num10 == -1.0 || (double) num11 < (double) num10)
               {
                 num10 = num11;
@@ -10612,7 +10399,7 @@ label_730:
           Tuple<int, int> tuple = tupleList[0];
           for (int index3 = 0; index3 < tupleList.Count; ++index3)
           {
-            float num11 = Vector2.Distance(Vector2.op_Addition(Vector2.op_Multiply(new Vector2((float) tupleList[index3].Item1, (float) tupleList[index3].Item2), 16f), Vector2.op_Multiply(Vector2.get_One(), 8f)), mouse);
+            float num11 = Vector2.Distance(new Vector2((float) tupleList[index3].Item1, (float) tupleList[index3].Item2) * 16f + Vector2.One * 8f, mouse);
             if ((double) num10 == -1.0 || (double) num11 < (double) num10)
             {
               num10 = num11;
@@ -10655,9 +10442,9 @@ label_730:
       if (!smartCursorEnabled && !PlayerInput.UsingGamepad)
         return;
       Item obj = this.inventory[this.selectedItem];
-      Vector2 vector2 = Vector2.op_Addition(Main.screenPosition, new Vector2((float) Main.mouseX, (float) Main.mouseY));
+      Vector2 vector2 = Main.screenPosition + new Vector2((float) Main.mouseX, (float) Main.mouseY);
       if ((double) this.gravDir == -1.0)
-        vector2.Y = (__Null) (Main.screenPosition.Y + (double) Main.screenHeight - (double) Main.mouseY);
+        vector2.Y = Main.screenPosition.Y + (float) Main.screenHeight - (float) Main.mouseY;
       int index1 = Player.tileTargetX;
       int index2 = Player.tileTargetY;
       if (index1 < 10)
@@ -10687,10 +10474,10 @@ label_21:
       if (flag1)
         return;
       int num2 = 0;
-      int num3 = (int) (this.position.X / 16.0) - Player.tileRangeX - num2 + 1;
-      int num4 = (int) ((this.position.X + (double) this.width) / 16.0) + Player.tileRangeX + num2 - 1;
-      int num5 = (int) (this.position.Y / 16.0) - Player.tileRangeY - num2 + 1;
-      int num6 = (int) ((this.position.Y + (double) this.height) / 16.0) + Player.tileRangeY + num2 - 2;
+      int num3 = (int) ((double) this.position.X / 16.0) - Player.tileRangeX - num2 + 1;
+      int num4 = (int) (((double) this.position.X + (double) this.width) / 16.0) + Player.tileRangeX + num2 - 1;
+      int num5 = (int) ((double) this.position.Y / 16.0) - Player.tileRangeY - num2 + 1;
+      int num6 = (int) (((double) this.position.Y + (double) this.height) / 16.0) + Player.tileRangeY + num2 - 2;
       int lx1 = Utils.Clamp<int>(num3, 10, Main.maxTilesX - 10);
       int hx = Utils.Clamp<int>(num4, 10, Main.maxTilesX - 10);
       int ly1 = Utils.Clamp<int>(num5, 10, Main.maxTilesY - 10);
@@ -10703,11 +10490,11 @@ label_21:
         int num8 = (int) projectile.Center.Y / 16;
         tupleList1.Add(new Tuple<int, int>(num7, num8));
       }
-      int x = -1;
-      int y = -1;
+      int x1 = -1;
+      int y1 = -1;
       int index4 = -1;
-      Vector2 point1 = Vector2.op_Addition(Main.ReverseGravitySupport(Main.MouseScreen, 0.0f), Main.screenPosition);
-      if (x == -1 && y == -1)
+      Vector2 point1 = Main.ReverseGravitySupport(Main.MouseScreen, 0.0f) + Main.screenPosition;
+      if (x1 == -1 && y1 == -1)
       {
         List<Tuple<int, int>> tupleList2 = new List<Tuple<int, int>>();
         for (int index3 = lx1; index3 <= hx; ++index3)
@@ -10865,7 +10652,7 @@ label_21:
           Tuple<int, int> tuple = tupleList2[0];
           for (int index3 = 0; index3 < tupleList2.Count; ++index3)
           {
-            float num8 = Vector2.Distance(Vector2.op_Addition(Vector2.op_Multiply(new Vector2((float) tupleList2[index3].Item1, (float) tupleList2[index3].Item2), 16f), Vector2.op_Multiply(Vector2.get_One(), 8f)), vector2);
+            float num8 = Vector2.Distance(new Vector2((float) tupleList2[index3].Item1, (float) tupleList2[index3].Item2) * 16f + Vector2.One * 8f, vector2);
             if ((double) num7 == -1.0 || (double) num8 < (double) num7)
             {
               num7 = num8;
@@ -10874,8 +10661,8 @@ label_21:
           }
           if (Collision.InTileBounds(tuple.Item1, tuple.Item2, lx1, ly1, hx, hy))
           {
-            x = tuple.Item1;
-            y = tuple.Item2;
+            x1 = tuple.Item1;
+            y1 = tuple.Item2;
           }
         }
         bool flag2 = false;
@@ -11142,20 +10929,18 @@ label_124:
           {
             int lx2 = index5 - (int) tile.frameX % (num9 * num7 + num11) / num9;
             int ly2 = index6 - (int) tile.frameY % (num10 * num8 + num12) / num10;
-            bool flag3 = Collision.InTileBounds(x, y, lx2, ly2, lx2 + num7 - 1, ly2 + num8 - 1);
+            bool flag3 = Collision.InTileBounds(x1, y1, lx2, ly2, lx2 + num7 - 1, ly2 + num8 - 1);
             if (!smartCursorEnabled)
               flag3 = flag3 && Collision.InTileBounds((int) vector2.X / 16, (int) vector2.Y / 16, lx2, ly2, lx2 + num7 - 1, ly2 + num8 - 1);
             if (flag2)
               flag3 = false;
             if (!flag2 && flag3)
               flag2 = true;
-            for (int index7 = lx2; index7 < lx2 + num7; ++index7)
+            for (int x2 = lx2; x2 < lx2 + num7; ++x2)
             {
-              for (int index8 = ly2; index8 < ly2 + num8; ++index8)
+              for (int y2 = ly2; y2 < ly2 + num8; ++y2)
               {
-                Point point2;
-                // ISSUE: explicit reference operation
-                ((Point) @point2).\u002Ector(index7, index8);
+                Point point2 = new Point(x2, y2);
                 if (!Main.SmartInteractTileCoords.Contains(point2))
                 {
                   if (flag3)
@@ -11171,54 +10956,45 @@ label_124:
       }
       if (index4 == -1 && smartCursorEnabled)
       {
-        Rectangle rectangle;
-        // ISSUE: explicit reference operation
-        ((Rectangle) @rectangle).\u002Ector(lx1 * 16, ly1 * 16, (hx - lx1) * 16 + 16, (hy - ly1) * 16 + 16);
+        Microsoft.Xna.Framework.Rectangle rectangle = new Microsoft.Xna.Framework.Rectangle(lx1 * 16, ly1 * 16, (hx - lx1) * 16 + 16, (hy - ly1) * 16 + 16);
         bool flag2 = false;
         for (int index3 = 0; index3 < 200; ++index3)
         {
           NPC npc = Main.npc[index3];
-          if (npc.active && npc.townNPC)
+          if (npc.active && npc.townNPC && npc.Hitbox.Intersects(rectangle))
           {
-            Rectangle hitbox = npc.Hitbox;
-            // ISSUE: explicit reference operation
-            if (((Rectangle) @hitbox).Intersects(rectangle))
+            Main.SmartInteractNPCsNearby.Add(index3);
+            if (!flag2)
             {
-              Main.SmartInteractNPCsNearby.Add(index3);
-              if (!flag2)
+              float num7 = npc.Hitbox.Distance(point1);
+              if (index4 == -1 || (double) Main.npc[index4].Hitbox.Distance(point1) > (double) num7)
+                index4 = index3;
+              if ((double) num7 == 0.0)
               {
-                float num7 = npc.Hitbox.Distance(point1);
-                if (index4 == -1 || (double) Main.npc[index4].Hitbox.Distance(point1) > (double) num7)
-                  index4 = index3;
-                if ((double) num7 == 0.0)
-                {
-                  flag2 = true;
-                  index4 = index3;
-                  break;
-                }
+                flag2 = true;
+                index4 = index3;
+                break;
               }
             }
           }
         }
         if (flag2)
         {
-          x = y = -1;
+          x1 = y1 = -1;
           Main.SmartInteractTileCoordsSelected.Clear();
         }
       }
-      if (x != -1 && y != -1 && index4 != -1)
+      if (x1 != -1 && y1 != -1 && index4 != -1)
       {
-        Rectangle r;
-        // ISSUE: explicit reference operation
-        ((Rectangle) @r).\u002Ector(x * 16, y * 16, 16, 16);
-        Rectangle hitbox = Main.npc[index4].Hitbox;
+        Microsoft.Xna.Framework.Rectangle r = new Microsoft.Xna.Framework.Rectangle(x1 * 16, y1 * 16, 16, 16);
+        Microsoft.Xna.Framework.Rectangle hitbox = Main.npc[index4].Hitbox;
         if ((double) r.Distance(point1) < (double) hitbox.Distance(point1))
         {
           index4 = -1;
         }
         else
         {
-          x = y = -1;
+          x1 = y1 = -1;
           Main.SmartInteractTileCoordsSelected.Clear();
         }
       }
@@ -11226,7 +11002,7 @@ label_124:
         Main.SmartInteractTileCoordsSelected.Clear();
       if (PlayerInput.UsingGamepad && !Main.SmartCursorEnabled)
       {
-        if (x != -1 && y != -1)
+        if (x1 != -1 && y1 != -1)
         {
           Main.TileInteractionLX = lx1 - 10;
           Main.TileInteractionLY = ly1 - 10;
@@ -11237,10 +11013,10 @@ label_124:
       }
       else
       {
-        if (x != -1 && y != -1)
+        if (x1 != -1 && y1 != -1)
         {
-          Main.SmartInteractX = x;
-          Main.SmartInteractY = y;
+          Main.SmartInteractX = x1;
+          Main.SmartInteractY = y1;
           Main.SmartInteractShowingGenuine = true;
           Main.TileInteractionLX = lx1 - 10;
           Main.TileInteractionLY = ly1 - 10;
@@ -11319,7 +11095,7 @@ label_124:
                 while (Main.tile[x, y].active() && ((int) Main.tile[x, y].type == 323 && (int) Main.tile[x, y + 1].type == 323 || (int) Main.tile[x, y].type == 72 && (int) Main.tile[x, y + 1].type == 72) && Collision.InTileBounds(x, y + 1, LX, LY, HX, HY))
                   ++y;
               }
-              float num2 = Vector2.Distance(Vector2.op_Addition(Vector2.op_Multiply(new Vector2((float) x, (float) y), 16f), Vector2.op_Multiply(Vector2.get_One(), 8f)), mouse);
+              float num2 = Vector2.Distance(new Vector2((float) x, (float) y) * 16f + Vector2.One * 8f, mouse);
               if ((double) num1 == -1.0 || (double) num2 < (double) num1)
               {
                 num1 = num2;
@@ -11375,11 +11151,10 @@ label_124:
         {
           if (Collision.EmptyTile(tupleList[index].Item1, tupleList[index].Item2, true))
           {
-            Vector2 vector2 = Vector2.op_Subtraction(Vector2.op_Addition(Vector2.op_Multiply(new Vector2((float) tupleList[index].Item1, (float) tupleList[index].Item2), 16f), Vector2.op_Multiply(Vector2.get_One(), 8f)), mouse);
+            Vector2 vector2 = new Vector2((float) tupleList[index].Item1, (float) tupleList[index].Item2) * 16f + Vector2.One * 8f - mouse;
             bool flag2 = false;
-            float num3 = Math.Abs((float) vector2.X);
-            // ISSUE: explicit reference operation
-            float num4 = ((Vector2) @vector2).Length();
+            float num3 = Math.Abs(vector2.X);
+            float num4 = vector2.Length();
             if ((double) num3 < (double) num2)
               flag2 = true;
             if ((double) num3 == (double) num2 && ((double) num1 == -1.0 || (double) num4 < (double) num1))
@@ -11442,7 +11217,7 @@ label_124:
         Tuple<int, int> tuple = tupleList[0];
         for (int index = 0; index < tupleList.Count; ++index)
         {
-          float num2 = Vector2.Distance(Vector2.op_Addition(Vector2.op_Multiply(new Vector2((float) tupleList[index].Item1, (float) tupleList[index].Item2), 16f), Vector2.op_Multiply(Vector2.get_One(), 8f)), mouse);
+          float num2 = Vector2.Distance(new Vector2((float) tupleList[index].Item1, (float) tupleList[index].Item2) * 16f + Vector2.One * 8f, mouse);
           if ((double) num1 == -1.0 || (double) num2 < (double) num1)
           {
             num1 = num2;
@@ -11463,10 +11238,10 @@ label_124:
       if (this.controlTorch && this.itemAnimation == 0)
       {
         int num1 = 0;
-        int index1 = (int) (((double) Main.mouseX + Main.screenPosition.X) / 16.0);
-        int index2 = (int) (((double) Main.mouseY + Main.screenPosition.Y) / 16.0);
+        int index1 = (int) (((double) Main.mouseX + (double) Main.screenPosition.X) / 16.0);
+        int index2 = (int) (((double) Main.mouseY + (double) Main.screenPosition.Y) / 16.0);
         if ((double) this.gravDir == -1.0)
-          index2 = (int) ((Main.screenPosition.Y + (double) Main.screenHeight - (double) Main.mouseY) / 16.0);
+          index2 = (int) (((double) Main.screenPosition.Y + (double) Main.screenHeight - (double) Main.mouseY) / 16.0);
         int num2 = -10;
         int num3 = -10;
         int num4 = -10;
@@ -11487,14 +11262,14 @@ label_124:
         }
         int num7 = 0;
         int num8 = 0;
-        if (this.position.X / 16.0 >= (double) index1)
-          num7 = (int) (this.position.X / 16.0) - index1;
-        if ((this.position.X + (double) this.width) / 16.0 <= (double) index1)
-          num7 = index1 - (int) ((this.position.X + (double) this.width) / 16.0);
-        if (this.position.Y / 16.0 >= (double) index2)
-          num8 = (int) (this.position.Y / 16.0) - index2;
-        if ((this.position.Y + (double) this.height) / 16.0 <= (double) index2)
-          num8 = index2 - (int) ((this.position.Y + (double) this.height) / 16.0);
+        if ((double) this.position.X / 16.0 >= (double) index1)
+          num7 = (int) ((double) this.position.X / 16.0) - index1;
+        if (((double) this.position.X + (double) this.width) / 16.0 <= (double) index1)
+          num7 = index1 - (int) (((double) this.position.X + (double) this.width) / 16.0);
+        if ((double) this.position.Y / 16.0 >= (double) index2)
+          num8 = (int) ((double) this.position.Y / 16.0) - index2;
+        if (((double) this.position.Y + (double) this.height) / 16.0 <= (double) index2)
+          num8 = index2 - (int) (((double) this.position.Y + (double) this.height) / 16.0);
         bool flag1 = false;
         bool flag2 = false;
         try
@@ -11548,8 +11323,8 @@ label_124:
           num1 = 4;
         if (num1 == 0 || num1 == 4)
         {
-          float num9 = Math.Abs((float) ((double) Main.mouseX + Main.screenPosition.X - (this.position.X + (double) (this.width / 2))));
-          float num10 = Math.Abs((float) ((double) Main.mouseY + Main.screenPosition.Y - (this.position.Y + (double) (this.height / 2)))) * 1.3f;
+          float num9 = Math.Abs((float) ((double) Main.mouseX + (double) Main.screenPosition.X - ((double) this.position.X + (double) (this.width / 2))));
+          float num10 = Math.Abs((float) ((double) Main.mouseY + (double) Main.screenPosition.Y - ((double) this.position.Y + (double) (this.height / 2)))) * 1.3f;
           if (Math.Sqrt((double) num9 * (double) num9 + (double) num10 * (double) num10) > 200.0)
             num1 = 5;
         }
@@ -12061,7 +11836,7 @@ label_124:
     public void UpdateLifeRegen()
     {
       bool flag = false;
-      if (this.shinyStone && (double) Math.Abs((float) this.velocity.X) < 0.05 && ((double) Math.Abs((float) this.velocity.Y) < 0.05 && this.itemAnimation == 0))
+      if (this.shinyStone && (double) Math.Abs(this.velocity.X) < 0.05 && ((double) Math.Abs(this.velocity.Y) < 0.05 && this.itemAnimation == 0))
         flag = true;
       if (this.poisoned)
       {
@@ -12200,7 +11975,7 @@ label_124:
         ++num1;
         this.lifeRegenTime = 3600;
       }
-      float num3 = this.velocity.X == 0.0 || this.grappling[0] > 0 ? num1 * 1.25f : num1 * 0.5f;
+      float num3 = (double) this.velocity.X == 0.0 || this.grappling[0] > 0 ? num1 * 1.25f : num1 * 0.5f;
       if (this.crimsonRegen)
         num3 *= 1.5f;
       if (this.shinyStone)
@@ -12231,23 +12006,17 @@ label_124:
         ++this.lifeRegenCount;
         if (flag && (Main.rand.Next(30000) < this.lifeRegenTime || Main.rand.Next(30) == 0))
         {
-          int index = Dust.NewDust(this.position, this.width, this.height, 55, 0.0f, 0.0f, 200, (Color) null, 0.5f);
+          int index = Dust.NewDust(this.position, this.width, this.height, 55, 0.0f, 0.0f, 200, new Color(), 0.5f);
           Main.dust[index].noGravity = true;
-          Dust dust = Main.dust[index];
-          Vector2 vector2_1 = Vector2.op_Multiply(dust.velocity, 0.75f);
-          dust.velocity = vector2_1;
+          Main.dust[index].velocity *= 0.75f;
           Main.dust[index].fadeIn = 1.3f;
-          Vector2 vector2_2;
-          // ISSUE: explicit reference operation
-          ((Vector2) @vector2_2).\u002Ector((float) Main.rand.Next(-100, 101), (float) Main.rand.Next(-100, 101));
-          // ISSUE: explicit reference operation
-          ((Vector2) @vector2_2).Normalize();
-          Vector2 vector2_3 = Vector2.op_Multiply(vector2_2, (float) Main.rand.Next(50, 100) * 0.04f);
-          Main.dust[index].velocity = vector2_3;
-          // ISSUE: explicit reference operation
-          ((Vector2) @vector2_3).Normalize();
-          Vector2 vector2_4 = Vector2.op_Multiply(vector2_3, 34f);
-          Main.dust[index].position = Vector2.op_Subtraction(this.Center, vector2_4);
+          Vector2 vector2_1 = new Vector2((float) Main.rand.Next(-100, 101), (float) Main.rand.Next(-100, 101));
+          vector2_1.Normalize();
+          Vector2 vector2_2 = vector2_1 * ((float) Main.rand.Next(50, 100) * 0.04f);
+          Main.dust[index].velocity = vector2_2;
+          vector2_2.Normalize();
+          Vector2 vector2_3 = vector2_2 * 34f;
+          Main.dust[index].position = this.Center - vector2_3;
         }
       }
       while (this.lifeRegenCount >= 120)
@@ -12260,29 +12029,15 @@ label_124:
           {
             for (int index1 = 0; index1 < 10; ++index1)
             {
-              int index2 = Dust.NewDust(this.position, this.width, this.height, 5, 0.0f, 0.0f, 175, (Color) null, 1.75f);
+              int index2 = Dust.NewDust(this.position, this.width, this.height, 5, 0.0f, 0.0f, 175, new Color(), 1.75f);
               Main.dust[index2].noGravity = true;
-              Dust dust = Main.dust[index2];
-              Vector2 vector2 = Vector2.op_Multiply(dust.velocity, 0.75f);
-              dust.velocity = vector2;
+              Main.dust[index2].velocity *= 0.75f;
               int num2 = Main.rand.Next(-40, 41);
               int num5 = Main.rand.Next(-40, 41);
-              // ISSUE: explicit reference operation
-              // ISSUE: variable of a reference type
-              Vector2& local1 = @Main.dust[index2].position;
-              // ISSUE: explicit reference operation
-              double num6 = (^local1).X + (double) num2;
-              // ISSUE: explicit reference operation
-              (^local1).X = (__Null) num6;
-              // ISSUE: explicit reference operation
-              // ISSUE: variable of a reference type
-              Vector2& local2 = @Main.dust[index2].position;
-              // ISSUE: explicit reference operation
-              double num7 = (^local2).Y + (double) num5;
-              // ISSUE: explicit reference operation
-              (^local2).Y = (__Null) num7;
-              Main.dust[index2].velocity.X = (__Null) ((double) -num2 * 0.0750000029802322);
-              Main.dust[index2].velocity.Y = (__Null) ((double) -num5 * 0.0750000029802322);
+              Main.dust[index2].position.X += (float) num2;
+              Main.dust[index2].position.Y += (float) num5;
+              Main.dust[index2].velocity.X = (float) -num2 * 0.075f;
+              Main.dust[index2].velocity.Y = (float) -num5 * 0.075f;
             }
           }
         }
@@ -12295,7 +12050,7 @@ label_124:
         {
           this.lifeRegenCount += 600;
           this.statLife -= 5;
-          CombatText.NewText(new Rectangle((int) this.position.X, (int) this.position.Y, this.width, this.height), CombatText.LifeRegen, 5, false, true);
+          CombatText.NewText(new Microsoft.Xna.Framework.Rectangle((int) this.position.X, (int) this.position.Y, this.width, this.height), CombatText.LifeRegen, 5, false, true);
           if (this.statLife <= 0 && this.whoAmI == Main.myPlayer)
           {
             if (this.suffocating)
@@ -12313,25 +12068,25 @@ label_124:
           {
             this.lifeRegenCount += 480;
             this.statLife -= 4;
-            CombatText.NewText(new Rectangle((int) this.position.X, (int) this.position.Y, this.width, this.height), CombatText.LifeRegen, 4, false, true);
+            CombatText.NewText(new Microsoft.Xna.Framework.Rectangle((int) this.position.X, (int) this.position.Y, this.width, this.height), CombatText.LifeRegen, 4, false, true);
           }
           else if (this.lifeRegenCount <= -360)
           {
             this.lifeRegenCount += 360;
             this.statLife -= 3;
-            CombatText.NewText(new Rectangle((int) this.position.X, (int) this.position.Y, this.width, this.height), CombatText.LifeRegen, 3, false, true);
+            CombatText.NewText(new Microsoft.Xna.Framework.Rectangle((int) this.position.X, (int) this.position.Y, this.width, this.height), CombatText.LifeRegen, 3, false, true);
           }
           else if (this.lifeRegenCount <= -240)
           {
             this.lifeRegenCount += 240;
             this.statLife -= 2;
-            CombatText.NewText(new Rectangle((int) this.position.X, (int) this.position.Y, this.width, this.height), CombatText.LifeRegen, 2, false, true);
+            CombatText.NewText(new Microsoft.Xna.Framework.Rectangle((int) this.position.X, (int) this.position.Y, this.width, this.height), CombatText.LifeRegen, 2, false, true);
           }
           else
           {
             this.lifeRegenCount += 120;
             --this.statLife;
-            CombatText.NewText(new Rectangle((int) this.position.X, (int) this.position.Y, this.width, this.height), CombatText.LifeRegen, 1, false, true);
+            CombatText.NewText(new Microsoft.Xna.Framework.Rectangle((int) this.position.X, (int) this.position.Y, this.width, this.height), CombatText.LifeRegen, 1, false, true);
           }
           if (this.statLife <= 0 && this.whoAmI == Main.myPlayer)
           {
@@ -12366,7 +12121,7 @@ label_124:
       {
         --this.manaRegenDelay;
         this.manaRegenDelay -= this.manaRegenDelayBonus;
-        if (this.velocity.X == 0.0 && this.velocity.Y == 0.0 || (this.grappling[0] >= 0 || this.manaRegenBuff))
+        if ((double) this.velocity.X == 0.0 && (double) this.velocity.Y == 0.0 || (this.grappling[0] >= 0 || this.manaRegenBuff))
           --this.manaRegenDelay;
       }
       if (this.manaRegenBuff && this.manaRegenDelay > 20)
@@ -12375,7 +12130,7 @@ label_124:
       {
         this.manaRegenDelay = 0;
         this.manaRegen = this.statManaMax2 / 7 + 1 + this.manaRegenBonus;
-        if (this.velocity.X == 0.0 && this.velocity.Y == 0.0 || (this.grappling[0] >= 0 || this.manaRegenBuff))
+        if ((double) this.velocity.X == 0.0 && (double) this.velocity.Y == 0.0 || (this.grappling[0] >= 0 || this.manaRegenBuff))
           this.manaRegen += this.statManaMax2 / 2;
         float num = (float) ((double) this.statMana / (double) this.statManaMax2 * 0.800000011920929 + 0.200000002980232);
         if (this.manaRegenBuff)
@@ -12401,12 +12156,10 @@ label_124:
             Main.PlaySound(25, -1, -1, 1, 1f, 0.0f);
             for (int index1 = 0; index1 < 5; ++index1)
             {
-              int index2 = Dust.NewDust(this.position, this.width, this.height, 45, 0.0f, 0.0f, (int) byte.MaxValue, (Color) null, (float) Main.rand.Next(20, 26) * 0.1f);
+              int index2 = Dust.NewDust(this.position, this.width, this.height, 45, 0.0f, 0.0f, (int) byte.MaxValue, new Color(), (float) Main.rand.Next(20, 26) * 0.1f);
               Main.dust[index2].noLight = true;
               Main.dust[index2].noGravity = true;
-              Dust dust = Main.dust[index2];
-              Vector2 vector2 = Vector2.op_Multiply(dust.velocity, 0.5f);
-              dust.velocity = vector2;
+              Main.dust[index2].velocity *= 0.5f;
             }
           }
           this.statMana = this.statManaMax2;
@@ -12418,8 +12171,8 @@ label_124:
     {
       if (this.mount.Active)
       {
-        Player.jumpHeight = this.mount.JumpHeight((float) this.velocity.X);
-        Player.jumpSpeed = this.mount.JumpSpeed((float) this.velocity.X);
+        Player.jumpHeight = this.mount.JumpHeight(this.velocity.X);
+        Player.jumpSpeed = this.mount.JumpSpeed(this.velocity.X);
       }
       else
       {
@@ -12450,92 +12203,92 @@ label_124:
     {
       if (!this.controlUp && !this.controlDown)
         return;
-      int index1 = (int) (this.position.X + (double) (this.width / 2)) / 16;
-      int index2 = (int) (this.position.Y - 8.0) / 16;
+      int index1 = (int) ((double) this.position.X + (double) (this.width / 2)) / 16;
+      int index2 = (int) ((double) this.position.Y - 8.0) / 16;
       if (Main.tile[index1, index2] == null || !Main.tile[index1, index2].active() || !Main.tileRope[(int) Main.tile[index1, index2].type])
         return;
-      float num1 = (float) this.position.Y;
+      float num1 = this.position.Y;
       if (Main.tile[index1, index2 - 1] == null)
         Main.tile[index1, index2 - 1] = new Tile();
       if (Main.tile[index1, index2 + 1] == null)
         Main.tile[index1, index2 + 1] = new Tile();
       if ((!Main.tile[index1, index2 - 1].active() || !Main.tileRope[(int) Main.tile[index1, index2 - 1].type]) && (!Main.tile[index1, index2 + 1].active() || !Main.tileRope[(int) Main.tile[index1, index2 + 1].type]))
         num1 = (float) (index2 * 16 + 22);
-      float num2 = (float) (index1 * 16 + 8 - this.width / 2 + 6 * this.direction);
-      int num3 = index1 * 16 + 8 - this.width / 2 + 6;
-      int num4 = index1 * 16 + 8 - this.width / 2;
-      int num5 = index1 * 16 + 8 - this.width / 2 - 6;
-      int num6 = 1;
-      float num7 = Math.Abs((float) this.position.X - (float) num3);
-      if ((double) Math.Abs((float) this.position.X - (float) num4) < (double) num7)
+      float x1 = (float) (index1 * 16 + 8 - this.width / 2 + 6 * this.direction);
+      int num2 = index1 * 16 + 8 - this.width / 2 + 6;
+      int num3 = index1 * 16 + 8 - this.width / 2;
+      int num4 = index1 * 16 + 8 - this.width / 2 - 6;
+      int num5 = 1;
+      float num6 = Math.Abs(this.position.X - (float) num2);
+      if ((double) Math.Abs(this.position.X - (float) num3) < (double) num6)
       {
-        num6 = 2;
-        num7 = Math.Abs((float) this.position.X - (float) num4);
+        num5 = 2;
+        num6 = Math.Abs(this.position.X - (float) num3);
       }
-      if ((double) Math.Abs((float) this.position.X - (float) num5) < (double) num7)
+      if ((double) Math.Abs(this.position.X - (float) num4) < (double) num6)
       {
-        num6 = 3;
-        Math.Abs((float) this.position.X - (float) num5);
+        num5 = 3;
+        Math.Abs(this.position.X - (float) num4);
       }
-      if (num6 == 1)
+      if (num5 == 1)
       {
-        num2 = (float) num3;
+        x1 = (float) num2;
         this.pulleyDir = (byte) 2;
         this.direction = 1;
       }
-      if (num6 == 2)
+      if (num5 == 2)
       {
-        num2 = (float) num4;
+        x1 = (float) num3;
         this.pulleyDir = (byte) 1;
       }
-      if (num6 == 3)
+      if (num5 == 3)
       {
-        num2 = (float) num5;
+        x1 = (float) num4;
         this.pulleyDir = (byte) 2;
         this.direction = -1;
       }
-      if (!Collision.SolidCollision(new Vector2(num2, (float) this.position.Y), this.width, this.height))
+      if (!Collision.SolidCollision(new Vector2(x1, this.position.Y), this.width, this.height))
       {
         if (this.whoAmI == Main.myPlayer)
-          Main.cameraX = Main.cameraX + (float) this.position.X - num2;
+          Main.cameraX = Main.cameraX + this.position.X - x1;
         this.pulley = true;
-        this.position.X = (__Null) (double) num2;
-        this.gfxOffY = (float) this.position.Y - num1;
+        this.position.X = x1;
+        this.gfxOffY = this.position.Y - num1;
         this.stepSpeed = 2.5f;
-        this.position.Y = (__Null) (double) num1;
-        this.velocity.X = (__Null) 0.0;
+        this.position.Y = num1;
+        this.velocity.X = 0.0f;
       }
       else
       {
-        float num8 = (float) num3;
+        float x2 = (float) num2;
         this.pulleyDir = (byte) 2;
         this.direction = 1;
-        if (!Collision.SolidCollision(new Vector2(num8, (float) this.position.Y), this.width, this.height))
+        if (!Collision.SolidCollision(new Vector2(x2, this.position.Y), this.width, this.height))
         {
           if (this.whoAmI == Main.myPlayer)
-            Main.cameraX = Main.cameraX + (float) this.position.X - num8;
+            Main.cameraX = Main.cameraX + this.position.X - x2;
           this.pulley = true;
-          this.position.X = (__Null) (double) num8;
-          this.gfxOffY = (float) this.position.Y - num1;
+          this.position.X = x2;
+          this.gfxOffY = this.position.Y - num1;
           this.stepSpeed = 2.5f;
-          this.position.Y = (__Null) (double) num1;
-          this.velocity.X = (__Null) 0.0;
+          this.position.Y = num1;
+          this.velocity.X = 0.0f;
         }
         else
         {
-          float num9 = (float) num5;
+          float x3 = (float) num4;
           this.pulleyDir = (byte) 2;
           this.direction = -1;
-          if (Collision.SolidCollision(new Vector2(num9, (float) this.position.Y), this.width, this.height))
+          if (Collision.SolidCollision(new Vector2(x3, this.position.Y), this.width, this.height))
             return;
           if (this.whoAmI == Main.myPlayer)
-            Main.cameraX = Main.cameraX + (float) this.position.X - num9;
+            Main.cameraX = Main.cameraX + this.position.X - x3;
           this.pulley = true;
-          this.position.X = (__Null) (double) num9;
-          this.gfxOffY = (float) this.position.Y - num1;
+          this.position.X = x3;
+          this.gfxOffY = this.position.Y - num1;
           this.stepSpeed = 2.5f;
-          this.position.Y = (__Null) (double) num1;
-          this.velocity.X = (__Null) 0.0;
+          this.position.Y = num1;
+          this.velocity.X = 0.0f;
         }
       }
     }
@@ -12549,12 +12302,12 @@ label_124:
       float num1 = (float) (((double) this.accRunSpeed + (double) this.maxRunSpeed) / 2.0);
       float num2 = 0.0f;
       bool flag3 = false;
-      if (this.windPushed && (!this.mount.Active || this.velocity.Y != 0.0 || !flag2))
+      if (this.windPushed && (!this.mount.Active || (double) this.velocity.Y != 0.0 || !flag2))
       {
         num2 = (float) Math.Sign(Main.windSpeed) * 0.07f;
         if ((double) Math.Abs(Main.windSpeed) > 0.5)
           num2 *= 1.37f;
-        if (this.velocity.Y != 0.0)
+        if ((double) this.velocity.Y != 0.0)
           num2 *= 1.5f;
         if (flag2)
           num2 *= 0.8f;
@@ -12564,81 +12317,53 @@ label_124:
       }
       if ((double) this.trackBoost != 0.0)
       {
-        // ISSUE: explicit reference operation
-        // ISSUE: variable of a reference type
-        Vector2& local = @this.velocity;
-        // ISSUE: explicit reference operation
-        double num3 = (^local).X + (double) this.trackBoost;
-        // ISSUE: explicit reference operation
-        (^local).X = (__Null) num3;
+        this.velocity.X += this.trackBoost;
         this.trackBoost = 0.0f;
-        if (this.velocity.X < 0.0)
+        if ((double) this.velocity.X < 0.0)
         {
-          if (this.velocity.X < -(double) this.maxRunSpeed)
-            this.velocity.X = (__Null) -(double) this.maxRunSpeed;
+          if ((double) this.velocity.X < -(double) this.maxRunSpeed)
+            this.velocity.X = -this.maxRunSpeed;
         }
-        else if (this.velocity.X > (double) this.maxRunSpeed)
-          this.velocity.X = (__Null) (double) this.maxRunSpeed;
+        else if ((double) this.velocity.X > (double) this.maxRunSpeed)
+          this.velocity.X = this.maxRunSpeed;
       }
-      if (this.controlLeft && this.velocity.X > -(double) this.maxRunSpeed)
+      if (this.controlLeft && (double) this.velocity.X > -(double) this.maxRunSpeed)
       {
-        if (!this.mount.Active || !this.mount.Cart || this.velocity.Y == 0.0)
+        if (!this.mount.Active || !this.mount.Cart || (double) this.velocity.Y == 0.0)
         {
-          if (this.velocity.X > (double) this.runSlowdown)
-          {
-            // ISSUE: explicit reference operation
-            // ISSUE: variable of a reference type
-            Vector2& local = @this.velocity;
-            // ISSUE: explicit reference operation
-            double num3 = (^local).X - (double) this.runSlowdown;
-            // ISSUE: explicit reference operation
-            (^local).X = (__Null) num3;
-          }
-          // ISSUE: explicit reference operation
-          // ISSUE: variable of a reference type
-          Vector2& local1 = @this.velocity;
-          // ISSUE: explicit reference operation
-          double num4 = (^local1).X - (double) this.runAcceleration;
-          // ISSUE: explicit reference operation
-          (^local1).X = (__Null) num4;
+          if ((double) this.velocity.X > (double) this.runSlowdown)
+            this.velocity.X -= this.runSlowdown;
+          this.velocity.X -= this.runAcceleration;
         }
         if (this.onWrongGround)
         {
-          if (this.velocity.X < -(double) this.runSlowdown)
-          {
-            // ISSUE: explicit reference operation
-            // ISSUE: variable of a reference type
-            Vector2& local = @this.velocity;
-            // ISSUE: explicit reference operation
-            double num3 = (^local).X + (double) this.runSlowdown;
-            // ISSUE: explicit reference operation
-            (^local).X = (__Null) num3;
-          }
+          if ((double) this.velocity.X < -(double) this.runSlowdown)
+            this.velocity.X += this.runSlowdown;
           else
-            this.velocity.X = (__Null) 0.0;
+            this.velocity.X = 0.0f;
         }
         if (this.mount.Active && this.mount.Cart && !this.onWrongGround)
         {
-          if (this.velocity.X < 0.0 && flag1)
+          if ((double) this.velocity.X < 0.0 && flag1)
             this.direction = -1;
-          else if (this.itemAnimation <= 0 && this.velocity.Y == 0.0)
+          else if (this.itemAnimation <= 0 && (double) this.velocity.Y == 0.0)
           {
             Main.PlaySound(SoundID.Item55, (int) this.position.X + this.width / 2, (int) this.position.Y + this.height / 2);
             DelegateMethods.Minecart.rotation = this.fullRotation;
             DelegateMethods.Minecart.rotationOrigin = this.fullRotationOrigin;
-            if ((double) Math.Abs((float) this.velocity.X) > (double) this.maxRunSpeed * 0.66)
+            if ((double) Math.Abs(this.velocity.X) > (double) this.maxRunSpeed * 0.66)
             {
               if (Main.rand.Next(2) == 0)
-                Minecart.WheelSparks(this.mount.MinecartDust, Vector2.op_Addition(this.position, Vector2.op_Multiply(this.velocity, 0.66f)), this.width, this.height, 1);
+                Minecart.WheelSparks(this.mount.MinecartDust, this.position + this.velocity * 0.66f, this.width, this.height, 1);
               if (Main.rand.Next(2) == 0)
-                Minecart.WheelSparks(this.mount.MinecartDust, Vector2.op_Addition(this.position, Vector2.op_Multiply(this.velocity, 0.33f)), this.width, this.height, 1);
+                Minecart.WheelSparks(this.mount.MinecartDust, this.position + this.velocity * 0.33f, this.width, this.height, 1);
               if (Main.rand.Next(2) == 0)
                 Minecart.WheelSparks(this.mount.MinecartDust, this.position, this.width, this.height, 1);
             }
-            else if ((double) Math.Abs((float) this.velocity.X) > (double) this.maxRunSpeed * 0.33)
+            else if ((double) Math.Abs(this.velocity.X) > (double) this.maxRunSpeed * 0.33)
             {
               if (Main.rand.Next(3) != 0)
-                Minecart.WheelSparks(this.mount.MinecartDust, Vector2.op_Addition(this.position, Vector2.op_Multiply(this.velocity, 0.5f)), this.width, this.height, 1);
+                Minecart.WheelSparks(this.mount.MinecartDust, this.position + this.velocity * 0.5f, this.width, this.height, 1);
               if (Main.rand.Next(3) != 0)
                 Minecart.WheelSparks(this.mount.MinecartDust, this.position, this.width, this.height, 1);
             }
@@ -12649,65 +12374,43 @@ label_124:
         else if (!this.sandStorm && (this.itemAnimation == 0 || this.inventory[this.selectedItem].useTurn) && this.mount.AllowDirectionChange)
           this.direction = -1;
       }
-      else if (this.controlRight && this.velocity.X < (double) this.maxRunSpeed)
+      else if (this.controlRight && (double) this.velocity.X < (double) this.maxRunSpeed)
       {
-        if (!this.mount.Active || !this.mount.Cart || this.velocity.Y == 0.0)
+        if (!this.mount.Active || !this.mount.Cart || (double) this.velocity.Y == 0.0)
         {
-          if (this.velocity.X < -(double) this.runSlowdown)
-          {
-            // ISSUE: explicit reference operation
-            // ISSUE: variable of a reference type
-            Vector2& local = @this.velocity;
-            // ISSUE: explicit reference operation
-            double num3 = (^local).X + (double) this.runSlowdown;
-            // ISSUE: explicit reference operation
-            (^local).X = (__Null) num3;
-          }
-          // ISSUE: explicit reference operation
-          // ISSUE: variable of a reference type
-          Vector2& local1 = @this.velocity;
-          // ISSUE: explicit reference operation
-          double num4 = (^local1).X + (double) this.runAcceleration;
-          // ISSUE: explicit reference operation
-          (^local1).X = (__Null) num4;
+          if ((double) this.velocity.X < -(double) this.runSlowdown)
+            this.velocity.X += this.runSlowdown;
+          this.velocity.X += this.runAcceleration;
         }
         if (this.onWrongGround)
         {
-          if (this.velocity.X > (double) this.runSlowdown)
-          {
-            // ISSUE: explicit reference operation
-            // ISSUE: variable of a reference type
-            Vector2& local = @this.velocity;
-            // ISSUE: explicit reference operation
-            double num3 = (^local).X - (double) this.runSlowdown;
-            // ISSUE: explicit reference operation
-            (^local).X = (__Null) num3;
-          }
+          if ((double) this.velocity.X > (double) this.runSlowdown)
+            this.velocity.X -= this.runSlowdown;
           else
-            this.velocity.X = (__Null) 0.0;
+            this.velocity.X = 0.0f;
         }
         if (this.mount.Active && this.mount.Cart && !this.onWrongGround)
         {
-          if (this.velocity.X > 0.0 && flag1)
+          if ((double) this.velocity.X > 0.0 && flag1)
             this.direction = 1;
-          else if (this.itemAnimation <= 0 && this.velocity.Y == 0.0)
+          else if (this.itemAnimation <= 0 && (double) this.velocity.Y == 0.0)
           {
             Main.PlaySound(SoundID.Item55, (int) this.position.X + this.width / 2, (int) this.position.Y + this.height / 2);
             DelegateMethods.Minecart.rotation = this.fullRotation;
             DelegateMethods.Minecart.rotationOrigin = this.fullRotationOrigin;
-            if ((double) Math.Abs((float) this.velocity.X) > (double) this.maxRunSpeed * 0.66)
+            if ((double) Math.Abs(this.velocity.X) > (double) this.maxRunSpeed * 0.66)
             {
               if (Main.rand.Next(2) == 0)
-                Minecart.WheelSparks(this.mount.MinecartDust, Vector2.op_Addition(this.position, Vector2.op_Multiply(this.velocity, 0.66f)), this.width, this.height, 1);
+                Minecart.WheelSparks(this.mount.MinecartDust, this.position + this.velocity * 0.66f, this.width, this.height, 1);
               if (Main.rand.Next(2) == 0)
-                Minecart.WheelSparks(this.mount.MinecartDust, Vector2.op_Addition(this.position, Vector2.op_Multiply(this.velocity, 0.33f)), this.width, this.height, 1);
+                Minecart.WheelSparks(this.mount.MinecartDust, this.position + this.velocity * 0.33f, this.width, this.height, 1);
               if (Main.rand.Next(2) == 0)
                 Minecart.WheelSparks(this.mount.MinecartDust, this.position, this.width, this.height, 1);
             }
-            else if ((double) Math.Abs((float) this.velocity.X) > (double) this.maxRunSpeed * 0.33)
+            else if ((double) Math.Abs(this.velocity.X) > (double) this.maxRunSpeed * 0.33)
             {
               if (Main.rand.Next(3) != 0)
-                Minecart.WheelSparks(this.mount.MinecartDust, Vector2.op_Addition(this.position, Vector2.op_Multiply(this.velocity, 0.5f)), this.width, this.height, 1);
+                Minecart.WheelSparks(this.mount.MinecartDust, this.position + this.velocity * 0.5f, this.width, this.height, 1);
               if (Main.rand.Next(3) != 0)
                 Minecart.WheelSparks(this.mount.MinecartDust, this.position, this.width, this.height, 1);
             }
@@ -12718,401 +12421,243 @@ label_124:
         else if (!this.sandStorm && (this.itemAnimation == 0 || this.inventory[this.selectedItem].useTurn) && this.mount.AllowDirectionChange)
           this.direction = 1;
       }
-      else if (this.controlLeft && this.velocity.X > -(double) this.accRunSpeed && this.dashDelay >= 0)
+      else if (this.controlLeft && (double) this.velocity.X > -(double) this.accRunSpeed && this.dashDelay >= 0)
       {
         if (this.mount.Active && this.mount.Cart)
         {
-          if (this.velocity.X < 0.0)
+          if ((double) this.velocity.X < 0.0)
             this.direction = -1;
         }
         else if ((this.itemAnimation == 0 || this.inventory[this.selectedItem].useTurn) && this.mount.AllowDirectionChange)
           this.direction = -1;
-        if (this.velocity.Y == 0.0 || this.wingsLogic > 0 || this.mount.CanFly)
+        if ((double) this.velocity.Y == 0.0 || this.wingsLogic > 0 || this.mount.CanFly)
         {
-          if (this.velocity.X > (double) this.runSlowdown)
-          {
-            // ISSUE: explicit reference operation
-            // ISSUE: variable of a reference type
-            Vector2& local = @this.velocity;
-            // ISSUE: explicit reference operation
-            double num3 = (^local).X - (double) this.runSlowdown;
-            // ISSUE: explicit reference operation
-            (^local).X = (__Null) num3;
-          }
-          // ISSUE: explicit reference operation
-          // ISSUE: variable of a reference type
-          Vector2& local1 = @this.velocity;
-          // ISSUE: explicit reference operation
-          double num4 = (^local1).X - (double) this.runAcceleration * 0.200000002980232;
-          // ISSUE: explicit reference operation
-          (^local1).X = (__Null) num4;
+          if ((double) this.velocity.X > (double) this.runSlowdown)
+            this.velocity.X -= this.runSlowdown;
+          this.velocity.X -= this.runAcceleration * 0.2f;
           if (this.wingsLogic > 0)
-          {
-            // ISSUE: explicit reference operation
-            // ISSUE: variable of a reference type
-            Vector2& local2 = @this.velocity;
-            // ISSUE: explicit reference operation
-            double num3 = (^local2).X - (double) this.runAcceleration * 0.200000002980232;
-            // ISSUE: explicit reference operation
-            (^local2).X = (__Null) num3;
-          }
+            this.velocity.X -= this.runAcceleration * 0.2f;
         }
         if (this.onWrongGround)
         {
-          if (this.velocity.X < (double) this.runSlowdown)
-          {
-            // ISSUE: explicit reference operation
-            // ISSUE: variable of a reference type
-            Vector2& local = @this.velocity;
-            // ISSUE: explicit reference operation
-            double num3 = (^local).X + (double) this.runSlowdown;
-            // ISSUE: explicit reference operation
-            (^local).X = (__Null) num3;
-          }
+          if ((double) this.velocity.X < (double) this.runSlowdown)
+            this.velocity.X += this.runSlowdown;
           else
-            this.velocity.X = (__Null) 0.0;
+            this.velocity.X = 0.0f;
         }
-        if (this.velocity.X < -(double) num1 && this.velocity.Y == 0.0 && !this.mount.Active)
+        if ((double) this.velocity.X < -(double) num1 && (double) this.velocity.Y == 0.0 && !this.mount.Active)
         {
           int num3 = 0;
           if ((double) this.gravDir == -1.0)
             num3 -= this.height;
-          if (this.runSoundDelay == 0 && this.velocity.Y == 0.0)
+          if (this.runSoundDelay == 0 && (double) this.velocity.Y == 0.0)
           {
             Main.PlaySound(this.hermesStepSound.SoundType, (int) this.position.X, (int) this.position.Y, this.hermesStepSound.SoundStyle, 1f, 0.0f);
             this.runSoundDelay = this.hermesStepSound.IntendedCooldown;
           }
           if (this.wings == 3)
           {
-            int index1 = Dust.NewDust(new Vector2((float) (this.position.X - 4.0), (float) this.position.Y + (float) this.height + (float) num3), this.width + 8, 4, 186, (float) (-this.velocity.X * 0.5), (float) (this.velocity.Y * 0.5), 50, (Color) null, 1.5f);
-            Dust dust1 = Main.dust[index1];
-            Vector2 vector2_1 = Vector2.op_Multiply(dust1.velocity, 0.025f);
-            dust1.velocity = vector2_1;
+            int index1 = Dust.NewDust(new Vector2(this.position.X - 4f, this.position.Y + (float) this.height + (float) num3), this.width + 8, 4, 186, (float) (-(double) this.velocity.X * 0.5), this.velocity.Y * 0.5f, 50, new Color(), 1.5f);
+            Main.dust[index1].velocity *= 0.025f;
             Main.dust[index1].shader = GameShaders.Armor.GetSecondaryShader(this.cWings, this);
-            int index2 = Dust.NewDust(new Vector2((float) (this.position.X - 4.0), (float) this.position.Y + (float) this.height + (float) num3), this.width + 8, 4, 186, (float) (-this.velocity.X * 0.5), (float) (this.velocity.Y * 0.5), 50, (Color) null, 1.5f);
-            Dust dust2 = Main.dust[index2];
-            Vector2 vector2_2 = Vector2.op_Multiply(dust2.velocity, 0.2f);
-            dust2.velocity = vector2_2;
+            int index2 = Dust.NewDust(new Vector2(this.position.X - 4f, this.position.Y + (float) this.height + (float) num3), this.width + 8, 4, 186, (float) (-(double) this.velocity.X * 0.5), this.velocity.Y * 0.5f, 50, new Color(), 1.5f);
+            Main.dust[index2].velocity *= 0.2f;
             Main.dust[index2].shader = GameShaders.Armor.GetSecondaryShader(this.cWings, this);
           }
           else if (this.sailDash)
           {
             for (int index1 = 0; index1 < 4; ++index1)
             {
-              int index2 = Dust.NewDust(new Vector2((float) (this.position.X - 4.0), (float) this.position.Y), this.width + 8, this.height, 253, (float) (-this.velocity.X * 0.5), (float) (this.velocity.Y * 0.5), 100, (Color) null, 1.5f);
+              int index2 = Dust.NewDust(new Vector2(this.position.X - 4f, this.position.Y), this.width + 8, this.height, 253, (float) (-(double) this.velocity.X * 0.5), this.velocity.Y * 0.5f, 100, new Color(), 1.5f);
               Main.dust[index2].noGravity = true;
-              Main.dust[index2].velocity.X = (__Null) (Main.dust[index2].velocity.X * 0.200000002980232);
-              Main.dust[index2].velocity.Y = (__Null) (Main.dust[index2].velocity.Y * 0.200000002980232);
+              Main.dust[index2].velocity.X = Main.dust[index2].velocity.X * 0.2f;
+              Main.dust[index2].velocity.Y = Main.dust[index2].velocity.Y * 0.2f;
               Main.dust[index2].shader = GameShaders.Armor.GetSecondaryShader(this.cShoe, this);
               Main.dust[index2].scale += (float) Main.rand.Next(-5, 3) * 0.1f;
-              Vector2 vector2;
-              // ISSUE: explicit reference operation
-              ((Vector2) @vector2).\u002Ector((float) Main.rand.Next(-100, 101), (float) Main.rand.Next(-100, 101));
-              // ISSUE: explicit reference operation
-              ((Vector2) @vector2).Normalize();
-              vector2 = Vector2.op_Multiply(vector2, (float) Main.rand.Next(81) * 0.1f);
+              Vector2 vector2 = new Vector2((float) Main.rand.Next(-100, 101), (float) Main.rand.Next(-100, 101));
+              vector2.Normalize();
+              vector2 *= (float) Main.rand.Next(81) * 0.1f;
             }
           }
           else if (this.coldDash)
           {
             for (int index1 = 0; index1 < 2; ++index1)
             {
-              int index2 = index1 != 0 ? Dust.NewDust(new Vector2((float) this.position.X + (float) (this.width / 2), (float) this.position.Y + (float) this.height + this.gfxOffY), this.width / 2, 6, 76, 0.0f, 0.0f, 0, (Color) null, 1.35f) : Dust.NewDust(new Vector2((float) this.position.X, (float) this.position.Y + (float) this.height + this.gfxOffY), this.width / 2, 6, 76, 0.0f, 0.0f, 0, (Color) null, 1.35f);
+              int index2 = index1 != 0 ? Dust.NewDust(new Vector2(this.position.X + (float) (this.width / 2), this.position.Y + (float) this.height + this.gfxOffY), this.width / 2, 6, 76, 0.0f, 0.0f, 0, new Color(), 1.35f) : Dust.NewDust(new Vector2(this.position.X, this.position.Y + (float) this.height + this.gfxOffY), this.width / 2, 6, 76, 0.0f, 0.0f, 0, new Color(), 1.35f);
               Main.dust[index2].scale *= (float) (1.0 + (double) Main.rand.Next(20, 40) * 0.00999999977648258);
               Main.dust[index2].noGravity = true;
               Main.dust[index2].noLight = true;
-              Dust dust = Main.dust[index2];
-              Vector2 vector2 = Vector2.op_Multiply(dust.velocity, 1f / 1000f);
-              dust.velocity = vector2;
-              // ISSUE: explicit reference operation
-              // ISSUE: variable of a reference type
-              Vector2& local = @Main.dust[index2].velocity;
-              // ISSUE: explicit reference operation
-              double num4 = (^local).Y - 3.0 / 1000.0;
-              // ISSUE: explicit reference operation
-              (^local).Y = (__Null) num4;
+              Main.dust[index2].velocity *= 1f / 1000f;
+              Main.dust[index2].velocity.Y -= 3f / 1000f;
               Main.dust[index2].shader = GameShaders.Armor.GetSecondaryShader(this.cShoe, this);
             }
           }
           else
           {
-            int index = Dust.NewDust(new Vector2((float) (this.position.X - 4.0), (float) this.position.Y + (float) this.height + (float) num3), this.width + 8, 4, 16, (float) (-this.velocity.X * 0.5), (float) (this.velocity.Y * 0.5), 50, (Color) null, 1.5f);
-            Main.dust[index].velocity.X = (__Null) (Main.dust[index].velocity.X * 0.200000002980232);
-            Main.dust[index].velocity.Y = (__Null) (Main.dust[index].velocity.Y * 0.200000002980232);
+            int index = Dust.NewDust(new Vector2(this.position.X - 4f, this.position.Y + (float) this.height + (float) num3), this.width + 8, 4, 16, (float) (-(double) this.velocity.X * 0.5), this.velocity.Y * 0.5f, 50, new Color(), 1.5f);
+            Main.dust[index].velocity.X = Main.dust[index].velocity.X * 0.2f;
+            Main.dust[index].velocity.Y = Main.dust[index].velocity.Y * 0.2f;
             Main.dust[index].shader = GameShaders.Armor.GetSecondaryShader(this.cShoe, this);
           }
         }
       }
-      else if (this.controlRight && this.velocity.X < (double) this.accRunSpeed && this.dashDelay >= 0)
+      else if (this.controlRight && (double) this.velocity.X < (double) this.accRunSpeed && this.dashDelay >= 0)
       {
         if (this.mount.Active && this.mount.Cart)
         {
-          if (this.velocity.X > 0.0)
+          if ((double) this.velocity.X > 0.0)
             this.direction = -1;
         }
         else if ((this.itemAnimation == 0 || this.inventory[this.selectedItem].useTurn) && this.mount.AllowDirectionChange)
           this.direction = 1;
-        if (this.velocity.Y == 0.0 || this.wingsLogic > 0 || this.mount.CanFly)
+        if ((double) this.velocity.Y == 0.0 || this.wingsLogic > 0 || this.mount.CanFly)
         {
-          if (this.velocity.X < -(double) this.runSlowdown)
-          {
-            // ISSUE: explicit reference operation
-            // ISSUE: variable of a reference type
-            Vector2& local = @this.velocity;
-            // ISSUE: explicit reference operation
-            double num3 = (^local).X + (double) this.runSlowdown;
-            // ISSUE: explicit reference operation
-            (^local).X = (__Null) num3;
-          }
-          // ISSUE: explicit reference operation
-          // ISSUE: variable of a reference type
-          Vector2& local1 = @this.velocity;
-          // ISSUE: explicit reference operation
-          double num4 = (^local1).X + (double) this.runAcceleration * 0.200000002980232;
-          // ISSUE: explicit reference operation
-          (^local1).X = (__Null) num4;
+          if ((double) this.velocity.X < -(double) this.runSlowdown)
+            this.velocity.X += this.runSlowdown;
+          this.velocity.X += this.runAcceleration * 0.2f;
           if (this.wingsLogic > 0)
-          {
-            // ISSUE: explicit reference operation
-            // ISSUE: variable of a reference type
-            Vector2& local2 = @this.velocity;
-            // ISSUE: explicit reference operation
-            double num3 = (^local2).X + (double) this.runAcceleration * 0.200000002980232;
-            // ISSUE: explicit reference operation
-            (^local2).X = (__Null) num3;
-          }
+            this.velocity.X += this.runAcceleration * 0.2f;
         }
         if (this.onWrongGround)
         {
-          if (this.velocity.X > (double) this.runSlowdown)
-          {
-            // ISSUE: explicit reference operation
-            // ISSUE: variable of a reference type
-            Vector2& local = @this.velocity;
-            // ISSUE: explicit reference operation
-            double num3 = (^local).X - (double) this.runSlowdown;
-            // ISSUE: explicit reference operation
-            (^local).X = (__Null) num3;
-          }
+          if ((double) this.velocity.X > (double) this.runSlowdown)
+            this.velocity.X -= this.runSlowdown;
           else
-            this.velocity.X = (__Null) 0.0;
+            this.velocity.X = 0.0f;
         }
-        if (this.velocity.X > (double) num1 && this.velocity.Y == 0.0 && !this.mount.Active)
+        if ((double) this.velocity.X > (double) num1 && (double) this.velocity.Y == 0.0 && !this.mount.Active)
         {
           int num3 = 0;
           if ((double) this.gravDir == -1.0)
             num3 -= this.height;
-          if (this.runSoundDelay == 0 && this.velocity.Y == 0.0)
+          if (this.runSoundDelay == 0 && (double) this.velocity.Y == 0.0)
           {
             Main.PlaySound(this.hermesStepSound.SoundType, (int) this.position.X, (int) this.position.Y, this.hermesStepSound.SoundStyle, 1f, 0.0f);
             this.runSoundDelay = this.hermesStepSound.IntendedCooldown;
           }
           if (this.wings == 3)
           {
-            int index1 = Dust.NewDust(new Vector2((float) (this.position.X - 4.0), (float) this.position.Y + (float) this.height + (float) num3), this.width + 8, 4, 186, (float) (-this.velocity.X * 0.5), (float) (this.velocity.Y * 0.5), 50, (Color) null, 1.5f);
-            Dust dust1 = Main.dust[index1];
-            Vector2 vector2_1 = Vector2.op_Multiply(dust1.velocity, 0.025f);
-            dust1.velocity = vector2_1;
+            int index1 = Dust.NewDust(new Vector2(this.position.X - 4f, this.position.Y + (float) this.height + (float) num3), this.width + 8, 4, 186, (float) (-(double) this.velocity.X * 0.5), this.velocity.Y * 0.5f, 50, new Color(), 1.5f);
+            Main.dust[index1].velocity *= 0.025f;
             Main.dust[index1].shader = GameShaders.Armor.GetSecondaryShader(this.cWings, this);
-            int index2 = Dust.NewDust(new Vector2((float) (this.position.X - 4.0), (float) this.position.Y + (float) this.height + (float) num3), this.width + 8, 4, 186, (float) (-this.velocity.X * 0.5), (float) (this.velocity.Y * 0.5), 50, (Color) null, 1.5f);
-            Dust dust2 = Main.dust[index2];
-            Vector2 vector2_2 = Vector2.op_Multiply(dust2.velocity, 0.2f);
-            dust2.velocity = vector2_2;
+            int index2 = Dust.NewDust(new Vector2(this.position.X - 4f, this.position.Y + (float) this.height + (float) num3), this.width + 8, 4, 186, (float) (-(double) this.velocity.X * 0.5), this.velocity.Y * 0.5f, 50, new Color(), 1.5f);
+            Main.dust[index2].velocity *= 0.2f;
             Main.dust[index2].shader = GameShaders.Armor.GetSecondaryShader(this.cWings, this);
           }
           else if (this.sailDash)
           {
             for (int index1 = 0; index1 < 4; ++index1)
             {
-              int index2 = Dust.NewDust(new Vector2((float) (this.position.X - 4.0), (float) this.position.Y), this.width + 8, this.height, 253, (float) (-this.velocity.X * 0.5), (float) (this.velocity.Y * 0.5), 100, (Color) null, 1.5f);
+              int index2 = Dust.NewDust(new Vector2(this.position.X - 4f, this.position.Y), this.width + 8, this.height, 253, (float) (-(double) this.velocity.X * 0.5), this.velocity.Y * 0.5f, 100, new Color(), 1.5f);
               Main.dust[index2].noGravity = true;
-              Main.dust[index2].velocity.X = (__Null) (Main.dust[index2].velocity.X * 0.200000002980232);
-              Main.dust[index2].velocity.Y = (__Null) (Main.dust[index2].velocity.Y * 0.200000002980232);
+              Main.dust[index2].velocity.X = Main.dust[index2].velocity.X * 0.2f;
+              Main.dust[index2].velocity.Y = Main.dust[index2].velocity.Y * 0.2f;
               Main.dust[index2].shader = GameShaders.Armor.GetSecondaryShader(this.cShoe, this);
               Main.dust[index2].scale += (float) Main.rand.Next(-5, 3) * 0.1f;
-              Vector2 vector2;
-              // ISSUE: explicit reference operation
-              ((Vector2) @vector2).\u002Ector((float) Main.rand.Next(-100, 101), (float) Main.rand.Next(-100, 101));
-              // ISSUE: explicit reference operation
-              ((Vector2) @vector2).Normalize();
-              vector2 = Vector2.op_Multiply(vector2, (float) Main.rand.Next(81) * 0.1f);
+              Vector2 vector2 = new Vector2((float) Main.rand.Next(-100, 101), (float) Main.rand.Next(-100, 101));
+              vector2.Normalize();
+              vector2 *= (float) Main.rand.Next(81) * 0.1f;
             }
           }
           else if (this.coldDash)
           {
             for (int index1 = 0; index1 < 2; ++index1)
             {
-              int index2 = index1 != 0 ? Dust.NewDust(new Vector2((float) this.position.X + (float) (this.width / 2), (float) this.position.Y + (float) this.height + this.gfxOffY), this.width / 2, 6, 76, 0.0f, 0.0f, 0, (Color) null, 1.35f) : Dust.NewDust(new Vector2((float) this.position.X, (float) this.position.Y + (float) this.height + this.gfxOffY), this.width / 2, 6, 76, 0.0f, 0.0f, 0, (Color) null, 1.35f);
+              int index2 = index1 != 0 ? Dust.NewDust(new Vector2(this.position.X + (float) (this.width / 2), this.position.Y + (float) this.height + this.gfxOffY), this.width / 2, 6, 76, 0.0f, 0.0f, 0, new Color(), 1.35f) : Dust.NewDust(new Vector2(this.position.X, this.position.Y + (float) this.height + this.gfxOffY), this.width / 2, 6, 76, 0.0f, 0.0f, 0, new Color(), 1.35f);
               Main.dust[index2].scale *= (float) (1.0 + (double) Main.rand.Next(20, 40) * 0.00999999977648258);
               Main.dust[index2].noGravity = true;
               Main.dust[index2].noLight = true;
-              Dust dust = Main.dust[index2];
-              Vector2 vector2 = Vector2.op_Multiply(dust.velocity, 1f / 1000f);
-              dust.velocity = vector2;
-              // ISSUE: explicit reference operation
-              // ISSUE: variable of a reference type
-              Vector2& local = @Main.dust[index2].velocity;
-              // ISSUE: explicit reference operation
-              double num4 = (^local).Y - 3.0 / 1000.0;
-              // ISSUE: explicit reference operation
-              (^local).Y = (__Null) num4;
+              Main.dust[index2].velocity *= 1f / 1000f;
+              Main.dust[index2].velocity.Y -= 3f / 1000f;
               Main.dust[index2].shader = GameShaders.Armor.GetSecondaryShader(this.cShoe, this);
             }
           }
           else
           {
-            int index = Dust.NewDust(new Vector2((float) (this.position.X - 4.0), (float) this.position.Y + (float) this.height + (float) num3), this.width + 8, 4, 16, (float) (-this.velocity.X * 0.5), (float) (this.velocity.Y * 0.5), 50, (Color) null, 1.5f);
-            Main.dust[index].velocity.X = (__Null) (Main.dust[index].velocity.X * 0.200000002980232);
-            Main.dust[index].velocity.Y = (__Null) (Main.dust[index].velocity.Y * 0.200000002980232);
+            int index = Dust.NewDust(new Vector2(this.position.X - 4f, this.position.Y + (float) this.height + (float) num3), this.width + 8, 4, 16, (float) (-(double) this.velocity.X * 0.5), this.velocity.Y * 0.5f, 50, new Color(), 1.5f);
+            Main.dust[index].velocity.X = Main.dust[index].velocity.X * 0.2f;
+            Main.dust[index].velocity.Y = Main.dust[index].velocity.Y * 0.2f;
             Main.dust[index].shader = GameShaders.Armor.GetSecondaryShader(this.cShoe, this);
           }
         }
       }
-      else if (this.mount.Active && this.mount.Cart && (double) Math.Abs((float) this.velocity.X) >= 1.0)
+      else if (this.mount.Active && this.mount.Cart && (double) Math.Abs(this.velocity.X) >= 1.0)
       {
         if (this.onWrongGround)
         {
-          if (this.velocity.X > 0.0)
+          if ((double) this.velocity.X > 0.0)
           {
-            if (this.velocity.X > (double) this.runSlowdown)
-            {
-              // ISSUE: explicit reference operation
-              // ISSUE: variable of a reference type
-              Vector2& local = @this.velocity;
-              // ISSUE: explicit reference operation
-              double num3 = (^local).X - (double) this.runSlowdown;
-              // ISSUE: explicit reference operation
-              (^local).X = (__Null) num3;
-            }
+            if ((double) this.velocity.X > (double) this.runSlowdown)
+              this.velocity.X -= this.runSlowdown;
             else
-              this.velocity.X = (__Null) 0.0;
+              this.velocity.X = 0.0f;
           }
-          else if (this.velocity.X < 0.0)
+          else if ((double) this.velocity.X < 0.0)
           {
-            if (this.velocity.X < -(double) this.runSlowdown)
-            {
-              // ISSUE: explicit reference operation
-              // ISSUE: variable of a reference type
-              Vector2& local = @this.velocity;
-              // ISSUE: explicit reference operation
-              double num3 = (^local).X + (double) this.runSlowdown;
-              // ISSUE: explicit reference operation
-              (^local).X = (__Null) num3;
-            }
+            if ((double) this.velocity.X < -(double) this.runSlowdown)
+              this.velocity.X += this.runSlowdown;
             else
-              this.velocity.X = (__Null) 0.0;
+              this.velocity.X = 0.0f;
           }
         }
-        if (this.velocity.X > (double) this.maxRunSpeed)
-          this.velocity.X = (__Null) (double) this.maxRunSpeed;
-        if (this.velocity.X < -(double) this.maxRunSpeed)
-          this.velocity.X = (__Null) -(double) this.maxRunSpeed;
+        if ((double) this.velocity.X > (double) this.maxRunSpeed)
+          this.velocity.X = this.maxRunSpeed;
+        if ((double) this.velocity.X < -(double) this.maxRunSpeed)
+          this.velocity.X = -this.maxRunSpeed;
       }
-      else if (this.velocity.Y == 0.0)
+      else if ((double) this.velocity.Y == 0.0)
       {
-        if (this.velocity.X > (double) this.runSlowdown)
-        {
-          // ISSUE: explicit reference operation
-          // ISSUE: variable of a reference type
-          Vector2& local = @this.velocity;
-          // ISSUE: explicit reference operation
-          double num3 = (^local).X - (double) this.runSlowdown;
-          // ISSUE: explicit reference operation
-          (^local).X = (__Null) num3;
-        }
-        else if (this.velocity.X < -(double) this.runSlowdown)
-        {
-          // ISSUE: explicit reference operation
-          // ISSUE: variable of a reference type
-          Vector2& local = @this.velocity;
-          // ISSUE: explicit reference operation
-          double num3 = (^local).X + (double) this.runSlowdown;
-          // ISSUE: explicit reference operation
-          (^local).X = (__Null) num3;
-        }
+        if ((double) this.velocity.X > (double) this.runSlowdown)
+          this.velocity.X -= this.runSlowdown;
+        else if ((double) this.velocity.X < -(double) this.runSlowdown)
+          this.velocity.X += this.runSlowdown;
         else
-          this.velocity.X = (__Null) 0.0;
+          this.velocity.X = 0.0f;
       }
       else if (!this.PortalPhysicsEnabled)
       {
         if ((double) this.velocity.X > (double) this.runSlowdown * 0.5)
-        {
-          // ISSUE: explicit reference operation
-          // ISSUE: variable of a reference type
-          Vector2& local = @this.velocity;
-          // ISSUE: explicit reference operation
-          double num3 = (^local).X - (double) this.runSlowdown * 0.5;
-          // ISSUE: explicit reference operation
-          (^local).X = (__Null) num3;
-        }
+          this.velocity.X -= this.runSlowdown * 0.5f;
         else if ((double) this.velocity.X < -(double) this.runSlowdown * 0.5)
-        {
-          // ISSUE: explicit reference operation
-          // ISSUE: variable of a reference type
-          Vector2& local = @this.velocity;
-          // ISSUE: explicit reference operation
-          double num3 = (^local).X + (double) this.runSlowdown * 0.5;
-          // ISSUE: explicit reference operation
-          (^local).X = (__Null) num3;
-        }
+          this.velocity.X += this.runSlowdown * 0.5f;
         else
-          this.velocity.X = (__Null) 0.0;
+          this.velocity.X = 0.0f;
       }
       if (flag3)
       {
-        if ((double) num2 < 0.0 && this.velocity.X > (double) num2)
+        if ((double) num2 < 0.0 && (double) this.velocity.X > (double) num2)
         {
-          // ISSUE: explicit reference operation
-          // ISSUE: variable of a reference type
-          Vector2& local = @this.velocity;
-          // ISSUE: explicit reference operation
-          double num3 = (^local).X + (double) num2;
-          // ISSUE: explicit reference operation
-          (^local).X = (__Null) num3;
-          if (this.velocity.X < (double) num2)
-            this.velocity.X = (__Null) (double) num2;
+          this.velocity.X += num2;
+          if ((double) this.velocity.X < (double) num2)
+            this.velocity.X = num2;
         }
-        if ((double) num2 > 0.0 && this.velocity.X < (double) num2)
+        if ((double) num2 > 0.0 && (double) this.velocity.X < (double) num2)
         {
-          // ISSUE: explicit reference operation
-          // ISSUE: variable of a reference type
-          Vector2& local = @this.velocity;
-          // ISSUE: explicit reference operation
-          double num3 = (^local).X + (double) num2;
-          // ISSUE: explicit reference operation
-          (^local).X = (__Null) num3;
-          if (this.velocity.X > (double) num2)
-            this.velocity.X = (__Null) (double) num2;
+          this.velocity.X += num2;
+          if ((double) this.velocity.X > (double) num2)
+            this.velocity.X = num2;
         }
       }
-      if (this.mount.Active && this.mount.Type == 10 && (double) Math.Abs((float) this.velocity.X) > (double) this.mount.DashSpeed - (double) this.mount.RunSpeed / 2.0)
+      if (this.mount.Active && this.mount.Type == 10 && (double) Math.Abs(this.velocity.X) > (double) this.mount.DashSpeed - (double) this.mount.RunSpeed / 2.0)
       {
-        Rectangle rect = this.getRect();
+        Microsoft.Xna.Framework.Rectangle rect = this.getRect();
         if (this.direction == 1)
-        {
-          // ISSUE: explicit reference operation
-          ((Rectangle) @rect).Offset(this.width - 1, 0);
-        }
-        rect.Width = (__Null) 2;
-        // ISSUE: explicit reference operation
-        ((Rectangle) @rect).Inflate(6, 12);
+          rect.Offset(this.width - 1, 0);
+        rect.Width = 2;
+        rect.Inflate(6, 12);
         float Damage = 80f * this.minionDamage;
         float Knockback = 10f;
         int NPCImmuneTime = 30;
         int PlayerImmuneTime = 6;
         this.CollideWithNPCs(rect, Damage, Knockback, NPCImmuneTime, PlayerImmuneTime);
       }
-      if (!this.mount.Active || this.mount.Type != 14 || (double) Math.Abs((float) this.velocity.X) <= (double) this.mount.RunSpeed / 2.0)
+      if (!this.mount.Active || this.mount.Type != 14 || (double) Math.Abs(this.velocity.X) <= (double) this.mount.RunSpeed / 2.0)
         return;
-      Rectangle rect1 = this.getRect();
+      Microsoft.Xna.Framework.Rectangle rect1 = this.getRect();
       if (this.direction == 1)
-      {
-        // ISSUE: explicit reference operation
-        ((Rectangle) @rect1).Offset(this.width - 1, 0);
-      }
-      rect1.Width = (__Null) 2;
-      // ISSUE: explicit reference operation
-      ((Rectangle) @rect1).Inflate(6, 12);
+        rect1.Offset(this.width - 1, 0);
+      rect1.Width = 2;
+      rect1.Inflate(6, 12);
       float Damage1 = 90f * this.minionDamage;
       float Knockback1 = 10f;
       int NPCImmuneTime1 = 30;
@@ -13120,7 +12665,7 @@ label_124:
       this.CollideWithNPCs(rect1, Damage1, Knockback1, NPCImmuneTime1, PlayerImmuneTime1);
     }
 
-    private int CollideWithNPCs(Rectangle myRect, float Damage, float Knockback, int NPCImmuneTime, int PlayerImmuneTime)
+    private int CollideWithNPCs(Microsoft.Xna.Framework.Rectangle myRect, float Damage, float Knockback, int NPCImmuneTime, int PlayerImmuneTime)
     {
       int num = 0;
       for (int index = 0; index < 200; ++index)
@@ -13128,14 +12673,13 @@ label_124:
         NPC npc = Main.npc[index];
         if (npc.active && !npc.dontTakeDamage && (!npc.friendly && npc.immune[this.whoAmI] == 0))
         {
-          Rectangle rect = npc.getRect();
-          // ISSUE: explicit reference operation
-          if (((Rectangle) @myRect).Intersects(rect) && (npc.noTileCollide || Collision.CanHit(this.position, this.width, this.height, npc.position, npc.width, npc.height)))
+          Microsoft.Xna.Framework.Rectangle rect = npc.getRect();
+          if (myRect.Intersects(rect) && (npc.noTileCollide || Collision.CanHit(this.position, this.width, this.height, npc.position, npc.width, npc.height)))
           {
             int direction = this.direction;
-            if (this.velocity.X < 0.0)
+            if ((double) this.velocity.X < 0.0)
               direction = -1;
-            if (this.velocity.X > 0.0)
+            if ((double) this.velocity.X > 0.0)
               direction = 1;
             if (this.whoAmI == Main.myPlayer)
               this.ApplyDamageToNPC(npc, (int) Damage, Knockback, direction, false);
@@ -13164,34 +12708,31 @@ label_124:
 
     public void JumpMovement()
     {
-      if (this.mount.Active && this.mount.Type == 3 && ((int) this.wetSlime == 0 && this.velocity.Y > 0.0))
+      if (this.mount.Active && this.mount.Type == 3 && ((int) this.wetSlime == 0 && (double) this.velocity.Y > 0.0))
       {
-        Rectangle rect1 = this.getRect();
-        // ISSUE: explicit reference operation
-        ((Rectangle) @rect1).Offset(0, this.height - 1);
-        rect1.Height = (__Null) 2;
-        // ISSUE: explicit reference operation
-        ((Rectangle) @rect1).Inflate(12, 6);
+        Microsoft.Xna.Framework.Rectangle rect1 = this.getRect();
+        rect1.Offset(0, this.height - 1);
+        rect1.Height = 2;
+        rect1.Inflate(12, 6);
         for (int index = 0; index < 200; ++index)
         {
           NPC npc = Main.npc[index];
           if (npc.active && !npc.dontTakeDamage && (!npc.friendly && npc.immune[this.whoAmI] == 0))
           {
-            Rectangle rect2 = npc.getRect();
-            // ISSUE: explicit reference operation
-            if (((Rectangle) @rect1).Intersects(rect2) && (npc.noTileCollide || Collision.CanHit(this.position, this.width, this.height, npc.position, npc.width, npc.height)))
+            Microsoft.Xna.Framework.Rectangle rect2 = npc.getRect();
+            if (rect1.Intersects(rect2) && (npc.noTileCollide || Collision.CanHit(this.position, this.width, this.height, npc.position, npc.width, npc.height)))
             {
               float num = 40f * this.minionDamage;
               float knockback = 5f;
               int direction = this.direction;
-              if (this.velocity.X < 0.0)
+              if ((double) this.velocity.X < 0.0)
                 direction = -1;
-              if (this.velocity.X > 0.0)
+              if ((double) this.velocity.X > 0.0)
                 direction = 1;
               if (this.whoAmI == Main.myPlayer)
                 this.ApplyDamageToNPC(npc, (int) num, knockback, direction, false);
               npc.immune[this.whoAmI] = 10;
-              this.velocity.Y = (__Null) -10.0;
+              this.velocity.Y = -10f;
               this.immune = true;
               this.immuneNoBlink = true;
               this.immuneTime = 6;
@@ -13207,13 +12748,13 @@ label_124:
           flag1 = true;
         if (this.jump > 0)
         {
-          if (this.velocity.Y == 0.0)
+          if ((double) this.velocity.Y == 0.0)
           {
             this.jump = 0;
           }
           else
           {
-            this.velocity.Y = (__Null) (-(double) Player.jumpSpeed * (double) this.gravDir);
+            this.velocity.Y = -Player.jumpSpeed * this.gravDir;
             if (this.merman && (!this.mount.Active || !this.mount.Cart))
             {
               if (this.swimTime <= 10)
@@ -13223,9 +12764,9 @@ label_124:
               --this.jump;
           }
         }
-        else if ((this.sliding || this.velocity.Y == 0.0 || (flag1 || this.jumpAgainCloud) || (this.jumpAgainSandstorm || this.jumpAgainBlizzard || (this.jumpAgainFart || this.jumpAgainSail)) || (this.jumpAgainUnicorn || this.wet && this.accFlipper && (!this.mount.Active || !this.mount.Cart))) && (this.releaseJump || this.autoJump && (this.velocity.Y == 0.0 || this.sliding)))
+        else if ((this.sliding || (double) this.velocity.Y == 0.0 || (flag1 || this.jumpAgainCloud) || (this.jumpAgainSandstorm || this.jumpAgainBlizzard || (this.jumpAgainFart || this.jumpAgainSail)) || (this.jumpAgainUnicorn || this.wet && this.accFlipper && (!this.mount.Active || !this.mount.Cart))) && (this.releaseJump || this.autoJump && ((double) this.velocity.Y == 0.0 || this.sliding)))
         {
-          if (this.sliding || this.velocity.Y == 0.0)
+          if (this.sliding || (double) this.velocity.Y == 0.0)
             this.justJumped = true;
           bool flag2 = false;
           if (this.wet && this.accFlipper)
@@ -13271,24 +12812,24 @@ label_124:
           }
           this.canRocket = false;
           this.rocketRelease = false;
-          if ((this.velocity.Y == 0.0 || this.sliding || this.autoJump && this.justJumped) && this.doubleJumpCloud)
+          if (((double) this.velocity.Y == 0.0 || this.sliding || this.autoJump && this.justJumped) && this.doubleJumpCloud)
             this.jumpAgainCloud = true;
-          if ((this.velocity.Y == 0.0 || this.sliding || this.autoJump && this.justJumped) && this.doubleJumpSandstorm)
+          if (((double) this.velocity.Y == 0.0 || this.sliding || this.autoJump && this.justJumped) && this.doubleJumpSandstorm)
             this.jumpAgainSandstorm = true;
-          if ((this.velocity.Y == 0.0 || this.sliding || this.autoJump && this.justJumped) && this.doubleJumpBlizzard)
+          if (((double) this.velocity.Y == 0.0 || this.sliding || this.autoJump && this.justJumped) && this.doubleJumpBlizzard)
             this.jumpAgainBlizzard = true;
-          if ((this.velocity.Y == 0.0 || this.sliding || this.autoJump && this.justJumped) && this.doubleJumpFart)
+          if (((double) this.velocity.Y == 0.0 || this.sliding || this.autoJump && this.justJumped) && this.doubleJumpFart)
             this.jumpAgainFart = true;
-          if ((this.velocity.Y == 0.0 || this.sliding || this.autoJump && this.justJumped) && this.doubleJumpSail)
+          if (((double) this.velocity.Y == 0.0 || this.sliding || this.autoJump && this.justJumped) && this.doubleJumpSail)
             this.jumpAgainSail = true;
-          if ((this.velocity.Y == 0.0 || this.sliding || this.autoJump && this.justJumped) && this.doubleJumpUnicorn)
+          if (((double) this.velocity.Y == 0.0 || this.sliding || this.autoJump && this.justJumped) && this.doubleJumpUnicorn)
             this.jumpAgainUnicorn = true;
-          if (this.velocity.Y == 0.0 || flag2 || (this.sliding || flag1))
+          if ((double) this.velocity.Y == 0.0 || flag2 || (this.sliding || flag1))
           {
-            this.velocity.Y = (__Null) (-(double) Player.jumpSpeed * (double) this.gravDir);
+            this.velocity.Y = -Player.jumpSpeed * this.gravDir;
             this.jump = Player.jumpHeight;
             if (this.sliding)
-              this.velocity.X = (__Null) (double) (3 * -this.slideDir);
+              this.velocity.X = (float) (3 * -this.slideDir);
           }
           else if (flag3)
           {
@@ -13296,7 +12837,7 @@ label_124:
             int height = this.height;
             double gravDir = (double) this.gravDir;
             Main.PlaySound(16, (int) this.position.X, (int) this.position.Y, 1, 1f, 0.0f);
-            this.velocity.Y = (__Null) (-(double) Player.jumpSpeed * (double) this.gravDir);
+            this.velocity.Y = -Player.jumpSpeed * this.gravDir;
             this.jump = Player.jumpHeight * 3;
           }
           else if (flag4)
@@ -13305,59 +12846,32 @@ label_124:
             int height = this.height;
             double gravDir = (double) this.gravDir;
             Main.PlaySound(16, (int) this.position.X, (int) this.position.Y, 1, 1f, 0.0f);
-            this.velocity.Y = (__Null) (-(double) Player.jumpSpeed * (double) this.gravDir);
+            this.velocity.Y = -Player.jumpSpeed * this.gravDir;
             this.jump = (int) ((double) Player.jumpHeight * 1.5);
           }
           else if (flag6)
           {
             this.dJumpEffectSail = true;
-            int num1 = this.height;
+            int num = this.height;
             if ((double) this.gravDir == -1.0)
-              num1 = 0;
+              num = 0;
             Main.PlaySound(16, (int) this.position.X, (int) this.position.Y, 1, 1f, 0.0f);
-            this.velocity.Y = (__Null) (-(double) Player.jumpSpeed * (double) this.gravDir);
+            this.velocity.Y = -Player.jumpSpeed * this.gravDir;
             this.jump = (int) ((double) Player.jumpHeight * 1.25);
             for (int index1 = 0; index1 < 30; ++index1)
             {
-              int index2 = Dust.NewDust(new Vector2((float) this.position.X, (float) this.position.Y + (float) num1), this.width, 12, 253, (float) (this.velocity.X * 0.300000011920929), (float) (this.velocity.Y * 0.300000011920929), 100, (Color) null, 1.5f);
+              int index2 = Dust.NewDust(new Vector2(this.position.X, this.position.Y + (float) num), this.width, 12, 253, this.velocity.X * 0.3f, this.velocity.Y * 0.3f, 100, new Color(), 1.5f);
               if (index1 % 2 == 0)
-              {
-                // ISSUE: explicit reference operation
-                // ISSUE: variable of a reference type
-                Vector2& local = @Main.dust[index2].velocity;
-                // ISSUE: explicit reference operation
-                double num2 = (^local).X + (double) Main.rand.Next(30, 71) * 0.100000001490116;
-                // ISSUE: explicit reference operation
-                (^local).X = (__Null) num2;
-              }
+                Main.dust[index2].velocity.X += (float) Main.rand.Next(30, 71) * 0.1f;
               else
-              {
-                // ISSUE: explicit reference operation
-                // ISSUE: variable of a reference type
-                Vector2& local = @Main.dust[index2].velocity;
-                // ISSUE: explicit reference operation
-                double num2 = (^local).X - (double) Main.rand.Next(30, 71) * 0.100000001490116;
-                // ISSUE: explicit reference operation
-                (^local).X = (__Null) num2;
-              }
-              // ISSUE: explicit reference operation
-              // ISSUE: variable of a reference type
-              Vector2& local1 = @Main.dust[index2].velocity;
-              // ISSUE: explicit reference operation
-              double num3 = (^local1).Y + (double) Main.rand.Next(-10, 31) * 0.100000001490116;
-              // ISSUE: explicit reference operation
-              (^local1).Y = (__Null) num3;
+                Main.dust[index2].velocity.X -= (float) Main.rand.Next(30, 71) * 0.1f;
+              Main.dust[index2].velocity.Y += (float) Main.rand.Next(-10, 31) * 0.1f;
               Main.dust[index2].noGravity = true;
               Main.dust[index2].scale += (float) Main.rand.Next(-10, 41) * 0.01f;
-              Dust dust = Main.dust[index2];
-              Vector2 vector2_1 = Vector2.op_Multiply(dust.velocity, Main.dust[index2].scale * 0.7f);
-              dust.velocity = vector2_1;
-              Vector2 vector2_2;
-              // ISSUE: explicit reference operation
-              ((Vector2) @vector2_2).\u002Ector((float) Main.rand.Next(-100, 101), (float) Main.rand.Next(-100, 101));
-              // ISSUE: explicit reference operation
-              ((Vector2) @vector2_2).Normalize();
-              vector2_2 = Vector2.op_Multiply(vector2_2, (float) Main.rand.Next(81) * 0.1f);
+              Main.dust[index2].velocity *= Main.dust[index2].scale * 0.7f;
+              Vector2 vector2 = new Vector2((float) Main.rand.Next(-100, 101), (float) Main.rand.Next(-100, 101));
+              vector2.Normalize();
+              vector2 *= (float) Main.rand.Next(81) * 0.1f;
             }
           }
           else if (flag5)
@@ -13367,23 +12881,23 @@ label_124:
             if ((double) this.gravDir == -1.0)
               num = 0;
             Main.PlaySound(SoundID.Item16, this.position);
-            this.velocity.Y = (__Null) (-(double) Player.jumpSpeed * (double) this.gravDir);
+            this.velocity.Y = -Player.jumpSpeed * this.gravDir;
             this.jump = Player.jumpHeight * 2;
             for (int index1 = 0; index1 < 10; ++index1)
             {
-              int index2 = Dust.NewDust(new Vector2((float) (this.position.X - 34.0), (float) (this.position.Y + (double) num - 16.0)), 102, 32, 188, (float) (-this.velocity.X * 0.5), (float) (this.velocity.Y * 0.5), 100, (Color) null, 1.5f);
-              Main.dust[index2].velocity.X = (__Null) (Main.dust[index2].velocity.X * 0.5 - this.velocity.X * 0.100000001490116);
-              Main.dust[index2].velocity.Y = (__Null) (Main.dust[index2].velocity.Y * 0.5 - this.velocity.Y * 0.300000011920929);
+              int index2 = Dust.NewDust(new Vector2(this.position.X - 34f, (float) ((double) this.position.Y + (double) num - 16.0)), 102, 32, 188, (float) (-(double) this.velocity.X * 0.5), this.velocity.Y * 0.5f, 100, new Color(), 1.5f);
+              Main.dust[index2].velocity.X = (float) ((double) Main.dust[index2].velocity.X * 0.5 - (double) this.velocity.X * 0.100000001490116);
+              Main.dust[index2].velocity.Y = (float) ((double) Main.dust[index2].velocity.Y * 0.5 - (double) this.velocity.Y * 0.300000011920929);
             }
-            int index3 = Gore.NewGore(new Vector2((float) (this.position.X + (double) (this.width / 2) - 16.0), (float) (this.position.Y + (double) num - 16.0)), new Vector2((float) -this.velocity.X, (float) -this.velocity.Y), Main.rand.Next(435, 438), 1f);
-            Main.gore[index3].velocity.X = (__Null) (Main.gore[index3].velocity.X * 0.100000001490116 - this.velocity.X * 0.100000001490116);
-            Main.gore[index3].velocity.Y = (__Null) (Main.gore[index3].velocity.Y * 0.100000001490116 - this.velocity.Y * 0.0500000007450581);
-            int index4 = Gore.NewGore(new Vector2((float) (this.position.X - 36.0), (float) (this.position.Y + (double) num - 16.0)), new Vector2((float) -this.velocity.X, (float) -this.velocity.Y), Main.rand.Next(435, 438), 1f);
-            Main.gore[index4].velocity.X = (__Null) (Main.gore[index4].velocity.X * 0.100000001490116 - this.velocity.X * 0.100000001490116);
-            Main.gore[index4].velocity.Y = (__Null) (Main.gore[index4].velocity.Y * 0.100000001490116 - this.velocity.Y * 0.0500000007450581);
-            int index5 = Gore.NewGore(new Vector2((float) (this.position.X + (double) this.width + 4.0), (float) (this.position.Y + (double) num - 16.0)), new Vector2((float) -this.velocity.X, (float) -this.velocity.Y), Main.rand.Next(435, 438), 1f);
-            Main.gore[index5].velocity.X = (__Null) (Main.gore[index5].velocity.X * 0.100000001490116 - this.velocity.X * 0.100000001490116);
-            Main.gore[index5].velocity.Y = (__Null) (Main.gore[index5].velocity.Y * 0.100000001490116 - this.velocity.Y * 0.0500000007450581);
+            int index3 = Gore.NewGore(new Vector2((float) ((double) this.position.X + (double) (this.width / 2) - 16.0), (float) ((double) this.position.Y + (double) num - 16.0)), new Vector2(-this.velocity.X, -this.velocity.Y), Main.rand.Next(435, 438), 1f);
+            Main.gore[index3].velocity.X = (float) ((double) Main.gore[index3].velocity.X * 0.100000001490116 - (double) this.velocity.X * 0.100000001490116);
+            Main.gore[index3].velocity.Y = (float) ((double) Main.gore[index3].velocity.Y * 0.100000001490116 - (double) this.velocity.Y * 0.0500000007450581);
+            int index4 = Gore.NewGore(new Vector2(this.position.X - 36f, (float) ((double) this.position.Y + (double) num - 16.0)), new Vector2(-this.velocity.X, -this.velocity.Y), Main.rand.Next(435, 438), 1f);
+            Main.gore[index4].velocity.X = (float) ((double) Main.gore[index4].velocity.X * 0.100000001490116 - (double) this.velocity.X * 0.100000001490116);
+            Main.gore[index4].velocity.Y = (float) ((double) Main.gore[index4].velocity.Y * 0.100000001490116 - (double) this.velocity.Y * 0.0500000007450581);
+            int index5 = Gore.NewGore(new Vector2((float) ((double) this.position.X + (double) this.width + 4.0), (float) ((double) this.position.Y + (double) num - 16.0)), new Vector2(-this.velocity.X, -this.velocity.Y), Main.rand.Next(435, 438), 1f);
+            Main.gore[index5].velocity.X = (float) ((double) Main.gore[index5].velocity.X * 0.100000001490116 - (double) this.velocity.X * 0.100000001490116);
+            Main.gore[index5].velocity.Y = (float) ((double) Main.gore[index5].velocity.Y * 0.100000001490116 - (double) this.velocity.Y * 0.0500000007450581);
           }
           else if (flag7)
           {
@@ -13391,12 +12905,10 @@ label_124:
             int height = this.height;
             double gravDir = (double) this.gravDir;
             Main.PlaySound(16, (int) this.position.X, (int) this.position.Y, 1, 1f, 0.0f);
-            this.velocity.Y = (__Null) (-(double) Player.jumpSpeed * (double) this.gravDir);
+            this.velocity.Y = -Player.jumpSpeed * this.gravDir;
             this.jump = Player.jumpHeight * 2;
             Vector2 center = this.Center;
-            Vector2 vector2_1;
-            // ISSUE: explicit reference operation
-            ((Vector2) @vector2_1).\u002Ector(50f, 20f);
+            Vector2 vector2_1 = new Vector2(50f, 20f);
             float num1 = 6.283185f * Main.rand.NextFloat();
             for (int index = 0; index < 5; ++index)
             {
@@ -13407,10 +12919,10 @@ label_124:
                   176,
                   177,
                   179
-                }), 0.0f, 0.0f, 0, (Color) null, 1f)];
-                Vector2 vector2_2 = Vector2.op_Multiply(Vector2.get_UnitY().RotatedBy((double) num2 * 6.28318548202515 / 14.0 + (double) num1, (Vector2) null), 0.2f * (float) index);
-                dust.position = Vector2.op_Addition(center, Vector2.op_Multiply(vector2_2, vector2_1));
-                dust.velocity = Vector2.op_Addition(vector2_2, new Vector2(0.0f, this.gravDir * 4f));
+                }), 0.0f, 0.0f, 0, new Color(), 1f)];
+                Vector2 vector2_2 = Vector2.UnitY.RotatedBy((double) num2 * 6.28318548202515 / 14.0 + (double) num1, new Vector2()) * (0.2f * (float) index);
+                dust.position = center + vector2_2 * vector2_1;
+                dust.velocity = vector2_2 + new Vector2(0.0f, this.gravDir * 4f);
                 dust.noGravity = true;
                 dust.scale = (float) (1.0 + (double) Main.rand.NextFloat() * 0.800000011920929);
                 dust.fadeIn = Main.rand.NextFloat() * 2f;
@@ -13425,23 +12937,23 @@ label_124:
             if ((double) this.gravDir == -1.0)
               num = 0;
             Main.PlaySound(16, (int) this.position.X, (int) this.position.Y, 1, 1f, 0.0f);
-            this.velocity.Y = (__Null) (-(double) Player.jumpSpeed * (double) this.gravDir);
+            this.velocity.Y = -Player.jumpSpeed * this.gravDir;
             this.jump = (int) ((double) Player.jumpHeight * 0.75);
             for (int index1 = 0; index1 < 10; ++index1)
             {
-              int index2 = Dust.NewDust(new Vector2((float) (this.position.X - 34.0), (float) (this.position.Y + (double) num - 16.0)), 102, 32, 16, (float) (-this.velocity.X * 0.5), (float) (this.velocity.Y * 0.5), 100, (Color) null, 1.5f);
-              Main.dust[index2].velocity.X = (__Null) (Main.dust[index2].velocity.X * 0.5 - this.velocity.X * 0.100000001490116);
-              Main.dust[index2].velocity.Y = (__Null) (Main.dust[index2].velocity.Y * 0.5 - this.velocity.Y * 0.300000011920929);
+              int index2 = Dust.NewDust(new Vector2(this.position.X - 34f, (float) ((double) this.position.Y + (double) num - 16.0)), 102, 32, 16, (float) (-(double) this.velocity.X * 0.5), this.velocity.Y * 0.5f, 100, new Color(), 1.5f);
+              Main.dust[index2].velocity.X = (float) ((double) Main.dust[index2].velocity.X * 0.5 - (double) this.velocity.X * 0.100000001490116);
+              Main.dust[index2].velocity.Y = (float) ((double) Main.dust[index2].velocity.Y * 0.5 - (double) this.velocity.Y * 0.300000011920929);
             }
-            int index3 = Gore.NewGore(new Vector2((float) (this.position.X + (double) (this.width / 2) - 16.0), (float) (this.position.Y + (double) num - 16.0)), new Vector2((float) -this.velocity.X, (float) -this.velocity.Y), Main.rand.Next(11, 14), 1f);
-            Main.gore[index3].velocity.X = (__Null) (Main.gore[index3].velocity.X * 0.100000001490116 - this.velocity.X * 0.100000001490116);
-            Main.gore[index3].velocity.Y = (__Null) (Main.gore[index3].velocity.Y * 0.100000001490116 - this.velocity.Y * 0.0500000007450581);
-            int index4 = Gore.NewGore(new Vector2((float) (this.position.X - 36.0), (float) (this.position.Y + (double) num - 16.0)), new Vector2((float) -this.velocity.X, (float) -this.velocity.Y), Main.rand.Next(11, 14), 1f);
-            Main.gore[index4].velocity.X = (__Null) (Main.gore[index4].velocity.X * 0.100000001490116 - this.velocity.X * 0.100000001490116);
-            Main.gore[index4].velocity.Y = (__Null) (Main.gore[index4].velocity.Y * 0.100000001490116 - this.velocity.Y * 0.0500000007450581);
-            int index5 = Gore.NewGore(new Vector2((float) (this.position.X + (double) this.width + 4.0), (float) (this.position.Y + (double) num - 16.0)), new Vector2((float) -this.velocity.X, (float) -this.velocity.Y), Main.rand.Next(11, 14), 1f);
-            Main.gore[index5].velocity.X = (__Null) (Main.gore[index5].velocity.X * 0.100000001490116 - this.velocity.X * 0.100000001490116);
-            Main.gore[index5].velocity.Y = (__Null) (Main.gore[index5].velocity.Y * 0.100000001490116 - this.velocity.Y * 0.0500000007450581);
+            int index3 = Gore.NewGore(new Vector2((float) ((double) this.position.X + (double) (this.width / 2) - 16.0), (float) ((double) this.position.Y + (double) num - 16.0)), new Vector2(-this.velocity.X, -this.velocity.Y), Main.rand.Next(11, 14), 1f);
+            Main.gore[index3].velocity.X = (float) ((double) Main.gore[index3].velocity.X * 0.100000001490116 - (double) this.velocity.X * 0.100000001490116);
+            Main.gore[index3].velocity.Y = (float) ((double) Main.gore[index3].velocity.Y * 0.100000001490116 - (double) this.velocity.Y * 0.0500000007450581);
+            int index4 = Gore.NewGore(new Vector2(this.position.X - 36f, (float) ((double) this.position.Y + (double) num - 16.0)), new Vector2(-this.velocity.X, -this.velocity.Y), Main.rand.Next(11, 14), 1f);
+            Main.gore[index4].velocity.X = (float) ((double) Main.gore[index4].velocity.X * 0.100000001490116 - (double) this.velocity.X * 0.100000001490116);
+            Main.gore[index4].velocity.Y = (float) ((double) Main.gore[index4].velocity.Y * 0.100000001490116 - (double) this.velocity.Y * 0.0500000007450581);
+            int index5 = Gore.NewGore(new Vector2((float) ((double) this.position.X + (double) this.width + 4.0), (float) ((double) this.position.Y + (double) num - 16.0)), new Vector2(-this.velocity.X, -this.velocity.Y), Main.rand.Next(11, 14), 1f);
+            Main.gore[index5].velocity.X = (float) ((double) Main.gore[index5].velocity.X * 0.100000001490116 - (double) this.velocity.X * 0.100000001490116);
+            Main.gore[index5].velocity.Y = (float) ((double) Main.gore[index5].velocity.Y * 0.100000001490116 - (double) this.velocity.Y * 0.0500000007450581);
           }
         }
         this.releaseJump = false;
@@ -13460,17 +12972,14 @@ label_124:
       {
         if (this.eocHit < 0)
         {
-          Rectangle rectangle;
-          // ISSUE: explicit reference operation
-          ((Rectangle) @rectangle).\u002Ector((int) ((double) this.position.X + (double) this.velocity.X * 0.5 - 4.0), (int) ((double) this.position.Y + (double) this.velocity.Y * 0.5 - 4.0), this.width + 8, this.height + 8);
+          Microsoft.Xna.Framework.Rectangle rectangle = new Microsoft.Xna.Framework.Rectangle((int) ((double) this.position.X + (double) this.velocity.X * 0.5 - 4.0), (int) ((double) this.position.Y + (double) this.velocity.Y * 0.5 - 4.0), this.width + 8, this.height + 8);
           for (int index = 0; index < 200; ++index)
           {
             if (Main.npc[index].active && !Main.npc[index].dontTakeDamage && !Main.npc[index].friendly)
             {
               NPC npc = Main.npc[index];
-              Rectangle rect = npc.getRect();
-              // ISSUE: explicit reference operation
-              if (((Rectangle) @rectangle).Intersects(rect) && (npc.noTileCollide || this.CanHit((Entity) npc)))
+              Microsoft.Xna.Framework.Rectangle rect = npc.getRect();
+              if (rectangle.Intersects(rect) && (npc.noTileCollide || this.CanHit((Entity) npc)))
               {
                 float num = 30f * this.meleeDamage;
                 float knockback = 9f;
@@ -13482,16 +12991,16 @@ label_124:
                 if (Main.rand.Next(100) < this.meleeCrit)
                   crit = true;
                 int direction = this.direction;
-                if (this.velocity.X < 0.0)
+                if ((double) this.velocity.X < 0.0)
                   direction = -1;
-                if (this.velocity.X > 0.0)
+                if ((double) this.velocity.X > 0.0)
                   direction = 1;
                 if (this.whoAmI == Main.myPlayer)
                   this.ApplyDamageToNPC(npc, (int) num, knockback, direction, crit);
                 this.eocDash = 10;
                 this.dashDelay = 30;
-                this.velocity.X = (__Null) (double) (-direction * 9);
-                this.velocity.Y = (__Null) -4.0;
+                this.velocity.X = (float) (-direction * 9);
+                this.velocity.Y = -4f;
                 this.immune = true;
                 this.immuneNoBlink = true;
                 this.immuneTime = 4;
@@ -13500,30 +13009,19 @@ label_124:
             }
           }
         }
-        else if ((!this.controlLeft || this.velocity.X >= 0.0) && (!this.controlRight || this.velocity.X <= 0.0))
-        {
-          // ISSUE: explicit reference operation
-          // ISSUE: variable of a reference type
-          Vector2& local = @this.velocity;
-          // ISSUE: explicit reference operation
-          double num = (^local).X * 0.949999988079071;
-          // ISSUE: explicit reference operation
-          (^local).X = (__Null) num;
-        }
+        else if ((!this.controlLeft || (double) this.velocity.X >= 0.0) && (!this.controlRight || (double) this.velocity.X <= 0.0))
+          this.velocity.X *= 0.95f;
       }
       if (this.dash == 3 && this.dashDelay < 0 && this.whoAmI == Main.myPlayer)
       {
-        Rectangle rectangle;
-        // ISSUE: explicit reference operation
-        ((Rectangle) @rectangle).\u002Ector((int) ((double) this.position.X + (double) this.velocity.X * 0.5 - 4.0), (int) ((double) this.position.Y + (double) this.velocity.Y * 0.5 - 4.0), this.width + 8, this.height + 8);
+        Microsoft.Xna.Framework.Rectangle rectangle = new Microsoft.Xna.Framework.Rectangle((int) ((double) this.position.X + (double) this.velocity.X * 0.5 - 4.0), (int) ((double) this.position.Y + (double) this.velocity.Y * 0.5 - 4.0), this.width + 8, this.height + 8);
         for (int index1 = 0; index1 < 200; ++index1)
         {
           if (Main.npc[index1].active && !Main.npc[index1].dontTakeDamage && (!Main.npc[index1].friendly && Main.npc[index1].immune[this.whoAmI] <= 0))
           {
             NPC npc = Main.npc[index1];
-            Rectangle rect = npc.getRect();
-            // ISSUE: explicit reference operation
-            if (((Rectangle) @rectangle).Intersects(rect) && (npc.noTileCollide || this.CanHit((Entity) npc)))
+            Microsoft.Xna.Framework.Rectangle rect = npc.getRect();
+            if (rectangle.Intersects(rect) && (npc.noTileCollide || this.CanHit((Entity) npc)))
             {
               if (!this.solarDashConsumedFlare)
               {
@@ -13540,14 +13038,14 @@ label_124:
               if (Main.rand.Next(100) < this.meleeCrit)
                 crit = true;
               int direction = this.direction;
-              if (this.velocity.X < 0.0)
+              if ((double) this.velocity.X < 0.0)
                 direction = -1;
-              if (this.velocity.X > 0.0)
+              if ((double) this.velocity.X > 0.0)
                 direction = 1;
               if (this.whoAmI == Main.myPlayer)
               {
                 this.ApplyDamageToNPC(npc, (int) num, knockback, direction, crit);
-                int index2 = Projectile.NewProjectile((float) this.Center.X, (float) this.Center.Y, 0.0f, 0.0f, 608, 150, 15f, Main.myPlayer, 0.0f, 0.0f);
+                int index2 = Projectile.NewProjectile(this.Center.X, this.Center.Y, 0.0f, 0.0f, 608, 150, 15f, Main.myPlayer, 0.0f, 0.0f);
                 Main.projectile[index2].Kill();
               }
               npc.immune[this.whoAmI] = 6;
@@ -13577,10 +13075,8 @@ label_124:
         {
           for (int index1 = 0; index1 < 2; ++index1)
           {
-            int index2 = this.velocity.Y != 0.0 ? Dust.NewDust(new Vector2((float) this.position.X, (float) (this.position.Y + (double) (this.height / 2) - 8.0)), this.width, 16, 31, 0.0f, 0.0f, 100, (Color) null, 1.4f) : Dust.NewDust(new Vector2((float) this.position.X, (float) (this.position.Y + (double) this.height - 4.0)), this.width, 8, 31, 0.0f, 0.0f, 100, (Color) null, 1.4f);
-            Dust dust = Main.dust[index2];
-            Vector2 vector2 = Vector2.op_Multiply(dust.velocity, 0.1f);
-            dust.velocity = vector2;
+            int index2 = (double) this.velocity.Y != 0.0 ? Dust.NewDust(new Vector2(this.position.X, (float) ((double) this.position.Y + (double) (this.height / 2) - 8.0)), this.width, 16, 31, 0.0f, 0.0f, 100, new Color(), 1.4f) : Dust.NewDust(new Vector2(this.position.X, (float) ((double) this.position.Y + (double) this.height - 4.0)), this.width, 8, 31, 0.0f, 0.0f, 100, new Color(), 1.4f);
+            Main.dust[index2].velocity *= 0.1f;
             Main.dust[index2].scale *= (float) (1.0 + (double) Main.rand.Next(20) * 0.00999999977648258);
             Main.dust[index2].shader = GameShaders.Armor.GetSecondaryShader(this.cShoe, this);
           }
@@ -13589,10 +13085,8 @@ label_124:
         {
           for (int index1 = 0; index1 < 0; ++index1)
           {
-            int index2 = this.velocity.Y != 0.0 ? Dust.NewDust(new Vector2((float) this.position.X, (float) (this.position.Y + (double) (this.height / 2) - 8.0)), this.width, 16, 31, 0.0f, 0.0f, 100, (Color) null, 1.4f) : Dust.NewDust(new Vector2((float) this.position.X, (float) (this.position.Y + (double) this.height - 4.0)), this.width, 8, 31, 0.0f, 0.0f, 100, (Color) null, 1.4f);
-            Dust dust = Main.dust[index2];
-            Vector2 vector2 = Vector2.op_Multiply(dust.velocity, 0.1f);
-            dust.velocity = vector2;
+            int index2 = (double) this.velocity.Y != 0.0 ? Dust.NewDust(new Vector2(this.position.X, (float) ((double) this.position.Y + (double) (this.height / 2) - 8.0)), this.width, 16, 31, 0.0f, 0.0f, 100, new Color(), 1.4f) : Dust.NewDust(new Vector2(this.position.X, (float) ((double) this.position.Y + (double) this.height - 4.0)), this.width, 8, 31, 0.0f, 0.0f, 100, new Color(), 1.4f);
+            Main.dust[index2].velocity *= 0.1f;
             Main.dust[index2].scale *= (float) (1.0 + (double) Main.rand.Next(20) * 0.00999999977648258);
             Main.dust[index2].shader = GameShaders.Armor.GetSecondaryShader(this.cShoe, this);
           }
@@ -13604,10 +13098,8 @@ label_124:
         {
           for (int index1 = 0; index1 < 4; ++index1)
           {
-            int index2 = Dust.NewDust(new Vector2((float) this.position.X, (float) (this.position.Y + 4.0)), this.width, this.height - 8, 6, 0.0f, 0.0f, 100, (Color) null, 1.7f);
-            Dust dust = Main.dust[index2];
-            Vector2 vector2 = Vector2.op_Multiply(dust.velocity, 0.1f);
-            dust.velocity = vector2;
+            int index2 = Dust.NewDust(new Vector2(this.position.X, this.position.Y + 4f), this.width, this.height - 8, 6, 0.0f, 0.0f, 100, new Color(), 1.7f);
+            Main.dust[index2].velocity *= 0.1f;
             Main.dust[index2].scale *= (float) (1.0 + (double) Main.rand.Next(20) * 0.00999999977648258);
             Main.dust[index2].shader = GameShaders.Armor.GetSecondaryShader(this.ArmorSetDye(), this);
             Main.dust[index2].noGravity = true;
@@ -13623,10 +13115,8 @@ label_124:
         {
           for (int index1 = 0; index1 < 2; ++index1)
           {
-            int index2 = Dust.NewDust(new Vector2((float) this.position.X, (float) (this.position.Y + 4.0)), this.width, this.height - 8, 229, 0.0f, 0.0f, 100, (Color) null, 1.2f);
-            Dust dust = Main.dust[index2];
-            Vector2 vector2 = Vector2.op_Multiply(dust.velocity, 0.1f);
-            dust.velocity = vector2;
+            int index2 = Dust.NewDust(new Vector2(this.position.X, this.position.Y + 4f), this.width, this.height - 8, 229, 0.0f, 0.0f, 100, new Color(), 1.2f);
+            Main.dust[index2].velocity *= 0.1f;
             Main.dust[index2].scale *= (float) (1.0 + (double) Main.rand.Next(20) * 0.00999999977648258);
             Main.dust[index2].shader = GameShaders.Armor.GetSecondaryShader(this.cWings, this);
             Main.dust[index2].noGravity = true;
@@ -13640,38 +13130,24 @@ label_124:
         if (this.dash <= 0)
           return;
         this.vortexStealthActive = false;
-        if (this.velocity.X > (double) num1 || this.velocity.X < -(double) num1)
+        if ((double) this.velocity.X > (double) num1 || (double) this.velocity.X < -(double) num1)
+          this.velocity.X *= num2;
+        else if ((double) this.velocity.X > (double) num3 || (double) this.velocity.X < -(double) num3)
         {
-          // ISSUE: explicit reference operation
-          // ISSUE: variable of a reference type
-          Vector2& local = @this.velocity;
-          // ISSUE: explicit reference operation
-          double num6 = (^local).X * (double) num2;
-          // ISSUE: explicit reference operation
-          (^local).X = (__Null) num6;
-        }
-        else if (this.velocity.X > (double) num3 || this.velocity.X < -(double) num3)
-        {
-          // ISSUE: explicit reference operation
-          // ISSUE: variable of a reference type
-          Vector2& local = @this.velocity;
-          // ISSUE: explicit reference operation
-          double num6 = (^local).X * (double) num4;
-          // ISSUE: explicit reference operation
-          (^local).X = (__Null) num6;
+          this.velocity.X *= num4;
         }
         else
         {
           this.dashDelay = num5;
-          if (this.velocity.X < 0.0)
+          if ((double) this.velocity.X < 0.0)
           {
-            this.velocity.X = (__Null) -(double) num3;
+            this.velocity.X = -num3;
           }
           else
           {
-            if (this.velocity.X <= 0.0)
+            if ((double) this.velocity.X <= 0.0)
               return;
-            this.velocity.X = (__Null) (double) num3;
+            this.velocity.X = num3;
           }
         }
       }
@@ -13681,7 +13157,7 @@ label_124:
           return;
         if (this.dash == 1)
         {
-          int num1 = 0;
+          int num = 0;
           bool flag = false;
           if (this.dashTime > 0)
             --this.dashTime;
@@ -13691,7 +13167,7 @@ label_124:
           {
             if (this.dashTime > 0)
             {
-              num1 = 1;
+              num = 1;
               flag = true;
               this.dashTime = 0;
             }
@@ -13702,7 +13178,7 @@ label_124:
           {
             if (this.dashTime < 0)
             {
-              num1 = -1;
+              num = -1;
               flag = true;
               this.dashTime = 0;
             }
@@ -13711,59 +13187,33 @@ label_124:
           }
           if (!flag)
             return;
-          this.velocity.X = (__Null) (16.8999996185303 * (double) num1);
-          Point tileCoordinates1 = Vector2.op_Addition(this.Center, new Vector2((float) (num1 * this.width / 2 + 2), (float) ((double) this.gravDir * (double) -this.height / 2.0 + (double) this.gravDir * 2.0))).ToTileCoordinates();
-          Point tileCoordinates2 = Vector2.op_Addition(this.Center, new Vector2((float) (num1 * this.width / 2 + 2), 0.0f)).ToTileCoordinates();
-          if (WorldGen.SolidOrSlopedTile((int) tileCoordinates1.X, (int) tileCoordinates1.Y) || WorldGen.SolidOrSlopedTile((int) tileCoordinates2.X, (int) tileCoordinates2.Y))
-          {
-            // ISSUE: explicit reference operation
-            // ISSUE: variable of a reference type
-            Vector2& local = @this.velocity;
-            // ISSUE: explicit reference operation
-            double num2 = (^local).X / 2.0;
-            // ISSUE: explicit reference operation
-            (^local).X = (__Null) num2;
-          }
+          this.velocity.X = 16.9f * (float) num;
+          Point tileCoordinates1 = (this.Center + new Vector2((float) (num * this.width / 2 + 2), (float) ((double) this.gravDir * (double) -this.height / 2.0 + (double) this.gravDir * 2.0))).ToTileCoordinates();
+          Point tileCoordinates2 = (this.Center + new Vector2((float) (num * this.width / 2 + 2), 0.0f)).ToTileCoordinates();
+          if (WorldGen.SolidOrSlopedTile(tileCoordinates1.X, tileCoordinates1.Y) || WorldGen.SolidOrSlopedTile(tileCoordinates2.X, tileCoordinates2.Y))
+            this.velocity.X /= 2f;
           this.dashDelay = -1;
           for (int index1 = 0; index1 < 20; ++index1)
           {
-            int index2 = Dust.NewDust(new Vector2((float) this.position.X, (float) this.position.Y), this.width, this.height, 31, 0.0f, 0.0f, 100, (Color) null, 2f);
-            // ISSUE: explicit reference operation
-            // ISSUE: variable of a reference type
-            Vector2& local1 = @Main.dust[index2].position;
-            // ISSUE: explicit reference operation
-            double num2 = (^local1).X + (double) Main.rand.Next(-5, 6);
-            // ISSUE: explicit reference operation
-            (^local1).X = (__Null) num2;
-            // ISSUE: explicit reference operation
-            // ISSUE: variable of a reference type
-            Vector2& local2 = @Main.dust[index2].position;
-            // ISSUE: explicit reference operation
-            double num3 = (^local2).Y + (double) Main.rand.Next(-5, 6);
-            // ISSUE: explicit reference operation
-            (^local2).Y = (__Null) num3;
-            Dust dust = Main.dust[index2];
-            Vector2 vector2 = Vector2.op_Multiply(dust.velocity, 0.2f);
-            dust.velocity = vector2;
+            int index2 = Dust.NewDust(new Vector2(this.position.X, this.position.Y), this.width, this.height, 31, 0.0f, 0.0f, 100, new Color(), 2f);
+            Main.dust[index2].position.X += (float) Main.rand.Next(-5, 6);
+            Main.dust[index2].position.Y += (float) Main.rand.Next(-5, 6);
+            Main.dust[index2].velocity *= 0.2f;
             Main.dust[index2].scale *= (float) (1.0 + (double) Main.rand.Next(20) * 0.00999999977648258);
             Main.dust[index2].shader = GameShaders.Armor.GetSecondaryShader(this.cShoe, this);
           }
-          int index3 = Gore.NewGore(new Vector2((float) (this.position.X + (double) (this.width / 2) - 24.0), (float) (this.position.Y + (double) (this.height / 2) - 34.0)), (Vector2) null, Main.rand.Next(61, 64), 1f);
-          Main.gore[index3].velocity.X = (__Null) ((double) Main.rand.Next(-50, 51) * 0.00999999977648258);
-          Main.gore[index3].velocity.Y = (__Null) ((double) Main.rand.Next(-50, 51) * 0.00999999977648258);
-          Gore gore1 = Main.gore[index3];
-          Vector2 vector2_1 = Vector2.op_Multiply(gore1.velocity, 0.4f);
-          gore1.velocity = vector2_1;
-          int index4 = Gore.NewGore(new Vector2((float) (this.position.X + (double) (this.width / 2) - 24.0), (float) (this.position.Y + (double) (this.height / 2) - 14.0)), (Vector2) null, Main.rand.Next(61, 64), 1f);
-          Main.gore[index4].velocity.X = (__Null) ((double) Main.rand.Next(-50, 51) * 0.00999999977648258);
-          Main.gore[index4].velocity.Y = (__Null) ((double) Main.rand.Next(-50, 51) * 0.00999999977648258);
-          Gore gore2 = Main.gore[index4];
-          Vector2 vector2_2 = Vector2.op_Multiply(gore2.velocity, 0.4f);
-          gore2.velocity = vector2_2;
+          int index3 = Gore.NewGore(new Vector2((float) ((double) this.position.X + (double) (this.width / 2) - 24.0), (float) ((double) this.position.Y + (double) (this.height / 2) - 34.0)), new Vector2(), Main.rand.Next(61, 64), 1f);
+          Main.gore[index3].velocity.X = (float) Main.rand.Next(-50, 51) * 0.01f;
+          Main.gore[index3].velocity.Y = (float) Main.rand.Next(-50, 51) * 0.01f;
+          Main.gore[index3].velocity *= 0.4f;
+          int index4 = Gore.NewGore(new Vector2((float) ((double) this.position.X + (double) (this.width / 2) - 24.0), (float) ((double) this.position.Y + (double) (this.height / 2) - 14.0)), new Vector2(), Main.rand.Next(61, 64), 1f);
+          Main.gore[index4].velocity.X = (float) Main.rand.Next(-50, 51) * 0.01f;
+          Main.gore[index4].velocity.Y = (float) Main.rand.Next(-50, 51) * 0.01f;
+          Main.gore[index4].velocity *= 0.4f;
         }
         else if (this.dash == 2)
         {
-          int num1 = 0;
+          int num = 0;
           bool flag = false;
           if (this.dashTime > 0)
             --this.dashTime;
@@ -13773,7 +13223,7 @@ label_124:
           {
             if (this.dashTime > 0)
             {
-              num1 = 1;
+              num = 1;
               flag = true;
               this.dashTime = 0;
             }
@@ -13784,7 +13234,7 @@ label_124:
           {
             if (this.dashTime < 0)
             {
-              num1 = -1;
+              num = -1;
               flag = true;
               this.dashTime = 0;
             }
@@ -13793,41 +13243,19 @@ label_124:
           }
           if (!flag)
             return;
-          this.velocity.X = (__Null) (14.5 * (double) num1);
-          Point tileCoordinates1 = Vector2.op_Addition(this.Center, new Vector2((float) (num1 * this.width / 2 + 2), (float) ((double) this.gravDir * (double) -this.height / 2.0 + (double) this.gravDir * 2.0))).ToTileCoordinates();
-          Point tileCoordinates2 = Vector2.op_Addition(this.Center, new Vector2((float) (num1 * this.width / 2 + 2), 0.0f)).ToTileCoordinates();
-          if (WorldGen.SolidOrSlopedTile((int) tileCoordinates1.X, (int) tileCoordinates1.Y) || WorldGen.SolidOrSlopedTile((int) tileCoordinates2.X, (int) tileCoordinates2.Y))
-          {
-            // ISSUE: explicit reference operation
-            // ISSUE: variable of a reference type
-            Vector2& local = @this.velocity;
-            // ISSUE: explicit reference operation
-            double num2 = (^local).X / 2.0;
-            // ISSUE: explicit reference operation
-            (^local).X = (__Null) num2;
-          }
+          this.velocity.X = 14.5f * (float) num;
+          Point tileCoordinates1 = (this.Center + new Vector2((float) (num * this.width / 2 + 2), (float) ((double) this.gravDir * (double) -this.height / 2.0 + (double) this.gravDir * 2.0))).ToTileCoordinates();
+          Point tileCoordinates2 = (this.Center + new Vector2((float) (num * this.width / 2 + 2), 0.0f)).ToTileCoordinates();
+          if (WorldGen.SolidOrSlopedTile(tileCoordinates1.X, tileCoordinates1.Y) || WorldGen.SolidOrSlopedTile(tileCoordinates2.X, tileCoordinates2.Y))
+            this.velocity.X /= 2f;
           this.dashDelay = -1;
           this.eocDash = 15;
           for (int index1 = 0; index1 < 0; ++index1)
           {
-            int index2 = Dust.NewDust(new Vector2((float) this.position.X, (float) this.position.Y), this.width, this.height, 31, 0.0f, 0.0f, 100, (Color) null, 2f);
-            // ISSUE: explicit reference operation
-            // ISSUE: variable of a reference type
-            Vector2& local1 = @Main.dust[index2].position;
-            // ISSUE: explicit reference operation
-            double num2 = (^local1).X + (double) Main.rand.Next(-5, 6);
-            // ISSUE: explicit reference operation
-            (^local1).X = (__Null) num2;
-            // ISSUE: explicit reference operation
-            // ISSUE: variable of a reference type
-            Vector2& local2 = @Main.dust[index2].position;
-            // ISSUE: explicit reference operation
-            double num3 = (^local2).Y + (double) Main.rand.Next(-5, 6);
-            // ISSUE: explicit reference operation
-            (^local2).Y = (__Null) num3;
-            Dust dust = Main.dust[index2];
-            Vector2 vector2 = Vector2.op_Multiply(dust.velocity, 0.2f);
-            dust.velocity = vector2;
+            int index2 = Dust.NewDust(new Vector2(this.position.X, this.position.Y), this.width, this.height, 31, 0.0f, 0.0f, 100, new Color(), 2f);
+            Main.dust[index2].position.X += (float) Main.rand.Next(-5, 6);
+            Main.dust[index2].position.Y += (float) Main.rand.Next(-5, 6);
+            Main.dust[index2].velocity *= 0.2f;
             Main.dust[index2].scale *= (float) (1.0 + (double) Main.rand.Next(20) * 0.00999999977648258);
             Main.dust[index2].shader = GameShaders.Armor.GetSecondaryShader(this.cShield, this);
           }
@@ -13836,7 +13264,7 @@ label_124:
         {
           if (this.dash != 3)
             return;
-          int num1 = 0;
+          int num = 0;
           bool flag = false;
           if (this.dashTime > 0)
             --this.dashTime;
@@ -13846,7 +13274,7 @@ label_124:
           {
             if (this.dashTime > 0)
             {
-              num1 = 1;
+              num = 1;
               flag = true;
               this.dashTime = 0;
               this.solarDashing = true;
@@ -13859,7 +13287,7 @@ label_124:
           {
             if (this.dashTime < 0)
             {
-              num1 = -1;
+              num = -1;
               flag = true;
               this.dashTime = 0;
               this.solarDashing = true;
@@ -13870,40 +13298,18 @@ label_124:
           }
           if (!flag)
             return;
-          this.velocity.X = (__Null) (21.8999996185303 * (double) num1);
-          Point tileCoordinates1 = Vector2.op_Addition(this.Center, new Vector2((float) (num1 * this.width / 2 + 2), (float) ((double) this.gravDir * (double) -this.height / 2.0 + (double) this.gravDir * 2.0))).ToTileCoordinates();
-          Point tileCoordinates2 = Vector2.op_Addition(this.Center, new Vector2((float) (num1 * this.width / 2 + 2), 0.0f)).ToTileCoordinates();
-          if (WorldGen.SolidOrSlopedTile((int) tileCoordinates1.X, (int) tileCoordinates1.Y) || WorldGen.SolidOrSlopedTile((int) tileCoordinates2.X, (int) tileCoordinates2.Y))
-          {
-            // ISSUE: explicit reference operation
-            // ISSUE: variable of a reference type
-            Vector2& local = @this.velocity;
-            // ISSUE: explicit reference operation
-            double num2 = (^local).X / 2.0;
-            // ISSUE: explicit reference operation
-            (^local).X = (__Null) num2;
-          }
+          this.velocity.X = 21.9f * (float) num;
+          Point tileCoordinates1 = (this.Center + new Vector2((float) (num * this.width / 2 + 2), (float) ((double) this.gravDir * (double) -this.height / 2.0 + (double) this.gravDir * 2.0))).ToTileCoordinates();
+          Point tileCoordinates2 = (this.Center + new Vector2((float) (num * this.width / 2 + 2), 0.0f)).ToTileCoordinates();
+          if (WorldGen.SolidOrSlopedTile(tileCoordinates1.X, tileCoordinates1.Y) || WorldGen.SolidOrSlopedTile(tileCoordinates2.X, tileCoordinates2.Y))
+            this.velocity.X /= 2f;
           this.dashDelay = -1;
           for (int index1 = 0; index1 < 20; ++index1)
           {
-            int index2 = Dust.NewDust(new Vector2((float) this.position.X, (float) this.position.Y), this.width, this.height, 6, 0.0f, 0.0f, 100, (Color) null, 2f);
-            // ISSUE: explicit reference operation
-            // ISSUE: variable of a reference type
-            Vector2& local1 = @Main.dust[index2].position;
-            // ISSUE: explicit reference operation
-            double num2 = (^local1).X + (double) Main.rand.Next(-5, 6);
-            // ISSUE: explicit reference operation
-            (^local1).X = (__Null) num2;
-            // ISSUE: explicit reference operation
-            // ISSUE: variable of a reference type
-            Vector2& local2 = @Main.dust[index2].position;
-            // ISSUE: explicit reference operation
-            double num3 = (^local2).Y + (double) Main.rand.Next(-5, 6);
-            // ISSUE: explicit reference operation
-            (^local2).Y = (__Null) num3;
-            Dust dust = Main.dust[index2];
-            Vector2 vector2 = Vector2.op_Multiply(dust.velocity, 0.2f);
-            dust.velocity = vector2;
+            int index2 = Dust.NewDust(new Vector2(this.position.X, this.position.Y), this.width, this.height, 6, 0.0f, 0.0f, 100, new Color(), 2f);
+            Main.dust[index2].position.X += (float) Main.rand.Next(-5, 6);
+            Main.dust[index2].position.Y += (float) Main.rand.Next(-5, 6);
+            Main.dust[index2].velocity *= 0.2f;
             Main.dust[index2].scale *= (float) (1.0 + (double) Main.rand.Next(20) * 0.00999999977648258);
             Main.dust[index2].shader = GameShaders.Armor.GetSecondaryShader(this.ArmorSetDye(), this);
             Main.dust[index2].noGravity = true;
@@ -13919,96 +13325,60 @@ label_124:
       if (this.slideDir == 0 || this.spikedBoots <= 0 || this.mount.Active || (!this.controlLeft || this.slideDir != -1) && (!this.controlRight || this.slideDir != 1))
         return;
       bool flag = false;
-      float x = (float) this.position.X;
+      float x = this.position.X;
       if (this.slideDir == 1)
         x += (float) this.width;
       float num1 = x + (float) this.slideDir;
-      float num2 = (float) (this.position.Y + (double) this.height + 1.0);
+      float num2 = (float) ((double) this.position.Y + (double) this.height + 1.0);
       if ((double) this.gravDir < 0.0)
-        num2 = (float) (this.position.Y - 1.0);
+        num2 = this.position.Y - 1f;
       float num3 = num1 / 16f;
       float num4 = num2 / 16f;
       if (WorldGen.SolidTile((int) num3, (int) num4) && WorldGen.SolidTile((int) num3, (int) num4 - 1))
         flag = true;
       if (this.spikedBoots >= 2)
       {
-        if (!flag || (this.velocity.Y <= 0.0 || (double) this.gravDir != 1.0) && (this.velocity.Y >= (double) this.gravity || (double) this.gravDir != -1.0))
+        if (!flag || ((double) this.velocity.Y <= 0.0 || (double) this.gravDir != 1.0) && ((double) this.velocity.Y >= (double) this.gravity || (double) this.gravDir != -1.0))
           return;
         float num5 = this.gravity;
         if (this.slowFall)
           num5 = !this.controlUp ? this.gravity / 3f * this.gravDir : this.gravity / 10f * this.gravDir;
-        this.fallStart = (int) (this.position.Y / 16.0);
+        this.fallStart = (int) ((double) this.position.Y / 16.0);
         if (this.controlDown && (double) this.gravDir == 1.0 || this.controlUp && (double) this.gravDir == -1.0)
         {
-          this.velocity.Y = (__Null) (4.0 * (double) this.gravDir);
-          int index = Dust.NewDust(new Vector2((float) this.position.X + (float) (this.width / 2) + (float) ((this.width / 2 - 4) * this.slideDir), (float) (this.position.Y + (double) (this.height / 2) + (double) (this.height / 2 - 4) * (double) this.gravDir)), 8, 8, 31, 0.0f, 0.0f, 0, (Color) null, 1f);
+          this.velocity.Y = 4f * this.gravDir;
+          int index = Dust.NewDust(new Vector2(this.position.X + (float) (this.width / 2) + (float) ((this.width / 2 - 4) * this.slideDir), (float) ((double) this.position.Y + (double) (this.height / 2) + (double) (this.height / 2 - 4) * (double) this.gravDir)), 8, 8, 31, 0.0f, 0.0f, 0, new Color(), 1f);
           if (this.slideDir < 0)
-          {
-            // ISSUE: explicit reference operation
-            // ISSUE: variable of a reference type
-            Vector2& local = @Main.dust[index].position;
-            // ISSUE: explicit reference operation
-            double num6 = (^local).X - 10.0;
-            // ISSUE: explicit reference operation
-            (^local).X = (__Null) num6;
-          }
+            Main.dust[index].position.X -= 10f;
           if ((double) this.gravDir < 0.0)
-          {
-            // ISSUE: explicit reference operation
-            // ISSUE: variable of a reference type
-            Vector2& local = @Main.dust[index].position;
-            // ISSUE: explicit reference operation
-            double num6 = (^local).Y - 12.0;
-            // ISSUE: explicit reference operation
-            (^local).Y = (__Null) num6;
-          }
-          Dust dust = Main.dust[index];
-          Vector2 vector2 = Vector2.op_Multiply(dust.velocity, 0.1f);
-          dust.velocity = vector2;
+            Main.dust[index].position.Y -= 12f;
+          Main.dust[index].velocity *= 0.1f;
           Main.dust[index].scale *= 1.2f;
           Main.dust[index].noGravity = true;
           Main.dust[index].shader = GameShaders.Armor.GetSecondaryShader(this.cShoe, this);
         }
         else if ((double) this.gravDir == -1.0)
-          this.velocity.Y = (__Null) ((-(double) num5 + 9.99999974737875E-06) * (double) this.gravDir);
+          this.velocity.Y = (float) (-(double) num5 + 9.99999974737875E-06) * this.gravDir;
         else
-          this.velocity.Y = (__Null) ((-(double) num5 + 9.99999974737875E-06) * (double) this.gravDir);
+          this.velocity.Y = (float) (-(double) num5 + 9.99999974737875E-06) * this.gravDir;
         this.sliding = true;
       }
       else
       {
         if ((!flag || (double) this.velocity.Y <= 0.5 || (double) this.gravDir != 1.0) && ((double) this.velocity.Y >= -0.5 || (double) this.gravDir != -1.0))
           return;
-        this.fallStart = (int) (this.position.Y / 16.0);
+        this.fallStart = (int) ((double) this.position.Y / 16.0);
         if (this.controlDown)
-          this.velocity.Y = (__Null) (4.0 * (double) this.gravDir);
+          this.velocity.Y = 4f * this.gravDir;
         else
-          this.velocity.Y = (__Null) (0.5 * (double) this.gravDir);
+          this.velocity.Y = 0.5f * this.gravDir;
         this.sliding = true;
-        int index = Dust.NewDust(new Vector2((float) this.position.X + (float) (this.width / 2) + (float) ((this.width / 2 - 4) * this.slideDir), (float) (this.position.Y + (double) (this.height / 2) + (double) (this.height / 2 - 4) * (double) this.gravDir)), 8, 8, 31, 0.0f, 0.0f, 0, (Color) null, 1f);
+        int index = Dust.NewDust(new Vector2(this.position.X + (float) (this.width / 2) + (float) ((this.width / 2 - 4) * this.slideDir), (float) ((double) this.position.Y + (double) (this.height / 2) + (double) (this.height / 2 - 4) * (double) this.gravDir)), 8, 8, 31, 0.0f, 0.0f, 0, new Color(), 1f);
         if (this.slideDir < 0)
-        {
-          // ISSUE: explicit reference operation
-          // ISSUE: variable of a reference type
-          Vector2& local = @Main.dust[index].position;
-          // ISSUE: explicit reference operation
-          double num5 = (^local).X - 10.0;
-          // ISSUE: explicit reference operation
-          (^local).X = (__Null) num5;
-        }
+          Main.dust[index].position.X -= 10f;
         if ((double) this.gravDir < 0.0)
-        {
-          // ISSUE: explicit reference operation
-          // ISSUE: variable of a reference type
-          Vector2& local = @Main.dust[index].position;
-          // ISSUE: explicit reference operation
-          double num5 = (^local).Y - 12.0;
-          // ISSUE: explicit reference operation
-          (^local).Y = (__Null) num5;
-        }
-        Dust dust = Main.dust[index];
-        Vector2 vector2 = Vector2.op_Multiply(dust.velocity, 0.1f);
-        dust.velocity = vector2;
+          Main.dust[index].position.Y -= 12f;
+        Main.dust[index].velocity *= 0.1f;
         Main.dust[index].scale *= 1.2f;
         Main.dust[index].noGravity = true;
         Main.dust[index].shader = GameShaders.Armor.GetSecondaryShader(this.cShoe, this);
@@ -14018,7 +13388,7 @@ label_124:
     public void CarpetMovement()
     {
       bool flag = false;
-      if (this.grappling[0] == -1 && this.carpet && (!this.jumpAgainCloud && !this.jumpAgainSandstorm) && (!this.jumpAgainBlizzard && !this.jumpAgainFart && (!this.jumpAgainSail && !this.jumpAgainUnicorn)) && (this.jump == 0 && this.velocity.Y != 0.0 && (this.rocketTime == 0 && (double) this.wingTime == 0.0) && !this.mount.Active))
+      if (this.grappling[0] == -1 && this.carpet && (!this.jumpAgainCloud && !this.jumpAgainSandstorm) && (!this.jumpAgainBlizzard && !this.jumpAgainFart && (!this.jumpAgainSail && !this.jumpAgainUnicorn)) && (this.jump == 0 && (double) this.velocity.Y != 0.0 && (this.rocketTime == 0 && (double) this.wingTime == 0.0) && !this.mount.Active))
       {
         if (this.controlJump && this.canCarpet)
         {
@@ -14027,15 +13397,15 @@ label_124:
         }
         if (this.carpetTime > 0 && this.controlJump)
         {
-          this.fallStart = (int) (this.position.Y / 16.0);
+          this.fallStart = (int) ((double) this.position.Y / 16.0);
           flag = true;
           --this.carpetTime;
           float gravity = this.gravity;
-          if ((double) this.gravDir == 1.0 && this.velocity.Y > -(double) gravity)
-            this.velocity.Y = (__Null) -((double) gravity + 9.99999997475243E-07);
-          else if ((double) this.gravDir == -1.0 && this.velocity.Y < (double) gravity)
-            this.velocity.Y = (__Null) ((double) gravity + 9.99999997475243E-07);
-          this.carpetFrameCounter += 1f + Math.Abs((float) (this.velocity.X * 0.5));
+          if ((double) this.gravDir == 1.0 && (double) this.velocity.Y > -(double) gravity)
+            this.velocity.Y = (float) -((double) gravity + 9.99999997475243E-07);
+          else if ((double) this.gravDir == -1.0 && (double) this.velocity.Y < (double) gravity)
+            this.velocity.Y = gravity + 1E-06f;
+          this.carpetFrameCounter += 1f + Math.Abs(this.velocity.X * 0.5f);
           if ((double) this.carpetFrameCounter > 8.0)
           {
             this.carpetFrameCounter = 0.0f;
@@ -14055,16 +13425,16 @@ label_124:
 
     public void DoubleJumpVisuals()
     {
-      if (this.dJumpEffectCloud && this.doubleJumpCloud && !this.jumpAgainCloud && (this.jumpAgainSandstorm || !this.doubleJumpSandstorm) && ((double) this.gravDir == 1.0 && this.velocity.Y < 0.0 || (double) this.gravDir == -1.0 && this.velocity.Y > 0.0))
+      if (this.dJumpEffectCloud && this.doubleJumpCloud && !this.jumpAgainCloud && (this.jumpAgainSandstorm || !this.doubleJumpSandstorm) && ((double) this.gravDir == 1.0 && (double) this.velocity.Y < 0.0 || (double) this.gravDir == -1.0 && (double) this.velocity.Y > 0.0))
       {
         int num = this.height;
         if ((double) this.gravDir == -1.0)
           num = -6;
-        int index = Dust.NewDust(new Vector2((float) (this.position.X - 4.0), (float) this.position.Y + (float) num), this.width + 8, 4, 16, (float) (-this.velocity.X * 0.5), (float) (this.velocity.Y * 0.5), 100, (Color) null, 1.5f);
-        Main.dust[index].velocity.X = (__Null) (Main.dust[index].velocity.X * 0.5 - this.velocity.X * 0.100000001490116);
-        Main.dust[index].velocity.Y = (__Null) (Main.dust[index].velocity.Y * 0.5 - this.velocity.Y * 0.300000011920929);
+        int index = Dust.NewDust(new Vector2(this.position.X - 4f, this.position.Y + (float) num), this.width + 8, 4, 16, (float) (-(double) this.velocity.X * 0.5), this.velocity.Y * 0.5f, 100, new Color(), 1.5f);
+        Main.dust[index].velocity.X = (float) ((double) Main.dust[index].velocity.X * 0.5 - (double) this.velocity.X * 0.100000001490116);
+        Main.dust[index].velocity.Y = (float) ((double) Main.dust[index].velocity.Y * 0.5 - (double) this.velocity.Y * 0.300000011920929);
       }
-      if (this.dJumpEffectSandstorm && this.doubleJumpSandstorm && !this.jumpAgainSandstorm && ((double) this.gravDir == 1.0 && this.velocity.Y < 0.0 || (double) this.gravDir == -1.0 && this.velocity.Y > 0.0))
+      if (this.dJumpEffectSandstorm && this.doubleJumpSandstorm && !this.jumpAgainSandstorm && ((double) this.gravDir == 1.0 && (double) this.velocity.Y < 0.0 || (double) this.gravDir == -1.0 && (double) this.velocity.Y > 0.0))
       {
         int num = this.height;
         if ((double) this.gravDir == -1.0)
@@ -14072,47 +13442,43 @@ label_124:
         float Scale = (float) (((double) this.jump / 75.0 + 1.0) / 2.0);
         for (int index1 = 0; index1 < 3; ++index1)
         {
-          int index2 = Dust.NewDust(new Vector2((float) this.position.X, (float) this.position.Y + (float) (num / 2)), this.width, 32, 124, (float) (this.velocity.X * 0.300000011920929), (float) (this.velocity.Y * 0.300000011920929), 150, (Color) null, 1f * Scale);
-          Dust dust = Main.dust[index2];
-          Vector2 vector2 = Vector2.op_Multiply(dust.velocity, 0.5f * Scale);
-          dust.velocity = vector2;
+          int index2 = Dust.NewDust(new Vector2(this.position.X, this.position.Y + (float) (num / 2)), this.width, 32, 124, this.velocity.X * 0.3f, this.velocity.Y * 0.3f, 150, new Color(), 1f * Scale);
+          Main.dust[index2].velocity *= 0.5f * Scale;
           Main.dust[index2].fadeIn = 1.5f * Scale;
         }
         this.sandStorm = true;
         if (this.miscCounter % 3 == 0)
         {
-          int index = Gore.NewGore(new Vector2((float) (this.position.X + (double) (this.width / 2) - 18.0), (float) this.position.Y + (float) (num / 2)), new Vector2((float) -this.velocity.X, (float) -this.velocity.Y), Main.rand.Next(220, 223), Scale);
-          Main.gore[index].velocity = Vector2.op_Multiply(Vector2.op_Multiply(this.velocity, 0.3f), Scale);
+          int index = Gore.NewGore(new Vector2((float) ((double) this.position.X + (double) (this.width / 2) - 18.0), this.position.Y + (float) (num / 2)), new Vector2(-this.velocity.X, -this.velocity.Y), Main.rand.Next(220, 223), Scale);
+          Main.gore[index].velocity = this.velocity * 0.3f * Scale;
           Main.gore[index].alpha = 100;
         }
       }
-      if (this.dJumpEffectFart && this.doubleJumpFart && !this.jumpAgainFart && ((double) this.gravDir == 1.0 && this.velocity.Y < 0.0 || (double) this.gravDir == -1.0 && this.velocity.Y > 0.0))
+      if (this.dJumpEffectFart && this.doubleJumpFart && !this.jumpAgainFart && ((double) this.gravDir == 1.0 && (double) this.velocity.Y < 0.0 || (double) this.gravDir == -1.0 && (double) this.velocity.Y > 0.0))
       {
         int num = this.height;
         if ((double) this.gravDir == -1.0)
           num = -6;
-        int index = Dust.NewDust(new Vector2((float) (this.position.X - 4.0), (float) this.position.Y + (float) num), this.width + 8, 4, 188, (float) (-this.velocity.X * 0.5), (float) (this.velocity.Y * 0.5), 100, (Color) null, 1.5f);
-        Main.dust[index].velocity.X = (__Null) (Main.dust[index].velocity.X * 0.5 - this.velocity.X * 0.100000001490116);
-        Main.dust[index].velocity.Y = (__Null) (Main.dust[index].velocity.Y * 0.5 - this.velocity.Y * 0.300000011920929);
-        Dust dust = Main.dust[index];
-        Vector2 vector2 = Vector2.op_Multiply(dust.velocity, 0.5f);
-        dust.velocity = vector2;
+        int index = Dust.NewDust(new Vector2(this.position.X - 4f, this.position.Y + (float) num), this.width + 8, 4, 188, (float) (-(double) this.velocity.X * 0.5), this.velocity.Y * 0.5f, 100, new Color(), 1.5f);
+        Main.dust[index].velocity.X = (float) ((double) Main.dust[index].velocity.X * 0.5 - (double) this.velocity.X * 0.100000001490116);
+        Main.dust[index].velocity.Y = (float) ((double) Main.dust[index].velocity.Y * 0.5 - (double) this.velocity.Y * 0.300000011920929);
+        Main.dust[index].velocity *= 0.5f;
       }
-      if (this.dJumpEffectUnicorn && this.doubleJumpUnicorn && !this.jumpAgainUnicorn && ((double) this.gravDir == 1.0 && this.velocity.Y < 0.0 || (double) this.gravDir == -1.0 && this.velocity.Y > 0.0))
+      if (this.dJumpEffectUnicorn && this.doubleJumpUnicorn && !this.jumpAgainUnicorn && ((double) this.gravDir == 1.0 && (double) this.velocity.Y < 0.0 || (double) this.gravDir == -1.0 && (double) this.velocity.Y > 0.0))
       {
         Dust dust = Main.dust[Dust.NewDust(this.position, this.width, this.height, Utils.SelectRandom<int>(Main.rand, new int[3]
         {
           176,
           177,
           179
-        }), 0.0f, 0.0f, 0, (Color) null, 1f)];
-        dust.velocity = Vector2.get_Zero();
+        }), 0.0f, 0.0f, 0, new Color(), 1f)];
+        dust.velocity = Vector2.Zero;
         dust.noGravity = true;
         dust.scale = (float) (0.5 + (double) Main.rand.NextFloat() * 0.800000011920929);
         dust.fadeIn = (float) (1.0 + (double) Main.rand.NextFloat() * 2.0);
         dust.shader = GameShaders.Armor.GetSecondaryShader(this.cMount, this);
       }
-      if (this.dJumpEffectSail && this.doubleJumpSail && !this.jumpAgainSail && ((double) this.gravDir == 1.0 && this.velocity.Y < 1.0 || (double) this.gravDir == -1.0 && this.velocity.Y > 1.0))
+      if (this.dJumpEffectSail && this.doubleJumpSail && !this.jumpAgainSail && ((double) this.gravDir == 1.0 && (double) this.velocity.Y < 1.0 || (double) this.gravDir == -1.0 && (double) this.velocity.Y > 1.0))
       {
         int num1 = 1;
         if (this.jump > 0)
@@ -14122,79 +13488,50 @@ label_124:
           num2 = 6;
         for (int index1 = 0; index1 < num1; ++index1)
         {
-          int index2 = Dust.NewDust(new Vector2((float) this.position.X, (float) this.position.Y + (float) num2), this.width, 12, 253, (float) (this.velocity.X * 0.300000011920929), (float) (this.velocity.Y * 0.300000011920929), 100, (Color) null, 1.5f);
+          int index2 = Dust.NewDust(new Vector2(this.position.X, this.position.Y + (float) num2), this.width, 12, 253, this.velocity.X * 0.3f, this.velocity.Y * 0.3f, 100, new Color(), 1.5f);
           Main.dust[index2].scale += (float) Main.rand.Next(-5, 3) * 0.1f;
           if (this.jump <= 0)
-          {
             Main.dust[index2].scale *= 0.8f;
-          }
           else
-          {
-            Dust dust = Main.dust[index2];
-            Vector2 vector2 = Vector2.op_Subtraction(dust.velocity, Vector2.op_Division(this.velocity, 5f));
-            dust.velocity = vector2;
-          }
+            Main.dust[index2].velocity -= this.velocity / 5f;
           Main.dust[index2].noGravity = true;
-          Vector2 vector2_1;
-          // ISSUE: explicit reference operation
-          ((Vector2) @vector2_1).\u002Ector((float) Main.rand.Next(-100, 101), (float) Main.rand.Next(-100, 101));
-          // ISSUE: explicit reference operation
-          ((Vector2) @vector2_1).Normalize();
-          vector2_1 = Vector2.op_Multiply(vector2_1, (float) Main.rand.Next(81) * 0.1f);
+          Vector2 vector2 = new Vector2((float) Main.rand.Next(-100, 101), (float) Main.rand.Next(-100, 101));
+          vector2.Normalize();
+          vector2 *= (float) Main.rand.Next(81) * 0.1f;
         }
       }
-      if (!this.dJumpEffectBlizzard || !this.doubleJumpBlizzard || this.jumpAgainBlizzard || ((double) this.gravDir != 1.0 || this.velocity.Y >= 0.0) && ((double) this.gravDir != -1.0 || this.velocity.Y <= 0.0))
+      if (!this.dJumpEffectBlizzard || !this.doubleJumpBlizzard || this.jumpAgainBlizzard || ((double) this.gravDir != 1.0 || (double) this.velocity.Y >= 0.0) && ((double) this.gravDir != -1.0 || (double) this.velocity.Y <= 0.0))
         return;
       int num3 = this.height - 6;
       if ((double) this.gravDir == -1.0)
         num3 = 6;
       for (int index1 = 0; index1 < 2; ++index1)
       {
-        int index2 = Dust.NewDust(new Vector2((float) this.position.X, (float) this.position.Y + (float) num3), this.width, 12, 76, (float) (this.velocity.X * 0.300000011920929), (float) (this.velocity.Y * 0.300000011920929), 0, (Color) null, 1f);
-        Dust dust1 = Main.dust[index2];
-        Vector2 vector2_1 = Vector2.op_Multiply(dust1.velocity, 0.1f);
-        dust1.velocity = vector2_1;
+        int index2 = Dust.NewDust(new Vector2(this.position.X, this.position.Y + (float) num3), this.width, 12, 76, this.velocity.X * 0.3f, this.velocity.Y * 0.3f, 0, new Color(), 1f);
+        Main.dust[index2].velocity *= 0.1f;
         if (index1 == 0)
-        {
-          Dust dust2 = Main.dust[index2];
-          Vector2 vector2_2 = Vector2.op_Addition(dust2.velocity, Vector2.op_Multiply(this.velocity, 0.03f));
-          dust2.velocity = vector2_2;
-        }
+          Main.dust[index2].velocity += this.velocity * 0.03f;
         else
-        {
-          Dust dust2 = Main.dust[index2];
-          Vector2 vector2_2 = Vector2.op_Subtraction(dust2.velocity, Vector2.op_Multiply(this.velocity, 0.03f));
-          dust2.velocity = vector2_2;
-        }
-        Dust dust3 = Main.dust[index2];
-        Vector2 vector2_3 = Vector2.op_Subtraction(dust3.velocity, Vector2.op_Multiply(this.velocity, 0.1f));
-        dust3.velocity = vector2_3;
+          Main.dust[index2].velocity -= this.velocity * 0.03f;
+        Main.dust[index2].velocity -= this.velocity * 0.1f;
         Main.dust[index2].noGravity = true;
         Main.dust[index2].noLight = true;
       }
       for (int index1 = 0; index1 < 3; ++index1)
       {
-        int index2 = Dust.NewDust(new Vector2((float) this.position.X, (float) this.position.Y + (float) num3), this.width, 12, 76, (float) (this.velocity.X * 0.300000011920929), (float) (this.velocity.Y * 0.300000011920929), 0, (Color) null, 1f);
+        int index2 = Dust.NewDust(new Vector2(this.position.X, this.position.Y + (float) num3), this.width, 12, 76, this.velocity.X * 0.3f, this.velocity.Y * 0.3f, 0, new Color(), 1f);
         Main.dust[index2].fadeIn = 1.5f;
-        Dust dust1 = Main.dust[index2];
-        Vector2 vector2_1 = Vector2.op_Multiply(dust1.velocity, 0.6f);
-        dust1.velocity = vector2_1;
-        Dust dust2 = Main.dust[index2];
-        Vector2 vector2_2 = Vector2.op_Addition(dust2.velocity, Vector2.op_Multiply(this.velocity, 0.8f));
-        dust2.velocity = vector2_2;
+        Main.dust[index2].velocity *= 0.6f;
+        Main.dust[index2].velocity += this.velocity * 0.8f;
         Main.dust[index2].noGravity = true;
         Main.dust[index2].noLight = true;
       }
       for (int index1 = 0; index1 < 3; ++index1)
       {
-        int index2 = Dust.NewDust(new Vector2((float) this.position.X, (float) this.position.Y + (float) num3), this.width, 12, 76, (float) (this.velocity.X * 0.300000011920929), (float) (this.velocity.Y * 0.300000011920929), 0, (Color) null, 1f);
+        int index2 = Dust.NewDust(new Vector2(this.position.X, this.position.Y + (float) num3), this.width, 12, 76, this.velocity.X * 0.3f, this.velocity.Y * 0.3f, 0, new Color(), 1f);
         Main.dust[index2].fadeIn = 1.5f;
-        Dust dust1 = Main.dust[index2];
-        Vector2 vector2_1 = Vector2.op_Multiply(dust1.velocity, 0.6f);
-        dust1.velocity = vector2_1;
-        Dust dust2 = Main.dust[index2];
-        Vector2 vector2_2 = Vector2.op_Subtraction(dust2.velocity, Vector2.op_Multiply(this.velocity, 0.8f));
-        dust2.velocity = vector2_2;
+        Main.dust[index2].velocity *= 0.6f;
+        Main.dust[index2].velocity -= this.velocity * 0.8f;
         Main.dust[index2].noGravity = true;
         Main.dust[index2].noLight = true;
       }
@@ -14204,62 +13541,24 @@ label_124:
     {
       if (this.wingsLogic == 4 && this.controlUp)
       {
-        // ISSUE: explicit reference operation
-        // ISSUE: variable of a reference type
-        Vector2& local1 = @this.velocity;
-        // ISSUE: explicit reference operation
-        double num1 = (^local1).Y - 0.200000002980232 * (double) this.gravDir;
-        // ISSUE: explicit reference operation
-        (^local1).Y = (__Null) num1;
+        this.velocity.Y -= 0.2f * this.gravDir;
         if ((double) this.gravDir == 1.0)
         {
-          if (this.velocity.Y > 0.0)
-          {
-            // ISSUE: explicit reference operation
-            // ISSUE: variable of a reference type
-            Vector2& local2 = @this.velocity;
-            // ISSUE: explicit reference operation
-            double num2 = (^local2).Y - 1.0;
-            // ISSUE: explicit reference operation
-            (^local2).Y = (__Null) num2;
-          }
-          else if (this.velocity.Y > -(double) Player.jumpSpeed)
-          {
-            // ISSUE: explicit reference operation
-            // ISSUE: variable of a reference type
-            Vector2& local2 = @this.velocity;
-            // ISSUE: explicit reference operation
-            double num2 = (^local2).Y - 0.200000002980232;
-            // ISSUE: explicit reference operation
-            (^local2).Y = (__Null) num2;
-          }
-          if (this.velocity.Y < -(double) Player.jumpSpeed * 3.0)
-            this.velocity.Y = (__Null) (-(double) Player.jumpSpeed * 3.0);
+          if ((double) this.velocity.Y > 0.0)
+            --this.velocity.Y;
+          else if ((double) this.velocity.Y > -(double) Player.jumpSpeed)
+            this.velocity.Y -= 0.2f;
+          if ((double) this.velocity.Y < -(double) Player.jumpSpeed * 3.0)
+            this.velocity.Y = (float) (-(double) Player.jumpSpeed * 3.0);
         }
         else
         {
-          if (this.velocity.Y < 0.0)
-          {
-            // ISSUE: explicit reference operation
-            // ISSUE: variable of a reference type
-            Vector2& local2 = @this.velocity;
-            // ISSUE: explicit reference operation
-            double num2 = (^local2).Y + 1.0;
-            // ISSUE: explicit reference operation
-            (^local2).Y = (__Null) num2;
-          }
-          else if (this.velocity.Y < (double) Player.jumpSpeed)
-          {
-            // ISSUE: explicit reference operation
-            // ISSUE: variable of a reference type
-            Vector2& local2 = @this.velocity;
-            // ISSUE: explicit reference operation
-            double num2 = (^local2).Y + 0.200000002980232;
-            // ISSUE: explicit reference operation
-            (^local2).Y = (__Null) num2;
-          }
-          if (this.velocity.Y > (double) Player.jumpSpeed * 3.0)
-            this.velocity.Y = (__Null) ((double) Player.jumpSpeed * 3.0);
+          if ((double) this.velocity.Y < 0.0)
+            ++this.velocity.Y;
+          else if ((double) this.velocity.Y < (double) Player.jumpSpeed)
+            this.velocity.Y += 0.2f;
+          if ((double) this.velocity.Y > (double) Player.jumpSpeed * 3.0)
+            this.velocity.Y = Player.jumpSpeed * 3f;
         }
         this.wingTime -= 2f;
       }
@@ -14300,62 +13599,24 @@ label_124:
           num3 = 2f;
           num1 = 0.15f;
         }
-        // ISSUE: explicit reference operation
-        // ISSUE: variable of a reference type
-        Vector2& local1 = @this.velocity;
-        // ISSUE: explicit reference operation
-        double num6 = (^local1).Y - (double) num1 * (double) this.gravDir;
-        // ISSUE: explicit reference operation
-        (^local1).Y = (__Null) num6;
+        this.velocity.Y -= num1 * this.gravDir;
         if ((double) this.gravDir == 1.0)
         {
-          if (this.velocity.Y > 0.0)
-          {
-            // ISSUE: explicit reference operation
-            // ISSUE: variable of a reference type
-            Vector2& local2 = @this.velocity;
-            // ISSUE: explicit reference operation
-            double num7 = (^local2).Y - (double) num2;
-            // ISSUE: explicit reference operation
-            (^local2).Y = (__Null) num7;
-          }
-          else if (this.velocity.Y > -(double) Player.jumpSpeed * (double) num4)
-          {
-            // ISSUE: explicit reference operation
-            // ISSUE: variable of a reference type
-            Vector2& local2 = @this.velocity;
-            // ISSUE: explicit reference operation
-            double num7 = (^local2).Y - (double) num5;
-            // ISSUE: explicit reference operation
-            (^local2).Y = (__Null) num7;
-          }
-          if (this.velocity.Y < -(double) Player.jumpSpeed * (double) num3)
-            this.velocity.Y = (__Null) (-(double) Player.jumpSpeed * (double) num3);
+          if ((double) this.velocity.Y > 0.0)
+            this.velocity.Y -= num2;
+          else if ((double) this.velocity.Y > -(double) Player.jumpSpeed * (double) num4)
+            this.velocity.Y -= num5;
+          if ((double) this.velocity.Y < -(double) Player.jumpSpeed * (double) num3)
+            this.velocity.Y = -Player.jumpSpeed * num3;
         }
         else
         {
-          if (this.velocity.Y < 0.0)
-          {
-            // ISSUE: explicit reference operation
-            // ISSUE: variable of a reference type
-            Vector2& local2 = @this.velocity;
-            // ISSUE: explicit reference operation
-            double num7 = (^local2).Y + (double) num2;
-            // ISSUE: explicit reference operation
-            (^local2).Y = (__Null) num7;
-          }
-          else if (this.velocity.Y < (double) Player.jumpSpeed * (double) num4)
-          {
-            // ISSUE: explicit reference operation
-            // ISSUE: variable of a reference type
-            Vector2& local2 = @this.velocity;
-            // ISSUE: explicit reference operation
-            double num7 = (^local2).Y + (double) num5;
-            // ISSUE: explicit reference operation
-            (^local2).Y = (__Null) num7;
-          }
-          if (this.velocity.Y > (double) Player.jumpSpeed * (double) num3)
-            this.velocity.Y = (__Null) ((double) Player.jumpSpeed * (double) num3);
+          if ((double) this.velocity.Y < 0.0)
+            this.velocity.Y += num2;
+          else if ((double) this.velocity.Y < (double) Player.jumpSpeed * (double) num4)
+            this.velocity.Y += num5;
+          if ((double) this.velocity.Y > (double) Player.jumpSpeed * (double) num3)
+            this.velocity.Y = Player.jumpSpeed * num3;
         }
         if ((this.wingsLogic == 22 || this.wingsLogic == 28 || (this.wingsLogic == 30 || this.wingsLogic == 31) || this.wingsLogic == 37) && (this.controlDown && !this.controlLeft && !this.controlRight))
           this.wingTime -= 0.5f;
@@ -14378,17 +13639,13 @@ label_124:
       if (index1 == -1 || (double) Main.projectile[index1].ai[0] < 0.0)
         return;
       Projectile projectile = Main.projectile[index1];
-      Vector2 vector2_1;
-      // ISSUE: explicit reference operation
-      ((Vector2) @vector2_1).\u002Ector(0.0f, 216f);
-      Vector2 vector2_2 = Vector2.op_Addition(Vector2.op_Subtraction(Main.npc[(int) Math.Abs(projectile.ai[0]) - 1].Center, this.Center), vector2_1);
-      // ISSUE: explicit reference operation
-      if ((double) ((Vector2) @vector2_2).Length() <= 200.0)
+      Vector2 vector2_1 = new Vector2(0.0f, 216f);
+      Vector2 vector2_2 = Main.npc[(int) Math.Abs(projectile.ai[0]) - 1].Center - this.Center + vector2_1;
+      if ((double) vector2_2.Length() <= 200.0)
         return;
       Vector2 vector2_3 = Vector2.Normalize(vector2_2);
       Player player = this;
-      // ISSUE: explicit reference operation
-      Vector2 vector2_4 = Vector2.op_Addition(player.position, Vector2.op_Multiply(vector2_3, ((Vector2) @vector2_2).Length() - 200f));
+      Vector2 vector2_4 = player.position + vector2_3 * (vector2_2.Length() - 200f);
       player.position = vector2_4;
     }
 
@@ -14396,29 +13653,29 @@ label_124:
     {
       if (Main.wof < 0 || !Main.npc[Main.wof].active)
         return;
-      float num1 = (float) (Main.npc[Main.wof].position.X + 40.0);
+      float num1 = Main.npc[Main.wof].position.X + 40f;
       if (Main.npc[Main.wof].direction > 0)
         num1 -= 96f;
-      if (this.position.X + (double) this.width > (double) num1 && this.position.X < (double) num1 + 140.0 && this.gross)
+      if ((double) this.position.X + (double) this.width > (double) num1 && (double) this.position.X < (double) num1 + 140.0 && this.gross)
       {
         this.noKnockback = false;
         this.Hurt(PlayerDeathReason.LegacyDefault(), 50, Main.npc[Main.wof].direction, false, false, false, -1);
       }
-      if (!this.gross && this.position.Y > (double) ((Main.maxTilesY - 250) * 16) && (this.position.X > (double) num1 - 1920.0 && this.position.X < (double) num1 + 1920.0))
+      if (!this.gross && (double) this.position.Y > (double) ((Main.maxTilesY - 250) * 16) && ((double) this.position.X > (double) num1 - 1920.0 && (double) this.position.X < (double) num1 + 1920.0))
       {
         this.AddBuff(37, 10, true);
         Main.PlaySound(4, (int) Main.npc[Main.wof].position.X, (int) Main.npc[Main.wof].position.Y, 10, 1f, 0.0f);
       }
       if (this.gross)
       {
-        if (this.position.Y < (double) ((Main.maxTilesY - 200) * 16))
+        if ((double) this.position.Y < (double) ((Main.maxTilesY - 200) * 16))
           this.AddBuff(38, 10, true);
         if (Main.npc[Main.wof].direction < 0)
         {
-          if (this.position.X + (double) (this.width / 2) > Main.npc[Main.wof].position.X + (double) (Main.npc[Main.wof].width / 2) + 40.0)
+          if ((double) this.position.X + (double) (this.width / 2) > (double) Main.npc[Main.wof].position.X + (double) (Main.npc[Main.wof].width / 2) + 40.0)
             this.AddBuff(38, 10, true);
         }
-        else if (this.position.X + (double) (this.width / 2) < Main.npc[Main.wof].position.X + (double) (Main.npc[Main.wof].width / 2) - 40.0)
+        else if ((double) this.position.X + (double) (this.width / 2) < (double) Main.npc[Main.wof].position.X + (double) (Main.npc[Main.wof].width / 2) - 40.0)
           this.AddBuff(38, 10, true);
       }
       if (!this.tongued)
@@ -14431,15 +13688,15 @@ label_124:
           Main.projectile[index].Kill();
       }
       Vector2 center = this.Center;
-      float num2 = (float) (Main.npc[Main.wof].position.X + (double) (Main.npc[Main.wof].width / 2) - center.X);
-      float num3 = (float) (Main.npc[Main.wof].position.Y + (double) (Main.npc[Main.wof].height / 2) - center.Y);
+      float num2 = Main.npc[Main.wof].position.X + (float) (Main.npc[Main.wof].width / 2) - center.X;
+      float num3 = Main.npc[Main.wof].position.Y + (float) (Main.npc[Main.wof].height / 2) - center.Y;
       if (Math.Sqrt((double) num2 * (double) num2 + (double) num3 * (double) num3) > 3000.0)
       {
         this.KillMe(PlayerDeathReason.ByOther(11), 1000.0, 0, false);
       }
       else
       {
-        if (Main.npc[Main.wof].position.X >= 608.0 && Main.npc[Main.wof].position.X <= (double) ((Main.maxTilesX - 38) * 16))
+        if ((double) Main.npc[Main.wof].position.X >= 608.0 && (double) Main.npc[Main.wof].position.X <= (double) ((Main.maxTilesX - 38) * 16))
           return;
         this.KillMe(PlayerDeathReason.ByOther(12), 1000.0, 0, false);
       }
@@ -14584,7 +13841,7 @@ label_124:
       this.canCarpet = true;
       this.carpetFrame = -1;
       this.wingFrame = 1;
-      if (this.velocity.Y == 0.0 || this.wet && (double) this.velocity.Y > -0.02 && (double) this.velocity.Y < 0.02)
+      if ((double) this.velocity.Y == 0.0 || this.wet && (double) this.velocity.Y > -0.02 && (double) this.velocity.Y < 0.02)
         this.wingFrame = 0;
       if (this.wings == 4)
         this.wingFrame = 3;
@@ -14596,70 +13853,54 @@ label_124:
       this.rocketFrame = false;
       this.canRocket = false;
       this.rocketRelease = false;
-      this.fallStart = (int) (this.position.Y / 16.0);
+      this.fallStart = (int) ((double) this.position.Y / 16.0);
       int index1 = -1;
       float num1 = 0.0f;
       float num2 = 0.0f;
       for (int index2 = 0; index2 < this.grapCount; ++index2)
       {
         Projectile projectile = Main.projectile[this.grappling[index2]];
-        num1 += (float) projectile.position.X + (float) (projectile.width / 2);
-        num2 += (float) projectile.position.Y + (float) (projectile.height / 2);
+        num1 += projectile.position.X + (float) (projectile.width / 2);
+        num2 += projectile.position.Y + (float) (projectile.height / 2);
         if (projectile.type == 403)
           index1 = index2;
         else if (projectile.type == 446)
         {
-          Vector2 vector2_1;
-          // ISSUE: explicit reference operation
-          ((Vector2) @vector2_1).\u002Ector((float) (this.controlRight.ToInt() - this.controlLeft.ToInt()), (float) (this.controlDown.ToInt() - this.controlUp.ToInt()) * this.gravDir);
-          if (Vector2.op_Inequality(vector2_1, Vector2.get_Zero()))
-          {
-            // ISSUE: explicit reference operation
-            ((Vector2) @vector2_1).Normalize();
-          }
-          vector2_1 = Vector2.op_Multiply(vector2_1, 100f);
-          Vector2 vector2_2 = Vector2.Normalize(Vector2.op_Addition(Vector2.op_Subtraction(this.Center, projectile.Center), vector2_1));
-          if (float.IsNaN((float) vector2_2.X) || float.IsNaN((float) vector2_2.Y))
-            vector2_2 = Vector2.op_UnaryNegation(Vector2.get_UnitY());
+          Vector2 vector2_1 = new Vector2((float) (this.controlRight.ToInt() - this.controlLeft.ToInt()), (float) (this.controlDown.ToInt() - this.controlUp.ToInt()) * this.gravDir);
+          if (vector2_1 != Vector2.Zero)
+            vector2_1.Normalize();
+          vector2_1 *= 100f;
+          Vector2 vector2_2 = Vector2.Normalize(this.Center - projectile.Center + vector2_1);
+          if (float.IsNaN(vector2_2.X) || float.IsNaN(vector2_2.Y))
+            vector2_2 = -Vector2.UnitY;
           float num3 = 200f;
-          num1 += (float) vector2_2.X * num3;
-          num2 += (float) vector2_2.Y * num3;
+          num1 += vector2_2.X * num3;
+          num2 += vector2_2.Y * num3;
         }
         else if (projectile.type == 652)
         {
-          Vector2 vector2_1;
-          // ISSUE: explicit reference operation
-          ((Vector2) @vector2_1).\u002Ector((float) (this.controlRight.ToInt() - this.controlLeft.ToInt()), (float) (this.controlDown.ToInt() - this.controlUp.ToInt()) * this.gravDir);
-          if (Vector2.op_Inequality(vector2_1, Vector2.get_Zero()))
-          {
-            // ISSUE: explicit reference operation
-            ((Vector2) @vector2_1).Normalize();
-          }
-          Vector2 vector2_2 = Vector2.op_Subtraction(projectile.Center, this.Center);
+          Vector2 vector2_1 = new Vector2((float) (this.controlRight.ToInt() - this.controlLeft.ToInt()), (float) (this.controlDown.ToInt() - this.controlUp.ToInt()) * this.gravDir);
+          if (vector2_1 != Vector2.Zero)
+            vector2_1.Normalize();
+          Vector2 vector2_2 = projectile.Center - this.Center;
           Vector2 vector2_3 = vector2_2;
-          if (Vector2.op_Inequality(vector2_3, Vector2.get_Zero()))
-          {
-            // ISSUE: explicit reference operation
-            ((Vector2) @vector2_3).Normalize();
-          }
-          Vector2 vector2_4 = Vector2.get_Zero();
-          if (Vector2.op_Inequality(vector2_1, Vector2.get_Zero()))
-            vector2_4 = Vector2.op_Multiply(vector2_3, Vector2.Dot(vector2_3, vector2_1));
+          if (vector2_3 != Vector2.Zero)
+            vector2_3.Normalize();
+          Vector2 vector2_4 = Vector2.Zero;
+          if (vector2_1 != Vector2.Zero)
+            vector2_4 = vector2_3 * Vector2.Dot(vector2_3, vector2_1);
           float num3 = 6f;
-          // ISSUE: explicit reference operation
-          if ((double) Vector2.Dot(vector2_4, vector2_2) < 0.0 && (double) ((Vector2) @vector2_2).Length() >= 600.0)
+          if ((double) Vector2.Dot(vector2_4, vector2_2) < 0.0 && (double) vector2_2.Length() >= 600.0)
             num3 = 0.0f;
-          num1 += (float) (-vector2_2.X + vector2_4.X * (double) num3);
-          num2 += (float) (-vector2_2.Y + vector2_4.Y * (double) num3);
+          num1 += (float) (-(double) vector2_2.X + (double) vector2_4.X * (double) num3);
+          num2 += (float) (-(double) vector2_2.Y + (double) vector2_4.Y * (double) num3);
         }
       }
       float num4 = num1 / (float) this.grapCount;
       float num5 = num2 / (float) this.grapCount;
-      Vector2 vector2;
-      // ISSUE: explicit reference operation
-      ((Vector2) @vector2).\u002Ector((float) (this.position.X + (double) this.width * 0.5), (float) (this.position.Y + (double) this.height * 0.5));
-      float num6 = num4 - (float) vector2.X;
-      float num7 = num5 - (float) vector2.Y;
+      Vector2 vector2 = new Vector2(this.position.X + (float) this.width * 0.5f, this.position.Y + (float) this.height * 0.5f);
+      float num6 = num4 - vector2.X;
+      float num7 = num5 - vector2.Y;
       float num8 = (float) Math.Sqrt((double) num6 * (double) num6 + (double) num7 * (double) num7);
       float num9 = 11f;
       if (Main.projectile[this.grappling[0]].type == 315)
@@ -14671,21 +13912,21 @@ label_124:
       float num12 = num7 * num10;
       if ((double) num12 > 0.0)
         this.GoingDownWithGrapple = true;
-      this.velocity.X = (__Null) (double) num11;
-      this.velocity.Y = (__Null) (double) num12;
+      this.velocity.X = num11;
+      this.velocity.Y = num12;
       if (index1 != -1)
       {
         Projectile projectile = Main.projectile[this.grappling[index1]];
-        if (projectile.position.X < this.position.X + (double) this.width && projectile.position.X + (double) projectile.width >= this.position.X && (projectile.position.Y < this.position.Y + (double) this.height && projectile.position.Y + (double) projectile.height >= this.position.Y))
+        if ((double) projectile.position.X < (double) this.position.X + (double) this.width && (double) projectile.position.X + (double) projectile.width >= (double) this.position.X && ((double) projectile.position.Y < (double) this.position.Y + (double) this.height && (double) projectile.position.Y + (double) projectile.height >= (double) this.position.Y))
         {
-          int tileX = (int) (projectile.position.X + (double) (projectile.width / 2)) / 16;
-          int tileY = (int) (projectile.position.Y + (double) (projectile.height / 2)) / 16;
-          this.velocity = Vector2.get_Zero();
+          int tileX = (int) ((double) projectile.position.X + (double) (projectile.width / 2)) / 16;
+          int tileY = (int) ((double) projectile.position.Y + (double) (projectile.height / 2)) / 16;
+          this.velocity = Vector2.Zero;
           if ((int) Main.tile[tileX, tileY].type == 314)
           {
             Vector2 Position;
-            Position.X = (__Null) (projectile.position.X + (double) (projectile.width / 2) - (double) (this.width / 2));
-            Position.Y = (__Null) (projectile.position.Y + (double) (projectile.height / 2) - (double) (this.height / 2));
+            Position.X = projectile.position.X + (float) (projectile.width / 2) - (float) (this.width / 2);
+            Position.Y = projectile.position.Y + (float) (projectile.height / 2) - (float) (this.height / 2);
             this.grappling[0] = -1;
             this.grapCount = 0;
             for (int index2 = 0; index2 < 1000; ++index2)
@@ -14710,30 +13951,24 @@ label_124:
       }
       if (this.itemAnimation == 0)
       {
-        if (this.velocity.X > 0.0)
+        if ((double) this.velocity.X > 0.0)
           this.ChangeDir(1);
-        if (this.velocity.X < 0.0)
+        if ((double) this.velocity.X < 0.0)
           this.ChangeDir(-1);
       }
       if (this.controlJump)
       {
         if (!this.releaseJump)
           return;
-        if ((this.velocity.Y == 0.0 || this.wet && (double) this.velocity.Y > -0.02 && (double) this.velocity.Y < 0.02) && !this.controlDown)
+        if (((double) this.velocity.Y == 0.0 || this.wet && (double) this.velocity.Y > -0.02 && (double) this.velocity.Y < 0.02) && !this.controlDown)
         {
-          this.velocity.Y = (__Null) -(double) Player.jumpSpeed;
+          this.velocity.Y = -Player.jumpSpeed;
           this.jump = Player.jumpHeight / 2;
           this.releaseJump = false;
         }
         else
         {
-          // ISSUE: explicit reference operation
-          // ISSUE: variable of a reference type
-          Vector2& local = @this.velocity;
-          // ISSUE: explicit reference operation
-          double num3 = (^local).Y + 0.00999999977648258;
-          // ISSUE: explicit reference operation
-          (^local).Y = (__Null) num3;
+          this.velocity.Y += 0.01f;
           this.releaseJump = false;
         }
         if (this.doubleJumpCloud)
@@ -14763,20 +13998,20 @@ label_124:
     public void StickyMovement()
     {
       bool flag = false;
-      if (this.mount.Type == 6 && (double) Math.Abs((float) this.velocity.X) > 5.0)
+      if (this.mount.Type == 6 && (double) Math.Abs(this.velocity.X) > 5.0)
         flag = true;
-      if (this.mount.Type == 13 && (double) Math.Abs((float) this.velocity.X) > 5.0)
+      if (this.mount.Type == 13 && (double) Math.Abs(this.velocity.X) > 5.0)
         flag = true;
-      if (this.mount.Type == 11 && (double) Math.Abs((float) this.velocity.X) > 5.0)
+      if (this.mount.Type == 11 && (double) Math.Abs(this.velocity.X) > 5.0)
         flag = true;
-      Vector2 vector2_1 = new Vector2((float) this.position.X + (float) (this.width / 2) - (float) (this.width / 2 / 2), (float) this.position.Y + (float) (this.height / 2) - (float) (this.height / 2 / 2));
+      Vector2 vector2_1 = new Vector2(this.position.X + (float) (this.width / 2) - (float) (this.width / 2 / 2), this.position.Y + (float) (this.height / 2) - (float) (this.height / 2 / 2));
       Vector2 vector2_2 = Collision.StickyTiles(this.position, this.velocity, this.width, this.height);
-      if (vector2_2.Y != -1.0 && vector2_2.X != -1.0)
+      if ((double) vector2_2.Y != -1.0 && (double) vector2_2.X != -1.0)
       {
         int x = (int) vector2_2.X;
         int y = (int) vector2_2.Y;
         int type = (int) Main.tile[x, y].type;
-        if (this.whoAmI == Main.myPlayer && type == 51 && (this.velocity.X != 0.0 || this.velocity.Y != 0.0))
+        if (this.whoAmI == Main.myPlayer && type == 51 && ((double) this.velocity.X != 0.0 || (double) this.velocity.Y != 0.0))
         {
           ++this.stickyBreak;
           if (this.stickyBreak > Main.rand.Next(20, 100) || flag)
@@ -14789,116 +14024,72 @@ label_124:
         }
         if (flag)
           return;
-        this.fallStart = (int) (this.position.Y / 16.0);
+        this.fallStart = (int) ((double) this.position.Y / 16.0);
         if (type != 229)
           this.jump = 0;
-        if (this.velocity.X > 1.0)
-          this.velocity.X = (__Null) 1.0;
-        if (this.velocity.X < -1.0)
-          this.velocity.X = (__Null) -1.0;
-        if (this.velocity.Y > 1.0)
-          this.velocity.Y = (__Null) 1.0;
-        if (this.velocity.Y < -5.0)
-          this.velocity.Y = (__Null) -5.0;
+        if ((double) this.velocity.X > 1.0)
+          this.velocity.X = 1f;
+        if ((double) this.velocity.X < -1.0)
+          this.velocity.X = -1f;
+        if ((double) this.velocity.Y > 1.0)
+          this.velocity.Y = 1f;
+        if ((double) this.velocity.Y < -5.0)
+          this.velocity.Y = -5f;
         if ((double) this.velocity.X > 0.75 || (double) this.velocity.X < -0.75)
-        {
-          // ISSUE: explicit reference operation
-          // ISSUE: variable of a reference type
-          Vector2& local = @this.velocity;
-          // ISSUE: explicit reference operation
-          double num = (^local).X * 0.850000023841858;
-          // ISSUE: explicit reference operation
-          (^local).X = (__Null) num;
-        }
+          this.velocity.X *= 0.85f;
         else
-        {
-          // ISSUE: explicit reference operation
-          // ISSUE: variable of a reference type
-          Vector2& local = @this.velocity;
-          // ISSUE: explicit reference operation
-          double num = (^local).X * 0.600000023841858;
-          // ISSUE: explicit reference operation
-          (^local).X = (__Null) num;
-        }
-        if (this.velocity.Y < 0.0)
-        {
-          // ISSUE: explicit reference operation
-          // ISSUE: variable of a reference type
-          Vector2& local = @this.velocity;
-          // ISSUE: explicit reference operation
-          double num = (^local).Y * 0.959999978542328;
-          // ISSUE: explicit reference operation
-          (^local).Y = (__Null) num;
-        }
+          this.velocity.X *= 0.6f;
+        if ((double) this.velocity.Y < 0.0)
+          this.velocity.Y *= 0.96f;
         else
-        {
-          // ISSUE: explicit reference operation
-          // ISSUE: variable of a reference type
-          Vector2& local = @this.velocity;
-          // ISSUE: explicit reference operation
-          double num = (^local).Y * 0.300000011920929;
-          // ISSUE: explicit reference operation
-          (^local).Y = (__Null) num;
-        }
-        if (type != 229 || Main.rand.Next(5) != 0 || (double) this.velocity.Y <= 0.15 && this.velocity.Y >= 0.0)
+          this.velocity.Y *= 0.3f;
+        if (type != 229 || Main.rand.Next(5) != 0 || (double) this.velocity.Y <= 0.15 && (double) this.velocity.Y >= 0.0)
           return;
-        if ((double) (x * 16) < this.position.X + (double) (this.width / 2))
+        if ((double) (x * 16) < (double) this.position.X + (double) (this.width / 2))
         {
-          int index = Dust.NewDust(new Vector2((float) (this.position.X - 4.0), (float) (y * 16)), 4, 16, 153, 0.0f, 0.0f, 50, (Color) null, 1f);
+          int index = Dust.NewDust(new Vector2(this.position.X - 4f, (float) (y * 16)), 4, 16, 153, 0.0f, 0.0f, 50, new Color(), 1f);
           Main.dust[index].scale += (float) Main.rand.Next(0, 6) * 0.1f;
-          Dust dust = Main.dust[index];
-          Vector2 vector2_3 = Vector2.op_Multiply(dust.velocity, 0.1f);
-          dust.velocity = vector2_3;
+          Main.dust[index].velocity *= 0.1f;
           Main.dust[index].noGravity = true;
         }
         else
         {
-          int index = Dust.NewDust(new Vector2((float) (this.position.X + (double) this.width - 2.0), (float) (y * 16)), 4, 16, 153, 0.0f, 0.0f, 50, (Color) null, 1f);
+          int index = Dust.NewDust(new Vector2((float) ((double) this.position.X + (double) this.width - 2.0), (float) (y * 16)), 4, 16, 153, 0.0f, 0.0f, 50, new Color(), 1f);
           Main.dust[index].scale += (float) Main.rand.Next(0, 6) * 0.1f;
-          Dust dust = Main.dust[index];
-          Vector2 vector2_3 = Vector2.op_Multiply(dust.velocity, 0.1f);
-          dust.velocity = vector2_3;
+          Main.dust[index].velocity *= 0.1f;
           Main.dust[index].noGravity = true;
         }
-        if (Main.tile[x, y + 1] != null && (int) Main.tile[x, y + 1].type == 229 && this.position.Y + (double) this.height > (double) ((y + 1) * 16))
+        if (Main.tile[x, y + 1] != null && (int) Main.tile[x, y + 1].type == 229 && (double) this.position.Y + (double) this.height > (double) ((y + 1) * 16))
         {
-          if ((double) (x * 16) < this.position.X + (double) (this.width / 2))
+          if ((double) (x * 16) < (double) this.position.X + (double) (this.width / 2))
           {
-            int index = Dust.NewDust(new Vector2((float) (this.position.X - 4.0), (float) (y * 16 + 16)), 4, 16, 153, 0.0f, 0.0f, 50, (Color) null, 1f);
+            int index = Dust.NewDust(new Vector2(this.position.X - 4f, (float) (y * 16 + 16)), 4, 16, 153, 0.0f, 0.0f, 50, new Color(), 1f);
             Main.dust[index].scale += (float) Main.rand.Next(0, 6) * 0.1f;
-            Dust dust = Main.dust[index];
-            Vector2 vector2_3 = Vector2.op_Multiply(dust.velocity, 0.1f);
-            dust.velocity = vector2_3;
+            Main.dust[index].velocity *= 0.1f;
             Main.dust[index].noGravity = true;
           }
           else
           {
-            int index = Dust.NewDust(new Vector2((float) (this.position.X + (double) this.width - 2.0), (float) (y * 16 + 16)), 4, 16, 153, 0.0f, 0.0f, 50, (Color) null, 1f);
+            int index = Dust.NewDust(new Vector2((float) ((double) this.position.X + (double) this.width - 2.0), (float) (y * 16 + 16)), 4, 16, 153, 0.0f, 0.0f, 50, new Color(), 1f);
             Main.dust[index].scale += (float) Main.rand.Next(0, 6) * 0.1f;
-            Dust dust = Main.dust[index];
-            Vector2 vector2_3 = Vector2.op_Multiply(dust.velocity, 0.1f);
-            dust.velocity = vector2_3;
+            Main.dust[index].velocity *= 0.1f;
             Main.dust[index].noGravity = true;
           }
         }
-        if (Main.tile[x, y + 2] == null || (int) Main.tile[x, y + 2].type != 229 || this.position.Y + (double) this.height <= (double) ((y + 2) * 16))
+        if (Main.tile[x, y + 2] == null || (int) Main.tile[x, y + 2].type != 229 || (double) this.position.Y + (double) this.height <= (double) ((y + 2) * 16))
           return;
-        if ((double) (x * 16) < this.position.X + (double) (this.width / 2))
+        if ((double) (x * 16) < (double) this.position.X + (double) (this.width / 2))
         {
-          int index = Dust.NewDust(new Vector2((float) (this.position.X - 4.0), (float) (y * 16 + 32)), 4, 16, 153, 0.0f, 0.0f, 50, (Color) null, 1f);
+          int index = Dust.NewDust(new Vector2(this.position.X - 4f, (float) (y * 16 + 32)), 4, 16, 153, 0.0f, 0.0f, 50, new Color(), 1f);
           Main.dust[index].scale += (float) Main.rand.Next(0, 6) * 0.1f;
-          Dust dust = Main.dust[index];
-          Vector2 vector2_3 = Vector2.op_Multiply(dust.velocity, 0.1f);
-          dust.velocity = vector2_3;
+          Main.dust[index].velocity *= 0.1f;
           Main.dust[index].noGravity = true;
         }
         else
         {
-          int index = Dust.NewDust(new Vector2((float) (this.position.X + (double) this.width - 2.0), (float) (y * 16 + 32)), 4, 16, 153, 0.0f, 0.0f, 50, (Color) null, 1f);
+          int index = Dust.NewDust(new Vector2((float) ((double) this.position.X + (double) this.width - 2.0), (float) (y * 16 + 32)), 4, 16, 153, 0.0f, 0.0f, 50, new Color(), 1f);
           Main.dust[index].scale += (float) Main.rand.Next(0, 6) * 0.1f;
-          Dust dust = Main.dust[index];
-          Vector2 vector2_3 = Vector2.op_Multiply(dust.velocity, 0.1f);
-          dust.velocity = vector2_3;
+          Main.dust[index].velocity *= 0.1f;
           Main.dust[index].noGravity = true;
         }
       }
@@ -14965,11 +14156,11 @@ label_124:
       {
         try
         {
-          int index1 = (int) ((this.position.X + (double) (this.width / 2) + (double) (6 * this.direction)) / 16.0);
+          int index1 = (int) (((double) this.position.X + (double) (this.width / 2) + (double) (6 * this.direction)) / 16.0);
           int num = 0;
           if ((double) this.gravDir == -1.0)
             num = this.height;
-          int index2 = (int) ((this.position.Y + (double) num - 44.0 * (double) this.gravDir) / 16.0);
+          int index2 = (int) (((double) this.position.Y + (double) num - 44.0 * (double) this.gravDir) / 16.0);
           if ((int) Main.tile[index1, index2].liquid < 128)
           {
             if (Main.tile[index1, index2] == null)
@@ -15034,19 +14225,19 @@ label_13:
       if ((double) this.gravDir == -1.0)
         num1 += this.height - 12;
       if (this.inventory[this.selectedItem].type == 186)
-        Dust.NewDust(new Vector2((float) (this.position.X + (double) (10 * this.direction) + 4.0), (float) (this.position.Y + (double) num1 - 54.0 * (double) this.gravDir)), this.width - 8, 8, 34, 0.0f, 0.0f, 0, (Color) null, 1.2f);
+        Dust.NewDust(new Vector2((float) ((double) this.position.X + (double) (10 * this.direction) + 4.0), (float) ((double) this.position.Y + (double) num1 - 54.0 * (double) this.gravDir)), this.width - 8, 8, 34, 0.0f, 0.0f, 0, new Color(), 1.2f);
       else
-        Dust.NewDust(new Vector2((float) this.position.X + (float) (12 * this.direction), (float) (this.position.Y + (double) num1 + 4.0 * (double) this.gravDir)), this.width - 8, 8, 34, 0.0f, 0.0f, 0, (Color) null, 1.2f);
+        Dust.NewDust(new Vector2(this.position.X + (float) (12 * this.direction), (float) ((double) this.position.Y + (double) num1 + 4.0 * (double) this.gravDir)), this.width - 8, 8, 34, 0.0f, 0.0f, 0, new Color(), 1.2f);
     }
 
     public void CheckIceBreak()
     {
-      if (this.velocity.Y <= 7.0)
+      if ((double) this.velocity.Y <= 7.0)
         return;
-      Vector2 vector2 = Vector2.op_Addition(this.position, this.velocity);
-      int num1 = (int) (vector2.X / 16.0);
-      int num2 = (int) ((vector2.X + (double) this.width) / 16.0);
-      int num3 = (int) ((this.position.Y + (double) this.height + 1.0) / 16.0);
+      Vector2 vector2 = this.position + this.velocity;
+      int num1 = (int) ((double) vector2.X / 16.0);
+      int num2 = (int) (((double) vector2.X + (double) this.width) / 16.0);
+      int num3 = (int) (((double) this.position.Y + (double) this.height + 1.0) / 16.0);
       for (int i = num1; i <= num2; ++i)
       {
         for (int j = num3; j <= num3 + 1; ++j)
@@ -15064,13 +14255,13 @@ label_13:
     public void SlopeDownMovement()
     {
       this.sloping = false;
-      float y = (float) this.velocity.Y;
+      float y = this.velocity.Y;
       Vector4 vector4 = Collision.WalkDownSlope(this.position, this.velocity, this.width, this.height, this.gravity * this.gravDir);
       this.position.X = vector4.X;
       this.position.Y = vector4.Y;
       this.velocity.X = vector4.Z;
       this.velocity.Y = vector4.W;
-      if (this.velocity.Y == (double) y)
+      if ((double) this.velocity.Y == (double) y)
         return;
       this.sloping = true;
     }
@@ -15080,13 +14271,13 @@ label_13:
       int Height = !this.onTrack ? this.height : this.height - 20;
       Vector2 velocity = this.velocity;
       this.velocity = Collision.TileCollision(this.position, this.velocity, this.width, Height, fallThrough, ignorePlats, (int) this.gravDir);
-      Vector2 vector2_1 = Vector2.op_Multiply(this.velocity, 0.25f);
-      if (this.velocity.X != velocity.X)
+      Vector2 vector2_1 = this.velocity * 0.25f;
+      if ((double) this.velocity.X != (double) velocity.X)
         vector2_1.X = this.velocity.X;
-      if (this.velocity.Y != velocity.Y)
+      if ((double) this.velocity.Y != (double) velocity.Y)
         vector2_1.Y = this.velocity.Y;
       Player player = this;
-      Vector2 vector2_2 = Vector2.op_Addition(player.position, vector2_1);
+      Vector2 vector2_2 = player.position + vector2_1;
       player.position = vector2_2;
     }
 
@@ -15095,49 +14286,47 @@ label_13:
       int Height = !this.onTrack ? this.height : this.height - 20;
       Vector2 velocity = this.velocity;
       this.velocity = Collision.TileCollision(this.position, this.velocity, this.width, Height, fallThrough, ignorePlats, (int) this.gravDir);
-      Vector2 vector2_1 = Vector2.op_Multiply(this.velocity, 0.5f);
-      if (this.velocity.X != velocity.X)
+      Vector2 vector2_1 = this.velocity * 0.5f;
+      if ((double) this.velocity.X != (double) velocity.X)
         vector2_1.X = this.velocity.X;
-      if (this.velocity.Y != velocity.Y)
+      if ((double) this.velocity.Y != (double) velocity.Y)
         vector2_1.Y = this.velocity.Y;
       Player player = this;
-      Vector2 vector2_2 = Vector2.op_Addition(player.position, vector2_1);
+      Vector2 vector2_2 = player.position + vector2_1;
       player.position = vector2_2;
     }
 
     public void DryCollision(bool fallThrough, bool ignorePlats)
     {
       int Height = !this.onTrack ? this.height : this.height - 10;
-      // ISSUE: explicit reference operation
-      if ((double) ((Vector2) @this.velocity).Length() > 16.0)
+      if ((double) this.velocity.Length() > 16.0)
       {
         Vector2 vector2_1 = Collision.TileCollision(this.position, this.velocity, this.width, Height, fallThrough, ignorePlats, (int) this.gravDir);
-        // ISSUE: explicit reference operation
-        float num1 = ((Vector2) @this.velocity).Length();
+        float num1 = this.velocity.Length();
         Vector2 vector2_2 = Vector2.Normalize(this.velocity);
-        if (vector2_1.Y == 0.0)
-          vector2_2.Y = (__Null) 0.0;
-        Vector2 vector2_3 = Vector2.get_Zero();
+        if ((double) vector2_1.Y == 0.0)
+          vector2_2.Y = 0.0f;
+        Vector2 zero1 = Vector2.Zero;
         bool flag = this.mount.Type == 7 || this.mount.Type == 8 || this.mount.Type == 12;
-        Vector2.get_Zero();
+        Vector2 zero2 = Vector2.Zero;
         while ((double) num1 > 0.0)
         {
           float num2 = num1;
           if ((double) num2 > 16.0)
             num2 = 16f;
           num1 -= num2;
-          Vector2 velocity1 = Vector2.op_Multiply(vector2_2, num2);
+          Vector2 velocity1 = vector2_2 * num2;
           this.velocity = velocity1;
           this.SlopeDownMovement();
           velocity1 = this.velocity;
-          if (this.velocity.Y == (double) this.gravity && (!this.mount.Active || !this.mount.Cart && !flag))
+          if ((double) this.velocity.Y == (double) this.gravity && (!this.mount.Active || !this.mount.Cart && !flag))
             Collision.StepDown(ref this.position, ref velocity1, this.width, this.height, ref this.stepSpeed, ref this.gfxOffY, (int) this.gravDir, this.waterWalk || this.waterWalk2);
           if ((double) this.gravDir == -1.0)
           {
-            if ((this.carpetFrame != -1 || this.velocity.Y <= (double) this.gravity) && !this.controlUp)
+            if ((this.carpetFrame != -1 || (double) this.velocity.Y <= (double) this.gravity) && !this.controlUp)
               Collision.StepUp(ref this.position, ref velocity1, this.width, this.height, ref this.stepSpeed, ref this.gfxOffY, (int) this.gravDir, this.controlUp, 0);
           }
-          else if (flag || (this.carpetFrame != -1 || this.velocity.Y >= (double) this.gravity) && (!this.controlDown && !this.mount.Cart))
+          else if (flag || (this.carpetFrame != -1 || (double) this.velocity.Y >= (double) this.gravity) && (!this.controlDown && !this.mount.Cart))
             Collision.StepUp(ref this.position, ref velocity1, this.width, this.height, ref this.stepSpeed, ref this.gfxOffY, (int) this.gravDir, this.controlUp, 0);
           Vector2 Velocity = Collision.TileCollision(this.position, velocity1, this.width, Height, fallThrough, ignorePlats, (int) this.gravDir);
           if (Collision.up && (double) this.gravDir == 1.0)
@@ -15146,16 +14335,16 @@ label_13:
           {
             Vector2 velocity2 = this.velocity;
             Velocity = Collision.WaterCollision(this.position, Velocity, this.width, this.height, fallThrough, false, this.waterWalk);
-            if (Vector2.op_Inequality(velocity2, this.velocity))
-              this.fallStart = (int) (this.position.Y / 16.0);
+            if (velocity2 != this.velocity)
+              this.fallStart = (int) ((double) this.position.Y / 16.0);
           }
           Player player = this;
-          Vector2 vector2_4 = Vector2.op_Addition(player.position, Velocity);
-          player.position = vector2_4;
+          Vector2 vector2_3 = player.position + Velocity;
+          player.position = vector2_3;
           bool Falling = false;
-          if (Velocity.Y > (double) this.gravity)
+          if ((double) Velocity.Y > (double) this.gravity)
             Falling = true;
-          if (Velocity.Y < -(double) this.gravity)
+          if ((double) Velocity.Y < -(double) this.gravity)
             Falling = true;
           this.velocity = Velocity;
           this.UpdateTouchingTiles();
@@ -15164,9 +14353,9 @@ label_13:
           this.SlopingCollision(fallThrough);
           Collision.StepConveyorBelt((Entity) this, this.gravDir);
           Velocity = this.velocity;
-          vector2_3 = Vector2.op_Addition(vector2_3, Velocity);
+          zero1 += Velocity;
         }
-        this.velocity = vector2_3;
+        this.velocity = zero1;
       }
       else
       {
@@ -15177,11 +14366,11 @@ label_13:
         {
           Vector2 velocity = this.velocity;
           this.velocity = Collision.WaterCollision(this.position, this.velocity, this.width, this.height, fallThrough, false, this.waterWalk);
-          if (Vector2.op_Inequality(velocity, this.velocity))
-            this.fallStart = (int) (this.position.Y / 16.0);
+          if (velocity != this.velocity)
+            this.fallStart = (int) ((double) this.position.Y / 16.0);
         }
         Player player = this;
-        Vector2 vector2 = Vector2.op_Addition(player.position, this.velocity);
+        Vector2 vector2 = player.position + this.velocity;
         player.position = vector2;
       }
     }
@@ -15195,28 +14384,27 @@ label_13:
         this.stairFall = true;
       else if (!fallThrough)
         this.stairFall = false;
-      if (Collision.stair && (double) Math.Abs((float) (vector4.Y - this.position.Y)) > 8.0 + (double) Math.Abs((float) this.velocity.X))
+      if (Collision.stair && (double) Math.Abs(vector4.Y - this.position.Y) > 8.0 + (double) Math.Abs(this.velocity.X))
       {
-        this.gfxOffY -= (float) (vector4.Y - this.position.Y);
+        this.gfxOffY -= vector4.Y - this.position.Y;
         this.stepSpeed = 4f;
       }
-      // ISSUE: variable of the null type
-      __Null y = this.velocity.Y;
+      double y = (double) this.velocity.Y;
       this.position.X = vector4.X;
       this.position.Y = vector4.Y;
       this.velocity.X = vector4.Z;
       this.velocity.Y = vector4.W;
-      if ((double) this.gravDir != -1.0 || this.velocity.Y != 0.0100999996066093)
+      if ((double) this.gravDir != -1.0 || (double) this.velocity.Y != 0.0100999996066093)
         return;
-      this.velocity.Y = (__Null) 0.0;
+      this.velocity.Y = 0.0f;
     }
 
     public void FloorVisuals(bool Falling)
     {
-      int index1 = (int) ((this.position.X + (double) (this.width / 2)) / 16.0);
-      int index2 = (int) ((this.position.Y + (double) this.height) / 16.0);
+      int index1 = (int) (((double) this.position.X + (double) (this.width / 2)) / 16.0);
+      int index2 = (int) (((double) this.position.Y + (double) this.height) / 16.0);
       if ((double) this.gravDir == -1.0)
-        index2 = (int) (this.position.Y - 0.100000001490116) / 16;
+        index2 = (int) ((double) this.position.Y - 0.100000001490116) / 16;
       int type = -1;
       if (Main.tile[index1 - 1, index2] == null)
         Main.tile[index1 - 1, index2] = new Tile();
@@ -15302,43 +14490,29 @@ label_13:
           flag = false;
         if (Type == 53 && Main.rand.Next(3) != 0)
           flag = false;
-        Color newColor = (Color) null;
+        Color newColor = new Color();
         if (type == 193)
-        {
-          // ISSUE: explicit reference operation
-          ((Color) @newColor).\u002Ector(30, 100, (int) byte.MaxValue, 100);
-        }
+          newColor = new Color(30, 100, (int) byte.MaxValue, 100);
         if (type == 197)
-        {
-          // ISSUE: explicit reference operation
-          ((Color) @newColor).\u002Ector(97, 200, (int) byte.MaxValue, 100);
-        }
+          newColor = new Color(97, 200, (int) byte.MaxValue, 100);
         if (!Falling)
         {
-          float num2 = Math.Abs((float) this.velocity.X) / 3f;
+          float num2 = Math.Abs(this.velocity.X) / 3f;
           if ((double) Main.rand.Next(100) > (double) num2 * 100.0)
             flag = false;
         }
         if (flag)
         {
-          float num2 = (float) this.velocity.X;
+          float num2 = this.velocity.X;
           if ((double) num2 > 6.0)
             num2 = 6f;
           if ((double) num2 < -6.0)
             num2 = -6f;
-          if (this.velocity.X != 0.0 || Falling)
+          if ((double) this.velocity.X != 0.0 || Falling)
           {
-            int index2 = Dust.NewDust(new Vector2((float) this.position.X, (float) (this.position.Y + (double) this.height - 2.0)), this.width, 6, Type, 0.0f, 0.0f, 50, newColor, 1f);
+            int index2 = Dust.NewDust(new Vector2(this.position.X, (float) ((double) this.position.Y + (double) this.height - 2.0)), this.width, 6, Type, 0.0f, 0.0f, 50, newColor, 1f);
             if ((double) this.gravDir == -1.0)
-            {
-              // ISSUE: explicit reference operation
-              // ISSUE: variable of a reference type
-              Vector2& local = @Main.dust[index2].position;
-              // ISSUE: explicit reference operation
-              double num3 = (^local).Y - (double) (this.height + 4);
-              // ISSUE: explicit reference operation
-              (^local).Y = (__Null) num3;
-            }
+              Main.dust[index2].position.Y -= (float) (this.height + 4);
             if (Type == 76)
             {
               Main.dust[index2].scale += (float) Main.rand.Next(3) * 0.1f;
@@ -15356,73 +14530,21 @@ label_13:
             Main.dust[index2].noGravity = true;
             if (num1 > 1)
             {
-              // ISSUE: explicit reference operation
-              // ISSUE: variable of a reference type
-              Vector2& local1 = @Main.dust[index2].velocity;
-              // ISSUE: explicit reference operation
-              double num3 = (^local1).X * 1.20000004768372;
-              // ISSUE: explicit reference operation
-              (^local1).X = (__Null) num3;
-              // ISSUE: explicit reference operation
-              // ISSUE: variable of a reference type
-              Vector2& local2 = @Main.dust[index2].velocity;
-              // ISSUE: explicit reference operation
-              double num4 = (^local2).Y * 0.800000011920929;
-              // ISSUE: explicit reference operation
-              (^local2).Y = (__Null) num4;
-              // ISSUE: explicit reference operation
-              // ISSUE: variable of a reference type
-              Vector2& local3 = @Main.dust[index2].velocity;
-              // ISSUE: explicit reference operation
-              double num5 = (^local3).Y - 1.0;
-              // ISSUE: explicit reference operation
-              (^local3).Y = (__Null) num5;
-              Dust dust = Main.dust[index2];
-              Vector2 vector2 = Vector2.op_Multiply(dust.velocity, 0.8f);
-              dust.velocity = vector2;
+              Main.dust[index2].velocity.X *= 1.2f;
+              Main.dust[index2].velocity.Y *= 0.8f;
+              --Main.dust[index2].velocity.Y;
+              Main.dust[index2].velocity *= 0.8f;
               Main.dust[index2].scale += (float) Main.rand.Next(3) * 0.1f;
-              Main.dust[index2].velocity.X = (__Null) ((Main.dust[index2].position.X - (this.position.X + (double) (this.width / 2))) * 0.200000002980232);
-              if (Main.dust[index2].velocity.Y > 0.0)
-              {
-                // ISSUE: explicit reference operation
-                // ISSUE: variable of a reference type
-                Vector2& local4 = @Main.dust[index2].velocity;
-                // ISSUE: explicit reference operation
-                double num6 = (^local4).Y * -1.0;
-                // ISSUE: explicit reference operation
-                (^local4).Y = (__Null) num6;
-              }
-              // ISSUE: explicit reference operation
-              // ISSUE: variable of a reference type
-              Vector2& local5 = @Main.dust[index2].velocity;
-              // ISSUE: explicit reference operation
-              double num7 = (^local5).X + (double) num2 * 0.300000011920929;
-              // ISSUE: explicit reference operation
-              (^local5).X = (__Null) num7;
+              Main.dust[index2].velocity.X = (float) (((double) Main.dust[index2].position.X - ((double) this.position.X + (double) (this.width / 2))) * 0.200000002980232);
+              if ((double) Main.dust[index2].velocity.Y > 0.0)
+                Main.dust[index2].velocity.Y *= -1f;
+              Main.dust[index2].velocity.X += num2 * 0.3f;
             }
             else
-            {
-              Dust dust = Main.dust[index2];
-              Vector2 vector2 = Vector2.op_Multiply(dust.velocity, 0.2f);
-              dust.velocity = vector2;
-            }
-            // ISSUE: explicit reference operation
-            // ISSUE: variable of a reference type
-            Vector2& local6 = @Main.dust[index2].position;
-            // ISSUE: explicit reference operation
-            double num8 = (^local6).X - (double) num2 * 1.0;
-            // ISSUE: explicit reference operation
-            (^local6).X = (__Null) num8;
+              Main.dust[index2].velocity *= 0.2f;
+            Main.dust[index2].position.X -= num2 * 1f;
             if ((double) this.gravDir == -1.0)
-            {
-              // ISSUE: explicit reference operation
-              // ISSUE: variable of a reference type
-              Vector2& local1 = @Main.dust[index2].velocity;
-              // ISSUE: explicit reference operation
-              double num3 = (^local1).Y * -1.0;
-              // ISSUE: explicit reference operation
-              (^local1).Y = (__Null) num3;
-            }
+              Main.dust[index2].velocity.Y *= -1f;
           }
         }
       }
@@ -15430,30 +14552,30 @@ label_13:
 
     public void BordersMovement()
     {
-      if (this.position.X < (double) Main.leftWorld + 640.0 + 16.0)
+      if ((double) this.position.X < (double) Main.leftWorld + 640.0 + 16.0)
       {
-        this.position.X = (__Null) ((double) Main.leftWorld + 640.0 + 16.0);
-        this.velocity.X = (__Null) 0.0;
+        this.position.X = (float) ((double) Main.leftWorld + 640.0 + 16.0);
+        this.velocity.X = 0.0f;
       }
-      if (this.position.X + (double) this.width > (double) Main.rightWorld - 640.0 - 32.0)
+      if ((double) this.position.X + (double) this.width > (double) Main.rightWorld - 640.0 - 32.0)
       {
-        this.position.X = (__Null) ((double) Main.rightWorld - 640.0 - 32.0 - (double) this.width);
-        this.velocity.X = (__Null) 0.0;
+        this.position.X = (float) ((double) Main.rightWorld - 640.0 - 32.0) - (float) this.width;
+        this.velocity.X = 0.0f;
       }
-      if (this.position.Y < (double) Main.topWorld + 640.0 + 16.0)
+      if ((double) this.position.Y < (double) Main.topWorld + 640.0 + 16.0)
       {
-        this.position.Y = (__Null) ((double) Main.topWorld + 640.0 + 16.0);
+        this.position.Y = (float) ((double) Main.topWorld + 640.0 + 16.0);
         if ((double) this.velocity.Y < 0.11)
-          this.velocity.Y = (__Null) 0.109999999403954;
+          this.velocity.Y = 0.11f;
         this.gravDir = 1f;
         AchievementsHelper.HandleSpecialEvent(this, 11);
       }
-      if (this.position.Y > (double) Main.bottomWorld - 640.0 - 32.0 - (double) this.height)
+      if ((double) this.position.Y > (double) Main.bottomWorld - 640.0 - 32.0 - (double) this.height)
       {
-        this.position.Y = (__Null) ((double) Main.bottomWorld - 640.0 - 32.0 - (double) this.height);
-        this.velocity.Y = (__Null) 0.0;
+        this.position.Y = (float) ((double) Main.bottomWorld - 640.0 - 32.0) - (float) this.height;
+        this.velocity.Y = 0.0f;
       }
-      if (this.position.Y <= (double) Main.bottomWorld - 640.0 - 150.0 - (double) this.height)
+      if ((double) this.position.Y <= (double) Main.bottomWorld - 640.0 - 150.0 - (double) this.height)
         return;
       AchievementsHelper.HandleSpecialEvent(this, 10);
     }
@@ -15595,12 +14717,10 @@ label_13:
           num10 += 0.5f;
         if ((double) num1 == (double) num7 && (double) num2 == (double) num8 && (double) num3 == (double) num9)
           num10 += 0.5f;
-        Vector2 spinningpoint;
-        // ISSUE: explicit reference operation
-        ((Vector2) @spinningpoint).\u002Ector((float) (this.width / 2 + 8 * this.direction), 2f);
+        Vector2 spinningpoint = new Vector2((float) (this.width / 2 + 8 * this.direction), 2f);
         if ((double) this.fullRotation != 0.0)
           spinningpoint = spinningpoint.RotatedBy((double) this.fullRotation, this.fullRotationOrigin);
-        Lighting.AddLight((int) (this.position.X + spinningpoint.X) / 16, (int) (this.position.Y + spinningpoint.Y) / 16, num1 * num10, num2 * num10, num3 * num10);
+        Lighting.AddLight((int) ((double) this.position.X + (double) spinningpoint.X) / 16, (int) ((double) this.position.Y + (double) spinningpoint.Y) / 16, num1 * num10, num2 * num10, num3 * num10);
       }
       if ((double) num4 != 0.0 || (double) num5 != 0.0 || (double) num6 != 0.0)
       {
@@ -15609,12 +14729,10 @@ label_13:
           num10 += 0.5f;
         if ((double) num4 == (double) num7 && (double) num5 == (double) num8 && (double) num6 == (double) num9)
           num10 += 0.5f;
-        Vector2 spinningpoint;
-        // ISSUE: explicit reference operation
-        ((Vector2) @spinningpoint).\u002Ector((float) (this.width / 2 + 8), (float) (this.height / 2));
+        Vector2 spinningpoint = new Vector2((float) (this.width / 2 + 8), (float) (this.height / 2));
         if ((double) this.fullRotation != 0.0)
           spinningpoint = spinningpoint.RotatedBy((double) this.fullRotation, this.fullRotationOrigin);
-        Lighting.AddLight((int) (this.position.X + spinningpoint.X) / 16, (int) (this.position.Y + spinningpoint.Y) / 16, num4 * num10, num5 * num10, num6 * num10);
+        Lighting.AddLight((int) ((double) this.position.X + (double) spinningpoint.X) / 16, (int) ((double) this.position.Y + (double) spinningpoint.Y) / 16, num4 * num10, num5 * num10, num6 * num10);
       }
       if ((double) num7 == 0.0 && (double) num8 == 0.0 && (double) num9 == 0.0)
         return;
@@ -15623,19 +14741,15 @@ label_13:
         num11 += 0.5f;
       if ((double) num7 == (double) num1 && (double) num8 == (double) num2 && (double) num9 == (double) num3)
         num11 += 0.5f;
-      Vector2 spinningpoint1;
-      // ISSUE: explicit reference operation
-      ((Vector2) @spinningpoint1).\u002Ector((float) (this.width / 2 + 8 * this.direction), (float) this.height * 0.75f);
+      Vector2 spinningpoint1 = new Vector2((float) (this.width / 2 + 8 * this.direction), (float) this.height * 0.75f);
       if ((double) this.fullRotation != 0.0)
         spinningpoint1 = spinningpoint1.RotatedBy((double) this.fullRotation, this.fullRotationOrigin);
-      Lighting.AddLight((int) (this.position.X + spinningpoint1.X) / 16, (int) (this.position.Y + spinningpoint1.Y) / 16, num7 * num11, num8 * num11, num9 * num11);
+      Lighting.AddLight((int) ((double) this.position.X + (double) spinningpoint1.X) / 16, (int) ((double) this.position.Y + (double) spinningpoint1.Y) / 16, num7 * num11, num8 * num11, num9 * num11);
     }
 
     private void Update_NPCCollision()
     {
-      Rectangle rectangle;
-      // ISSUE: explicit reference operation
-      ((Rectangle) @rectangle).\u002Ector((int) this.position.X, (int) this.position.Y, this.width, this.height);
+      Microsoft.Xna.Framework.Rectangle rectangle = new Microsoft.Xna.Framework.Rectangle((int) this.position.X, (int) this.position.Y, this.width, this.height);
       for (int index = 0; index < 200; ++index)
       {
         if (Main.npc[index].active && !Main.npc[index].friendly && Main.npc[index].damage > 0)
@@ -15654,10 +14768,9 @@ label_13:
           if ((specialHitSetter != -1 || !this.immune) && (this.dash != 2 || index != this.eocHit || this.eocDash <= 0) && !this.npcTypeNoAggro[Main.npc[index].type])
           {
             float damageMultiplier = 1f;
-            Rectangle npcRect = new Rectangle((int) Main.npc[index].position.X, (int) Main.npc[index].position.Y, Main.npc[index].width, Main.npc[index].height);
+            Microsoft.Xna.Framework.Rectangle npcRect = new Microsoft.Xna.Framework.Rectangle((int) Main.npc[index].position.X, (int) Main.npc[index].position.Y, Main.npc[index].width, Main.npc[index].height);
             NPC.GetMeleeCollisionData(rectangle, index, ref specialHitSetter, ref damageMultiplier, ref npcRect);
-            // ISSUE: explicit reference operation
-            if (((Rectangle) @rectangle).Intersects(npcRect) && !this.npcTypeNoAggro[Main.npc[index].type])
+            if (rectangle.Intersects(npcRect) && !this.npcTypeNoAggro[Main.npc[index].type])
             {
               bool flag1 = true;
               bool flag2 = false;
@@ -15674,7 +14787,7 @@ label_13:
                 flag2 = true;
               }
               int hitDirection = -1;
-              if (Main.npc[index].position.X + (double) (Main.npc[index].width / 2) < this.position.X + (double) (this.width / 2))
+              if ((double) Main.npc[index].position.X + (double) (Main.npc[index].width / 2) < (double) this.position.X + (double) (this.width / 2))
                 hitDirection = 1;
               int Damage = Main.DamageVar((float) Main.npc[index].damage * damageMultiplier);
               int banner = Item.NPCtoBanner(Main.npc[index].BannerID());
@@ -15706,11 +14819,9 @@ label_13:
       }
     }
 
-    public bool CanParryAgainst(Rectangle blockingPlayerRect, Rectangle enemyRect, Vector2 enemyVelocity)
+    public bool CanParryAgainst(Microsoft.Xna.Framework.Rectangle blockingPlayerRect, Microsoft.Xna.Framework.Rectangle enemyRect, Vector2 enemyVelocity)
     {
-      // ISSUE: explicit reference operation
-      // ISSUE: explicit reference operation
-      if (this.shieldParryTimeLeft > 0 && Math.Sign((int) (((Rectangle) @enemyRect).get_Center().X - ((Rectangle) @blockingPlayerRect).get_Center().X)) == this.direction && Vector2.op_Inequality(enemyVelocity, Vector2.get_Zero()))
+      if (this.shieldParryTimeLeft > 0 && Math.Sign(enemyRect.Center.X - blockingPlayerRect.Center.X) == this.direction && enemyVelocity != Vector2.Zero)
         return !this.immune;
       return false;
     }
@@ -15812,12 +14923,10 @@ label_13:
           Main.PlaySound(25, -1, -1, 1, 1f, 0.0f);
           for (int index1 = 0; index1 < 10; ++index1)
           {
-            int index2 = Dust.NewDust(Vector2.op_Addition(this.Center, new Vector2((float) (this.direction * 6 + (this.direction == -1 ? -10 : 0)), -14f)), 10, 16, 45, 0.0f, 0.0f, (int) byte.MaxValue, new Color((int) byte.MaxValue, 100, 0, (int) sbyte.MaxValue), (float) Main.rand.Next(10, 16) * 0.1f);
+            int index2 = Dust.NewDust(this.Center + new Vector2((float) (this.direction * 6 + (this.direction == -1 ? -10 : 0)), -14f), 10, 16, 45, 0.0f, 0.0f, (int) byte.MaxValue, new Color((int) byte.MaxValue, 100, 0, (int) sbyte.MaxValue), (float) Main.rand.Next(10, 16) * 0.1f);
             Main.dust[index2].noLight = true;
             Main.dust[index2].noGravity = true;
-            Dust dust = Main.dust[index2];
-            Vector2 vector2 = Vector2.op_Multiply(dust.velocity, 0.5f);
-            dust.velocity = vector2;
+            Main.dust[index2].velocity *= 0.5f;
           }
         }
       }
@@ -15926,33 +15035,32 @@ label_13:
     {
       bool flag1 = false;
       bool flag2 = false;
-      // ISSUE: explicit reference operation
-      Keys[] pressedKeys = ((KeyboardState) @Main.keyState).GetPressedKeys();
+      Keys[] pressedKeys = Main.keyState.GetPressedKeys();
       for (int index = 0; index < pressedKeys.Length; ++index)
       {
-        if ((int) pressedKeys[index] == 160 || (int) pressedKeys[index] == 161)
+        if (pressedKeys[index] == Keys.LeftShift || pressedKeys[index] == Keys.RightShift)
           flag1 = true;
-        else if ((int) pressedKeys[index] == 164 || (int) pressedKeys[index] == 165)
+        else if (pressedKeys[index] == Keys.LeftAlt || pressedKeys[index] == Keys.RightAlt)
           flag2 = true;
       }
-      if (Main.blockKey != ((object) (Keys) 0).ToString())
+      if (Main.blockKey != Keys.None.ToString())
       {
         bool flag3 = false;
         for (int index = 0; index < pressedKeys.Length; ++index)
         {
-          if (((object) (Keys) (int) pressedKeys[index]).ToString() == Main.blockKey)
+          if (pressedKeys[index].ToString() == Main.blockKey)
           {
-            pressedKeys[index] = (Keys) 0;
+            pressedKeys[index] = Keys.None;
             flag3 = true;
           }
         }
         if (!flag3)
-          Main.blockKey = ((object) (Keys) 0).ToString();
+          Main.blockKey = Keys.None.ToString();
       }
       for (int index = 0; index < pressedKeys.Length; ++index)
       {
-        string str = string.Concat((object) (Keys) (int) pressedKeys[index]);
-        if ((int) pressedKeys[index] != 9 || (!flag1 || SocialAPI.Mode != SocialMode.Steam) && !flag2)
+        string str = string.Concat((object) pressedKeys[index]);
+        if (pressedKeys[index] != Keys.Tab || (!flag1 || SocialAPI.Mode != SocialMode.Steam) && !flag2)
         {
           if (str == Main.cUp)
             this.controlUp = true;
@@ -16001,53 +15109,22 @@ label_13:
       }
       if (Main.gamePad)
       {
-        GamePadState state = GamePad.GetState((PlayerIndex) 0);
-        // ISSUE: explicit reference operation
-        GamePadDPad dpad1 = ((GamePadState) @state).get_DPad();
-        // ISSUE: explicit reference operation
-        if (((GamePadDPad) @dpad1).get_Up() == 1)
+        GamePadState state = GamePad.GetState(PlayerIndex.One);
+        if (state.DPad.Up == ButtonState.Pressed)
           this.controlUp = true;
-        // ISSUE: explicit reference operation
-        GamePadDPad dpad2 = ((GamePadState) @state).get_DPad();
-        // ISSUE: explicit reference operation
-        if (((GamePadDPad) @dpad2).get_Down() == 1)
+        if (state.DPad.Down == ButtonState.Pressed)
           this.controlDown = true;
-        // ISSUE: explicit reference operation
-        GamePadDPad dpad3 = ((GamePadState) @state).get_DPad();
-        // ISSUE: explicit reference operation
-        if (((GamePadDPad) @dpad3).get_Left() == 1)
+        if (state.DPad.Left == ButtonState.Pressed)
           this.controlLeft = true;
-        // ISSUE: explicit reference operation
-        GamePadDPad dpad4 = ((GamePadState) @state).get_DPad();
-        // ISSUE: explicit reference operation
-        if (((GamePadDPad) @dpad4).get_Right() == 1)
+        if (state.DPad.Right == ButtonState.Pressed)
           this.controlRight = true;
-        // ISSUE: explicit reference operation
-        GamePadTriggers triggers1 = ((GamePadState) @state).get_Triggers();
-        // ISSUE: explicit reference operation
-        if ((double) ((GamePadTriggers) @triggers1).get_Left() > 0.0)
+        if ((double) state.Triggers.Left > 0.0)
           this.controlJump = true;
-        // ISSUE: explicit reference operation
-        GamePadTriggers triggers2 = ((GamePadState) @state).get_Triggers();
-        // ISSUE: explicit reference operation
-        if ((double) ((GamePadTriggers) @triggers2).get_Right() > 0.0)
+        if ((double) state.Triggers.Right > 0.0)
           this.controlUseItem = true;
-        double num1 = (double) (Main.screenWidth / 2);
-        // ISSUE: explicit reference operation
-        GamePadThumbSticks thumbSticks1 = ((GamePadState) @state).get_ThumbSticks();
-        // ISSUE: explicit reference operation
-        double num2 = ((GamePadThumbSticks) @thumbSticks1).get_Right().X * (double) Player.tileRangeX * 16.0;
-        Main.mouseX = (int) (num1 + num2);
-        double num3 = (double) (Main.screenHeight / 2);
-        // ISSUE: explicit reference operation
-        GamePadThumbSticks thumbSticks2 = ((GamePadState) @state).get_ThumbSticks();
-        // ISSUE: explicit reference operation
-        double num4 = ((GamePadThumbSticks) @thumbSticks2).get_Right().Y * (double) Player.tileRangeX * 16.0;
-        Main.mouseY = (int) (num3 - num4);
-        // ISSUE: explicit reference operation
-        GamePadThumbSticks thumbSticks3 = ((GamePadState) @state).get_ThumbSticks();
-        // ISSUE: explicit reference operation
-        if (((GamePadThumbSticks) @thumbSticks3).get_Right().X == 0.0)
+        Main.mouseX = (int) ((double) (Main.screenWidth / 2) + (double) state.ThumbSticks.Right.X * (double) Player.tileRangeX * 16.0);
+        Main.mouseY = (int) ((double) (Main.screenHeight / 2) - (double) state.ThumbSticks.Right.Y * (double) Player.tileRangeX * 16.0);
+        if ((double) state.ThumbSticks.Right.X == 0.0)
           Main.mouseX = Main.screenWidth / 2 + this.direction * 2;
       }
       if (Main.mouseLeft)
@@ -16079,7 +15156,7 @@ label_13:
       if (this.releaseUseTile)
         this.tileInteractionHappened = false;
       this.tileInteractAttempted = flag;
-      if (this.position.X / 16.0 - (double) Player.tileRangeX <= (double) myX && (this.position.X + (double) this.width) / 16.0 + (double) Player.tileRangeX - 1.0 >= (double) myX && (this.position.Y / 16.0 - (double) Player.tileRangeY <= (double) myY && (this.position.Y + (double) this.height) / 16.0 + (double) Player.tileRangeY - 2.0 >= (double) myY))
+      if ((double) this.position.X / 16.0 - (double) Player.tileRangeX <= (double) myX && ((double) this.position.X + (double) this.width) / 16.0 + (double) Player.tileRangeX - 1.0 >= (double) myX && ((double) this.position.Y / 16.0 - (double) Player.tileRangeY <= (double) myY && ((double) this.position.Y + (double) this.height) / 16.0 + (double) Player.tileRangeY - 2.0 >= (double) myY))
       {
         this.TileInteractionsCheckLongDistance(Player.tileTargetX, Player.tileTargetY);
         this.TileInteractionsCheck(myX, myY);
@@ -16208,37 +15285,21 @@ label_13:
           int Type = 166;
           int Damage = 35;
           float KnockBack = 3.5f;
-          Vector2 vector2;
-          // ISSUE: explicit reference operation
-          ((Vector2) @vector2).\u002Ector((float) ((num3 + 2) * 16 - 8), (float) ((num5 + 2) * 16 - 8));
+          Vector2 vector2 = new Vector2((float) ((num3 + 2) * 16 - 8), (float) ((num5 + 2) * 16 - 8));
           if (num2 == 0)
           {
             num7 *= -1f;
-            // ISSUE: explicit reference operation
-            // ISSUE: variable of a reference type
-            Vector2& local = @vector2;
-            // ISSUE: explicit reference operation
-            double num9 = (^local).X - 12.0;
-            // ISSUE: explicit reference operation
-            (^local).X = (__Null) num9;
+            vector2.X -= 12f;
           }
           else
-          {
-            // ISSUE: explicit reference operation
-            // ISSUE: variable of a reference type
-            Vector2& local = @vector2;
-            // ISSUE: explicit reference operation
-            double num9 = (^local).X + 12.0;
-            // ISSUE: explicit reference operation
-            (^local).X = (__Null) num9;
-          }
-          float num10 = num7;
-          float num11 = num8;
-          float num12 = (float) Math.Sqrt((double) num10 * (double) num10 + (double) num11 * (double) num11);
-          float num13 = num6 / num12;
-          float SpeedX = num10 * num13;
-          float SpeedY = num11 * num13;
-          Projectile.NewProjectile((float) vector2.X, (float) vector2.Y, SpeedX, SpeedY, Type, Damage, KnockBack, Main.myPlayer, 0.0f, 0.0f);
+            vector2.X += 12f;
+          float num9 = num7;
+          float num10 = num8;
+          float num11 = (float) Math.Sqrt((double) num9 * (double) num9 + (double) num10 * (double) num10);
+          float num12 = num6 / num11;
+          float SpeedX = num9 * num12;
+          float SpeedY = num10 * num12;
+          Projectile.NewProjectile(vector2.X, vector2.Y, SpeedX, SpeedY, Type, Damage, KnockBack, Main.myPlayer, 0.0f, 0.0f);
         }
       }
       if (releaseUseTile)
@@ -16315,11 +15376,11 @@ label_13:
         {
           flag1 = true;
           bool flag2 = (int) Main.tile[myX, myY].type == 387;
-          int num = WorldGen.ShiftTrapdoor(myX, myY, (double) (myY * 16) > this.Center.Y, -1).ToInt();
+          int num = WorldGen.ShiftTrapdoor(myX, myY, (double) (myY * 16) > (double) this.Center.Y, -1).ToInt();
           if (num == 0)
-            num = -WorldGen.ShiftTrapdoor(myX, myY, (double) (myY * 16) <= this.Center.Y, -1).ToInt();
+            num = -WorldGen.ShiftTrapdoor(myX, myY, (double) (myY * 16) <= (double) this.Center.Y, -1).ToInt();
           if (num != 0)
-            NetMessage.SendData(19, -1, -1, (NetworkText) null, 2 + flag2.ToInt(), (float) myX, (float) myY, (float) (num * Math.Sign((float) (myY * 16) - (float) this.Center.Y)), 0, 0, 0);
+            NetMessage.SendData(19, -1, -1, (NetworkText) null, 2 + flag2.ToInt(), (float) myX, (float) myY, (float) (num * Math.Sign((float) (myY * 16) - this.Center.Y)), 0, 0, 0);
         }
         else if ((int) Main.tile[myX, myY].type == 388 || (int) Main.tile[myX, myY].type == 389)
         {
@@ -17011,11 +16072,8 @@ label_13:
 
     private void LaunchMinecartHook(int myX, int myY)
     {
-      Vector2 vector2;
-      // ISSUE: explicit reference operation
-      ((Vector2) @vector2).\u002Ector((float) Main.mouseX + (float) Main.screenPosition.X, (float) Main.mouseY + (float) Main.screenPosition.Y);
-      // ISSUE: explicit reference operation
-      ((Vector2) @vector2).\u002Ector((float) (myX * 16 + 8), (float) (myY * 16 + 8));
+      Vector2 vector2 = new Vector2((float) Main.mouseX + Main.screenPosition.X, (float) Main.mouseY + Main.screenPosition.Y);
+      vector2 = new Vector2((float) (myX * 16 + 8), (float) (myY * 16 + 8));
       this.minecartLeft = this.direction <= 0;
       this.grappling[0] = -1;
       this.grapCount = 0;
@@ -17024,7 +16082,7 @@ label_13:
         if (Main.projectile[index].active && Main.projectile[index].owner == this.whoAmI && Main.projectile[index].aiStyle == 7)
           Main.projectile[index].Kill();
       }
-      Projectile.NewProjectile((float) vector2.X, (float) vector2.Y, 0.0f, 0.0f, 403, 0, 0.0f, this.whoAmI, 0.0f, 0.0f);
+      Projectile.NewProjectile(vector2.X, vector2.Y, 0.0f, 0.0f, 403, 0, 0.0f, this.whoAmI, 0.0f, 0.0f);
     }
 
     private void TileInteractionsMouseOver(int myX, int myY)
@@ -17678,7 +16736,7 @@ label_13:
         case 2:
           return Main.hcColor;
         default:
-          return Color.get_White();
+          return Color.White;
       }
     }
 
@@ -17719,51 +16777,41 @@ label_13:
 
     private void TryLandingOnDetonator()
     {
-      if (this.whoAmI != Main.myPlayer || this.velocity.Y < 3.0)
+      if (this.whoAmI != Main.myPlayer || (double) this.velocity.Y < 3.0)
         return;
-      Point tileCoordinates = Vector2.op_Addition(this.Bottom, new Vector2(0.0f, 0.01f)).ToTileCoordinates();
-      Tile tileSafely = Framing.GetTileSafely((int) tileCoordinates.X, (int) tileCoordinates.Y);
+      Point tileCoordinates = (this.Bottom + new Vector2(0.0f, 0.01f)).ToTileCoordinates();
+      Tile tileSafely = Framing.GetTileSafely(tileCoordinates.X, tileCoordinates.Y);
       if (!tileSafely.active() || (int) tileSafely.type != 411 || ((int) tileSafely.frameY != 0 || (int) tileSafely.frameX >= 36))
         return;
-      Wiring.HitSwitch((int) tileCoordinates.X, (int) tileCoordinates.Y);
-      NetMessage.SendData(59, -1, -1, (NetworkText) null, (int) tileCoordinates.X, (float) tileCoordinates.Y, 0.0f, 0.0f, 0, 0, 0);
+      Wiring.HitSwitch(tileCoordinates.X, tileCoordinates.Y);
+      NetMessage.SendData(59, -1, -1, (NetworkText) null, tileCoordinates.X, (float) tileCoordinates.Y, 0.0f, 0.0f, 0, 0, 0);
     }
 
     private void TryBouncingBlocks(bool Falling)
     {
-      if (this.velocity.Y < 5.0 && this.velocity.Y > -5.0 || this.wet)
+      if ((double) this.velocity.Y < 5.0 && (double) this.velocity.Y > -5.0 || this.wet)
         return;
-      int num1 = 0;
+      int num = 0;
       bool flag = false;
-      using (List<Point>.Enumerator enumerator = this.TouchedTiles.GetEnumerator())
+      foreach (Point touchedTile in this.TouchedTiles)
       {
-        while (enumerator.MoveNext())
+        Tile tile = Main.tile[touchedTile.X, touchedTile.Y];
+        if (tile != null && tile.active() && (tile.nactive() && Main.tileBouncy[(int) tile.type]))
         {
-          Point current = enumerator.Current;
-          Tile tile = Main.tile[(int) current.X, (int) current.Y];
-          if (tile != null && tile.active() && (tile.nactive() && Main.tileBouncy[(int) tile.type]))
-          {
-            flag = true;
-            num1 = (int) current.Y;
-            break;
-          }
+          flag = true;
+          num = touchedTile.Y;
+          break;
         }
       }
       if (!flag)
         return;
-      // ISSUE: explicit reference operation
-      // ISSUE: variable of a reference type
-      Vector2& local = @this.velocity;
-      // ISSUE: explicit reference operation
-      double num2 = (^local).Y * -0.800000011920929;
-      // ISSUE: explicit reference operation
-      (^local).Y = (__Null) num2;
+      this.velocity.Y *= -0.8f;
       if (this.controlJump)
-        this.velocity.Y = (__Null) (double) MathHelper.Clamp((float) this.velocity.Y, -13f, 13f);
-      this.position.Y = (__Null) (double) (num1 * 16 - (this.velocity.Y < 0.0 ? this.height : -16));
+        this.velocity.Y = MathHelper.Clamp(this.velocity.Y, -13f, 13f);
+      this.position.Y = (float) (num * 16 - ((double) this.velocity.Y < 0.0 ? this.height : -16));
       this.FloorVisuals(Falling);
-      this.velocity.Y = (__Null) (double) MathHelper.Clamp((float) this.velocity.Y, -20f, 20f);
-      if (this.velocity.Y * (double) this.gravDir >= 0.0)
+      this.velocity.Y = MathHelper.Clamp(this.velocity.Y, -20f, 20f);
+      if ((double) this.velocity.Y * (double) this.gravDir >= 0.0)
         return;
       this.fallStart = (int) this.position.Y / 16;
     }
@@ -17785,9 +16833,7 @@ label_13:
             defaultItemGrabRange += 50;
           if (ItemID.Sets.NebulaPickup[Main.item[number].type])
             defaultItemGrabRange += 100;
-          Rectangle rectangle1 = new Rectangle((int) this.position.X, (int) this.position.Y, this.width, this.height);
-          // ISSUE: explicit reference operation
-          if (((Rectangle) @rectangle1).Intersects(new Rectangle((int) Main.item[number].position.X, (int) Main.item[number].position.Y, Main.item[number].width, Main.item[number].height)))
+          if (new Microsoft.Xna.Framework.Rectangle((int) this.position.X, (int) this.position.Y, this.width, this.height).Intersects(new Microsoft.Xna.Framework.Rectangle((int) Main.item[number].position.X, (int) Main.item[number].position.Y, Main.item[number].width, Main.item[number].height)))
           {
             if (i == Main.myPlayer && (this.inventory[this.selectedItem].type != 0 || this.itemAnimation <= 0))
             {
@@ -17798,7 +16844,7 @@ label_13:
                 Main.item[number] = new Item();
                 if (Main.netMode == 1)
                 {
-                  NetMessage.SendData(102, -1, -1, (NetworkText) null, i, (float) buffType, (float) this.Center.X, (float) this.Center.Y, 0, 0, 0);
+                  NetMessage.SendData(102, -1, -1, (NetworkText) null, i, (float) buffType, this.Center.X, this.Center.Y, 0, 0, 0);
                   NetMessage.SendData(21, -1, -1, (NetworkText) null, number, 0.0f, 0.0f, 0.0f, 0, 0, 0);
                 }
                 else
@@ -17836,171 +16882,94 @@ label_13:
               }
             }
           }
-          else
+          else if (new Microsoft.Xna.Framework.Rectangle((int) this.position.X - defaultItemGrabRange, (int) this.position.Y - defaultItemGrabRange, this.width + defaultItemGrabRange * 2, this.height + defaultItemGrabRange * 2).Intersects(new Microsoft.Xna.Framework.Rectangle((int) Main.item[number].position.X, (int) Main.item[number].position.Y, Main.item[number].width, Main.item[number].height)) && this.ItemSpace(Main.item[number]))
           {
-            Rectangle rectangle2 = new Rectangle((int) this.position.X - defaultItemGrabRange, (int) this.position.Y - defaultItemGrabRange, this.width + defaultItemGrabRange * 2, this.height + defaultItemGrabRange * 2);
-            // ISSUE: explicit reference operation
-            if (((Rectangle) @rectangle2).Intersects(new Rectangle((int) Main.item[number].position.X, (int) Main.item[number].position.Y, Main.item[number].width, Main.item[number].height)) && this.ItemSpace(Main.item[number]))
+            Main.item[number].beingGrabbed = true;
+            if (this.manaMagnet && (Main.item[number].type == 184 || Main.item[number].type == 1735 || Main.item[number].type == 1868))
             {
-              Main.item[number].beingGrabbed = true;
-              if (this.manaMagnet && (Main.item[number].type == 184 || Main.item[number].type == 1735 || Main.item[number].type == 1868))
+              float num1 = 12f;
+              Vector2 vector2 = new Vector2(Main.item[number].position.X + (float) (Main.item[number].width / 2), Main.item[number].position.Y + (float) (Main.item[number].height / 2));
+              float num2 = this.Center.X - vector2.X;
+              float num3 = this.Center.Y - vector2.Y;
+              float num4 = (float) Math.Sqrt((double) num2 * (double) num2 + (double) num3 * (double) num3);
+              float num5 = num1 / num4;
+              float num6 = num2 * num5;
+              float num7 = num3 * num5;
+              int num8 = 5;
+              Main.item[number].velocity.X = (Main.item[number].velocity.X * (float) (num8 - 1) + num6) / (float) num8;
+              Main.item[number].velocity.Y = (Main.item[number].velocity.Y * (float) (num8 - 1) + num7) / (float) num8;
+            }
+            else if (this.lifeMagnet && (Main.item[number].type == 58 || Main.item[number].type == 1734 || Main.item[number].type == 1867))
+            {
+              float num1 = 15f;
+              Vector2 vector2 = new Vector2(Main.item[number].position.X + (float) (Main.item[number].width / 2), Main.item[number].position.Y + (float) (Main.item[number].height / 2));
+              float num2 = this.Center.X - vector2.X;
+              float num3 = this.Center.Y - vector2.Y;
+              float num4 = (float) Math.Sqrt((double) num2 * (double) num2 + (double) num3 * (double) num3);
+              float num5 = num1 / num4;
+              float num6 = num2 * num5;
+              float num7 = num3 * num5;
+              int num8 = 5;
+              Main.item[number].velocity.X = (Main.item[number].velocity.X * (float) (num8 - 1) + num6) / (float) num8;
+              Main.item[number].velocity.Y = (Main.item[number].velocity.Y * (float) (num8 - 1) + num7) / (float) num8;
+            }
+            else if (this.goldRing && Main.item[number].type >= 71 && Main.item[number].type <= 74)
+            {
+              float num1 = 12f;
+              Vector2 vector2 = new Vector2(Main.item[number].position.X + (float) (Main.item[number].width / 2), Main.item[number].position.Y + (float) (Main.item[number].height / 2));
+              float num2 = this.Center.X - vector2.X;
+              float num3 = this.Center.Y - vector2.Y;
+              float num4 = (float) Math.Sqrt((double) num2 * (double) num2 + (double) num3 * (double) num3);
+              float num5 = num1 / num4;
+              float num6 = num2 * num5;
+              float num7 = num3 * num5;
+              int num8 = 5;
+              Main.item[number].velocity.X = (Main.item[number].velocity.X * (float) (num8 - 1) + num6) / (float) num8;
+              Main.item[number].velocity.Y = (Main.item[number].velocity.Y * (float) (num8 - 1) + num7) / (float) num8;
+            }
+            else if (ItemID.Sets.NebulaPickup[Main.item[number].type])
+            {
+              float num1 = 12f;
+              Vector2 vector2 = new Vector2(Main.item[number].position.X + (float) (Main.item[number].width / 2), Main.item[number].position.Y + (float) (Main.item[number].height / 2));
+              float num2 = this.Center.X - vector2.X;
+              float num3 = this.Center.Y - vector2.Y;
+              float num4 = (float) Math.Sqrt((double) num2 * (double) num2 + (double) num3 * (double) num3);
+              float num5 = num1 / num4;
+              float num6 = num2 * num5;
+              float num7 = num3 * num5;
+              int num8 = 5;
+              Main.item[number].velocity.X = (Main.item[number].velocity.X * (float) (num8 - 1) + num6) / (float) num8;
+              Main.item[number].velocity.Y = (Main.item[number].velocity.Y * (float) (num8 - 1) + num7) / (float) num8;
+            }
+            else
+            {
+              if ((double) this.position.X + (double) this.width * 0.5 > (double) Main.item[number].position.X + (double) Main.item[number].width * 0.5)
               {
-                float num1 = 12f;
-                Vector2 vector2;
-                // ISSUE: explicit reference operation
-                ((Vector2) @vector2).\u002Ector((float) Main.item[number].position.X + (float) (Main.item[number].width / 2), (float) Main.item[number].position.Y + (float) (Main.item[number].height / 2));
-                float num2 = (float) (this.Center.X - vector2.X);
-                float num3 = (float) (this.Center.Y - vector2.Y);
-                float num4 = (float) Math.Sqrt((double) num2 * (double) num2 + (double) num3 * (double) num3);
-                float num5 = num1 / num4;
-                float num6 = num2 * num5;
-                float num7 = num3 * num5;
-                int num8 = 5;
-                Main.item[number].velocity.X = (__Null) ((Main.item[number].velocity.X * (double) (num8 - 1) + (double) num6) / (double) num8);
-                Main.item[number].velocity.Y = (__Null) ((Main.item[number].velocity.Y * (double) (num8 - 1) + (double) num7) / (double) num8);
-              }
-              else if (this.lifeMagnet && (Main.item[number].type == 58 || Main.item[number].type == 1734 || Main.item[number].type == 1867))
-              {
-                float num1 = 15f;
-                Vector2 vector2;
-                // ISSUE: explicit reference operation
-                ((Vector2) @vector2).\u002Ector((float) Main.item[number].position.X + (float) (Main.item[number].width / 2), (float) Main.item[number].position.Y + (float) (Main.item[number].height / 2));
-                float num2 = (float) (this.Center.X - vector2.X);
-                float num3 = (float) (this.Center.Y - vector2.Y);
-                float num4 = (float) Math.Sqrt((double) num2 * (double) num2 + (double) num3 * (double) num3);
-                float num5 = num1 / num4;
-                float num6 = num2 * num5;
-                float num7 = num3 * num5;
-                int num8 = 5;
-                Main.item[number].velocity.X = (__Null) ((Main.item[number].velocity.X * (double) (num8 - 1) + (double) num6) / (double) num8);
-                Main.item[number].velocity.Y = (__Null) ((Main.item[number].velocity.Y * (double) (num8 - 1) + (double) num7) / (double) num8);
-              }
-              else if (this.goldRing && Main.item[number].type >= 71 && Main.item[number].type <= 74)
-              {
-                float num1 = 12f;
-                Vector2 vector2;
-                // ISSUE: explicit reference operation
-                ((Vector2) @vector2).\u002Ector((float) Main.item[number].position.X + (float) (Main.item[number].width / 2), (float) Main.item[number].position.Y + (float) (Main.item[number].height / 2));
-                float num2 = (float) (this.Center.X - vector2.X);
-                float num3 = (float) (this.Center.Y - vector2.Y);
-                float num4 = (float) Math.Sqrt((double) num2 * (double) num2 + (double) num3 * (double) num3);
-                float num5 = num1 / num4;
-                float num6 = num2 * num5;
-                float num7 = num3 * num5;
-                int num8 = 5;
-                Main.item[number].velocity.X = (__Null) ((Main.item[number].velocity.X * (double) (num8 - 1) + (double) num6) / (double) num8);
-                Main.item[number].velocity.Y = (__Null) ((Main.item[number].velocity.Y * (double) (num8 - 1) + (double) num7) / (double) num8);
-              }
-              else if (ItemID.Sets.NebulaPickup[Main.item[number].type])
-              {
-                float num1 = 12f;
-                Vector2 vector2;
-                // ISSUE: explicit reference operation
-                ((Vector2) @vector2).\u002Ector((float) Main.item[number].position.X + (float) (Main.item[number].width / 2), (float) Main.item[number].position.Y + (float) (Main.item[number].height / 2));
-                float num2 = (float) (this.Center.X - vector2.X);
-                float num3 = (float) (this.Center.Y - vector2.Y);
-                float num4 = (float) Math.Sqrt((double) num2 * (double) num2 + (double) num3 * (double) num3);
-                float num5 = num1 / num4;
-                float num6 = num2 * num5;
-                float num7 = num3 * num5;
-                int num8 = 5;
-                Main.item[number].velocity.X = (__Null) ((Main.item[number].velocity.X * (double) (num8 - 1) + (double) num6) / (double) num8);
-                Main.item[number].velocity.Y = (__Null) ((Main.item[number].velocity.Y * (double) (num8 - 1) + (double) num7) / (double) num8);
+                if ((double) Main.item[number].velocity.X < (double) Player.itemGrabSpeedMax + (double) this.velocity.X)
+                  Main.item[number].velocity.X += Player.itemGrabSpeed;
+                if ((double) Main.item[number].velocity.X < 0.0)
+                  Main.item[number].velocity.X += Player.itemGrabSpeed * 0.75f;
               }
               else
               {
-                if ((double) this.position.X + (double) this.width * 0.5 > (double) Main.item[number].position.X + (double) Main.item[number].width * 0.5)
-                {
-                  if (Main.item[number].velocity.X < (double) Player.itemGrabSpeedMax + this.velocity.X)
-                  {
-                    // ISSUE: explicit reference operation
-                    // ISSUE: variable of a reference type
-                    Vector2& local = @Main.item[number].velocity;
-                    // ISSUE: explicit reference operation
-                    double num = (^local).X + (double) Player.itemGrabSpeed;
-                    // ISSUE: explicit reference operation
-                    (^local).X = (__Null) num;
-                  }
-                  if (Main.item[number].velocity.X < 0.0)
-                  {
-                    // ISSUE: explicit reference operation
-                    // ISSUE: variable of a reference type
-                    Vector2& local = @Main.item[number].velocity;
-                    // ISSUE: explicit reference operation
-                    double num = (^local).X + (double) Player.itemGrabSpeed * 0.75;
-                    // ISSUE: explicit reference operation
-                    (^local).X = (__Null) num;
-                  }
-                }
-                else
-                {
-                  if (Main.item[number].velocity.X > -(double) Player.itemGrabSpeedMax + this.velocity.X)
-                  {
-                    // ISSUE: explicit reference operation
-                    // ISSUE: variable of a reference type
-                    Vector2& local = @Main.item[number].velocity;
-                    // ISSUE: explicit reference operation
-                    double num = (^local).X - (double) Player.itemGrabSpeed;
-                    // ISSUE: explicit reference operation
-                    (^local).X = (__Null) num;
-                  }
-                  if (Main.item[number].velocity.X > 0.0)
-                  {
-                    // ISSUE: explicit reference operation
-                    // ISSUE: variable of a reference type
-                    Vector2& local = @Main.item[number].velocity;
-                    // ISSUE: explicit reference operation
-                    double num = (^local).X - (double) Player.itemGrabSpeed * 0.75;
-                    // ISSUE: explicit reference operation
-                    (^local).X = (__Null) num;
-                  }
-                }
-                if ((double) this.position.Y + (double) this.height * 0.5 > (double) Main.item[number].position.Y + (double) Main.item[number].height * 0.5)
-                {
-                  if (Main.item[number].velocity.Y < (double) Player.itemGrabSpeedMax)
-                  {
-                    // ISSUE: explicit reference operation
-                    // ISSUE: variable of a reference type
-                    Vector2& local = @Main.item[number].velocity;
-                    // ISSUE: explicit reference operation
-                    double num = (^local).Y + (double) Player.itemGrabSpeed;
-                    // ISSUE: explicit reference operation
-                    (^local).Y = (__Null) num;
-                  }
-                  if (Main.item[number].velocity.Y < 0.0)
-                  {
-                    // ISSUE: explicit reference operation
-                    // ISSUE: variable of a reference type
-                    Vector2& local = @Main.item[number].velocity;
-                    // ISSUE: explicit reference operation
-                    double num = (^local).Y + (double) Player.itemGrabSpeed * 0.75;
-                    // ISSUE: explicit reference operation
-                    (^local).Y = (__Null) num;
-                  }
-                }
-                else
-                {
-                  if (Main.item[number].velocity.Y > -(double) Player.itemGrabSpeedMax)
-                  {
-                    // ISSUE: explicit reference operation
-                    // ISSUE: variable of a reference type
-                    Vector2& local = @Main.item[number].velocity;
-                    // ISSUE: explicit reference operation
-                    double num = (^local).Y - (double) Player.itemGrabSpeed;
-                    // ISSUE: explicit reference operation
-                    (^local).Y = (__Null) num;
-                  }
-                  if (Main.item[number].velocity.Y > 0.0)
-                  {
-                    // ISSUE: explicit reference operation
-                    // ISSUE: variable of a reference type
-                    Vector2& local = @Main.item[number].velocity;
-                    // ISSUE: explicit reference operation
-                    double num = (^local).Y - (double) Player.itemGrabSpeed * 0.75;
-                    // ISSUE: explicit reference operation
-                    (^local).Y = (__Null) num;
-                  }
-                }
+                if ((double) Main.item[number].velocity.X > -(double) Player.itemGrabSpeedMax + (double) this.velocity.X)
+                  Main.item[number].velocity.X -= Player.itemGrabSpeed;
+                if ((double) Main.item[number].velocity.X > 0.0)
+                  Main.item[number].velocity.X -= Player.itemGrabSpeed * 0.75f;
+              }
+              if ((double) this.position.Y + (double) this.height * 0.5 > (double) Main.item[number].position.Y + (double) Main.item[number].height * 0.5)
+              {
+                if ((double) Main.item[number].velocity.Y < (double) Player.itemGrabSpeedMax)
+                  Main.item[number].velocity.Y += Player.itemGrabSpeed;
+                if ((double) Main.item[number].velocity.Y < 0.0)
+                  Main.item[number].velocity.Y += Player.itemGrabSpeed * 0.75f;
+              }
+              else
+              {
+                if ((double) Main.item[number].velocity.Y > -(double) Player.itemGrabSpeedMax)
+                  Main.item[number].velocity.Y -= Player.itemGrabSpeed;
+                if ((double) Main.item[number].velocity.Y > 0.0)
+                  Main.item[number].velocity.Y -= Player.itemGrabSpeed * 0.75f;
               }
             }
           }
@@ -18171,37 +17140,37 @@ label_13:
       for (int index = 0; index < inv.Count; ++index)
         dictionary[index] = new List<int>();
       dictionary[0] = new List<int>() { 58, 57, 56, 55, 54 };
-      for (int index1 = 0; index1 < inv.Count; ++index1)
+      for (int x = 0; x < inv.Count; ++x)
       {
-        for (int index2 = 0; index2 < inv[index1].Length; ++index2)
+        for (int y = 0; y < inv[x].Length; ++y)
         {
-          if (!dictionary[index1].Contains(index2) && inv[index1][index2].type >= 71 && inv[index1][index2].type <= 74)
-            slotCoins.Add(new Point(index1, index2));
+          if (!dictionary[x].Contains(y) && inv[x][y].type >= 71 && inv[x][y].type <= 74)
+            slotCoins.Add(new Point(x, y));
         }
       }
-      int index3 = 0;
-      for (int index1 = inv[index3].Length - 1; index1 >= 0; --index1)
+      int x1 = 0;
+      for (int y = inv[x1].Length - 1; y >= 0; --y)
       {
-        if (!dictionary[index3].Contains(index1) && (inv[index3][index1].type == 0 || inv[index3][index1].stack == 0))
-          slotsEmpty.Add(new Point(index3, index1));
+        if (!dictionary[x1].Contains(y) && (inv[x1][y].type == 0 || inv[x1][y].stack == 0))
+          slotsEmpty.Add(new Point(x1, y));
       }
-      int index4 = 1;
-      for (int index1 = inv[index4].Length - 1; index1 >= 0; --index1)
+      int x2 = 1;
+      for (int y = inv[x2].Length - 1; y >= 0; --y)
       {
-        if (!dictionary[index4].Contains(index1) && (inv[index4][index1].type == 0 || inv[index4][index1].stack == 0))
-          slotEmptyBank.Add(new Point(index4, index1));
+        if (!dictionary[x2].Contains(y) && (inv[x2][y].type == 0 || inv[x2][y].stack == 0))
+          slotEmptyBank.Add(new Point(x2, y));
       }
-      int index5 = 2;
-      for (int index1 = inv[index5].Length - 1; index1 >= 0; --index1)
+      int x3 = 2;
+      for (int y = inv[x3].Length - 1; y >= 0; --y)
       {
-        if (!dictionary[index5].Contains(index1) && (inv[index5][index1].type == 0 || inv[index5][index1].stack == 0))
-          slotEmptyBank2.Add(new Point(index5, index1));
+        if (!dictionary[x3].Contains(y) && (inv[x3][y].type == 0 || inv[x3][y].stack == 0))
+          slotEmptyBank2.Add(new Point(x3, y));
       }
-      int index6 = 3;
-      for (int index1 = inv[index6].Length - 1; index1 >= 0; --index1)
+      int x4 = 3;
+      for (int y = inv[x4].Length - 1; y >= 0; --y)
       {
-        if (!dictionary[index6].Contains(index1) && (inv[index6][index1].type == 0 || inv[index6][index1].stack == 0))
-          slotEmptyBank3.Add(new Point(index6, index1));
+        if (!dictionary[x4].Contains(y) && (inv[x4][y].type == 0 || inv[x4][y].stack == 0))
+          slotEmptyBank3.Add(new Point(x4, y));
       }
       return !Player.TryPurchasing(price, inv, slotCoins, slotsEmpty, slotEmptyBank, slotEmptyBank2, slotEmptyBank3);
     }
@@ -18218,26 +17187,22 @@ label_13:
         {
           if (num1 >= num2)
           {
-            using (List<Point>.Enumerator enumerator = slotCoins.GetEnumerator())
+            foreach (Point slotCoin in slotCoins)
             {
-              while (enumerator.MoveNext())
+              if (inv[slotCoin.X][slotCoin.Y].type == 74 - index)
               {
-                Point current = enumerator.Current;
-                if (inv[(int) current.X][current.Y].type == 74 - index)
+                long num3 = num1 / num2;
+                dictionary[slotCoin] = inv[slotCoin.X][slotCoin.Y].Clone();
+                if (num3 < (long) inv[slotCoin.X][slotCoin.Y].stack)
                 {
-                  long num3 = num1 / num2;
-                  dictionary[current] = inv[(int) current.X][current.Y].Clone();
-                  if (num3 < (long) inv[(int) current.X][current.Y].stack)
-                  {
-                    inv[(int) current.X][current.Y].stack -= (int) num3;
-                  }
-                  else
-                  {
-                    inv[(int) current.X][current.Y].SetDefaults(0, false);
-                    slotsEmpty.Add(current);
-                  }
-                  num1 -= num2 * (long) (dictionary[current].stack - inv[(int) current.X][current.Y].stack);
+                  inv[slotCoin.X][slotCoin.Y].stack -= (int) num3;
                 }
+                else
+                {
+                  inv[slotCoin.X][slotCoin.Y].SetDefaults(0, false);
+                  slotsEmpty.Add(slotCoin);
+                }
+                num1 -= num2 * (long) (dictionary[slotCoin].stack - inv[slotCoin.X][slotCoin.Y].stack);
               }
             }
           }
@@ -18248,9 +17213,7 @@ label_13:
           if (slotsEmpty.Count > 0)
           {
             slotsEmpty.Sort(new Comparison<Point>(DelegateMethods.CompareYReverse));
-            Point point;
-            // ISSUE: explicit reference operation
-            ((Point) @point).\u002Ector(-1, -1);
+            Point point = new Point(-1, -1);
             for (int index1 = 0; index1 < inv.Count; ++index1)
             {
               long num3 = 10000;
@@ -18258,30 +17221,26 @@ label_13:
               {
                 if (num1 >= num3)
                 {
-                  using (List<Point>.Enumerator enumerator = slotCoins.GetEnumerator())
+                  foreach (Point slotCoin in slotCoins)
                   {
-                    while (enumerator.MoveNext())
+                    if (slotCoin.X == index1 && inv[slotCoin.X][slotCoin.Y].type == 74 - index2 && inv[slotCoin.X][slotCoin.Y].stack >= 1)
                     {
-                      Point current = enumerator.Current;
-                      if (current.X == index1 && inv[(int) current.X][current.Y].type == 74 - index2 && inv[(int) current.X][current.Y].stack >= 1)
+                      List<Point> pointList = slotsEmpty;
+                      if (index1 == 1 && slotEmptyBank.Count > 0)
+                        pointList = slotEmptyBank;
+                      if (index1 == 2 && slotEmptyBank2.Count > 0)
+                        pointList = slotEmptyBank2;
+                      if (--inv[slotCoin.X][slotCoin.Y].stack <= 0)
                       {
-                        List<Point> pointList = slotsEmpty;
-                        if (index1 == 1 && slotEmptyBank.Count > 0)
-                          pointList = slotEmptyBank;
-                        if (index1 == 2 && slotEmptyBank2.Count > 0)
-                          pointList = slotEmptyBank2;
-                        if (--inv[(int) current.X][current.Y].stack <= 0)
-                        {
-                          inv[(int) current.X][current.Y].SetDefaults(0, false);
-                          pointList.Add(current);
-                        }
-                        dictionary[pointList[0]] = inv[(int) pointList[0].X][pointList[0].Y].Clone();
-                        inv[(int) pointList[0].X][pointList[0].Y].SetDefaults(73 - index2, false);
-                        inv[(int) pointList[0].X][pointList[0].Y].stack = 100;
-                        point = pointList[0];
-                        pointList.RemoveAt(0);
-                        break;
+                        inv[slotCoin.X][slotCoin.Y].SetDefaults(0, false);
+                        pointList.Add(slotCoin);
                       }
+                      dictionary[pointList[0]] = inv[pointList[0].X][pointList[0].Y].Clone();
+                      inv[pointList[0].X][pointList[0].Y].SetDefaults(73 - index2, false);
+                      inv[pointList[0].X][pointList[0].Y].stack = 100;
+                      point = pointList[0];
+                      pointList.RemoveAt(0);
+                      break;
                     }
                   }
                 }
@@ -18294,32 +17253,28 @@ label_13:
               {
                 if (point.X == -1 && point.Y == -1)
                 {
-                  using (List<Point>.Enumerator enumerator = slotCoins.GetEnumerator())
+                  foreach (Point slotCoin in slotCoins)
                   {
-                    while (enumerator.MoveNext())
+                    if (slotCoin.X == index1 && inv[slotCoin.X][slotCoin.Y].type == 73 + index2 && inv[slotCoin.X][slotCoin.Y].stack >= 1)
                     {
-                      Point current = enumerator.Current;
-                      if (current.X == index1 && inv[(int) current.X][current.Y].type == 73 + index2 && inv[(int) current.X][current.Y].stack >= 1)
+                      List<Point> pointList = slotsEmpty;
+                      if (index1 == 1 && slotEmptyBank.Count > 0)
+                        pointList = slotEmptyBank;
+                      if (index1 == 2 && slotEmptyBank2.Count > 0)
+                        pointList = slotEmptyBank2;
+                      if (index1 == 3 && slotEmptyBank3.Count > 0)
+                        pointList = slotEmptyBank3;
+                      if (--inv[slotCoin.X][slotCoin.Y].stack <= 0)
                       {
-                        List<Point> pointList = slotsEmpty;
-                        if (index1 == 1 && slotEmptyBank.Count > 0)
-                          pointList = slotEmptyBank;
-                        if (index1 == 2 && slotEmptyBank2.Count > 0)
-                          pointList = slotEmptyBank2;
-                        if (index1 == 3 && slotEmptyBank3.Count > 0)
-                          pointList = slotEmptyBank3;
-                        if (--inv[(int) current.X][current.Y].stack <= 0)
-                        {
-                          inv[(int) current.X][current.Y].SetDefaults(0, false);
-                          pointList.Add(current);
-                        }
-                        dictionary[pointList[0]] = inv[(int) pointList[0].X][pointList[0].Y].Clone();
-                        inv[(int) pointList[0].X][pointList[0].Y].SetDefaults(72 + index2, false);
-                        inv[(int) pointList[0].X][pointList[0].Y].stack = 100;
-                        point = pointList[0];
-                        pointList.RemoveAt(0);
-                        break;
+                        inv[slotCoin.X][slotCoin.Y].SetDefaults(0, false);
+                        pointList.Add(slotCoin);
                       }
+                      dictionary[pointList[0]] = inv[pointList[0].X][pointList[0].Y].Clone();
+                      inv[pointList[0].X][pointList[0].Y].SetDefaults(72 + index2, false);
+                      inv[pointList[0].X][pointList[0].Y].stack = 100;
+                      point = pointList[0];
+                      pointList.RemoveAt(0);
+                      break;
                     }
                   }
                 }
@@ -18337,14 +17292,8 @@ label_13:
           }
           else
           {
-            using (Dictionary<Point, Item>.Enumerator enumerator = dictionary.GetEnumerator())
-            {
-              while (enumerator.MoveNext())
-              {
-                KeyValuePair<Point, Item> current = enumerator.Current;
-                inv[(int) current.Key.X][current.Key.Y] = current.Value.Clone();
-              }
-            }
+            foreach (KeyValuePair<Point, Item> keyValuePair in dictionary)
+              inv[keyValuePair.Key.X][keyValuePair.Key.Y] = keyValuePair.Value.Clone();
             flag = true;
             break;
           }
@@ -18565,8 +17514,8 @@ label_13:
       this.oldAdjLava = this.adjLava;
       this.adjLava = false;
       this.alchemyTable = false;
-      int num3 = (int) ((this.position.X + (double) (this.width / 2)) / 16.0);
-      int num4 = (int) ((this.position.Y + (double) this.height) / 16.0);
+      int num3 = (int) (((double) this.position.X + (double) (this.width / 2)) / 16.0);
+      int num4 = (int) (((double) this.position.Y + (double) this.height) / 16.0);
       for (int index1 = num3 - num1; index1 <= num3 + num1; ++index1)
       {
         for (int index2 = num4 - num2; index2 < num4 + num2; ++index2)
@@ -18645,7 +17594,7 @@ label_13:
         {
           if ((int) this.armor[index].wingSlot > 0)
           {
-            if (!this.hideVisual[index] || this.velocity.Y != 0.0 && !this.mount.Active)
+            if (!this.hideVisual[index] || (double) this.velocity.Y != 0.0 && !this.mount.Active)
               this.wings = (int) this.armor[index].wingSlot;
             else
               continue;
@@ -18813,12 +17762,10 @@ label_13:
         return;
       if ((this.body == 68 && this.legs == 57 && this.head == 106 || this.body == 74 && this.legs == 63 && this.head == 106) && Main.rand.Next(10) == 0)
       {
-        int index = Dust.NewDust(new Vector2((float) (this.position.X - this.velocity.X * 2.0), (float) (this.position.Y - 2.0 - this.velocity.Y * 2.0)), this.width, this.height, 43, 0.0f, 0.0f, 100, new Color((int) byte.MaxValue, 0, (int) byte.MaxValue), 0.3f);
+        int index = Dust.NewDust(new Vector2(this.position.X - this.velocity.X * 2f, (float) ((double) this.position.Y - 2.0 - (double) this.velocity.Y * 2.0)), this.width, this.height, 43, 0.0f, 0.0f, 100, new Color((int) byte.MaxValue, 0, (int) byte.MaxValue), 0.3f);
         Main.dust[index].fadeIn = 0.8f;
         Main.dust[index].noGravity = true;
-        Dust dust = Main.dust[index];
-        Vector2 vector2 = Vector2.op_Multiply(dust.velocity, 2f);
-        dust.velocity = vector2;
+        Main.dust[index].velocity *= 2f;
         Main.dust[index].shader = GameShaders.Armor.GetSecondaryShader(this.ArmorSetDye(), this);
       }
       if (this.wings == 27)
@@ -18830,7 +17777,7 @@ label_13:
         this.socialShadowRocketBoots = true;
       if (this.head == 5 && this.body == 5 && (this.legs == 5 && Main.rand.Next(10) == 0))
       {
-        int index = Dust.NewDust(new Vector2((float) this.position.X, (float) this.position.Y), this.width, this.height, 14, 0.0f, 0.0f, 200, (Color) null, 1.2f);
+        int index = Dust.NewDust(new Vector2(this.position.X, this.position.Y), this.width, this.height, 14, 0.0f, 0.0f, 200, new Color(), 1.2f);
         Main.dust[index].shader = GameShaders.Armor.GetSecondaryShader(this.ArmorSetDye(), this);
       }
       if (this.head == 76 && this.body == 49 && this.legs == 45)
@@ -18839,136 +17786,94 @@ label_13:
         this.socialShadowRocketBoots = true;
       if (this.head == 74 && this.body == 48 && (this.legs == 44 && Main.rand.Next(10) == 0))
       {
-        int index = Dust.NewDust(new Vector2((float) this.position.X, (float) this.position.Y), this.width, this.height, 14, 0.0f, 0.0f, 200, (Color) null, 1.2f);
+        int index = Dust.NewDust(new Vector2(this.position.X, this.position.Y), this.width, this.height, 14, 0.0f, 0.0f, 200, new Color(), 1.2f);
         Main.dust[index].shader = GameShaders.Armor.GetSecondaryShader(this.ArmorSetDye(), this);
       }
       if (this.head == 57 && this.body == 37 && this.legs == 35)
       {
         int maxValue = 10;
-        if ((double) Math.Abs((float) this.velocity.X) + (double) Math.Abs((float) this.velocity.Y) > 1.0)
+        if ((double) Math.Abs(this.velocity.X) + (double) Math.Abs(this.velocity.Y) > 1.0)
           maxValue = 2;
         if (Main.rand.Next(maxValue) == 0)
         {
-          int index = Dust.NewDust(new Vector2((float) this.position.X, (float) this.position.Y), this.width, this.height, 115, 0.0f, 0.0f, 140, (Color) null, 0.75f);
+          int index = Dust.NewDust(new Vector2(this.position.X, this.position.Y), this.width, this.height, 115, 0.0f, 0.0f, 140, new Color(), 0.75f);
           Main.dust[index].noGravity = true;
           Main.dust[index].fadeIn = 1.5f;
-          Dust dust1 = Main.dust[index];
-          Vector2 vector2_1 = Vector2.op_Multiply(dust1.velocity, 0.3f);
-          dust1.velocity = vector2_1;
-          Dust dust2 = Main.dust[index];
-          Vector2 vector2_2 = Vector2.op_Addition(dust2.velocity, Vector2.op_Multiply(this.velocity, 0.2f));
-          dust2.velocity = vector2_2;
+          Main.dust[index].velocity *= 0.3f;
+          Main.dust[index].velocity += this.velocity * 0.2f;
           Main.dust[index].shader = GameShaders.Armor.GetSecondaryShader(this.ArmorSetDye(), this);
         }
       }
-      if (this.head == 6 && this.body == 6 && (this.legs == 6 && (double) Math.Abs((float) this.velocity.X) + (double) Math.Abs((float) this.velocity.Y) > 1.0) && !this.rocketFrame)
+      if (this.head == 6 && this.body == 6 && (this.legs == 6 && (double) Math.Abs(this.velocity.X) + (double) Math.Abs(this.velocity.Y) > 1.0) && !this.rocketFrame)
       {
         for (int index1 = 0; index1 < 2; ++index1)
         {
-          int index2 = Dust.NewDust(new Vector2((float) (this.position.X - this.velocity.X * 2.0), (float) (this.position.Y - 2.0 - this.velocity.Y * 2.0)), this.width, this.height, 6, 0.0f, 0.0f, 100, (Color) null, 2f);
+          int index2 = Dust.NewDust(new Vector2(this.position.X - this.velocity.X * 2f, (float) ((double) this.position.Y - 2.0 - (double) this.velocity.Y * 2.0)), this.width, this.height, 6, 0.0f, 0.0f, 100, new Color(), 2f);
           Main.dust[index2].noGravity = true;
           Main.dust[index2].noLight = true;
-          // ISSUE: explicit reference operation
-          // ISSUE: variable of a reference type
-          Vector2& local1 = @Main.dust[index2].velocity;
-          // ISSUE: explicit reference operation
-          double num4 = (^local1).X - this.velocity.X * 0.5;
-          // ISSUE: explicit reference operation
-          (^local1).X = (__Null) num4;
-          // ISSUE: explicit reference operation
-          // ISSUE: variable of a reference type
-          Vector2& local2 = @Main.dust[index2].velocity;
-          // ISSUE: explicit reference operation
-          double num5 = (^local2).Y - this.velocity.Y * 0.5;
-          // ISSUE: explicit reference operation
-          (^local2).Y = (__Null) num5;
+          Main.dust[index2].velocity.X -= this.velocity.X * 0.5f;
+          Main.dust[index2].velocity.Y -= this.velocity.Y * 0.5f;
           Main.dust[index2].shader = GameShaders.Armor.GetSecondaryShader(this.ArmorSetDye(), this);
         }
       }
-      if (this.head == 8 && this.body == 8 && (this.legs == 8 && (double) Math.Abs((float) this.velocity.X) + (double) Math.Abs((float) this.velocity.Y) > 1.0))
+      if (this.head == 8 && this.body == 8 && (this.legs == 8 && (double) Math.Abs(this.velocity.X) + (double) Math.Abs(this.velocity.Y) > 1.0))
       {
-        int index = Dust.NewDust(new Vector2((float) (this.position.X - this.velocity.X * 2.0), (float) (this.position.Y - 2.0 - this.velocity.Y * 2.0)), this.width, this.height, 40, 0.0f, 0.0f, 50, (Color) null, 1.4f);
+        int index = Dust.NewDust(new Vector2(this.position.X - this.velocity.X * 2f, (float) ((double) this.position.Y - 2.0 - (double) this.velocity.Y * 2.0)), this.width, this.height, 40, 0.0f, 0.0f, 50, new Color(), 1.4f);
         Main.dust[index].noGravity = true;
-        Main.dust[index].velocity.X = (__Null) (this.velocity.X * 0.25);
-        Main.dust[index].velocity.Y = (__Null) (this.velocity.Y * 0.25);
+        Main.dust[index].velocity.X = this.velocity.X * 0.25f;
+        Main.dust[index].velocity.Y = this.velocity.Y * 0.25f;
         Main.dust[index].shader = GameShaders.Armor.GetSecondaryShader(this.ArmorSetDye(), this);
       }
-      if (this.head == 9 && this.body == 9 && (this.legs == 9 && (double) Math.Abs((float) this.velocity.X) + (double) Math.Abs((float) this.velocity.Y) > 1.0) && !this.rocketFrame)
+      if (this.head == 9 && this.body == 9 && (this.legs == 9 && (double) Math.Abs(this.velocity.X) + (double) Math.Abs(this.velocity.Y) > 1.0) && !this.rocketFrame)
       {
         for (int index1 = 0; index1 < 2; ++index1)
         {
-          int index2 = Dust.NewDust(new Vector2((float) (this.position.X - this.velocity.X * 2.0), (float) (this.position.Y - 2.0 - this.velocity.Y * 2.0)), this.width, this.height, 6, 0.0f, 0.0f, 100, (Color) null, 2f);
+          int index2 = Dust.NewDust(new Vector2(this.position.X - this.velocity.X * 2f, (float) ((double) this.position.Y - 2.0 - (double) this.velocity.Y * 2.0)), this.width, this.height, 6, 0.0f, 0.0f, 100, new Color(), 2f);
           Main.dust[index2].noGravity = true;
           Main.dust[index2].noLight = true;
-          // ISSUE: explicit reference operation
-          // ISSUE: variable of a reference type
-          Vector2& local1 = @Main.dust[index2].velocity;
-          // ISSUE: explicit reference operation
-          double num4 = (^local1).X - this.velocity.X * 0.5;
-          // ISSUE: explicit reference operation
-          (^local1).X = (__Null) num4;
-          // ISSUE: explicit reference operation
-          // ISSUE: variable of a reference type
-          Vector2& local2 = @Main.dust[index2].velocity;
-          // ISSUE: explicit reference operation
-          double num5 = (^local2).Y - this.velocity.Y * 0.5;
-          // ISSUE: explicit reference operation
-          (^local2).Y = (__Null) num5;
+          Main.dust[index2].velocity.X -= this.velocity.X * 0.5f;
+          Main.dust[index2].velocity.Y -= this.velocity.Y * 0.5f;
           Main.dust[index2].shader = GameShaders.Armor.GetSecondaryShader(this.ArmorSetDye(), this);
         }
       }
       if (this.body == 18 && this.legs == 17 && (this.head == 32 || this.head == 33 || this.head == 34) && Main.rand.Next(10) == 0)
       {
-        int index = Dust.NewDust(new Vector2((float) (this.position.X - this.velocity.X * 2.0), (float) (this.position.Y - 2.0 - this.velocity.Y * 2.0)), this.width, this.height, 43, 0.0f, 0.0f, 100, (Color) null, 0.3f);
+        int index = Dust.NewDust(new Vector2(this.position.X - this.velocity.X * 2f, (float) ((double) this.position.Y - 2.0 - (double) this.velocity.Y * 2.0)), this.width, this.height, 43, 0.0f, 0.0f, 100, new Color(), 0.3f);
         Main.dust[index].fadeIn = 0.8f;
-        Dust dust = Main.dust[index];
-        Vector2 vector2 = Vector2.op_Multiply(dust.velocity, 0.0f);
-        dust.velocity = vector2;
+        Main.dust[index].velocity *= 0.0f;
         Main.dust[index].shader = GameShaders.Armor.GetSecondaryShader(this.ArmorSetDye(), this);
       }
-      if (this.body == 24 && this.legs == 23 && (this.head == 42 || this.head == 43 || this.head == 41) && (this.velocity.X != 0.0 && this.velocity.Y != 0.0 && Main.rand.Next(10) == 0))
+      if (this.body == 24 && this.legs == 23 && (this.head == 42 || this.head == 43 || this.head == 41) && ((double) this.velocity.X != 0.0 && (double) this.velocity.Y != 0.0 && Main.rand.Next(10) == 0))
       {
-        int index = Dust.NewDust(new Vector2((float) (this.position.X - this.velocity.X * 2.0), (float) (this.position.Y - 2.0 - this.velocity.Y * 2.0)), this.width, this.height, 43, 0.0f, 0.0f, 100, (Color) null, 0.3f);
+        int index = Dust.NewDust(new Vector2(this.position.X - this.velocity.X * 2f, (float) ((double) this.position.Y - 2.0 - (double) this.velocity.Y * 2.0)), this.width, this.height, 43, 0.0f, 0.0f, 100, new Color(), 0.3f);
         Main.dust[index].fadeIn = 0.8f;
-        Dust dust = Main.dust[index];
-        Vector2 vector2 = Vector2.op_Multiply(dust.velocity, 0.0f);
-        dust.velocity = vector2;
+        Main.dust[index].velocity *= 0.0f;
         Main.dust[index].shader = GameShaders.Armor.GetSecondaryShader(this.ArmorSetDye(), this);
       }
-      if (this.body == 36 && this.head == 56 && (this.velocity.X != 0.0 && this.velocity.Y == 0.0))
+      if (this.body == 36 && this.head == 56 && ((double) this.velocity.X != 0.0 && (double) this.velocity.Y == 0.0))
       {
         for (int index1 = 0; index1 < 2; ++index1)
         {
-          int index2 = Dust.NewDust(new Vector2((float) this.position.X, (float) (this.position.Y + ((double) this.gravDir == 1.0 ? (double) (this.height - 2) : -4.0))), this.width, 6, 106, 0.0f, 0.0f, 100, (Color) null, 0.1f);
+          int index2 = Dust.NewDust(new Vector2(this.position.X, this.position.Y + ((double) this.gravDir == 1.0 ? (float) (this.height - 2) : -4f)), this.width, 6, 106, 0.0f, 0.0f, 100, new Color(), 0.1f);
           Main.dust[index2].fadeIn = 1f;
           Main.dust[index2].noGravity = true;
-          Dust dust = Main.dust[index2];
-          Vector2 vector2 = Vector2.op_Multiply(dust.velocity, 0.2f);
-          dust.velocity = vector2;
+          Main.dust[index2].velocity *= 0.2f;
           Main.dust[index2].shader = GameShaders.Armor.GetSecondaryShader(this.ArmorSetDye(), this);
         }
       }
       if (this.body == 27 && this.head == 46 && this.legs == 26)
       {
         this.frostArmor = true;
-        if (this.velocity.X != 0.0 && this.velocity.Y == 0.0 && this.miscCounter % 2 == 0)
+        if ((double) this.velocity.X != 0.0 && (double) this.velocity.Y == 0.0 && this.miscCounter % 2 == 0)
         {
           for (int index1 = 0; index1 < 2; ++index1)
           {
-            int index2 = index1 != 0 ? Dust.NewDust(new Vector2((float) this.position.X + (float) (this.width / 2), (float) this.position.Y + (float) this.height + this.gfxOffY), this.width / 2, 6, 76, 0.0f, 0.0f, 0, (Color) null, 1.35f) : Dust.NewDust(new Vector2((float) this.position.X, (float) this.position.Y + (float) this.height + this.gfxOffY), this.width / 2, 6, 76, 0.0f, 0.0f, 0, (Color) null, 1.35f);
+            int index2 = index1 != 0 ? Dust.NewDust(new Vector2(this.position.X + (float) (this.width / 2), this.position.Y + (float) this.height + this.gfxOffY), this.width / 2, 6, 76, 0.0f, 0.0f, 0, new Color(), 1.35f) : Dust.NewDust(new Vector2(this.position.X, this.position.Y + (float) this.height + this.gfxOffY), this.width / 2, 6, 76, 0.0f, 0.0f, 0, new Color(), 1.35f);
             Main.dust[index2].scale *= (float) (1.0 + (double) Main.rand.Next(20, 40) * 0.00999999977648258);
             Main.dust[index2].noGravity = true;
             Main.dust[index2].noLight = true;
-            Dust dust = Main.dust[index2];
-            Vector2 vector2 = Vector2.op_Multiply(dust.velocity, 1f / 1000f);
-            dust.velocity = vector2;
-            // ISSUE: explicit reference operation
-            // ISSUE: variable of a reference type
-            Vector2& local = @Main.dust[index2].velocity;
-            // ISSUE: explicit reference operation
-            double num4 = (^local).Y - 3.0 / 1000.0;
-            // ISSUE: explicit reference operation
-            (^local).Y = (__Null) num4;
+            Main.dust[index2].velocity *= 1f / 1000f;
+            Main.dust[index2].velocity.Y -= 3f / 1000f;
             Main.dust[index2].shader = GameShaders.Armor.GetSecondaryShader(this.ArmorSetDye(), this);
           }
         }
@@ -18976,8 +17881,8 @@ label_13:
       if (this.mount.Active)
       {
         this.legFrameCounter = 0.0;
-        this.legFrame.Y = (__Null) (this.legFrame.Height * 6);
-        if (this.velocity.Y != 0.0)
+        this.legFrame.Y = this.legFrame.Height * 6;
+        if ((double) this.velocity.Y != 0.0)
         {
           if (this.mount.FlyTime > 0 && this.jump == 0 && (this.controlJump && !this.mount.CanHover))
           {
@@ -18987,18 +17892,14 @@ label_13:
               {
                 if (Main.rand.Next(4) == 0)
                 {
-                  int index = Dust.NewDust(new Vector2((float) (this.Center.X - 22.0), (float) (this.position.Y + (double) this.height - 6.0)), 20, 10, 64, (float) (this.velocity.X * 0.25), (float) (this.velocity.Y * 0.25), (int) byte.MaxValue, (Color) null, 1f);
-                  Dust dust = Main.dust[index];
-                  Vector2 vector2 = Vector2.op_Multiply(dust.velocity, 0.1f);
-                  dust.velocity = vector2;
+                  int index = Dust.NewDust(new Vector2(this.Center.X - 22f, (float) ((double) this.position.Y + (double) this.height - 6.0)), 20, 10, 64, this.velocity.X * 0.25f, this.velocity.Y * 0.25f, (int) byte.MaxValue, new Color(), 1f);
+                  Main.dust[index].velocity *= 0.1f;
                   Main.dust[index].noLight = true;
                 }
                 if (Main.rand.Next(4) == 0)
                 {
-                  int index = Dust.NewDust(new Vector2((float) (this.Center.X + 12.0), (float) (this.position.Y + (double) this.height - 6.0)), 20, 10, 64, (float) (this.velocity.X * 0.25), (float) (this.velocity.Y * 0.25), (int) byte.MaxValue, (Color) null, 1f);
-                  Dust dust = Main.dust[index];
-                  Vector2 vector2 = Vector2.op_Multiply(dust.velocity, 0.1f);
-                  dust.velocity = vector2;
+                  int index = Dust.NewDust(new Vector2(this.Center.X + 12f, (float) ((double) this.position.Y + (double) this.height - 6.0)), 20, 10, 64, this.velocity.X * 0.25f, this.velocity.Y * 0.25f, (int) byte.MaxValue, new Color(), 1f);
+                  Main.dust[index].velocity *= 0.1f;
                   Main.dust[index].noLight = true;
                 }
               }
@@ -19006,18 +17907,14 @@ label_13:
               {
                 if (Main.rand.Next(4) == 0)
                 {
-                  int index = Dust.NewDust(new Vector2((float) (this.Center.X - 32.0), (float) (this.position.Y + (double) this.height - 6.0)), 20, 10, 64, (float) (this.velocity.X * 0.25), (float) (this.velocity.Y * 0.25), (int) byte.MaxValue, (Color) null, 1f);
-                  Dust dust = Main.dust[index];
-                  Vector2 vector2 = Vector2.op_Multiply(dust.velocity, 0.1f);
-                  dust.velocity = vector2;
+                  int index = Dust.NewDust(new Vector2(this.Center.X - 32f, (float) ((double) this.position.Y + (double) this.height - 6.0)), 20, 10, 64, this.velocity.X * 0.25f, this.velocity.Y * 0.25f, (int) byte.MaxValue, new Color(), 1f);
+                  Main.dust[index].velocity *= 0.1f;
                   Main.dust[index].noLight = true;
                 }
                 if (Main.rand.Next(4) == 0)
                 {
-                  int index = Dust.NewDust(new Vector2((float) (this.Center.X + 2.0), (float) (this.position.Y + (double) this.height - 6.0)), 20, 10, 64, (float) (this.velocity.X * 0.25), (float) (this.velocity.Y * 0.25), (int) byte.MaxValue, (Color) null, 1f);
-                  Dust dust = Main.dust[index];
-                  Vector2 vector2 = Vector2.op_Multiply(dust.velocity, 0.1f);
-                  dust.velocity = vector2;
+                  int index = Dust.NewDust(new Vector2(this.Center.X + 2f, (float) ((double) this.position.Y + (double) this.height - 6.0)), 20, 10, 64, this.velocity.X * 0.25f, this.velocity.Y * 0.25f, (int) byte.MaxValue, new Color(), 1f);
+                  Main.dust[index].velocity *= 0.1f;
                   Main.dust[index].noLight = true;
                 }
               }
@@ -19029,7 +17926,7 @@ label_13:
           else
             this.mount.UpdateFrame(this, 2, this.velocity);
         }
-        else if (this.velocity.X == 0.0 || (this.slippy || this.slippy2 || this.windPushed) && (!this.controlLeft && !this.controlRight))
+        else if ((double) this.velocity.X == 0.0 || (this.slippy || this.slippy2 || this.windPushed) && (!this.controlLeft && !this.controlRight))
           this.mount.UpdateFrame(this, 0, this.velocity);
         else
           this.mount.UpdateFrame(this, 1, this.velocity);
@@ -19037,9 +17934,9 @@ label_13:
       else if (this.legs == 140)
       {
         this.legFrameCounter = 0.0;
-        this.legFrame.Y = (__Null) (this.legFrame.Height * (this.velocity.Y != 0.0).ToInt());
+        this.legFrame.Y = this.legFrame.Height * ((double) this.velocity.Y != 0.0).ToInt();
         if (this.wings == 22 || this.wings == 28)
-          this.legFrame.Y = (__Null) 0;
+          this.legFrame.Y = 0;
       }
       else if (this.swimTime > 0)
       {
@@ -19047,64 +17944,50 @@ label_13:
         while (this.legFrameCounter > 8.0)
         {
           this.legFrameCounter -= 8.0;
-          // ISSUE: explicit reference operation
-          // ISSUE: variable of a reference type
-          Rectangle& local1 = @this.legFrame;
-          // ISSUE: explicit reference operation
-          // ISSUE: variable of the null type
-          __Null local2 = (^local1).Y + this.legFrame.Height;
-          // ISSUE: explicit reference operation
-          (^local1).Y = local2;
+          this.legFrame.Y += this.legFrame.Height;
         }
         if (this.legFrame.Y < this.legFrame.Height * 7)
-          this.legFrame.Y = (__Null) (this.legFrame.Height * 19);
+          this.legFrame.Y = this.legFrame.Height * 19;
         else if (this.legFrame.Y > this.legFrame.Height * 19)
-          this.legFrame.Y = (__Null) (this.legFrame.Height * 7);
+          this.legFrame.Y = this.legFrame.Height * 7;
       }
-      else if (this.velocity.Y != 0.0 || this.grappling[0] > -1)
+      else if ((double) this.velocity.Y != 0.0 || this.grappling[0] > -1)
       {
         this.legFrameCounter = 0.0;
-        this.legFrame.Y = (__Null) (this.legFrame.Height * 5);
+        this.legFrame.Y = this.legFrame.Height * 5;
         if (this.wings == 22 || this.wings == 28)
-          this.legFrame.Y = (__Null) 0;
+          this.legFrame.Y = 0;
       }
-      else if (this.velocity.X != 0.0)
+      else if ((double) this.velocity.X != 0.0)
       {
         if ((this.slippy || this.slippy2 || this.windPushed) && (!this.controlLeft && !this.controlRight))
         {
           this.legFrameCounter = 0.0;
-          this.legFrame.Y = (__Null) 0;
+          this.legFrame.Y = 0;
         }
         else
         {
-          this.legFrameCounter += (double) Math.Abs((float) this.velocity.X) * 1.3;
+          this.legFrameCounter += (double) Math.Abs(this.velocity.X) * 1.3;
           while (this.legFrameCounter > 8.0)
           {
             this.legFrameCounter -= 8.0;
-            // ISSUE: explicit reference operation
-            // ISSUE: variable of a reference type
-            Rectangle& local1 = @this.legFrame;
-            // ISSUE: explicit reference operation
-            // ISSUE: variable of the null type
-            __Null local2 = (^local1).Y + this.legFrame.Height;
-            // ISSUE: explicit reference operation
-            (^local1).Y = local2;
+            this.legFrame.Y += this.legFrame.Height;
           }
           if (this.legFrame.Y < this.legFrame.Height * 7)
-            this.legFrame.Y = (__Null) (this.legFrame.Height * 19);
+            this.legFrame.Y = this.legFrame.Height * 19;
           else if (this.legFrame.Y > this.legFrame.Height * 19)
-            this.legFrame.Y = (__Null) (this.legFrame.Height * 7);
+            this.legFrame.Y = this.legFrame.Height * 7;
         }
       }
       else
       {
         this.legFrameCounter = 0.0;
-        this.legFrame.Y = (__Null) 0;
+        this.legFrame.Y = 0;
       }
       if (this.carpetFrame >= 0)
       {
         this.legFrameCounter = 0.0;
-        this.legFrame.Y = (__Null) 0;
+        this.legFrame.Y = 0;
       }
       if (this.sandStorm)
       {
@@ -19114,45 +17997,45 @@ label_13:
           if (this.inventory[this.selectedItem].holdStyle == 2)
           {
             if (this.inventory[this.selectedItem].type == 946)
-              this.itemLocation.X = (__Null) (this.position.X + (double) this.width * 0.5 - (double) (16 * this.direction));
+              this.itemLocation.X = this.position.X + (float) this.width * 0.5f - (float) (16 * this.direction);
             if (this.inventory[this.selectedItem].type == 186)
             {
-              this.itemLocation.X = (__Null) (this.position.X + (double) this.width * 0.5 + (double) (6 * this.direction));
+              this.itemLocation.X = this.position.X + (float) this.width * 0.5f + (float) (6 * this.direction);
               this.itemRotation = 0.79f * (float) -this.direction;
             }
           }
         }
         this.legFrameCounter = 0.0;
-        this.legFrame.Y = (__Null) 0;
+        this.legFrame.Y = 0;
       }
       if (this.itemAnimation > 0 && this.inventory[this.selectedItem].useStyle != 10)
       {
         if (this.inventory[this.selectedItem].useStyle == 1 || this.inventory[this.selectedItem].type == 0)
         {
           if ((double) this.itemAnimation < (double) this.itemAnimationMax * 0.333)
-            this.bodyFrame.Y = (__Null) (this.bodyFrame.Height * 3);
+            this.bodyFrame.Y = this.bodyFrame.Height * 3;
           else if ((double) this.itemAnimation < (double) this.itemAnimationMax * 0.666)
-            this.bodyFrame.Y = (__Null) (this.bodyFrame.Height * 2);
+            this.bodyFrame.Y = this.bodyFrame.Height * 2;
           else
             this.bodyFrame.Y = this.bodyFrame.Height;
         }
         else if (this.inventory[this.selectedItem].useStyle == 2)
         {
           if ((double) this.itemAnimation > (double) this.itemAnimationMax * 0.5)
-            this.bodyFrame.Y = (__Null) (this.bodyFrame.Height * 3);
+            this.bodyFrame.Y = this.bodyFrame.Height * 3;
           else
-            this.bodyFrame.Y = (__Null) (this.bodyFrame.Height * 2);
+            this.bodyFrame.Y = this.bodyFrame.Height * 2;
         }
         else if (this.inventory[this.selectedItem].useStyle == 3)
         {
           if ((double) this.itemAnimation > (double) this.itemAnimationMax * 0.666)
-            this.bodyFrame.Y = (__Null) (this.bodyFrame.Height * 3);
+            this.bodyFrame.Y = this.bodyFrame.Height * 3;
           else
-            this.bodyFrame.Y = (__Null) (this.bodyFrame.Height * 3);
+            this.bodyFrame.Y = this.bodyFrame.Height * 3;
         }
         else if (this.inventory[this.selectedItem].useStyle == 4)
         {
-          this.bodyFrame.Y = (__Null) (this.bodyFrame.Height * 2);
+          this.bodyFrame.Y = this.bodyFrame.Height * 2;
         }
         else
         {
@@ -19160,47 +18043,47 @@ label_13:
             return;
           if (this.inventory[this.selectedItem].type == 281 || this.inventory[this.selectedItem].type == 986)
           {
-            this.bodyFrame.Y = (__Null) (this.bodyFrame.Height * 2);
+            this.bodyFrame.Y = this.bodyFrame.Height * 2;
           }
           else
           {
             float num4 = this.itemRotation * (float) this.direction;
-            this.bodyFrame.Y = (__Null) (this.bodyFrame.Height * 3);
+            this.bodyFrame.Y = this.bodyFrame.Height * 3;
             if ((double) num4 < -0.75)
             {
-              this.bodyFrame.Y = (__Null) (this.bodyFrame.Height * 2);
+              this.bodyFrame.Y = this.bodyFrame.Height * 2;
               if ((double) this.gravDir == -1.0)
-                this.bodyFrame.Y = (__Null) (this.bodyFrame.Height * 4);
+                this.bodyFrame.Y = this.bodyFrame.Height * 4;
             }
             if ((double) num4 <= 0.6)
               return;
-            this.bodyFrame.Y = (__Null) (this.bodyFrame.Height * 4);
+            this.bodyFrame.Y = this.bodyFrame.Height * 4;
             if ((double) this.gravDir != -1.0)
               return;
-            this.bodyFrame.Y = (__Null) (this.bodyFrame.Height * 2);
+            this.bodyFrame.Y = this.bodyFrame.Height * 2;
           }
         }
       }
       else if (this.mount.Active)
       {
         this.bodyFrameCounter = 0.0;
-        this.bodyFrame.Y = (__Null) (this.bodyFrame.Height * this.mount.BodyFrame);
+        this.bodyFrame.Y = this.bodyFrame.Height * this.mount.BodyFrame;
       }
       else if (this.pulley)
       {
         if ((int) this.pulleyDir == 2)
           this.bodyFrame.Y = this.bodyFrame.Height;
         else
-          this.bodyFrame.Y = (__Null) (this.bodyFrame.Height * 2);
+          this.bodyFrame.Y = this.bodyFrame.Height * 2;
       }
       else if (this.inventory[this.selectedItem].holdStyle == 1 && (!this.wet || !this.inventory[this.selectedItem].noWet))
-        this.bodyFrame.Y = (__Null) (this.bodyFrame.Height * 3);
+        this.bodyFrame.Y = this.bodyFrame.Height * 3;
       else if (this.inventory[this.selectedItem].holdStyle == 2 && (!this.wet || !this.inventory[this.selectedItem].noWet))
-        this.bodyFrame.Y = (__Null) (this.bodyFrame.Height * 2);
+        this.bodyFrame.Y = this.bodyFrame.Height * 2;
       else if (this.inventory[this.selectedItem].holdStyle == 3)
-        this.bodyFrame.Y = (__Null) (this.bodyFrame.Height * 3);
+        this.bodyFrame.Y = this.bodyFrame.Height * 3;
       else if (this.shieldRaised)
-        this.bodyFrame.Y = (__Null) (this.bodyFrame.Height * 10);
+        this.bodyFrame.Y = this.bodyFrame.Height * 10;
       else if (this.grappling[0] >= 0)
       {
         this.sandStorm = false;
@@ -19210,89 +18093,80 @@ label_13:
         this.dJumpEffectFart = false;
         this.dJumpEffectSail = false;
         this.dJumpEffectUnicorn = false;
-        Vector2 vector2;
-        // ISSUE: explicit reference operation
-        ((Vector2) @vector2).\u002Ector((float) (this.position.X + (double) this.width * 0.5), (float) (this.position.Y + (double) this.height * 0.5));
+        Vector2 vector2 = new Vector2(this.position.X + (float) this.width * 0.5f, this.position.Y + (float) this.height * 0.5f);
         float num4 = 0.0f;
         float num5 = 0.0f;
         for (int index = 0; index < this.grapCount; ++index)
         {
-          num4 += (float) Main.projectile[this.grappling[index]].position.X + (float) (Main.projectile[this.grappling[index]].width / 2);
-          num5 += (float) Main.projectile[this.grappling[index]].position.Y + (float) (Main.projectile[this.grappling[index]].height / 2);
+          num4 += Main.projectile[this.grappling[index]].position.X + (float) (Main.projectile[this.grappling[index]].width / 2);
+          num5 += Main.projectile[this.grappling[index]].position.Y + (float) (Main.projectile[this.grappling[index]].height / 2);
         }
         float num6 = num4 / (float) this.grapCount;
         float num7 = num5 / (float) this.grapCount;
-        float num8 = num6 - (float) vector2.X;
-        float num9 = num7 - (float) vector2.Y;
+        float num8 = num6 - vector2.X;
+        float num9 = num7 - vector2.Y;
         if ((double) num9 < 0.0 && (double) Math.Abs(num9) > (double) Math.Abs(num8))
         {
-          this.bodyFrame.Y = (__Null) (this.bodyFrame.Height * 2);
+          this.bodyFrame.Y = this.bodyFrame.Height * 2;
           if ((double) this.gravDir != -1.0)
             return;
-          this.bodyFrame.Y = (__Null) (this.bodyFrame.Height * 4);
+          this.bodyFrame.Y = this.bodyFrame.Height * 4;
         }
         else if ((double) num9 > 0.0 && (double) Math.Abs(num9) > (double) Math.Abs(num8))
         {
-          this.bodyFrame.Y = (__Null) (this.bodyFrame.Height * 4);
+          this.bodyFrame.Y = this.bodyFrame.Height * 4;
           if ((double) this.gravDir != -1.0)
             return;
-          this.bodyFrame.Y = (__Null) (this.bodyFrame.Height * 2);
+          this.bodyFrame.Y = this.bodyFrame.Height * 2;
         }
         else
-          this.bodyFrame.Y = (__Null) (this.bodyFrame.Height * 3);
+          this.bodyFrame.Y = this.bodyFrame.Height * 3;
       }
       else if (this.swimTime > 0)
       {
         if (this.swimTime > 20)
-          this.bodyFrame.Y = (__Null) 0;
+          this.bodyFrame.Y = 0;
         else if (this.swimTime > 10)
-          this.bodyFrame.Y = (__Null) (this.bodyFrame.Height * 5);
+          this.bodyFrame.Y = this.bodyFrame.Height * 5;
         else
-          this.bodyFrame.Y = (__Null) 0;
+          this.bodyFrame.Y = 0;
       }
-      else if (this.velocity.Y != 0.0)
+      else if ((double) this.velocity.Y != 0.0)
       {
-        this.bodyFrame.Y = !this.sliding ? (this.sandStorm || this.carpetFrame >= 0 ? (__Null) (this.bodyFrame.Height * 6) : (this.eocDash <= 0 ? (this.wings <= 0 ? (__Null) (this.bodyFrame.Height * 5) : (this.wings == 22 || this.wings == 28 ? (__Null) 0 : (this.velocity.Y <= 0.0 ? (__Null) (this.bodyFrame.Height * 6) : (!this.controlJump ? (__Null) (this.bodyFrame.Height * 5) : (__Null) (this.bodyFrame.Height * 6))))) : (__Null) (this.bodyFrame.Height * 6))) : (__Null) (this.bodyFrame.Height * 3);
+        this.bodyFrame.Y = !this.sliding ? (this.sandStorm || this.carpetFrame >= 0 ? this.bodyFrame.Height * 6 : (this.eocDash <= 0 ? (this.wings <= 0 ? this.bodyFrame.Height * 5 : (this.wings == 22 || this.wings == 28 ? 0 : ((double) this.velocity.Y <= 0.0 ? this.bodyFrame.Height * 6 : (!this.controlJump ? this.bodyFrame.Height * 5 : this.bodyFrame.Height * 6)))) : this.bodyFrame.Height * 6)) : this.bodyFrame.Height * 3;
         this.bodyFrameCounter = 0.0;
       }
-      else if (this.velocity.X != 0.0)
+      else if ((double) this.velocity.X != 0.0)
       {
         if (this.legs == 140)
         {
-          this.bodyFrameCounter += (double) Math.Abs((float) this.velocity.X) * 0.5;
+          this.bodyFrameCounter += (double) Math.Abs(this.velocity.X) * 0.5;
           while (this.bodyFrameCounter > 8.0)
           {
             this.bodyFrameCounter -= 8.0;
-            // ISSUE: explicit reference operation
-            // ISSUE: variable of a reference type
-            Rectangle& local1 = @this.bodyFrame;
-            // ISSUE: explicit reference operation
-            // ISSUE: variable of the null type
-            __Null local2 = (^local1).Y + this.bodyFrame.Height;
-            // ISSUE: explicit reference operation
-            (^local1).Y = local2;
+            this.bodyFrame.Y += this.bodyFrame.Height;
           }
           if (this.bodyFrame.Y < this.bodyFrame.Height * 7)
           {
-            this.bodyFrame.Y = (__Null) (this.bodyFrame.Height * 19);
+            this.bodyFrame.Y = this.bodyFrame.Height * 19;
           }
           else
           {
             if (this.bodyFrame.Y <= this.bodyFrame.Height * 19)
               return;
-            this.bodyFrame.Y = (__Null) (this.bodyFrame.Height * 7);
+            this.bodyFrame.Y = this.bodyFrame.Height * 7;
           }
         }
         else
         {
-          this.bodyFrameCounter += (double) Math.Abs((float) this.velocity.X) * 1.5;
+          this.bodyFrameCounter += (double) Math.Abs(this.velocity.X) * 1.5;
           this.bodyFrame.Y = this.legFrame.Y;
         }
       }
       else
       {
         this.bodyFrameCounter = 0.0;
-        this.bodyFrame.Y = (__Null) 0;
+        this.bodyFrame.Y = 0;
       }
     }
 
@@ -19334,11 +18208,11 @@ label_13:
         this.armorEffectDrawShadowLokis = true;
         this.armorEffectDrawOutlines = true;
       }
-      if (drawPlayer.mount.Active && drawPlayer.mount.Type == 3 && (drawPlayer.velocity.Y != 0.0 && !drawPlayer.SlimeDontHyperJump))
+      if (drawPlayer.mount.Active && drawPlayer.mount.Type == 3 && ((double) drawPlayer.velocity.Y != 0.0 && !drawPlayer.SlimeDontHyperJump))
         this.armorEffectDrawShadow = true;
-      if (drawPlayer.mount.Active && drawPlayer.mount.Type == 10 && (double) Math.Abs((float) drawPlayer.velocity.X) > (double) drawPlayer.mount.DashSpeed - (double) drawPlayer.mount.RunSpeed / 2.0)
+      if (drawPlayer.mount.Active && drawPlayer.mount.Type == 10 && (double) Math.Abs(drawPlayer.velocity.X) > (double) drawPlayer.mount.DashSpeed - (double) drawPlayer.mount.RunSpeed / 2.0)
         this.armorEffectDrawShadow = true;
-      if (drawPlayer.mount.Active && drawPlayer.mount.Type == 14 && (double) Math.Abs((float) drawPlayer.velocity.X) > (double) drawPlayer.mount.RunSpeed / 2.0)
+      if (drawPlayer.mount.Active && drawPlayer.mount.Type == 14 && (double) Math.Abs(drawPlayer.velocity.X) > (double) drawPlayer.mount.RunSpeed / 2.0)
         this.armorEffectDrawShadowBasilisk = true;
       if (drawPlayer.body == 67 && drawPlayer.legs == 56 && (drawPlayer.head >= 103 && drawPlayer.head <= 105))
         this.armorEffectDrawShadow = true;
@@ -19539,18 +18413,14 @@ label_13:
           extraInfo1 = this.lastPortalColorIndex;
         float dustCountMult = MathHelper.Clamp((float) (1.0 - (double) this.teleportTime * 0.990000009536743), 0.01f, 1f);
         Main.TeleportEffect(this.getRect(), Style, extraInfo1, dustCountMult);
-        float num1 = Vector2.Distance(this.position, newPos);
+        float num = Vector2.Distance(this.position, newPos);
         PressurePlateHelper.UpdatePlayerPosition(this);
         this.position = newPos;
-        this.fallStart = (int) (this.position.Y / 16.0);
+        this.fallStart = (int) ((double) this.position.Y / 16.0);
         if (this.whoAmI == Main.myPlayer)
         {
           bool flag = false;
-          double num2 = (double) num1;
-          Vector2 vector2 = new Vector2((float) Main.screenWidth, (float) Main.screenHeight);
-          // ISSUE: explicit reference operation
-          double num3 = (double) ((Vector2) @vector2).Length() / 2.0 + 100.0;
-          if (num2 < num3)
+          if ((double) num < (double) new Vector2((float) Main.screenWidth, (float) Main.screenHeight).Length() / 2.0 + 100.0)
           {
             int time = 0;
             if (Style == 1)
@@ -19563,8 +18433,8 @@ label_13:
             Main.BlackFadeIn = (int) byte.MaxValue;
             Lighting.BlackOut();
             Main.screenLastPosition = Main.screenPosition;
-            Main.screenPosition.X = (__Null) (this.position.X + (double) (this.width / 2) - (double) (Main.screenWidth / 2));
-            Main.screenPosition.Y = (__Null) (this.position.Y + (double) (this.height / 2) - (double) (Main.screenHeight / 2));
+            Main.screenPosition.X = this.position.X + (float) (this.width / 2) - (float) (Main.screenWidth / 2);
+            Main.screenPosition.Y = this.position.Y + (float) (this.height / 2) - (float) (Main.screenHeight / 2);
             Main.quickBG = 10;
           }
           if ((double) dustCountMult > 0.100000001490116 || !flag || Style != 0)
@@ -19585,7 +18455,7 @@ label_13:
         PressurePlateHelper.UpdatePlayerPosition(this);
         for (int index = 0; index < 3; ++index)
           this.UpdateSocialShadow();
-        this.oldPosition = Vector2.op_Addition(this.position, this.BlehOldPositionFixer);
+        this.oldPosition = this.position + this.BlehOldPositionFixer;
         Main.TeleportEffect(this.getRect(), Style, extraInfo1, dustCountMult);
         this.teleportTime = 1f;
         this.teleportStyle = Style;
@@ -19616,9 +18486,9 @@ label_13:
         NetMessage.SendData(12, -1, -1, (NetworkText) null, Main.myPlayer, 0.0f, 0.0f, 0.0f, 0, 0, 0);
         Main.gameMenu = false;
       }
-      this.headPosition = Vector2.get_Zero();
-      this.bodyPosition = Vector2.get_Zero();
-      this.legPosition = Vector2.get_Zero();
+      this.headPosition = Vector2.Zero;
+      this.bodyPosition = Vector2.Zero;
+      this.legPosition = Vector2.Zero;
       this.headRotation = 0.0f;
       this.bodyRotation = 0.0f;
       this.legRotation = 0.0f;
@@ -19642,13 +18512,13 @@ label_13:
       this.active = true;
       if (this.SpawnX >= 0 && this.SpawnY >= 0)
       {
-        this.position.X = (__Null) (double) (this.SpawnX * 16 + 8 - this.width / 2);
-        this.position.Y = (__Null) (double) (this.SpawnY * 16 - this.height);
+        this.position.X = (float) (this.SpawnX * 16 + 8 - this.width / 2);
+        this.position.Y = (float) (this.SpawnY * 16 - this.height);
       }
       else
       {
-        this.position.X = (__Null) (double) (Main.spawnTileX * 16 + 8 - this.width / 2);
-        this.position.Y = (__Null) (double) (Main.spawnTileY * 16 - this.height);
+        this.position.X = (float) (Main.spawnTileX * 16 + 8 - this.width / 2);
+        this.position.Y = (float) (Main.spawnTileY * 16 - this.height);
         for (int i = Main.spawnTileX - 1; i < Main.spawnTileX + 2; ++i)
         {
           for (int j = Main.spawnTileY - 3; j < Main.spawnTileY; ++j)
@@ -19670,13 +18540,13 @@ label_13:
       this.wet = false;
       this.wetCount = (byte) 0;
       this.lavaWet = false;
-      this.fallStart = (int) (this.position.Y / 16.0);
+      this.fallStart = (int) ((double) this.position.Y / 16.0);
       this.fallStart2 = this.fallStart;
-      this.velocity.X = (__Null) 0.0;
-      this.velocity.Y = (__Null) 0.0;
+      this.velocity.X = 0.0f;
+      this.velocity.Y = 0.0f;
       for (int index = 0; index < 3; ++index)
         this.UpdateSocialShadow();
-      this.oldPosition = Vector2.op_Addition(this.position, this.BlehOldPositionFixer);
+      this.oldPosition = this.position + this.BlehOldPositionFixer;
       this.talkNPC = -1;
       if (this.whoAmI == Main.myPlayer)
         Main.npcChatCornerItem = 0;
@@ -19694,8 +18564,8 @@ label_13:
       Main.renderNow = true;
       if (Main.netMode == 1)
         Netplay.newRecent();
-      Main.screenPosition.X = (__Null) (this.position.X + (double) (this.width / 2) - (double) (Main.screenWidth / 2));
-      Main.screenPosition.Y = (__Null) (this.position.Y + (double) (this.height / 2) - (double) (Main.screenHeight / 2));
+      Main.screenPosition.X = this.position.X + (float) (this.width / 2) - (float) (Main.screenWidth / 2);
+      Main.screenPosition.Y = this.position.Y + (float) (this.height / 2) - (float) (Main.screenHeight / 2);
     }
 
     public void ShadowDodge()
@@ -19726,24 +18596,10 @@ label_13:
         this.hurtCooldowns[index] = this.immuneTime;
       for (int index1 = 0; index1 < 100; ++index1)
       {
-        int index2 = Dust.NewDust(new Vector2((float) this.position.X, (float) this.position.Y), this.width, this.height, 31, 0.0f, 0.0f, 100, (Color) null, 2f);
-        // ISSUE: explicit reference operation
-        // ISSUE: variable of a reference type
-        Vector2& local1 = @Main.dust[index2].position;
-        // ISSUE: explicit reference operation
-        double num1 = (^local1).X + (double) Main.rand.Next(-20, 21);
-        // ISSUE: explicit reference operation
-        (^local1).X = (__Null) num1;
-        // ISSUE: explicit reference operation
-        // ISSUE: variable of a reference type
-        Vector2& local2 = @Main.dust[index2].position;
-        // ISSUE: explicit reference operation
-        double num2 = (^local2).Y + (double) Main.rand.Next(-20, 21);
-        // ISSUE: explicit reference operation
-        (^local2).Y = (__Null) num2;
-        Dust dust = Main.dust[index2];
-        Vector2 vector2 = Vector2.op_Multiply(dust.velocity, 0.4f);
-        dust.velocity = vector2;
+        int index2 = Dust.NewDust(new Vector2(this.position.X, this.position.Y), this.width, this.height, 31, 0.0f, 0.0f, 100, new Color(), 2f);
+        Main.dust[index2].position.X += (float) Main.rand.Next(-20, 21);
+        Main.dust[index2].position.Y += (float) Main.rand.Next(-20, 21);
+        Main.dust[index2].velocity *= 0.4f;
         Main.dust[index2].scale *= (float) (1.0 + (double) Main.rand.Next(40) * 0.00999999977648258);
         Main.dust[index2].shader = GameShaders.Armor.GetSecondaryShader(this.cWaist, this);
         if (Main.rand.Next(2) == 0)
@@ -19752,41 +18608,31 @@ label_13:
           Main.dust[index2].noGravity = true;
         }
       }
-      int index3 = Gore.NewGore(new Vector2((float) (this.position.X + (double) (this.width / 2) - 24.0), (float) (this.position.Y + (double) (this.height / 2) - 24.0)), (Vector2) null, Main.rand.Next(61, 64), 1f);
+      int index3 = Gore.NewGore(new Vector2((float) ((double) this.position.X + (double) (this.width / 2) - 24.0), (float) ((double) this.position.Y + (double) (this.height / 2) - 24.0)), new Vector2(), Main.rand.Next(61, 64), 1f);
       Main.gore[index3].scale = 1.5f;
-      Main.gore[index3].velocity.X = (__Null) ((double) Main.rand.Next(-50, 51) * 0.00999999977648258);
-      Main.gore[index3].velocity.Y = (__Null) ((double) Main.rand.Next(-50, 51) * 0.00999999977648258);
-      Gore gore1 = Main.gore[index3];
-      Vector2 vector2_1 = Vector2.op_Multiply(gore1.velocity, 0.4f);
-      gore1.velocity = vector2_1;
-      int index4 = Gore.NewGore(new Vector2((float) (this.position.X + (double) (this.width / 2) - 24.0), (float) (this.position.Y + (double) (this.height / 2) - 24.0)), (Vector2) null, Main.rand.Next(61, 64), 1f);
+      Main.gore[index3].velocity.X = (float) Main.rand.Next(-50, 51) * 0.01f;
+      Main.gore[index3].velocity.Y = (float) Main.rand.Next(-50, 51) * 0.01f;
+      Main.gore[index3].velocity *= 0.4f;
+      int index4 = Gore.NewGore(new Vector2((float) ((double) this.position.X + (double) (this.width / 2) - 24.0), (float) ((double) this.position.Y + (double) (this.height / 2) - 24.0)), new Vector2(), Main.rand.Next(61, 64), 1f);
       Main.gore[index4].scale = 1.5f;
-      Main.gore[index4].velocity.X = (__Null) (1.5 + (double) Main.rand.Next(-50, 51) * 0.00999999977648258);
-      Main.gore[index4].velocity.Y = (__Null) (1.5 + (double) Main.rand.Next(-50, 51) * 0.00999999977648258);
-      Gore gore2 = Main.gore[index4];
-      Vector2 vector2_2 = Vector2.op_Multiply(gore2.velocity, 0.4f);
-      gore2.velocity = vector2_2;
-      int index5 = Gore.NewGore(new Vector2((float) (this.position.X + (double) (this.width / 2) - 24.0), (float) (this.position.Y + (double) (this.height / 2) - 24.0)), (Vector2) null, Main.rand.Next(61, 64), 1f);
+      Main.gore[index4].velocity.X = (float) (1.5 + (double) Main.rand.Next(-50, 51) * 0.00999999977648258);
+      Main.gore[index4].velocity.Y = (float) (1.5 + (double) Main.rand.Next(-50, 51) * 0.00999999977648258);
+      Main.gore[index4].velocity *= 0.4f;
+      int index5 = Gore.NewGore(new Vector2((float) ((double) this.position.X + (double) (this.width / 2) - 24.0), (float) ((double) this.position.Y + (double) (this.height / 2) - 24.0)), new Vector2(), Main.rand.Next(61, 64), 1f);
       Main.gore[index5].scale = 1.5f;
-      Main.gore[index5].velocity.X = (__Null) (-1.5 - (double) Main.rand.Next(-50, 51) * 0.00999999977648258);
-      Main.gore[index5].velocity.Y = (__Null) (1.5 + (double) Main.rand.Next(-50, 51) * 0.00999999977648258);
-      Gore gore3 = Main.gore[index5];
-      Vector2 vector2_3 = Vector2.op_Multiply(gore3.velocity, 0.4f);
-      gore3.velocity = vector2_3;
-      int index6 = Gore.NewGore(new Vector2((float) (this.position.X + (double) (this.width / 2) - 24.0), (float) (this.position.Y + (double) (this.height / 2) - 24.0)), (Vector2) null, Main.rand.Next(61, 64), 1f);
+      Main.gore[index5].velocity.X = (float) (-1.5 - (double) Main.rand.Next(-50, 51) * 0.00999999977648258);
+      Main.gore[index5].velocity.Y = (float) (1.5 + (double) Main.rand.Next(-50, 51) * 0.00999999977648258);
+      Main.gore[index5].velocity *= 0.4f;
+      int index6 = Gore.NewGore(new Vector2((float) ((double) this.position.X + (double) (this.width / 2) - 24.0), (float) ((double) this.position.Y + (double) (this.height / 2) - 24.0)), new Vector2(), Main.rand.Next(61, 64), 1f);
       Main.gore[index6].scale = 1.5f;
-      Main.gore[index6].velocity.X = (__Null) (1.5 + (double) Main.rand.Next(-50, 51) * 0.00999999977648258);
-      Main.gore[index6].velocity.Y = (__Null) (-1.5 - (double) Main.rand.Next(-50, 51) * 0.00999999977648258);
-      Gore gore4 = Main.gore[index6];
-      Vector2 vector2_4 = Vector2.op_Multiply(gore4.velocity, 0.4f);
-      gore4.velocity = vector2_4;
-      int index7 = Gore.NewGore(new Vector2((float) (this.position.X + (double) (this.width / 2) - 24.0), (float) (this.position.Y + (double) (this.height / 2) - 24.0)), (Vector2) null, Main.rand.Next(61, 64), 1f);
+      Main.gore[index6].velocity.X = (float) (1.5 + (double) Main.rand.Next(-50, 51) * 0.00999999977648258);
+      Main.gore[index6].velocity.Y = (float) (-1.5 - (double) Main.rand.Next(-50, 51) * 0.00999999977648258);
+      Main.gore[index6].velocity *= 0.4f;
+      int index7 = Gore.NewGore(new Vector2((float) ((double) this.position.X + (double) (this.width / 2) - 24.0), (float) ((double) this.position.Y + (double) (this.height / 2) - 24.0)), new Vector2(), Main.rand.Next(61, 64), 1f);
       Main.gore[index7].scale = 1.5f;
-      Main.gore[index7].velocity.X = (__Null) (-1.5 - (double) Main.rand.Next(-50, 51) * 0.00999999977648258);
-      Main.gore[index7].velocity.Y = (__Null) (-1.5 - (double) Main.rand.Next(-50, 51) * 0.00999999977648258);
-      Gore gore5 = Main.gore[index7];
-      Vector2 vector2_5 = Vector2.op_Multiply(gore5.velocity, 0.4f);
-      gore5.velocity = vector2_5;
+      Main.gore[index7].velocity.X = (float) (-1.5 - (double) Main.rand.Next(-50, 51) * 0.00999999977648258);
+      Main.gore[index7].velocity.Y = (float) (-1.5 - (double) Main.rand.Next(-50, 51) * 0.00999999977648258);
+      Main.gore[index7].velocity *= 0.4f;
       if (this.whoAmI != Main.myPlayer)
         return;
       NetMessage.SendData(62, -1, -1, (NetworkText) null, this.whoAmI, 1f, 0.0f, 0.0f, 0, 0, 0);
@@ -19854,7 +18700,7 @@ label_13:
             dmg = 1.0;
           if (this.whoAmI == Main.myPlayer)
           {
-            int index = Projectile.NewProjectile((float) this.Center.X, (float) this.Center.Y, 0.0f, 0.0f, 608, 150, 15f, Main.myPlayer, 0.0f, 0.0f);
+            int index = Projectile.NewProjectile(this.Center.X, this.Center.Y, 0.0f, 0.0f, 608, 150, 15f, Main.myPlayer, 0.0f, 0.0f);
             Main.projectile[index].Kill();
           }
         }
@@ -19940,9 +18786,7 @@ label_13:
               int num1 = 300 + (int) dmg * 2;
               if (Main.rand.Next(500) < num1)
               {
-                Vector2 vector2 = Vector2.op_Subtraction(Main.npc[index].Center, this.Center);
-                // ISSUE: explicit reference operation
-                float num2 = ((Vector2) @vector2).Length();
+                float num2 = (Main.npc[index].Center - this.Center).Length();
                 float num3 = (float) Main.rand.Next(200 + (int) dmg / 2, 301 + (int) dmg * 2);
                 if ((double) num3 > 500.0)
                   num3 = (float) (500.0 + ((double) num3 - 500.0) * 0.75);
@@ -19958,7 +18802,7 @@ label_13:
               }
             }
           }
-          Projectile.NewProjectile((float) this.Center.X + (float) Main.rand.Next(-40, 40), (float) this.Center.Y - (float) Main.rand.Next(20, 60), (float) (this.velocity.X * 0.300000011920929), (float) (this.velocity.Y * 0.300000011920929), 565, 0, 0.0f, this.whoAmI, 0.0f, 0.0f);
+          Projectile.NewProjectile(this.Center.X + (float) Main.rand.Next(-40, 40), this.Center.Y - (float) Main.rand.Next(20, 60), this.velocity.X * 0.3f, this.velocity.Y * 0.3f, 565, 0, 0.0f, this.whoAmI, 0.0f, 0.0f);
         }
         if (Main.netMode == 1 && this.whoAmI == Main.myPlayer && !quiet)
         {
@@ -19966,7 +18810,7 @@ label_13:
           NetMessage.SendData(16, -1, -1, (NetworkText) null, this.whoAmI, 0.0f, 0.0f, 0.0f, 0, 0, 0);
           NetMessage.SendPlayerHurt(this.whoAmI, damageSource, Damage, hitDirection, Crit, pvp, hitContext, -1, -1);
         }
-        CombatText.NewText(new Rectangle((int) this.position.X, (int) this.position.Y, this.width, this.height), Crit ? CombatText.DamagedFriendlyCrit : CombatText.DamagedFriendly, (int) dmg, Crit, false);
+        CombatText.NewText(new Microsoft.Xna.Framework.Rectangle((int) this.position.X, (int) this.position.Y, this.width, this.height), Crit ? CombatText.DamagedFriendlyCrit : CombatText.DamagedFriendly, (int) dmg, Crit, false);
         this.statLife -= (int) dmg;
         if (cooldownCounter == -1)
         {
@@ -19997,19 +18841,17 @@ label_13:
           {
             for (int index1 = 0; index1 < 3; ++index1)
             {
-              float X = (float) this.position.X + (float) Main.rand.Next(-400, 400);
-              float Y = (float) this.position.Y - (float) Main.rand.Next(500, 800);
-              Vector2 vector2;
-              // ISSUE: explicit reference operation
-              ((Vector2) @vector2).\u002Ector(X, Y);
-              float num1 = (float) (this.position.X + (double) (this.width / 2) - vector2.X);
-              float num2 = (float) (this.position.Y + (double) (this.height / 2) - vector2.Y);
-              float num3 = num1 + (float) Main.rand.Next(-100, 101);
-              float num4 = 23f / (float) Math.Sqrt((double) num3 * (double) num3 + (double) num2 * (double) num2);
-              float SpeedX = num3 * num4;
-              float SpeedY = num2 * num4;
-              int index2 = Projectile.NewProjectile(X, Y, SpeedX, SpeedY, 92, 30, 5f, this.whoAmI, 0.0f, 0.0f);
-              Main.projectile[index2].ai[1] = (float) this.position.Y;
+              float num1 = this.position.X + (float) Main.rand.Next(-400, 400);
+              float num2 = this.position.Y - (float) Main.rand.Next(500, 800);
+              Vector2 vector2 = new Vector2(num1, num2);
+              float num3 = this.position.X + (float) (this.width / 2) - vector2.X;
+              float num4 = this.position.Y + (float) (this.height / 2) - vector2.Y;
+              float num5 = num3 + (float) Main.rand.Next(-100, 101);
+              float num6 = 23f / (float) Math.Sqrt((double) num5 * (double) num5 + (double) num4 * (double) num4);
+              float SpeedX = num5 * num6;
+              float SpeedY = num4 * num6;
+              int index2 = Projectile.NewProjectile(num1, num2, SpeedX, SpeedY, 92, 30, 5f, this.whoAmI, 0.0f, 0.0f);
+              Main.projectile[index2].ai[1] = this.position.Y;
             }
           }
           if (this.bee)
@@ -20022,7 +18864,7 @@ label_13:
             if (this.strongBees && Main.rand.Next(3) == 0)
               ++num;
             for (int index = 0; index < num; ++index)
-              Projectile.NewProjectile((float) this.position.X, (float) this.position.Y, (float) Main.rand.Next(-35, 36) * 0.02f, (float) Main.rand.Next(-35, 36) * 0.02f, this.beeType(), this.beeDamage(7), this.beeKB(0.0f), Main.myPlayer, 0.0f, 0.0f);
+              Projectile.NewProjectile(this.position.X, this.position.Y, (float) Main.rand.Next(-35, 36) * 0.02f, (float) Main.rand.Next(-35, 36) * 0.02f, this.beeType(), this.beeDamage(7), this.beeKB(0.0f), Main.myPlayer, 0.0f, 0.0f);
           }
         }
         if (flag2 && hitDirection != 0)
@@ -20036,14 +18878,14 @@ label_13:
               num1 = 2.5f;
               num2 = -1.5f;
             }
-            this.velocity.X = (__Null) ((double) num1 * (double) hitDirection);
-            this.velocity.Y = (__Null) (double) num2;
+            this.velocity.X = num1 * (float) hitDirection;
+            this.velocity.Y = num2;
           }
         }
         else if (!this.noKnockback && hitDirection != 0 && (!this.mount.Active || !this.mount.Cart))
         {
-          this.velocity.X = (__Null) (4.5 * (double) hitDirection);
-          this.velocity.Y = (__Null) -3.5;
+          this.velocity.X = 4.5f * (float) hitDirection;
+          this.velocity.Y = -3.5f;
         }
         if (this.stoned)
           Main.PlaySound(0, (int) this.position.X, (int) this.position.Y, 1, 1f, 0.0f);
@@ -20070,19 +18912,19 @@ label_13:
           for (int index1 = 0; (double) index1 < num1; ++index1)
           {
             if (this.stoned)
-              Dust.NewDust(this.position, this.width, this.height, 1, num2 + (float) hitDirection * num3 * Main.rand.NextFloat(), -2f, 0, (Color) null, 1f);
+              Dust.NewDust(this.position, this.width, this.height, 1, num2 + (float) hitDirection * num3 * Main.rand.NextFloat(), -2f, 0, new Color(), 1f);
             else if (this.frostArmor)
             {
-              int index2 = Dust.NewDust(this.position, this.width, this.height, 135, num2 + (float) hitDirection * num3 * Main.rand.NextFloat(), -2f, 0, (Color) null, 1f);
+              int index2 = Dust.NewDust(this.position, this.width, this.height, 135, num2 + (float) hitDirection * num3 * Main.rand.NextFloat(), -2f, 0, new Color(), 1f);
               Main.dust[index2].shader = GameShaders.Armor.GetSecondaryShader(this.ArmorSetDye(), this);
             }
             else if (this.boneArmor)
             {
-              int index2 = Dust.NewDust(this.position, this.width, this.height, 26, num2 + (float) hitDirection * num3 * Main.rand.NextFloat(), -2f, 0, (Color) null, 1f);
+              int index2 = Dust.NewDust(this.position, this.width, this.height, 26, num2 + (float) hitDirection * num3 * Main.rand.NextFloat(), -2f, 0, new Color(), 1f);
               Main.dust[index2].shader = GameShaders.Armor.GetSecondaryShader(this.ArmorSetDye(), this);
             }
             else
-              Dust.NewDust(this.position, this.width, this.height, 5, num2 + (float) hitDirection * num3 * Main.rand.NextFloat(), -2f, 0, (Color) null, 1f);
+              Dust.NewDust(this.position, this.width, this.height, 5, num2 + (float) hitDirection * num3 * Main.rand.NextFloat(), -2f, 0, new Color(), 1f);
           }
         }
         else
@@ -20144,8 +18986,8 @@ label_13:
               Main.item[number].netDefaults(this.inventory[index].netID);
               Main.item[number].Prefix((int) this.inventory[index].prefix);
               Main.item[number].stack = this.inventory[index].stack;
-              Main.item[number].velocity.Y = (__Null) ((double) Main.rand.Next(-20, 1) * 0.200000002980232);
-              Main.item[number].velocity.X = (__Null) ((double) Main.rand.Next(-20, 21) * 0.200000002980232);
+              Main.item[number].velocity.Y = (float) Main.rand.Next(-20, 1) * 0.2f;
+              Main.item[number].velocity.X = (float) Main.rand.Next(-20, 21) * 0.2f;
               Main.item[number].noGrabDelay = 100;
               Main.item[number].favorited = false;
               Main.item[number].newAndShiny = false;
@@ -20164,34 +19006,34 @@ label_13:
         }
       }
       Main.PlaySound(5, (int) this.position.X, (int) this.position.Y, 1, 1f, 0.0f);
-      this.headVelocity.Y = (__Null) ((double) Main.rand.Next(-40, -10) * 0.100000001490116);
-      this.bodyVelocity.Y = (__Null) ((double) Main.rand.Next(-40, -10) * 0.100000001490116);
-      this.legVelocity.Y = (__Null) ((double) Main.rand.Next(-40, -10) * 0.100000001490116);
-      this.headVelocity.X = (__Null) ((double) Main.rand.Next(-20, 21) * 0.100000001490116 + (double) (2 * hitDirection));
-      this.bodyVelocity.X = (__Null) ((double) Main.rand.Next(-20, 21) * 0.100000001490116 + (double) (2 * hitDirection));
-      this.legVelocity.X = (__Null) ((double) Main.rand.Next(-20, 21) * 0.100000001490116 + (double) (2 * hitDirection));
+      this.headVelocity.Y = (float) Main.rand.Next(-40, -10) * 0.1f;
+      this.bodyVelocity.Y = (float) Main.rand.Next(-40, -10) * 0.1f;
+      this.legVelocity.Y = (float) Main.rand.Next(-40, -10) * 0.1f;
+      this.headVelocity.X = (float) Main.rand.Next(-20, 21) * 0.1f + (float) (2 * hitDirection);
+      this.bodyVelocity.X = (float) Main.rand.Next(-20, 21) * 0.1f + (float) (2 * hitDirection);
+      this.legVelocity.X = (float) Main.rand.Next(-20, 21) * 0.1f + (float) (2 * hitDirection);
       if (this.stoned)
       {
-        this.headPosition = Vector2.get_Zero();
-        this.bodyPosition = Vector2.get_Zero();
-        this.legPosition = Vector2.get_Zero();
+        this.headPosition = Vector2.Zero;
+        this.bodyPosition = Vector2.Zero;
+        this.legPosition = Vector2.Zero;
       }
       for (int index1 = 0; index1 < 100; ++index1)
       {
         if (this.stoned)
-          Dust.NewDust(this.position, this.width, this.height, 1, (float) (2 * hitDirection), -2f, 0, (Color) null, 1f);
+          Dust.NewDust(this.position, this.width, this.height, 1, (float) (2 * hitDirection), -2f, 0, new Color(), 1f);
         else if (this.frostArmor)
         {
-          int index2 = Dust.NewDust(this.position, this.width, this.height, 135, (float) (2 * hitDirection), -2f, 0, (Color) null, 1f);
+          int index2 = Dust.NewDust(this.position, this.width, this.height, 135, (float) (2 * hitDirection), -2f, 0, new Color(), 1f);
           Main.dust[index2].shader = GameShaders.Armor.GetSecondaryShader(this.ArmorSetDye(), this);
         }
         else if (this.boneArmor)
         {
-          int index2 = Dust.NewDust(this.position, this.width, this.height, 26, (float) (2 * hitDirection), -2f, 0, (Color) null, 1f);
+          int index2 = Dust.NewDust(this.position, this.width, this.height, 26, (float) (2 * hitDirection), -2f, 0, new Color(), 1f);
           Main.dust[index2].shader = GameShaders.Armor.GetSecondaryShader(this.ArmorSetDye(), this);
         }
         else
-          Dust.NewDust(this.position, this.width, this.height, 5, (float) (2 * hitDirection), -2f, 0, (Color) null, 1f);
+          Dust.NewDust(this.position, this.width, this.height, 5, (float) (2 * hitDirection), -2f, 0, new Color(), 1f);
       }
       this.mount.Dismount(this);
       this.dead = true;
@@ -20201,7 +19043,7 @@ label_13:
       {
         for (int index = 0; index < 200; ++index)
         {
-          if (Main.npc[index].active && (Main.npc[index].boss || Main.npc[index].type == 13 || (Main.npc[index].type == 14 || Main.npc[index].type == 15)) && (double) Math.Abs((float) (this.Center.X - Main.npc[index].Center.X)) + (double) Math.Abs((float) (this.Center.Y - Main.npc[index].Center.Y)) < 4000.0)
+          if (Main.npc[index].active && (Main.npc[index].boss || Main.npc[index].type == 13 || (Main.npc[index].type == 14 || Main.npc[index].type == 15)) && (double) Math.Abs(this.Center.X - Main.npc[index].Center.X) + (double) Math.Abs(this.Center.Y - Main.npc[index].Center.Y) < 4000.0)
           {
             flag = true;
             break;
@@ -20256,7 +19098,7 @@ label_13:
         num1 += (float) Main.rand.Next(-30, 31) * 0.1f;
       int num2 = Main.rand.Next(6);
       int Type = coinsOwned <= 100000 ? (num2 != 0 ? 200 + num2 : 43) : Main.rand.Next(5) + 527;
-      int index = Projectile.NewProjectile((float) this.position.X + (float) (this.width / 2), (float) this.position.Y + (float) (this.height / 2), (float) Main.rand.Next(10, 30) * 0.1f * (float) hitDirection + num1, (float) Main.rand.Next(-40, -20) * 0.1f, Type, 0, 0.0f, Main.myPlayer, 0.0f, 0.0f);
+      int index = Projectile.NewProjectile(this.position.X + (float) (this.width / 2), this.position.Y + (float) (this.height / 2), (float) Main.rand.Next(10, 30) * 0.1f * (float) hitDirection + num1, (float) Main.rand.Next(-40, -20) * 0.1f, Type, 0, 0.0f, Main.myPlayer, 0.0f, 0.0f);
       Main.projectile[index].miscText = deathText.ToString();
     }
 
@@ -20489,7 +19331,7 @@ label_13:
 
     public void PlaceThing()
     {
-      if ((this.inventory[this.selectedItem].type == 1071 || this.inventory[this.selectedItem].type == 1543) && (this.position.X / 16.0 - (double) Player.tileRangeX - (double) this.inventory[this.selectedItem].tileBoost - (double) this.blockRange <= (double) Player.tileTargetX && (this.position.X + (double) this.width) / 16.0 + (double) Player.tileRangeX + (double) this.inventory[this.selectedItem].tileBoost - 1.0 + (double) this.blockRange >= (double) Player.tileTargetX) && (this.position.Y / 16.0 - (double) Player.tileRangeY - (double) this.inventory[this.selectedItem].tileBoost - (double) this.blockRange <= (double) Player.tileTargetY && (this.position.Y + (double) this.height) / 16.0 + (double) Player.tileRangeY + (double) this.inventory[this.selectedItem].tileBoost - 2.0 + (double) this.blockRange >= (double) Player.tileTargetY))
+      if ((this.inventory[this.selectedItem].type == 1071 || this.inventory[this.selectedItem].type == 1543) && ((double) this.position.X / 16.0 - (double) Player.tileRangeX - (double) this.inventory[this.selectedItem].tileBoost - (double) this.blockRange <= (double) Player.tileTargetX && ((double) this.position.X + (double) this.width) / 16.0 + (double) Player.tileRangeX + (double) this.inventory[this.selectedItem].tileBoost - 1.0 + (double) this.blockRange >= (double) Player.tileTargetX) && ((double) this.position.Y / 16.0 - (double) Player.tileRangeY - (double) this.inventory[this.selectedItem].tileBoost - (double) this.blockRange <= (double) Player.tileTargetY && ((double) this.position.Y + (double) this.height) / 16.0 + (double) Player.tileRangeY + (double) this.inventory[this.selectedItem].tileBoost - 2.0 + (double) this.blockRange >= (double) Player.tileTargetY))
       {
         int tileTargetX = Player.tileTargetX;
         int tileTargetY = Player.tileTargetY;
@@ -20520,7 +19362,7 @@ label_13:
           }
         }
       }
-      if ((this.inventory[this.selectedItem].type == 1072 || this.inventory[this.selectedItem].type == 1544) && (this.position.X / 16.0 - (double) Player.tileRangeX - (double) this.inventory[this.selectedItem].tileBoost - (double) this.blockRange <= (double) Player.tileTargetX && (this.position.X + (double) this.width) / 16.0 + (double) Player.tileRangeX + (double) this.inventory[this.selectedItem].tileBoost - 1.0 + (double) this.blockRange >= (double) Player.tileTargetX) && (this.position.Y / 16.0 - (double) Player.tileRangeY - (double) this.inventory[this.selectedItem].tileBoost - (double) this.blockRange <= (double) Player.tileTargetY && (this.position.Y + (double) this.height) / 16.0 + (double) Player.tileRangeY + (double) this.inventory[this.selectedItem].tileBoost - 2.0 + (double) this.blockRange >= (double) Player.tileTargetY))
+      if ((this.inventory[this.selectedItem].type == 1072 || this.inventory[this.selectedItem].type == 1544) && ((double) this.position.X / 16.0 - (double) Player.tileRangeX - (double) this.inventory[this.selectedItem].tileBoost - (double) this.blockRange <= (double) Player.tileTargetX && ((double) this.position.X + (double) this.width) / 16.0 + (double) Player.tileRangeX + (double) this.inventory[this.selectedItem].tileBoost - 1.0 + (double) this.blockRange >= (double) Player.tileTargetX) && ((double) this.position.Y / 16.0 - (double) Player.tileRangeY - (double) this.inventory[this.selectedItem].tileBoost - (double) this.blockRange <= (double) Player.tileTargetY && ((double) this.position.Y + (double) this.height) / 16.0 + (double) Player.tileRangeY + (double) this.inventory[this.selectedItem].tileBoost - 2.0 + (double) this.blockRange >= (double) Player.tileTargetY))
       {
         int tileTargetX = Player.tileTargetX;
         int tileTargetY = Player.tileTargetY;
@@ -20551,7 +19393,7 @@ label_13:
           }
         }
       }
-      if ((this.inventory[this.selectedItem].type == 1100 || this.inventory[this.selectedItem].type == 1545) && (this.position.X / 16.0 - (double) Player.tileRangeX - (double) this.inventory[this.selectedItem].tileBoost - (double) this.blockRange <= (double) Player.tileTargetX && (this.position.X + (double) this.width) / 16.0 + (double) Player.tileRangeX + (double) this.inventory[this.selectedItem].tileBoost - 1.0 + (double) this.blockRange >= (double) Player.tileTargetX) && (this.position.Y / 16.0 - (double) Player.tileRangeY - (double) this.inventory[this.selectedItem].tileBoost - (double) this.blockRange <= (double) Player.tileTargetY && (this.position.Y + (double) this.height) / 16.0 + (double) Player.tileRangeY + (double) this.inventory[this.selectedItem].tileBoost - 2.0 + (double) this.blockRange >= (double) Player.tileTargetY))
+      if ((this.inventory[this.selectedItem].type == 1100 || this.inventory[this.selectedItem].type == 1545) && ((double) this.position.X / 16.0 - (double) Player.tileRangeX - (double) this.inventory[this.selectedItem].tileBoost - (double) this.blockRange <= (double) Player.tileTargetX && ((double) this.position.X + (double) this.width) / 16.0 + (double) Player.tileRangeX + (double) this.inventory[this.selectedItem].tileBoost - 1.0 + (double) this.blockRange >= (double) Player.tileTargetX) && ((double) this.position.Y / 16.0 - (double) Player.tileRangeY - (double) this.inventory[this.selectedItem].tileBoost - (double) this.blockRange <= (double) Player.tileTargetY && ((double) this.position.Y + (double) this.height) / 16.0 + (double) Player.tileRangeY + (double) this.inventory[this.selectedItem].tileBoost - 2.0 + (double) this.blockRange >= (double) Player.tileTargetY))
       {
         int tileTargetX = Player.tileTargetX;
         int tileTargetY = Player.tileTargetY;
@@ -20567,14 +19409,14 @@ label_13:
           }
         }
       }
-      if ((this.inventory[this.selectedItem].type == 929 || this.inventory[this.selectedItem].type == 1338 || this.inventory[this.selectedItem].type == 1345) && (this.position.X / 16.0 - (double) Player.tileRangeX - (double) this.inventory[this.selectedItem].tileBoost - (double) this.blockRange <= (double) Player.tileTargetX && (this.position.X + (double) this.width) / 16.0 + (double) Player.tileRangeX + (double) this.inventory[this.selectedItem].tileBoost - 1.0 + (double) this.blockRange >= (double) Player.tileTargetX && (this.position.Y / 16.0 - (double) Player.tileRangeY - (double) this.inventory[this.selectedItem].tileBoost - (double) this.blockRange <= (double) Player.tileTargetY && (this.position.Y + (double) this.height) / 16.0 + (double) Player.tileRangeY + (double) this.inventory[this.selectedItem].tileBoost - 2.0 + (double) this.blockRange >= (double) Player.tileTargetY)))
+      if ((this.inventory[this.selectedItem].type == 929 || this.inventory[this.selectedItem].type == 1338 || this.inventory[this.selectedItem].type == 1345) && ((double) this.position.X / 16.0 - (double) Player.tileRangeX - (double) this.inventory[this.selectedItem].tileBoost - (double) this.blockRange <= (double) Player.tileTargetX && ((double) this.position.X + (double) this.width) / 16.0 + (double) Player.tileRangeX + (double) this.inventory[this.selectedItem].tileBoost - 1.0 + (double) this.blockRange >= (double) Player.tileTargetX && ((double) this.position.Y / 16.0 - (double) Player.tileRangeY - (double) this.inventory[this.selectedItem].tileBoost - (double) this.blockRange <= (double) Player.tileTargetY && ((double) this.position.Y + (double) this.height) / 16.0 + (double) Player.tileRangeY + (double) this.inventory[this.selectedItem].tileBoost - 2.0 + (double) this.blockRange >= (double) Player.tileTargetY)))
       {
         int tileTargetX = Player.tileTargetX;
         int tileTargetY = Player.tileTargetY;
         if (Main.tile[tileTargetX, tileTargetY].active() && (int) Main.tile[tileTargetX, tileTargetY].type == 209)
           this.ShootFromCannon(tileTargetX, tileTargetY);
       }
-      if (this.inventory[this.selectedItem].type >= 1874 && this.inventory[this.selectedItem].type <= 1905 && (Main.tile[Player.tileTargetX, Player.tileTargetY].active() && (int) Main.tile[Player.tileTargetX, Player.tileTargetY].type == 171) && (this.position.X / 16.0 - (double) Player.tileRangeX - (double) this.inventory[this.selectedItem].tileBoost - (double) this.blockRange <= (double) Player.tileTargetX && (this.position.X + (double) this.width) / 16.0 + (double) Player.tileRangeX + (double) this.inventory[this.selectedItem].tileBoost - 1.0 + (double) this.blockRange >= (double) Player.tileTargetX && (this.position.Y / 16.0 - (double) Player.tileRangeY - (double) this.inventory[this.selectedItem].tileBoost - (double) this.blockRange <= (double) Player.tileTargetY && (this.position.Y + (double) this.height) / 16.0 + (double) Player.tileRangeY + (double) this.inventory[this.selectedItem].tileBoost - 2.0 + (double) this.blockRange >= (double) Player.tileTargetY)) && (this.itemTime == 0 && this.itemAnimation > 0 && this.controlUseItem))
+      if (this.inventory[this.selectedItem].type >= 1874 && this.inventory[this.selectedItem].type <= 1905 && (Main.tile[Player.tileTargetX, Player.tileTargetY].active() && (int) Main.tile[Player.tileTargetX, Player.tileTargetY].type == 171) && ((double) this.position.X / 16.0 - (double) Player.tileRangeX - (double) this.inventory[this.selectedItem].tileBoost - (double) this.blockRange <= (double) Player.tileTargetX && ((double) this.position.X + (double) this.width) / 16.0 + (double) Player.tileRangeX + (double) this.inventory[this.selectedItem].tileBoost - 1.0 + (double) this.blockRange >= (double) Player.tileTargetX && ((double) this.position.Y / 16.0 - (double) Player.tileRangeY - (double) this.inventory[this.selectedItem].tileBoost - (double) this.blockRange <= (double) Player.tileTargetY && ((double) this.position.Y + (double) this.height) / 16.0 + (double) Player.tileRangeY + (double) this.inventory[this.selectedItem].tileBoost - 2.0 + (double) this.blockRange >= (double) Player.tileTargetY)) && (this.itemTime == 0 && this.itemAnimation > 0 && this.controlUseItem))
       {
         int type = this.inventory[this.selectedItem].type;
         if (type >= 1874 && type <= 1877)
@@ -20652,14 +19494,14 @@ label_13:
       }
       if (ItemID.Sets.ExtractinatorMode[this.inventory[this.selectedItem].type] >= 0 && Main.tile[Player.tileTargetX, Player.tileTargetY].active() && (int) Main.tile[Player.tileTargetX, Player.tileTargetY].type == 219)
       {
-        if (this.position.X / 16.0 - (double) Player.tileRangeX - (double) this.inventory[this.selectedItem].tileBoost - (double) this.blockRange <= (double) Player.tileTargetX && (this.position.X + (double) this.width) / 16.0 + (double) Player.tileRangeX + (double) this.inventory[this.selectedItem].tileBoost - 1.0 + (double) this.blockRange >= (double) Player.tileTargetX && (this.position.Y / 16.0 - (double) Player.tileRangeY - (double) this.inventory[this.selectedItem].tileBoost - (double) this.blockRange <= (double) Player.tileTargetY && (this.position.Y + (double) this.height) / 16.0 + (double) Player.tileRangeY + (double) this.inventory[this.selectedItem].tileBoost - 2.0 + (double) this.blockRange >= (double) Player.tileTargetY) && (this.itemTime == 0 && this.itemAnimation > 0 && this.controlUseItem))
+        if ((double) this.position.X / 16.0 - (double) Player.tileRangeX - (double) this.inventory[this.selectedItem].tileBoost - (double) this.blockRange <= (double) Player.tileTargetX && ((double) this.position.X + (double) this.width) / 16.0 + (double) Player.tileRangeX + (double) this.inventory[this.selectedItem].tileBoost - 1.0 + (double) this.blockRange >= (double) Player.tileTargetX && ((double) this.position.Y / 16.0 - (double) Player.tileRangeY - (double) this.inventory[this.selectedItem].tileBoost - (double) this.blockRange <= (double) Player.tileTargetY && ((double) this.position.Y + (double) this.height) / 16.0 + (double) Player.tileRangeY + (double) this.inventory[this.selectedItem].tileBoost - 2.0 + (double) this.blockRange >= (double) Player.tileTargetY) && (this.itemTime == 0 && this.itemAnimation > 0 && this.controlUseItem))
         {
           this.itemTime = this.inventory[this.selectedItem].useTime;
           Main.PlaySound(7, -1, -1, 1, 1f, 0.0f);
           Player.ExtractinatorUse(ItemID.Sets.ExtractinatorMode[this.inventory[this.selectedItem].type]);
         }
       }
-      else if (!this.noBuilding && this.inventory[this.selectedItem].createTile >= 0 && (this.position.X / 16.0 - (double) Player.tileRangeX - (double) this.inventory[this.selectedItem].tileBoost - (double) this.blockRange <= (double) Player.tileTargetX && (this.position.X + (double) this.width) / 16.0 + (double) Player.tileRangeX + (double) this.inventory[this.selectedItem].tileBoost - 1.0 + (double) this.blockRange >= (double) Player.tileTargetX) && (this.position.Y / 16.0 - (double) Player.tileRangeY - (double) this.inventory[this.selectedItem].tileBoost - (double) this.blockRange <= (double) Player.tileTargetY && (this.position.Y + (double) this.height) / 16.0 + (double) Player.tileRangeY + (double) this.inventory[this.selectedItem].tileBoost - 2.0 + (double) this.blockRange >= (double) Player.tileTargetY))
+      else if (!this.noBuilding && this.inventory[this.selectedItem].createTile >= 0 && ((double) this.position.X / 16.0 - (double) Player.tileRangeX - (double) this.inventory[this.selectedItem].tileBoost - (double) this.blockRange <= (double) Player.tileTargetX && ((double) this.position.X + (double) this.width) / 16.0 + (double) Player.tileRangeX + (double) this.inventory[this.selectedItem].tileBoost - 1.0 + (double) this.blockRange >= (double) Player.tileTargetX) && ((double) this.position.Y / 16.0 - (double) Player.tileRangeY - (double) this.inventory[this.selectedItem].tileBoost - (double) this.blockRange <= (double) Player.tileTargetY && ((double) this.position.Y + (double) this.height) / 16.0 + (double) Player.tileRangeY + (double) this.inventory[this.selectedItem].tileBoost - 2.0 + (double) this.blockRange >= (double) Player.tileTargetY))
       {
         this.showItemIcon = true;
         bool flag1 = false;
@@ -20712,42 +19554,35 @@ label_13:
           {
             flag4 = true;
             flag3 = TileObject.CanPlace(Player.tileTargetX, Player.tileTargetY, (int) (ushort) this.inventory[this.selectedItem].createTile, this.inventory[this.selectedItem].placeStyle, this.direction, out objectData, false);
-            int num1 = 0;
-            int num2 = 0;
-            int num3 = 0;
-            int num4 = 0;
+            int width = 0;
+            int height = 0;
+            int x = 0;
+            int y = 0;
             switch (objectData.type)
             {
               case 138:
-                num1 = 32;
-                num2 = 32;
-                num3 = objectData.xCoord * 16;
-                num4 = objectData.yCoord * 16;
+                width = 32;
+                height = 32;
+                x = objectData.xCoord * 16;
+                y = objectData.yCoord * 16;
                 break;
               case 235:
-                num1 = 48;
-                num2 = 16;
-                num3 = objectData.xCoord * 16;
-                num4 = objectData.yCoord * 16;
+                width = 48;
+                height = 16;
+                x = objectData.xCoord * 16;
+                y = objectData.yCoord * 16;
                 break;
             }
-            if (num1 != 0 && num2 != 0)
+            if (width != 0 && height != 0)
             {
-              Rectangle rectangle;
-              // ISSUE: explicit reference operation
-              ((Rectangle) @rectangle).\u002Ector(num3, num4, num1, num2);
+              Microsoft.Xna.Framework.Rectangle rectangle = new Microsoft.Xna.Framework.Rectangle(x, y, width, height);
               for (int index = 0; index < (int) byte.MaxValue; ++index)
               {
                 Player player = Main.player[index];
-                if (player.active && !player.dead)
+                if (player.active && !player.dead && player.Hitbox.Intersects(rectangle))
                 {
-                  Rectangle hitbox = player.Hitbox;
-                  // ISSUE: explicit reference operation
-                  if (((Rectangle) @hitbox).Intersects(rectangle))
-                  {
-                    flag3 = false;
-                    break;
-                  }
+                  flag3 = false;
+                  break;
                 }
               }
             }
@@ -21384,7 +20219,7 @@ label_13:
           }
         }
       }
-      if (this.inventory[this.selectedItem].createWall < 0 || this.position.X / 16.0 - (double) Player.tileRangeX - (double) this.inventory[this.selectedItem].tileBoost > (double) Player.tileTargetX || ((this.position.X + (double) this.width) / 16.0 + (double) Player.tileRangeX + (double) this.inventory[this.selectedItem].tileBoost - 1.0 < (double) Player.tileTargetX || this.position.Y / 16.0 - (double) Player.tileRangeY - (double) this.inventory[this.selectedItem].tileBoost > (double) Player.tileTargetY) || (this.position.Y + (double) this.height) / 16.0 + (double) Player.tileRangeY + (double) this.inventory[this.selectedItem].tileBoost - 2.0 < (double) Player.tileTargetY)
+      if (this.inventory[this.selectedItem].createWall < 0 || (double) this.position.X / 16.0 - (double) Player.tileRangeX - (double) this.inventory[this.selectedItem].tileBoost > (double) Player.tileTargetX || (((double) this.position.X + (double) this.width) / 16.0 + (double) Player.tileRangeX + (double) this.inventory[this.selectedItem].tileBoost - 1.0 < (double) Player.tileTargetX || (double) this.position.Y / 16.0 - (double) Player.tileRangeY - (double) this.inventory[this.selectedItem].tileBoost > (double) Player.tileTargetY) || ((double) this.position.Y + (double) this.height) / 16.0 + (double) Player.tileRangeY + (double) this.inventory[this.selectedItem].tileBoost - 2.0 < (double) Player.tileTargetY)
         return;
       this.showItemIcon = true;
       if (this.itemTime != 0 || this.itemAnimation <= 0 || !this.controlUseItem || !Main.tile[Player.tileTargetX + 1, Player.tileTargetY].active() && (int) Main.tile[Player.tileTargetX + 1, Player.tileTargetY].wall <= 0 && (!Main.tile[Player.tileTargetX - 1, Player.tileTargetY].active() && (int) Main.tile[Player.tileTargetX - 1, Player.tileTargetY].wall <= 0) && (!Main.tile[Player.tileTargetX, Player.tileTargetY + 1].active() && (int) Main.tile[Player.tileTargetX, Player.tileTargetY + 1].wall <= 0 && (!Main.tile[Player.tileTargetX, Player.tileTargetY - 1].active() && (int) Main.tile[Player.tileTargetX, Player.tileTargetY - 1].wall <= 0)) || (int) Main.tile[Player.tileTargetX, Player.tileTargetY].wall == this.inventory[this.selectedItem].createWall)
@@ -21766,7 +20601,7 @@ label_13:
       }
       if (Type <= 0)
         return;
-      Vector2 vector2 = Vector2.op_Addition(Main.ReverseGravitySupport(Main.MouseScreen, 0.0f), Main.screenPosition);
+      Vector2 vector2 = Main.ReverseGravitySupport(Main.MouseScreen, 0.0f) + Main.screenPosition;
       int number = Item.NewItem((int) vector2.X, (int) vector2.Y, 1, 1, Type, Stack, false, -1, false, false);
       if (Main.netMode != 1)
         return;
@@ -21783,20 +20618,20 @@ label_13:
       {
         if ((int) this.pulleyDir == 2 && dir == this.direction)
           return;
-        int num = (int) (this.position.X + (double) (this.width / 2)) / 16 * 16 + 8 - this.width / 2;
-        if (Collision.SolidCollision(new Vector2((float) num, (float) this.position.Y), this.width, this.height))
+        int num = (int) ((double) this.position.X + (double) (this.width / 2)) / 16 * 16 + 8 - this.width / 2;
+        if (Collision.SolidCollision(new Vector2((float) num, this.position.Y), this.width, this.height))
           return;
         if (this.whoAmI == Main.myPlayer)
-          Main.cameraX = Main.cameraX + (float) this.position.X - (float) num;
+          Main.cameraX = Main.cameraX + this.position.X - (float) num;
         this.pulleyDir = (byte) 1;
-        this.position.X = (__Null) (double) num;
+        this.position.X = (float) num;
         this.direction = dir;
       }
     }
 
-    public Rectangle getRect()
+    public Microsoft.Xna.Framework.Rectangle getRect()
     {
-      return new Rectangle((int) this.position.X, (int) this.position.Y, this.width, this.height);
+      return new Microsoft.Xna.Framework.Rectangle((int) this.position.X, (int) this.position.Y, this.width, this.height);
     }
 
     private void pumpkinSword(int i, int dmg, float kb)
@@ -21810,11 +20645,9 @@ label_13:
       int num5 = num3 + (int) this.position.X;
       int num6 = num4 + (int) this.position.Y;
       float num7 = 8f;
-      Vector2 vector2;
-      // ISSUE: explicit reference operation
-      ((Vector2) @vector2).\u002Ector((float) num5, (float) num6);
-      float num8 = (float) (Main.npc[i].position.X - vector2.X);
-      float num9 = (float) (Main.npc[i].position.Y - vector2.Y);
+      Vector2 vector2 = new Vector2((float) num5, (float) num6);
+      float num8 = Main.npc[i].position.X - vector2.X;
+      float num9 = Main.npc[i].position.Y - vector2.Y;
       float num10 = (float) Math.Sqrt((double) num8 * (double) num8 + (double) num9 * (double) num9);
       float num11 = num7 / num10;
       float SpeedX = num8 * num11;
@@ -21850,8 +20683,8 @@ label_13:
         }
         else
         {
-          newItem.position.X = (__Null) (this.Center.X - (double) (newItem.width / 2));
-          newItem.position.Y = (__Null) (this.Center.Y - (double) (newItem.height / 2));
+          newItem.position.X = this.Center.X - (float) (newItem.width / 2);
+          newItem.position.Y = this.Center.Y - (float) (newItem.height / 2);
           newItem.active = true;
           ItemText.NewText(newItem, 0, false, false);
         }
@@ -21945,7 +20778,7 @@ label_13:
       if (Main.netMode == 0)
         this.Teleport(telePos, num, 0);
       else
-        NetMessage.SendData(65, -1, -1, (NetworkText) null, 2, (float) this.whoAmI, (float) telePos.X, (float) telePos.Y, num, 0, 0);
+        NetMessage.SendData(65, -1, -1, (NetworkText) null, 2, (float) this.whoAmI, telePos.X, telePos.Y, num, 0, 0);
     }
 
     private void PayDD2CrystalsBeforeUse(Item item)
@@ -22009,37 +20842,13 @@ label_13:
       {
         int num5 = Main.rand.Next(200 - index1 * 2, 400 + index1 * 2);
         Vector2 center = this.Center;
-        // ISSUE: explicit reference operation
-        // ISSUE: variable of a reference type
-        Vector2& local1 = @center;
-        // ISSUE: explicit reference operation
-        double num6 = (^local1).X + (double) Main.rand.Next(-num5, num5 + 1);
-        // ISSUE: explicit reference operation
-        (^local1).X = (__Null) num6;
-        // ISSUE: explicit reference operation
-        // ISSUE: variable of a reference type
-        Vector2& local2 = @center;
-        // ISSUE: explicit reference operation
-        double num7 = (^local2).Y + (double) Main.rand.Next(-num5, num5 + 1);
-        // ISSUE: explicit reference operation
-        (^local2).Y = (__Null) num7;
+        center.X += (float) Main.rand.Next(-num5, num5 + 1);
+        center.Y += (float) Main.rand.Next(-num5, num5 + 1);
         if (!Collision.SolidCollision(center, num3, num3) && !Collision.WetCollision(center, num3, num3))
         {
-          // ISSUE: explicit reference operation
-          // ISSUE: variable of a reference type
-          Vector2& local3 = @center;
-          // ISSUE: explicit reference operation
-          double num8 = (^local3).X + (double) (num3 / 2);
-          // ISSUE: explicit reference operation
-          (^local3).X = (__Null) num8;
-          // ISSUE: explicit reference operation
-          // ISSUE: variable of a reference type
-          Vector2& local4 = @center;
-          // ISSUE: explicit reference operation
-          double num9 = (^local4).Y + (double) (num3 / 2);
-          // ISSUE: explicit reference operation
-          (^local4).Y = (__Null) num9;
-          if (Collision.CanHit(new Vector2((float) this.Center.X, (float) this.position.Y), 1, 1, center, 1, 1) || Collision.CanHit(new Vector2((float) this.Center.X, (float) (this.position.Y - 50.0)), 1, 1, center, 1, 1))
+          center.X += (float) (num3 / 2);
+          center.Y += (float) (num3 / 2);
+          if (Collision.CanHit(new Vector2(this.Center.X, this.position.Y), 1, 1, center, 1, 1) || Collision.CanHit(new Vector2(this.Center.X, this.position.Y - 50f), 1, 1, center, 1, 1))
           {
             int index2 = (int) center.X / 16;
             int index3 = (int) center.Y / 16;
@@ -22050,36 +20859,12 @@ label_13:
             }
             else
             {
-              // ISSUE: explicit reference operation
-              // ISSUE: variable of a reference type
-              Vector2& local5 = @center;
-              // ISSUE: explicit reference operation
-              double num10 = (^local5).X - (double) (num4 / 2);
-              // ISSUE: explicit reference operation
-              (^local5).X = (__Null) num10;
-              // ISSUE: explicit reference operation
-              // ISSUE: variable of a reference type
-              Vector2& local6 = @center;
-              // ISSUE: explicit reference operation
-              double num11 = (^local6).Y - (double) (num4 / 2);
-              // ISSUE: explicit reference operation
-              (^local6).Y = (__Null) num11;
+              center.X -= (float) (num4 / 2);
+              center.Y -= (float) (num4 / 2);
               if (Collision.SolidCollision(center, num4, num4))
               {
-                // ISSUE: explicit reference operation
-                // ISSUE: variable of a reference type
-                Vector2& local7 = @center;
-                // ISSUE: explicit reference operation
-                double num12 = (^local7).X + (double) (num4 / 2);
-                // ISSUE: explicit reference operation
-                (^local7).X = (__Null) num12;
-                // ISSUE: explicit reference operation
-                // ISSUE: variable of a reference type
-                Vector2& local8 = @center;
-                // ISSUE: explicit reference operation
-                double num13 = (^local8).Y + (double) (num4 / 2);
-                // ISSUE: explicit reference operation
-                (^local8).Y = (__Null) num13;
+                center.X += (float) (num4 / 2);
+                center.Y += (float) (num4 / 2);
                 flag = true;
               }
             }
@@ -22087,20 +20872,15 @@ label_13:
             {
               for (int index4 = 0; index4 < 1000; ++index4)
               {
-                if (Main.projectile[index4].active && Main.projectile[index4].owner == this.whoAmI && Main.projectile[index4].aiStyle == 105)
+                if (Main.projectile[index4].active && Main.projectile[index4].owner == this.whoAmI && Main.projectile[index4].aiStyle == 105 && (double) (center - Main.projectile[index4].Center).Length() < 48.0)
                 {
-                  Vector2 vector2 = Vector2.op_Subtraction(center, Main.projectile[index4].Center);
-                  // ISSUE: explicit reference operation
-                  if ((double) ((Vector2) @vector2).Length() < 48.0)
-                  {
-                    flag = false;
-                    break;
-                  }
+                  flag = false;
+                  break;
                 }
               }
               if (flag && Main.myPlayer == this.whoAmI)
               {
-                Projectile.NewProjectile((float) center.X, (float) center.Y, 0.0f, 0.0f, 567 + Main.rand.Next(2), Damage, KnockBack, this.whoAmI, 0.0f, 0.0f);
+                Projectile.NewProjectile(center.X, center.Y, 0.0f, 0.0f, 567 + Main.rand.Next(2), Damage, KnockBack, this.whoAmI, 0.0f, 0.0f);
                 break;
               }
             }
@@ -22111,8 +20891,8 @@ label_13:
 
     public bool CanHit(Entity ent)
     {
-      if (!Collision.CanHit(this.position, this.width, this.height, ent.position, ent.width, ent.height) && !Collision.CanHitLine(Vector2.op_Addition(this.Center, new Vector2((float) (this.direction * this.width / 2), (float) ((double) this.gravDir * (double) -this.height / 3.0))), 0, 0, Vector2.op_Addition(ent.Center, new Vector2(0.0f, (float) (-ent.height / 3))), 0, 0) && !Collision.CanHitLine(Vector2.op_Addition(this.Center, new Vector2((float) (this.direction * this.width / 2), (float) ((double) this.gravDir * (double) -this.height / 3.0))), 0, 0, ent.Center, 0, 0))
-        return Collision.CanHitLine(Vector2.op_Addition(this.Center, new Vector2((float) (this.direction * this.width / 2), 0.0f)), 0, 0, Vector2.op_Addition(ent.Center, new Vector2(0.0f, (float) (ent.height / 3))), 0, 0);
+      if (!Collision.CanHit(this.position, this.width, this.height, ent.position, ent.width, ent.height) && !Collision.CanHitLine(this.Center + new Vector2((float) (this.direction * this.width / 2), (float) ((double) this.gravDir * (double) -this.height / 3.0)), 0, 0, ent.Center + new Vector2(0.0f, (float) (-ent.height / 3)), 0, 0) && !Collision.CanHitLine(this.Center + new Vector2((float) (this.direction * this.width / 2), (float) ((double) this.gravDir * (double) -this.height / 3.0)), 0, 0, ent.Center, 0, 0))
+        return Collision.CanHitLine(this.Center + new Vector2((float) (this.direction * this.width / 2), 0.0f), 0, 0, ent.Center + new Vector2(0.0f, (float) (ent.height / 3)), 0, 0);
       return true;
     }
 
@@ -22132,7 +20912,7 @@ label_13:
           {
             this.channel = true;
             if (this.releaseUseItem)
-              this.mount.UseAbility(this, Vector2.get_Zero(), true);
+              this.mount.UseAbility(this, Vector2.Zero, true);
             this.releaseUseItem = false;
           }
         }
@@ -22177,7 +20957,7 @@ label_13:
       {
         if (sItem.useStyle == 0)
           this.releaseUseItem = false;
-        if (this.position.X / 16.0 - (double) Player.tileRangeX - (double) sItem.tileBoost <= (double) Player.tileTargetX && (this.position.X + (double) this.width) / 16.0 + (double) Player.tileRangeX + (double) sItem.tileBoost - 1.0 >= (double) Player.tileTargetX && (this.position.Y / 16.0 - (double) Player.tileRangeY - (double) sItem.tileBoost <= (double) Player.tileTargetY && (this.position.Y + (double) this.height) / 16.0 + (double) Player.tileRangeY + (double) sItem.tileBoost - 2.0 >= (double) Player.tileTargetY))
+        if ((double) this.position.X / 16.0 - (double) Player.tileRangeX - (double) sItem.tileBoost <= (double) Player.tileTargetX && ((double) this.position.X + (double) this.width) / 16.0 + (double) Player.tileRangeX + (double) sItem.tileBoost - 1.0 >= (double) Player.tileTargetX && ((double) this.position.Y / 16.0 - (double) Player.tileRangeY - (double) sItem.tileBoost <= (double) Player.tileTargetY && ((double) this.position.Y + (double) this.height) / 16.0 + (double) Player.tileRangeY + (double) sItem.tileBoost - 2.0 >= (double) Player.tileTargetY))
         {
           int tileTargetX = Player.tileTargetX;
           int tileTargetY = Player.tileTargetY;
@@ -22350,8 +21130,8 @@ label_13:
               {
                 Main.projectile[index1].ai[0] = 1f;
                 float num1 = -10f;
-                if (Main.projectile[index1].wet && Main.projectile[index1].velocity.Y > (double) num1)
-                  Main.projectile[index1].velocity.Y = (__Null) (double) num1;
+                if (Main.projectile[index1].wet && (double) Main.projectile[index1].velocity.Y > (double) num1)
+                  Main.projectile[index1].velocity.Y = num1;
                 Main.projectile[index1].netUpdate2 = true;
                 if ((double) Main.projectile[index1].ai[1] < 0.0 && (double) Main.projectile[index1].localAI[1] != 0.0)
                 {
@@ -22540,10 +21320,10 @@ label_13:
           canUse = false;
         if (sItem.shoot == 17 && canUse && i == Main.myPlayer)
         {
-          int i1 = (int) ((double) Main.mouseX + Main.screenPosition.X) / 16;
-          int j = (int) ((double) Main.mouseY + Main.screenPosition.Y) / 16;
+          int i1 = (int) ((double) Main.mouseX + (double) Main.screenPosition.X) / 16;
+          int j = (int) ((double) Main.mouseY + (double) Main.screenPosition.Y) / 16;
           if ((double) this.gravDir == -1.0)
-            j = (int) (Main.screenPosition.Y + (double) Main.screenHeight - (double) Main.mouseY) / 16;
+            j = (int) ((double) Main.screenPosition.Y + (double) Main.screenHeight - (double) Main.mouseY) / 16;
           Tile tile = Main.tile[i1, j];
           if (tile.active() && ((int) tile.type == 0 || (int) tile.type == 2 || ((int) tile.type == 23 || (int) tile.type == 109) || (int) tile.type == 199))
           {
@@ -22694,8 +21474,8 @@ label_13:
         }
         else
         {
-          this.itemHeight = Main.itemTexture[sItem.type].get_Height();
-          this.itemWidth = Main.itemTexture[sItem.type].get_Width();
+          this.itemHeight = Main.itemTexture[sItem.type].Height;
+          this.itemWidth = Main.itemTexture[sItem.type].Width;
         }
         --this.itemAnimation;
         if (!Main.dedServ)
@@ -22707,20 +21487,20 @@ label_13:
               if ((double) this.itemAnimation < (double) this.itemAnimationMax * 0.333)
               {
                 float num = 10f;
-                this.itemLocation.X = (__Null) (this.position.X + (double) this.width * 0.5 + ((double) Main.itemTexture[sItem.type].get_Width() * 0.5 - (double) num) * (double) this.direction);
-                this.itemLocation.Y = (__Null) (this.position.Y + 26.0 + (double) playerOffsetHitbox);
+                this.itemLocation.X = (float) ((double) this.position.X + (double) this.width * 0.5 + ((double) Main.itemTexture[sItem.type].Width * 0.5 - (double) num) * (double) this.direction);
+                this.itemLocation.Y = this.position.Y + 26f + playerOffsetHitbox;
               }
               else if ((double) this.itemAnimation < (double) this.itemAnimationMax * 0.666)
               {
                 float num = 8f;
-                this.itemLocation.X = (__Null) (this.position.X + (double) this.width * 0.5 + ((double) Main.itemTexture[sItem.type].get_Width() * 0.5 - (double) num) * (double) this.direction);
-                this.itemLocation.Y = (__Null) (this.position.Y + 24.0 + (double) playerOffsetHitbox);
+                this.itemLocation.X = (float) ((double) this.position.X + (double) this.width * 0.5 + ((double) Main.itemTexture[sItem.type].Width * 0.5 - (double) num) * (double) this.direction);
+                this.itemLocation.Y = this.position.Y + 24f + playerOffsetHitbox;
               }
               else
               {
                 float num = 6f;
-                this.itemLocation.X = (__Null) (this.position.X + (double) this.width * 0.5 - ((double) Main.itemTexture[sItem.type].get_Width() * 0.5 - (double) num) * (double) this.direction);
-                this.itemLocation.Y = (__Null) (this.position.Y + 20.0 + (double) playerOffsetHitbox);
+                this.itemLocation.X = (float) ((double) this.position.X + (double) this.width * 0.5 - ((double) Main.itemTexture[sItem.type].Width * 0.5 - (double) num) * (double) this.direction);
+                this.itemLocation.Y = this.position.Y + 20f + playerOffsetHitbox;
               }
               this.itemRotation = (float) (((double) this.itemAnimation / (double) this.itemAnimationMax - 0.5) * (double) -this.direction * 3.5 - (double) this.direction * 0.300000011920929);
             }
@@ -22729,77 +21509,77 @@ label_13:
               if ((double) this.itemAnimation < (double) this.itemAnimationMax * 0.333)
               {
                 float num = 10f;
-                if (Main.itemTexture[sItem.type].get_Width() > 32)
+                if (Main.itemTexture[sItem.type].Width > 32)
                   num = 14f;
-                if (Main.itemTexture[sItem.type].get_Width() >= 52)
+                if (Main.itemTexture[sItem.type].Width >= 52)
                   num = 24f;
-                if (Main.itemTexture[sItem.type].get_Width() >= 64)
+                if (Main.itemTexture[sItem.type].Width >= 64)
                   num = 28f;
-                if (Main.itemTexture[sItem.type].get_Width() >= 92)
+                if (Main.itemTexture[sItem.type].Width >= 92)
                   num = 38f;
                 if (sItem.type == 2330 || sItem.type == 2320 || sItem.type == 2341)
                   num += 8f;
-                this.itemLocation.X = (__Null) (this.position.X + (double) this.width * 0.5 + ((double) Main.itemTexture[sItem.type].get_Width() * 0.5 - (double) num) * (double) this.direction);
-                this.itemLocation.Y = (__Null) (this.position.Y + 24.0 + (double) playerOffsetHitbox);
+                this.itemLocation.X = (float) ((double) this.position.X + (double) this.width * 0.5 + ((double) Main.itemTexture[sItem.type].Width * 0.5 - (double) num) * (double) this.direction);
+                this.itemLocation.Y = this.position.Y + 24f + playerOffsetHitbox;
               }
               else if ((double) this.itemAnimation < (double) this.itemAnimationMax * 0.666)
               {
                 float num1 = 10f;
-                if (Main.itemTexture[sItem.type].get_Width() > 32)
+                if (Main.itemTexture[sItem.type].Width > 32)
                   num1 = 18f;
-                if (Main.itemTexture[sItem.type].get_Width() >= 52)
+                if (Main.itemTexture[sItem.type].Width >= 52)
                   num1 = 24f;
-                if (Main.itemTexture[sItem.type].get_Width() >= 64)
+                if (Main.itemTexture[sItem.type].Width >= 64)
                   num1 = 28f;
-                if (Main.itemTexture[sItem.type].get_Width() >= 92)
+                if (Main.itemTexture[sItem.type].Width >= 92)
                   num1 = 38f;
                 if (sItem.type == 2330 || sItem.type == 2320 || sItem.type == 2341)
                   num1 += 4f;
-                this.itemLocation.X = (__Null) (this.position.X + (double) this.width * 0.5 + ((double) Main.itemTexture[sItem.type].get_Width() * 0.5 - (double) num1) * (double) this.direction);
+                this.itemLocation.X = (float) ((double) this.position.X + (double) this.width * 0.5 + ((double) Main.itemTexture[sItem.type].Width * 0.5 - (double) num1) * (double) this.direction);
                 float num2 = 10f;
-                if (Main.itemTexture[sItem.type].get_Height() > 32)
+                if (Main.itemTexture[sItem.type].Height > 32)
                   num2 = 8f;
-                if (Main.itemTexture[sItem.type].get_Height() > 52)
+                if (Main.itemTexture[sItem.type].Height > 52)
                   num2 = 12f;
-                if (Main.itemTexture[sItem.type].get_Height() > 64)
+                if (Main.itemTexture[sItem.type].Height > 64)
                   num2 = 14f;
                 if (sItem.type == 2330 || sItem.type == 2320 || sItem.type == 2341)
                   num2 += 4f;
-                this.itemLocation.Y = (__Null) (this.position.Y + (double) num2 + (double) playerOffsetHitbox);
+                this.itemLocation.Y = this.position.Y + num2 + playerOffsetHitbox;
               }
               else
               {
                 float num1 = 6f;
-                if (Main.itemTexture[sItem.type].get_Width() > 32)
+                if (Main.itemTexture[sItem.type].Width > 32)
                   num1 = 14f;
-                if (Main.itemTexture[sItem.type].get_Width() >= 48)
+                if (Main.itemTexture[sItem.type].Width >= 48)
                   num1 = 18f;
-                if (Main.itemTexture[sItem.type].get_Width() >= 52)
+                if (Main.itemTexture[sItem.type].Width >= 52)
                   num1 = 24f;
-                if (Main.itemTexture[sItem.type].get_Width() >= 64)
+                if (Main.itemTexture[sItem.type].Width >= 64)
                   num1 = 28f;
-                if (Main.itemTexture[sItem.type].get_Width() >= 92)
+                if (Main.itemTexture[sItem.type].Width >= 92)
                   num1 = 38f;
                 if (sItem.type == 2330 || sItem.type == 2320 || sItem.type == 2341)
                   num1 += 4f;
-                this.itemLocation.X = (__Null) (this.position.X + (double) this.width * 0.5 - ((double) Main.itemTexture[sItem.type].get_Width() * 0.5 - (double) num1) * (double) this.direction);
+                this.itemLocation.X = (float) ((double) this.position.X + (double) this.width * 0.5 - ((double) Main.itemTexture[sItem.type].Width * 0.5 - (double) num1) * (double) this.direction);
                 float num2 = 10f;
-                if (Main.itemTexture[sItem.type].get_Height() > 32)
+                if (Main.itemTexture[sItem.type].Height > 32)
                   num2 = 10f;
-                if (Main.itemTexture[sItem.type].get_Height() > 52)
+                if (Main.itemTexture[sItem.type].Height > 52)
                   num2 = 12f;
-                if (Main.itemTexture[sItem.type].get_Height() > 64)
+                if (Main.itemTexture[sItem.type].Height > 64)
                   num2 = 14f;
                 if (sItem.type == 2330 || sItem.type == 2320 || sItem.type == 2341)
                   num2 += 4f;
-                this.itemLocation.Y = (__Null) (this.position.Y + (double) num2 + (double) playerOffsetHitbox);
+                this.itemLocation.Y = this.position.Y + num2 + playerOffsetHitbox;
               }
               this.itemRotation = (float) (((double) this.itemAnimation / (double) this.itemAnimationMax - 0.5) * (double) -this.direction * 3.5 - (double) this.direction * 0.300000011920929);
             }
             if ((double) this.gravDir == -1.0)
             {
               this.itemRotation = -this.itemRotation;
-              this.itemLocation.Y = (__Null) (this.position.Y + (double) this.height + (this.position.Y - this.itemLocation.Y));
+              this.itemLocation.Y = (float) ((double) this.position.Y + (double) this.height + ((double) this.position.Y - (double) this.itemLocation.Y));
             }
           }
           else if (sItem.useStyle == 2)
@@ -22807,50 +21587,44 @@ label_13:
             this.itemRotation = (float) ((double) this.itemAnimation / (double) this.itemAnimationMax * (double) this.direction * 2.0 + -1.39999997615814 * (double) this.direction);
             if ((double) this.itemAnimation < (double) this.itemAnimationMax * 0.5)
             {
-              this.itemLocation.X = (__Null) (this.position.X + (double) this.width * 0.5 + ((double) Main.itemTexture[sItem.type].get_Width() * 0.5 - 9.0 - (double) this.itemRotation * 12.0 * (double) this.direction) * (double) this.direction);
-              this.itemLocation.Y = (__Null) (this.position.Y + 38.0 + (double) this.itemRotation * (double) this.direction * 4.0 + (double) playerOffsetHitbox);
+              this.itemLocation.X = (float) ((double) this.position.X + (double) this.width * 0.5 + ((double) Main.itemTexture[sItem.type].Width * 0.5 - 9.0 - (double) this.itemRotation * 12.0 * (double) this.direction) * (double) this.direction);
+              this.itemLocation.Y = (float) ((double) this.position.Y + 38.0 + (double) this.itemRotation * (double) this.direction * 4.0) + playerOffsetHitbox;
             }
             else
             {
-              this.itemLocation.X = (__Null) (this.position.X + (double) this.width * 0.5 + ((double) Main.itemTexture[sItem.type].get_Width() * 0.5 - 9.0 - (double) this.itemRotation * 16.0 * (double) this.direction) * (double) this.direction);
-              this.itemLocation.Y = (__Null) (this.position.Y + 38.0 + (double) this.itemRotation * (double) this.direction + (double) playerOffsetHitbox);
+              this.itemLocation.X = (float) ((double) this.position.X + (double) this.width * 0.5 + ((double) Main.itemTexture[sItem.type].Width * 0.5 - 9.0 - (double) this.itemRotation * 16.0 * (double) this.direction) * (double) this.direction);
+              this.itemLocation.Y = (float) ((double) this.position.Y + 38.0 + (double) this.itemRotation * (double) this.direction) + playerOffsetHitbox;
             }
             if ((double) this.gravDir == -1.0)
             {
               this.itemRotation = -this.itemRotation;
-              this.itemLocation.Y = (__Null) (this.position.Y + (double) this.height + (this.position.Y - this.itemLocation.Y));
+              this.itemLocation.Y = (float) ((double) this.position.Y + (double) this.height + ((double) this.position.Y - (double) this.itemLocation.Y));
             }
           }
           else if (sItem.useStyle == 3)
           {
             if ((double) this.itemAnimation > (double) this.itemAnimationMax * 0.666)
             {
-              this.itemLocation.X = (__Null) -1000.0;
-              this.itemLocation.Y = (__Null) -1000.0;
+              this.itemLocation.X = -1000f;
+              this.itemLocation.Y = -1000f;
               this.itemRotation = -1.3f * (float) this.direction;
             }
             else
             {
-              this.itemLocation.X = (__Null) (this.position.X + (double) this.width * 0.5 + ((double) Main.itemTexture[sItem.type].get_Width() * 0.5 - 4.0) * (double) this.direction);
-              this.itemLocation.Y = (__Null) (this.position.Y + 24.0 + (double) playerOffsetHitbox);
-              float num1 = (float) ((double) this.itemAnimation / (double) this.itemAnimationMax * (double) Main.itemTexture[sItem.type].get_Width() * (double) this.direction * (double) sItem.scale * 1.20000004768372) - (float) (10 * this.direction);
-              if ((double) num1 > -4.0 && this.direction == -1)
-                num1 = -8f;
-              if ((double) num1 < 4.0 && this.direction == 1)
-                num1 = 8f;
-              // ISSUE: explicit reference operation
-              // ISSUE: variable of a reference type
-              Vector2& local = @this.itemLocation;
-              // ISSUE: explicit reference operation
-              double num2 = (^local).X - (double) num1;
-              // ISSUE: explicit reference operation
-              (^local).X = (__Null) num2;
+              this.itemLocation.X = (float) ((double) this.position.X + (double) this.width * 0.5 + ((double) Main.itemTexture[sItem.type].Width * 0.5 - 4.0) * (double) this.direction);
+              this.itemLocation.Y = this.position.Y + 24f + playerOffsetHitbox;
+              float num = (float) ((double) this.itemAnimation / (double) this.itemAnimationMax * (double) Main.itemTexture[sItem.type].Width * (double) this.direction * (double) sItem.scale * 1.20000004768372) - (float) (10 * this.direction);
+              if ((double) num > -4.0 && this.direction == -1)
+                num = -8f;
+              if ((double) num < 4.0 && this.direction == 1)
+                num = 8f;
+              this.itemLocation.X -= num;
               this.itemRotation = 0.8f * (float) this.direction;
             }
             if ((double) this.gravDir == -1.0)
             {
               this.itemRotation = -this.itemRotation;
-              this.itemLocation.Y = (__Null) (this.position.Y + (double) this.height + (this.position.Y - this.itemLocation.Y));
+              this.itemLocation.Y = (float) ((double) this.position.Y + (double) this.height + ((double) this.position.Y - (double) this.itemLocation.Y));
             }
           }
           else if (sItem.useStyle == 4)
@@ -22859,12 +21633,12 @@ label_13:
             if (sItem.type == 3601)
               num = 10;
             this.itemRotation = 0.0f;
-            this.itemLocation.X = (__Null) (this.position.X + (double) this.width * 0.5 + ((double) Main.itemTexture[sItem.type].get_Width() * 0.5 - 9.0 - (double) this.itemRotation * 14.0 * (double) this.direction - 4.0 - (double) num) * (double) this.direction);
-            this.itemLocation.Y = (__Null) (this.position.Y + (double) Main.itemTexture[sItem.type].get_Height() * 0.5 + 4.0 + (double) playerOffsetHitbox);
+            this.itemLocation.X = (float) ((double) this.position.X + (double) this.width * 0.5 + ((double) Main.itemTexture[sItem.type].Width * 0.5 - 9.0 - (double) this.itemRotation * 14.0 * (double) this.direction - 4.0 - (double) num) * (double) this.direction);
+            this.itemLocation.Y = (float) ((double) this.position.Y + (double) Main.itemTexture[sItem.type].Height * 0.5 + 4.0) + playerOffsetHitbox;
             if ((double) this.gravDir == -1.0)
             {
               this.itemRotation = -this.itemRotation;
-              this.itemLocation.Y = (__Null) (this.position.Y + (double) this.height + (this.position.Y - this.itemLocation.Y));
+              this.itemLocation.Y = (float) ((double) this.position.Y + (double) this.height + ((double) this.position.Y - (double) this.itemLocation.Y));
             }
           }
           else if (sItem.useStyle == 5)
@@ -22872,8 +21646,8 @@ label_13:
             if (sItem.type == 3779)
             {
               this.itemRotation = 0.0f;
-              this.itemLocation.X = (__Null) (this.Center.X + (double) (6 * this.direction));
-              this.itemLocation.Y = (__Null) (this.MountedCenter.Y + 6.0);
+              this.itemLocation.X = this.Center.X + (float) (6 * this.direction);
+              this.itemLocation.Y = this.MountedCenter.Y + 6f;
             }
             else if (Item.staff[sItem.type])
             {
@@ -22881,14 +21655,12 @@ label_13:
               if (sItem.type == 3476)
                 num = 14f;
               this.itemLocation = this.MountedCenter;
-              Player player = this;
-              Vector2 vector2 = Vector2.op_Addition(player.itemLocation, Vector2.op_Multiply(Vector2.op_Multiply(this.itemRotation.ToRotationVector2(), num), (float) this.direction));
-              player.itemLocation = vector2;
+              this.itemLocation += this.itemRotation.ToRotationVector2() * num * (float) this.direction;
             }
             else
             {
-              this.itemLocation.X = (__Null) (this.position.X + (double) this.width * 0.5 - (double) Main.itemTexture[sItem.type].get_Width() * 0.5 - (double) (this.direction * 2));
-              this.itemLocation.Y = (__Null) (this.MountedCenter.Y - (double) Main.itemTexture[sItem.type].get_Height() * 0.5);
+              this.itemLocation.X = (float) ((double) this.position.X + (double) this.width * 0.5 - (double) Main.itemTexture[sItem.type].Width * 0.5) - (float) (this.direction * 2);
+              this.itemLocation.Y = this.MountedCenter.Y - (float) Main.itemTexture[sItem.type].Height * 0.5f;
             }
           }
         }
@@ -22896,14 +21668,14 @@ label_13:
       else if (sItem.holdStyle == 1 && !this.pulley)
       {
         if (Main.dedServ)
-          this.itemLocation.X = (__Null) (this.position.X + (double) this.width * 0.5 + 20.0 * (double) this.direction);
+          this.itemLocation.X = (float) ((double) this.position.X + (double) this.width * 0.5 + 20.0 * (double) this.direction);
         else if (sItem.type == 930)
         {
-          this.itemLocation.X = (__Null) (this.position.X + (double) (this.width / 2) * 0.5 - 12.0 - (double) (2 * this.direction));
-          float x = (float) this.position.X + (float) (this.width / 2) + (float) (38 * this.direction);
+          this.itemLocation.X = (float) ((double) this.position.X + (double) (this.width / 2) * 0.5 - 12.0) - (float) (2 * this.direction);
+          float x = this.position.X + (float) (this.width / 2) + (float) (38 * this.direction);
           if (this.direction == 1)
             x -= 10f;
-          float y = (float) (this.MountedCenter.Y - 4.0 * (double) this.gravDir);
+          float y = this.MountedCenter.Y - 4f * this.gravDir;
           if ((double) this.gravDir == -1.0)
             y -= 8f;
           this.RotateRelativePoint(ref x, ref y);
@@ -22933,24 +21705,18 @@ label_13:
             Type = 187;
           if (Type > 0)
           {
-            int index = Dust.NewDust(new Vector2(x, y + this.gfxOffY), 6, 6, Type, 0.0f, 0.0f, 100, (Color) null, 1.6f);
+            int index = Dust.NewDust(new Vector2(x, y + this.gfxOffY), 6, 6, Type, 0.0f, 0.0f, 100, new Color(), 1.6f);
             Main.dust[index].noGravity = true;
-            // ISSUE: explicit reference operation
-            // ISSUE: variable of a reference type
-            Vector2& local = @Main.dust[index].velocity;
-            // ISSUE: explicit reference operation
-            double num = (^local).Y - 4.0 * (double) this.gravDir;
-            // ISSUE: explicit reference operation
-            (^local).Y = (__Null) num;
+            Main.dust[index].velocity.Y -= 4f * this.gravDir;
           }
         }
         else if (sItem.type == 968)
         {
-          this.itemLocation.X = (__Null) (this.position.X + (double) this.width * 0.5 + (double) (8 * this.direction));
+          this.itemLocation.X = this.position.X + (float) this.width * 0.5f + (float) (8 * this.direction);
           if (this.whoAmI == Main.myPlayer)
           {
-            int index1 = (int) (this.itemLocation.X + (double) Main.itemTexture[sItem.type].get_Width() * 0.800000011920929 * (double) this.direction) / 16;
-            int index2 = (int) (this.itemLocation.Y + (double) playerOffsetHitbox + (double) (Main.itemTexture[sItem.type].get_Height() / 2)) / 16;
+            int index1 = (int) ((double) this.itemLocation.X + (double) Main.itemTexture[sItem.type].Width * 0.800000011920929 * (double) this.direction) / 16;
+            int index2 = (int) ((double) this.itemLocation.Y + (double) playerOffsetHitbox + (double) (Main.itemTexture[sItem.type].Height / 2)) / 16;
             if (Main.tile[index1, index2] == null)
               Main.tile[index1, index2] = new Tile();
             if (Main.tile[index1, index2].active() && (int) Main.tile[index1, index2].type == 215 && (int) Main.tile[index1, index2].frameY < 54)
@@ -22982,94 +21748,54 @@ label_13:
           }
         }
         else if (sItem.type == 856)
-          this.itemLocation.X = (__Null) (this.position.X + (double) this.width * 0.5 + (double) (4 * this.direction));
+          this.itemLocation.X = this.position.X + (float) this.width * 0.5f + (float) (4 * this.direction);
         else if (sItem.fishingPole > 0)
         {
-          this.itemLocation.X = (__Null) (this.position.X + (double) this.width * 0.5 + (double) Main.itemTexture[sItem.type].get_Width() * 0.180000007152557 * (double) this.direction);
+          this.itemLocation.X = (float) ((double) this.position.X + (double) this.width * 0.5 + (double) Main.itemTexture[sItem.type].Width * 0.180000007152557 * (double) this.direction);
         }
         else
         {
-          this.itemLocation.X = (__Null) (this.position.X + (double) this.width * 0.5 + ((double) Main.itemTexture[sItem.type].get_Width() * 0.5 + 2.0) * (double) this.direction);
+          this.itemLocation.X = (float) ((double) this.position.X + (double) this.width * 0.5 + ((double) Main.itemTexture[sItem.type].Width * 0.5 + 2.0) * (double) this.direction);
           if (sItem.type == 282 || sItem.type == 286 || sItem.type == 3112)
           {
-            // ISSUE: explicit reference operation
-            // ISSUE: variable of a reference type
-            Vector2& local1 = @this.itemLocation;
-            // ISSUE: explicit reference operation
-            double num1 = (^local1).X - (double) (this.direction * 2);
-            // ISSUE: explicit reference operation
-            (^local1).X = (__Null) num1;
-            // ISSUE: explicit reference operation
-            // ISSUE: variable of a reference type
-            Vector2& local2 = @this.itemLocation;
-            // ISSUE: explicit reference operation
-            double num2 = (^local2).Y + 4.0;
-            // ISSUE: explicit reference operation
-            (^local2).Y = (__Null) num2;
+            this.itemLocation.X -= (float) (this.direction * 2);
+            this.itemLocation.Y += 4f;
           }
           else if (sItem.type == 3002)
           {
-            // ISSUE: explicit reference operation
-            // ISSUE: variable of a reference type
-            Vector2& local1 = @this.itemLocation;
-            // ISSUE: explicit reference operation
-            double num1 = (^local1).X - (double) (4 * this.direction);
-            // ISSUE: explicit reference operation
-            (^local1).X = (__Null) num1;
-            // ISSUE: explicit reference operation
-            // ISSUE: variable of a reference type
-            Vector2& local2 = @this.itemLocation;
-            // ISSUE: explicit reference operation
-            double num2 = (^local2).Y + 2.0;
-            // ISSUE: explicit reference operation
-            (^local2).Y = (__Null) num2;
+            this.itemLocation.X -= (float) (4 * this.direction);
+            this.itemLocation.Y += 2f;
           }
         }
-        this.itemLocation.Y = (__Null) (this.position.Y + 24.0 + (double) playerOffsetHitbox);
+        this.itemLocation.Y = this.position.Y + 24f + playerOffsetHitbox;
         if (sItem.type == 856)
-          this.itemLocation.Y = (__Null) (this.position.Y + 34.0 + (double) playerOffsetHitbox);
+          this.itemLocation.Y = this.position.Y + 34f + playerOffsetHitbox;
         if (sItem.type == 930)
-          this.itemLocation.Y = (__Null) (this.position.Y + 9.0 + (double) playerOffsetHitbox);
+          this.itemLocation.Y = this.position.Y + 9f + playerOffsetHitbox;
         if (sItem.fishingPole > 0)
-        {
-          // ISSUE: explicit reference operation
-          // ISSUE: variable of a reference type
-          Vector2& local = @this.itemLocation;
-          // ISSUE: explicit reference operation
-          double num = (^local).Y + 4.0;
-          // ISSUE: explicit reference operation
-          (^local).Y = (__Null) num;
-        }
+          this.itemLocation.Y += 4f;
         else if (sItem.type == 3476)
         {
-          this.itemLocation.X = (__Null) (this.Center.X + (double) (14 * this.direction));
+          this.itemLocation.X = this.Center.X + (float) (14 * this.direction);
           this.itemLocation.Y = this.MountedCenter.Y;
         }
         else if (sItem.type == 3779)
         {
-          this.itemLocation.X = (__Null) (this.Center.X + (double) (6 * this.direction));
-          this.itemLocation.Y = (__Null) (this.MountedCenter.Y + 6.0);
+          this.itemLocation.X = this.Center.X + (float) (6 * this.direction);
+          this.itemLocation.Y = this.MountedCenter.Y + 6f;
         }
         else if (sItem.type == 353)
         {
-          this.itemLocation.X = (__Null) (this.Center.X + (double) (8 * this.direction));
-          this.itemLocation.Y = (__Null) (this.MountedCenter.Y + 11.0);
+          this.itemLocation.X = this.Center.X + (float) (8 * this.direction);
+          this.itemLocation.Y = this.MountedCenter.Y + 11f;
         }
         this.itemRotation = 0.0f;
         if ((double) this.gravDir == -1.0)
         {
           this.itemRotation = -this.itemRotation;
-          this.itemLocation.Y = (__Null) (this.position.Y + (double) this.height + (this.position.Y - this.itemLocation.Y) + (double) playerOffsetHitbox);
+          this.itemLocation.Y = (float) ((double) this.position.Y + (double) this.height + ((double) this.position.Y - (double) this.itemLocation.Y)) + playerOffsetHitbox;
           if (sItem.type == 930)
-          {
-            // ISSUE: explicit reference operation
-            // ISSUE: variable of a reference type
-            Vector2& local = @this.itemLocation;
-            // ISSUE: explicit reference operation
-            double num = (^local).Y - 24.0;
-            // ISSUE: explicit reference operation
-            (^local).Y = (__Null) num;
-          }
+            this.itemLocation.Y -= 24f;
         }
       }
       else if (sItem.holdStyle == 2 && !this.pulley)
@@ -23077,35 +21803,35 @@ label_13:
         if (sItem.type == 946)
         {
           this.itemRotation = 0.0f;
-          this.itemLocation.X = (__Null) (this.position.X + (double) this.width * 0.5 - (double) (16 * this.direction));
-          this.itemLocation.Y = (__Null) (this.position.Y + 22.0 + (double) playerOffsetHitbox);
-          this.fallStart = (int) (this.position.Y / 16.0);
+          this.itemLocation.X = this.position.X + (float) this.width * 0.5f - (float) (16 * this.direction);
+          this.itemLocation.Y = this.position.Y + 22f + playerOffsetHitbox;
+          this.fallStart = (int) ((double) this.position.Y / 16.0);
           if ((double) this.gravDir == -1.0)
           {
             this.itemRotation = -this.itemRotation;
-            this.itemLocation.Y = (__Null) (this.position.Y + (double) this.height + (this.position.Y - this.itemLocation.Y));
-            if (this.velocity.Y < -2.0)
-              this.velocity.Y = (__Null) -2.0;
+            this.itemLocation.Y = (float) ((double) this.position.Y + (double) this.height + ((double) this.position.Y - (double) this.itemLocation.Y));
+            if ((double) this.velocity.Y < -2.0)
+              this.velocity.Y = -2f;
           }
-          else if (this.velocity.Y > 2.0)
-            this.velocity.Y = (__Null) 2.0;
+          else if ((double) this.velocity.Y > 2.0)
+            this.velocity.Y = 2f;
         }
         else
         {
-          this.itemLocation.X = (__Null) (this.position.X + (double) this.width * 0.5 + (double) (6 * this.direction));
-          this.itemLocation.Y = (__Null) (this.position.Y + 16.0 + (double) playerOffsetHitbox);
+          this.itemLocation.X = this.position.X + (float) this.width * 0.5f + (float) (6 * this.direction);
+          this.itemLocation.Y = this.position.Y + 16f + playerOffsetHitbox;
           this.itemRotation = 0.79f * (float) -this.direction;
           if ((double) this.gravDir == -1.0)
           {
             this.itemRotation = -this.itemRotation;
-            this.itemLocation.Y = (__Null) (this.position.Y + (double) this.height + (this.position.Y - this.itemLocation.Y));
+            this.itemLocation.Y = (float) ((double) this.position.Y + (double) this.height + ((double) this.position.Y - (double) this.itemLocation.Y));
           }
         }
       }
       else if (sItem.holdStyle == 3 && !this.pulley && !Main.dedServ)
       {
-        this.itemLocation.X = (__Null) (this.position.X + (double) this.width * 0.5 - (double) Main.itemTexture[sItem.type].get_Width() * 0.5 - (double) (this.direction * 2));
-        this.itemLocation.Y = (__Null) (this.MountedCenter.Y - (double) Main.itemTexture[sItem.type].get_Height() * 0.5);
+        this.itemLocation.X = (float) ((double) this.position.X + (double) this.width * 0.5 - (double) Main.itemTexture[sItem.type].Width * 0.5) - (float) (this.direction * 2);
+        this.itemLocation.Y = this.MountedCenter.Y - (float) Main.itemTexture[sItem.type].Height * 0.5f;
         this.itemRotation = 0.0f;
       }
       if (((sItem.type == 974 || sItem.type == 8 || (sItem.type == 1245 || sItem.type == 2274) || (sItem.type == 3004 || sItem.type == 3045 || sItem.type == 3114) || sItem.type >= 427 && sItem.type <= 433) && !this.wet || (sItem.type == 523 || sItem.type == 1333)) && !this.pulley)
@@ -23264,19 +21990,11 @@ label_13:
         {
           if (Main.rand.Next(maxValue) == 0)
           {
-            int index = Dust.NewDust(new Vector2((float) (this.itemLocation.X - 16.0), (float) (this.itemLocation.Y - 14.0 * (double) this.gravDir)), 4, 4, Type, 0.0f, 0.0f, 100, (Color) null, 1f);
+            int index = Dust.NewDust(new Vector2(this.itemLocation.X - 16f, this.itemLocation.Y - 14f * this.gravDir), 4, 4, Type, 0.0f, 0.0f, 100, new Color(), 1f);
             if (Main.rand.Next(3) != 0)
               Main.dust[index].noGravity = true;
-            Dust dust = Main.dust[index];
-            Vector2 vector2 = Vector2.op_Multiply(dust.velocity, 0.3f);
-            dust.velocity = vector2;
-            // ISSUE: explicit reference operation
-            // ISSUE: variable of a reference type
-            Vector2& local = @Main.dust[index].velocity;
-            // ISSUE: explicit reference operation
-            double num3 = (^local).Y - 1.5;
-            // ISSUE: explicit reference operation
-            (^local).Y = (__Null) num3;
+            Main.dust[index].velocity *= 0.3f;
+            Main.dust[index].velocity.Y -= 1.5f;
             Main.dust[index].position = this.RotatedRelativePoint(Main.dust[index].position, true);
             if (Type == 66)
             {
@@ -23284,25 +22002,17 @@ label_13:
               Main.dust[index].noGravity = true;
             }
           }
-          Lighting.AddLight(this.RotatedRelativePoint(new Vector2((float) (this.itemLocation.X - 12.0 + this.velocity.X), (float) (this.itemLocation.Y - 14.0 + this.velocity.Y)), true), R, G, B);
+          Lighting.AddLight(this.RotatedRelativePoint(new Vector2(this.itemLocation.X - 12f + this.velocity.X, this.itemLocation.Y - 14f + this.velocity.Y), true), R, G, B);
         }
         else
         {
           if (Main.rand.Next(maxValue) == 0)
           {
-            int index = Dust.NewDust(new Vector2((float) (this.itemLocation.X + 6.0), (float) (this.itemLocation.Y - 14.0 * (double) this.gravDir)), 4, 4, Type, 0.0f, 0.0f, 100, (Color) null, 1f);
+            int index = Dust.NewDust(new Vector2(this.itemLocation.X + 6f, this.itemLocation.Y - 14f * this.gravDir), 4, 4, Type, 0.0f, 0.0f, 100, new Color(), 1f);
             if (Main.rand.Next(3) != 0)
               Main.dust[index].noGravity = true;
-            Dust dust = Main.dust[index];
-            Vector2 vector2 = Vector2.op_Multiply(dust.velocity, 0.3f);
-            dust.velocity = vector2;
-            // ISSUE: explicit reference operation
-            // ISSUE: variable of a reference type
-            Vector2& local = @Main.dust[index].velocity;
-            // ISSUE: explicit reference operation
-            double num3 = (^local).Y - 1.5;
-            // ISSUE: explicit reference operation
-            (^local).Y = (__Null) num3;
+            Main.dust[index].velocity *= 0.3f;
+            Main.dust[index].velocity.Y -= 1.5f;
             Main.dust[index].position = this.RotatedRelativePoint(Main.dust[index].position, true);
             if (Type == 66)
             {
@@ -23310,7 +22020,7 @@ label_13:
               Main.dust[index].noGravity = true;
             }
           }
-          Lighting.AddLight(this.RotatedRelativePoint(new Vector2((float) (this.itemLocation.X + 12.0 + this.velocity.X), (float) (this.itemLocation.Y - 14.0 + this.velocity.Y)), true), R, G, B);
+          Lighting.AddLight(this.RotatedRelativePoint(new Vector2(this.itemLocation.X + 12f + this.velocity.X, this.itemLocation.Y - 14f + this.velocity.Y), true), R, G, B);
         }
       }
       if ((sItem.type == 105 || sItem.type == 713) && (!this.wet && !this.pulley))
@@ -23322,43 +22032,27 @@ label_13:
         {
           if (Main.rand.Next(maxValue) == 0)
           {
-            int index = Dust.NewDust(new Vector2((float) (this.itemLocation.X - 12.0), (float) (this.itemLocation.Y - 20.0 * (double) this.gravDir)), 4, 4, 6, 0.0f, 0.0f, 100, (Color) null, 1f);
+            int index = Dust.NewDust(new Vector2(this.itemLocation.X - 12f, this.itemLocation.Y - 20f * this.gravDir), 4, 4, 6, 0.0f, 0.0f, 100, new Color(), 1f);
             if (Main.rand.Next(3) != 0)
               Main.dust[index].noGravity = true;
-            Dust dust = Main.dust[index];
-            Vector2 vector2 = Vector2.op_Multiply(dust.velocity, 0.3f);
-            dust.velocity = vector2;
-            // ISSUE: explicit reference operation
-            // ISSUE: variable of a reference type
-            Vector2& local = @Main.dust[index].velocity;
-            // ISSUE: explicit reference operation
-            double num = (^local).Y - 1.5;
-            // ISSUE: explicit reference operation
-            (^local).Y = (__Null) num;
+            Main.dust[index].velocity *= 0.3f;
+            Main.dust[index].velocity.Y -= 1.5f;
             Main.dust[index].position = this.RotatedRelativePoint(Main.dust[index].position, true);
           }
-          Lighting.AddLight(this.RotatedRelativePoint(new Vector2((float) (this.itemLocation.X - 16.0 + this.velocity.X), (float) (this.itemLocation.Y - 14.0)), true), 1f, 0.95f, 0.8f);
+          Lighting.AddLight(this.RotatedRelativePoint(new Vector2(this.itemLocation.X - 16f + this.velocity.X, this.itemLocation.Y - 14f), true), 1f, 0.95f, 0.8f);
         }
         else
         {
           if (Main.rand.Next(maxValue) == 0)
           {
-            int index = Dust.NewDust(new Vector2((float) (this.itemLocation.X + 4.0), (float) (this.itemLocation.Y - 20.0 * (double) this.gravDir)), 4, 4, 6, 0.0f, 0.0f, 100, (Color) null, 1f);
+            int index = Dust.NewDust(new Vector2(this.itemLocation.X + 4f, this.itemLocation.Y - 20f * this.gravDir), 4, 4, 6, 0.0f, 0.0f, 100, new Color(), 1f);
             if (Main.rand.Next(3) != 0)
               Main.dust[index].noGravity = true;
-            Dust dust = Main.dust[index];
-            Vector2 vector2 = Vector2.op_Multiply(dust.velocity, 0.3f);
-            dust.velocity = vector2;
-            // ISSUE: explicit reference operation
-            // ISSUE: variable of a reference type
-            Vector2& local = @Main.dust[index].velocity;
-            // ISSUE: explicit reference operation
-            double num = (^local).Y - 1.5;
-            // ISSUE: explicit reference operation
-            (^local).Y = (__Null) num;
+            Main.dust[index].velocity *= 0.3f;
+            Main.dust[index].velocity.Y -= 1.5f;
             Main.dust[index].position = this.RotatedRelativePoint(Main.dust[index].position, true);
           }
-          Lighting.AddLight(this.RotatedRelativePoint(new Vector2((float) (this.itemLocation.X + 6.0 + this.velocity.X), (float) (this.itemLocation.Y - 14.0)), true), 1f, 0.95f, 0.8f);
+          Lighting.AddLight(this.RotatedRelativePoint(new Vector2(this.itemLocation.X + 6f + this.velocity.X, this.itemLocation.Y - 14f), true), 1f, 0.95f, 0.8f);
         }
       }
       else if (sItem.type == 148 && !this.wet)
@@ -23370,54 +22064,32 @@ label_13:
         {
           if (Main.rand.Next(maxValue) == 0)
           {
-            int index = Dust.NewDust(new Vector2((float) (this.itemLocation.X - 12.0), (float) (this.itemLocation.Y - 20.0 * (double) this.gravDir)), 4, 4, 172, 0.0f, 0.0f, 100, (Color) null, 1f);
+            int index = Dust.NewDust(new Vector2(this.itemLocation.X - 12f, this.itemLocation.Y - 20f * this.gravDir), 4, 4, 172, 0.0f, 0.0f, 100, new Color(), 1f);
             if (Main.rand.Next(3) != 0)
               Main.dust[index].noGravity = true;
-            Dust dust = Main.dust[index];
-            Vector2 vector2 = Vector2.op_Multiply(dust.velocity, 0.3f);
-            dust.velocity = vector2;
-            // ISSUE: explicit reference operation
-            // ISSUE: variable of a reference type
-            Vector2& local = @Main.dust[index].velocity;
-            // ISSUE: explicit reference operation
-            double num = (^local).Y - 1.5;
-            // ISSUE: explicit reference operation
-            (^local).Y = (__Null) num;
+            Main.dust[index].velocity *= 0.3f;
+            Main.dust[index].velocity.Y -= 1.5f;
             Main.dust[index].position = this.RotatedRelativePoint(Main.dust[index].position, true);
           }
-          Lighting.AddLight(this.RotatedRelativePoint(new Vector2((float) (this.itemLocation.X - 16.0 + this.velocity.X), (float) (this.itemLocation.Y - 14.0)), true), 0.0f, 0.5f, 1f);
+          Lighting.AddLight(this.RotatedRelativePoint(new Vector2(this.itemLocation.X - 16f + this.velocity.X, this.itemLocation.Y - 14f), true), 0.0f, 0.5f, 1f);
         }
         else
         {
           if (Main.rand.Next(maxValue) == 0)
           {
-            int index = Dust.NewDust(new Vector2((float) (this.itemLocation.X + 4.0), (float) (this.itemLocation.Y - 20.0 * (double) this.gravDir)), 4, 4, 172, 0.0f, 0.0f, 100, (Color) null, 1f);
+            int index = Dust.NewDust(new Vector2(this.itemLocation.X + 4f, this.itemLocation.Y - 20f * this.gravDir), 4, 4, 172, 0.0f, 0.0f, 100, new Color(), 1f);
             if (Main.rand.Next(3) != 0)
               Main.dust[index].noGravity = true;
-            Dust dust = Main.dust[index];
-            Vector2 vector2 = Vector2.op_Multiply(dust.velocity, 0.3f);
-            dust.velocity = vector2;
-            // ISSUE: explicit reference operation
-            // ISSUE: variable of a reference type
-            Vector2& local = @Main.dust[index].velocity;
-            // ISSUE: explicit reference operation
-            double num = (^local).Y - 1.5;
-            // ISSUE: explicit reference operation
-            (^local).Y = (__Null) num;
+            Main.dust[index].velocity *= 0.3f;
+            Main.dust[index].velocity.Y -= 1.5f;
             Main.dust[index].position = this.RotatedRelativePoint(Main.dust[index].position, true);
           }
-          Lighting.AddLight(this.RotatedRelativePoint(new Vector2((float) (this.itemLocation.X + 6.0 + this.velocity.X), (float) (this.itemLocation.Y - 14.0)), true), 0.0f, 0.5f, 1f);
+          Lighting.AddLight(this.RotatedRelativePoint(new Vector2(this.itemLocation.X + 6f + this.velocity.X, this.itemLocation.Y - 14f), true), 0.0f, 0.5f, 1f);
         }
       }
       else if (sItem.type == 3117 && !this.wet)
       {
-        // ISSUE: explicit reference operation
-        // ISSUE: variable of a reference type
-        Vector2& local1 = @this.itemLocation;
-        // ISSUE: explicit reference operation
-        double num1 = (^local1).X - (double) (this.direction * 4);
-        // ISSUE: explicit reference operation
-        (^local1).X = (__Null) num1;
+        this.itemLocation.X -= (float) (this.direction * 4);
         int maxValue = 10;
         if (this.itemAnimation > 0)
           maxValue = 7;
@@ -23425,51 +22097,35 @@ label_13:
         {
           if (Main.rand.Next(maxValue) == 0)
           {
-            int index = Dust.NewDust(new Vector2((float) (this.itemLocation.X - 10.0), (float) (this.itemLocation.Y - 20.0 * (double) this.gravDir)), 4, 4, 242, 0.0f, 0.0f, 100, (Color) null, 1f);
+            int index = Dust.NewDust(new Vector2(this.itemLocation.X - 10f, this.itemLocation.Y - 20f * this.gravDir), 4, 4, 242, 0.0f, 0.0f, 100, new Color(), 1f);
             if (Main.rand.Next(3) != 0)
               Main.dust[index].noGravity = true;
-            Dust dust = Main.dust[index];
-            Vector2 vector2 = Vector2.op_Multiply(dust.velocity, 0.3f);
-            dust.velocity = vector2;
-            // ISSUE: explicit reference operation
-            // ISSUE: variable of a reference type
-            Vector2& local2 = @Main.dust[index].velocity;
-            // ISSUE: explicit reference operation
-            double num2 = (^local2).Y - 1.5;
-            // ISSUE: explicit reference operation
-            (^local2).Y = (__Null) num2;
+            Main.dust[index].velocity *= 0.3f;
+            Main.dust[index].velocity.Y -= 1.5f;
             Main.dust[index].position = this.RotatedRelativePoint(Main.dust[index].position, true);
           }
-          Lighting.AddLight(this.RotatedRelativePoint(new Vector2((float) (this.itemLocation.X - 16.0 + this.velocity.X), (float) (this.itemLocation.Y - 14.0)), true), 0.9f, 0.1f, 0.75f);
+          Lighting.AddLight(this.RotatedRelativePoint(new Vector2(this.itemLocation.X - 16f + this.velocity.X, this.itemLocation.Y - 14f), true), 0.9f, 0.1f, 0.75f);
         }
         else
         {
           if (Main.rand.Next(maxValue) == 0)
           {
-            int index = Dust.NewDust(new Vector2((float) (this.itemLocation.X + 6.0), (float) (this.itemLocation.Y - 20.0 * (double) this.gravDir)), 4, 4, 242, 0.0f, 0.0f, 100, (Color) null, 1f);
+            int index = Dust.NewDust(new Vector2(this.itemLocation.X + 6f, this.itemLocation.Y - 20f * this.gravDir), 4, 4, 242, 0.0f, 0.0f, 100, new Color(), 1f);
             if (Main.rand.Next(3) != 0)
               Main.dust[index].noGravity = true;
-            Dust dust = Main.dust[index];
-            Vector2 vector2 = Vector2.op_Multiply(dust.velocity, 0.3f);
-            dust.velocity = vector2;
-            // ISSUE: explicit reference operation
-            // ISSUE: variable of a reference type
-            Vector2& local2 = @Main.dust[index].velocity;
-            // ISSUE: explicit reference operation
-            double num2 = (^local2).Y - 1.5;
-            // ISSUE: explicit reference operation
-            (^local2).Y = (__Null) num2;
+            Main.dust[index].velocity *= 0.3f;
+            Main.dust[index].velocity.Y -= 1.5f;
             Main.dust[index].position = this.RotatedRelativePoint(Main.dust[index].position, true);
           }
-          Lighting.AddLight(this.RotatedRelativePoint(new Vector2((float) (this.itemLocation.X + 6.0 + this.velocity.X), (float) (this.itemLocation.Y - 14.0)), true), 0.9f, 0.1f, 0.75f);
+          Lighting.AddLight(this.RotatedRelativePoint(new Vector2(this.itemLocation.X + 6f + this.velocity.X, this.itemLocation.Y - 14f), true), 0.9f, 0.1f, 0.75f);
         }
       }
       if (sItem.type == 282 && !this.pulley)
       {
         if (this.direction == -1)
-          Lighting.AddLight(this.RotatedRelativePoint(new Vector2((float) (this.itemLocation.X - 16.0 + this.velocity.X), (float) (this.itemLocation.Y - 14.0)), true), 0.7f, 1f, 0.8f);
+          Lighting.AddLight(this.RotatedRelativePoint(new Vector2(this.itemLocation.X - 16f + this.velocity.X, this.itemLocation.Y - 14f), true), 0.7f, 1f, 0.8f);
         else
-          Lighting.AddLight(this.RotatedRelativePoint(new Vector2((float) (this.itemLocation.X + 6.0 + this.velocity.X), (float) (this.itemLocation.Y - 14.0)), true), 0.7f, 1f, 0.8f);
+          Lighting.AddLight(this.RotatedRelativePoint(new Vector2(this.itemLocation.X + 6f + this.velocity.X, this.itemLocation.Y - 14f), true), 0.7f, 1f, 0.8f);
       }
       if (sItem.type == 3002 && !this.pulley)
       {
@@ -23477,9 +22133,9 @@ label_13:
         float G = 0.95f;
         float B = 0.55f;
         if (this.direction == -1)
-          Lighting.AddLight(this.RotatedRelativePoint(new Vector2((float) (this.itemLocation.X - 16.0 + this.velocity.X), (float) (this.itemLocation.Y - 14.0)), true), R, G, B);
+          Lighting.AddLight(this.RotatedRelativePoint(new Vector2(this.itemLocation.X - 16f + this.velocity.X, this.itemLocation.Y - 14f), true), R, G, B);
         else
-          Lighting.AddLight(this.RotatedRelativePoint(new Vector2((float) (this.itemLocation.X + 6.0 + this.velocity.X), (float) (this.itemLocation.Y - 14.0)), true), R, G, B);
+          Lighting.AddLight(this.RotatedRelativePoint(new Vector2(this.itemLocation.X + 6f + this.velocity.X, this.itemLocation.Y - 14f), true), R, G, B);
         ++this.spelunkerTimer;
         if ((int) this.spelunkerTimer >= 10)
         {
@@ -23491,31 +22147,22 @@ label_13:
           {
             for (int index2 = num3 - num1; index2 <= num3 + num1; ++index2)
             {
-              if (Main.rand.Next(4) == 0)
+              if (Main.rand.Next(4) == 0 && ((double) new Vector2((float) (num2 - index1), (float) (num3 - index2)).Length() < (double) num1 && index1 > 0 && (index1 < Main.maxTilesX - 1 && index2 > 0) && (index2 < Main.maxTilesY - 1 && Main.tile[index1, index2] != null && Main.tile[index1, index2].active())))
               {
-                Vector2 vector2_1;
-                // ISSUE: explicit reference operation
-                ((Vector2) @vector2_1).\u002Ector((float) (num2 - index1), (float) (num3 - index2));
-                // ISSUE: explicit reference operation
-                if ((double) ((Vector2) @vector2_1).Length() < (double) num1 && index1 > 0 && (index1 < Main.maxTilesX - 1 && index2 > 0) && (index2 < Main.maxTilesY - 1 && Main.tile[index1, index2] != null && Main.tile[index1, index2].active()))
+                bool flag2 = false;
+                if ((int) Main.tile[index1, index2].type == 185 && (int) Main.tile[index1, index2].frameY == 18)
                 {
-                  bool flag2 = false;
-                  if ((int) Main.tile[index1, index2].type == 185 && (int) Main.tile[index1, index2].frameY == 18)
-                  {
-                    if ((int) Main.tile[index1, index2].frameX >= 576 && (int) Main.tile[index1, index2].frameX <= 882)
-                      flag2 = true;
-                  }
-                  else if ((int) Main.tile[index1, index2].type == 186 && (int) Main.tile[index1, index2].frameX >= 864 && (int) Main.tile[index1, index2].frameX <= 1170)
+                  if ((int) Main.tile[index1, index2].frameX >= 576 && (int) Main.tile[index1, index2].frameX <= 882)
                     flag2 = true;
-                  if (flag2 || Main.tileSpelunker[(int) Main.tile[index1, index2].type] || Main.tileAlch[(int) Main.tile[index1, index2].type] && (int) Main.tile[index1, index2].type != 82)
-                  {
-                    int index3 = Dust.NewDust(new Vector2((float) (index1 * 16), (float) (index2 * 16)), 16, 16, 204, 0.0f, 0.0f, 150, (Color) null, 0.3f);
-                    Main.dust[index3].fadeIn = 0.75f;
-                    Dust dust = Main.dust[index3];
-                    Vector2 vector2_2 = Vector2.op_Multiply(dust.velocity, 0.1f);
-                    dust.velocity = vector2_2;
-                    Main.dust[index3].noLight = true;
-                  }
+                }
+                else if ((int) Main.tile[index1, index2].type == 186 && (int) Main.tile[index1, index2].frameX >= 864 && (int) Main.tile[index1, index2].frameX <= 1170)
+                  flag2 = true;
+                if (flag2 || Main.tileSpelunker[(int) Main.tile[index1, index2].type] || Main.tileAlch[(int) Main.tile[index1, index2].type] && (int) Main.tile[index1, index2].type != 82)
+                {
+                  int index3 = Dust.NewDust(new Vector2((float) (index1 * 16), (float) (index2 * 16)), 16, 16, 204, 0.0f, 0.0f, 150, new Color(), 0.3f);
+                  Main.dust[index3].fadeIn = 0.75f;
+                  Main.dust[index3].velocity *= 0.1f;
+                  Main.dust[index3].noLight = true;
                 }
               }
             }
@@ -23525,16 +22172,16 @@ label_13:
       if (sItem.type == 286 && !this.pulley)
       {
         if (this.direction == -1)
-          Lighting.AddLight(this.RotatedRelativePoint(new Vector2((float) (this.itemLocation.X - 16.0 + this.velocity.X), (float) (this.itemLocation.Y - 14.0)), true), 0.7f, 0.8f, 1f);
+          Lighting.AddLight(this.RotatedRelativePoint(new Vector2(this.itemLocation.X - 16f + this.velocity.X, this.itemLocation.Y - 14f), true), 0.7f, 0.8f, 1f);
         else
-          Lighting.AddLight(this.RotatedRelativePoint(new Vector2((float) (this.itemLocation.X + 6.0 + this.velocity.X), (float) (this.itemLocation.Y - 14.0)), true), 0.7f, 0.8f, 1f);
+          Lighting.AddLight(this.RotatedRelativePoint(new Vector2(this.itemLocation.X + 6f + this.velocity.X, this.itemLocation.Y - 14f), true), 0.7f, 0.8f, 1f);
       }
       if (sItem.type == 3112 && !this.pulley)
       {
         if (this.direction == -1)
-          Lighting.AddLight(this.RotatedRelativePoint(new Vector2((float) (this.itemLocation.X - 16.0 + this.velocity.X), (float) (this.itemLocation.Y - 14.0)), true), 1f, 0.6f, 0.85f);
+          Lighting.AddLight(this.RotatedRelativePoint(new Vector2(this.itemLocation.X - 16f + this.velocity.X, this.itemLocation.Y - 14f), true), 1f, 0.6f, 0.85f);
         else
-          Lighting.AddLight(this.RotatedRelativePoint(new Vector2((float) (this.itemLocation.X + 6.0 + this.velocity.X), (float) (this.itemLocation.Y - 14.0)), true), 1f, 0.6f, 0.85f);
+          Lighting.AddLight(this.RotatedRelativePoint(new Vector2(this.itemLocation.X + 6f + this.velocity.X, this.itemLocation.Y - 14f), true), 1f, 0.6f, 0.85f);
       }
       this.releaseUseItem = !this.controlUseItem;
       if (this.itemTime > 0)
@@ -23554,12 +22201,10 @@ label_13:
               Main.PlaySound(25, -1, -1, 1, 1f, 0.0f);
               for (int index1 = 0; index1 < 5; ++index1)
               {
-                int index2 = Dust.NewDust(this.position, this.width, this.height, 45, 0.0f, 0.0f, (int) byte.MaxValue, (Color) null, (float) Main.rand.Next(20, 26) * 0.1f);
+                int index2 = Dust.NewDust(this.position, this.width, this.height, 45, 0.0f, 0.0f, (int) byte.MaxValue, new Color(), (float) Main.rand.Next(20, 26) * 0.1f);
                 Main.dust[index2].noLight = true;
                 Main.dust[index2].noGravity = true;
-                Dust dust = Main.dust[index2];
-                Vector2 vector2 = Vector2.op_Multiply(dust.velocity, 0.5f);
-                dust.velocity = vector2;
+                Main.dust[index2].velocity *= 0.5f;
               }
               break;
           }
@@ -23694,16 +22339,13 @@ label_13:
             bool flag3 = true;
             if (sItem.type == 3611)
               flag3 = false;
-            Vector2 vector2_2 = Vector2.get_UnitX().RotatedBy((double) this.fullRotation, (Vector2) null);
-            Vector2 v1 = Vector2.op_Subtraction(Main.MouseWorld, vector2_1);
-            Vector2 vector2_3 = Vector2.op_Multiply(this.itemRotation.ToRotationVector2(), (float) this.direction);
+            Vector2 vector2_2 = Vector2.UnitX.RotatedBy((double) this.fullRotation, new Vector2());
+            Vector2 v1 = Main.MouseWorld - vector2_1;
+            Vector2 vector2_3 = this.itemRotation.ToRotationVector2() * (float) this.direction;
             if (sItem.type == 3852 && this.itemAnimation != this.itemAnimationMax - 1)
               v1 = vector2_3;
-            if (Vector2.op_Inequality(v1, Vector2.get_Zero()))
-            {
-              // ISSUE: explicit reference operation
-              ((Vector2) @v1).Normalize();
-            }
+            if (v1 != Vector2.Zero)
+              v1.Normalize();
             float num2 = Vector2.Dot(vector2_2, v1);
             if (flag3)
             {
@@ -23713,88 +22355,60 @@ label_13:
                 this.ChangeDir(-1);
             }
             if (sItem.type == 3094 || sItem.type == 3378 || sItem.type == 3543)
-              vector2_1.Y = (__Null) (this.position.Y + (double) (this.height / 3));
+              vector2_1.Y = this.position.Y + (float) (this.height / 3);
             if (sItem.type == 2611)
             {
               Vector2 vector2_4 = v1;
-              if (Vector2.op_Inequality(vector2_4, Vector2.get_Zero()))
-              {
-                // ISSUE: explicit reference operation
-                ((Vector2) @vector2_4).Normalize();
-              }
-              vector2_1 = Vector2.op_Addition(vector2_1, vector2_4);
+              if (vector2_4 != Vector2.Zero)
+                vector2_4.Normalize();
+              vector2_1 += vector2_4;
             }
             if (sItem.type == 3827)
-              vector2_1 = Vector2.op_Addition(vector2_1, Vector2.op_Multiply(v1.SafeNormalize(Vector2.get_Zero()).RotatedBy((double) this.direction * -1.57079637050629, (Vector2) null), 24f));
+              vector2_1 += v1.SafeNormalize(Vector2.Zero).RotatedBy((double) this.direction * -1.57079637050629, new Vector2()) * 24f;
             if (shoot == 9)
             {
-              // ISSUE: explicit reference operation
-              ((Vector2) @vector2_1).\u002Ector((float) (this.position.X + (double) this.width * 0.5 + (double) (Main.rand.Next(201) * -this.direction) + ((double) Main.mouseX + Main.screenPosition.X - this.position.X)), (float) (this.MountedCenter.Y - 600.0));
+              vector2_1 = new Vector2((float) ((double) this.position.X + (double) this.width * 0.5 + (double) (Main.rand.Next(201) * -this.direction) + ((double) Main.mouseX + (double) Main.screenPosition.X - (double) this.position.X)), this.MountedCenter.Y - 600f);
               num1 = 0.0f;
               Damage *= 2;
             }
             if (sItem.type == 986 || sItem.type == 281)
             {
-              // ISSUE: explicit reference operation
-              // ISSUE: variable of a reference type
-              Vector2& local1 = @vector2_1;
-              // ISSUE: explicit reference operation
-              double num3 = (^local1).X + (double) (6 * this.direction);
-              // ISSUE: explicit reference operation
-              (^local1).X = (__Null) num3;
-              // ISSUE: explicit reference operation
-              // ISSUE: variable of a reference type
-              Vector2& local2 = @vector2_1;
-              // ISSUE: explicit reference operation
-              double num4 = (^local2).Y - 6.0 * (double) this.gravDir;
-              // ISSUE: explicit reference operation
-              (^local2).Y = (__Null) num4;
+              vector2_1.X += (float) (6 * this.direction);
+              vector2_1.Y -= 6f * this.gravDir;
             }
             if (sItem.type == 3007)
             {
-              // ISSUE: explicit reference operation
-              // ISSUE: variable of a reference type
-              Vector2& local1 = @vector2_1;
-              // ISSUE: explicit reference operation
-              double num3 = (^local1).X - (double) (4 * this.direction);
-              // ISSUE: explicit reference operation
-              (^local1).X = (__Null) num3;
-              // ISSUE: explicit reference operation
-              // ISSUE: variable of a reference type
-              Vector2& local2 = @vector2_1;
-              // ISSUE: explicit reference operation
-              double num4 = (^local2).Y - 1.0 * (double) this.gravDir;
-              // ISSUE: explicit reference operation
-              (^local2).Y = (__Null) num4;
+              vector2_1.X -= (float) (4 * this.direction);
+              vector2_1.Y -= 1f * this.gravDir;
             }
-            float f1 = (float) ((double) Main.mouseX + Main.screenPosition.X - vector2_1.X);
-            float f2 = (float) ((double) Main.mouseY + Main.screenPosition.Y - vector2_1.Y);
+            float f1 = (float) Main.mouseX + Main.screenPosition.X - vector2_1.X;
+            float f2 = (float) Main.mouseY + Main.screenPosition.Y - vector2_1.Y;
             if (sItem.type == 3852 && this.itemAnimation != this.itemAnimationMax - 1)
             {
               Vector2 vector2_4 = vector2_3;
-              f1 = (float) vector2_4.X;
-              f2 = (float) vector2_4.Y;
+              f1 = vector2_4.X;
+              f2 = vector2_4.Y;
             }
             if ((double) this.gravDir == -1.0)
-              f2 = (float) (Main.screenPosition.Y + (double) Main.screenHeight - (double) Main.mouseY - vector2_1.Y);
-            float num5 = (float) Math.Sqrt((double) f1 * (double) f1 + (double) f2 * (double) f2);
-            float num6 = num5;
-            float num7;
+              f2 = Main.screenPosition.Y + (float) Main.screenHeight - (float) Main.mouseY - vector2_1.Y;
+            float num3 = (float) Math.Sqrt((double) f1 * (double) f1 + (double) f2 * (double) f2);
+            float num4 = num3;
+            float num5;
             if (float.IsNaN(f1) && float.IsNaN(f2) || (double) f1 == 0.0 && (double) f2 == 0.0)
             {
               f1 = (float) this.direction;
               f2 = 0.0f;
-              num7 = speed;
+              num5 = speed;
             }
             else
-              num7 = speed / num5;
+              num5 = speed / num3;
             if (sItem.type == 1929 || sItem.type == 2270)
             {
-              f1 += (float) Main.rand.Next(-50, 51) * 0.03f / num7;
-              f2 += (float) Main.rand.Next(-50, 51) * 0.03f / num7;
+              f1 += (float) Main.rand.Next(-50, 51) * 0.03f / num5;
+              f2 += (float) Main.rand.Next(-50, 51) * 0.03f / num5;
             }
-            float SpeedX1 = f1 * num7;
-            float SpeedY1 = f2 * num7;
+            float num6 = f1 * num5;
+            float num7 = f2 * num5;
             if (sItem.type == 757)
               Damage = (int) ((double) Damage * 1.25);
             if (shoot == 250)
@@ -23807,31 +22421,17 @@ label_13:
             }
             if (shoot == 12)
             {
-              // ISSUE: explicit reference operation
-              // ISSUE: variable of a reference type
-              Vector2& local1 = @vector2_1;
-              // ISSUE: explicit reference operation
-              double num3 = (^local1).X + (double) SpeedX1 * 3.0;
-              // ISSUE: explicit reference operation
-              (^local1).X = (__Null) num3;
-              // ISSUE: explicit reference operation
-              // ISSUE: variable of a reference type
-              Vector2& local2 = @vector2_1;
-              // ISSUE: explicit reference operation
-              double num4 = (^local2).Y + (double) SpeedY1 * 3.0;
-              // ISSUE: explicit reference operation
-              (^local2).Y = (__Null) num4;
+              vector2_1.X += num6 * 3f;
+              vector2_1.Y += num7 * 3f;
             }
             if (sItem.useStyle == 5)
             {
               if (sItem.type == 3029)
               {
-                Vector2 vector2_4;
-                // ISSUE: explicit reference operation
-                ((Vector2) @vector2_4).\u002Ector(SpeedX1, SpeedY1);
-                vector2_4.X = (__Null) ((double) Main.mouseX + Main.screenPosition.X - vector2_1.X);
-                vector2_4.Y = (__Null) ((double) Main.mouseY + Main.screenPosition.Y - vector2_1.Y - 1000.0);
-                this.itemRotation = (float) Math.Atan2(vector2_4.Y * (double) this.direction, vector2_4.X * (double) this.direction);
+                Vector2 vector2_4 = new Vector2(num6, num7);
+                vector2_4.X = (float) Main.mouseX + Main.screenPosition.X - vector2_1.X;
+                vector2_4.Y = (float) ((double) Main.mouseY + (double) Main.screenPosition.Y - (double) vector2_1.Y - 1000.0);
+                this.itemRotation = (float) Math.Atan2((double) vector2_4.Y * (double) this.direction, (double) vector2_4.X * (double) this.direction);
                 NetMessage.SendData(13, -1, -1, (NetworkText) null, this.whoAmI, 0.0f, 0.0f, 0.0f, 0, 0, 0);
                 NetMessage.SendData(41, -1, -1, (NetworkText) null, this.whoAmI, 0.0f, 0.0f, 0.0f, 0, 0, 0);
               }
@@ -23843,796 +22443,662 @@ label_13:
               }
               else
               {
-                this.itemRotation = (float) Math.Atan2((double) SpeedY1 * (double) this.direction, (double) SpeedX1 * (double) this.direction) - this.fullRotation;
+                this.itemRotation = (float) Math.Atan2((double) num7 * (double) this.direction, (double) num6 * (double) this.direction) - this.fullRotation;
                 NetMessage.SendData(13, -1, -1, (NetworkText) null, this.whoAmI, 0.0f, 0.0f, 0.0f, 0, 0, 0);
                 NetMessage.SendData(41, -1, -1, (NetworkText) null, this.whoAmI, 0.0f, 0.0f, 0.0f, 0, 0, 0);
               }
             }
             if (shoot == 17)
             {
-              vector2_1.X = (__Null) ((double) Main.mouseX + Main.screenPosition.X);
-              vector2_1.Y = (__Null) ((double) Main.mouseY + Main.screenPosition.Y);
+              vector2_1.X = (float) Main.mouseX + Main.screenPosition.X;
+              vector2_1.Y = (float) Main.mouseY + Main.screenPosition.Y;
               if ((double) this.gravDir == -1.0)
-                vector2_1.Y = (__Null) (Main.screenPosition.Y + (double) Main.screenHeight - (double) Main.mouseY);
+                vector2_1.Y = Main.screenPosition.Y + (float) Main.screenHeight - (float) Main.mouseY;
             }
             if (shoot == 76)
             {
               shoot += Main.rand.Next(3);
-              float num3 = num6 / (float) (Main.screenHeight / 2);
-              if ((double) num3 > 1.0)
-                num3 = 1f;
-              float num4 = SpeedX1 + (float) Main.rand.Next(-40, 41) * 0.01f;
-              float num8 = SpeedY1 + (float) Main.rand.Next(-40, 41) * 0.01f;
-              float SpeedX2 = num4 * (num3 + 0.25f);
-              float SpeedY2 = num8 * (num3 + 0.25f);
-              int number = Projectile.NewProjectile((float) vector2_1.X, (float) vector2_1.Y, SpeedX2, SpeedY2, shoot, Damage, num1, i, 0.0f, 0.0f);
+              float num8 = num4 / (float) (Main.screenHeight / 2);
+              if ((double) num8 > 1.0)
+                num8 = 1f;
+              float num9 = num6 + (float) Main.rand.Next(-40, 41) * 0.01f;
+              float num10 = num7 + (float) Main.rand.Next(-40, 41) * 0.01f;
+              float SpeedX = num9 * (num8 + 0.25f);
+              float SpeedY = num10 * (num8 + 0.25f);
+              int number = Projectile.NewProjectile(vector2_1.X, vector2_1.Y, SpeedX, SpeedY, shoot, Damage, num1, i, 0.0f, 0.0f);
               Main.projectile[number].ai[1] = 1f;
-              float num9 = (float) ((double) num3 * 2.0 - 1.0);
-              if ((double) num9 < -1.0)
-                num9 = -1f;
-              if ((double) num9 > 1.0)
-                num9 = 1f;
-              Main.projectile[number].ai[0] = num9;
+              float num11 = (float) ((double) num8 * 2.0 - 1.0);
+              if ((double) num11 < -1.0)
+                num11 = -1f;
+              if ((double) num11 > 1.0)
+                num11 = 1f;
+              Main.projectile[number].ai[0] = num11;
               NetMessage.SendData(27, -1, -1, (NetworkText) null, number, 0.0f, 0.0f, 0.0f, 0, 0, 0);
             }
             else if (sItem.type == 3029)
             {
-              int num3 = 3;
+              int num8 = 3;
               if (Main.rand.Next(3) == 0)
-                ++num3;
-              for (int index1 = 0; index1 < num3; ++index1)
+                ++num8;
+              for (int index1 = 0; index1 < num8; ++index1)
               {
-                // ISSUE: explicit reference operation
-                ((Vector2) @vector2_1).\u002Ector((float) (this.position.X + (double) this.width * 0.5 + (double) (Main.rand.Next(201) * -this.direction) + ((double) Main.mouseX + Main.screenPosition.X - this.position.X)), (float) (this.MountedCenter.Y - 600.0));
-                vector2_1.X = (__Null) ((vector2_1.X * 10.0 + this.Center.X) / 11.0 + (double) Main.rand.Next(-100, 101));
-                // ISSUE: explicit reference operation
-                // ISSUE: variable of a reference type
-                Vector2& local1 = @vector2_1;
-                // ISSUE: explicit reference operation
-                double num4 = (^local1).Y - (double) (150 * index1);
-                // ISSUE: explicit reference operation
-                (^local1).Y = (__Null) num4;
-                float num8 = (float) ((double) Main.mouseX + Main.screenPosition.X - vector2_1.X);
-                float num9 = (float) ((double) Main.mouseY + Main.screenPosition.Y - vector2_1.Y);
-                if ((double) num9 < 0.0)
-                  num9 *= -1f;
-                if ((double) num9 < 20.0)
-                  num9 = 20f;
-                float num10 = (float) Math.Sqrt((double) num8 * (double) num8 + (double) num9 * (double) num9);
-                float num11 = speed / num10;
-                float num12 = num8 * num11;
-                float num13 = num9 * num11;
-                float num14 = num12 + (float) Main.rand.Next(-40, 41) * 0.03f;
-                float SpeedY2 = num13 + (float) Main.rand.Next(-40, 41) * 0.03f;
-                float SpeedX2 = num14 * ((float) Main.rand.Next(75, 150) * 0.01f);
-                // ISSUE: explicit reference operation
-                // ISSUE: variable of a reference type
-                Vector2& local2 = @vector2_1;
-                // ISSUE: explicit reference operation
-                double num15 = (^local2).X + (double) Main.rand.Next(-50, 51);
-                // ISSUE: explicit reference operation
-                (^local2).X = (__Null) num15;
-                int index2 = Projectile.NewProjectile((float) vector2_1.X, (float) vector2_1.Y, SpeedX2, SpeedY2, shoot, Damage, num1, i, 0.0f, 0.0f);
+                vector2_1 = new Vector2((float) ((double) this.position.X + (double) this.width * 0.5 + (double) (Main.rand.Next(201) * -this.direction) + ((double) Main.mouseX + (double) Main.screenPosition.X - (double) this.position.X)), this.MountedCenter.Y - 600f);
+                vector2_1.X = (float) (((double) vector2_1.X * 10.0 + (double) this.Center.X) / 11.0) + (float) Main.rand.Next(-100, 101);
+                vector2_1.Y -= (float) (150 * index1);
+                float num9 = (float) Main.mouseX + Main.screenPosition.X - vector2_1.X;
+                float num10 = (float) Main.mouseY + Main.screenPosition.Y - vector2_1.Y;
+                if ((double) num10 < 0.0)
+                  num10 *= -1f;
+                if ((double) num10 < 20.0)
+                  num10 = 20f;
+                float num11 = (float) Math.Sqrt((double) num9 * (double) num9 + (double) num10 * (double) num10);
+                float num12 = speed / num11;
+                float num13 = num9 * num12;
+                float num14 = num10 * num12;
+                float num15 = num13 + (float) Main.rand.Next(-40, 41) * 0.03f;
+                float SpeedY = num14 + (float) Main.rand.Next(-40, 41) * 0.03f;
+                float SpeedX = num15 * ((float) Main.rand.Next(75, 150) * 0.01f);
+                vector2_1.X += (float) Main.rand.Next(-50, 51);
+                int index2 = Projectile.NewProjectile(vector2_1.X, vector2_1.Y, SpeedX, SpeedY, shoot, Damage, num1, i, 0.0f, 0.0f);
                 Main.projectile[index2].noDropItem = true;
               }
             }
             else if (sItem.type == 98 || sItem.type == 533)
             {
-              float SpeedX2 = SpeedX1 + (float) Main.rand.Next(-40, 41) * 0.01f;
-              float SpeedY2 = SpeedY1 + (float) Main.rand.Next(-40, 41) * 0.01f;
-              Projectile.NewProjectile((float) vector2_1.X, (float) vector2_1.Y, SpeedX2, SpeedY2, shoot, Damage, num1, i, 0.0f, 0.0f);
+              float SpeedX = num6 + (float) Main.rand.Next(-40, 41) * 0.01f;
+              float SpeedY = num7 + (float) Main.rand.Next(-40, 41) * 0.01f;
+              Projectile.NewProjectile(vector2_1.X, vector2_1.Y, SpeedX, SpeedY, shoot, Damage, num1, i, 0.0f, 0.0f);
             }
             else if (sItem.type == 1319)
             {
-              float SpeedX2 = SpeedX1 + (float) Main.rand.Next(-40, 41) * 0.02f;
-              float SpeedY2 = SpeedY1 + (float) Main.rand.Next(-40, 41) * 0.02f;
-              int index = Projectile.NewProjectile((float) vector2_1.X, (float) vector2_1.Y, SpeedX2, SpeedY2, shoot, Damage, num1, i, 0.0f, 0.0f);
+              float SpeedX = num6 + (float) Main.rand.Next(-40, 41) * 0.02f;
+              float SpeedY = num7 + (float) Main.rand.Next(-40, 41) * 0.02f;
+              int index = Projectile.NewProjectile(vector2_1.X, vector2_1.Y, SpeedX, SpeedY, shoot, Damage, num1, i, 0.0f, 0.0f);
               Main.projectile[index].ranged = true;
               Main.projectile[index].thrown = false;
             }
             else if (sItem.type == 3107)
             {
-              float SpeedX2 = SpeedX1 + (float) Main.rand.Next(-40, 41) * 0.02f;
-              float SpeedY2 = SpeedY1 + (float) Main.rand.Next(-40, 41) * 0.02f;
-              Projectile.NewProjectile((float) vector2_1.X, (float) vector2_1.Y, SpeedX2, SpeedY2, shoot, Damage, num1, i, 0.0f, 0.0f);
+              float SpeedX = num6 + (float) Main.rand.Next(-40, 41) * 0.02f;
+              float SpeedY = num7 + (float) Main.rand.Next(-40, 41) * 0.02f;
+              Projectile.NewProjectile(vector2_1.X, vector2_1.Y, SpeedX, SpeedY, shoot, Damage, num1, i, 0.0f, 0.0f);
             }
             else if (sItem.type == 3053)
             {
-              Vector2 vector2_4;
-              // ISSUE: explicit reference operation
-              ((Vector2) @vector2_4).\u002Ector(SpeedX1, SpeedY1);
-              // ISSUE: explicit reference operation
-              ((Vector2) @vector2_4).Normalize();
-              Vector2 vector2_5;
-              // ISSUE: explicit reference operation
-              ((Vector2) @vector2_5).\u002Ector((float) Main.rand.Next(-100, 101), (float) Main.rand.Next(-100, 101));
-              // ISSUE: explicit reference operation
-              ((Vector2) @vector2_5).Normalize();
-              Vector2 vector2_6 = Vector2.op_Addition(Vector2.op_Multiply(vector2_4, 4f), vector2_5);
-              // ISSUE: explicit reference operation
-              ((Vector2) @vector2_6).Normalize();
-              vector2_6 = Vector2.op_Multiply(vector2_6, sItem.shootSpeed);
+              Vector2 vector2_4 = new Vector2(num6, num7);
+              vector2_4.Normalize();
+              Vector2 vector2_5 = new Vector2((float) Main.rand.Next(-100, 101), (float) Main.rand.Next(-100, 101));
+              vector2_5.Normalize();
+              Vector2 vector2_6 = vector2_4 * 4f + vector2_5;
+              vector2_6.Normalize();
+              vector2_6 *= sItem.shootSpeed;
               float ai1 = (float) Main.rand.Next(10, 80) * (1f / 1000f);
               if (Main.rand.Next(2) == 0)
                 ai1 *= -1f;
               float ai0 = (float) Main.rand.Next(10, 80) * (1f / 1000f);
               if (Main.rand.Next(2) == 0)
                 ai0 *= -1f;
-              Projectile.NewProjectile((float) vector2_1.X, (float) vector2_1.Y, (float) vector2_6.X, (float) vector2_6.Y, shoot, Damage, num1, i, ai0, ai1);
+              Projectile.NewProjectile(vector2_1.X, vector2_1.Y, vector2_6.X, vector2_6.Y, shoot, Damage, num1, i, ai0, ai1);
             }
             else if (sItem.type == 3019)
             {
-              Vector2 vector2_4;
-              // ISSUE: explicit reference operation
-              ((Vector2) @vector2_4).\u002Ector(SpeedX1, SpeedY1);
-              // ISSUE: explicit reference operation
-              float num3 = ((Vector2) @vector2_4).Length();
-              // ISSUE: explicit reference operation
-              // ISSUE: variable of a reference type
-              Vector2& local1 = @vector2_4;
-              // ISSUE: explicit reference operation
-              double num4 = (^local1).X + (double) Main.rand.Next(-100, 101) * 0.00999999977648258 * (double) num3 * 0.150000005960464;
-              // ISSUE: explicit reference operation
-              (^local1).X = (__Null) num4;
-              // ISSUE: explicit reference operation
-              // ISSUE: variable of a reference type
-              Vector2& local2 = @vector2_4;
-              // ISSUE: explicit reference operation
-              double num8 = (^local2).Y + (double) Main.rand.Next(-100, 101) * 0.00999999977648258 * (double) num3 * 0.150000005960464;
-              // ISSUE: explicit reference operation
-              (^local2).Y = (__Null) num8;
-              float num9 = SpeedX1 + (float) Main.rand.Next(-40, 41) * 0.03f;
-              float num10 = SpeedY1 + (float) Main.rand.Next(-40, 41) * 0.03f;
-              // ISSUE: explicit reference operation
-              ((Vector2) @vector2_4).Normalize();
-              Vector2 vector2_5 = Vector2.op_Multiply(vector2_4, num3);
-              float num11 = num9 * ((float) Main.rand.Next(50, 150) * 0.01f);
-              float num12 = num10 * ((float) Main.rand.Next(50, 150) * 0.01f);
-              Vector2 vector2_6;
-              // ISSUE: explicit reference operation
-              ((Vector2) @vector2_6).\u002Ector(num11, num12);
-              // ISSUE: explicit reference operation
-              // ISSUE: variable of a reference type
-              Vector2& local3 = @vector2_6;
-              // ISSUE: explicit reference operation
-              double num13 = (^local3).X + (double) Main.rand.Next(-100, 101) * 0.025000000372529;
-              // ISSUE: explicit reference operation
-              (^local3).X = (__Null) num13;
-              // ISSUE: explicit reference operation
-              // ISSUE: variable of a reference type
-              Vector2& local4 = @vector2_6;
-              // ISSUE: explicit reference operation
-              double num14 = (^local4).Y + (double) Main.rand.Next(-100, 101) * 0.025000000372529;
-              // ISSUE: explicit reference operation
-              (^local4).Y = (__Null) num14;
-              // ISSUE: explicit reference operation
-              ((Vector2) @vector2_6).Normalize();
-              vector2_6 = Vector2.op_Multiply(vector2_6, num3);
-              float x = (float) vector2_6.X;
-              float y = (float) vector2_6.Y;
-              Projectile.NewProjectile((float) vector2_1.X, (float) vector2_1.Y, x, y, shoot, Damage, num1, i, (float) vector2_5.X, (float) vector2_5.Y);
+              Vector2 vector2_4 = new Vector2(num6, num7);
+              float num8 = vector2_4.Length();
+              vector2_4.X += (float) ((double) Main.rand.Next(-100, 101) * 0.00999999977648258 * (double) num8 * 0.150000005960464);
+              vector2_4.Y += (float) ((double) Main.rand.Next(-100, 101) * 0.00999999977648258 * (double) num8 * 0.150000005960464);
+              float num9 = num6 + (float) Main.rand.Next(-40, 41) * 0.03f;
+              float num10 = num7 + (float) Main.rand.Next(-40, 41) * 0.03f;
+              vector2_4.Normalize();
+              Vector2 vector2_5 = vector2_4 * num8;
+              Vector2 vector2_6 = new Vector2(num9 * ((float) Main.rand.Next(50, 150) * 0.01f), num10 * ((float) Main.rand.Next(50, 150) * 0.01f));
+              vector2_6.X += (float) Main.rand.Next(-100, 101) * 0.025f;
+              vector2_6.Y += (float) Main.rand.Next(-100, 101) * 0.025f;
+              vector2_6.Normalize();
+              vector2_6 *= num8;
+              float x = vector2_6.X;
+              float y = vector2_6.Y;
+              Projectile.NewProjectile(vector2_1.X, vector2_1.Y, x, y, shoot, Damage, num1, i, vector2_5.X, vector2_5.Y);
             }
             else if (sItem.type == 2797)
             {
-              Vector2 vector2_4 = Vector2.op_Multiply(Vector2.op_Multiply(Vector2.Normalize(new Vector2(SpeedX1, SpeedY1)), 40f), sItem.scale);
-              if (Collision.CanHit(vector2_1, 0, 0, Vector2.op_Addition(vector2_1, vector2_4), 0, 0))
-                vector2_1 = Vector2.op_Addition(vector2_1, vector2_4);
-              float rotation = new Vector2(SpeedX1, SpeedY1).ToRotation();
-              float num3 = 2.094395f;
-              int num4 = Main.rand.Next(4, 5);
+              Vector2 vector2_4 = Vector2.Normalize(new Vector2(num6, num7)) * 40f * sItem.scale;
+              if (Collision.CanHit(vector2_1, 0, 0, vector2_1 + vector2_4, 0, 0))
+                vector2_1 += vector2_4;
+              float rotation = new Vector2(num6, num7).ToRotation();
+              float num8 = 2.094395f;
+              int num9 = Main.rand.Next(4, 5);
               if (Main.rand.Next(4) == 0)
-                ++num4;
-              for (int index1 = 0; index1 < num4; ++index1)
+                ++num9;
+              for (int index1 = 0; index1 < num9; ++index1)
               {
-                float num8 = (float) (Main.rand.NextDouble() * 0.200000002980232 + 0.0500000007450581);
-                Vector2 vector2_5 = Vector2.op_Multiply(new Vector2(SpeedX1, SpeedY1).RotatedBy((double) num3 * Main.rand.NextDouble() - (double) num3 / 2.0, (Vector2) null), num8);
-                int index2 = Projectile.NewProjectile((float) vector2_1.X, (float) vector2_1.Y, (float) vector2_5.X, (float) vector2_5.Y, 444, Damage, num1, i, rotation, 0.0f);
+                float num10 = (float) (Main.rand.NextDouble() * 0.200000002980232 + 0.0500000007450581);
+                Vector2 vector2_5 = new Vector2(num6, num7).RotatedBy((double) num8 * Main.rand.NextDouble() - (double) num8 / 2.0, new Vector2()) * num10;
+                int index2 = Projectile.NewProjectile(vector2_1.X, vector2_1.Y, vector2_5.X, vector2_5.Y, 444, Damage, num1, i, rotation, 0.0f);
                 Main.projectile[index2].localAI[0] = (float) shoot;
                 Main.projectile[index2].localAI[1] = speed;
               }
             }
             else if (sItem.type == 2270)
             {
-              float SpeedX2 = SpeedX1 + (float) Main.rand.Next(-40, 41) * 0.05f;
-              float SpeedY2 = SpeedY1 + (float) Main.rand.Next(-40, 41) * 0.05f;
+              float SpeedX = num6 + (float) Main.rand.Next(-40, 41) * 0.05f;
+              float SpeedY = num7 + (float) Main.rand.Next(-40, 41) * 0.05f;
               if (Main.rand.Next(3) == 0)
               {
-                SpeedX2 *= (float) (1.0 + (double) Main.rand.Next(-30, 31) * 0.0199999995529652);
-                SpeedY2 *= (float) (1.0 + (double) Main.rand.Next(-30, 31) * 0.0199999995529652);
+                SpeedX *= (float) (1.0 + (double) Main.rand.Next(-30, 31) * 0.0199999995529652);
+                SpeedY *= (float) (1.0 + (double) Main.rand.Next(-30, 31) * 0.0199999995529652);
               }
-              Projectile.NewProjectile((float) vector2_1.X, (float) vector2_1.Y, SpeedX2, SpeedY2, shoot, Damage, num1, i, 0.0f, 0.0f);
+              Projectile.NewProjectile(vector2_1.X, vector2_1.Y, SpeedX, SpeedY, shoot, Damage, num1, i, 0.0f, 0.0f);
             }
             else if (sItem.type == 1930)
             {
-              int num3 = 2 + Main.rand.Next(3);
-              for (int index = 0; index < num3; ++index)
+              int num8 = 2 + Main.rand.Next(3);
+              for (int index = 0; index < num8; ++index)
               {
-                float num4 = SpeedX1;
-                float num8 = SpeedY1;
-                float num9 = 0.025f * (float) index;
-                float num10 = num4 + (float) Main.rand.Next(-35, 36) * num9;
-                float num11 = num8 + (float) Main.rand.Next(-35, 36) * num9;
-                float num12 = (float) Math.Sqrt((double) num10 * (double) num10 + (double) num11 * (double) num11);
-                float num13 = speed / num12;
-                float SpeedX2 = num10 * num13;
-                float SpeedY2 = num11 * num13;
-                Projectile.NewProjectile((float) (vector2_1.X + (double) SpeedX1 * (double) (num3 - index) * 1.75), (float) (vector2_1.Y + (double) SpeedY1 * (double) (num3 - index) * 1.75), SpeedX2, SpeedY2, shoot, Damage, num1, i, (float) Main.rand.Next(0, 10 * (index + 1)), 0.0f);
+                float num9 = num6;
+                float num10 = num7;
+                float num11 = 0.025f * (float) index;
+                float num12 = num9 + (float) Main.rand.Next(-35, 36) * num11;
+                float num13 = num10 + (float) Main.rand.Next(-35, 36) * num11;
+                float num14 = (float) Math.Sqrt((double) num12 * (double) num12 + (double) num13 * (double) num13);
+                float num15 = speed / num14;
+                float SpeedX = num12 * num15;
+                float SpeedY = num13 * num15;
+                Projectile.NewProjectile(vector2_1.X + (float) ((double) num6 * (double) (num8 - index) * 1.75), vector2_1.Y + (float) ((double) num7 * (double) (num8 - index) * 1.75), SpeedX, SpeedY, shoot, Damage, num1, i, (float) Main.rand.Next(0, 10 * (index + 1)), 0.0f);
               }
             }
             else if (sItem.type == 1931)
             {
-              int num3 = 2;
-              for (int index = 0; index < num3; ++index)
+              int num8 = 2;
+              for (int index = 0; index < num8; ++index)
               {
-                // ISSUE: explicit reference operation
-                ((Vector2) @vector2_1).\u002Ector((float) (this.position.X + (double) this.width * 0.5 + (double) (Main.rand.Next(201) * -this.direction) + ((double) Main.mouseX + Main.screenPosition.X - this.position.X)), (float) (this.MountedCenter.Y - 600.0));
-                vector2_1.X = (__Null) ((vector2_1.X + this.Center.X) / 2.0 + (double) Main.rand.Next(-200, 201));
-                // ISSUE: explicit reference operation
-                // ISSUE: variable of a reference type
-                Vector2& local = @vector2_1;
-                // ISSUE: explicit reference operation
-                double num4 = (^local).Y - (double) (100 * index);
-                // ISSUE: explicit reference operation
-                (^local).Y = (__Null) num4;
-                float num8 = (float) ((double) Main.mouseX + Main.screenPosition.X - vector2_1.X);
-                float num9 = (float) ((double) Main.mouseY + Main.screenPosition.Y - vector2_1.Y);
-                if ((double) num9 < 0.0)
-                  num9 *= -1f;
-                if ((double) num9 < 20.0)
-                  num9 = 20f;
-                float num10 = (float) Math.Sqrt((double) num8 * (double) num8 + (double) num9 * (double) num9);
-                float num11 = speed / num10;
-                float num12 = num8 * num11;
-                float num13 = num9 * num11;
-                float SpeedX2 = num12 + (float) Main.rand.Next(-40, 41) * 0.02f;
-                float SpeedY2 = num13 + (float) Main.rand.Next(-40, 41) * 0.02f;
-                Projectile.NewProjectile((float) vector2_1.X, (float) vector2_1.Y, SpeedX2, SpeedY2, shoot, Damage, num1, i, 0.0f, (float) Main.rand.Next(5));
+                vector2_1 = new Vector2((float) ((double) this.position.X + (double) this.width * 0.5 + (double) (Main.rand.Next(201) * -this.direction) + ((double) Main.mouseX + (double) Main.screenPosition.X - (double) this.position.X)), this.MountedCenter.Y - 600f);
+                vector2_1.X = (float) (((double) vector2_1.X + (double) this.Center.X) / 2.0) + (float) Main.rand.Next(-200, 201);
+                vector2_1.Y -= (float) (100 * index);
+                float num9 = (float) Main.mouseX + Main.screenPosition.X - vector2_1.X;
+                float num10 = (float) Main.mouseY + Main.screenPosition.Y - vector2_1.Y;
+                if ((double) num10 < 0.0)
+                  num10 *= -1f;
+                if ((double) num10 < 20.0)
+                  num10 = 20f;
+                float num11 = (float) Math.Sqrt((double) num9 * (double) num9 + (double) num10 * (double) num10);
+                float num12 = speed / num11;
+                float num13 = num9 * num12;
+                float num14 = num10 * num12;
+                float SpeedX = num13 + (float) Main.rand.Next(-40, 41) * 0.02f;
+                float SpeedY = num14 + (float) Main.rand.Next(-40, 41) * 0.02f;
+                Projectile.NewProjectile(vector2_1.X, vector2_1.Y, SpeedX, SpeedY, shoot, Damage, num1, i, 0.0f, (float) Main.rand.Next(5));
               }
             }
             else if (sItem.type == 2750)
             {
-              int num3 = 1;
-              for (int index = 0; index < num3; ++index)
+              int num8 = 1;
+              for (int index = 0; index < num8; ++index)
               {
-                // ISSUE: explicit reference operation
-                ((Vector2) @vector2_1).\u002Ector((float) (this.position.X + (double) this.width * 0.5 + (double) (Main.rand.Next(201) * -this.direction) + ((double) Main.mouseX + Main.screenPosition.X - this.position.X)), (float) (this.MountedCenter.Y - 600.0));
-                vector2_1.X = (__Null) ((vector2_1.X + this.Center.X) / 2.0 + (double) Main.rand.Next(-200, 201));
-                // ISSUE: explicit reference operation
-                // ISSUE: variable of a reference type
-                Vector2& local = @vector2_1;
-                // ISSUE: explicit reference operation
-                double num4 = (^local).Y - (double) (100 * index);
-                // ISSUE: explicit reference operation
-                (^local).Y = (__Null) num4;
-                float num8 = (float) ((double) Main.mouseX + Main.screenPosition.X - vector2_1.X + (double) Main.rand.Next(-40, 41) * 0.0299999993294477);
-                float num9 = (float) ((double) Main.mouseY + Main.screenPosition.Y - vector2_1.Y);
-                if ((double) num9 < 0.0)
-                  num9 *= -1f;
-                if ((double) num9 < 20.0)
-                  num9 = 20f;
-                float num10 = (float) Math.Sqrt((double) num8 * (double) num8 + (double) num9 * (double) num9);
-                float num11 = speed / num10;
-                float num12 = num8 * num11;
-                float num13 = num9 * num11;
-                float num14 = num12;
-                float num15 = num13 + (float) Main.rand.Next(-40, 41) * 0.02f;
-                Projectile.NewProjectile((float) vector2_1.X, (float) vector2_1.Y, num14 * 0.75f, num15 * 0.75f, shoot + Main.rand.Next(3), Damage, num1, i, 0.0f, (float) (0.5 + Main.rand.NextDouble() * 0.300000011920929));
+                vector2_1 = new Vector2((float) ((double) this.position.X + (double) this.width * 0.5 + (double) (Main.rand.Next(201) * -this.direction) + ((double) Main.mouseX + (double) Main.screenPosition.X - (double) this.position.X)), this.MountedCenter.Y - 600f);
+                vector2_1.X = (float) (((double) vector2_1.X + (double) this.Center.X) / 2.0) + (float) Main.rand.Next(-200, 201);
+                vector2_1.Y -= (float) (100 * index);
+                float num9 = (float) ((double) Main.mouseX + (double) Main.screenPosition.X - (double) vector2_1.X + (double) Main.rand.Next(-40, 41) * 0.0299999993294477);
+                float num10 = (float) Main.mouseY + Main.screenPosition.Y - vector2_1.Y;
+                if ((double) num10 < 0.0)
+                  num10 *= -1f;
+                if ((double) num10 < 20.0)
+                  num10 = 20f;
+                float num11 = (float) Math.Sqrt((double) num9 * (double) num9 + (double) num10 * (double) num10);
+                float num12 = speed / num11;
+                float num13 = num9 * num12;
+                float num14 = num10 * num12;
+                float num15 = num13;
+                float num16 = num14 + (float) Main.rand.Next(-40, 41) * 0.02f;
+                Projectile.NewProjectile(vector2_1.X, vector2_1.Y, num15 * 0.75f, num16 * 0.75f, shoot + Main.rand.Next(3), Damage, num1, i, 0.0f, (float) (0.5 + Main.rand.NextDouble() * 0.300000011920929));
               }
             }
             else if (sItem.type == 3570)
             {
-              int num3 = 3;
-              for (int index = 0; index < num3; ++index)
+              int num8 = 3;
+              for (int index = 0; index < num8; ++index)
               {
-                // ISSUE: explicit reference operation
-                ((Vector2) @vector2_1).\u002Ector((float) (this.position.X + (double) this.width * 0.5 + (double) (Main.rand.Next(201) * -this.direction) + ((double) Main.mouseX + Main.screenPosition.X - this.position.X)), (float) (this.MountedCenter.Y - 600.0));
-                vector2_1.X = (__Null) ((vector2_1.X + this.Center.X) / 2.0 + (double) Main.rand.Next(-200, 201));
-                // ISSUE: explicit reference operation
-                // ISSUE: variable of a reference type
-                Vector2& local = @vector2_1;
-                // ISSUE: explicit reference operation
-                double num4 = (^local).Y - (double) (100 * index);
-                // ISSUE: explicit reference operation
-                (^local).Y = (__Null) num4;
-                float num8 = (float) ((double) Main.mouseX + Main.screenPosition.X - vector2_1.X);
-                float num9 = (float) ((double) Main.mouseY + Main.screenPosition.Y - vector2_1.Y);
-                float ai1 = num9 + (float) vector2_1.Y;
-                if ((double) num9 < 0.0)
-                  num9 *= -1f;
-                if ((double) num9 < 20.0)
-                  num9 = 20f;
-                float num10 = (float) Math.Sqrt((double) num8 * (double) num8 + (double) num9 * (double) num9);
-                float num11 = speed / num10;
-                Vector2 vector2_4 = Vector2.op_Division(new Vector2(num8 * num11, num9 * num11), 2f);
-                Projectile.NewProjectile((float) vector2_1.X, (float) vector2_1.Y, (float) vector2_4.X, (float) vector2_4.Y, shoot, Damage, num1, i, 0.0f, ai1);
+                vector2_1 = new Vector2((float) ((double) this.position.X + (double) this.width * 0.5 + (double) (Main.rand.Next(201) * -this.direction) + ((double) Main.mouseX + (double) Main.screenPosition.X - (double) this.position.X)), this.MountedCenter.Y - 600f);
+                vector2_1.X = (float) (((double) vector2_1.X + (double) this.Center.X) / 2.0) + (float) Main.rand.Next(-200, 201);
+                vector2_1.Y -= (float) (100 * index);
+                float num9 = (float) Main.mouseX + Main.screenPosition.X - vector2_1.X;
+                float num10 = (float) Main.mouseY + Main.screenPosition.Y - vector2_1.Y;
+                float ai1 = num10 + vector2_1.Y;
+                if ((double) num10 < 0.0)
+                  num10 *= -1f;
+                if ((double) num10 < 20.0)
+                  num10 = 20f;
+                float num11 = (float) Math.Sqrt((double) num9 * (double) num9 + (double) num10 * (double) num10);
+                float num12 = speed / num11;
+                Vector2 vector2_4 = new Vector2(num9 * num12, num10 * num12) / 2f;
+                Projectile.NewProjectile(vector2_1.X, vector2_1.Y, vector2_4.X, vector2_4.Y, shoot, Damage, num1, i, 0.0f, ai1);
               }
             }
             else if (sItem.type == 3065)
             {
-              Vector2 vector2_4 = Vector2.op_Addition(Main.screenPosition, new Vector2((float) Main.mouseX, (float) Main.mouseY));
-              float ai1 = (float) vector2_4.Y;
-              if ((double) ai1 > this.Center.Y - 200.0)
-                ai1 = (float) (this.Center.Y - 200.0);
+              Vector2 vector2_4 = Main.screenPosition + new Vector2((float) Main.mouseX, (float) Main.mouseY);
+              float ai1 = vector2_4.Y;
+              if ((double) ai1 > (double) this.Center.Y - 200.0)
+                ai1 = this.Center.Y - 200f;
               for (int index = 0; index < 3; ++index)
               {
-                vector2_1 = Vector2.op_Addition(this.Center, new Vector2((float) (-Main.rand.Next(0, 401) * this.direction), -600f));
-                // ISSUE: explicit reference operation
-                // ISSUE: variable of a reference type
-                Vector2& local1 = @vector2_1;
-                // ISSUE: explicit reference operation
-                double num3 = (^local1).Y - (double) (100 * index);
-                // ISSUE: explicit reference operation
-                (^local1).Y = (__Null) num3;
-                Vector2 vector2_5 = Vector2.op_Subtraction(vector2_4, vector2_1);
-                if (vector2_5.Y < 0.0)
-                {
-                  // ISSUE: explicit reference operation
-                  // ISSUE: variable of a reference type
-                  Vector2& local2 = @vector2_5;
-                  // ISSUE: explicit reference operation
-                  double num4 = (^local2).Y * -1.0;
-                  // ISSUE: explicit reference operation
-                  (^local2).Y = (__Null) num4;
-                }
-                if (vector2_5.Y < 20.0)
-                  vector2_5.Y = (__Null) 20.0;
-                // ISSUE: explicit reference operation
-                ((Vector2) @vector2_5).Normalize();
-                vector2_5 = Vector2.op_Multiply(vector2_5, speed);
-                float x = (float) vector2_5.X;
-                float y = (float) vector2_5.Y;
-                float SpeedX2 = x;
-                float SpeedY2 = y + (float) Main.rand.Next(-40, 41) * 0.02f;
-                Projectile.NewProjectile((float) vector2_1.X, (float) vector2_1.Y, SpeedX2, SpeedY2, shoot, Damage * 2, num1, i, 0.0f, ai1);
+                vector2_1 = this.Center + new Vector2((float) (-Main.rand.Next(0, 401) * this.direction), -600f);
+                vector2_1.Y -= (float) (100 * index);
+                Vector2 vector2_5 = vector2_4 - vector2_1;
+                if ((double) vector2_5.Y < 0.0)
+                  vector2_5.Y *= -1f;
+                if ((double) vector2_5.Y < 20.0)
+                  vector2_5.Y = 20f;
+                vector2_5.Normalize();
+                vector2_5 *= speed;
+                float x = vector2_5.X;
+                float y = vector2_5.Y;
+                float SpeedX = x;
+                float SpeedY = y + (float) Main.rand.Next(-40, 41) * 0.02f;
+                Projectile.NewProjectile(vector2_1.X, vector2_1.Y, SpeedX, SpeedY, shoot, Damage * 2, num1, i, 0.0f, ai1);
               }
             }
             else if (sItem.type == 2624)
             {
-              float num3 = 0.3141593f;
-              int num4 = 5;
-              Vector2 spinningpoint;
-              // ISSUE: explicit reference operation
-              ((Vector2) @spinningpoint).\u002Ector(SpeedX1, SpeedY1);
-              // ISSUE: explicit reference operation
-              ((Vector2) @spinningpoint).Normalize();
-              spinningpoint = Vector2.op_Multiply(spinningpoint, 40f);
-              bool flag4 = Collision.CanHit(vector2_1, 0, 0, Vector2.op_Addition(vector2_1, spinningpoint), 0, 0);
-              for (int index1 = 0; index1 < num4; ++index1)
+              float num8 = 0.3141593f;
+              int num9 = 5;
+              Vector2 spinningpoint = new Vector2(num6, num7);
+              spinningpoint.Normalize();
+              spinningpoint *= 40f;
+              bool flag4 = Collision.CanHit(vector2_1, 0, 0, vector2_1 + spinningpoint, 0, 0);
+              for (int index1 = 0; index1 < num9; ++index1)
               {
-                float num8 = (float) index1 - (float) (((double) num4 - 1.0) / 2.0);
-                Vector2 vector2_4 = spinningpoint.RotatedBy((double) num3 * (double) num8, (Vector2) null);
+                float num10 = (float) index1 - (float) (((double) num9 - 1.0) / 2.0);
+                Vector2 vector2_4 = spinningpoint.RotatedBy((double) num8 * (double) num10, new Vector2());
                 if (!flag4)
-                  vector2_4 = Vector2.op_Subtraction(vector2_4, spinningpoint);
-                int index2 = Projectile.NewProjectile((float) (vector2_1.X + vector2_4.X), (float) (vector2_1.Y + vector2_4.Y), SpeedX1, SpeedY1, shoot, Damage, num1, i, 0.0f, 0.0f);
+                  vector2_4 -= spinningpoint;
+                int index2 = Projectile.NewProjectile(vector2_1.X + vector2_4.X, vector2_1.Y + vector2_4.Y, num6, num7, shoot, Damage, num1, i, 0.0f, 0.0f);
                 Main.projectile[index2].noDropItem = true;
               }
             }
             else if (sItem.type == 1929)
             {
-              float SpeedX2 = SpeedX1 + (float) Main.rand.Next(-40, 41) * 0.03f;
-              float SpeedY2 = SpeedY1 + (float) Main.rand.Next(-40, 41) * 0.03f;
-              Projectile.NewProjectile((float) vector2_1.X, (float) vector2_1.Y, SpeedX2, SpeedY2, shoot, Damage, num1, i, 0.0f, 0.0f);
+              float SpeedX = num6 + (float) Main.rand.Next(-40, 41) * 0.03f;
+              float SpeedY = num7 + (float) Main.rand.Next(-40, 41) * 0.03f;
+              Projectile.NewProjectile(vector2_1.X, vector2_1.Y, SpeedX, SpeedY, shoot, Damage, num1, i, 0.0f, 0.0f);
             }
             else if (sItem.type == 1553)
             {
-              float SpeedX2 = SpeedX1 + (float) Main.rand.Next(-40, 41) * 0.005f;
-              float SpeedY2 = SpeedY1 + (float) Main.rand.Next(-40, 41) * 0.005f;
-              Projectile.NewProjectile((float) vector2_1.X, (float) vector2_1.Y, SpeedX2, SpeedY2, shoot, Damage, num1, i, 0.0f, 0.0f);
+              float SpeedX = num6 + (float) Main.rand.Next(-40, 41) * 0.005f;
+              float SpeedY = num7 + (float) Main.rand.Next(-40, 41) * 0.005f;
+              Projectile.NewProjectile(vector2_1.X, vector2_1.Y, SpeedX, SpeedY, shoot, Damage, num1, i, 0.0f, 0.0f);
             }
             else if (sItem.type == 518)
             {
-              float num3 = SpeedX1;
-              float num4 = SpeedY1;
-              float SpeedX2 = num3 + (float) Main.rand.Next(-40, 41) * 0.04f;
-              float SpeedY2 = num4 + (float) Main.rand.Next(-40, 41) * 0.04f;
-              Projectile.NewProjectile((float) vector2_1.X, (float) vector2_1.Y, SpeedX2, SpeedY2, shoot, Damage, num1, i, 0.0f, 0.0f);
+              float num8 = num6;
+              float num9 = num7;
+              float SpeedX = num8 + (float) Main.rand.Next(-40, 41) * 0.04f;
+              float SpeedY = num9 + (float) Main.rand.Next(-40, 41) * 0.04f;
+              Projectile.NewProjectile(vector2_1.X, vector2_1.Y, SpeedX, SpeedY, shoot, Damage, num1, i, 0.0f, 0.0f);
             }
             else if (sItem.type == 1265)
             {
-              float num3 = SpeedX1;
-              float num4 = SpeedY1;
-              float SpeedX2 = num3 + (float) Main.rand.Next(-30, 31) * 0.03f;
-              float SpeedY2 = num4 + (float) Main.rand.Next(-30, 31) * 0.03f;
-              Projectile.NewProjectile((float) vector2_1.X, (float) vector2_1.Y, SpeedX2, SpeedY2, shoot, Damage, num1, i, 0.0f, 0.0f);
+              float num8 = num6;
+              float num9 = num7;
+              float SpeedX = num8 + (float) Main.rand.Next(-30, 31) * 0.03f;
+              float SpeedY = num9 + (float) Main.rand.Next(-30, 31) * 0.03f;
+              Projectile.NewProjectile(vector2_1.X, vector2_1.Y, SpeedX, SpeedY, shoot, Damage, num1, i, 0.0f, 0.0f);
             }
             else if (sItem.type == 534)
             {
-              int num3 = Main.rand.Next(4, 6);
-              for (int index = 0; index < num3; ++index)
+              int num8 = Main.rand.Next(4, 6);
+              for (int index = 0; index < num8; ++index)
               {
-                float num4 = SpeedX1;
-                float num8 = SpeedY1;
-                float SpeedX2 = num4 + (float) Main.rand.Next(-40, 41) * 0.05f;
-                float SpeedY2 = num8 + (float) Main.rand.Next(-40, 41) * 0.05f;
-                Projectile.NewProjectile((float) vector2_1.X, (float) vector2_1.Y, SpeedX2, SpeedY2, shoot, Damage, num1, i, 0.0f, 0.0f);
+                float num9 = num6;
+                float num10 = num7;
+                float SpeedX = num9 + (float) Main.rand.Next(-40, 41) * 0.05f;
+                float SpeedY = num10 + (float) Main.rand.Next(-40, 41) * 0.05f;
+                Projectile.NewProjectile(vector2_1.X, vector2_1.Y, SpeedX, SpeedY, shoot, Damage, num1, i, 0.0f, 0.0f);
               }
             }
             else if (sItem.type == 2188)
             {
-              int num3 = 4;
+              int num8 = 4;
               if (Main.rand.Next(3) == 0)
-                ++num3;
+                ++num8;
               if (Main.rand.Next(4) == 0)
-                ++num3;
+                ++num8;
               if (Main.rand.Next(5) == 0)
-                ++num3;
-              for (int index = 0; index < num3; ++index)
+                ++num8;
+              for (int index = 0; index < num8; ++index)
               {
-                float num4 = SpeedX1;
-                float num8 = SpeedY1;
-                float num9 = 0.05f * (float) index;
-                float num10 = num4 + (float) Main.rand.Next(-35, 36) * num9;
-                float num11 = num8 + (float) Main.rand.Next(-35, 36) * num9;
-                float num12 = (float) Math.Sqrt((double) num10 * (double) num10 + (double) num11 * (double) num11);
-                float num13 = speed / num12;
-                float SpeedX2 = num10 * num13;
-                float SpeedY2 = num11 * num13;
-                Projectile.NewProjectile((float) vector2_1.X, (float) vector2_1.Y, SpeedX2, SpeedY2, shoot, Damage, num1, i, 0.0f, 0.0f);
+                float num9 = num6;
+                float num10 = num7;
+                float num11 = 0.05f * (float) index;
+                float num12 = num9 + (float) Main.rand.Next(-35, 36) * num11;
+                float num13 = num10 + (float) Main.rand.Next(-35, 36) * num11;
+                float num14 = (float) Math.Sqrt((double) num12 * (double) num12 + (double) num13 * (double) num13);
+                float num15 = speed / num14;
+                float SpeedX = num12 * num15;
+                float SpeedY = num13 * num15;
+                Projectile.NewProjectile(vector2_1.X, vector2_1.Y, SpeedX, SpeedY, shoot, Damage, num1, i, 0.0f, 0.0f);
               }
             }
             else if (sItem.type == 1308)
             {
-              int num3 = 3;
+              int num8 = 3;
               if (Main.rand.Next(3) == 0)
-                ++num3;
-              for (int index = 0; index < num3; ++index)
+                ++num8;
+              for (int index = 0; index < num8; ++index)
               {
-                float num4 = SpeedX1;
-                float num8 = SpeedY1;
-                float num9 = 0.05f * (float) index;
-                float num10 = num4 + (float) Main.rand.Next(-35, 36) * num9;
-                float num11 = num8 + (float) Main.rand.Next(-35, 36) * num9;
-                float num12 = (float) Math.Sqrt((double) num10 * (double) num10 + (double) num11 * (double) num11);
-                float num13 = speed / num12;
-                float SpeedX2 = num10 * num13;
-                float SpeedY2 = num11 * num13;
-                Projectile.NewProjectile((float) vector2_1.X, (float) vector2_1.Y, SpeedX2, SpeedY2, shoot, Damage, num1, i, 0.0f, 0.0f);
+                float num9 = num6;
+                float num10 = num7;
+                float num11 = 0.05f * (float) index;
+                float num12 = num9 + (float) Main.rand.Next(-35, 36) * num11;
+                float num13 = num10 + (float) Main.rand.Next(-35, 36) * num11;
+                float num14 = (float) Math.Sqrt((double) num12 * (double) num12 + (double) num13 * (double) num13);
+                float num15 = speed / num14;
+                float SpeedX = num12 * num15;
+                float SpeedY = num13 * num15;
+                Projectile.NewProjectile(vector2_1.X, vector2_1.Y, SpeedX, SpeedY, shoot, Damage, num1, i, 0.0f, 0.0f);
               }
             }
             else if (sItem.type == 1258)
             {
-              float num3 = SpeedX1;
-              float num4 = SpeedY1;
-              float SpeedX2 = num3 + (float) Main.rand.Next(-40, 41) * 0.01f;
-              float SpeedY2 = num4 + (float) Main.rand.Next(-40, 41) * 0.01f;
-              // ISSUE: explicit reference operation
-              // ISSUE: variable of a reference type
-              Vector2& local1 = @vector2_1;
-              // ISSUE: explicit reference operation
-              double num8 = (^local1).X + (double) Main.rand.Next(-40, 41) * 0.0500000007450581;
-              // ISSUE: explicit reference operation
-              (^local1).X = (__Null) num8;
-              // ISSUE: explicit reference operation
-              // ISSUE: variable of a reference type
-              Vector2& local2 = @vector2_1;
-              // ISSUE: explicit reference operation
-              double num9 = (^local2).Y + (double) Main.rand.Next(-45, 36) * 0.0500000007450581;
-              // ISSUE: explicit reference operation
-              (^local2).Y = (__Null) num9;
-              Projectile.NewProjectile((float) vector2_1.X, (float) vector2_1.Y, SpeedX2, SpeedY2, shoot, Damage, num1, i, 0.0f, 0.0f);
+              float num8 = num6;
+              float num9 = num7;
+              float SpeedX = num8 + (float) Main.rand.Next(-40, 41) * 0.01f;
+              float SpeedY = num9 + (float) Main.rand.Next(-40, 41) * 0.01f;
+              vector2_1.X += (float) Main.rand.Next(-40, 41) * 0.05f;
+              vector2_1.Y += (float) Main.rand.Next(-45, 36) * 0.05f;
+              Projectile.NewProjectile(vector2_1.X, vector2_1.Y, SpeedX, SpeedY, shoot, Damage, num1, i, 0.0f, 0.0f);
             }
             else if (sItem.type == 964)
             {
-              int num3 = Main.rand.Next(3, 5);
-              for (int index = 0; index < num3; ++index)
+              int num8 = Main.rand.Next(3, 5);
+              for (int index = 0; index < num8; ++index)
               {
-                float num4 = SpeedX1;
-                float num8 = SpeedY1;
-                float SpeedX2 = num4 + (float) Main.rand.Next(-35, 36) * 0.04f;
-                float SpeedY2 = num8 + (float) Main.rand.Next(-35, 36) * 0.04f;
-                Projectile.NewProjectile((float) vector2_1.X, (float) vector2_1.Y, SpeedX2, SpeedY2, shoot, Damage, num1, i, 0.0f, 0.0f);
+                float num9 = num6;
+                float num10 = num7;
+                float SpeedX = num9 + (float) Main.rand.Next(-35, 36) * 0.04f;
+                float SpeedY = num10 + (float) Main.rand.Next(-35, 36) * 0.04f;
+                Projectile.NewProjectile(vector2_1.X, vector2_1.Y, SpeedX, SpeedY, shoot, Damage, num1, i, 0.0f, 0.0f);
               }
             }
             else if (sItem.type == 1569)
             {
-              int num3 = 4;
+              int num8 = 4;
               if (Main.rand.Next(2) == 0)
-                ++num3;
+                ++num8;
               if (Main.rand.Next(4) == 0)
-                ++num3;
+                ++num8;
               if (Main.rand.Next(8) == 0)
-                ++num3;
+                ++num8;
               if (Main.rand.Next(16) == 0)
-                ++num3;
-              for (int index = 0; index < num3; ++index)
+                ++num8;
+              for (int index = 0; index < num8; ++index)
               {
-                float num4 = SpeedX1;
-                float num8 = SpeedY1;
-                float num9 = 0.05f * (float) index;
-                float num10 = num4 + (float) Main.rand.Next(-35, 36) * num9;
-                float num11 = num8 + (float) Main.rand.Next(-35, 36) * num9;
-                float num12 = (float) Math.Sqrt((double) num10 * (double) num10 + (double) num11 * (double) num11);
-                float num13 = speed / num12;
-                float SpeedX2 = num10 * num13;
-                float SpeedY2 = num11 * num13;
-                Projectile.NewProjectile((float) vector2_1.X, (float) vector2_1.Y, SpeedX2, SpeedY2, shoot, Damage, num1, i, 0.0f, 0.0f);
+                float num9 = num6;
+                float num10 = num7;
+                float num11 = 0.05f * (float) index;
+                float num12 = num9 + (float) Main.rand.Next(-35, 36) * num11;
+                float num13 = num10 + (float) Main.rand.Next(-35, 36) * num11;
+                float num14 = (float) Math.Sqrt((double) num12 * (double) num12 + (double) num13 * (double) num13);
+                float num15 = speed / num14;
+                float SpeedX = num12 * num15;
+                float SpeedY = num13 * num15;
+                Projectile.NewProjectile(vector2_1.X, vector2_1.Y, SpeedX, SpeedY, shoot, Damage, num1, i, 0.0f, 0.0f);
               }
             }
             else if (sItem.type == 1572 || sItem.type == 2366 || (sItem.type == 3571 || sItem.type == 3569))
             {
               bool flag4 = sItem.type == 3571 || sItem.type == 3569;
-              int i1 = (int) ((double) Main.mouseX + Main.screenPosition.X) / 16;
-              int j = (int) ((double) Main.mouseY + Main.screenPosition.Y) / 16;
+              int i1 = (int) ((double) Main.mouseX + (double) Main.screenPosition.X) / 16;
+              int j = (int) ((double) Main.mouseY + (double) Main.screenPosition.Y) / 16;
               if ((double) this.gravDir == -1.0)
-                j = (int) (Main.screenPosition.Y + (double) Main.screenHeight - (double) Main.mouseY) / 16;
+                j = (int) ((double) Main.screenPosition.Y + (double) Main.screenHeight - (double) Main.mouseY) / 16;
               if (!flag4)
               {
                 while (j < Main.maxTilesY - 10 && Main.tile[i1, j] != null && (!WorldGen.SolidTile2(i1, j) && Main.tile[i1 - 1, j] != null) && (!WorldGen.SolidTile2(i1 - 1, j) && Main.tile[i1 + 1, j] != null && !WorldGen.SolidTile2(i1 + 1, j)))
                   ++j;
                 --j;
               }
-              Projectile.NewProjectile((float) Main.mouseX + (float) Main.screenPosition.X, (float) (j * 16 - 24), 0.0f, 15f, shoot, Damage, num1, i, 0.0f, 0.0f);
+              Projectile.NewProjectile((float) Main.mouseX + Main.screenPosition.X, (float) (j * 16 - 24), 0.0f, 15f, shoot, Damage, num1, i, 0.0f, 0.0f);
               this.UpdateMaxTurrets();
             }
             else if (sItem.type == 1244 || sItem.type == 1256)
             {
-              int index = Projectile.NewProjectile((float) vector2_1.X, (float) vector2_1.Y, SpeedX1, SpeedY1, shoot, Damage, num1, i, 0.0f, 0.0f);
-              Main.projectile[index].ai[0] = (float) Main.mouseX + (float) Main.screenPosition.X;
-              Main.projectile[index].ai[1] = (float) Main.mouseY + (float) Main.screenPosition.Y;
+              int index = Projectile.NewProjectile(vector2_1.X, vector2_1.Y, num6, num7, shoot, Damage, num1, i, 0.0f, 0.0f);
+              Main.projectile[index].ai[0] = (float) Main.mouseX + Main.screenPosition.X;
+              Main.projectile[index].ai[1] = (float) Main.mouseY + Main.screenPosition.Y;
             }
             else if (sItem.type == 1229)
             {
-              int num3 = Main.rand.Next(2, 4);
+              int num8 = Main.rand.Next(2, 4);
               if (Main.rand.Next(5) == 0)
-                ++num3;
-              for (int index1 = 0; index1 < num3; ++index1)
+                ++num8;
+              for (int index1 = 0; index1 < num8; ++index1)
               {
-                float SpeedX2 = SpeedX1;
-                float SpeedY2 = SpeedY1;
+                float SpeedX = num6;
+                float SpeedY = num7;
                 if (index1 > 0)
                 {
-                  SpeedX2 += (float) Main.rand.Next(-35, 36) * 0.04f;
-                  SpeedY2 += (float) Main.rand.Next(-35, 36) * 0.04f;
+                  SpeedX += (float) Main.rand.Next(-35, 36) * 0.04f;
+                  SpeedY += (float) Main.rand.Next(-35, 36) * 0.04f;
                 }
                 if (index1 > 1)
                 {
-                  SpeedX2 += (float) Main.rand.Next(-35, 36) * 0.04f;
-                  SpeedY2 += (float) Main.rand.Next(-35, 36) * 0.04f;
+                  SpeedX += (float) Main.rand.Next(-35, 36) * 0.04f;
+                  SpeedY += (float) Main.rand.Next(-35, 36) * 0.04f;
                 }
                 if (index1 > 2)
                 {
-                  SpeedX2 += (float) Main.rand.Next(-35, 36) * 0.04f;
-                  SpeedY2 += (float) Main.rand.Next(-35, 36) * 0.04f;
+                  SpeedX += (float) Main.rand.Next(-35, 36) * 0.04f;
+                  SpeedY += (float) Main.rand.Next(-35, 36) * 0.04f;
                 }
-                int index2 = Projectile.NewProjectile((float) vector2_1.X, (float) vector2_1.Y, SpeedX2, SpeedY2, shoot, Damage, num1, i, 0.0f, 0.0f);
+                int index2 = Projectile.NewProjectile(vector2_1.X, vector2_1.Y, SpeedX, SpeedY, shoot, Damage, num1, i, 0.0f, 0.0f);
                 Main.projectile[index2].noDropItem = true;
               }
             }
             else if (sItem.type == 1121)
             {
-              int num3 = Main.rand.Next(1, 4);
+              int num8 = Main.rand.Next(1, 4);
               if (Main.rand.Next(6) == 0)
-                ++num3;
+                ++num8;
               if (Main.rand.Next(6) == 0)
-                ++num3;
+                ++num8;
               if (this.strongBees && Main.rand.Next(3) == 0)
-                ++num3;
-              for (int index1 = 0; index1 < num3; ++index1)
+                ++num8;
+              for (int index1 = 0; index1 < num8; ++index1)
               {
-                float num4 = SpeedX1;
-                float num8 = SpeedY1;
-                float SpeedX2 = num4 + (float) Main.rand.Next(-35, 36) * 0.02f;
-                float SpeedY2 = num8 + (float) Main.rand.Next(-35, 36) * 0.02f;
-                int index2 = Projectile.NewProjectile((float) vector2_1.X, (float) vector2_1.Y, SpeedX2, SpeedY2, this.beeType(), this.beeDamage(Damage), this.beeKB(num1), i, 0.0f, 0.0f);
+                float num9 = num6;
+                float num10 = num7;
+                float SpeedX = num9 + (float) Main.rand.Next(-35, 36) * 0.02f;
+                float SpeedY = num10 + (float) Main.rand.Next(-35, 36) * 0.02f;
+                int index2 = Projectile.NewProjectile(vector2_1.X, vector2_1.Y, SpeedX, SpeedY, this.beeType(), this.beeDamage(Damage), this.beeKB(num1), i, 0.0f, 0.0f);
                 Main.projectile[index2].magic = true;
               }
             }
             else if (sItem.type == 1155)
             {
-              int num3 = Main.rand.Next(2, 5);
+              int num8 = Main.rand.Next(2, 5);
               if (Main.rand.Next(5) == 0)
-                ++num3;
+                ++num8;
               if (Main.rand.Next(5) == 0)
-                ++num3;
-              for (int index = 0; index < num3; ++index)
+                ++num8;
+              for (int index = 0; index < num8; ++index)
               {
-                float num4 = SpeedX1;
-                float num8 = SpeedY1;
-                float SpeedX2 = num4 + (float) Main.rand.Next(-35, 36) * 0.02f;
-                float SpeedY2 = num8 + (float) Main.rand.Next(-35, 36) * 0.02f;
-                Projectile.NewProjectile((float) vector2_1.X, (float) vector2_1.Y, SpeedX2, SpeedY2, shoot, Damage, num1, i, 0.0f, 0.0f);
+                float num9 = num6;
+                float num10 = num7;
+                float SpeedX = num9 + (float) Main.rand.Next(-35, 36) * 0.02f;
+                float SpeedY = num10 + (float) Main.rand.Next(-35, 36) * 0.02f;
+                Projectile.NewProjectile(vector2_1.X, vector2_1.Y, SpeedX, SpeedY, shoot, Damage, num1, i, 0.0f, 0.0f);
               }
             }
             else if (sItem.type == 1801)
             {
-              int num3 = Main.rand.Next(1, 4);
-              for (int index = 0; index < num3; ++index)
+              int num8 = Main.rand.Next(1, 4);
+              for (int index = 0; index < num8; ++index)
               {
-                float num4 = SpeedX1;
-                float num8 = SpeedY1;
-                float SpeedX2 = num4 + (float) Main.rand.Next(-35, 36) * 0.05f;
-                float SpeedY2 = num8 + (float) Main.rand.Next(-35, 36) * 0.05f;
-                Projectile.NewProjectile((float) vector2_1.X, (float) vector2_1.Y, SpeedX2, SpeedY2, shoot, Damage, num1, i, 0.0f, 0.0f);
+                float num9 = num6;
+                float num10 = num7;
+                float SpeedX = num9 + (float) Main.rand.Next(-35, 36) * 0.05f;
+                float SpeedY = num10 + (float) Main.rand.Next(-35, 36) * 0.05f;
+                Projectile.NewProjectile(vector2_1.X, vector2_1.Y, SpeedX, SpeedY, shoot, Damage, num1, i, 0.0f, 0.0f);
               }
             }
             else if (sItem.type == 679)
             {
               for (int index = 0; index < 6; ++index)
               {
-                float num3 = SpeedX1;
-                float num4 = SpeedY1;
-                float SpeedX2 = num3 + (float) Main.rand.Next(-40, 41) * 0.05f;
-                float SpeedY2 = num4 + (float) Main.rand.Next(-40, 41) * 0.05f;
-                Projectile.NewProjectile((float) vector2_1.X, (float) vector2_1.Y, SpeedX2, SpeedY2, shoot, Damage, num1, i, 0.0f, 0.0f);
+                float num8 = num6;
+                float num9 = num7;
+                float SpeedX = num8 + (float) Main.rand.Next(-40, 41) * 0.05f;
+                float SpeedY = num9 + (float) Main.rand.Next(-40, 41) * 0.05f;
+                Projectile.NewProjectile(vector2_1.X, vector2_1.Y, SpeedX, SpeedY, shoot, Damage, num1, i, 0.0f, 0.0f);
               }
             }
             else if (sItem.type == 2623)
             {
               for (int index = 0; index < 3; ++index)
               {
-                float num3 = SpeedX1;
-                float num4 = SpeedY1;
-                float SpeedX2 = num3 + (float) Main.rand.Next(-40, 41) * 0.1f;
-                float SpeedY2 = num4 + (float) Main.rand.Next(-40, 41) * 0.1f;
-                Projectile.NewProjectile((float) vector2_1.X, (float) vector2_1.Y, SpeedX2, SpeedY2, shoot, Damage, num1, i, 0.0f, 0.0f);
+                float num8 = num6;
+                float num9 = num7;
+                float SpeedX = num8 + (float) Main.rand.Next(-40, 41) * 0.1f;
+                float SpeedY = num9 + (float) Main.rand.Next(-40, 41) * 0.1f;
+                Projectile.NewProjectile(vector2_1.X, vector2_1.Y, SpeedX, SpeedY, shoot, Damage, num1, i, 0.0f, 0.0f);
               }
             }
             else if (sItem.type == 3210)
             {
-              Vector2 vector2_4;
-              // ISSUE: explicit reference operation
-              ((Vector2) @vector2_4).\u002Ector(SpeedX1, SpeedY1);
-              // ISSUE: explicit reference operation
-              // ISSUE: variable of a reference type
-              Vector2& local1 = @vector2_4;
-              // ISSUE: explicit reference operation
-              double num3 = (^local1).X + (double) Main.rand.Next(-30, 31) * 0.0399999991059303;
-              // ISSUE: explicit reference operation
-              (^local1).X = (__Null) num3;
-              // ISSUE: explicit reference operation
-              // ISSUE: variable of a reference type
-              Vector2& local2 = @vector2_4;
-              // ISSUE: explicit reference operation
-              double num4 = (^local2).Y + (double) Main.rand.Next(-30, 31) * 0.0299999993294477;
-              // ISSUE: explicit reference operation
-              (^local2).Y = (__Null) num4;
-              // ISSUE: explicit reference operation
-              ((Vector2) @vector2_4).Normalize();
-              vector2_4 = Vector2.op_Multiply(vector2_4, (float) Main.rand.Next(70, 91) * 0.1f);
-              // ISSUE: explicit reference operation
-              // ISSUE: variable of a reference type
-              Vector2& local3 = @vector2_4;
-              // ISSUE: explicit reference operation
-              double num8 = (^local3).X + (double) Main.rand.Next(-30, 31) * 0.0399999991059303;
-              // ISSUE: explicit reference operation
-              (^local3).X = (__Null) num8;
-              // ISSUE: explicit reference operation
-              // ISSUE: variable of a reference type
-              Vector2& local4 = @vector2_4;
-              // ISSUE: explicit reference operation
-              double num9 = (^local4).Y + (double) Main.rand.Next(-30, 31) * 0.0299999993294477;
-              // ISSUE: explicit reference operation
-              (^local4).Y = (__Null) num9;
-              Projectile.NewProjectile((float) vector2_1.X, (float) vector2_1.Y, (float) vector2_4.X, (float) vector2_4.Y, shoot, Damage, num1, i, (float) Main.rand.Next(20), 0.0f);
+              Vector2 vector2_4 = new Vector2(num6, num7);
+              vector2_4.X += (float) Main.rand.Next(-30, 31) * 0.04f;
+              vector2_4.Y += (float) Main.rand.Next(-30, 31) * 0.03f;
+              vector2_4.Normalize();
+              vector2_4 *= (float) Main.rand.Next(70, 91) * 0.1f;
+              vector2_4.X += (float) Main.rand.Next(-30, 31) * 0.04f;
+              vector2_4.Y += (float) Main.rand.Next(-30, 31) * 0.03f;
+              Projectile.NewProjectile(vector2_1.X, vector2_1.Y, vector2_4.X, vector2_4.Y, shoot, Damage, num1, i, (float) Main.rand.Next(20), 0.0f);
             }
             else if (sItem.type == 434)
             {
-              float SpeedX2 = SpeedX1;
-              float SpeedY2 = SpeedY1;
+              float SpeedX = num6;
+              float SpeedY = num7;
               if (this.itemAnimation < 5)
               {
-                float num3 = SpeedX2 + (float) Main.rand.Next(-40, 41) * 0.01f;
-                float num4 = SpeedY2 + (float) Main.rand.Next(-40, 41) * 0.01f;
-                SpeedX2 = num3 * 1.1f;
-                SpeedY2 = num4 * 1.1f;
+                float num8 = SpeedX + (float) Main.rand.Next(-40, 41) * 0.01f;
+                float num9 = SpeedY + (float) Main.rand.Next(-40, 41) * 0.01f;
+                SpeedX = num8 * 1.1f;
+                SpeedY = num9 * 1.1f;
               }
               else if (this.itemAnimation < 10)
               {
-                float num3 = SpeedX2 + (float) Main.rand.Next(-20, 21) * 0.01f;
-                float num4 = SpeedY2 + (float) Main.rand.Next(-20, 21) * 0.01f;
-                SpeedX2 = num3 * 1.05f;
-                SpeedY2 = num4 * 1.05f;
+                float num8 = SpeedX + (float) Main.rand.Next(-20, 21) * 0.01f;
+                float num9 = SpeedY + (float) Main.rand.Next(-20, 21) * 0.01f;
+                SpeedX = num8 * 1.05f;
+                SpeedY = num9 * 1.05f;
               }
-              Projectile.NewProjectile((float) vector2_1.X, (float) vector2_1.Y, SpeedX2, SpeedY2, shoot, Damage, num1, i, 0.0f, 0.0f);
+              Projectile.NewProjectile(vector2_1.X, vector2_1.Y, SpeedX, SpeedY, shoot, Damage, num1, i, 0.0f, 0.0f);
             }
             else if (sItem.type == 1157)
             {
               shoot = Main.rand.Next(191, 195);
-              float SpeedX2 = 0.0f;
-              float SpeedY2 = 0.0f;
-              vector2_1.X = (__Null) ((double) Main.mouseX + Main.screenPosition.X);
-              vector2_1.Y = (__Null) ((double) Main.mouseY + Main.screenPosition.Y);
-              int index = Projectile.NewProjectile((float) vector2_1.X, (float) vector2_1.Y, SpeedX2, SpeedY2, shoot, Damage, num1, i, 0.0f, 0.0f);
+              float SpeedX = 0.0f;
+              float SpeedY = 0.0f;
+              vector2_1.X = (float) Main.mouseX + Main.screenPosition.X;
+              vector2_1.Y = (float) Main.mouseY + Main.screenPosition.Y;
+              int index = Projectile.NewProjectile(vector2_1.X, vector2_1.Y, SpeedX, SpeedY, shoot, Damage, num1, i, 0.0f, 0.0f);
               Main.projectile[index].localAI[0] = 30f;
             }
             else if (sItem.type == 1802)
             {
-              float SpeedX2 = 0.0f;
-              float SpeedY2 = 0.0f;
-              vector2_1.X = (__Null) ((double) Main.mouseX + Main.screenPosition.X);
-              vector2_1.Y = (__Null) ((double) Main.mouseY + Main.screenPosition.Y);
-              Projectile.NewProjectile((float) vector2_1.X, (float) vector2_1.Y, SpeedX2, SpeedY2, shoot, Damage, num1, i, 0.0f, 0.0f);
+              float SpeedX = 0.0f;
+              float SpeedY = 0.0f;
+              vector2_1.X = (float) Main.mouseX + Main.screenPosition.X;
+              vector2_1.Y = (float) Main.mouseY + Main.screenPosition.Y;
+              Projectile.NewProjectile(vector2_1.X, vector2_1.Y, SpeedX, SpeedY, shoot, Damage, num1, i, 0.0f, 0.0f);
             }
             else if (sItem.type == 2364 || sItem.type == 2365)
             {
-              float SpeedX2 = 0.0f;
-              float SpeedY2 = 0.0f;
-              vector2_1.X = (__Null) ((double) Main.mouseX + Main.screenPosition.X);
-              vector2_1.Y = (__Null) ((double) Main.mouseY + Main.screenPosition.Y);
-              Projectile.NewProjectile((float) vector2_1.X, (float) vector2_1.Y, SpeedX2, SpeedY2, shoot, Damage, num1, i, 0.0f, 0.0f);
+              float SpeedX = 0.0f;
+              float SpeedY = 0.0f;
+              vector2_1.X = (float) Main.mouseX + Main.screenPosition.X;
+              vector2_1.Y = (float) Main.mouseY + Main.screenPosition.Y;
+              Projectile.NewProjectile(vector2_1.X, vector2_1.Y, SpeedX, SpeedY, shoot, Damage, num1, i, 0.0f, 0.0f);
             }
             else if (sItem.type == 2535)
             {
-              float num3 = 0.0f;
-              float num4 = 0.0f;
-              vector2_1.X = (__Null) ((double) Main.mouseX + Main.screenPosition.X);
-              vector2_1.Y = (__Null) ((double) Main.mouseY + Main.screenPosition.Y);
-              Vector2 spinningpoint1;
-              // ISSUE: explicit reference operation
-              ((Vector2) @spinningpoint1).\u002Ector(num3, num4);
-              Vector2 spinningpoint2 = spinningpoint1.RotatedBy(1.57079637050629, (Vector2) null);
-              Projectile.NewProjectile((float) (vector2_1.X + spinningpoint2.X), (float) (vector2_1.Y + spinningpoint2.Y), (float) spinningpoint2.X, (float) spinningpoint2.Y, shoot, Damage, num1, i, 0.0f, 0.0f);
-              spinningpoint2 = spinningpoint2.RotatedBy(-3.14159274101257, (Vector2) null);
-              Projectile.NewProjectile((float) (vector2_1.X + spinningpoint2.X), (float) (vector2_1.Y + spinningpoint2.Y), (float) spinningpoint2.X, (float) spinningpoint2.Y, shoot + 1, Damage, num1, i, 0.0f, 0.0f);
+              float x = 0.0f;
+              float y = 0.0f;
+              vector2_1.X = (float) Main.mouseX + Main.screenPosition.X;
+              vector2_1.Y = (float) Main.mouseY + Main.screenPosition.Y;
+              Vector2 spinningpoint = new Vector2(x, y).RotatedBy(1.57079637050629, new Vector2());
+              Projectile.NewProjectile(vector2_1.X + spinningpoint.X, vector2_1.Y + spinningpoint.Y, spinningpoint.X, spinningpoint.Y, shoot, Damage, num1, i, 0.0f, 0.0f);
+              spinningpoint = spinningpoint.RotatedBy(-3.14159274101257, new Vector2());
+              Projectile.NewProjectile(vector2_1.X + spinningpoint.X, vector2_1.Y + spinningpoint.Y, spinningpoint.X, spinningpoint.Y, shoot + 1, Damage, num1, i, 0.0f, 0.0f);
             }
             else if (sItem.type == 2551)
             {
-              float SpeedX2 = 0.0f;
-              float SpeedY2 = 0.0f;
-              vector2_1.X = (__Null) ((double) Main.mouseX + Main.screenPosition.X);
-              vector2_1.Y = (__Null) ((double) Main.mouseY + Main.screenPosition.Y);
-              Projectile.NewProjectile((float) vector2_1.X, (float) vector2_1.Y, SpeedX2, SpeedY2, shoot + Main.rand.Next(3), Damage, num1, i, 0.0f, 0.0f);
+              float SpeedX = 0.0f;
+              float SpeedY = 0.0f;
+              vector2_1.X = (float) Main.mouseX + Main.screenPosition.X;
+              vector2_1.Y = (float) Main.mouseY + Main.screenPosition.Y;
+              Projectile.NewProjectile(vector2_1.X, vector2_1.Y, SpeedX, SpeedY, shoot + Main.rand.Next(3), Damage, num1, i, 0.0f, 0.0f);
             }
             else if (sItem.type == 2584)
             {
-              float SpeedX2 = 0.0f;
-              float SpeedY2 = 0.0f;
-              vector2_1.X = (__Null) ((double) Main.mouseX + Main.screenPosition.X);
-              vector2_1.Y = (__Null) ((double) Main.mouseY + Main.screenPosition.Y);
-              Projectile.NewProjectile((float) vector2_1.X, (float) vector2_1.Y, SpeedX2, SpeedY2, shoot + Main.rand.Next(3), Damage, num1, i, 0.0f, 0.0f);
+              float SpeedX = 0.0f;
+              float SpeedY = 0.0f;
+              vector2_1.X = (float) Main.mouseX + Main.screenPosition.X;
+              vector2_1.Y = (float) Main.mouseY + Main.screenPosition.Y;
+              Projectile.NewProjectile(vector2_1.X, vector2_1.Y, SpeedX, SpeedY, shoot + Main.rand.Next(3), Damage, num1, i, 0.0f, 0.0f);
             }
             else if (sItem.type == 2621)
             {
-              float SpeedX2 = 0.0f;
-              float SpeedY2 = 0.0f;
-              vector2_1.X = (__Null) ((double) Main.mouseX + Main.screenPosition.X);
-              vector2_1.Y = (__Null) ((double) Main.mouseY + Main.screenPosition.Y);
-              Projectile.NewProjectile((float) vector2_1.X, (float) vector2_1.Y, SpeedX2, SpeedY2, shoot, Damage, num1, i, 0.0f, 0.0f);
+              float SpeedX = 0.0f;
+              float SpeedY = 0.0f;
+              vector2_1.X = (float) Main.mouseX + Main.screenPosition.X;
+              vector2_1.Y = (float) Main.mouseY + Main.screenPosition.Y;
+              Projectile.NewProjectile(vector2_1.X, vector2_1.Y, SpeedX, SpeedY, shoot, Damage, num1, i, 0.0f, 0.0f);
             }
             else if (sItem.type == 2749 || sItem.type == 3249 || sItem.type == 3474)
             {
-              float SpeedX2 = 0.0f;
-              float SpeedY2 = 0.0f;
-              vector2_1.X = (__Null) ((double) Main.mouseX + Main.screenPosition.X);
-              vector2_1.Y = (__Null) ((double) Main.mouseY + Main.screenPosition.Y);
-              Projectile.NewProjectile((float) vector2_1.X, (float) vector2_1.Y, SpeedX2, SpeedY2, shoot, Damage, num1, i, 0.0f, 0.0f);
+              float SpeedX = 0.0f;
+              float SpeedY = 0.0f;
+              vector2_1.X = (float) Main.mouseX + Main.screenPosition.X;
+              vector2_1.Y = (float) Main.mouseY + Main.screenPosition.Y;
+              Projectile.NewProjectile(vector2_1.X, vector2_1.Y, SpeedX, SpeedY, shoot, Damage, num1, i, 0.0f, 0.0f);
             }
             else if (sItem.type == 3531)
             {
-              int num3 = -1;
+              int num8 = -1;
               int index1 = -1;
               for (int index2 = 0; index2 < 1000; ++index2)
               {
                 if (Main.projectile[index2].active && Main.projectile[index2].owner == Main.myPlayer)
                 {
-                  if (num3 == -1 && Main.projectile[index2].type == 625)
-                    num3 = index2;
+                  if (num8 == -1 && Main.projectile[index2].type == 625)
+                    num8 = index2;
                   if (index1 == -1 && Main.projectile[index2].type == 628)
                     index1 = index2;
-                  if (num3 != -1 && index1 != -1)
+                  if (num8 != -1 && index1 != -1)
                     break;
                 }
               }
-              if (num3 == -1 && index1 == -1)
+              if (num8 == -1 && index1 == -1)
               {
-                float SpeedX2 = 0.0f;
-                float SpeedY2 = 0.0f;
-                vector2_1.X = (__Null) ((double) Main.mouseX + Main.screenPosition.X);
-                vector2_1.Y = (__Null) ((double) Main.mouseY + Main.screenPosition.Y);
-                int num4 = Projectile.NewProjectile((float) vector2_1.X, (float) vector2_1.Y, SpeedX2, SpeedY2, shoot, Damage, num1, i, 0.0f, 0.0f);
-                int num8 = Projectile.NewProjectile((float) vector2_1.X, (float) vector2_1.Y, SpeedX2, SpeedY2, shoot + 1, Damage, num1, i, (float) num4, 0.0f);
-                int index2 = num8;
-                int num9 = Projectile.NewProjectile((float) vector2_1.X, (float) vector2_1.Y, SpeedX2, SpeedY2, shoot + 2, Damage, num1, i, (float) num8, 0.0f);
-                Main.projectile[index2].localAI[1] = (float) num9;
-                int index3 = num9;
-                int num10 = Projectile.NewProjectile((float) vector2_1.X, (float) vector2_1.Y, SpeedX2, SpeedY2, shoot + 3, Damage, num1, i, (float) num9, 0.0f);
-                Main.projectile[index3].localAI[1] = (float) num10;
+                float SpeedX = 0.0f;
+                float SpeedY = 0.0f;
+                vector2_1.X = (float) Main.mouseX + Main.screenPosition.X;
+                vector2_1.Y = (float) Main.mouseY + Main.screenPosition.Y;
+                int num9 = Projectile.NewProjectile(vector2_1.X, vector2_1.Y, SpeedX, SpeedY, shoot, Damage, num1, i, 0.0f, 0.0f);
+                int num10 = Projectile.NewProjectile(vector2_1.X, vector2_1.Y, SpeedX, SpeedY, shoot + 1, Damage, num1, i, (float) num9, 0.0f);
+                int index2 = num10;
+                int num11 = Projectile.NewProjectile(vector2_1.X, vector2_1.Y, SpeedX, SpeedY, shoot + 2, Damage, num1, i, (float) num10, 0.0f);
+                Main.projectile[index2].localAI[1] = (float) num11;
+                int index3 = num11;
+                int num12 = Projectile.NewProjectile(vector2_1.X, vector2_1.Y, SpeedX, SpeedY, shoot + 3, Damage, num1, i, (float) num11, 0.0f);
+                Main.projectile[index3].localAI[1] = (float) num12;
               }
-              else if (num3 != -1 && index1 != -1)
+              else if (num8 != -1 && index1 != -1)
               {
-                int num4 = Projectile.NewProjectile((float) vector2_1.X, (float) vector2_1.Y, SpeedX1, SpeedY1, shoot + 1, Damage, num1, i, (float) Projectile.GetByUUID(Main.myPlayer, Main.projectile[index1].ai[0]), 0.0f);
-                int index2 = num4;
-                int index3 = Projectile.NewProjectile((float) vector2_1.X, (float) vector2_1.Y, SpeedX1, SpeedY1, shoot + 2, Damage, num1, i, (float) num4, 0.0f);
+                int num9 = Projectile.NewProjectile(vector2_1.X, vector2_1.Y, num6, num7, shoot + 1, Damage, num1, i, (float) Projectile.GetByUUID(Main.myPlayer, Main.projectile[index1].ai[0]), 0.0f);
+                int index2 = num9;
+                int index3 = Projectile.NewProjectile(vector2_1.X, vector2_1.Y, num6, num7, shoot + 2, Damage, num1, i, (float) num9, 0.0f);
                 Main.projectile[index2].localAI[1] = (float) index3;
                 Main.projectile[index2].netUpdate = true;
                 Main.projectile[index2].ai[1] = 1f;
@@ -24646,11 +23112,11 @@ label_13:
             }
             else if (sItem.type == 1309)
             {
-              float SpeedX2 = 0.0f;
-              float SpeedY2 = 0.0f;
-              vector2_1.X = (__Null) ((double) Main.mouseX + Main.screenPosition.X);
-              vector2_1.Y = (__Null) ((double) Main.mouseY + Main.screenPosition.Y);
-              Projectile.NewProjectile((float) vector2_1.X, (float) vector2_1.Y, SpeedX2, SpeedY2, shoot, Damage, num1, i, 0.0f, 0.0f);
+              float SpeedX = 0.0f;
+              float SpeedY = 0.0f;
+              vector2_1.X = (float) Main.mouseX + Main.screenPosition.X;
+              vector2_1.Y = (float) Main.mouseY + Main.screenPosition.Y;
+              Projectile.NewProjectile(vector2_1.X, vector2_1.Y, SpeedX, SpeedY, shoot, Damage, num1, i, 0.0f, 0.0f);
             }
             else if (sItem.shoot > 0 && (Main.projPet[sItem.shoot] || sItem.shoot == 72 || (sItem.shoot == 18 || sItem.shoot == 500) || sItem.shoot == 650) && !sItem.summon)
             {
@@ -24667,63 +23133,35 @@ label_13:
                     Main.projectile[index].Kill();
                 }
               }
-              Projectile.NewProjectile((float) vector2_1.X, (float) vector2_1.Y, SpeedX1, SpeedY1, shoot, Damage, num1, i, 0.0f, 0.0f);
+              Projectile.NewProjectile(vector2_1.X, vector2_1.Y, num6, num7, shoot, Damage, num1, i, 0.0f, 0.0f);
             }
             else if (sItem.type == 3006)
             {
               Vector2 vector2_4;
-              vector2_4.X = (__Null) ((double) Main.mouseX + Main.screenPosition.X);
-              vector2_4.Y = (__Null) ((double) Main.mouseY + Main.screenPosition.Y);
+              vector2_4.X = (float) Main.mouseX + Main.screenPosition.X;
+              vector2_4.Y = (float) Main.mouseY + Main.screenPosition.Y;
               while (Collision.CanHitLine(this.position, this.width, this.height, vector2_1, 1, 1))
               {
-                // ISSUE: explicit reference operation
-                // ISSUE: variable of a reference type
-                Vector2& local1 = @vector2_1;
-                // ISSUE: explicit reference operation
-                double num3 = (^local1).X + (double) SpeedX1;
-                // ISSUE: explicit reference operation
-                (^local1).X = (__Null) num3;
-                // ISSUE: explicit reference operation
-                // ISSUE: variable of a reference type
-                Vector2& local2 = @vector2_1;
-                // ISSUE: explicit reference operation
-                double num4 = (^local2).Y + (double) SpeedY1;
-                // ISSUE: explicit reference operation
-                (^local2).Y = (__Null) num4;
-                Vector2 vector2_5 = Vector2.op_Subtraction(vector2_1, vector2_4);
-                // ISSUE: explicit reference operation
-                if ((double) ((Vector2) @vector2_5).Length() < 20.0 + (double) Math.Abs(SpeedX1) + (double) Math.Abs(SpeedY1))
+                vector2_1.X += num6;
+                vector2_1.Y += num7;
+                if ((double) (vector2_1 - vector2_4).Length() < 20.0 + (double) Math.Abs(num6) + (double) Math.Abs(num7))
                 {
                   vector2_1 = vector2_4;
                   break;
                 }
               }
-              Projectile.NewProjectile((float) vector2_1.X, (float) vector2_1.Y, 0.0f, 0.0f, shoot, Damage, num1, i, 0.0f, 0.0f);
+              Projectile.NewProjectile(vector2_1.X, vector2_1.Y, 0.0f, 0.0f, shoot, Damage, num1, i, 0.0f, 0.0f);
             }
             else if (sItem.type == 3014)
             {
               Vector2 vector2_4;
-              vector2_4.X = (__Null) ((double) Main.mouseX + Main.screenPosition.X);
-              vector2_4.Y = (__Null) ((double) Main.mouseY + Main.screenPosition.Y);
+              vector2_4.X = (float) Main.mouseX + Main.screenPosition.X;
+              vector2_4.Y = (float) Main.mouseY + Main.screenPosition.Y;
               while (Collision.CanHitLine(this.position, this.width, this.height, vector2_1, 1, 1))
               {
-                // ISSUE: explicit reference operation
-                // ISSUE: variable of a reference type
-                Vector2& local1 = @vector2_1;
-                // ISSUE: explicit reference operation
-                double num3 = (^local1).X + (double) SpeedX1;
-                // ISSUE: explicit reference operation
-                (^local1).X = (__Null) num3;
-                // ISSUE: explicit reference operation
-                // ISSUE: variable of a reference type
-                Vector2& local2 = @vector2_1;
-                // ISSUE: explicit reference operation
-                double num4 = (^local2).Y + (double) SpeedY1;
-                // ISSUE: explicit reference operation
-                (^local2).Y = (__Null) num4;
-                Vector2 vector2_5 = Vector2.op_Subtraction(vector2_1, vector2_4);
-                // ISSUE: explicit reference operation
-                if ((double) ((Vector2) @vector2_5).Length() < 20.0 + (double) Math.Abs(SpeedX1) + (double) Math.Abs(SpeedY1))
+                vector2_1.X += num6;
+                vector2_1.Y += num7;
+                if ((double) (vector2_1 - vector2_4).Length() < 20.0 + (double) Math.Abs(num6) + (double) Math.Abs(num7))
                 {
                   vector2_1 = vector2_4;
                   break;
@@ -24747,40 +23185,34 @@ label_13:
               if ((double) ai1 > (double) (16 * num11))
                 ai1 = (float) (16 * num11);
               float ai0 = num9 - ai1;
-              vector2_1.X = (__Null) (double) ((int) (vector2_1.X / 16.0) * 16);
+              vector2_1.X = (float) ((int) ((double) vector2_1.X / 16.0) * 16);
               if (!flag4)
-                Projectile.NewProjectile((float) vector2_1.X, (float) vector2_1.Y, 0.0f, 0.0f, shoot, Damage, num1, i, ai0, ai1);
+                Projectile.NewProjectile(vector2_1.X, vector2_1.Y, 0.0f, 0.0f, shoot, Damage, num1, i, ai0, ai1);
             }
             else if (sItem.type == 3384)
             {
-              int num3 = this.altFunctionUse == 2 ? 1 : 0;
-              Projectile.NewProjectile((float) vector2_1.X, (float) vector2_1.Y, SpeedX1, SpeedY1, shoot, Damage, num1, i, 0.0f, (float) num3);
+              int num8 = this.altFunctionUse == 2 ? 1 : 0;
+              Projectile.NewProjectile(vector2_1.X, vector2_1.Y, num6, num7, shoot, Damage, num1, i, 0.0f, (float) num8);
             }
             else if (sItem.type == 3473)
             {
               float ai1 = (float) (((double) Main.rand.NextFloat() - 0.5) * 0.785398185253143);
-              Vector2 vector2_4;
-              // ISSUE: explicit reference operation
-              ((Vector2) @vector2_4).\u002Ector(SpeedX1, SpeedY1);
-              Projectile.NewProjectile((float) vector2_1.X, (float) vector2_1.Y, (float) vector2_4.X, (float) vector2_4.Y, shoot, Damage, num1, i, 0.0f, ai1);
+              Vector2 vector2_4 = new Vector2(num6, num7);
+              Projectile.NewProjectile(vector2_1.X, vector2_1.Y, vector2_4.X, vector2_4.Y, shoot, Damage, num1, i, 0.0f, ai1);
             }
             else if (sItem.type == 3836)
             {
               float ai0 = (float) ((double) Main.rand.NextFloat() * (double) speed * 0.75) * (float) this.direction;
-              Vector2 velocity;
-              // ISSUE: explicit reference operation
-              ((Vector2) @velocity).\u002Ector(SpeedX1, SpeedY1);
+              Vector2 velocity = new Vector2(num6, num7);
               Projectile.NewProjectile(vector2_1, velocity, shoot, Damage, num1, i, ai0, 0.0f);
             }
             else if (sItem.type == 3858)
             {
               bool flag4 = this.altFunctionUse == 2;
-              Vector2 velocity;
-              // ISSUE: explicit reference operation
-              ((Vector2) @velocity).\u002Ector(SpeedX1, SpeedY1);
+              Vector2 velocity = new Vector2(num6, num7);
               if (flag4)
               {
-                velocity = Vector2.op_Multiply(velocity, 1.5f);
+                velocity *= 1.5f;
                 float ai0 = (float) ((0.300000011920929 + 0.699999988079071 * (double) Main.rand.NextFloat()) * (double) speed * 1.75) * (float) this.direction;
                 Projectile.NewProjectile(vector2_1, velocity, 708, (int) ((double) Damage * 0.75), num1 + 4f, i, ai0, 0.0f);
               }
@@ -24789,113 +23221,106 @@ label_13:
             }
             else if (sItem.type == 3859)
             {
-              Vector2 vector2_4;
-              // ISSUE: explicit reference operation
-              ((Vector2) @vector2_4).\u002Ector(SpeedX1, SpeedY1);
+              Vector2 vector2_4 = new Vector2(num6, num7);
               shoot = 710;
               Damage = (int) ((double) Damage * 0.699999988079071);
-              Vector2 v2 = Vector2.op_Multiply(vector2_4, 0.8f);
-              Vector2 vector2_5 = v2.SafeNormalize(Vector2.op_UnaryNegation(Vector2.get_UnitY()));
-              float num3 = (float) Math.PI / 180f * (float) -this.direction;
-              for (float num4 = -2.5f; (double) num4 < 3.0; ++num4)
-                Projectile.NewProjectile(vector2_1, Vector2.op_Addition(v2, Vector2.op_Multiply(Vector2.op_Multiply(vector2_5, num4), 0.5f)).RotatedBy((double) num4 * (double) num3, (Vector2) null), shoot, Damage, num1, i, 0.0f, 0.0f);
+              Vector2 v2 = vector2_4 * 0.8f;
+              Vector2 vector2_5 = v2.SafeNormalize(-Vector2.UnitY);
+              float num8 = (float) Math.PI / 180f * (float) -this.direction;
+              for (float num9 = -2.5f; (double) num9 < 3.0; ++num9)
+                Projectile.NewProjectile(vector2_1, (v2 + vector2_5 * num9 * 0.5f).RotatedBy((double) num9 * (double) num8, new Vector2()), shoot, Damage, num1, i, 0.0f, 0.0f);
             }
             else if (sItem.type == 3870)
             {
-              Vector2 vector2_4 = Vector2.op_Multiply(Vector2.op_Multiply(Vector2.Normalize(new Vector2(SpeedX1, SpeedY1)), 40f), sItem.scale);
-              if (Collision.CanHit(vector2_1, 0, 0, Vector2.op_Addition(vector2_1, vector2_4), 0, 0))
-                vector2_1 = Vector2.op_Addition(vector2_1, vector2_4);
-              Vector2 vector2_5;
-              // ISSUE: explicit reference operation
-              ((Vector2) @vector2_5).\u002Ector(SpeedX1, SpeedY1);
-              Vector2 v2 = Vector2.op_Multiply(vector2_5, 0.8f);
-              Vector2 vector2_6 = v2.SafeNormalize(Vector2.op_UnaryNegation(Vector2.get_UnitY()));
-              float num3 = (float) Math.PI / 180f * (float) -this.direction;
+              Vector2 vector2_4 = Vector2.Normalize(new Vector2(num6, num7)) * 40f * sItem.scale;
+              if (Collision.CanHit(vector2_1, 0, 0, vector2_1 + vector2_4, 0, 0))
+                vector2_1 += vector2_4;
+              Vector2 v2 = new Vector2(num6, num7) * 0.8f;
+              Vector2 vector2_5 = v2.SafeNormalize(-Vector2.UnitY);
+              float num8 = (float) Math.PI / 180f * (float) -this.direction;
               for (int index = 0; index <= 2; ++index)
-                Projectile.NewProjectile(vector2_1, Vector2.op_Addition(v2, Vector2.op_Multiply(Vector2.op_Multiply(vector2_6, (float) index), 1f)).RotatedBy((double) index * (double) num3, (Vector2) null), shoot, Damage, num1, i, 0.0f, 0.0f);
+                Projectile.NewProjectile(vector2_1, (v2 + vector2_5 * (float) index * 1f).RotatedBy((double) index * (double) num8, new Vector2()), shoot, Damage, num1, i, 0.0f, 0.0f);
             }
             else if (sItem.type == 3542)
             {
-              float num3 = (float) (((double) Main.rand.NextFloat() - 0.5) * 0.785398185253143 * 0.699999988079071);
-              for (int index = 0; index < 10 && !Collision.CanHit(vector2_1, 0, 0, Vector2.op_Addition(vector2_1, Vector2.op_Multiply(new Vector2(SpeedX1, SpeedY1).RotatedBy((double) num3, (Vector2) null), 100f)), 0, 0); ++index)
-                num3 = (float) (((double) Main.rand.NextFloat() - 0.5) * 0.785398185253143 * 0.699999988079071);
-              Vector2 vector2_4 = Vector2.op_Multiply(new Vector2(SpeedX1, SpeedY1).RotatedBy((double) num3, (Vector2) null), (float) (0.949999988079071 + (double) Main.rand.NextFloat() * 0.300000011920929));
-              Projectile.NewProjectile((float) vector2_1.X, (float) vector2_1.Y, (float) vector2_4.X, (float) vector2_4.Y, shoot, Damage, num1, i, 0.0f, 0.0f);
+              float num8 = (float) (((double) Main.rand.NextFloat() - 0.5) * 0.785398185253143 * 0.699999988079071);
+              for (int index = 0; index < 10 && !Collision.CanHit(vector2_1, 0, 0, vector2_1 + new Vector2(num6, num7).RotatedBy((double) num8, new Vector2()) * 100f, 0, 0); ++index)
+                num8 = (float) (((double) Main.rand.NextFloat() - 0.5) * 0.785398185253143 * 0.699999988079071);
+              Vector2 vector2_4 = new Vector2(num6, num7).RotatedBy((double) num8, new Vector2()) * (float) (0.949999988079071 + (double) Main.rand.NextFloat() * 0.300000011920929);
+              Projectile.NewProjectile(vector2_1.X, vector2_1.Y, vector2_4.X, vector2_4.Y, shoot, Damage, num1, i, 0.0f, 0.0f);
             }
             else if (sItem.type == 3779)
             {
-              float num3 = Main.rand.NextFloat() * 6.283185f;
-              for (int index = 0; index < 10 && !Collision.CanHit(vector2_1, 0, 0, Vector2.op_Addition(vector2_1, Vector2.op_Multiply(new Vector2(SpeedX1, SpeedY1).RotatedBy((double) num3, (Vector2) null), 100f)), 0, 0); ++index)
-                num3 = Main.rand.NextFloat() * 6.283185f;
-              Vector2 vector2_4 = Vector2.op_Multiply(new Vector2(SpeedX1, SpeedY1).RotatedBy((double) num3, (Vector2) null), (float) (0.949999988079071 + (double) Main.rand.NextFloat() * 0.300000011920929));
-              Projectile.NewProjectile(Vector2.op_Addition(vector2_1, Vector2.op_Multiply(vector2_4, 30f)), Vector2.get_Zero(), shoot, Damage, num1, i, -2f, 0.0f);
+              float num8 = Main.rand.NextFloat() * 6.283185f;
+              for (int index = 0; index < 10 && !Collision.CanHit(vector2_1, 0, 0, vector2_1 + new Vector2(num6, num7).RotatedBy((double) num8, new Vector2()) * 100f, 0, 0); ++index)
+                num8 = Main.rand.NextFloat() * 6.283185f;
+              Vector2 vector2_4 = new Vector2(num6, num7).RotatedBy((double) num8, new Vector2()) * (float) (0.949999988079071 + (double) Main.rand.NextFloat() * 0.300000011920929);
+              Projectile.NewProjectile(vector2_1 + vector2_4 * 30f, Vector2.Zero, shoot, Damage, num1, i, -2f, 0.0f);
             }
             else if (sItem.type == 3787)
             {
               float f3 = Main.rand.NextFloat() * 6.283185f;
-              float num3 = 20f;
-              float num4 = 60f;
-              Vector2 position = Vector2.op_Addition(vector2_1, Vector2.op_Multiply(f3.ToRotationVector2(), MathHelper.Lerp(num3, num4, Main.rand.NextFloat())));
+              float num8 = 20f;
+              float num9 = 60f;
+              Vector2 position = vector2_1 + f3.ToRotationVector2() * MathHelper.Lerp(num8, num9, Main.rand.NextFloat());
               for (int index = 0; index < 50; ++index)
               {
-                position = Vector2.op_Addition(vector2_1, Vector2.op_Multiply(f3.ToRotationVector2(), MathHelper.Lerp(num3, num4, Main.rand.NextFloat())));
-                if (!Collision.CanHit(vector2_1, 0, 0, Vector2.op_Addition(position, Vector2.op_Multiply(Vector2.op_Subtraction(position, vector2_1).SafeNormalize(Vector2.get_UnitX()), 8f)), 0, 0))
+                position = vector2_1 + f3.ToRotationVector2() * MathHelper.Lerp(num8, num9, Main.rand.NextFloat());
+                if (!Collision.CanHit(vector2_1, 0, 0, position + (position - vector2_1).SafeNormalize(Vector2.UnitX) * 8f, 0, 0))
                   f3 = Main.rand.NextFloat() * 6.283185f;
                 else
                   break;
               }
-              Vector2 v2 = Vector2.op_Subtraction(Main.MouseWorld, position);
-              Vector2 defaultValue = Vector2.op_Multiply(new Vector2(SpeedX1, SpeedY1).SafeNormalize(Vector2.get_UnitY()), speed);
-              Vector2 velocity = Vector2.Lerp(Vector2.op_Multiply(v2.SafeNormalize(defaultValue), speed), defaultValue, 0.25f);
+              Vector2 v2 = Main.MouseWorld - position;
+              Vector2 defaultValue = new Vector2(num6, num7).SafeNormalize(Vector2.UnitY) * speed;
+              Vector2 velocity = Vector2.Lerp(v2.SafeNormalize(defaultValue) * speed, defaultValue, 0.25f);
               Projectile.NewProjectile(position, velocity, shoot, Damage, num1, i, 0.0f, 0.0f);
             }
             else if (sItem.type == 3788)
             {
-              Vector2 v2;
-              // ISSUE: explicit reference operation
-              ((Vector2) @v2).\u002Ector(SpeedX1, SpeedY1);
-              float num3 = 0.7853982f;
+              Vector2 v2 = new Vector2(num6, num7);
+              float num8 = 0.7853982f;
               for (int index = 0; index < 2; ++index)
               {
-                Projectile.NewProjectile(vector2_1, Vector2.op_Addition(v2, Vector2.op_Multiply(Vector2.op_Multiply(v2.SafeNormalize(Vector2.get_Zero()).RotatedBy((double) num3 * ((double) Main.rand.NextFloat() * 0.5 + 0.5), (Vector2) null), Main.rand.NextFloatDirection()), 2f)), shoot, Damage, num1, i, 0.0f, 0.0f);
-                Projectile.NewProjectile(vector2_1, Vector2.op_Addition(v2, Vector2.op_Multiply(Vector2.op_Multiply(v2.SafeNormalize(Vector2.get_Zero()).RotatedBy(-(double) num3 * ((double) Main.rand.NextFloat() * 0.5 + 0.5), (Vector2) null), Main.rand.NextFloatDirection()), 2f)), shoot, Damage, num1, i, 0.0f, 0.0f);
+                Projectile.NewProjectile(vector2_1, v2 + v2.SafeNormalize(Vector2.Zero).RotatedBy((double) num8 * ((double) Main.rand.NextFloat() * 0.5 + 0.5), new Vector2()) * Main.rand.NextFloatDirection() * 2f, shoot, Damage, num1, i, 0.0f, 0.0f);
+                Projectile.NewProjectile(vector2_1, v2 + v2.SafeNormalize(Vector2.Zero).RotatedBy(-(double) num8 * ((double) Main.rand.NextFloat() * 0.5 + 0.5), new Vector2()) * Main.rand.NextFloatDirection() * 2f, shoot, Damage, num1, i, 0.0f, 0.0f);
               }
-              Projectile.NewProjectile(vector2_1, Vector2.op_Multiply(v2.SafeNormalize(Vector2.op_Multiply(Vector2.get_UnitX(), (float) this.direction)), speed * 1.3f), 661, Damage * 2, num1, i, 0.0f, 0.0f);
+              Projectile.NewProjectile(vector2_1, v2.SafeNormalize(Vector2.UnitX * (float) this.direction) * (speed * 1.3f), 661, Damage * 2, num1, i, 0.0f, 0.0f);
             }
             else if (sItem.type == 3475)
-              Projectile.NewProjectile((float) vector2_1.X, (float) vector2_1.Y, SpeedX1, SpeedY1, 615, Damage, num1, i, (float) (5 * Main.rand.Next(0, 20)), 0.0f);
+              Projectile.NewProjectile(vector2_1.X, vector2_1.Y, num6, num7, 615, Damage, num1, i, (float) (5 * Main.rand.Next(0, 20)), 0.0f);
             else if (sItem.type == 3540)
-              Projectile.NewProjectile((float) vector2_1.X, (float) vector2_1.Y, SpeedX1, SpeedY1, 630, Damage, num1, i, 0.0f, 0.0f);
+              Projectile.NewProjectile(vector2_1.X, vector2_1.Y, num6, num7, 630, Damage, num1, i, 0.0f, 0.0f);
             else if (sItem.type == 3854)
-              Projectile.NewProjectile((float) vector2_1.X, (float) vector2_1.Y, SpeedX1, SpeedY1, 705, Damage, num1, i, 0.0f, 0.0f);
+              Projectile.NewProjectile(vector2_1.X, vector2_1.Y, num6, num7, 705, Damage, num1, i, 0.0f, 0.0f);
             else if (sItem.type == 3546)
             {
               for (int index = 0; index < 2; ++index)
               {
-                float num3 = SpeedX1;
-                float num4 = SpeedY1;
-                float SpeedX2 = num3 + (float) Main.rand.Next(-40, 41) * 0.05f;
-                float SpeedY2 = num4 + (float) Main.rand.Next(-40, 41) * 0.05f;
-                Vector2 vector2_4 = Vector2.op_Addition(vector2_1, Vector2.op_Multiply(Vector2.Normalize(new Vector2(SpeedX2, SpeedY2).RotatedBy(-1.57079637050629 * (double) this.direction, (Vector2) null)), 6f));
-                Projectile.NewProjectile((float) vector2_4.X, (float) vector2_4.Y, SpeedX2, SpeedY2, 167 + Main.rand.Next(4), Damage, num1, i, 0.0f, 1f);
+                float num8 = num6;
+                float num9 = num7;
+                float num10 = num8 + (float) Main.rand.Next(-40, 41) * 0.05f;
+                float num11 = num9 + (float) Main.rand.Next(-40, 41) * 0.05f;
+                Vector2 vector2_4 = vector2_1 + Vector2.Normalize(new Vector2(num10, num11).RotatedBy(-1.57079637050629 * (double) this.direction, new Vector2())) * 6f;
+                Projectile.NewProjectile(vector2_4.X, vector2_4.Y, num10, num11, 167 + Main.rand.Next(4), Damage, num1, i, 0.0f, 1f);
               }
             }
             else if (sItem.type == 3350)
             {
-              float num3 = SpeedX1;
-              float num4 = SpeedY1;
-              float SpeedX2 = num3 + (float) Main.rand.Next(-1, 2) * 0.5f;
-              float SpeedY2 = num4 + (float) Main.rand.Next(-1, 2) * 0.5f;
-              if (Collision.CanHitLine(this.Center, 0, 0, Vector2.op_Addition(vector2_1, Vector2.op_Multiply(new Vector2(SpeedX2, SpeedY2), 2f)), 0, 0))
-                vector2_1 = Vector2.op_Addition(vector2_1, new Vector2(SpeedX2, SpeedY2));
-              Projectile.NewProjectile((float) vector2_1.X, (float) (vector2_1.Y - (double) this.gravDir * 4.0), SpeedX2, SpeedY2, shoot, Damage, num1, i, 0.0f, (float) Main.rand.Next(12) / 6f);
+              float num8 = num6;
+              float num9 = num7;
+              float num10 = num8 + (float) Main.rand.Next(-1, 2) * 0.5f;
+              float num11 = num9 + (float) Main.rand.Next(-1, 2) * 0.5f;
+              if (Collision.CanHitLine(this.Center, 0, 0, vector2_1 + new Vector2(num10, num11) * 2f, 0, 0))
+                vector2_1 += new Vector2(num10, num11);
+              Projectile.NewProjectile(vector2_1.X, vector2_1.Y - this.gravDir * 4f, num10, num11, shoot, Damage, num1, i, 0.0f, (float) Main.rand.Next(12) / 6f);
             }
             else if (sItem.type == 3852)
             {
               if (this.altFunctionUse == 2)
-                Projectile.NewProjectile((float) vector2_1.X, (float) (this.Bottom.Y - 100.0), (float) this.direction * speed, 0.0f, 704, Damage * 2, num1, i, 0.0f, 0.0f);
+                Projectile.NewProjectile(vector2_1.X, this.Bottom.Y - 100f, (float) this.direction * speed, 0.0f, 704, Damage * 2, num1, i, 0.0f, 0.0f);
               else
-                Projectile.NewProjectile((float) vector2_1.X, (float) vector2_1.Y, SpeedX1, SpeedY1, shoot, Damage, num1, i, 0.0f, 0.0f);
+                Projectile.NewProjectile(vector2_1.X, vector2_1.Y, num6, num7, shoot, Damage, num1, i, 0.0f, 0.0f);
             }
             else if (sItem.type == 3818 || sItem.type == 3819 || (sItem.type == 3820 || sItem.type == 3824) || (sItem.type == 3825 || sItem.type == 3826 || (sItem.type == 3829 || sItem.type == 3830)) || (sItem.type == 3831 || sItem.type == 3832 || (sItem.type == 3833 || sItem.type == 3834)))
             {
@@ -24909,7 +23334,7 @@ label_13:
             }
             else
             {
-              int index = Projectile.NewProjectile((float) vector2_1.X, (float) vector2_1.Y, SpeedX1, SpeedY1, shoot, Damage, num1, i, 0.0f, 0.0f);
+              int index = Projectile.NewProjectile(vector2_1.X, vector2_1.Y, num6, num7, shoot, Damage, num1, i, 0.0f, 0.0f);
               if (sItem.type == 726)
                 Main.projectile[index].magic = true;
               if (sItem.type == 724 || sItem.type == 676)
@@ -24936,7 +23361,7 @@ label_13:
             NetMessage.SendData(41, -1, -1, (NetworkText) null, this.whoAmI, 0.0f, 0.0f, 0.0f, 0, 0, 0);
           }
         }
-        if (this.whoAmI == Main.myPlayer && (sItem.type == 509 || sItem.type == 510 || (sItem.type == 849 || sItem.type == 850) || (sItem.type == 851 || sItem.type == 3612 || (sItem.type == 3620 || sItem.type == 3625))) && (this.position.X / 16.0 - (double) Player.tileRangeX - (double) sItem.tileBoost - (double) this.blockRange <= (double) Player.tileTargetX && (this.position.X + (double) this.width) / 16.0 + (double) Player.tileRangeX + (double) sItem.tileBoost - 1.0 + (double) this.blockRange >= (double) Player.tileTargetX && (this.position.Y / 16.0 - (double) Player.tileRangeY - (double) sItem.tileBoost - (double) this.blockRange <= (double) Player.tileTargetY && (this.position.Y + (double) this.height) / 16.0 + (double) Player.tileRangeY + (double) sItem.tileBoost - 2.0 + (double) this.blockRange >= (double) Player.tileTargetY)))
+        if (this.whoAmI == Main.myPlayer && (sItem.type == 509 || sItem.type == 510 || (sItem.type == 849 || sItem.type == 850) || (sItem.type == 851 || sItem.type == 3612 || (sItem.type == 3620 || sItem.type == 3625))) && ((double) this.position.X / 16.0 - (double) Player.tileRangeX - (double) sItem.tileBoost - (double) this.blockRange <= (double) Player.tileTargetX && ((double) this.position.X + (double) this.width) / 16.0 + (double) Player.tileRangeX + (double) sItem.tileBoost - 1.0 + (double) this.blockRange >= (double) Player.tileTargetX && ((double) this.position.Y / 16.0 - (double) Player.tileRangeY - (double) sItem.tileBoost - (double) this.blockRange <= (double) Player.tileTargetY && ((double) this.position.Y + (double) this.height) / 16.0 + (double) Player.tileRangeY + (double) sItem.tileBoost - 2.0 + (double) this.blockRange >= (double) Player.tileTargetY)))
         {
           if (!Main.GamepadDisableCursorItemIcon)
           {
@@ -25080,14 +23505,12 @@ label_13:
             }
             if (sItem.type == 3625)
             {
-              Point point;
-              // ISSUE: explicit reference operation
-              ((Point) @point).\u002Ector(Player.tileTargetX, Player.tileTargetY);
+              Point point = new Point(Player.tileTargetX, Player.tileTargetY);
               this.itemTime = sItem.useTime;
               WiresUI.Settings.MultiToolMode toolMode = WiresUI.Settings.ToolMode;
               WiresUI.Settings.ToolMode &= ~WiresUI.Settings.MultiToolMode.Actuator;
               if (Main.netMode == 1)
-                NetMessage.SendData(109, -1, -1, (NetworkText) null, (int) point.X, (float) point.Y, (float) point.X, (float) point.Y, (int) WiresUI.Settings.ToolMode, 0, 0);
+                NetMessage.SendData(109, -1, -1, (NetworkText) null, point.X, (float) point.Y, (float) point.X, (float) point.Y, (int) WiresUI.Settings.ToolMode, 0, 0);
               else
                 Wiring.MassWireOperation(point, point, this);
               WiresUI.Settings.ToolMode = toolMode;
@@ -25097,11 +23520,9 @@ label_13:
         if (this.itemAnimation > 0 && this.itemTime == 0 && (sItem.type == 507 || sItem.type == 508))
         {
           this.itemTime = sItem.useTime;
-          Vector2 vector2;
-          // ISSUE: explicit reference operation
-          ((Vector2) @vector2).\u002Ector((float) (this.position.X + (double) this.width * 0.5), (float) (this.position.Y + (double) this.height * 0.5));
-          float num1 = (float) ((double) Main.mouseX + Main.screenPosition.X - vector2.X);
-          float num2 = (float) ((double) Main.mouseY + Main.screenPosition.Y - vector2.Y);
+          Vector2 vector2 = new Vector2(this.position.X + (float) this.width * 0.5f, this.position.Y + (float) this.height * 0.5f);
+          float num1 = (float) Main.mouseX + Main.screenPosition.X - vector2.X;
+          float num2 = (float) Main.mouseY + Main.screenPosition.Y - vector2.Y;
           float num3 = (float) Math.Sqrt((double) num1 * (double) num1 + (double) num2 * (double) num2) / (float) (Main.screenHeight / 2);
           if ((double) num3 > 1.0)
             num3 = 1f;
@@ -25117,7 +23538,7 @@ label_13:
           Main.PlaySound(type2, this.position);
           NetMessage.SendData(58, -1, -1, (NetworkText) null, this.whoAmI, number2, 0.0f, 0.0f, 0, 0, 0);
         }
-        if ((sItem.type >= 205 && sItem.type <= 207 || (sItem.type == 1128 || sItem.type == 3031) || sItem.type == 3032) && (!this.noBuilding && this.position.X / 16.0 - (double) Player.tileRangeX - (double) sItem.tileBoost <= (double) Player.tileTargetX && ((this.position.X + (double) this.width) / 16.0 + (double) Player.tileRangeX + (double) sItem.tileBoost - 1.0 >= (double) Player.tileTargetX && this.position.Y / 16.0 - (double) Player.tileRangeY - (double) sItem.tileBoost <= (double) Player.tileTargetY) && (this.position.Y + (double) this.height) / 16.0 + (double) Player.tileRangeY + (double) sItem.tileBoost - 2.0 >= (double) Player.tileTargetY))
+        if ((sItem.type >= 205 && sItem.type <= 207 || (sItem.type == 1128 || sItem.type == 3031) || sItem.type == 3032) && (!this.noBuilding && (double) this.position.X / 16.0 - (double) Player.tileRangeX - (double) sItem.tileBoost <= (double) Player.tileTargetX && (((double) this.position.X + (double) this.width) / 16.0 + (double) Player.tileRangeX + (double) sItem.tileBoost - 1.0 >= (double) Player.tileTargetX && (double) this.position.Y / 16.0 - (double) Player.tileRangeY - (double) sItem.tileBoost <= (double) Player.tileTargetY) && ((double) this.position.Y + (double) this.height) / 16.0 + (double) Player.tileRangeY + (double) sItem.tileBoost - 2.0 >= (double) Player.tileTargetY))
         {
           if (!Main.GamepadDisableCursorItemIcon)
           {
@@ -25262,7 +23683,7 @@ label_13:
         }
         if (sItem.pick > 0 || sItem.axe > 0 || sItem.hammer > 0)
         {
-          bool flag3 = this.position.X / 16.0 - (double) Player.tileRangeX - (double) sItem.tileBoost <= (double) Player.tileTargetX && (this.position.X + (double) this.width) / 16.0 + (double) Player.tileRangeX + (double) sItem.tileBoost - 1.0 >= (double) Player.tileTargetX && this.position.Y / 16.0 - (double) Player.tileRangeY - (double) sItem.tileBoost <= (double) Player.tileTargetY && (this.position.Y + (double) this.height) / 16.0 + (double) Player.tileRangeY + (double) sItem.tileBoost - 2.0 >= (double) Player.tileTargetY;
+          bool flag3 = (double) this.position.X / 16.0 - (double) Player.tileRangeX - (double) sItem.tileBoost <= (double) Player.tileTargetX && ((double) this.position.X + (double) this.width) / 16.0 + (double) Player.tileRangeX + (double) sItem.tileBoost - 1.0 >= (double) Player.tileTargetX && (double) this.position.Y / 16.0 - (double) Player.tileRangeY - (double) sItem.tileBoost <= (double) Player.tileTargetY && ((double) this.position.Y + (double) this.height) / 16.0 + (double) Player.tileRangeY + (double) sItem.tileBoost - 2.0 >= (double) Player.tileTargetY;
           if (this.noBuilding)
             flag3 = false;
           if (flag3)
@@ -25635,10 +24056,10 @@ label_13:
             if (flag9 && !Main.tile[index5, index6].active())
             {
               int num1 = -1;
-              if (((double) Main.mouseX + Main.screenPosition.X) / 16.0 < Math.Round(((double) Main.mouseX + Main.screenPosition.X) / 16.0))
+              if (((double) Main.mouseX + (double) Main.screenPosition.X) / 16.0 < Math.Round(((double) Main.mouseX + (double) Main.screenPosition.X) / 16.0))
                 num1 = 0;
               int num2 = -1;
-              if (((double) Main.mouseY + Main.screenPosition.Y) / 16.0 < Math.Round(((double) Main.mouseY + Main.screenPosition.Y) / 16.0))
+              if (((double) Main.mouseY + (double) Main.screenPosition.Y) / 16.0 < Math.Round(((double) Main.mouseY + (double) Main.screenPosition.Y) / 16.0))
                 num2 = 0;
               for (int index1 = Player.tileTargetX + num1; index1 <= Player.tileTargetX + num1 + 1; ++index1)
               {
@@ -25717,23 +24138,17 @@ label_13:
         {
           this.itemTime = sItem.useTime;
           Vector2 vector2;
-          vector2.X = (__Null) ((double) Main.mouseX + Main.screenPosition.X);
-          vector2.Y = (double) this.gravDir != 1.0 ? (__Null) (Main.screenPosition.Y + (double) Main.screenHeight - (double) Main.mouseY) : (__Null) ((double) Main.mouseY + Main.screenPosition.Y - (double) this.height);
-          // ISSUE: explicit reference operation
-          // ISSUE: variable of a reference type
-          Vector2& local = @vector2;
-          // ISSUE: explicit reference operation
-          double num = (^local).X - (double) (this.width / 2);
-          // ISSUE: explicit reference operation
-          (^local).X = (__Null) num;
-          if (vector2.X > 50.0 && vector2.X < (double) (Main.maxTilesX * 16 - 50) && (vector2.Y > 50.0 && vector2.Y < (double) (Main.maxTilesY * 16 - 50)))
+          vector2.X = (float) Main.mouseX + Main.screenPosition.X;
+          vector2.Y = (double) this.gravDir != 1.0 ? Main.screenPosition.Y + (float) Main.screenHeight - (float) Main.mouseY : (float) Main.mouseY + Main.screenPosition.Y - (float) this.height;
+          vector2.X -= (float) (this.width / 2);
+          if ((double) vector2.X > 50.0 && (double) vector2.X < (double) (Main.maxTilesX * 16 - 50) && ((double) vector2.Y > 50.0 && (double) vector2.Y < (double) (Main.maxTilesY * 16 - 50)))
           {
-            int index1 = (int) (vector2.X / 16.0);
-            int index2 = (int) (vector2.Y / 16.0);
+            int index1 = (int) ((double) vector2.X / 16.0);
+            int index2 = (int) ((double) vector2.Y / 16.0);
             if (((int) Main.tile[index1, index2].wall != 87 || (double) index2 <= Main.worldSurface || NPC.downedPlantBoss) && !Collision.SolidCollision(vector2, this.width, this.height))
             {
               this.Teleport(vector2, 1, 0);
-              NetMessage.SendData(65, -1, -1, (NetworkText) null, 0, (float) this.whoAmI, (float) vector2.X, (float) vector2.Y, 1, 0, 0);
+              NetMessage.SendData(65, -1, -1, (NetworkText) null, 0, (float) this.whoAmI, vector2.X, vector2.Y, 1, 0, 0);
               if (this.chaosState)
               {
                 this.statLife -= this.statLifeMax2 / 7;
@@ -25789,116 +24204,59 @@ label_13:
       }
       if (sItem.type == 3542)
       {
-        Vector2 vector2_1 = Vector2.op_Multiply(Main.OffsetsPlayerOnhand[this.bodyFrame.Y / 56], 2f);
+        Vector2 vector2_1 = Main.OffsetsPlayerOnhand[this.bodyFrame.Y / 56] * 2f;
         if (this.direction != 1)
-          vector2_1.X = (__Null) ((double) (float) this.bodyFrame.Width - vector2_1.X);
+          vector2_1.X = (float) this.bodyFrame.Width - vector2_1.X;
         if ((double) this.gravDir != 1.0)
-          vector2_1.Y = (__Null) ((double) (float) this.bodyFrame.Height - vector2_1.Y);
-        vector2_1 = Vector2.op_Subtraction(vector2_1, Vector2.op_Division(new Vector2((float) (this.bodyFrame.Width - this.width), (float) (this.bodyFrame.Height - 42)), 2f));
-        Vector2 vector2_2 = Vector2.op_Subtraction(this.RotatedRelativePoint(Vector2.op_Addition(this.position, vector2_1), true), this.velocity);
+          vector2_1.Y = (float) this.bodyFrame.Height - vector2_1.Y;
+        vector2_1 -= new Vector2((float) (this.bodyFrame.Width - this.width), (float) (this.bodyFrame.Height - 42)) / 2f;
+        Vector2 vector2_2 = this.RotatedRelativePoint(this.position + vector2_1, true) - this.velocity;
         for (int index = 0; index < 4; ++index)
         {
-          Dust dust1 = Main.dust[Dust.NewDust(this.Center, 0, 0, 242, (float) (this.direction * 2), 0.0f, 150, (Color) null, 1.3f)];
-          dust1.position = vector2_2;
-          Dust dust2 = dust1;
-          Vector2 vector2_3 = Vector2.op_Multiply(dust2.velocity, 0.0f);
-          dust2.velocity = vector2_3;
-          dust1.noGravity = true;
-          dust1.fadeIn = 1f;
-          Dust dust3 = dust1;
-          Vector2 vector2_4 = Vector2.op_Addition(dust3.velocity, this.velocity);
-          dust3.velocity = vector2_4;
+          Dust dust = Main.dust[Dust.NewDust(this.Center, 0, 0, 242, (float) (this.direction * 2), 0.0f, 150, new Color(), 1.3f)];
+          dust.position = vector2_2;
+          dust.velocity *= 0.0f;
+          dust.noGravity = true;
+          dust.fadeIn = 1f;
+          dust.velocity += this.velocity;
           if (Main.rand.Next(2) == 0)
           {
-            Dust dust4 = dust1;
-            Vector2 vector2_5 = Vector2.op_Addition(dust4.position, Utils.RandomVector2(Main.rand, -4f, 4f));
-            dust4.position = vector2_5;
-            dust1.scale += Main.rand.NextFloat();
+            dust.position += Utils.RandomVector2(Main.rand, -4f, 4f);
+            dust.scale += Main.rand.NextFloat();
             if (Main.rand.Next(2) == 0)
-              dust1.customData = (object) this;
+              dust.customData = (object) this;
           }
         }
       }
       if ((sItem.damage >= 0 && sItem.type > 0 && !sItem.noMelee || (sItem.type == 1450 || sItem.type == 1991 || (sItem.type == 3183 || sItem.type == 3542)) || sItem.type == 3779) && this.itemAnimation > 0)
       {
         bool flag2 = false;
-        Rectangle r;
-        // ISSUE: explicit reference operation
-        ((Rectangle) @r).\u002Ector((int) this.itemLocation.X, (int) this.itemLocation.Y, 32, 32);
+        Microsoft.Xna.Framework.Rectangle r = new Microsoft.Xna.Framework.Rectangle((int) this.itemLocation.X, (int) this.itemLocation.Y, 32, 32);
         if (!Main.dedServ)
-        {
-          // ISSUE: explicit reference operation
-          ((Rectangle) @r).\u002Ector((int) this.itemLocation.X, (int) this.itemLocation.Y, Main.itemTexture[sItem.type].get_Width(), Main.itemTexture[sItem.type].get_Height());
-        }
-        r.Width = (__Null) (int) ((double) (float) r.Width * (double) sItem.scale);
-        r.Height = (__Null) (int) ((double) (float) r.Height * (double) sItem.scale);
+          r = new Microsoft.Xna.Framework.Rectangle((int) this.itemLocation.X, (int) this.itemLocation.Y, Main.itemTexture[sItem.type].Width, Main.itemTexture[sItem.type].Height);
+        r.Width = (int) ((double) r.Width * (double) sItem.scale);
+        r.Height = (int) ((double) r.Height * (double) sItem.scale);
         if (this.direction == -1)
-        {
-          // ISSUE: explicit reference operation
-          // ISSUE: variable of a reference type
-          Rectangle& local1 = @r;
-          // ISSUE: explicit reference operation
-          // ISSUE: variable of the null type
-          __Null local2 = (^local1).X - r.Width;
-          // ISSUE: explicit reference operation
-          (^local1).X = local2;
-        }
+          r.X -= r.Width;
         if ((double) this.gravDir == 1.0)
-        {
-          // ISSUE: explicit reference operation
-          // ISSUE: variable of a reference type
-          Rectangle& local1 = @r;
-          // ISSUE: explicit reference operation
-          // ISSUE: variable of the null type
-          __Null local2 = (^local1).Y - r.Height;
-          // ISSUE: explicit reference operation
-          (^local1).Y = local2;
-        }
+          r.Y -= r.Height;
         if (sItem.useStyle == 1)
         {
           if ((double) this.itemAnimation < (double) this.itemAnimationMax * 0.333)
           {
             if (this.direction == -1)
-            {
-              // ISSUE: explicit reference operation
-              // ISSUE: variable of a reference type
-              Rectangle& local = @r;
-              // ISSUE: explicit reference operation
-              int num = (^local).X - (int) ((double) r.Width * 1.4 - (double) r.Width);
-              // ISSUE: explicit reference operation
-              (^local).X = (__Null) num;
-            }
-            r.Width = (__Null) (int) ((double) r.Width * 1.4);
-            // ISSUE: explicit reference operation
-            // ISSUE: variable of a reference type
-            Rectangle& local1 = @r;
-            // ISSUE: explicit reference operation
-            int num1 = (^local1).Y + (int) ((double) r.Height * 0.5 * (double) this.gravDir);
-            // ISSUE: explicit reference operation
-            (^local1).Y = (__Null) num1;
-            r.Height = (__Null) (int) ((double) r.Height * 1.1);
+              r.X -= (int) ((double) r.Width * 1.4 - (double) r.Width);
+            r.Width = (int) ((double) r.Width * 1.4);
+            r.Y += (int) ((double) r.Height * 0.5 * (double) this.gravDir);
+            r.Height = (int) ((double) r.Height * 1.1);
           }
           else if ((double) this.itemAnimation >= (double) this.itemAnimationMax * 0.666)
           {
             if (this.direction == 1)
-            {
-              // ISSUE: explicit reference operation
-              // ISSUE: variable of a reference type
-              Rectangle& local = @r;
-              // ISSUE: explicit reference operation
-              int num = (^local).X - (int) ((double) r.Width * 1.2);
-              // ISSUE: explicit reference operation
-              (^local).X = (__Null) num;
-            }
-            r.Width = (__Null) (r.Width * 2);
-            // ISSUE: explicit reference operation
-            // ISSUE: variable of a reference type
-            Rectangle& local1 = @r;
-            // ISSUE: explicit reference operation
-            int num1 = (^local1).Y - (int) (((double) r.Height * 1.4 - (double) r.Height) * (double) this.gravDir);
-            // ISSUE: explicit reference operation
-            (^local1).Y = (__Null) num1;
-            r.Height = (__Null) (int) ((double) r.Height * 1.4);
+              r.X -= (int) ((double) r.Width * 1.2);
+            r.Width = r.Width * 2;
+            r.Y -= (int) (((double) r.Height * 1.4 - (double) r.Height) * (double) this.gravDir);
+            r.Height = (int) ((double) r.Height * 1.4);
           }
         }
         else if (sItem.useStyle == 3)
@@ -25910,58 +24268,32 @@ label_13:
           else
           {
             if (this.direction == -1)
-            {
-              // ISSUE: explicit reference operation
-              // ISSUE: variable of a reference type
-              Rectangle& local = @r;
-              // ISSUE: explicit reference operation
-              int num = (^local).X - (int) ((double) r.Width * 1.4 - (double) r.Width);
-              // ISSUE: explicit reference operation
-              (^local).X = (__Null) num;
-            }
-            r.Width = (__Null) (int) ((double) r.Width * 1.4);
-            // ISSUE: explicit reference operation
-            // ISSUE: variable of a reference type
-            Rectangle& local1 = @r;
-            // ISSUE: explicit reference operation
-            int num1 = (^local1).Y + (int) ((double) r.Height * 0.6);
-            // ISSUE: explicit reference operation
-            (^local1).Y = (__Null) num1;
-            r.Height = (__Null) (int) ((double) r.Height * 0.6);
+              r.X -= (int) ((double) r.Width * 1.4 - (double) r.Width);
+            r.Width = (int) ((double) r.Width * 1.4);
+            r.Y += (int) ((double) r.Height * 0.6);
+            r.Height = (int) ((double) r.Height * 0.6);
           }
         }
         double gravDir = (double) this.gravDir;
         if (sItem.type == 1450 && Main.rand.Next(3) == 0)
         {
           int index = -1;
-          float num1 = (float) (r.X + Main.rand.Next((int) r.Width));
-          float num2 = (float) (r.Y + Main.rand.Next((int) r.Height));
+          float x = (float) (r.X + Main.rand.Next(r.Width));
+          float y = (float) (r.Y + Main.rand.Next(r.Height));
           if (Main.rand.Next(500) == 0)
-            index = Gore.NewGore(new Vector2(num1, num2), (Vector2) null, 415, (float) Main.rand.Next(51, 101) * 0.01f);
+            index = Gore.NewGore(new Vector2(x, y), new Vector2(), 415, (float) Main.rand.Next(51, 101) * 0.01f);
           else if (Main.rand.Next(250) == 0)
-            index = Gore.NewGore(new Vector2(num1, num2), (Vector2) null, 414, (float) Main.rand.Next(51, 101) * 0.01f);
+            index = Gore.NewGore(new Vector2(x, y), new Vector2(), 414, (float) Main.rand.Next(51, 101) * 0.01f);
           else if (Main.rand.Next(80) == 0)
-            index = Gore.NewGore(new Vector2(num1, num2), (Vector2) null, 413, (float) Main.rand.Next(51, 101) * 0.01f);
+            index = Gore.NewGore(new Vector2(x, y), new Vector2(), 413, (float) Main.rand.Next(51, 101) * 0.01f);
           else if (Main.rand.Next(10) == 0)
-            index = Gore.NewGore(new Vector2(num1, num2), (Vector2) null, 412, (float) Main.rand.Next(51, 101) * 0.01f);
+            index = Gore.NewGore(new Vector2(x, y), new Vector2(), 412, (float) Main.rand.Next(51, 101) * 0.01f);
           else if (Main.rand.Next(3) == 0)
-            index = Gore.NewGore(new Vector2(num1, num2), (Vector2) null, 411, (float) Main.rand.Next(51, 101) * 0.01f);
+            index = Gore.NewGore(new Vector2(x, y), new Vector2(), 411, (float) Main.rand.Next(51, 101) * 0.01f);
           if (index >= 0)
           {
-            // ISSUE: explicit reference operation
-            // ISSUE: variable of a reference type
-            Vector2& local1 = @Main.gore[index].velocity;
-            // ISSUE: explicit reference operation
-            double num3 = (^local1).X + (double) (this.direction * 2);
-            // ISSUE: explicit reference operation
-            (^local1).X = (__Null) num3;
-            // ISSUE: explicit reference operation
-            // ISSUE: variable of a reference type
-            Vector2& local2 = @Main.gore[index].velocity;
-            // ISSUE: explicit reference operation
-            double num4 = (^local2).Y * 0.300000011920929;
-            // ISSUE: explicit reference operation
-            (^local2).Y = (__Null) num4;
+            Main.gore[index].velocity.X += (float) (this.direction * 2);
+            Main.gore[index].velocity.Y *= 0.3f;
           }
         }
         if (sItem.type == 3542)
@@ -25969,21 +24301,21 @@ label_13:
         if (sItem.type == 3779)
         {
           flag2 = true;
-          Vector2 vector2_1 = Vector2.op_Addition(this.itemLocation, new Vector2((float) (this.direction * 30), -8f));
+          Vector2 vector2_1 = this.itemLocation + new Vector2((float) (this.direction * 30), -8f);
           int itemAnimation = this.itemAnimation;
-          int num1 = this.itemAnimationMax - 2;
-          Vector2 vector2_2 = Vector2.op_Subtraction(vector2_1, this.position);
-          float num2 = 0.0f;
-          while ((double) num2 < 1.0)
+          int num = this.itemAnimationMax - 2;
+          Vector2 vector2_2 = vector2_1 - this.position;
+          float amount = 0.0f;
+          while ((double) amount < 1.0)
           {
-            Vector2 vector2_3 = Vector2.Lerp(Vector2.op_Addition(Vector2.op_Addition(this.oldPosition, vector2_2), new Vector2(0.0f, this.gfxOffY)), vector2_1, num2);
-            Dust dust = Main.dust[Dust.NewDust(Vector2.op_Subtraction(vector2_1, Vector2.op_Multiply(Vector2.get_One(), 8f)), 16, 16, 27, 0.0f, -2f, 0, (Color) null, 1f)];
+            Vector2 vector2_3 = Vector2.Lerp(this.oldPosition + vector2_2 + new Vector2(0.0f, this.gfxOffY), vector2_1, amount);
+            Dust dust = Main.dust[Dust.NewDust(vector2_1 - Vector2.One * 8f, 16, 16, 27, 0.0f, -2f, 0, new Color(), 1f)];
             dust.noGravity = true;
             dust.position = vector2_3;
             dust.velocity = new Vector2(0.0f, (float) (-(double) this.gravDir * 2.0));
             dust.scale = 1.2f;
             dust.alpha = 200;
-            num2 += 0.2f;
+            amount += 0.2f;
           }
         }
         if (!flag2)
@@ -26003,10 +24335,8 @@ label_13:
                 Type = 58;
                 break;
             }
-            int index = Dust.NewDust(new Vector2((float) r.X, (float) r.Y), (int) r.Width, (int) r.Height, Type, (float) (this.direction * 2), 0.0f, 150, (Color) null, 1.3f);
-            Dust dust = Main.dust[index];
-            Vector2 vector2 = Vector2.op_Multiply(dust.velocity, 0.2f);
-            dust.velocity = vector2;
+            int index = Dust.NewDust(new Vector2((float) r.X, (float) r.Y), r.Width, r.Height, Type, (float) (this.direction * 2), 0.0f, 150, new Color(), 1.3f);
+            Main.dust[index].velocity *= 0.2f;
           }
           if (sItem.type == 2880 && Main.rand.Next(2) == 0)
           {
@@ -26015,187 +24345,121 @@ label_13:
               226,
               229
             });
-            int index = Dust.NewDust(new Vector2((float) r.X, (float) r.Y), (int) r.Width, (int) r.Height, Type, (float) (this.direction * 2), 0.0f, 150, (Color) null, 1f);
-            Dust dust = Main.dust[index];
-            Vector2 vector2 = Vector2.op_Multiply(dust.velocity, 0.2f);
-            dust.velocity = vector2;
+            int index = Dust.NewDust(new Vector2((float) r.X, (float) r.Y), r.Width, r.Height, Type, (float) (this.direction * 2), 0.0f, 150, new Color(), 1f);
+            Main.dust[index].velocity *= 0.2f;
             Main.dust[index].noGravity = true;
           }
           if ((sItem.type == 44 || sItem.type == 45 || (sItem.type == 46 || sItem.type == 103) || sItem.type == 104) && Main.rand.Next(15) == 0)
-            Dust.NewDust(new Vector2((float) r.X, (float) r.Y), (int) r.Width, (int) r.Height, 14, (float) (this.direction * 2), 0.0f, 150, (Color) null, 1.3f);
+            Dust.NewDust(new Vector2((float) r.X, (float) r.Y), r.Width, r.Height, 14, (float) (this.direction * 2), 0.0f, 150, new Color(), 1.3f);
           if (sItem.type == 273 || sItem.type == 675)
           {
             if (Main.rand.Next(5) == 0)
-              Dust.NewDust(new Vector2((float) r.X, (float) r.Y), (int) r.Width, (int) r.Height, 14, (float) (this.direction * 2), 0.0f, 150, (Color) null, 1.4f);
-            int index = Dust.NewDust(new Vector2((float) r.X, (float) r.Y), (int) r.Width, (int) r.Height, 27, (float) (this.velocity.X * 0.200000002980232) + (float) (this.direction * 3), (float) (this.velocity.Y * 0.200000002980232), 100, (Color) null, 1.2f);
+              Dust.NewDust(new Vector2((float) r.X, (float) r.Y), r.Width, r.Height, 14, (float) (this.direction * 2), 0.0f, 150, new Color(), 1.4f);
+            int index = Dust.NewDust(new Vector2((float) r.X, (float) r.Y), r.Width, r.Height, 27, this.velocity.X * 0.2f + (float) (this.direction * 3), this.velocity.Y * 0.2f, 100, new Color(), 1.2f);
             Main.dust[index].noGravity = true;
-            // ISSUE: explicit reference operation
-            // ISSUE: variable of a reference type
-            Vector2& local1 = @Main.dust[index].velocity;
-            // ISSUE: explicit reference operation
-            double num1 = (^local1).X / 2.0;
-            // ISSUE: explicit reference operation
-            (^local1).X = (__Null) num1;
-            // ISSUE: explicit reference operation
-            // ISSUE: variable of a reference type
-            Vector2& local2 = @Main.dust[index].velocity;
-            // ISSUE: explicit reference operation
-            double num2 = (^local2).Y / 2.0;
-            // ISSUE: explicit reference operation
-            (^local2).Y = (__Null) num2;
+            Main.dust[index].velocity.X /= 2f;
+            Main.dust[index].velocity.Y /= 2f;
           }
           if (sItem.type == 723 && Main.rand.Next(2) == 0)
           {
-            int index = Dust.NewDust(new Vector2((float) r.X, (float) r.Y), (int) r.Width, (int) r.Height, 64, 0.0f, 0.0f, 150, (Color) null, 1.2f);
+            int index = Dust.NewDust(new Vector2((float) r.X, (float) r.Y), r.Width, r.Height, 64, 0.0f, 0.0f, 150, new Color(), 1.2f);
             Main.dust[index].noGravity = true;
           }
           if (sItem.type == 65)
           {
             if (Main.rand.Next(5) == 0)
-              Dust.NewDust(new Vector2((float) r.X, (float) r.Y), (int) r.Width, (int) r.Height, 58, 0.0f, 0.0f, 150, (Color) null, 1.2f);
+              Dust.NewDust(new Vector2((float) r.X, (float) r.Y), r.Width, r.Height, 58, 0.0f, 0.0f, 150, new Color(), 1.2f);
             if (Main.rand.Next(10) == 0)
-              Gore.NewGore(new Vector2((float) r.X, (float) r.Y), (Vector2) null, Main.rand.Next(16, 18), 1f);
+              Gore.NewGore(new Vector2((float) r.X, (float) r.Y), new Vector2(), Main.rand.Next(16, 18), 1f);
           }
           if (sItem.type == 3065)
           {
-            int index1 = Dust.NewDust(new Vector2((float) r.X, (float) r.Y), (int) r.Width, (int) r.Height, 58, 0.0f, 0.0f, 150, (Color) null, 1.2f);
-            Dust dust = Main.dust[index1];
-            Vector2 vector2_1 = Vector2.op_Multiply(dust.velocity, 0.5f);
-            dust.velocity = vector2_1;
+            int index1 = Dust.NewDust(new Vector2((float) r.X, (float) r.Y), r.Width, r.Height, 58, 0.0f, 0.0f, 150, new Color(), 1.2f);
+            Main.dust[index1].velocity *= 0.5f;
             if (Main.rand.Next(8) == 0)
             {
-              // ISSUE: explicit reference operation
-              // ISSUE: explicit reference operation
-              int index2 = Gore.NewGore(new Vector2((float) ((Rectangle) @r).get_Center().X, (float) ((Rectangle) @r).get_Center().Y), (Vector2) null, 16, 1f);
-              Gore gore1 = Main.gore[index2];
-              Vector2 vector2_2 = Vector2.op_Multiply(gore1.velocity, 0.5f);
-              gore1.velocity = vector2_2;
-              Gore gore2 = Main.gore[index2];
-              Vector2 vector2_3 = Vector2.op_Addition(gore2.velocity, new Vector2((float) this.direction, 0.0f));
-              gore2.velocity = vector2_3;
+              int index2 = Gore.NewGore(new Vector2((float) r.Center.X, (float) r.Center.Y), new Vector2(), 16, 1f);
+              Main.gore[index2].velocity *= 0.5f;
+              Main.gore[index2].velocity += new Vector2((float) this.direction, 0.0f);
             }
           }
           if (sItem.type == 190)
           {
-            int index = Dust.NewDust(new Vector2((float) r.X, (float) r.Y), (int) r.Width, (int) r.Height, 40, (float) (this.velocity.X * 0.200000002980232) + (float) (this.direction * 3), (float) (this.velocity.Y * 0.200000002980232), 0, (Color) null, 1.2f);
+            int index = Dust.NewDust(new Vector2((float) r.X, (float) r.Y), r.Width, r.Height, 40, this.velocity.X * 0.2f + (float) (this.direction * 3), this.velocity.Y * 0.2f, 0, new Color(), 1.2f);
             Main.dust[index].noGravity = true;
           }
           else if (sItem.type == 213)
           {
-            int index = Dust.NewDust(new Vector2((float) r.X, (float) r.Y), (int) r.Width, (int) r.Height, 3, (float) (this.velocity.X * 0.200000002980232) + (float) (this.direction * 3), (float) (this.velocity.Y * 0.200000002980232), 0, (Color) null, 1.2f);
+            int index = Dust.NewDust(new Vector2((float) r.X, (float) r.Y), r.Width, r.Height, 3, this.velocity.X * 0.2f + (float) (this.direction * 3), this.velocity.Y * 0.2f, 0, new Color(), 1.2f);
             Main.dust[index].noGravity = true;
           }
           if (sItem.type == 121)
           {
             for (int index1 = 0; index1 < 2; ++index1)
             {
-              int index2 = Dust.NewDust(new Vector2((float) r.X, (float) r.Y), (int) r.Width, (int) r.Height, 6, (float) (this.velocity.X * 0.200000002980232) + (float) (this.direction * 3), (float) (this.velocity.Y * 0.200000002980232), 100, (Color) null, 2.5f);
+              int index2 = Dust.NewDust(new Vector2((float) r.X, (float) r.Y), r.Width, r.Height, 6, this.velocity.X * 0.2f + (float) (this.direction * 3), this.velocity.Y * 0.2f, 100, new Color(), 2.5f);
               Main.dust[index2].noGravity = true;
-              // ISSUE: explicit reference operation
-              // ISSUE: variable of a reference type
-              Vector2& local1 = @Main.dust[index2].velocity;
-              // ISSUE: explicit reference operation
-              double num1 = (^local1).X * 2.0;
-              // ISSUE: explicit reference operation
-              (^local1).X = (__Null) num1;
-              // ISSUE: explicit reference operation
-              // ISSUE: variable of a reference type
-              Vector2& local2 = @Main.dust[index2].velocity;
-              // ISSUE: explicit reference operation
-              double num2 = (^local2).Y * 2.0;
-              // ISSUE: explicit reference operation
-              (^local2).Y = (__Null) num2;
+              Main.dust[index2].velocity.X *= 2f;
+              Main.dust[index2].velocity.Y *= 2f;
             }
           }
           if (sItem.type == 122 || sItem.type == 217)
           {
-            int index = Dust.NewDust(new Vector2((float) r.X, (float) r.Y), (int) r.Width, (int) r.Height, 6, (float) (this.velocity.X * 0.200000002980232) + (float) (this.direction * 3), (float) (this.velocity.Y * 0.200000002980232), 100, (Color) null, 1.9f);
+            int index = Dust.NewDust(new Vector2((float) r.X, (float) r.Y), r.Width, r.Height, 6, this.velocity.X * 0.2f + (float) (this.direction * 3), this.velocity.Y * 0.2f, 100, new Color(), 1.9f);
             Main.dust[index].noGravity = true;
           }
           if (sItem.type == 155)
           {
-            int index = Dust.NewDust(new Vector2((float) r.X, (float) r.Y), (int) r.Width, (int) r.Height, 172, (float) (this.velocity.X * 0.200000002980232) + (float) (this.direction * 3), (float) (this.velocity.Y * 0.200000002980232), 100, (Color) null, 0.9f);
+            int index = Dust.NewDust(new Vector2((float) r.X, (float) r.Y), r.Width, r.Height, 172, this.velocity.X * 0.2f + (float) (this.direction * 3), this.velocity.Y * 0.2f, 100, new Color(), 0.9f);
             Main.dust[index].noGravity = true;
-            Dust dust = Main.dust[index];
-            Vector2 vector2 = Vector2.op_Multiply(dust.velocity, 0.1f);
-            dust.velocity = vector2;
+            Main.dust[index].velocity *= 0.1f;
           }
           if (sItem.type == 676 && Main.rand.Next(3) == 0)
           {
-            int index = Dust.NewDust(new Vector2((float) r.X, (float) r.Y), (int) r.Width, (int) r.Height, 67, (float) (this.velocity.X * 0.200000002980232) + (float) (this.direction * 3), (float) (this.velocity.Y * 0.200000002980232), 90, (Color) null, 1.5f);
+            int index = Dust.NewDust(new Vector2((float) r.X, (float) r.Y), r.Width, r.Height, 67, this.velocity.X * 0.2f + (float) (this.direction * 3), this.velocity.Y * 0.2f, 90, new Color(), 1.5f);
             Main.dust[index].noGravity = true;
-            Dust dust = Main.dust[index];
-            Vector2 vector2 = Vector2.op_Multiply(dust.velocity, 0.2f);
-            dust.velocity = vector2;
+            Main.dust[index].velocity *= 0.2f;
           }
           if (sItem.type == 3063)
           {
-            int index = Dust.NewDust(r.TopLeft(), (int) r.Width, (int) r.Height, 66, 0.0f, 0.0f, 150, Color.get_Transparent(), 0.85f);
+            int index = Dust.NewDust(r.TopLeft(), r.Width, r.Height, 66, 0.0f, 0.0f, 150, Color.Transparent, 0.85f);
             Main.dust[index].color = Main.hslToRgb(Main.rand.NextFloat(), 1f, 0.5f);
             Main.dust[index].noGravity = true;
-            Dust dust = Main.dust[index];
-            Vector2 vector2 = Vector2.op_Division(dust.velocity, 2f);
-            dust.velocity = vector2;
+            Main.dust[index].velocity /= 2f;
           }
           if (sItem.type == 3823)
           {
-            Dust dust1 = Dust.NewDustDirect(r.TopLeft(), (int) r.Width, (int) r.Height, 6, (float) (this.velocity.X * 0.200000002980232) + (float) (this.direction * 3), (float) (this.velocity.Y * 0.200000002980232), 100, Color.get_Transparent(), 0.7f);
-            dust1.noGravity = true;
-            Dust dust2 = dust1;
-            Vector2 vector2 = Vector2.op_Multiply(dust2.velocity, 2f);
-            dust2.velocity = vector2;
-            dust1.fadeIn = 0.9f;
+            Dust dust = Dust.NewDustDirect(r.TopLeft(), r.Width, r.Height, 6, this.velocity.X * 0.2f + (float) (this.direction * 3), this.velocity.Y * 0.2f, 100, Color.Transparent, 0.7f);
+            dust.noGravity = true;
+            dust.velocity *= 2f;
+            dust.fadeIn = 0.9f;
           }
           if (sItem.type == 724 && Main.rand.Next(5) == 0)
           {
-            int index = Dust.NewDust(new Vector2((float) r.X, (float) r.Y), (int) r.Width, (int) r.Height, 67, (float) (this.velocity.X * 0.200000002980232) + (float) (this.direction * 3), (float) (this.velocity.Y * 0.200000002980232), 90, (Color) null, 1.5f);
+            int index = Dust.NewDust(new Vector2((float) r.X, (float) r.Y), r.Width, r.Height, 67, this.velocity.X * 0.2f + (float) (this.direction * 3), this.velocity.Y * 0.2f, 90, new Color(), 1.5f);
             Main.dust[index].noGravity = true;
-            Dust dust = Main.dust[index];
-            Vector2 vector2 = Vector2.op_Multiply(dust.velocity, 0.2f);
-            dust.velocity = vector2;
+            Main.dust[index].velocity *= 0.2f;
           }
           if (sItem.type >= 795 && sItem.type <= 802 && Main.rand.Next(3) == 0)
           {
-            int index = Dust.NewDust(new Vector2((float) r.X, (float) r.Y), (int) r.Width, (int) r.Height, 115, (float) (this.velocity.X * 0.200000002980232) + (float) (this.direction * 3), (float) (this.velocity.Y * 0.200000002980232), 140, (Color) null, 1.5f);
+            int index = Dust.NewDust(new Vector2((float) r.X, (float) r.Y), r.Width, r.Height, 115, this.velocity.X * 0.2f + (float) (this.direction * 3), this.velocity.Y * 0.2f, 140, new Color(), 1.5f);
             Main.dust[index].noGravity = true;
-            Dust dust = Main.dust[index];
-            Vector2 vector2 = Vector2.op_Multiply(dust.velocity, 0.25f);
-            dust.velocity = vector2;
+            Main.dust[index].velocity *= 0.25f;
           }
           if (sItem.type == 367 || sItem.type == 368 || sItem.type == 674)
           {
             if (Main.rand.Next(3) == 0)
             {
-              int index = Dust.NewDust(new Vector2((float) r.X, (float) r.Y), (int) r.Width, (int) r.Height, 57, (float) (this.velocity.X * 0.200000002980232) + (float) (this.direction * 3), (float) (this.velocity.Y * 0.200000002980232), 100, (Color) null, 1.1f);
+              int index = Dust.NewDust(new Vector2((float) r.X, (float) r.Y), r.Width, r.Height, 57, this.velocity.X * 0.2f + (float) (this.direction * 3), this.velocity.Y * 0.2f, 100, new Color(), 1.1f);
               Main.dust[index].noGravity = true;
-              // ISSUE: explicit reference operation
-              // ISSUE: variable of a reference type
-              Vector2& local1 = @Main.dust[index].velocity;
-              // ISSUE: explicit reference operation
-              double num1 = (^local1).X / 2.0;
-              // ISSUE: explicit reference operation
-              (^local1).X = (__Null) num1;
-              // ISSUE: explicit reference operation
-              // ISSUE: variable of a reference type
-              Vector2& local2 = @Main.dust[index].velocity;
-              // ISSUE: explicit reference operation
-              double num2 = (^local2).Y / 2.0;
-              // ISSUE: explicit reference operation
-              (^local2).Y = (__Null) num2;
-              // ISSUE: explicit reference operation
-              // ISSUE: variable of a reference type
-              Vector2& local3 = @Main.dust[index].velocity;
-              // ISSUE: explicit reference operation
-              double num3 = (^local3).X + (double) (this.direction * 2);
-              // ISSUE: explicit reference operation
-              (^local3).X = (__Null) num3;
+              Main.dust[index].velocity.X /= 2f;
+              Main.dust[index].velocity.Y /= 2f;
+              Main.dust[index].velocity.X += (float) (this.direction * 2);
             }
             if (Main.rand.Next(4) == 0)
             {
-              int index = Dust.NewDust(new Vector2((float) r.X, (float) r.Y), (int) r.Width, (int) r.Height, 43, 0.0f, 0.0f, 254, (Color) null, 0.3f);
-              Dust dust = Main.dust[index];
-              Vector2 vector2 = Vector2.op_Multiply(dust.velocity, 0.0f);
-              dust.velocity = vector2;
+              int index = Dust.NewDust(new Vector2((float) r.X, (float) r.Y), r.Width, r.Height, 43, 0.0f, 0.0f, 254, new Color(), 0.3f);
+              Main.dust[index].velocity *= 0.0f;
             }
           }
           if (sItem.type >= 198 && sItem.type <= 203 || sItem.type >= 3764 && sItem.type <= 3769)
@@ -26239,22 +24503,14 @@ label_13:
               G *= 0.9f;
               B *= 0.1f;
             }
-            Lighting.AddLight((int) ((this.itemLocation.X + 6.0 + this.velocity.X) / 16.0), (int) ((this.itemLocation.Y - 14.0) / 16.0), R, G, B);
+            Lighting.AddLight((int) (((double) this.itemLocation.X + 6.0 + (double) this.velocity.X) / 16.0), (int) (((double) this.itemLocation.Y - 14.0) / 16.0), R, G, B);
           }
           if (this.frostBurn && sItem.melee && (!sItem.noMelee && !sItem.noUseGraphic) && Main.rand.Next(2) == 0)
           {
-            int index = Dust.NewDust(new Vector2((float) r.X, (float) r.Y), (int) r.Width, (int) r.Height, 135, (float) (this.velocity.X * 0.200000002980232) + (float) (this.direction * 3), (float) (this.velocity.Y * 0.200000002980232), 100, (Color) null, 2.5f);
+            int index = Dust.NewDust(new Vector2((float) r.X, (float) r.Y), r.Width, r.Height, 135, this.velocity.X * 0.2f + (float) (this.direction * 3), this.velocity.Y * 0.2f, 100, new Color(), 2.5f);
             Main.dust[index].noGravity = true;
-            Dust dust = Main.dust[index];
-            Vector2 vector2 = Vector2.op_Multiply(dust.velocity, 0.7f);
-            dust.velocity = vector2;
-            // ISSUE: explicit reference operation
-            // ISSUE: variable of a reference type
-            Vector2& local = @Main.dust[index].velocity;
-            // ISSUE: explicit reference operation
-            double num = (^local).Y - 0.5;
-            // ISSUE: explicit reference operation
-            (^local).Y = (__Null) num;
+            Main.dust[index].velocity *= 0.7f;
+            Main.dust[index].velocity.Y -= 0.5f;
           }
           if (sItem.melee && !sItem.noMelee && (!sItem.noUseGraphic && (int) this.meleeEnchant > 0))
           {
@@ -26262,91 +24518,49 @@ label_13:
             {
               if (Main.rand.Next(3) == 0)
               {
-                int index = Dust.NewDust(new Vector2((float) r.X, (float) r.Y), (int) r.Width, (int) r.Height, 171, 0.0f, 0.0f, 100, (Color) null, 1f);
+                int index = Dust.NewDust(new Vector2((float) r.X, (float) r.Y), r.Width, r.Height, 171, 0.0f, 0.0f, 100, new Color(), 1f);
                 Main.dust[index].noGravity = true;
                 Main.dust[index].fadeIn = 1.5f;
-                Dust dust = Main.dust[index];
-                Vector2 vector2 = Vector2.op_Multiply(dust.velocity, 0.25f);
-                dust.velocity = vector2;
+                Main.dust[index].velocity *= 0.25f;
               }
             }
             else if ((int) this.meleeEnchant == 2)
             {
               if (Main.rand.Next(2) == 0)
               {
-                int index = Dust.NewDust(new Vector2((float) r.X, (float) r.Y), (int) r.Width, (int) r.Height, 75, (float) (this.velocity.X * 0.200000002980232) + (float) (this.direction * 3), (float) (this.velocity.Y * 0.200000002980232), 100, (Color) null, 2.5f);
+                int index = Dust.NewDust(new Vector2((float) r.X, (float) r.Y), r.Width, r.Height, 75, this.velocity.X * 0.2f + (float) (this.direction * 3), this.velocity.Y * 0.2f, 100, new Color(), 2.5f);
                 Main.dust[index].noGravity = true;
-                Dust dust = Main.dust[index];
-                Vector2 vector2 = Vector2.op_Multiply(dust.velocity, 0.7f);
-                dust.velocity = vector2;
-                // ISSUE: explicit reference operation
-                // ISSUE: variable of a reference type
-                Vector2& local = @Main.dust[index].velocity;
-                // ISSUE: explicit reference operation
-                double num = (^local).Y - 0.5;
-                // ISSUE: explicit reference operation
-                (^local).Y = (__Null) num;
+                Main.dust[index].velocity *= 0.7f;
+                Main.dust[index].velocity.Y -= 0.5f;
               }
             }
             else if ((int) this.meleeEnchant == 3)
             {
               if (Main.rand.Next(2) == 0)
               {
-                int index = Dust.NewDust(new Vector2((float) r.X, (float) r.Y), (int) r.Width, (int) r.Height, 6, (float) (this.velocity.X * 0.200000002980232) + (float) (this.direction * 3), (float) (this.velocity.Y * 0.200000002980232), 100, (Color) null, 2.5f);
+                int index = Dust.NewDust(new Vector2((float) r.X, (float) r.Y), r.Width, r.Height, 6, this.velocity.X * 0.2f + (float) (this.direction * 3), this.velocity.Y * 0.2f, 100, new Color(), 2.5f);
                 Main.dust[index].noGravity = true;
-                Dust dust = Main.dust[index];
-                Vector2 vector2 = Vector2.op_Multiply(dust.velocity, 0.7f);
-                dust.velocity = vector2;
-                // ISSUE: explicit reference operation
-                // ISSUE: variable of a reference type
-                Vector2& local = @Main.dust[index].velocity;
-                // ISSUE: explicit reference operation
-                double num = (^local).Y - 0.5;
-                // ISSUE: explicit reference operation
-                (^local).Y = (__Null) num;
+                Main.dust[index].velocity *= 0.7f;
+                Main.dust[index].velocity.Y -= 0.5f;
               }
             }
             else if ((int) this.meleeEnchant == 4)
             {
               if (Main.rand.Next(2) == 0)
               {
-                int index = Dust.NewDust(new Vector2((float) r.X, (float) r.Y), (int) r.Width, (int) r.Height, 57, (float) (this.velocity.X * 0.200000002980232) + (float) (this.direction * 3), (float) (this.velocity.Y * 0.200000002980232), 100, (Color) null, 1.1f);
+                int index = Dust.NewDust(new Vector2((float) r.X, (float) r.Y), r.Width, r.Height, 57, this.velocity.X * 0.2f + (float) (this.direction * 3), this.velocity.Y * 0.2f, 100, new Color(), 1.1f);
                 Main.dust[index].noGravity = true;
-                // ISSUE: explicit reference operation
-                // ISSUE: variable of a reference type
-                Vector2& local1 = @Main.dust[index].velocity;
-                // ISSUE: explicit reference operation
-                double num1 = (^local1).X / 2.0;
-                // ISSUE: explicit reference operation
-                (^local1).X = (__Null) num1;
-                // ISSUE: explicit reference operation
-                // ISSUE: variable of a reference type
-                Vector2& local2 = @Main.dust[index].velocity;
-                // ISSUE: explicit reference operation
-                double num2 = (^local2).Y / 2.0;
-                // ISSUE: explicit reference operation
-                (^local2).Y = (__Null) num2;
+                Main.dust[index].velocity.X /= 2f;
+                Main.dust[index].velocity.Y /= 2f;
               }
             }
             else if ((int) this.meleeEnchant == 5)
             {
               if (Main.rand.Next(2) == 0)
               {
-                int index = Dust.NewDust(new Vector2((float) r.X, (float) r.Y), (int) r.Width, (int) r.Height, 169, 0.0f, 0.0f, 100, (Color) null, 1f);
-                // ISSUE: explicit reference operation
-                // ISSUE: variable of a reference type
-                Vector2& local1 = @Main.dust[index].velocity;
-                // ISSUE: explicit reference operation
-                double num1 = (^local1).X + (double) this.direction;
-                // ISSUE: explicit reference operation
-                (^local1).X = (__Null) num1;
-                // ISSUE: explicit reference operation
-                // ISSUE: variable of a reference type
-                Vector2& local2 = @Main.dust[index].velocity;
-                // ISSUE: explicit reference operation
-                double num2 = (^local2).Y + 0.200000002980232;
-                // ISSUE: explicit reference operation
-                (^local2).Y = (__Null) num2;
+                int index = Dust.NewDust(new Vector2((float) r.X, (float) r.Y), r.Width, r.Height, 169, 0.0f, 0.0f, 100, new Color(), 1f);
+                Main.dust[index].velocity.X += (float) this.direction;
+                Main.dust[index].velocity.Y += 0.2f;
                 Main.dust[index].noGravity = true;
               }
             }
@@ -26354,21 +24568,9 @@ label_13:
             {
               if (Main.rand.Next(2) == 0)
               {
-                int index = Dust.NewDust(new Vector2((float) r.X, (float) r.Y), (int) r.Width, (int) r.Height, 135, 0.0f, 0.0f, 100, (Color) null, 1f);
-                // ISSUE: explicit reference operation
-                // ISSUE: variable of a reference type
-                Vector2& local1 = @Main.dust[index].velocity;
-                // ISSUE: explicit reference operation
-                double num1 = (^local1).X + (double) this.direction;
-                // ISSUE: explicit reference operation
-                (^local1).X = (__Null) num1;
-                // ISSUE: explicit reference operation
-                // ISSUE: variable of a reference type
-                Vector2& local2 = @Main.dust[index].velocity;
-                // ISSUE: explicit reference operation
-                double num2 = (^local2).Y + 0.200000002980232;
-                // ISSUE: explicit reference operation
-                (^local2).Y = (__Null) num2;
+                int index = Dust.NewDust(new Vector2((float) r.X, (float) r.Y), r.Width, r.Height, 135, 0.0f, 0.0f, 100, new Color(), 1f);
+                Main.dust[index].velocity.X += (float) this.direction;
+                Main.dust[index].velocity.Y += 0.2f;
                 Main.dust[index].noGravity = true;
               }
             }
@@ -26377,100 +24579,38 @@ label_13:
               if (Main.rand.Next(20) == 0)
               {
                 int Type = Main.rand.Next(139, 143);
-                int index = Dust.NewDust(new Vector2((float) r.X, (float) r.Y), (int) r.Width, (int) r.Height, Type, (float) this.velocity.X, (float) this.velocity.Y, 0, (Color) null, 1.2f);
-                // ISSUE: explicit reference operation
-                // ISSUE: variable of a reference type
-                Vector2& local1 = @Main.dust[index].velocity;
-                // ISSUE: explicit reference operation
-                double num1 = (^local1).X * (1.0 + (double) Main.rand.Next(-50, 51) * 0.00999999977648258);
-                // ISSUE: explicit reference operation
-                (^local1).X = (__Null) num1;
-                // ISSUE: explicit reference operation
-                // ISSUE: variable of a reference type
-                Vector2& local2 = @Main.dust[index].velocity;
-                // ISSUE: explicit reference operation
-                double num2 = (^local2).Y * (1.0 + (double) Main.rand.Next(-50, 51) * 0.00999999977648258);
-                // ISSUE: explicit reference operation
-                (^local2).Y = (__Null) num2;
-                // ISSUE: explicit reference operation
-                // ISSUE: variable of a reference type
-                Vector2& local3 = @Main.dust[index].velocity;
-                // ISSUE: explicit reference operation
-                double num3 = (^local3).X + (double) Main.rand.Next(-50, 51) * 0.0500000007450581;
-                // ISSUE: explicit reference operation
-                (^local3).X = (__Null) num3;
-                // ISSUE: explicit reference operation
-                // ISSUE: variable of a reference type
-                Vector2& local4 = @Main.dust[index].velocity;
-                // ISSUE: explicit reference operation
-                double num4 = (^local4).Y + (double) Main.rand.Next(-50, 51) * 0.0500000007450581;
-                // ISSUE: explicit reference operation
-                (^local4).Y = (__Null) num4;
+                int index = Dust.NewDust(new Vector2((float) r.X, (float) r.Y), r.Width, r.Height, Type, this.velocity.X, this.velocity.Y, 0, new Color(), 1.2f);
+                Main.dust[index].velocity.X *= (float) (1.0 + (double) Main.rand.Next(-50, 51) * 0.00999999977648258);
+                Main.dust[index].velocity.Y *= (float) (1.0 + (double) Main.rand.Next(-50, 51) * 0.00999999977648258);
+                Main.dust[index].velocity.X += (float) Main.rand.Next(-50, 51) * 0.05f;
+                Main.dust[index].velocity.Y += (float) Main.rand.Next(-50, 51) * 0.05f;
                 Main.dust[index].scale *= (float) (1.0 + (double) Main.rand.Next(-30, 31) * 0.00999999977648258);
               }
               if (Main.rand.Next(40) == 0)
               {
                 int Type = Main.rand.Next(276, 283);
                 int index = Gore.NewGore(new Vector2((float) r.X, (float) r.Y), this.velocity, Type, 1f);
-                // ISSUE: explicit reference operation
-                // ISSUE: variable of a reference type
-                Vector2& local1 = @Main.gore[index].velocity;
-                // ISSUE: explicit reference operation
-                double num1 = (^local1).X * (1.0 + (double) Main.rand.Next(-50, 51) * 0.00999999977648258);
-                // ISSUE: explicit reference operation
-                (^local1).X = (__Null) num1;
-                // ISSUE: explicit reference operation
-                // ISSUE: variable of a reference type
-                Vector2& local2 = @Main.gore[index].velocity;
-                // ISSUE: explicit reference operation
-                double num2 = (^local2).Y * (1.0 + (double) Main.rand.Next(-50, 51) * 0.00999999977648258);
-                // ISSUE: explicit reference operation
-                (^local2).Y = (__Null) num2;
+                Main.gore[index].velocity.X *= (float) (1.0 + (double) Main.rand.Next(-50, 51) * 0.00999999977648258);
+                Main.gore[index].velocity.Y *= (float) (1.0 + (double) Main.rand.Next(-50, 51) * 0.00999999977648258);
                 Main.gore[index].scale *= (float) (1.0 + (double) Main.rand.Next(-20, 21) * 0.00999999977648258);
-                // ISSUE: explicit reference operation
-                // ISSUE: variable of a reference type
-                Vector2& local3 = @Main.gore[index].velocity;
-                // ISSUE: explicit reference operation
-                double num3 = (^local3).X + (double) Main.rand.Next(-50, 51) * 0.0500000007450581;
-                // ISSUE: explicit reference operation
-                (^local3).X = (__Null) num3;
-                // ISSUE: explicit reference operation
-                // ISSUE: variable of a reference type
-                Vector2& local4 = @Main.gore[index].velocity;
-                // ISSUE: explicit reference operation
-                double num4 = (^local4).Y + (double) Main.rand.Next(-50, 51) * 0.0500000007450581;
-                // ISSUE: explicit reference operation
-                (^local4).Y = (__Null) num4;
+                Main.gore[index].velocity.X += (float) Main.rand.Next(-50, 51) * 0.05f;
+                Main.gore[index].velocity.Y += (float) Main.rand.Next(-50, 51) * 0.05f;
               }
             }
             else if ((int) this.meleeEnchant == 8 && Main.rand.Next(4) == 0)
             {
-              int index = Dust.NewDust(new Vector2((float) r.X, (float) r.Y), (int) r.Width, (int) r.Height, 46, 0.0f, 0.0f, 100, (Color) null, 1f);
+              int index = Dust.NewDust(new Vector2((float) r.X, (float) r.Y), r.Width, r.Height, 46, 0.0f, 0.0f, 100, new Color(), 1f);
               Main.dust[index].noGravity = true;
               Main.dust[index].fadeIn = 1.5f;
-              Dust dust = Main.dust[index];
-              Vector2 vector2 = Vector2.op_Multiply(dust.velocity, 0.25f);
-              dust.velocity = vector2;
+              Main.dust[index].velocity *= 0.25f;
             }
           }
           if (this.magmaStone && sItem.melee && (!sItem.noMelee && !sItem.noUseGraphic) && Main.rand.Next(3) != 0)
           {
-            int index = Dust.NewDust(new Vector2((float) r.X, (float) r.Y), (int) r.Width, (int) r.Height, 6, (float) (this.velocity.X * 0.200000002980232) + (float) (this.direction * 3), (float) (this.velocity.Y * 0.200000002980232), 100, (Color) null, 2.5f);
+            int index = Dust.NewDust(new Vector2((float) r.X, (float) r.Y), r.Width, r.Height, 6, this.velocity.X * 0.2f + (float) (this.direction * 3), this.velocity.Y * 0.2f, 100, new Color(), 2.5f);
             Main.dust[index].noGravity = true;
-            // ISSUE: explicit reference operation
-            // ISSUE: variable of a reference type
-            Vector2& local1 = @Main.dust[index].velocity;
-            // ISSUE: explicit reference operation
-            double num1 = (^local1).X * 2.0;
-            // ISSUE: explicit reference operation
-            (^local1).X = (__Null) num1;
-            // ISSUE: explicit reference operation
-            // ISSUE: variable of a reference type
-            Vector2& local2 = @Main.dust[index].velocity;
-            // ISSUE: explicit reference operation
-            double num2 = (^local2).Y * 2.0;
-            // ISSUE: explicit reference operation
-            (^local2).Y = (__Null) num2;
+            Main.dust[index].velocity.X *= 2f;
+            Main.dust[index].velocity.Y *= 2f;
           }
           if (Main.myPlayer == i && (sItem.type == 1991 || sItem.type == 3183))
           {
@@ -26478,11 +24618,8 @@ label_13:
             {
               if (Main.npc[i1].active && (int) Main.npc[i1].catchItem > 0)
               {
-                Rectangle rectangle;
-                // ISSUE: explicit reference operation
-                ((Rectangle) @rectangle).\u002Ector((int) Main.npc[i1].position.X, (int) Main.npc[i1].position.Y, Main.npc[i1].width, Main.npc[i1].height);
-                // ISSUE: explicit reference operation
-                if (((Rectangle) @r).Intersects(rectangle) && (sItem.type == 3183 || Main.npc[i1].noTileCollide || this.CanHit((Entity) Main.npc[i1])))
+                Microsoft.Xna.Framework.Rectangle rectangle = new Microsoft.Xna.Framework.Rectangle((int) Main.npc[i1].position.X, (int) Main.npc[i1].position.Y, Main.npc[i1].width, Main.npc[i1].height);
+                if (r.Intersects(rectangle) && (sItem.type == 3183 || Main.npc[i1].noTileCollide || this.CanHit((Entity) Main.npc[i1])))
                   NPC.CatchNPC(i1, i);
               }
             }
@@ -26581,11 +24718,8 @@ label_13:
                   {
                     if (!Main.npc[index1].friendly || Main.npc[index1].type == 22 && this.killGuide || Main.npc[index1].type == 54 && this.killClothier)
                     {
-                      Rectangle rectangle;
-                      // ISSUE: explicit reference operation
-                      ((Rectangle) @rectangle).\u002Ector((int) Main.npc[index1].position.X, (int) Main.npc[index1].position.Y, Main.npc[index1].width, Main.npc[index1].height);
-                      // ISSUE: explicit reference operation
-                      if (((Rectangle) @r).Intersects(rectangle) && (Main.npc[index1].noTileCollide || this.CanHit((Entity) Main.npc[index1])))
+                      Microsoft.Xna.Framework.Rectangle rectangle = new Microsoft.Xna.Framework.Rectangle((int) Main.npc[index1].position.X, (int) Main.npc[index1].position.Y, Main.npc[index1].width, Main.npc[index1].height);
+                      if (r.Intersects(rectangle) && (Main.npc[index1].noTileCollide || this.CanHit((Entity) Main.npc[index1])))
                       {
                         bool crit = false;
                         if (sItem.melee && Main.rand.Next(1, 101) <= this.meleeCrit)
@@ -26607,23 +24741,18 @@ label_13:
                         }
                         int num8 = Main.DamageVar((float) num1);
                         this.StatusNPC(sItem.type, index1);
-                        this.OnHit((float) Main.npc[index1].Center.X, (float) Main.npc[index1].Center.Y, (Entity) Main.npc[index1]);
+                        this.OnHit(Main.npc[index1].Center.X, Main.npc[index1].Center.Y, (Entity) Main.npc[index1]);
                         if (this.armorPenetration > 0)
                           num8 += Main.npc[index1].checkArmorPenetration(this.armorPenetration);
                         int num9 = (int) Main.npc[index1].StrikeNPC(num8, num3, this.direction, crit, false, false);
                         if (this.inventory[this.selectedItem].type == 3211)
                         {
-                          Vector2 vector2_1;
-                          // ISSUE: explicit reference operation
-                          ((Vector2) @vector2_1).\u002Ector((float) (this.direction * 100 + Main.rand.Next(-25, 26)), (float) Main.rand.Next(-75, 76));
-                          // ISSUE: explicit reference operation
-                          ((Vector2) @vector2_1).Normalize();
-                          vector2_1 = Vector2.op_Multiply(vector2_1, (float) Main.rand.Next(30, 41) * 0.1f);
-                          Vector2 vector2_2;
-                          // ISSUE: explicit reference operation
-                          ((Vector2) @vector2_2).\u002Ector((float) (r.X + Main.rand.Next((int) r.Width)), (float) (r.Y + Main.rand.Next((int) r.Height)));
-                          vector2_2 = Vector2.op_Division(Vector2.op_Addition(vector2_2, Vector2.op_Multiply(Main.npc[index1].Center, 2f)), 3f);
-                          Projectile.NewProjectile((float) vector2_2.X, (float) vector2_2.Y, (float) vector2_1.X, (float) vector2_1.Y, 524, (int) ((double) num1 * 0.7), num3 * 0.7f, this.whoAmI, 0.0f, 0.0f);
+                          Vector2 vector2_1 = new Vector2((float) (this.direction * 100 + Main.rand.Next(-25, 26)), (float) Main.rand.Next(-75, 76));
+                          vector2_1.Normalize();
+                          vector2_1 *= (float) Main.rand.Next(30, 41) * 0.1f;
+                          Vector2 vector2_2 = new Vector2((float) (r.X + Main.rand.Next(r.Width)), (float) (r.Y + Main.rand.Next(r.Height)));
+                          vector2_2 = (vector2_2 + Main.npc[index1].Center * 2f) / 3f;
+                          Projectile.NewProjectile(vector2_2.X, vector2_2.Y, vector2_1.X, vector2_1.Y, 524, (int) ((double) num1 * 0.7), num3 * 0.7f, this.whoAmI, 0.0f, 0.0f);
                         }
                         bool flag3 = !Main.npc[index1].immortal;
                         if (this.beetleOffense && flag3)
@@ -26634,7 +24763,7 @@ label_13:
                         if (sItem.type == 1826 && ((double) Main.npc[index1].value > 0.0 || Main.npc[index1].damage > 0 && !Main.npc[index1].friendly))
                           this.pumpkinSword(index1, (int) ((double) num1 * 1.5), num3);
                         if ((int) this.meleeEnchant == 7)
-                          Projectile.NewProjectile((float) Main.npc[index1].Center.X, (float) Main.npc[index1].Center.Y, (float) Main.npc[index1].velocity.X, (float) Main.npc[index1].velocity.Y, 289, 0, 0.0f, this.whoAmI, 0.0f, 0.0f);
+                          Projectile.NewProjectile(Main.npc[index1].Center.X, Main.npc[index1].Center.Y, Main.npc[index1].velocity.X, Main.npc[index1].velocity.Y, 289, 0, 0.0f, this.whoAmI, 0.0f, 0.0f);
                         if (this.inventory[this.selectedItem].type == 3106)
                         {
                           this.stealth = 1f;
@@ -26664,8 +24793,8 @@ label_13:
                             Type = 73;
                           int number = Item.NewItem((int) Main.npc[index1].position.X, (int) Main.npc[index1].position.Y, Main.npc[index1].width, Main.npc[index1].height, Type, 1, false, 0, false, false);
                           Main.item[number].stack = Main.rand.Next(1, 11);
-                          Main.item[number].velocity.Y = (__Null) ((double) Main.rand.Next(-20, 1) * 0.200000002980232);
-                          Main.item[number].velocity.X = (__Null) ((double) Main.rand.Next(10, 31) * 0.200000002980232 * (double) this.direction);
+                          Main.item[number].velocity.Y = (float) Main.rand.Next(-20, 1) * 0.2f;
+                          Main.item[number].velocity.X = (float) Main.rand.Next(10, 31) * 0.2f * (float) this.direction;
                           if (Main.netMode == 1)
                             NetMessage.SendData(21, -1, -1, (NetworkText) null, number, 0.0f, 0.0f, 0.0f, 0, 0, 0);
                         }
@@ -26688,11 +24817,8 @@ label_13:
                   }
                   else if (Main.npc[index1].type == 63 || Main.npc[index1].type == 64 || (Main.npc[index1].type == 103 || Main.npc[index1].type == 242))
                   {
-                    Rectangle rectangle;
-                    // ISSUE: explicit reference operation
-                    ((Rectangle) @rectangle).\u002Ector((int) Main.npc[index1].position.X, (int) Main.npc[index1].position.Y, Main.npc[index1].width, Main.npc[index1].height);
-                    // ISSUE: explicit reference operation
-                    if (((Rectangle) @r).Intersects(rectangle) && (Main.npc[index1].noTileCollide || this.CanHit((Entity) Main.npc[index1])))
+                    Microsoft.Xna.Framework.Rectangle rectangle = new Microsoft.Xna.Framework.Rectangle((int) Main.npc[index1].position.X, (int) Main.npc[index1].position.Y, Main.npc[index1].width, Main.npc[index1].height);
+                    if (r.Intersects(rectangle) && (Main.npc[index1].noTileCollide || this.CanHit((Entity) Main.npc[index1])))
                     {
                       this.Hurt(PlayerDeathReason.LegacyDefault(), (int) ((double) Main.npc[index1].damage * 1.3), -this.direction, false, false, false, -1);
                       Main.npc[index1].immune[i] = this.itemAnimation;
@@ -26707,33 +24833,25 @@ label_13:
                 {
                   if (index1 != i && Main.player[index1].active && (Main.player[index1].hostile && !Main.player[index1].immune) && !Main.player[index1].dead && (Main.player[i].team == 0 || Main.player[i].team != Main.player[index1].team))
                   {
-                    Rectangle rectangle;
-                    // ISSUE: explicit reference operation
-                    ((Rectangle) @rectangle).\u002Ector((int) Main.player[index1].position.X, (int) Main.player[index1].position.Y, Main.player[index1].width, Main.player[index1].height);
-                    // ISSUE: explicit reference operation
-                    if (((Rectangle) @r).Intersects(rectangle) && this.CanHit((Entity) Main.player[index1]))
+                    Microsoft.Xna.Framework.Rectangle rectangle = new Microsoft.Xna.Framework.Rectangle((int) Main.player[index1].position.X, (int) Main.player[index1].position.Y, Main.player[index1].width, Main.player[index1].height);
+                    if (r.Intersects(rectangle) && this.CanHit((Entity) Main.player[index1]))
                     {
                       bool flag3 = false;
                       if (Main.rand.Next(1, 101) <= 10)
                         flag3 = true;
                       int num8 = Main.DamageVar((float) num1);
                       this.StatusPvP(sItem.type, index1);
-                      this.OnHit((float) Main.player[index1].Center.X, (float) Main.player[index1].Center.Y, (Entity) Main.player[index1]);
+                      this.OnHit(Main.player[index1].Center.X, Main.player[index1].Center.Y, (Entity) Main.player[index1]);
                       PlayerDeathReason playerDeathReason = PlayerDeathReason.ByPlayer(this.whoAmI);
                       int num9 = (int) Main.player[index1].Hurt(playerDeathReason, num8, this.direction, true, false, flag3, -1);
                       if (this.inventory[this.selectedItem].type == 3211)
                       {
-                        Vector2 vector2_1;
-                        // ISSUE: explicit reference operation
-                        ((Vector2) @vector2_1).\u002Ector((float) (this.direction * 100 + Main.rand.Next(-25, 26)), (float) Main.rand.Next(-75, 76));
-                        // ISSUE: explicit reference operation
-                        ((Vector2) @vector2_1).Normalize();
-                        vector2_1 = Vector2.op_Multiply(vector2_1, (float) Main.rand.Next(30, 41) * 0.1f);
-                        Vector2 vector2_2;
-                        // ISSUE: explicit reference operation
-                        ((Vector2) @vector2_2).\u002Ector((float) (r.X + Main.rand.Next((int) r.Width)), (float) (r.Y + Main.rand.Next((int) r.Height)));
-                        vector2_2 = Vector2.op_Division(Vector2.op_Addition(vector2_2, Vector2.op_Multiply(Main.player[index1].Center, 2f)), 3f);
-                        Projectile.NewProjectile((float) vector2_2.X, (float) vector2_2.Y, (float) vector2_1.X, (float) vector2_1.Y, 524, (int) ((double) num1 * 0.7), num3 * 0.7f, this.whoAmI, 0.0f, 0.0f);
+                        Vector2 vector2_1 = new Vector2((float) (this.direction * 100 + Main.rand.Next(-25, 26)), (float) Main.rand.Next(-75, 76));
+                        vector2_1.Normalize();
+                        vector2_1 *= (float) Main.rand.Next(30, 41) * 0.1f;
+                        Vector2 vector2_2 = new Vector2((float) (r.X + Main.rand.Next(r.Width)), (float) (r.Y + Main.rand.Next(r.Height)));
+                        vector2_2 = (vector2_2 + Main.player[index1].Center * 2f) / 3f;
+                        Projectile.NewProjectile(vector2_2.X, vector2_2.Y, vector2_1.X, vector2_1.Y, 524, (int) ((double) num1 * 0.7), num3 * 0.7f, this.whoAmI, 0.0f, 0.0f);
                       }
                       if (this.beetleOffense)
                       {
@@ -26741,7 +24859,7 @@ label_13:
                         this.beetleCountdown = 0;
                       }
                       if ((int) this.meleeEnchant == 7)
-                        Projectile.NewProjectile((float) Main.player[index1].Center.X, (float) Main.player[index1].Center.Y, (float) Main.player[index1].velocity.X, (float) Main.player[index1].velocity.Y, 289, 0, 0.0f, this.whoAmI, 0.0f, 0.0f);
+                        Projectile.NewProjectile(Main.player[index1].Center.X, Main.player[index1].Center.Y, Main.player[index1].velocity.X, Main.player[index1].velocity.Y, 289, 0, 0.0f, this.whoAmI, 0.0f, 0.0f);
                       if (sItem.type == 1123)
                       {
                         int num10 = Main.rand.Next(1, 4);
@@ -26967,7 +25085,7 @@ label_13:
           else
             NetMessage.SendData(61, -1, -1, (NetworkText) null, this.whoAmI, -5f, 0.0f, 0.0f, 0, 0, 0);
         }
-        if (this.itemTime == 0 && this.itemAnimation > 0 && ((int) sItem.makeNPC > 0 && this.controlUseItem) && (this.position.X / 16.0 - (double) Player.tileRangeX - (double) sItem.tileBoost <= (double) Player.tileTargetX && (this.position.X + (double) this.width) / 16.0 + (double) Player.tileRangeX + (double) sItem.tileBoost - 1.0 >= (double) Player.tileTargetX && (this.position.Y / 16.0 - (double) Player.tileRangeY - (double) sItem.tileBoost <= (double) Player.tileTargetY && (this.position.Y + (double) this.height) / 16.0 + (double) Player.tileRangeY + (double) sItem.tileBoost - 2.0 >= (double) Player.tileTargetY)))
+        if (this.itemTime == 0 && this.itemAnimation > 0 && ((int) sItem.makeNPC > 0 && this.controlUseItem) && ((double) this.position.X / 16.0 - (double) Player.tileRangeX - (double) sItem.tileBoost <= (double) Player.tileTargetX && ((double) this.position.X + (double) this.width) / 16.0 + (double) Player.tileRangeX + (double) sItem.tileBoost - 1.0 >= (double) Player.tileTargetX && ((double) this.position.Y / 16.0 - (double) Player.tileRangeY - (double) sItem.tileBoost <= (double) Player.tileTargetY && ((double) this.position.Y + (double) this.height) / 16.0 + (double) Player.tileRangeY + (double) sItem.tileBoost - 2.0 >= (double) Player.tileTargetY)))
         {
           int x = Main.mouseX + (int) Main.screenPosition.X;
           int y = Main.mouseY + (int) Main.screenPosition.Y;
@@ -27075,13 +25193,13 @@ label_13:
       if ((sItem.type == 50 || sItem.type == 3124 || sItem.type == 3199) && this.itemAnimation > 0)
       {
         if (Main.rand.Next(2) == 0)
-          Dust.NewDust(this.position, this.width, this.height, 15, 0.0f, 0.0f, 150, (Color) null, 1.1f);
+          Dust.NewDust(this.position, this.width, this.height, 15, 0.0f, 0.0f, 150, new Color(), 1.1f);
         if (this.itemTime == 0)
           this.itemTime = sItem.useTime;
         else if (this.itemTime == sItem.useTime / 2)
         {
           for (int index = 0; index < 70; ++index)
-            Dust.NewDust(this.position, this.width, this.height, 15, (float) (this.velocity.X * 0.5), (float) (this.velocity.Y * 0.5), 150, (Color) null, 1.5f);
+            Dust.NewDust(this.position, this.width, this.height, 15, this.velocity.X * 0.5f, this.velocity.Y * 0.5f, 150, new Color(), 1.5f);
           this.grappling[0] = -1;
           this.grapCount = 0;
           for (int index = 0; index < 1000; ++index)
@@ -27091,7 +25209,7 @@ label_13:
           }
           this.Spawn();
           for (int index = 0; index < 70; ++index)
-            Dust.NewDust(this.position, this.width, this.height, 15, 0.0f, 0.0f, 150, (Color) null, 1.5f);
+            Dust.NewDust(this.position, this.width, this.height, 15, 0.0f, 0.0f, 150, new Color(), 1.5f);
         }
       }
       if (sItem.type == 2350 && this.itemAnimation > 0)
@@ -27101,11 +25219,7 @@ label_13:
         else if (this.itemTime == 2)
         {
           for (int index = 0; index < 70; ++index)
-          {
-            Dust dust = Main.dust[Dust.NewDust(this.position, this.width, this.height, 15, (float) (this.velocity.X * 0.200000002980232), (float) (this.velocity.Y * 0.200000002980232), 150, Color.get_Cyan(), 1.2f)];
-            Vector2 vector2 = Vector2.op_Multiply(dust.velocity, 0.5f);
-            dust.velocity = vector2;
-          }
+            Main.dust[Dust.NewDust(this.position, this.width, this.height, 15, this.velocity.X * 0.2f, this.velocity.Y * 0.2f, 150, Color.Cyan, 1.2f)].velocity *= 0.5f;
           this.grappling[0] = -1;
           this.grapCount = 0;
           for (int index = 0; index < 1000; ++index)
@@ -27119,11 +25233,7 @@ label_13:
           this.immune = immune;
           this.immuneTime = immuneTime;
           for (int index = 0; index < 70; ++index)
-          {
-            Dust dust = Main.dust[Dust.NewDust(this.position, this.width, this.height, 15, 0.0f, 0.0f, 150, Color.get_Cyan(), 1.2f)];
-            Vector2 vector2 = Vector2.op_Multiply(dust.velocity, 0.5f);
-            dust.velocity = vector2;
-          }
+            Main.dust[Dust.NewDust(this.position, this.width, this.height, 15, 0.0f, 0.0f, 150, Color.Cyan, 1.2f)].velocity *= 0.5f;
           if (sItem.stack > 0)
             --sItem.stack;
         }
@@ -27161,39 +25271,25 @@ label_13:
         {
           float useTime = (float) sItem.useTime;
           float num1 = (useTime - (float) this.itemTime) / useTime;
-          float num2 = 15f;
-          float num3 = 44f;
-          float num4 = 9.424778f;
-          Vector2 vector2 = new Vector2(num2, 0.0f).RotatedBy((double) num4 * (double) num1, (Vector2) null);
-          // ISSUE: explicit reference operation
-          // ISSUE: variable of a reference type
-          Vector2& local1 = @vector2;
-          // ISSUE: explicit reference operation
-          double num5 = (^local1).X * (double) this.direction;
-          // ISSUE: explicit reference operation
-          (^local1).X = (__Null) num5;
+          float x = 15f;
+          float num2 = 44f;
+          float num3 = 9.424778f;
+          Vector2 vector2 = new Vector2(x, 0.0f).RotatedBy((double) num3 * (double) num1, new Vector2());
+          vector2.X *= (float) this.direction;
           for (int index1 = 0; index1 < 2; ++index1)
           {
             int Type = 221;
             if (index1 == 1)
             {
-              // ISSUE: explicit reference operation
-              // ISSUE: variable of a reference type
-              Vector2& local2 = @vector2;
-              // ISSUE: explicit reference operation
-              double num6 = (^local2).X * -1.0;
-              // ISSUE: explicit reference operation
-              (^local2).X = (__Null) num6;
+              vector2.X *= -1f;
               Type = 219;
             }
-            Vector2 Position;
-            // ISSUE: explicit reference operation
-            ((Vector2) @Position).\u002Ector((float) vector2.X, num3 * (1f - num1) - num3 + (float) (this.height / 2));
-            Position = Vector2.op_Addition(Position, this.Center);
-            int index2 = Dust.NewDust(Position, 0, 0, Type, 0.0f, 0.0f, 100, (Color) null, 1f);
+            Vector2 Position = new Vector2(vector2.X, num2 * (1f - num1) - num2 + (float) (this.height / 2));
+            Position += this.Center;
+            int index2 = Dust.NewDust(Position, 0, 0, Type, 0.0f, 0.0f, 100, new Color(), 1f);
             Main.dust[index2].position = Position;
             Main.dust[index2].noGravity = true;
-            Main.dust[index2].velocity = Vector2.get_Zero();
+            Main.dust[index2].velocity = Vector2.Zero;
             Main.dust[index2].scale = 1.3f;
             Main.dust[index2].customData = (object) this;
           }
@@ -27261,26 +25357,17 @@ label_13:
 
     public static bool WouldSpotOverlapWithSentry(int worldX, int worldY)
     {
-      Point point1;
-      // ISSUE: explicit reference operation
-      ((Point) @point1).\u002Ector(worldX, worldY - 8);
-      Point point2;
-      // ISSUE: explicit reference operation
-      ((Point) @point2).\u002Ector(worldX + 16, worldY - 8);
-      Point point3;
-      // ISSUE: explicit reference operation
-      ((Point) @point3).\u002Ector(worldX - 16, worldY - 8);
+      Point point1 = new Point(worldX, worldY - 8);
+      Point point2 = new Point(worldX + 16, worldY - 8);
+      Point point3 = new Point(worldX - 16, worldY - 8);
       bool flag = false;
       for (int index = 0; index < 1000; ++index)
       {
         Projectile projectile = Main.projectile[index];
         if (projectile.active && projectile.sentry)
         {
-          Rectangle hitbox = projectile.Hitbox;
-          // ISSUE: explicit reference operation
-          // ISSUE: explicit reference operation
-          // ISSUE: explicit reference operation
-          if (((Rectangle) @hitbox).Contains(point1) || ((Rectangle) @hitbox).Contains(point2) || ((Rectangle) @hitbox).Contains(point3))
+          Microsoft.Xna.Framework.Rectangle hitbox = projectile.Hitbox;
+          if (hitbox.Contains(point1) || hitbox.Contains(point2) || hitbox.Contains(point3))
           {
             flag = true;
             break;
@@ -27293,10 +25380,10 @@ label_13:
     public void FindSentryRestingSpot(int checkProj, out int worldX, out int worldY, out int pushYUp)
     {
       bool flag = false;
-      int i = (int) ((double) Main.mouseX + Main.screenPosition.X) / 16;
-      int j = (int) ((double) Main.mouseY + Main.screenPosition.Y) / 16;
+      int i = (int) ((double) Main.mouseX + (double) Main.screenPosition.X) / 16;
+      int j = (int) ((double) Main.mouseY + (double) Main.screenPosition.Y) / 16;
       if ((double) this.gravDir == -1.0)
-        j = (int) (Main.screenPosition.Y + (double) Main.screenHeight - (double) Main.mouseY) / 16;
+        j = (int) ((double) Main.screenPosition.Y + (double) Main.screenHeight - (double) Main.mouseY) / 16;
       worldX = i * 16 + 8;
       pushYUp = 41;
       switch (checkProj)
@@ -27976,37 +26063,33 @@ label_13:
 
     public Color GetImmuneAlpha(Color newColor, float alphaReduction)
     {
-      float num = (float) ((int) byte.MaxValue - this.immuneAlpha) / (float) byte.MaxValue;
+      float scale = (float) ((int) byte.MaxValue - this.immuneAlpha) / (float) byte.MaxValue;
       if ((double) alphaReduction > 0.0)
-        num *= 1f - alphaReduction;
+        scale *= 1f - alphaReduction;
       if (this.immuneAlpha > 125)
-        return Color.get_Transparent();
-      return Color.Multiply(newColor, num);
+        return Color.Transparent;
+      return Color.Multiply(newColor, scale);
     }
 
     public Color GetImmuneAlphaPure(Color newColor, float alphaReduction)
     {
-      float num = (float) ((int) byte.MaxValue - this.immuneAlpha) / (float) byte.MaxValue;
+      float scale = (float) ((int) byte.MaxValue - this.immuneAlpha) / (float) byte.MaxValue;
       if ((double) alphaReduction > 0.0)
-        num *= 1f - alphaReduction;
-      return Color.Multiply(newColor, num);
+        scale *= 1f - alphaReduction;
+      return Color.Multiply(newColor, scale);
     }
 
     public Color GetDeathAlpha(Color newColor)
     {
-      // ISSUE: explicit reference operation
-      int num1 = (int) ((Color) @newColor).get_R() + (int) ((double) this.immuneAlpha * 0.9);
-      // ISSUE: explicit reference operation
-      int num2 = (int) ((Color) @newColor).get_G() + (int) ((double) this.immuneAlpha * 0.5);
-      // ISSUE: explicit reference operation
-      int num3 = (int) ((Color) @newColor).get_B() + (int) ((double) this.immuneAlpha * 0.5);
-      // ISSUE: explicit reference operation
-      int num4 = (int) ((Color) @newColor).get_A() + (int) ((double) this.immuneAlpha * 0.4);
-      if (num4 < 0)
-        num4 = 0;
-      if (num4 > (int) byte.MaxValue)
-        num4 = (int) byte.MaxValue;
-      return new Color(num1, num2, num3, num4);
+      int r = (int) newColor.R + (int) ((double) this.immuneAlpha * 0.9);
+      int g = (int) newColor.G + (int) ((double) this.immuneAlpha * 0.5);
+      int b = (int) newColor.B + (int) ((double) this.immuneAlpha * 0.5);
+      int a = (int) newColor.A + (int) ((double) this.immuneAlpha * 0.4);
+      if (a < 0)
+        a = 0;
+      if (a > (int) byte.MaxValue)
+        a = (int) byte.MaxValue;
+      return new Color(r, g, b, a);
     }
 
     public void addDPS(int dmg)
@@ -28075,8 +26158,8 @@ label_13:
           if (this.inventory[index].stack <= 0)
             this.inventory[index] = new Item();
           Main.item[number].stack = num3;
-          Main.item[number].velocity.Y = (__Null) ((double) Main.rand.Next(-20, 1) * 0.200000002980232);
-          Main.item[number].velocity.X = (__Null) ((double) Main.rand.Next(-20, 21) * 0.200000002980232);
+          Main.item[number].velocity.Y = (float) Main.rand.Next(-20, 1) * 0.2f;
+          Main.item[number].velocity.X = (float) Main.rand.Next(-20, 21) * 0.2f;
           Main.item[number].noGrabDelay = 100;
           if (Main.netMode == 1)
             NetMessage.SendData(21, -1, -1, (NetworkText) null, number, 0.0f, 0.0f, 0.0f, 0, 0, 0);
@@ -28099,8 +26182,8 @@ label_13:
           Main.item[number].netDefaults(this.inventory[index].netID);
           Main.item[number].Prefix((int) this.inventory[index].prefix);
           Main.item[number].stack = this.inventory[index].stack;
-          Main.item[number].velocity.Y = (__Null) ((double) Main.rand.Next(-20, 1) * 0.200000002980232);
-          Main.item[number].velocity.X = (__Null) ((double) Main.rand.Next(-20, 21) * 0.200000002980232);
+          Main.item[number].velocity.Y = (float) Main.rand.Next(-20, 1) * 0.2f;
+          Main.item[number].velocity.X = (float) Main.rand.Next(-20, 21) * 0.2f;
           Main.item[number].noGrabDelay = 100;
           Main.item[number].newAndShiny = false;
           if (Main.netMode == 1)
@@ -28115,8 +26198,8 @@ label_13:
             Main.item[number].netDefaults(this.armor[index].netID);
             Main.item[number].Prefix((int) this.armor[index].prefix);
             Main.item[number].stack = this.armor[index].stack;
-            Main.item[number].velocity.Y = (__Null) ((double) Main.rand.Next(-20, 1) * 0.200000002980232);
-            Main.item[number].velocity.X = (__Null) ((double) Main.rand.Next(-20, 21) * 0.200000002980232);
+            Main.item[number].velocity.Y = (float) Main.rand.Next(-20, 1) * 0.2f;
+            Main.item[number].velocity.X = (float) Main.rand.Next(-20, 21) * 0.2f;
             Main.item[number].noGrabDelay = 100;
             Main.item[number].newAndShiny = false;
             if (Main.netMode == 1)
@@ -28132,8 +26215,8 @@ label_13:
             Main.item[number].netDefaults(this.dye[index].netID);
             Main.item[number].Prefix((int) this.dye[index].prefix);
             Main.item[number].stack = this.dye[index].stack;
-            Main.item[number].velocity.Y = (__Null) ((double) Main.rand.Next(-20, 1) * 0.200000002980232);
-            Main.item[number].velocity.X = (__Null) ((double) Main.rand.Next(-20, 21) * 0.200000002980232);
+            Main.item[number].velocity.Y = (float) Main.rand.Next(-20, 1) * 0.2f;
+            Main.item[number].velocity.X = (float) Main.rand.Next(-20, 21) * 0.2f;
             Main.item[number].noGrabDelay = 100;
             Main.item[number].newAndShiny = false;
             if (Main.netMode == 1)
@@ -28149,8 +26232,8 @@ label_13:
             Main.item[number].netDefaults(this.miscEquips[index].netID);
             Main.item[number].Prefix((int) this.miscEquips[index].prefix);
             Main.item[number].stack = this.miscEquips[index].stack;
-            Main.item[number].velocity.Y = (__Null) ((double) Main.rand.Next(-20, 1) * 0.200000002980232);
-            Main.item[number].velocity.X = (__Null) ((double) Main.rand.Next(-20, 21) * 0.200000002980232);
+            Main.item[number].velocity.Y = (float) Main.rand.Next(-20, 1) * 0.2f;
+            Main.item[number].velocity.X = (float) Main.rand.Next(-20, 21) * 0.2f;
             Main.item[number].noGrabDelay = 100;
             Main.item[number].newAndShiny = false;
             if (Main.netMode == 1)
@@ -28166,8 +26249,8 @@ label_13:
             Main.item[number].netDefaults(this.miscDyes[index].netID);
             Main.item[number].Prefix((int) this.miscDyes[index].prefix);
             Main.item[number].stack = this.miscDyes[index].stack;
-            Main.item[number].velocity.Y = (__Null) ((double) Main.rand.Next(-20, 1) * 0.200000002980232);
-            Main.item[number].velocity.X = (__Null) ((double) Main.rand.Next(-20, 21) * 0.200000002980232);
+            Main.item[number].velocity.Y = (float) Main.rand.Next(-20, 1) * 0.2f;
+            Main.item[number].velocity.X = (float) Main.rand.Next(-20, 21) * 0.2f;
             Main.item[number].noGrabDelay = 100;
             Main.item[number].newAndShiny = false;
             if (Main.netMode == 1)
@@ -28353,21 +26436,24 @@ label_13:
       bool isCloudSave = playerFile.IsCloudSave;
       if (!skipMapSave)
       {
-        try
+        if (!string.IsNullOrEmpty(Main.playerPathName))
         {
-          if (Main.mapEnabled)
-            Main.Map.Save();
-        }
-        catch
-        {
-        }
-        try
-        {
-          if (!isCloudSave)
-            Directory.CreateDirectory(Main.PlayerPath);
-        }
-        catch
-        {
+          try
+          {
+            if (Main.mapEnabled)
+              Main.Map.Save();
+          }
+          catch
+          {
+          }
+          try
+          {
+            if (!isCloudSave)
+              Directory.CreateDirectory(Main.PlayerPath);
+          }
+          catch
+          {
+          }
         }
       }
       if (Main.ServerSideCharacter || path == null || path == "")
@@ -28381,7 +26467,7 @@ label_13:
         {
           using (BinaryWriter writer = new BinaryWriter((Stream) cryptoStream))
           {
-            writer.Write(192);
+            writer.Write(193);
             playerFile.Metadata.Write(writer);
             writer.Write(player.name);
             writer.Write(player.difficulty);
@@ -28405,48 +26491,27 @@ label_13:
             writer.Write(player.extraAccessory);
             writer.Write(player.downedDD2EventAnyDifficulty);
             writer.Write(player.taxMoney);
-            // ISSUE: explicit reference operation
-            writer.Write(((Color) @player.hairColor).get_R());
-            // ISSUE: explicit reference operation
-            writer.Write(((Color) @player.hairColor).get_G());
-            // ISSUE: explicit reference operation
-            writer.Write(((Color) @player.hairColor).get_B());
-            // ISSUE: explicit reference operation
-            writer.Write(((Color) @player.skinColor).get_R());
-            // ISSUE: explicit reference operation
-            writer.Write(((Color) @player.skinColor).get_G());
-            // ISSUE: explicit reference operation
-            writer.Write(((Color) @player.skinColor).get_B());
-            // ISSUE: explicit reference operation
-            writer.Write(((Color) @player.eyeColor).get_R());
-            // ISSUE: explicit reference operation
-            writer.Write(((Color) @player.eyeColor).get_G());
-            // ISSUE: explicit reference operation
-            writer.Write(((Color) @player.eyeColor).get_B());
-            // ISSUE: explicit reference operation
-            writer.Write(((Color) @player.shirtColor).get_R());
-            // ISSUE: explicit reference operation
-            writer.Write(((Color) @player.shirtColor).get_G());
-            // ISSUE: explicit reference operation
-            writer.Write(((Color) @player.shirtColor).get_B());
-            // ISSUE: explicit reference operation
-            writer.Write(((Color) @player.underShirtColor).get_R());
-            // ISSUE: explicit reference operation
-            writer.Write(((Color) @player.underShirtColor).get_G());
-            // ISSUE: explicit reference operation
-            writer.Write(((Color) @player.underShirtColor).get_B());
-            // ISSUE: explicit reference operation
-            writer.Write(((Color) @player.pantsColor).get_R());
-            // ISSUE: explicit reference operation
-            writer.Write(((Color) @player.pantsColor).get_G());
-            // ISSUE: explicit reference operation
-            writer.Write(((Color) @player.pantsColor).get_B());
-            // ISSUE: explicit reference operation
-            writer.Write(((Color) @player.shoeColor).get_R());
-            // ISSUE: explicit reference operation
-            writer.Write(((Color) @player.shoeColor).get_G());
-            // ISSUE: explicit reference operation
-            writer.Write(((Color) @player.shoeColor).get_B());
+            writer.Write(player.hairColor.R);
+            writer.Write(player.hairColor.G);
+            writer.Write(player.hairColor.B);
+            writer.Write(player.skinColor.R);
+            writer.Write(player.skinColor.G);
+            writer.Write(player.skinColor.B);
+            writer.Write(player.eyeColor.R);
+            writer.Write(player.eyeColor.G);
+            writer.Write(player.eyeColor.B);
+            writer.Write(player.shirtColor.R);
+            writer.Write(player.shirtColor.G);
+            writer.Write(player.shirtColor.B);
+            writer.Write(player.underShirtColor.R);
+            writer.Write(player.underShirtColor.G);
+            writer.Write(player.underShirtColor.B);
+            writer.Write(player.pantsColor.R);
+            writer.Write(player.pantsColor.G);
+            writer.Write(player.pantsColor.B);
+            writer.Write(player.shoeColor.R);
+            writer.Write(player.shoeColor.G);
+            writer.Write(player.shoeColor.B);
             for (int index = 0; index < player.armor.Length; ++index)
             {
               writer.Write(player.armor[index].netID);
@@ -28557,7 +26622,7 @@ label_13:
                 playerFileData.Metadata = FileMetadata.Read(binaryReader, FileType.Player);
               else
                 playerFileData.Metadata = FileMetadata.FromCurrentSettings(FileType.Player);
-              if (release > 192)
+              if (release > 193)
               {
                 player1.loadStatus = 1;
                 player1.name = binaryReader.ReadString();
@@ -28988,7 +27053,7 @@ label_13:
     public Color GetHairColor(bool useLighting = true)
     {
       Color color = Lighting.GetColor((int) ((double) this.position.X + (double) this.width * 0.5) / 16, (int) (((double) this.position.Y + (double) this.height * 0.25) / 16.0));
-      return GameShaders.Hair.GetColor((short) this.hairDye, this, useLighting ? color : Color.get_White());
+      return GameShaders.Hair.GetColor((short) this.hairDye, this, useLighting ? color : Color.White);
     }
 
     public bool HasItem(int type)
@@ -29043,11 +27108,11 @@ label_13:
         return;
       Vector2 newPos = vector2;
       this.Teleport(newPos, 2, 0);
-      this.velocity = Vector2.get_Zero();
+      this.velocity = Vector2.Zero;
       if (Main.netMode != 2)
         return;
       RemoteClient.CheckSection(this.whoAmI, this.position, 1);
-      NetMessage.SendData(65, -1, -1, (NetworkText) null, 0, (float) this.whoAmI, (float) newPos.X, (float) newPos.Y, 3, 0, 0);
+      NetMessage.SendData(65, -1, -1, (NetworkText) null, 0, (float) this.whoAmI, newPos.X, newPos.Y, 3, 0, 0);
     }
 
     private Vector2 TestTeleport(ref bool canSpawn, int teleportStartX, int teleportRangeX, int teleportStartY, int teleportRangeY)
@@ -29056,13 +27121,13 @@ label_13:
       int num2 = 0;
       int num3 = 0;
       int width = this.width;
-      Vector2 Position = Vector2.op_Addition(Vector2.op_Multiply(new Vector2((float) num2, (float) num3), 16f), new Vector2((float) (-width / 2 + 8), (float) -this.height));
+      Vector2 Position = new Vector2((float) num2, (float) num3) * 16f + new Vector2((float) (-width / 2 + 8), (float) -this.height);
       while (!canSpawn && num1 < 1000)
       {
         ++num1;
         int index1 = teleportStartX + Main.rand.Next(teleportRangeX);
         int index2 = teleportStartY + Main.rand.Next(teleportRangeY);
-        Position = Vector2.op_Addition(Vector2.op_Multiply(new Vector2((float) index1, (float) index2), 16f), new Vector2((float) (-width / 2 + 8), (float) -this.height));
+        Position = new Vector2((float) index1, (float) index2) * 16f + new Vector2((float) (-width / 2 + 8), (float) -this.height);
         if (!Collision.SolidCollision(Position, width, this.height))
         {
           if (Main.tile[index1, index2] == null)
@@ -29075,13 +27140,12 @@ label_13:
               if (Main.tile[index1, index2 + num4] == null)
                 Main.tile[index1, index2 + num4] = new Tile();
               Tile tile = Main.tile[index1, index2 + num4];
-              Position = Vector2.op_Addition(Vector2.op_Multiply(new Vector2((float) index1, (float) (index2 + num4)), 16f), new Vector2((float) (-width / 2 + 8), (float) -this.height));
+              Position = new Vector2((float) index1, (float) (index2 + num4)) * 16f + new Vector2((float) (-width / 2 + 8), (float) -this.height);
               Vector4 vector4 = Collision.SlopeCollision(Position, this.velocity, width, this.height, this.gravDir, false);
               bool flag = !Collision.SolidCollision(Position, width, this.height);
-              if (vector4.Z == this.velocity.X)
+              if ((double) vector4.Z == (double) this.velocity.X)
               {
-                // ISSUE: variable of the null type
-                __Null y = this.velocity.Y;
+                double y = (double) this.velocity.Y;
               }
               if (flag)
                 ++num4;
@@ -29090,22 +27154,22 @@ label_13:
               else
                 break;
             }
-            if (!Collision.LavaCollision(Position, width, this.height) && Collision.HurtTiles(Position, this.velocity, width, this.height, false).Y <= 0.0)
+            if (!Collision.LavaCollision(Position, width, this.height) && (double) Collision.HurtTiles(Position, this.velocity, width, this.height, false).Y <= 0.0)
             {
               Collision.SlopeCollision(Position, this.velocity, width, this.height, this.gravDir, false);
               if (Collision.SolidCollision(Position, width, this.height) && num4 < 99)
               {
-                Vector2 Velocity1 = Vector2.op_Multiply(Vector2.get_UnitX(), 16f);
-                if (!Vector2.op_Inequality(Collision.TileCollision(Vector2.op_Subtraction(Position, Velocity1), Velocity1, this.width, this.height, false, false, (int) this.gravDir), Velocity1))
+                Vector2 Velocity1 = Vector2.UnitX * 16f;
+                if (!(Collision.TileCollision(Position - Velocity1, Velocity1, this.width, this.height, false, false, (int) this.gravDir) != Velocity1))
                 {
-                  Vector2 Velocity2 = Vector2.op_Multiply(Vector2.op_UnaryNegation(Vector2.get_UnitX()), 16f);
-                  if (!Vector2.op_Inequality(Collision.TileCollision(Vector2.op_Subtraction(Position, Velocity2), Velocity2, this.width, this.height, false, false, (int) this.gravDir), Velocity2))
+                  Vector2 Velocity2 = -Vector2.UnitX * 16f;
+                  if (!(Collision.TileCollision(Position - Velocity2, Velocity2, this.width, this.height, false, false, (int) this.gravDir) != Velocity2))
                   {
-                    Vector2 Velocity3 = Vector2.op_Multiply(Vector2.get_UnitY(), 16f);
-                    if (!Vector2.op_Inequality(Collision.TileCollision(Vector2.op_Subtraction(Position, Velocity3), Velocity3, this.width, this.height, false, false, (int) this.gravDir), Velocity3))
+                    Vector2 Velocity3 = Vector2.UnitY * 16f;
+                    if (!(Collision.TileCollision(Position - Velocity3, Velocity3, this.width, this.height, false, false, (int) this.gravDir) != Velocity3))
                     {
-                      Vector2 Velocity4 = Vector2.op_Multiply(Vector2.op_UnaryNegation(Vector2.get_UnitY()), 16f);
-                      if (!Vector2.op_Inequality(Collision.TileCollision(Vector2.op_Subtraction(Position, Velocity4), Velocity4, this.width, this.height, false, false, (int) this.gravDir), Velocity4))
+                      Vector2 Velocity4 = -Vector2.UnitY * 16f;
+                      if (!(Collision.TileCollision(Position - Velocity4, Velocity4, this.width, this.height, false, false, (int) this.gravDir) != Velocity4))
                       {
                         canSpawn = true;
                         int num5 = index2 + num4;
@@ -29503,16 +27567,15 @@ label_13:
           intList.Add(index);
       }
       bool flag1 = StrayMethods.CanSpawnSandstormFriendly(this.MinionRestTargetPoint, 30, 30);
-      bool flag2 = Vector2.op_Equality(this.MinionRestTargetPoint, Vector2.get_Zero());
+      bool flag2 = this.MinionRestTargetPoint == Vector2.Zero;
       Vector2 center = this.Center;
       Vector2 vector2_1 = this.MinionRestTargetPoint;
       if (flag2)
         vector2_1 = center;
       bool flag3 = false;
       float[] samples = new float[10];
-      Vector2 v = Vector2.op_Subtraction(vector2_1, center);
-      // ISSUE: explicit reference operation
-      Collision.LaserScan(center, v.SafeNormalize(Vector2.get_Zero()), 60f, ((Vector2) @v).Length(), samples);
+      Vector2 v = vector2_1 - center;
+      Collision.LaserScan(center, v.SafeNormalize(Vector2.Zero), 60f, v.Length(), samples);
       float num1 = 0.0f;
       for (int index = 0; index < samples.Length; ++index)
       {
@@ -29521,8 +27584,7 @@ label_13:
       }
       foreach (float num2 in samples)
       {
-        // ISSUE: explicit reference operation
-        if ((double) Math.Abs(num2 - ((Vector2) @v).Length()) < 10.0)
+        if ((double) Math.Abs(num2 - v.Length()) < 10.0)
         {
           flag3 = true;
           break;
@@ -29530,32 +27592,27 @@ label_13:
       }
       if (intList.Count <= 1)
       {
-        Vector2 Position1 = Vector2.op_Addition(center, Vector2.op_Multiply(v.SafeNormalize(Vector2.get_Zero()), num1));
-        Vector2 vector2_2 = Vector2.op_Subtraction(Position1, center);
-        // ISSUE: explicit reference operation
-        if ((double) ((Vector2) @vector2_2).Length() > 0.0)
+        Vector2 Position1 = center + v.SafeNormalize(Vector2.Zero) * num1;
+        Vector2 vector2_2 = Position1 - center;
+        if ((double) vector2_2.Length() > 0.0)
         {
           float num2 = 0.0f;
-          // ISSUE: explicit reference operation
-          while ((double) num2 < (double) ((Vector2) @vector2_2).Length())
+          while ((double) num2 < (double) vector2_2.Length())
           {
-            // ISSUE: explicit reference operation
-            Vector2 Position2 = Vector2.op_Addition(center, Vector2.op_Multiply(vector2_2, num2 / ((Vector2) @vector2_2).Length()));
-            Dust dust1 = Main.dust[Dust.NewDust(Position2, 0, 0, 269, 0.0f, 0.0f, 0, (Color) null, 1f)];
-            dust1.position = Position2;
-            dust1.fadeIn = 0.5f;
-            dust1.scale = 0.7f;
-            Dust dust2 = dust1;
-            Vector2 vector2_3 = Vector2.op_Multiply(dust2.velocity, 0.4f);
-            dust2.velocity = vector2_3;
-            dust1.noLight = true;
+            Vector2 Position2 = center + vector2_2 * (num2 / vector2_2.Length());
+            Dust dust = Main.dust[Dust.NewDust(Position2, 0, 0, 269, 0.0f, 0.0f, 0, new Color(), 1f)];
+            dust.position = Position2;
+            dust.fadeIn = 0.5f;
+            dust.scale = 0.7f;
+            dust.velocity *= 0.4f;
+            dust.noLight = true;
             num2 += 15f;
           }
         }
         float num3 = 0.0f;
         while ((double) num3 < 6.28318548202515)
         {
-          Dust dust = Main.dust[Dust.NewDust(Position1, 0, 0, 269, 0.0f, 0.0f, 0, (Color) null, 1f)];
+          Dust dust = Main.dust[Dust.NewDust(Position1, 0, 0, 269, 0.0f, 0.0f, 0, new Color(), 1f)];
           dust.position = Position1;
           dust.fadeIn = 1f;
           dust.scale = 0.3f;
@@ -29582,7 +27639,7 @@ label_13:
         }
       }
       int Damage = (int) (20.0 * (1.0 + (double) this.magicDamage + (double) this.minionDamage - 2.0));
-      Projectile projectile1 = Main.projectile[Projectile.NewProjectile(this.MinionRestTargetPoint, Vector2.get_Zero(), 656, Damage, 0.0f, Main.myPlayer, 0.0f, 0.0f)];
+      Projectile projectile1 = Main.projectile[Projectile.NewProjectile(this.MinionRestTargetPoint, Vector2.Zero, 656, Damage, 0.0f, Main.myPlayer, 0.0f, 0.0f)];
     }
 
     public void KeyHoldDown(int keyDir, int holdTime)
@@ -29593,10 +27650,10 @@ label_13:
       if (keyDir != num)
         return;
       if (this.setStardust && holdTime >= 60)
-        this.MinionRestTargetPoint = Vector2.get_Zero();
+        this.MinionRestTargetPoint = Vector2.Zero;
       if (!this.setForbidden || holdTime < 60)
         return;
-      this.MinionRestTargetPoint = Vector2.get_Zero();
+      this.MinionRestTargetPoint = Vector2.Zero;
     }
 
     public void MinionNPCTargetAim()
@@ -29617,7 +27674,7 @@ label_13:
     public void MinionRestTargetAim()
     {
       Vector2 mouseWorld = Main.MouseWorld;
-      float y = (float) mouseWorld.Y;
+      float y = mouseWorld.Y;
       int i = (int) mouseWorld.X / 16;
       int index1 = (int) y / 16;
       int num1 = 0;
@@ -29669,9 +27726,7 @@ label_13:
             flag = true;
         }
       }
-      Vector2 Other;
-      // ISSUE: explicit reference operation
-      ((Vector2) @Other).\u002Ector((float) (i * 16 + 8), (float) (num4 * 16));
+      Vector2 Other = new Vector2((float) (i * 16 + 8), (float) (num4 * 16));
       if ((double) this.Distance(Other) > 1000.0)
         return;
       this.MinionRestTargetPoint = Other;
@@ -29682,7 +27737,7 @@ label_13:
       if (this.whoAmI != Main.myPlayer)
         return;
       if ((double) this.Distance(this.MinionRestTargetPoint) > 1000.0)
-        this.MinionRestTargetPoint = Vector2.get_Zero();
+        this.MinionRestTargetPoint = Vector2.Zero;
       if (this.MinionAttackTargetNPC != -1 && (!Main.npc[this.MinionAttackTargetNPC].CanBeChasedBy((object) this, false) || (double) Main.npc[this.MinionAttackTargetNPC].Hitbox.Distance(this.Center) > 3000.0))
         this.MinionAttackTargetNPC = -1;
       if (this.stardustGuardian && this.HasMinionRestTarget)
@@ -29692,11 +27747,11 @@ label_13:
         float num2 = 2.094395f;
         for (int index1 = 0; index1 < 3; ++index1)
         {
-          int index2 = Dust.NewDust(minionRestTargetPoint, 0, 0, 135, 0.0f, 0.0f, 100, (Color) null, 1.5f);
+          int index2 = Dust.NewDust(minionRestTargetPoint, 0, 0, 135, 0.0f, 0.0f, 100, new Color(), 1.5f);
           Main.dust[index2].noGravity = true;
-          Main.dust[index2].velocity = Vector2.get_Zero();
+          Main.dust[index2].velocity = Vector2.Zero;
           Main.dust[index2].noLight = true;
-          Main.dust[index2].position = Vector2.op_Addition(minionRestTargetPoint, Vector2.op_Multiply(((float) ((double) num1 * 6.28318548202515 + (double) num2 * (double) index1)).ToRotationVector2(), 4f));
+          Main.dust[index2].position = minionRestTargetPoint + ((float) ((double) num1 * 6.28318548202515 + (double) num2 * (double) index1)).ToRotationVector2() * 4f;
           Main.dust[index2].shader = GameShaders.Armor.GetSecondaryShader(this.cPet, this);
         }
       }
@@ -29707,11 +27762,11 @@ label_13:
       float num4 = 2.094395f;
       for (int index1 = 0; index1 < 3; ++index1)
       {
-        int index2 = Dust.NewDust(center, 0, 0, 272, 0.0f, 0.0f, 100, (Color) null, 0.5f);
+        int index2 = Dust.NewDust(center, 0, 0, 272, 0.0f, 0.0f, 100, new Color(), 0.5f);
         Main.dust[index2].noGravity = true;
-        Main.dust[index2].velocity = Vector2.get_Zero();
+        Main.dust[index2].velocity = Vector2.Zero;
         Main.dust[index2].noLight = true;
-        Main.dust[index2].position = Vector2.op_Addition(center, Vector2.op_Multiply(((float) ((double) num3 * 6.28318548202515 + (double) num4 * (double) index1)).ToRotationVector2(), 12f));
+        Main.dust[index2].position = center + ((float) ((double) num3 * 6.28318548202515 + (double) num4 * (double) index1)).ToRotationVector2() * 12f;
       }
     }
 
@@ -29747,10 +27802,10 @@ label_13:
       this.TouchedTiles.Clear();
       List<Point> pointList1 = (List<Point>) null;
       List<Point> pointList2 = (List<Point>) null;
-      if (!Collision.IsClearSpotTest(Vector2.op_Addition(this.position, this.velocity), 16f, this.width, this.height, false, false, (int) this.gravDir, true, true))
-        pointList1 = Collision.FindCollisionTile(Math.Sign((float) this.velocity.Y) == 1 ? 2 : 3, Vector2.op_Addition(this.position, this.velocity), 16f, this.width, this.height, false, false, (int) this.gravDir, true, false);
-      if (!Collision.IsClearSpotTest(this.position, Math.Abs((float) this.velocity.Y), this.width, this.height, false, false, (int) this.gravDir, true, true))
-        pointList2 = Collision.FindCollisionTile(Math.Sign((float) this.velocity.Y) == 1 ? 2 : 3, this.position, Math.Abs((float) this.velocity.Y), this.width, this.height, false, false, (int) this.gravDir, true, true);
+      if (!Collision.IsClearSpotTest(this.position + this.velocity, 16f, this.width, this.height, false, false, (int) this.gravDir, true, true))
+        pointList1 = Collision.FindCollisionTile(Math.Sign(this.velocity.Y) == 1 ? 2 : 3, this.position + this.velocity, 16f, this.width, this.height, false, false, (int) this.gravDir, true, false);
+      if (!Collision.IsClearSpotTest(this.position, Math.Abs(this.velocity.Y), this.width, this.height, false, false, (int) this.gravDir, true, true))
+        pointList2 = Collision.FindCollisionTile(Math.Sign(this.velocity.Y) == 1 ? 2 : 3, this.position, Math.Abs(this.velocity.Y), this.width, this.height, false, false, (int) this.gravDir, true, true);
       if (pointList1 != null && pointList2 != null)
       {
         for (int index = 0; index < pointList2.Count; ++index)
@@ -29865,19 +27920,17 @@ label_13:
               break;
             bool flag = this.Mode == Player.SelectionRadial.SelectionMode.RadialCircular;
             float num = (float) (6.28318548202515 / (double) this.RadialCount / 2.0);
-            Vector2 v = PlayerInput.GamepadThumbstickRight.RotatedBy((double) num - 1.57079637050629, (Vector2) null);
-            // ISSUE: explicit reference operation
-            if ((double) ((Vector2) @v).Length() == 0.0)
-              v = PlayerInput.GamepadThumbstickLeft.RotatedBy((double) num - 1.57079637050629, (Vector2) null);
+            Vector2 v = PlayerInput.GamepadThumbstickRight.RotatedBy((double) num - 1.57079637050629, new Vector2());
+            if ((double) v.Length() == 0.0)
+              v = PlayerInput.GamepadThumbstickLeft.RotatedBy((double) num - 1.57079637050629, new Vector2());
             int to = -1;
-            // ISSUE: explicit reference operation
-            if ((double) ((Vector2) @v).Length() > 0.300000011920929)
+            if ((double) v.Length() > 0.300000011920929)
             {
               to = (int) ((double) (v.ToRotation() + 3.141593f) / (6.28318548202515 / (double) this.RadialCount));
               if (to >= this.RadialCount)
                 to -= this.RadialCount;
             }
-            if (to == -1 && flag || this._SelectedBinding == to || to == -1 && Vector2.op_Inequality(v, Vector2.get_Zero()))
+            if (to == -1 && flag || this._SelectedBinding == to || to == -1 && v != Vector2.Zero)
               break;
             this.ChangeSelection(to);
             break;
@@ -29965,8 +28018,8 @@ label_13:
       public void NewMessage(string message, int displayTime)
       {
         this.chatText = message;
-        this.snippets = ChatManager.ParseMessage(this.chatText, Color.get_White()).ToArray();
-        this.messageSize = ChatManager.GetStringSize(Main.fontMouseText, this.snippets, Vector2.get_One(), -1f);
+        this.snippets = ChatManager.ParseMessage(this.chatText, Color.White).ToArray();
+        this.messageSize = ChatManager.GetStringSize(Main.fontMouseText, this.snippets, Vector2.One, -1f);
         this.timeLeft = displayTime;
       }
     }

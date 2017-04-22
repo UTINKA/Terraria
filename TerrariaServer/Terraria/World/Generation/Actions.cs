@@ -1,7 +1,7 @@
 ﻿// Decompiled with JetBrains decompiler
 // Type: Terraria.World.Generation.Actions
 // Assembly: TerrariaServer, Version=1.3.5.1, Culture=neutral, PublicKeyToken=null
-// MVID: 880A80AC-FC6C-4F43-ABDD-E2472DA66CB5
+// MVID: C2103E81-0935-4BEA-9E98-4159FC80C2BB
 // Assembly location: F:\Steam\steamapps\common\Terraria\TerrariaServer.exe
 
 using Microsoft.Xna.Framework;
@@ -237,7 +237,7 @@ namespace Terraria.World.Generation
       private Color _color;
       private SpriteBatch _spriteBatch;
 
-      public DebugDraw(SpriteBatch spriteBatch, Color color = null)
+      public DebugDraw(SpriteBatch spriteBatch, Color color = default (Color))
       {
         this._spriteBatch = spriteBatch;
         this._color = color;
@@ -245,7 +245,7 @@ namespace Terraria.World.Generation
 
       public override bool Apply(Point origin, int x, int y, params object[] args)
       {
-        this._spriteBatch.Draw(Main.magicPixel, new Rectangle((x << 4) - (int) Main.screenPosition.X, (y << 4) - (int) Main.screenPosition.Y, 16, 16), this._color);
+        this._spriteBatch.Draw(Main.magicPixel, new Microsoft.Xna.Framework.Rectangle((x << 4) - (int) Main.screenPosition.X, (y << 4) - (int) Main.screenPosition.Y, 16, 16), this._color);
         return this.UnitApply(origin, x, y, args);
       }
     }

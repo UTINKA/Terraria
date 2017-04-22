@@ -1,7 +1,7 @@
 ﻿// Decompiled with JetBrains decompiler
 // Type: Terraria.RemoteClient
 // Assembly: TerrariaServer, Version=1.3.5.1, Culture=neutral, PublicKeyToken=null
-// MVID: 880A80AC-FC6C-4F43-ABDD-E2472DA66CB5
+// MVID: C2103E81-0935-4BEA-9E98-4159FC80C2BB
 // Assembly location: F:\Steam\steamapps\common\Terraria\TerrariaServer.exe
 
 using Microsoft.Xna.Framework;
@@ -89,8 +89,8 @@ namespace Terraria
     public static void CheckSection(int playerIndex, Vector2 position, int fluff = 1)
     {
       int index1 = playerIndex;
-      int sectionX = Netplay.GetSectionX((int) (position.X / 16.0));
-      int sectionY1 = Netplay.GetSectionY((int) (position.Y / 16.0));
+      int sectionX = Netplay.GetSectionX((int) ((double) position.X / 16.0));
+      int sectionY1 = Netplay.GetSectionY((int) ((double) position.Y / 16.0));
       int num = 0;
       for (int index2 = sectionX - fluff; index2 < sectionX + fluff + 1; ++index2)
       {

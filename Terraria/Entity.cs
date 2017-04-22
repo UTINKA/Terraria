@@ -1,7 +1,7 @@
 ﻿// Decompiled with JetBrains decompiler
 // Type: Terraria.Entity
 // Assembly: Terraria, Version=1.3.5.1, Culture=neutral, PublicKeyToken=null
-// MVID: DF0400F4-EE47-4864-BE80-932EDB02D8A6
+// MVID: E90A5A2F-CD10-4A2C-9D2A-6B036D4E8877
 // Assembly location: F:\Steam\steamapps\common\Terraria\Terraria.exe
 
 using Microsoft.Xna.Framework;
@@ -30,11 +30,11 @@ namespace Terraria
     {
       get
       {
-        return new Vector2((float) this.position.X + (float) (this.width / 2), (float) this.position.Y + (float) (this.height / 2));
+        return new Vector2(this.position.X + (float) (this.width / 2), this.position.Y + (float) (this.height / 2));
       }
       set
       {
-        this.position = new Vector2((float) value.X - (float) (this.width / 2), (float) value.Y - (float) (this.height / 2));
+        this.position = new Vector2(value.X - (float) (this.width / 2), value.Y - (float) (this.height / 2));
       }
     }
 
@@ -42,11 +42,11 @@ namespace Terraria
     {
       get
       {
-        return new Vector2((float) this.position.X, (float) this.position.Y + (float) (this.height / 2));
+        return new Vector2(this.position.X, this.position.Y + (float) (this.height / 2));
       }
       set
       {
-        this.position = new Vector2((float) value.X, (float) value.Y - (float) (this.height / 2));
+        this.position = new Vector2(value.X, value.Y - (float) (this.height / 2));
       }
     }
 
@@ -54,11 +54,11 @@ namespace Terraria
     {
       get
       {
-        return new Vector2((float) this.position.X + (float) this.width, (float) this.position.Y + (float) (this.height / 2));
+        return new Vector2(this.position.X + (float) this.width, this.position.Y + (float) (this.height / 2));
       }
       set
       {
-        this.position = new Vector2((float) value.X - (float) this.width, (float) value.Y - (float) (this.height / 2));
+        this.position = new Vector2(value.X - (float) this.width, value.Y - (float) (this.height / 2));
       }
     }
 
@@ -66,11 +66,11 @@ namespace Terraria
     {
       get
       {
-        return new Vector2((float) this.position.X + (float) (this.width / 2), (float) this.position.Y);
+        return new Vector2(this.position.X + (float) (this.width / 2), this.position.Y);
       }
       set
       {
-        this.position = new Vector2((float) value.X - (float) (this.width / 2), (float) value.Y);
+        this.position = new Vector2(value.X - (float) (this.width / 2), value.Y);
       }
     }
 
@@ -90,11 +90,11 @@ namespace Terraria
     {
       get
       {
-        return new Vector2((float) this.position.X + (float) this.width, (float) this.position.Y);
+        return new Vector2(this.position.X + (float) this.width, this.position.Y);
       }
       set
       {
-        this.position = new Vector2((float) value.X - (float) this.width, (float) value.Y);
+        this.position = new Vector2(value.X - (float) this.width, value.Y);
       }
     }
 
@@ -102,11 +102,11 @@ namespace Terraria
     {
       get
       {
-        return new Vector2((float) this.position.X + (float) (this.width / 2), (float) this.position.Y + (float) this.height);
+        return new Vector2(this.position.X + (float) (this.width / 2), this.position.Y + (float) this.height);
       }
       set
       {
-        this.position = new Vector2((float) value.X - (float) (this.width / 2), (float) value.Y - (float) this.height);
+        this.position = new Vector2(value.X - (float) (this.width / 2), value.Y - (float) this.height);
       }
     }
 
@@ -114,11 +114,11 @@ namespace Terraria
     {
       get
       {
-        return new Vector2((float) this.position.X, (float) this.position.Y + (float) this.height);
+        return new Vector2(this.position.X, this.position.Y + (float) this.height);
       }
       set
       {
-        this.position = new Vector2((float) value.X, (float) value.Y - (float) this.height);
+        this.position = new Vector2(value.X, value.Y - (float) this.height);
       }
     }
 
@@ -126,11 +126,11 @@ namespace Terraria
     {
       get
       {
-        return new Vector2((float) this.position.X + (float) this.width, (float) this.position.Y + (float) this.height);
+        return new Vector2(this.position.X + (float) this.width, this.position.Y + (float) this.height);
       }
       set
       {
-        this.position = new Vector2((float) value.X - (float) this.width, (float) value.Y - (float) this.height);
+        this.position = new Vector2(value.X - (float) this.width, value.Y - (float) this.height);
       }
     }
 
@@ -156,19 +156,19 @@ namespace Terraria
       set
       {
         this.position = new Vector2((float) value.X, (float) value.Y);
-        this.width = (int) value.Width;
-        this.height = (int) value.Height;
+        this.width = value.Width;
+        this.height = value.Height;
       }
     }
 
     public float AngleTo(Vector2 Destination)
     {
-      return (float) Math.Atan2((double) (Destination.Y - this.Center.Y), (double) (Destination.X - this.Center.X));
+      return (float) Math.Atan2((double) Destination.Y - (double) this.Center.Y, (double) Destination.X - (double) this.Center.X);
     }
 
     public float AngleFrom(Vector2 Source)
     {
-      return (float) Math.Atan2((double) (this.Center.Y - Source.Y), (double) (this.Center.X - Source.X));
+      return (float) Math.Atan2((double) this.Center.Y - (double) Source.Y, (double) this.Center.X - (double) Source.X);
     }
 
     public float Distance(Vector2 Other)
@@ -183,12 +183,12 @@ namespace Terraria
 
     public Vector2 DirectionTo(Vector2 Destination)
     {
-      return Vector2.Normalize(Vector2.op_Subtraction(Destination, this.Center));
+      return Vector2.Normalize(Destination - this.Center);
     }
 
     public Vector2 DirectionFrom(Vector2 Source)
     {
-      return Vector2.Normalize(Vector2.op_Subtraction(this.Center, Source));
+      return Vector2.Normalize(this.Center - Source);
     }
 
     public bool WithinRange(Vector2 Target, float MaxRange)

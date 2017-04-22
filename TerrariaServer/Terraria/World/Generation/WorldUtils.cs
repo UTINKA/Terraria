@@ -1,7 +1,7 @@
 ﻿// Decompiled with JetBrains decompiler
 // Type: Terraria.World.Generation.WorldUtils
 // Assembly: TerrariaServer, Version=1.3.5.1, Culture=neutral, PublicKeyToken=null
-// MVID: 880A80AC-FC6C-4F43-ABDD-E2472DA66CB5
+// MVID: C2103E81-0935-4BEA-9E98-4159FC80C2BB
 // Assembly location: F:\Steam\steamapps\common\Terraria\TerrariaServer.exe
 
 using Microsoft.Xna.Framework;
@@ -18,7 +18,7 @@ namespace Terraria.World.Generation
     public static bool Find(Point origin, GenSearch search, out Point result)
     {
       result = search.Find(origin);
-      return !Point.op_Equality(result, GenSearch.NOT_FOUND);
+      return !(result == GenSearch.NOT_FOUND);
     }
 
     public static void ClearTile(int x, int y, bool frameNeighbors = false)
@@ -67,25 +67,13 @@ namespace Terraria.World.Generation
       Point point1 = start;
       Point point2 = end;
       if (end.X < start.X)
-      {
-        // ISSUE: explicit reference operation
-        // ISSUE: cast to a reference type
-        // ISSUE: explicit reference operation
-        // ISSUE: cast to a reference type
-        Utils.Swap<int>((int&) @end.X, (int&) @start.X);
-      }
+        Utils.Swap<int>(ref end.X, ref start.X);
       if (end.Y < start.Y)
-      {
-        // ISSUE: explicit reference operation
-        // ISSUE: cast to a reference type
-        // ISSUE: explicit reference operation
-        // ISSUE: cast to a reference type
-        Utils.Swap<int>((int&) @end.Y, (int&) @start.Y);
-      }
-      for (int x = (int) start.X; x <= end.X; ++x)
-        WorldGen.PlaceWire(x, (int) point1.Y);
-      for (int y = (int) start.Y; y <= end.Y; ++y)
-        WorldGen.PlaceWire((int) point2.X, y);
+        Utils.Swap<int>(ref end.Y, ref start.Y);
+      for (int x = start.X; x <= end.X; ++x)
+        WorldGen.PlaceWire(x, point1.Y);
+      for (int y = start.Y; y <= end.Y; ++y)
+        WorldGen.PlaceWire(point2.X, y);
     }
 
     public static void DebugRegen()

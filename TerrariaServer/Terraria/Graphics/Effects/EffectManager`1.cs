@@ -1,7 +1,7 @@
 ﻿// Decompiled with JetBrains decompiler
 // Type: Terraria.Graphics.Effects.EffectManager`1
 // Assembly: TerrariaServer, Version=1.3.5.1, Culture=neutral, PublicKeyToken=null
-// MVID: 880A80AC-FC6C-4F43-ABDD-E2472DA66CB5
+// MVID: C2103E81-0935-4BEA-9E98-4159FC80C2BB
 // Assembly location: F:\Steam\steamapps\common\Terraria\TerrariaServer.exe
 
 using Microsoft.Xna.Framework;
@@ -54,7 +54,7 @@ namespace Terraria.Graphics.Effects
         obj.Load();
     }
 
-    public T Activate(string name, Vector2 position = null, params object[] args)
+    public T Activate(string name, Vector2 position = default (Vector2), params object[] args)
     {
       if (!this._effects.ContainsKey(name))
         throw new MissingEffectException("Unable to find effect named: " + name + ". Type: " + (object) typeof (T) + ".");

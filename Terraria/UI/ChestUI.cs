@@ -1,7 +1,7 @@
 ﻿// Decompiled with JetBrains decompiler
 // Type: Terraria.UI.ChestUI
 // Assembly: Terraria, Version=1.3.5.1, Culture=neutral, PublicKeyToken=null
-// MVID: DF0400F4-EE47-4864-BE80-932EDB02D8A6
+// MVID: E90A5A2F-CD10-4A2C-9D2A-6B036D4E8877
 // Assembly location: F:\Steam\steamapps\common\Terraria\Terraria.exe
 
 using Microsoft.Xna.Framework;
@@ -102,17 +102,14 @@ namespace Terraria.UI
         text = Lang.inter[33].Value;
       else if (player.chest == -4)
         text = Lang.GetItemNameValue(3813);
-      Color color;
-      // ISSUE: explicit reference operation
-      ((Color) @color).\u002Ector((int) Main.mouseTextColor, (int) Main.mouseTextColor, (int) Main.mouseTextColor, (int) Main.mouseTextColor);
-      Color baseColor = Color.op_Multiply(Color.get_White(), (float) (1.0 - ((double) byte.MaxValue - (double) Main.mouseTextColor) / (double) byte.MaxValue * 0.5));
-      // ISSUE: explicit reference operation
-      ((Color) @baseColor).set_A(byte.MaxValue);
+      Color color = new Color((int) Main.mouseTextColor, (int) Main.mouseTextColor, (int) Main.mouseTextColor, (int) Main.mouseTextColor);
+      Color baseColor = Color.White * (float) (1.0 - ((double) byte.MaxValue - (double) Main.mouseTextColor) / (double) byte.MaxValue * 0.5);
+      baseColor.A = byte.MaxValue;
       int lineAmount;
       Utils.WordwrapString(text, Main.fontMouseText, 200, 1, out lineAmount);
       ++lineAmount;
       for (int index = 0; index < lineAmount; ++index)
-        ChatManager.DrawColorCodedStringWithShadow(spritebatch, Main.fontMouseText, text, new Vector2(504f, (float) (Main.instance.invBottom + index * 26)), baseColor, 0.0f, Vector2.get_Zero(), Vector2.get_One(), -1f, 1.5f);
+        ChatManager.DrawColorCodedStringWithShadow(spritebatch, Main.fontMouseText, text, new Vector2(504f, (float) (Main.instance.invBottom + index * 26)), baseColor, 0.0f, Vector2.Zero, Vector2.One, -1f, 1.5f);
     }
 
     private static void DrawButtons(SpriteBatch spritebatch)
@@ -158,29 +155,28 @@ namespace Terraria.UI
             break;
         }
         Vector2 vector2 = Main.fontMouseText.MeasureString(text);
-        Color.op_Multiply(new Color((int) Main.mouseTextColor, (int) Main.mouseTextColor, (int) Main.mouseTextColor, (int) Main.mouseTextColor), num);
-        Color baseColor = Color.op_Multiply(Color.op_Multiply(Color.get_White(), 0.97f), (float) (1.0 - ((double) byte.MaxValue - (double) Main.mouseTextColor) / (double) byte.MaxValue * 0.5));
-        // ISSUE: explicit reference operation
-        ((Color) @baseColor).set_A(byte.MaxValue);
-        X += (int) (vector2.X * (double) num / 2.0);
-        ChatManager.DrawColorCodedStringWithShadow(spriteBatch, Main.fontMouseText, text, new Vector2((float) X, (float) Y), baseColor, 0.0f, Vector2.op_Division(vector2, 2f), new Vector2(num), -1f, 1.5f);
-        vector2 = Vector2.op_Multiply(vector2, num);
+        Color color = new Color((int) Main.mouseTextColor, (int) Main.mouseTextColor, (int) Main.mouseTextColor, (int) Main.mouseTextColor) * num;
+        Color baseColor = Color.White * 0.97f * (float) (1.0 - ((double) byte.MaxValue - (double) Main.mouseTextColor) / (double) byte.MaxValue * 0.5);
+        baseColor.A = byte.MaxValue;
+        X += (int) ((double) vector2.X * (double) num / 2.0);
+        ChatManager.DrawColorCodedStringWithShadow(spriteBatch, Main.fontMouseText, text, new Vector2((float) X, (float) Y), baseColor, 0.0f, vector2 / 2f, new Vector2(num), -1f, 1.5f);
+        vector2 *= num;
         switch (ID)
         {
           case 0:
-            UILinkPointNavigator.SetPosition(500, new Vector2((float) X - (float) (vector2.X * (double) num / 2.0 * 0.800000011920929), (float) Y));
+            UILinkPointNavigator.SetPosition(500, new Vector2((float) X - (float) ((double) vector2.X * (double) num / 2.0 * 0.800000011920929), (float) Y));
             break;
           case 1:
-            UILinkPointNavigator.SetPosition(501, new Vector2((float) X - (float) (vector2.X * (double) num / 2.0 * 0.800000011920929), (float) Y));
+            UILinkPointNavigator.SetPosition(501, new Vector2((float) X - (float) ((double) vector2.X * (double) num / 2.0 * 0.800000011920929), (float) Y));
             break;
           case 2:
-            UILinkPointNavigator.SetPosition(502, new Vector2((float) X - (float) (vector2.X * (double) num / 2.0 * 0.800000011920929), (float) Y));
+            UILinkPointNavigator.SetPosition(502, new Vector2((float) X - (float) ((double) vector2.X * (double) num / 2.0 * 0.800000011920929), (float) Y));
             break;
           case 3:
-            UILinkPointNavigator.SetPosition(503, new Vector2((float) X - (float) (vector2.X * (double) num / 2.0 * 0.800000011920929), (float) Y));
+            UILinkPointNavigator.SetPosition(503, new Vector2((float) X - (float) ((double) vector2.X * (double) num / 2.0 * 0.800000011920929), (float) Y));
             break;
           case 4:
-            UILinkPointNavigator.SetPosition(505, new Vector2((float) X - (float) (vector2.X * (double) num / 2.0 * 0.800000011920929), (float) Y));
+            UILinkPointNavigator.SetPosition(505, new Vector2((float) X - (float) ((double) vector2.X * (double) num / 2.0 * 0.800000011920929), (float) Y));
             break;
           case 5:
             UILinkPointNavigator.SetPosition(504, new Vector2((float) X, (float) Y));
@@ -189,7 +185,7 @@ namespace Terraria.UI
             UILinkPointNavigator.SetPosition(504, new Vector2((float) X, (float) Y));
             break;
         }
-        if (!Utils.FloatIntersect((float) Main.mouseX, (float) Main.mouseY, 0.0f, 0.0f, (float) X - (float) (vector2.X / 2.0), (float) Y - (float) (vector2.Y / 2.0), (float) vector2.X, (float) vector2.Y))
+        if (!Utils.FloatIntersect((float) Main.mouseX, (float) Main.mouseY, 0.0f, 0.0f, (float) X - vector2.X / 2f, (float) Y - vector2.Y / 2f, vector2.X, vector2.Y))
         {
           ChestUI.UpdateHover(ID, false);
         }
@@ -266,12 +262,12 @@ namespace Terraria.UI
           int num2 = (int) ((double) Main.instance.invBottom + (double) (index2 * 56) * (double) Main.inventoryScale);
           int slot = index1 + index2 * 10;
           Color color = new Color(100, 100, 100, 100);
-          if (Utils.FloatIntersect((float) Main.mouseX, (float) Main.mouseY, 0.0f, 0.0f, (float) num1, (float) num2, (float) Main.inventoryBackTexture.get_Width() * Main.inventoryScale, (float) Main.inventoryBackTexture.get_Height() * Main.inventoryScale) && !PlayerInput.IgnoreMouseInterface)
+          if (Utils.FloatIntersect((float) Main.mouseX, (float) Main.mouseY, 0.0f, 0.0f, (float) num1, (float) num2, (float) Main.inventoryBackTexture.Width * Main.inventoryScale, (float) Main.inventoryBackTexture.Height * Main.inventoryScale) && !PlayerInput.IgnoreMouseInterface)
           {
             player.mouseInterface = true;
             ItemSlot.Handle(inv, context, slot);
           }
-          ItemSlot.Draw(spriteBatch, inv, context, slot, new Vector2((float) num1, (float) num2), (Color) null);
+          ItemSlot.Draw(spriteBatch, inv, context, slot, new Vector2((float) num1, (float) num2), new Color());
         }
       }
     }
@@ -660,7 +656,7 @@ namespace Terraria.UI
       Main.PlaySound(12, -1, -1, 1, 1f, 0.0f);
       Main.editChest = false;
       Main.npcChatText = string.Empty;
-      Main.blockKey = ((object) (Keys) 27).ToString();
+      Main.blockKey = Keys.Escape.ToString();
     }
 
     public static void Restock()

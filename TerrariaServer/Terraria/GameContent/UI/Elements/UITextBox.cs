@@ -1,7 +1,7 @@
 ﻿// Decompiled with JetBrains decompiler
 // Type: Terraria.GameContent.UI.Elements.UITextBox
 // Assembly: TerrariaServer, Version=1.3.5.1, Culture=neutral, PublicKeyToken=null
-// MVID: 880A80AC-FC6C-4F43-ABDD-E2472DA66CB5
+// MVID: C2103E81-0935-4BEA-9E98-4159FC80C2BB
 // Assembly location: F:\Steam\steamapps\common\Terraria\TerrariaServer.exe
 
 using Microsoft.Xna.Framework;
@@ -71,34 +71,12 @@ namespace Terraria.GameContent.UI.Elements
         return;
       CalculatedStyle innerDimensions = this.GetInnerDimensions();
       Vector2 pos = innerDimensions.Position();
-      Vector2 vector2 = Vector2.op_Multiply(new Vector2((float) (this.IsLarge ? Main.fontDeathText : Main.fontMouseText).MeasureString(this.Text.Substring(0, this._cursor)).X, this.IsLarge ? 32f : 16f), this.TextScale);
+      Vector2 vector2 = new Vector2((this.IsLarge ? Main.fontDeathText : Main.fontMouseText).MeasureString(this.Text.Substring(0, this._cursor)).X, this.IsLarge ? 32f : 16f) * this.TextScale;
       if (this.IsLarge)
-      {
-        // ISSUE: explicit reference operation
-        // ISSUE: variable of a reference type
-        Vector2& local = @pos;
-        // ISSUE: explicit reference operation
-        double num = (^local).Y - 8.0 * (double) this.TextScale;
-        // ISSUE: explicit reference operation
-        (^local).Y = (__Null) num;
-      }
+        pos.Y -= 8f * this.TextScale;
       else
-      {
-        // ISSUE: explicit reference operation
-        // ISSUE: variable of a reference type
-        Vector2& local = @pos;
-        // ISSUE: explicit reference operation
-        double num = (^local).Y + 2.0 * (double) this.TextScale;
-        // ISSUE: explicit reference operation
-        (^local).Y = (__Null) num;
-      }
-      // ISSUE: explicit reference operation
-      // ISSUE: variable of a reference type
-      Vector2& local1 = @pos;
-      // ISSUE: explicit reference operation
-      double num1 = (^local1).X + (((double) innerDimensions.Width - this.TextSize.X) * 0.5 + vector2.X - (this.IsLarge ? 8.0 : 4.0) * (double) this.TextScale + 6.0);
-      // ISSUE: explicit reference operation
-      (^local1).X = (__Null) num1;
+        pos.Y += 2f * this.TextScale;
+      pos.X += (float) (((double) innerDimensions.Width - (double) this.TextSize.X) * 0.5 + (double) vector2.X - (this.IsLarge ? 8.0 : 4.0) * (double) this.TextScale + 6.0);
       if (this.IsLarge)
         Utils.DrawBorderStringBig(spriteBatch, "|", pos, this.TextColor, this.TextScale, 0.0f, 0.0f, -1);
       else

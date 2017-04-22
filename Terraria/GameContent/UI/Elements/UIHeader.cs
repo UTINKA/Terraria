@@ -1,7 +1,7 @@
 ﻿// Decompiled with JetBrains decompiler
 // Type: Terraria.GameContent.UI.Elements.UIHeader
 // Assembly: Terraria, Version=1.3.5.1, Culture=neutral, PublicKeyToken=null
-// MVID: DF0400F4-EE47-4864-BE80-932EDB02D8A6
+// MVID: E90A5A2F-CD10-4A2C-9D2A-6B036D4E8877
 // Assembly location: F:\Steam\steamapps\common\Terraria\Terraria.exe
 
 using Microsoft.Xna.Framework;
@@ -27,8 +27,8 @@ namespace Terraria.GameContent.UI.Elements
           return;
         this._text = value;
         Vector2 vector2 = Main.fontDeathText.MeasureString(this.Text);
-        this.Width.Pixels = (float) vector2.X;
-        this.Height.Pixels = (float) vector2.Y;
+        this.Width.Pixels = vector2.X;
+        this.Height.Pixels = vector2.Y;
         this.Width.Precent = 0.0f;
         this.Height.Precent = 0.0f;
         this.Recalculate();
@@ -48,7 +48,7 @@ namespace Terraria.GameContent.UI.Elements
     protected override void DrawSelf(SpriteBatch spriteBatch)
     {
       CalculatedStyle dimensions = this.GetDimensions();
-      DynamicSpriteFontExtensionMethods.DrawString(spriteBatch, Main.fontDeathText, this.Text, new Vector2(dimensions.X, dimensions.Y), Color.get_White());
+      DynamicSpriteFontExtensionMethods.DrawString(spriteBatch, Main.fontDeathText, this.Text, new Vector2(dimensions.X, dimensions.Y), Color.White);
     }
   }
 }

@@ -1,7 +1,7 @@
 ﻿// Decompiled with JetBrains decompiler
 // Type: Terraria.Graphics.Capture.CaptureInterface
 // Assembly: TerrariaServer, Version=1.3.5.1, Culture=neutral, PublicKeyToken=null
-// MVID: 880A80AC-FC6C-4F43-ABDD-E2472DA66CB5
+// MVID: C2103E81-0935-4BEA-9E98-4159FC80C2BB
 // Assembly location: F:\Steam\steamapps\common\Terraria\TerrariaServer.exe
 
 using Microsoft.Xna.Framework;
@@ -23,12 +23,12 @@ namespace Terraria.Graphics.Capture
     public static bool JustActivated = false;
     public static bool EdgeAPinned = false;
     public static bool EdgeBPinned = false;
-    public static Point EdgeA = (Point) null;
-    public static Point EdgeB = (Point) null;
+    public static Point EdgeA = new Point();
+    public static Point EdgeB = new Point();
     public static bool CameraLock = false;
     private static float CameraFrame = 0.0f;
     private static float CameraWaiting = 0.0f;
-    private const Keys KeyToggleActive = ; //unable to render the field
+    private const Keys KeyToggleActive = Keys.F1;
     private const float CameraMaxFrame = 5f;
     private const float CameraMaxWait = 60f;
     public bool Active;
@@ -58,7 +58,7 @@ namespace Terraria.Graphics.Capture
 
     public static Rectangle GetArea()
     {
-      return new Rectangle(Math.Min((int) CaptureInterface.EdgeA.X, (int) CaptureInterface.EdgeB.X), Math.Min((int) CaptureInterface.EdgeA.Y, (int) CaptureInterface.EdgeB.Y), Math.Abs((int) (CaptureInterface.EdgeA.X - CaptureInterface.EdgeB.X)) + 1, Math.Abs((int) (CaptureInterface.EdgeA.Y - CaptureInterface.EdgeB.Y)) + 1);
+      return new Rectangle(Math.Min(CaptureInterface.EdgeA.X, CaptureInterface.EdgeB.X), Math.Min(CaptureInterface.EdgeA.Y, CaptureInterface.EdgeB.Y), Math.Abs(CaptureInterface.EdgeA.X - CaptureInterface.EdgeB.X) + 1, Math.Abs(CaptureInterface.EdgeA.Y - CaptureInterface.EdgeB.Y) + 1);
     }
 
     public void Update()
@@ -67,8 +67,7 @@ namespace Terraria.Graphics.Capture
       this.UpdateCamera();
       if (CaptureInterface.CameraLock)
         return;
-      // ISSUE: explicit reference operation
-      bool flag = ((KeyboardState) @Main.keyState).IsKeyDown((Keys) 112);
+      bool flag = Main.keyState.IsKeyDown(Keys.F1);
       if (flag && !this.KeyToggleActiveHeld && (Main.mouseItem.type == 0 || this.Active) && !Main.CaptureModeDisabled)
         this.ToggleCamera(!this.Active);
       this.KeyToggleActiveHeld = flag;
@@ -77,10 +76,7 @@ namespace Terraria.Graphics.Capture
       Main.blockMouse = true;
       if (CaptureInterface.JustActivated && Main.mouseLeftRelease && !Main.mouseLeft)
         CaptureInterface.JustActivated = false;
-      Vector2 mouse;
-      // ISSUE: explicit reference operation
-      ((Vector2) @mouse).\u002Ector((float) Main.mouseX, (float) Main.mouseY);
-      if (this.UpdateButtons(mouse) && Main.mouseLeft)
+      if (this.UpdateButtons(new Vector2((float) Main.mouseX, (float) Main.mouseY)) && Main.mouseLeft)
         return;
       foreach (KeyValuePair<int, CaptureInterface.CaptureInterfaceMode> mode in CaptureInterface.Modes)
       {
@@ -95,19 +91,19 @@ namespace Terraria.Graphics.Capture
       if (!this.Active)
         return;
       sb.End();
-      sb.Begin((SpriteSortMode) 0, (BlendState) BlendState.AlphaBlend, (SamplerState) SamplerState.PointClamp, (DepthStencilState) DepthStencilState.None, (RasterizerState) RasterizerState.CullCounterClockwise, (Effect) null, Main.UIScaleMatrix);
+      sb.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.None, RasterizerState.CullCounterClockwise, (Effect) null, Main.UIScaleMatrix);
       PlayerInput.SetZoom_UI();
       foreach (CaptureInterface.CaptureInterfaceMode captureInterfaceMode in CaptureInterface.Modes.Values)
         captureInterfaceMode.Draw(sb);
       sb.End();
-      sb.Begin((SpriteSortMode) 0, (BlendState) BlendState.AlphaBlend, (SamplerState) SamplerState.PointClamp, (DepthStencilState) DepthStencilState.None, (RasterizerState) RasterizerState.CullCounterClockwise, (Effect) null, Main.UIScaleMatrix);
+      sb.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.None, RasterizerState.CullCounterClockwise, (Effect) null, Main.UIScaleMatrix);
       PlayerInput.SetZoom_UI();
       Main.mouseText = false;
       Main.instance.GUIBarsDraw();
       this.DrawButtons(sb);
       Main.instance.DrawMouseOver();
-      Utils.DrawBorderStringBig(sb, Lang.inter[81].Value, new Vector2((float) Main.screenWidth * 0.5f, 100f), Color.get_White(), 1f, 0.5f, 0.5f, -1);
-      Utils.DrawCursorSingle(sb, Main.cursorColor, float.NaN, Main.cursorScale, (Vector2) null, 0, 0);
+      Utils.DrawBorderStringBig(sb, Lang.inter[81].Value, new Vector2((float) Main.screenWidth * 0.5f, 100f), Color.White, 1f, 0.5f, 0.5f, -1);
+      Utils.DrawCursorSingle(sb, Main.cursorColor, float.NaN, Main.cursorScale, new Vector2(), 0, 0);
       this.DrawCameraLock(sb);
       sb.End();
       sb.Begin();
@@ -131,15 +127,11 @@ namespace Terraria.Graphics.Capture
     private bool UpdateButtons(Vector2 mouse)
     {
       this.HoveredMode = -1;
-      bool flag1 = !Main.graphics.get_IsFullScreen();
+      bool flag1 = !Main.graphics.IsFullScreen;
       int num1 = 9;
       for (int index = 0; index < num1; ++index)
       {
-        Rectangle rectangle;
-        // ISSUE: explicit reference operation
-        ((Rectangle) @rectangle).\u002Ector(24 + 46 * index, 24, 42, 42);
-        // ISSUE: explicit reference operation
-        if (((Rectangle) @rectangle).Contains(mouse.ToPoint()))
+        if (new Rectangle(24 + 46 * index, 24, 42, 42).Contains(mouse.ToPoint()))
         {
           this.HoveredMode = index;
           bool flag2 = Main.mouseLeft && Main.mouseLeftRelease;
@@ -228,10 +220,10 @@ namespace Terraria.Graphics.Capture
     public static void QuickScreenshot()
     {
       Point tileCoordinates1 = Main.ViewPosition.ToTileCoordinates();
-      Point tileCoordinates2 = Vector2.op_Addition(Main.ViewPosition, Main.ViewSize).ToTileCoordinates();
+      Point tileCoordinates2 = (Main.ViewPosition + Main.ViewSize).ToTileCoordinates();
       CaptureInterface.StartCamera(new CaptureSettings()
       {
-        Area = new Rectangle((int) tileCoordinates1.X, (int) tileCoordinates1.Y, tileCoordinates2.X - tileCoordinates1.X + 1, tileCoordinates2.Y - tileCoordinates1.Y + 1),
+        Area = new Rectangle(tileCoordinates1.X, tileCoordinates1.Y, tileCoordinates2.X - tileCoordinates1.X + 1, tileCoordinates2.Y - tileCoordinates1.Y + 1),
         Biome = CaptureBiome.Biomes[CaptureInterface.Settings.BiomeChoice],
         CaptureBackground = !CaptureInterface.Settings.TransparentBackground,
         CaptureEntities = CaptureInterface.Settings.IncludeEntities,
@@ -242,52 +234,50 @@ namespace Terraria.Graphics.Capture
 
     private void DrawButtons(SpriteBatch sb)
     {
-      Vector2 vector2_1 = new Vector2((float) Main.mouseX, (float) Main.mouseY);
-      int num1 = 9;
-      for (int index = 0; index < num1; ++index)
+      Vector2 vector2 = new Vector2((float) Main.mouseX, (float) Main.mouseY);
+      int num = 9;
+      for (int index = 0; index < num; ++index)
       {
-        Texture2D tex = Main.inventoryBackTexture;
-        float num2 = 0.8f;
-        Vector2 vector2_2;
-        // ISSUE: explicit reference operation
-        ((Vector2) @vector2_2).\u002Ector((float) (24 + 46 * index), 24f);
-        Color color = Color.op_Multiply(Main.inventoryBack, 0.8f);
+        Texture2D texture2D = Main.inventoryBackTexture;
+        float scale = 0.8f;
+        Vector2 position = new Vector2((float) (24 + 46 * index), 24f);
+        Color color = Main.inventoryBack * 0.8f;
         if (this.SelectedMode == 0 && index == 2)
-          tex = Main.inventoryBack14Texture;
+          texture2D = Main.inventoryBack14Texture;
         else if (this.SelectedMode == 1 && index == 3)
-          tex = Main.inventoryBack14Texture;
+          texture2D = Main.inventoryBack14Texture;
         else if (this.SelectedMode == 2 && index == 6)
-          tex = Main.inventoryBack14Texture;
+          texture2D = Main.inventoryBack14Texture;
         else if (index >= 2 && index <= 3)
-          tex = Main.inventoryBack2Texture;
-        sb.Draw(tex, vector2_2, new Rectangle?(), color, 0.0f, (Vector2) null, num2, (SpriteEffects) 0, 0.0f);
+          texture2D = Main.inventoryBack2Texture;
+        sb.Draw(texture2D, position, new Rectangle?(), color, 0.0f, new Vector2(), scale, SpriteEffects.None, 0.0f);
         switch (index)
         {
           case 0:
-            tex = Main.cameraTexture[7];
+            texture2D = Main.cameraTexture[7];
             break;
           case 1:
-            tex = Main.cameraTexture[0];
+            texture2D = Main.cameraTexture[0];
             break;
           case 2:
           case 3:
           case 4:
-            tex = Main.cameraTexture[index];
+            texture2D = Main.cameraTexture[index];
             break;
           case 5:
-            tex = Main.mapFullscreen ? Main.mapIconTexture[0] : Main.mapIconTexture[4];
+            texture2D = Main.mapFullscreen ? Main.mapIconTexture[0] : Main.mapIconTexture[4];
             break;
           case 6:
-            tex = Main.cameraTexture[1];
+            texture2D = Main.cameraTexture[1];
             break;
           case 7:
-            tex = Main.cameraTexture[6];
+            texture2D = Main.cameraTexture[6];
             break;
           case 8:
-            tex = Main.cameraTexture[5];
+            texture2D = Main.cameraTexture[5];
             break;
         }
-        sb.Draw(tex, Vector2.op_Addition(vector2_2, Vector2.op_Multiply(new Vector2(26f), num2)), new Rectangle?(), Color.get_White(), 0.0f, Vector2.op_Division(tex.Size(), 2f), 1f, (SpriteEffects) 0, 0.0f);
+        sb.Draw(texture2D, position + new Vector2(26f) * scale, new Rectangle?(), Color.White, 0.0f, texture2D.Size() / 2f, 1f, SpriteEffects.None, 0.0f);
         bool flag = false;
         switch (index)
         {
@@ -306,7 +296,7 @@ namespace Terraria.Graphics.Capture
             }
             break;
           case 7:
-            if (Main.graphics.get_IsFullScreen())
+            if (Main.graphics.IsFullScreen)
             {
               flag = true;
               break;
@@ -314,7 +304,7 @@ namespace Terraria.Graphics.Capture
             break;
         }
         if (flag)
-          sb.Draw(Main.cdTexture, Vector2.op_Addition(vector2_2, Vector2.op_Multiply(new Vector2(26f), num2)), new Rectangle?(), Color.op_Multiply(Color.get_White(), 0.65f), 0.0f, Vector2.op_Division(Main.cdTexture.Size(), 2f), 1f, (SpriteEffects) 0, 0.0f);
+          sb.Draw(Main.cdTexture, position + new Vector2(26f) * scale, new Rectangle?(), Color.White * 0.65f, 0.0f, Main.cdTexture.Size() / 2f, 1f, SpriteEffects.None, 0.0f);
       }
       string cursorText = "";
       switch (this.HoveredMode)
@@ -337,7 +327,7 @@ namespace Terraria.Graphics.Capture
               }
               break;
             case 7:
-              if (Main.graphics.get_IsFullScreen())
+              if (Main.graphics.IsFullScreen)
               {
                 cursorText = cursorText + "\n" + Lang.inter[113].Value;
                 break;
@@ -406,85 +396,85 @@ namespace Terraria.Graphics.Capture
       if ((double) Main.mapFullscreenScale > 16.0)
         Main.mapFullscreenScale = 16f;
       float mapFullscreenScale = Main.mapFullscreenScale;
-      if (Main.mapFullscreenPos.X < (double) num6)
-        Main.mapFullscreenPos.X = (__Null) (double) num6;
-      if (Main.mapFullscreenPos.X > (double) num8)
-        Main.mapFullscreenPos.X = (__Null) (double) num8;
-      if (Main.mapFullscreenPos.Y < (double) num7)
-        Main.mapFullscreenPos.Y = (__Null) (double) num7;
-      if (Main.mapFullscreenPos.Y > (double) num9)
-        Main.mapFullscreenPos.Y = (__Null) (double) num9;
-      float x = (float) Main.mapFullscreenPos.X;
-      float y = (float) Main.mapFullscreenPos.Y;
-      float num11 = x * mapFullscreenScale;
-      float num12 = y * mapFullscreenScale;
+      if ((double) Main.mapFullscreenPos.X < (double) num6)
+        Main.mapFullscreenPos.X = num6;
+      if ((double) Main.mapFullscreenPos.X > (double) num8)
+        Main.mapFullscreenPos.X = num8;
+      if ((double) Main.mapFullscreenPos.Y < (double) num7)
+        Main.mapFullscreenPos.Y = num7;
+      if ((double) Main.mapFullscreenPos.Y > (double) num9)
+        Main.mapFullscreenPos.Y = num9;
+      float x1 = Main.mapFullscreenPos.X;
+      float y1 = Main.mapFullscreenPos.Y;
+      float num11 = x1 * mapFullscreenScale;
+      float num12 = y1 * mapFullscreenScale;
       float num13 = -num11 + (float) (Main.screenWidth / 2);
       float num14 = -num12 + (float) (Main.screenHeight / 2);
-      float num15 = num13 + num6 * mapFullscreenScale;
-      float num16 = num14 + num7 * mapFullscreenScale;
-      float num17 = (float) (Main.maxTilesX / 840) * Main.mapFullscreenScale;
-      float num18 = num15;
-      float num19 = num16;
-      float width = (float) Main.mapTexture.get_Width();
-      float height = (float) Main.mapTexture.get_Height();
+      float x2 = num13 + num6 * mapFullscreenScale;
+      float y2 = num14 + num7 * mapFullscreenScale;
+      float num15 = (float) (Main.maxTilesX / 840) * Main.mapFullscreenScale;
+      float num16 = x2;
+      float num17 = y2;
+      float width = (float) Main.mapTexture.Width;
+      float height = (float) Main.mapTexture.Height;
+      float num18;
+      float num19;
       float num20;
       float num21;
-      float num22;
-      float num23;
       if (Main.maxTilesX == 8400)
       {
-        float num24 = num17 * 0.999f;
-        num20 = num18 - 40.6f * num24;
-        num21 = num16 - 5f * num24;
-        num22 = (width - 8.045f) * num24;
-        float num25 = (height + 0.12f) * num24;
-        if ((double) num24 < 1.2)
-          num23 = num25 + 1f;
+        float num22 = num15 * 0.999f;
+        num18 = num16 - 40.6f * num22;
+        num19 = y2 - 5f * num22;
+        num20 = (width - 8.045f) * num22;
+        float num23 = (height + 0.12f) * num22;
+        if ((double) num22 < 1.2)
+          num21 = num23 + 1f;
       }
       else if (Main.maxTilesX == 6400)
       {
-        float num24 = num17 * 1.09f;
-        num20 = num18 - 38.8f * num24;
-        num21 = num16 - 3.85f * num24;
-        num22 = (width - 13.6f) * num24;
-        float num25 = (height - 6.92f) * num24;
-        if ((double) num24 < 1.2)
-          num23 = num25 + 2f;
+        float num22 = num15 * 1.09f;
+        num18 = num16 - 38.8f * num22;
+        num19 = y2 - 3.85f * num22;
+        num20 = (width - 13.6f) * num22;
+        float num23 = (height - 6.92f) * num22;
+        if ((double) num22 < 1.2)
+          num21 = num23 + 2f;
       }
       else if (Main.maxTilesX == 6300)
       {
-        float num24 = num17 * 1.09f;
-        num20 = num18 - 39.8f * num24;
-        num21 = num16 - 4.08f * num24;
-        num22 = (width - 26.69f) * num24;
-        float num25 = (height - 6.92f) * num24;
-        if ((double) num24 < 1.2)
-          num23 = num25 + 2f;
+        float num22 = num15 * 1.09f;
+        num18 = num16 - 39.8f * num22;
+        num19 = y2 - 4.08f * num22;
+        num20 = (width - 26.69f) * num22;
+        float num23 = (height - 6.92f) * num22;
+        if ((double) num22 < 1.2)
+          num21 = num23 + 2f;
       }
       else if (Main.maxTilesX == 4200)
       {
-        float num24 = num17 * 0.998f;
-        num20 = num18 - 37.3f * num24;
-        num21 = num19 - 1.7f * num24;
-        num22 = (width - 16f) * num24;
-        num23 = (height - 8.31f) * num24;
+        float num22 = num15 * 0.998f;
+        num18 = num16 - 37.3f * num22;
+        num19 = num17 - 1.7f * num22;
+        num20 = (width - 16f) * num22;
+        num21 = (height - 8.31f) * num22;
       }
       if (Goal == 0)
       {
-        int num24 = (int) ((-(double) num15 + (double) PinX) / (double) mapFullscreenScale + (double) num6);
-        int num25 = (int) ((-(double) num16 + (double) PinY) / (double) mapFullscreenScale + (double) num7);
+        int x3 = (int) ((-(double) x2 + (double) PinX) / (double) mapFullscreenScale + (double) num6);
+        int y3 = (int) ((-(double) y2 + (double) PinY) / (double) mapFullscreenScale + (double) num7);
         bool flag = false;
-        if ((double) num24 < (double) num6)
+        if ((double) x3 < (double) num6)
           flag = true;
-        if ((double) num24 >= (double) num8)
+        if ((double) x3 >= (double) num8)
           flag = true;
-        if ((double) num25 < (double) num7)
+        if ((double) y3 < (double) num7)
           flag = true;
-        if ((double) num25 >= (double) num9)
+        if ((double) y3 >= (double) num9)
           flag = true;
         if (!flag)
         {
-          result = new Point(num24, num25);
+          result = new Point(x3, y3);
           return true;
         }
         result = new Point(-1, -1);
@@ -492,11 +482,9 @@ namespace Terraria.Graphics.Capture
       }
       if (Goal == 1)
       {
-        Vector2 vector2_1;
-        // ISSUE: explicit reference operation
-        ((Vector2) @vector2_1).\u002Ector(num15, num16);
-        Vector2 vector2_2 = Vector2.op_Subtraction(Vector2.op_Multiply(new Vector2((float) PinX, (float) PinY), mapFullscreenScale), new Vector2(10f * mapFullscreenScale));
-        result = Vector2.op_Addition(vector2_1, vector2_2).ToPoint();
+        Vector2 vector2_1 = new Vector2(x2, y2);
+        Vector2 vector2_2 = new Vector2((float) PinX, (float) PinY) * mapFullscreenScale - new Vector2(10f * mapFullscreenScale);
+        result = (vector2_1 + vector2_2).ToPoint();
         return true;
       }
       result = new Point(-1, -1);
@@ -516,14 +504,14 @@ namespace Terraria.Graphics.Capture
     private static void PointWorldClamp(ref Point point, int fluff)
     {
       if (point.X < fluff)
-        point.X = (__Null) fluff;
+        point.X = fluff;
       if (point.X > Main.maxTilesX - 1 - fluff)
-        point.X = (__Null) (Main.maxTilesX - 1 - fluff);
+        point.X = Main.maxTilesX - 1 - fluff;
       if (point.Y < fluff)
-        point.Y = (__Null) fluff;
+        point.Y = fluff;
       if (point.Y <= Main.maxTilesY - 1 - fluff)
         return;
-      point.Y = (__Null) (Main.maxTilesY - 1 - fluff);
+      point.Y = Main.maxTilesY - 1 - fluff;
     }
 
     public bool UsingMap()
@@ -577,7 +565,7 @@ namespace Terraria.Graphics.Capture
     {
       if ((double) CaptureInterface.CameraFrame == 0.0)
         return;
-      sb.Draw(Main.magicPixel, new Rectangle(0, 0, Main.screenWidth, Main.screenHeight), new Rectangle?(new Rectangle(0, 0, 1, 1)), Color.op_Multiply(Color.get_Black(), CaptureInterface.CameraFrame / 5f));
+      sb.Draw(Main.magicPixel, new Rectangle(0, 0, Main.screenWidth, Main.screenHeight), new Rectangle?(new Rectangle(0, 0, 1, 1)), Color.Black * (CaptureInterface.CameraFrame / 5f));
       if ((double) CaptureInterface.CameraFrame != 5.0)
         return;
       float num1 = (float) ((double) CaptureInterface.CameraWaiting - 60.0 + 5.0);
@@ -591,14 +579,10 @@ namespace Terraria.Graphics.Capture
       string text2 = "/ 100%";
       Vector2 vector2_1 = Main.fontDeathText.MeasureString(text1);
       Vector2 vector2_2 = Main.fontDeathText.MeasureString(text2);
-      Vector2 vector2_3;
-      // ISSUE: explicit reference operation
-      ((Vector2) @vector2_3).\u002Ector((float) -vector2_1.X, (float) (-vector2_1.Y / 2.0));
-      Vector2 vector2_4;
-      // ISSUE: explicit reference operation
-      ((Vector2) @vector2_4).\u002Ector(0.0f, (float) (-vector2_2.Y / 2.0));
-      ChatManager.DrawColorCodedStringWithShadow(sb, Main.fontDeathText, text1, Vector2.op_Addition(Vector2.op_Division(new Vector2((float) Main.screenWidth, (float) Main.screenHeight), 2f), vector2_3), Color.op_Multiply(Color.get_White(), num2), 0.0f, Vector2.get_Zero(), Vector2.get_One(), -1f, 2f);
-      ChatManager.DrawColorCodedStringWithShadow(sb, Main.fontDeathText, text2, Vector2.op_Addition(Vector2.op_Division(new Vector2((float) Main.screenWidth, (float) Main.screenHeight), 2f), vector2_4), Color.op_Multiply(Color.get_White(), num2), 0.0f, Vector2.get_Zero(), Vector2.get_One(), -1f, 2f);
+      Vector2 vector2_3 = new Vector2(-vector2_1.X, (float) (-(double) vector2_1.Y / 2.0));
+      Vector2 vector2_4 = new Vector2(0.0f, (float) (-(double) vector2_2.Y / 2.0));
+      ChatManager.DrawColorCodedStringWithShadow(sb, Main.fontDeathText, text1, new Vector2((float) Main.screenWidth, (float) Main.screenHeight) / 2f + vector2_3, Color.White * num2, 0.0f, Vector2.Zero, Vector2.One, -1f, 2f);
+      ChatManager.DrawColorCodedStringWithShadow(sb, Main.fontDeathText, text2, new Vector2((float) Main.screenWidth, (float) Main.screenHeight) / 2f + vector2_4, Color.White * num2, 0.0f, Vector2.Zero, Vector2.One, -1f, 2f);
     }
 
     public static void StartCamera(CaptureSettings settings)
@@ -621,7 +605,7 @@ namespace Terraria.Graphics.Capture
       public static bool TransparentBackground = false;
       public static int BiomeChoice = 0;
       public static int ScreenAnchor = 0;
-      public static Color MarkedAreaColor = Color.op_Multiply(new Color(0.8f, 0.8f, 0.8f, 0.0f), 0.3f);
+      public static Color MarkedAreaColor = new Color(0.8f, 0.8f, 0.8f, 0.0f) * 0.3f;
     }
 
     private abstract class CaptureInterfaceMode
@@ -644,10 +628,7 @@ namespace Terraria.Graphics.Capture
         if (!this.Selected)
           return;
         PlayerInput.SetZoom_Context();
-        Vector2 mouse;
-        // ISSUE: explicit reference operation
-        ((Vector2) @mouse).\u002Ector((float) Main.mouseX, (float) Main.mouseY);
-        this.EdgePlacement(mouse);
+        this.EdgePlacement(new Vector2((float) Main.mouseX, (float) Main.mouseY));
       }
 
       public override void Draw(SpriteBatch sb)
@@ -655,12 +636,12 @@ namespace Terraria.Graphics.Capture
         if (!this.Selected)
           return;
         sb.End();
-        sb.Begin((SpriteSortMode) 0, (BlendState) BlendState.AlphaBlend, (SamplerState) SamplerState.PointClamp, (DepthStencilState) DepthStencilState.None, (RasterizerState) RasterizerState.CullCounterClockwise, (Effect) null, Main.CurrentWantedZoomMatrix);
+        sb.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.None, RasterizerState.CullCounterClockwise, (Effect) null, Main.CurrentWantedZoomMatrix);
         PlayerInput.SetZoom_Context();
         this.DrawMarkedArea(sb);
         this.DrawCursors(sb);
         sb.End();
-        sb.Begin((SpriteSortMode) 0, (BlendState) BlendState.AlphaBlend, (SamplerState) SamplerState.PointClamp, (DepthStencilState) DepthStencilState.None, (RasterizerState) RasterizerState.CullCounterClockwise, (Effect) null, Main.UIScaleMatrix);
+        sb.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.None, RasterizerState.CullCounterClockwise, (Effect) null, Main.UIScaleMatrix);
         PlayerInput.SetZoom_UI();
       }
 
@@ -714,25 +695,24 @@ namespace Terraria.Graphics.Capture
       {
         if (!CaptureInterface.EdgeAPinned || !CaptureInterface.EdgeBPinned)
           return;
-        int PinX = Math.Min((int) CaptureInterface.EdgeA.X, (int) CaptureInterface.EdgeB.X);
-        int PinY = Math.Min((int) CaptureInterface.EdgeA.Y, (int) CaptureInterface.EdgeB.Y);
-        int num1 = Math.Abs((int) (CaptureInterface.EdgeA.X - CaptureInterface.EdgeB.X));
-        int num2 = Math.Abs((int) (CaptureInterface.EdgeA.Y - CaptureInterface.EdgeB.Y));
+        int PinX = Math.Min(CaptureInterface.EdgeA.X, CaptureInterface.EdgeB.X);
+        int PinY = Math.Min(CaptureInterface.EdgeA.Y, CaptureInterface.EdgeB.Y);
+        int num1 = Math.Abs(CaptureInterface.EdgeA.X - CaptureInterface.EdgeB.X);
+        int num2 = Math.Abs(CaptureInterface.EdgeA.Y - CaptureInterface.EdgeB.Y);
         if (!Main.mapFullscreen)
         {
           Rectangle rectangle1 = Main.ReverseGravitySupport(new Rectangle(PinX * 16, PinY * 16, (num1 + 1) * 16, (num2 + 1) * 16));
           Rectangle rectangle2 = Main.ReverseGravitySupport(new Rectangle((int) Main.screenPosition.X, (int) Main.screenPosition.Y, Main.screenWidth + 1, Main.screenHeight + 1));
-          Rectangle rectangle3;
-          Rectangle.Intersect(ref rectangle2, ref rectangle1, ref rectangle3);
-          if (rectangle3.Width == null || rectangle3.Height == null)
+          Rectangle result;
+          Rectangle.Intersect(ref rectangle2, ref rectangle1, out result);
+          if (result.Width == 0 || result.Height == 0)
             return;
-          // ISSUE: explicit reference operation
-          ((Rectangle) @rectangle3).Offset((int) -rectangle2.X, (int) -rectangle2.Y);
-          sb.Draw(Main.magicPixel, rectangle3, CaptureInterface.Settings.MarkedAreaColor);
+          result.Offset(-rectangle2.X, -rectangle2.Y);
+          sb.Draw(Main.magicPixel, result, CaptureInterface.Settings.MarkedAreaColor);
           for (int index = 0; index < 2; ++index)
           {
-            sb.Draw(Main.magicPixel, new Rectangle((int) rectangle3.X, rectangle3.Y + (index == 1 ? (int) rectangle3.Height : -2), (int) rectangle3.Width, 2), Color.get_White());
-            sb.Draw(Main.magicPixel, new Rectangle(rectangle3.X + (index == 1 ? (int) rectangle3.Width : -2), (int) rectangle3.Y, 2, (int) rectangle3.Height), Color.get_White());
+            sb.Draw(Main.magicPixel, new Rectangle(result.X, result.Y + (index == 1 ? result.Height : -2), result.Width, 2), Color.White);
+            sb.Draw(Main.magicPixel, new Rectangle(result.X + (index == 1 ? result.Width : -2), result.Y, 2, result.Height), Color.White);
           }
         }
         else
@@ -741,19 +721,18 @@ namespace Terraria.Graphics.Capture
           CaptureInterface.GetMapCoords(PinX, PinY, 1, out result1);
           Point result2;
           CaptureInterface.GetMapCoords(PinX + num1 + 1, PinY + num2 + 1, 1, out result2);
-          Rectangle rectangle1 = new Rectangle((int) result1.X, (int) result1.Y, (int) (result2.X - result1.X), (int) (result2.Y - result1.Y));
+          Rectangle rectangle1 = new Rectangle(result1.X, result1.Y, result2.X - result1.X, result2.Y - result1.Y);
           Rectangle rectangle2 = new Rectangle(0, 0, Main.screenWidth + 1, Main.screenHeight + 1);
-          Rectangle rectangle3;
-          Rectangle.Intersect(ref rectangle2, ref rectangle1, ref rectangle3);
-          if (rectangle3.Width == null || rectangle3.Height == null)
+          Rectangle result3;
+          Rectangle.Intersect(ref rectangle2, ref rectangle1, out result3);
+          if (result3.Width == 0 || result3.Height == 0)
             return;
-          // ISSUE: explicit reference operation
-          ((Rectangle) @rectangle3).Offset((int) -rectangle2.X, (int) -rectangle2.Y);
-          sb.Draw(Main.magicPixel, rectangle3, CaptureInterface.Settings.MarkedAreaColor);
+          result3.Offset(-rectangle2.X, -rectangle2.Y);
+          sb.Draw(Main.magicPixel, result3, CaptureInterface.Settings.MarkedAreaColor);
           for (int index = 0; index < 2; ++index)
           {
-            sb.Draw(Main.magicPixel, new Rectangle((int) rectangle3.X, rectangle3.Y + (index == 1 ? (int) rectangle3.Height : -2), (int) rectangle3.Width, 2), Color.get_White());
-            sb.Draw(Main.magicPixel, new Rectangle(rectangle3.X + (index == 1 ? (int) rectangle3.Width : -2), (int) rectangle3.Y, 2, (int) rectangle3.Height), Color.get_White());
+            sb.Draw(Main.magicPixel, new Rectangle(result3.X, result3.Y + (index == 1 ? result3.Height : -2), result3.Width, 2), Color.White);
+            sb.Draw(Main.magicPixel, new Rectangle(result3.X + (index == 1 ? result3.Width : -2), result3.Y, 2, result3.Height), Color.White);
           }
         }
       }
@@ -762,18 +741,18 @@ namespace Terraria.Graphics.Capture
       {
         float num1 = 1f / Main.cursorScale;
         float num2 = 0.8f / num1;
-        Vector2 vector2_1 = Vector2.op_Addition(Main.screenPosition, new Vector2(30f));
-        Vector2 vector2_2 = Vector2.op_Subtraction(Vector2.op_Addition(vector2_1, new Vector2((float) Main.screenWidth, (float) Main.screenHeight)), new Vector2(60f));
+        Vector2 min = Main.screenPosition + new Vector2(30f);
+        Vector2 max = min + new Vector2((float) Main.screenWidth, (float) Main.screenHeight) - new Vector2(60f);
         if (Main.mapFullscreen)
         {
-          vector2_1 = Vector2.op_Subtraction(vector2_1, Main.screenPosition);
-          vector2_2 = Vector2.op_Subtraction(vector2_2, Main.screenPosition);
+          min -= Main.screenPosition;
+          max -= Main.screenPosition;
         }
         Vector3 hsl = Main.rgbToHsl(Main.cursorColor);
-        Main.hslToRgb((float) ((hsl.X + 0.330000013113022) % 1.0), (float) hsl.Y, (float) hsl.Z);
-        Main.hslToRgb((float) ((hsl.X - 0.330000013113022) % 1.0), (float) hsl.Y, (float) hsl.Z);
+        Main.hslToRgb((float) (((double) hsl.X + 0.330000013113022) % 1.0), hsl.Y, hsl.Z);
+        Main.hslToRgb((float) (((double) hsl.X - 0.330000013113022) % 1.0), hsl.Y, hsl.Z);
         Color white;
-        Color color = white = Color.get_White();
+        Color color = white = Color.White;
         bool flag = (double) Main.player[Main.myPlayer].gravDir == -1.0;
         if (!CaptureInterface.EdgeAPinned)
         {
@@ -783,41 +762,39 @@ namespace Terraria.Graphics.Capture
         {
           int specialMode = 0;
           float num3 = 0.0f;
-          Vector2 vector2_3 = Vector2.get_Zero();
+          Vector2 vector2_1 = Vector2.Zero;
           if (!Main.mapFullscreen)
           {
-            Vector2 vector2_4 = Vector2.op_Multiply(CaptureInterface.EdgeA.ToVector2(), 16f);
+            Vector2 vector2_2 = CaptureInterface.EdgeA.ToVector2() * 16f;
             float num4;
-            Vector2 vector2_5;
+            Vector2 vector2_3;
             if (!CaptureInterface.EdgeBPinned)
             {
               specialMode = 1;
-              Vector2 vector2_6 = Vector2.op_Addition(vector2_4, Vector2.op_Multiply(Vector2.get_One(), 8f));
-              vector2_3 = vector2_6;
-              num4 = Vector2.op_Addition(Vector2.op_Addition(Vector2.op_UnaryNegation(vector2_6), Main.ReverseGravitySupport(new Vector2((float) Main.mouseX, (float) Main.mouseY), 0.0f)), Main.screenPosition).ToRotation();
+              Vector2 vector2_4 = vector2_2 + Vector2.One * 8f;
+              vector2_1 = vector2_4;
+              num4 = (-vector2_4 + Main.ReverseGravitySupport(new Vector2((float) Main.mouseX, (float) Main.mouseY), 0.0f) + Main.screenPosition).ToRotation();
               if (flag)
                 num4 = -num4;
-              vector2_5 = Vector2.Clamp(vector2_6, vector2_1, vector2_2);
-              if (Vector2.op_Inequality(vector2_5, vector2_6))
-                num4 = Vector2.op_Subtraction(vector2_6, vector2_5).ToRotation();
+              vector2_3 = Vector2.Clamp(vector2_4, min, max);
+              if (vector2_3 != vector2_4)
+                num4 = (vector2_4 - vector2_3).ToRotation();
             }
             else
             {
-              Vector2 vector2_6;
-              // ISSUE: explicit reference operation
-              ((Vector2) @vector2_6).\u002Ector((float) ((CaptureInterface.EdgeA.X > CaptureInterface.EdgeB.X).ToInt() * 16), (float) ((CaptureInterface.EdgeA.Y > CaptureInterface.EdgeB.Y).ToInt() * 16));
-              Vector2 vector2_7 = Vector2.op_Addition(vector2_4, vector2_6);
-              vector2_5 = Vector2.Clamp(vector2_7, vector2_1, vector2_2);
-              num4 = Vector2.op_Subtraction(Vector2.op_Subtraction(Vector2.op_Addition(Vector2.op_Multiply(CaptureInterface.EdgeB.ToVector2(), 16f), new Vector2(16f)), vector2_6), vector2_5).ToRotation();
-              if (Vector2.op_Inequality(vector2_5, vector2_7))
+              Vector2 vector2_4 = new Vector2((float) ((CaptureInterface.EdgeA.X > CaptureInterface.EdgeB.X).ToInt() * 16), (float) ((CaptureInterface.EdgeA.Y > CaptureInterface.EdgeB.Y).ToInt() * 16));
+              Vector2 vector2_5 = vector2_2 + vector2_4;
+              vector2_3 = Vector2.Clamp(vector2_5, min, max);
+              num4 = (CaptureInterface.EdgeB.ToVector2() * 16f + new Vector2(16f) - vector2_4 - vector2_3).ToRotation();
+              if (vector2_3 != vector2_5)
               {
-                num4 = Vector2.op_Subtraction(vector2_7, vector2_5).ToRotation();
+                num4 = (vector2_5 - vector2_3).ToRotation();
                 specialMode = 1;
               }
               if (flag)
                 num4 *= -1f;
             }
-            Utils.DrawCursorSingle(sb, color, num4 - 1.570796f, Main.cursorScale * num1, Main.ReverseGravitySupport(Vector2.op_Subtraction(vector2_5, Main.screenPosition), 0.0f), 4, specialMode);
+            Utils.DrawCursorSingle(sb, color, num4 - 1.570796f, Main.cursorScale * num1, Main.ReverseGravitySupport(vector2_3 - Main.screenPosition, 0.0f), 4, specialMode);
           }
           else
           {
@@ -826,42 +803,18 @@ namespace Terraria.Graphics.Capture
             {
               int num4 = (CaptureInterface.EdgeA.X > CaptureInterface.EdgeB.X).ToInt();
               int num5 = (CaptureInterface.EdgeA.Y > CaptureInterface.EdgeB.Y).ToInt();
-              // ISSUE: explicit reference operation
-              // ISSUE: variable of a reference type
-              Point& local1 = @result1;
-              // ISSUE: explicit reference operation
-              int num6 = (^local1).X + num4;
-              // ISSUE: explicit reference operation
-              (^local1).X = (__Null) num6;
-              // ISSUE: explicit reference operation
-              // ISSUE: variable of a reference type
-              Point& local2 = @result1;
-              // ISSUE: explicit reference operation
-              int num7 = (^local2).Y + num5;
-              // ISSUE: explicit reference operation
-              (^local2).Y = (__Null) num7;
-              CaptureInterface.GetMapCoords((int) result1.X, (int) result1.Y, 1, out result1);
+              result1.X += num4;
+              result1.Y += num5;
+              CaptureInterface.GetMapCoords(result1.X, result1.Y, 1, out result1);
               Point result2 = CaptureInterface.EdgeB;
-              // ISSUE: explicit reference operation
-              // ISSUE: variable of a reference type
-              Point& local3 = @result2;
-              // ISSUE: explicit reference operation
-              int num8 = (^local3).X + (1 - num4);
-              // ISSUE: explicit reference operation
-              (^local3).X = (__Null) num8;
-              // ISSUE: explicit reference operation
-              // ISSUE: variable of a reference type
-              Point& local4 = @result2;
-              // ISSUE: explicit reference operation
-              int num9 = (^local4).Y + (1 - num5);
-              // ISSUE: explicit reference operation
-              (^local4).Y = (__Null) num9;
-              CaptureInterface.GetMapCoords((int) result2.X, (int) result2.Y, 1, out result2);
-              Vector2 vector2_4 = Vector2.Clamp(result1.ToVector2(), vector2_1, vector2_2);
-              num3 = Vector2.op_Subtraction(result2.ToVector2(), vector2_4).ToRotation();
+              result2.X += 1 - num4;
+              result2.Y += 1 - num5;
+              CaptureInterface.GetMapCoords(result2.X, result2.Y, 1, out result2);
+              Vector2 vector2_2 = Vector2.Clamp(result1.ToVector2(), min, max);
+              num3 = (result2.ToVector2() - vector2_2).ToRotation();
             }
             else
-              CaptureInterface.GetMapCoords((int) result1.X, (int) result1.Y, 1, out result1);
+              CaptureInterface.GetMapCoords(result1.X, result1.Y, 1, out result1);
             Utils.DrawCursorSingle(sb, color, num3 - 1.570796f, Main.cursorScale * num1, result1.ToVector2(), 4, 0);
           }
         }
@@ -873,41 +826,39 @@ namespace Terraria.Graphics.Capture
         {
           int specialMode = 0;
           float num3 = 0.0f;
-          Vector2 vector2_3 = Vector2.get_Zero();
+          Vector2 vector2_1 = Vector2.Zero;
           if (!Main.mapFullscreen)
           {
-            Vector2 vector2_4 = Vector2.op_Multiply(CaptureInterface.EdgeB.ToVector2(), 16f);
+            Vector2 vector2_2 = CaptureInterface.EdgeB.ToVector2() * 16f;
             float num4;
-            Vector2 vector2_5;
+            Vector2 vector2_3;
             if (!CaptureInterface.EdgeAPinned)
             {
               specialMode = 1;
-              Vector2 vector2_6 = Vector2.op_Addition(vector2_4, Vector2.op_Multiply(Vector2.get_One(), 8f));
-              vector2_3 = vector2_6;
-              num4 = Vector2.op_Addition(Vector2.op_Addition(Vector2.op_UnaryNegation(vector2_6), Main.ReverseGravitySupport(new Vector2((float) Main.mouseX, (float) Main.mouseY), 0.0f)), Main.screenPosition).ToRotation();
+              Vector2 vector2_4 = vector2_2 + Vector2.One * 8f;
+              vector2_1 = vector2_4;
+              num4 = (-vector2_4 + Main.ReverseGravitySupport(new Vector2((float) Main.mouseX, (float) Main.mouseY), 0.0f) + Main.screenPosition).ToRotation();
               if (flag)
                 num4 = -num4;
-              vector2_5 = Vector2.Clamp(vector2_6, vector2_1, vector2_2);
-              if (Vector2.op_Inequality(vector2_5, vector2_6))
-                num4 = Vector2.op_Subtraction(vector2_6, vector2_5).ToRotation();
+              vector2_3 = Vector2.Clamp(vector2_4, min, max);
+              if (vector2_3 != vector2_4)
+                num4 = (vector2_4 - vector2_3).ToRotation();
             }
             else
             {
-              Vector2 vector2_6;
-              // ISSUE: explicit reference operation
-              ((Vector2) @vector2_6).\u002Ector((float) ((CaptureInterface.EdgeB.X >= CaptureInterface.EdgeA.X).ToInt() * 16), (float) ((CaptureInterface.EdgeB.Y >= CaptureInterface.EdgeA.Y).ToInt() * 16));
-              Vector2 vector2_7 = Vector2.op_Addition(vector2_4, vector2_6);
-              vector2_5 = Vector2.Clamp(vector2_7, vector2_1, vector2_2);
-              num4 = Vector2.op_Subtraction(Vector2.op_Subtraction(Vector2.op_Addition(Vector2.op_Multiply(CaptureInterface.EdgeA.ToVector2(), 16f), new Vector2(16f)), vector2_6), vector2_5).ToRotation();
-              if (Vector2.op_Inequality(vector2_5, vector2_7))
+              Vector2 vector2_4 = new Vector2((float) ((CaptureInterface.EdgeB.X >= CaptureInterface.EdgeA.X).ToInt() * 16), (float) ((CaptureInterface.EdgeB.Y >= CaptureInterface.EdgeA.Y).ToInt() * 16));
+              Vector2 vector2_5 = vector2_2 + vector2_4;
+              vector2_3 = Vector2.Clamp(vector2_5, min, max);
+              num4 = (CaptureInterface.EdgeA.ToVector2() * 16f + new Vector2(16f) - vector2_4 - vector2_3).ToRotation();
+              if (vector2_3 != vector2_5)
               {
-                num4 = Vector2.op_Subtraction(vector2_7, vector2_5).ToRotation();
+                num4 = (vector2_5 - vector2_3).ToRotation();
                 specialMode = 1;
               }
               if (flag)
                 num4 *= -1f;
             }
-            Utils.DrawCursorSingle(sb, white, num4 - 1.570796f, Main.cursorScale * num1, Main.ReverseGravitySupport(Vector2.op_Subtraction(vector2_5, Main.screenPosition), 0.0f), 5, specialMode);
+            Utils.DrawCursorSingle(sb, white, num4 - 1.570796f, Main.cursorScale * num1, Main.ReverseGravitySupport(vector2_3 - Main.screenPosition, 0.0f), 5, specialMode);
           }
           else
           {
@@ -916,42 +867,18 @@ namespace Terraria.Graphics.Capture
             {
               int num4 = (CaptureInterface.EdgeB.X >= CaptureInterface.EdgeA.X).ToInt();
               int num5 = (CaptureInterface.EdgeB.Y >= CaptureInterface.EdgeA.Y).ToInt();
-              // ISSUE: explicit reference operation
-              // ISSUE: variable of a reference type
-              Point& local1 = @result1;
-              // ISSUE: explicit reference operation
-              int num6 = (^local1).X + num4;
-              // ISSUE: explicit reference operation
-              (^local1).X = (__Null) num6;
-              // ISSUE: explicit reference operation
-              // ISSUE: variable of a reference type
-              Point& local2 = @result1;
-              // ISSUE: explicit reference operation
-              int num7 = (^local2).Y + num5;
-              // ISSUE: explicit reference operation
-              (^local2).Y = (__Null) num7;
-              CaptureInterface.GetMapCoords((int) result1.X, (int) result1.Y, 1, out result1);
+              result1.X += num4;
+              result1.Y += num5;
+              CaptureInterface.GetMapCoords(result1.X, result1.Y, 1, out result1);
               Point result2 = CaptureInterface.EdgeA;
-              // ISSUE: explicit reference operation
-              // ISSUE: variable of a reference type
-              Point& local3 = @result2;
-              // ISSUE: explicit reference operation
-              int num8 = (^local3).X + (1 - num4);
-              // ISSUE: explicit reference operation
-              (^local3).X = (__Null) num8;
-              // ISSUE: explicit reference operation
-              // ISSUE: variable of a reference type
-              Point& local4 = @result2;
-              // ISSUE: explicit reference operation
-              int num9 = (^local4).Y + (1 - num5);
-              // ISSUE: explicit reference operation
-              (^local4).Y = (__Null) num9;
-              CaptureInterface.GetMapCoords((int) result2.X, (int) result2.Y, 1, out result2);
-              Vector2 vector2_4 = Vector2.Clamp(result1.ToVector2(), vector2_1, vector2_2);
-              num3 = Vector2.op_Subtraction(result2.ToVector2(), vector2_4).ToRotation();
+              result2.X += 1 - num4;
+              result2.Y += 1 - num5;
+              CaptureInterface.GetMapCoords(result2.X, result2.Y, 1, out result2);
+              Vector2 vector2_2 = Vector2.Clamp(result1.ToVector2(), min, max);
+              num3 = (result2.ToVector2() - vector2_2).ToRotation();
             }
             else
-              CaptureInterface.GetMapCoords((int) result1.X, (int) result1.Y, 1, out result1);
+              CaptureInterface.GetMapCoords(result1.X, result1.Y, 1, out result1);
             Utils.DrawCursorSingle(sb, white, num3 - 1.570796f, Main.cursorScale * num1, result1.ToVector2(), 5, 0);
           }
         }
@@ -970,10 +897,7 @@ namespace Terraria.Graphics.Capture
         if (!this.Selected || CaptureInterface.JustActivated)
           return;
         PlayerInput.SetZoom_Context();
-        Vector2 mouse;
-        // ISSUE: explicit reference operation
-        ((Vector2) @mouse).\u002Ector((float) Main.mouseX, (float) Main.mouseY);
-        this.DragBounds(mouse);
+        this.DragBounds(new Vector2((float) Main.mouseX, (float) Main.mouseY));
       }
 
       public override void Draw(SpriteBatch sb)
@@ -981,11 +905,11 @@ namespace Terraria.Graphics.Capture
         if (!this.Selected)
           return;
         sb.End();
-        sb.Begin((SpriteSortMode) 0, (BlendState) BlendState.AlphaBlend, (SamplerState) SamplerState.PointClamp, (DepthStencilState) DepthStencilState.None, (RasterizerState) RasterizerState.CullCounterClockwise, (Effect) null, Main.CurrentWantedZoomMatrix);
+        sb.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.None, RasterizerState.CullCounterClockwise, (Effect) null, Main.CurrentWantedZoomMatrix);
         PlayerInput.SetZoom_Context();
         this.DrawMarkedArea(sb);
         sb.End();
-        sb.Begin((SpriteSortMode) 0, (BlendState) BlendState.AlphaBlend, (SamplerState) SamplerState.PointClamp, (DepthStencilState) DepthStencilState.None, (RasterizerState) RasterizerState.CullCounterClockwise, (Effect) null, Main.UIScaleMatrix);
+        sb.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.None, RasterizerState.CullCounterClockwise, (Effect) null, Main.UIScaleMatrix);
         PlayerInput.SetZoom_UI();
       }
 
@@ -1013,7 +937,7 @@ namespace Terraria.Graphics.Capture
             bool flag2 = true;
             Point result;
             if (!Main.mapFullscreen)
-              result = Vector2.op_Addition(Main.screenPosition, mouse).ToTileCoordinates();
+              result = (Main.screenPosition + mouse).ToTileCoordinates();
             else
               flag2 = CaptureInterface.GetMapCoords((int) mouse.X, (int) mouse.Y, 0, out result);
             if (flag2)
@@ -1033,10 +957,10 @@ namespace Terraria.Graphics.Capture
             this.caughtEdge = 1;
           }
         }
-        int PinX = Math.Min((int) CaptureInterface.EdgeA.X, (int) CaptureInterface.EdgeB.X);
-        int PinY = Math.Min((int) CaptureInterface.EdgeA.Y, (int) CaptureInterface.EdgeB.Y);
-        int num1 = Math.Abs((int) (CaptureInterface.EdgeA.X - CaptureInterface.EdgeB.X));
-        int num2 = Math.Abs((int) (CaptureInterface.EdgeA.Y - CaptureInterface.EdgeB.Y));
+        int PinX = Math.Min(CaptureInterface.EdgeA.X, CaptureInterface.EdgeB.X);
+        int PinY = Math.Min(CaptureInterface.EdgeA.Y, CaptureInterface.EdgeB.Y);
+        int num1 = Math.Abs(CaptureInterface.EdgeA.X - CaptureInterface.EdgeB.X);
+        int num2 = Math.Abs(CaptureInterface.EdgeA.Y - CaptureInterface.EdgeB.Y);
         bool flag = (double) Main.player[Main.myPlayer].gravDir == -1.0;
         int num3 = 1 - flag.ToInt();
         int num4 = flag.ToInt();
@@ -1046,12 +970,11 @@ namespace Terraria.Graphics.Capture
         {
           rectangle1 = Main.ReverseGravitySupport(new Rectangle(PinX * 16, PinY * 16, (num1 + 1) * 16, (num2 + 1) * 16));
           rectangle2 = Main.ReverseGravitySupport(new Rectangle((int) Main.screenPosition.X, (int) Main.screenPosition.Y, Main.screenWidth + 1, Main.screenHeight + 1));
-          Rectangle rectangle3;
-          Rectangle.Intersect(ref rectangle2, ref rectangle1, ref rectangle3);
-          if (rectangle3.Width == null || rectangle3.Height == null)
+          Rectangle result;
+          Rectangle.Intersect(ref rectangle2, ref rectangle1, out result);
+          if (result.Width == 0 || result.Height == 0)
             return;
-          // ISSUE: explicit reference operation
-          ((Rectangle) @rectangle3).Offset((int) -rectangle2.X, (int) -rectangle2.Y);
+          result.Offset(-rectangle2.X, -rectangle2.Y);
         }
         else
         {
@@ -1059,14 +982,13 @@ namespace Terraria.Graphics.Capture
           CaptureInterface.GetMapCoords(PinX, PinY, 1, out result1);
           Point result2;
           CaptureInterface.GetMapCoords(PinX + num1 + 1, PinY + num2 + 1, 1, out result2);
-          rectangle1 = new Rectangle((int) result1.X, (int) result1.Y, (int) (result2.X - result1.X), (int) (result2.Y - result1.Y));
+          rectangle1 = new Rectangle(result1.X, result1.Y, result2.X - result1.X, result2.Y - result1.Y);
           rectangle2 = new Rectangle(0, 0, Main.screenWidth + 1, Main.screenHeight + 1);
-          Rectangle rectangle3;
-          Rectangle.Intersect(ref rectangle2, ref rectangle1, ref rectangle3);
-          if (rectangle3.Width == null || rectangle3.Height == null)
+          Rectangle result3;
+          Rectangle.Intersect(ref rectangle2, ref rectangle1, out result3);
+          if (result3.Width == 0 || result3.Height == 0)
             return;
-          // ISSUE: explicit reference operation
-          ((Rectangle) @rectangle3).Offset((int) -rectangle2.X, (int) -rectangle2.Y);
+          result3.Offset(-rectangle2.X, -rectangle2.Y);
         }
         this.dragging = false;
         if (!Main.mouseLeft)
@@ -1074,37 +996,38 @@ namespace Terraria.Graphics.Capture
         if (this.currentAim != -1)
         {
           this.dragging = true;
-          Point point;
+          Point point1 = new Point();
+          Point point2;
           if (!Main.mapFullscreen)
           {
-            point = Main.MouseWorld.ToTileCoordinates();
+            point2 = Main.MouseWorld.ToTileCoordinates();
           }
           else
           {
             Point result;
             if (!CaptureInterface.GetMapCoords((int) mouse.X, (int) mouse.Y, 0, out result))
               return;
-            point = result;
+            point2 = result;
           }
           switch (this.currentAim)
           {
             case 0:
             case 1:
               if (this.caughtEdge == 0)
-                CaptureInterface.EdgeA.Y = point.Y;
+                CaptureInterface.EdgeA.Y = point2.Y;
               if (this.caughtEdge == 1)
               {
-                CaptureInterface.EdgeB.Y = point.Y;
+                CaptureInterface.EdgeB.Y = point2.Y;
                 break;
               }
               break;
             case 2:
             case 3:
               if (this.caughtEdge == 0)
-                CaptureInterface.EdgeA.X = point.X;
+                CaptureInterface.EdgeA.X = point2.X;
               if (this.caughtEdge == 1)
               {
-                CaptureInterface.EdgeB.X = point.X;
+                CaptureInterface.EdgeB.X = point2.X;
                 break;
               }
               break;
@@ -1114,17 +1037,13 @@ namespace Terraria.Graphics.Capture
         {
           this.caughtEdge = -1;
           Rectangle drawbox = rectangle1;
-          // ISSUE: explicit reference operation
-          ((Rectangle) @drawbox).Offset((int) -rectangle2.X, (int) -rectangle2.Y);
-          // ISSUE: explicit reference operation
-          this.inMap = ((Rectangle) @drawbox).Contains(mouse.ToPoint());
+          drawbox.Offset(-rectangle2.X, -rectangle2.Y);
+          this.inMap = drawbox.Contains(mouse.ToPoint());
           for (int boundIndex = 0; boundIndex < 4; ++boundIndex)
           {
             Rectangle bound = this.GetBound(drawbox, boundIndex);
-            // ISSUE: explicit reference operation
-            ((Rectangle) @bound).Inflate(8, 8);
-            // ISSUE: explicit reference operation
-            if (((Rectangle) @bound).Contains(mouse.ToPoint()))
+            bound.Inflate(8, 8);
+            if (bound.Contains(mouse.ToPoint()))
             {
               this.currentAim = boundIndex;
               if (boundIndex == 0)
@@ -1157,104 +1076,86 @@ namespace Terraria.Graphics.Capture
       private Rectangle GetBound(Rectangle drawbox, int boundIndex)
       {
         if (boundIndex == 0)
-          return new Rectangle((int) drawbox.X, drawbox.Y - 2, (int) drawbox.Width, 2);
+          return new Rectangle(drawbox.X, drawbox.Y - 2, drawbox.Width, 2);
         if (boundIndex == 1)
-          return new Rectangle((int) drawbox.X, (int) (drawbox.Y + drawbox.Height), (int) drawbox.Width, 2);
+          return new Rectangle(drawbox.X, drawbox.Y + drawbox.Height, drawbox.Width, 2);
         if (boundIndex == 2)
-          return new Rectangle(drawbox.X - 2, (int) drawbox.Y, 2, (int) drawbox.Height);
+          return new Rectangle(drawbox.X - 2, drawbox.Y, 2, drawbox.Height);
         if (boundIndex == 3)
-          return new Rectangle((int) (drawbox.X + drawbox.Width), (int) drawbox.Y, 2, (int) drawbox.Height);
-        return Rectangle.get_Empty();
+          return new Rectangle(drawbox.X + drawbox.Width, drawbox.Y, 2, drawbox.Height);
+        return Rectangle.Empty;
       }
 
       public void DrawMarkedArea(SpriteBatch sb)
       {
         if (!CaptureInterface.EdgeAPinned || !CaptureInterface.EdgeBPinned)
           return;
-        int PinX = Math.Min((int) CaptureInterface.EdgeA.X, (int) CaptureInterface.EdgeB.X);
-        int PinY = Math.Min((int) CaptureInterface.EdgeA.Y, (int) CaptureInterface.EdgeB.Y);
-        int num1 = Math.Abs((int) (CaptureInterface.EdgeA.X - CaptureInterface.EdgeB.X));
-        int num2 = Math.Abs((int) (CaptureInterface.EdgeA.Y - CaptureInterface.EdgeB.Y));
-        Rectangle rectangle1;
+        int PinX = Math.Min(CaptureInterface.EdgeA.X, CaptureInterface.EdgeB.X);
+        int PinY = Math.Min(CaptureInterface.EdgeA.Y, CaptureInterface.EdgeB.Y);
+        int num1 = Math.Abs(CaptureInterface.EdgeA.X - CaptureInterface.EdgeB.X);
+        int num2 = Math.Abs(CaptureInterface.EdgeA.Y - CaptureInterface.EdgeB.Y);
+        Rectangle result1;
         if (!Main.mapFullscreen)
         {
-          Rectangle rectangle2 = Main.ReverseGravitySupport(new Rectangle(PinX * 16, PinY * 16, (num1 + 1) * 16, (num2 + 1) * 16));
-          Rectangle rectangle3 = Main.ReverseGravitySupport(new Rectangle((int) Main.screenPosition.X, (int) Main.screenPosition.Y, Main.screenWidth + 1, Main.screenHeight + 1));
-          Rectangle.Intersect(ref rectangle3, ref rectangle2, ref rectangle1);
-          if (rectangle1.Width == null || rectangle1.Height == null)
+          Rectangle rectangle1 = Main.ReverseGravitySupport(new Rectangle(PinX * 16, PinY * 16, (num1 + 1) * 16, (num2 + 1) * 16));
+          Rectangle rectangle2 = Main.ReverseGravitySupport(new Rectangle((int) Main.screenPosition.X, (int) Main.screenPosition.Y, Main.screenWidth + 1, Main.screenHeight + 1));
+          Rectangle.Intersect(ref rectangle2, ref rectangle1, out result1);
+          if (result1.Width == 0 || result1.Height == 0)
             return;
-          // ISSUE: explicit reference operation
-          ((Rectangle) @rectangle1).Offset((int) -rectangle3.X, (int) -rectangle3.Y);
+          result1.Offset(-rectangle2.X, -rectangle2.Y);
         }
         else
         {
-          Point result1;
-          CaptureInterface.GetMapCoords(PinX, PinY, 1, out result1);
           Point result2;
-          CaptureInterface.GetMapCoords(PinX + num1 + 1, PinY + num2 + 1, 1, out result2);
-          Rectangle rectangle2 = new Rectangle((int) result1.X, (int) result1.Y, (int) (result2.X - result1.X), (int) (result2.Y - result1.Y));
-          Rectangle rectangle3 = new Rectangle(0, 0, Main.screenWidth + 1, Main.screenHeight + 1);
-          Rectangle.Intersect(ref rectangle3, ref rectangle2, ref rectangle1);
-          if (rectangle1.Width == null || rectangle1.Height == null)
+          CaptureInterface.GetMapCoords(PinX, PinY, 1, out result2);
+          Point result3;
+          CaptureInterface.GetMapCoords(PinX + num1 + 1, PinY + num2 + 1, 1, out result3);
+          Rectangle rectangle1 = new Rectangle(result2.X, result2.Y, result3.X - result2.X, result3.Y - result2.Y);
+          Rectangle rectangle2 = new Rectangle(0, 0, Main.screenWidth + 1, Main.screenHeight + 1);
+          Rectangle.Intersect(ref rectangle2, ref rectangle1, out result1);
+          if (result1.Width == 0 || result1.Height == 0)
             return;
-          // ISSUE: explicit reference operation
-          ((Rectangle) @rectangle1).Offset((int) -rectangle3.X, (int) -rectangle3.Y);
+          result1.Offset(-rectangle2.X, -rectangle2.Y);
         }
-        sb.Draw(Main.magicPixel, rectangle1, CaptureInterface.Settings.MarkedAreaColor);
-        Rectangle empty = Rectangle.get_Empty();
+        sb.Draw(Main.magicPixel, result1, CaptureInterface.Settings.MarkedAreaColor);
+        Rectangle r = Rectangle.Empty;
         for (int index = 0; index < 2; ++index)
         {
           if (this.currentAim != index)
-          {
-            this.DrawBound(sb, new Rectangle((int) rectangle1.X, rectangle1.Y + (index == 1 ? (int) rectangle1.Height : -2), (int) rectangle1.Width, 2), 0);
-          }
+            this.DrawBound(sb, new Rectangle(result1.X, result1.Y + (index == 1 ? result1.Height : -2), result1.Width, 2), 0);
           else
-          {
-            // ISSUE: explicit reference operation
-            ((Rectangle) @empty).\u002Ector((int) rectangle1.X, rectangle1.Y + (index == 1 ? (int) rectangle1.Height : -2), (int) rectangle1.Width, 2);
-          }
+            r = new Rectangle(result1.X, result1.Y + (index == 1 ? result1.Height : -2), result1.Width, 2);
           if (this.currentAim != index + 2)
-          {
-            this.DrawBound(sb, new Rectangle(rectangle1.X + (index == 1 ? (int) rectangle1.Width : -2), (int) rectangle1.Y, 2, (int) rectangle1.Height), 0);
-          }
+            this.DrawBound(sb, new Rectangle(result1.X + (index == 1 ? result1.Width : -2), result1.Y, 2, result1.Height), 0);
           else
-          {
-            // ISSUE: explicit reference operation
-            ((Rectangle) @empty).\u002Ector(rectangle1.X + (index == 1 ? (int) rectangle1.Width : -2), (int) rectangle1.Y, 2, (int) rectangle1.Height);
-          }
+            r = new Rectangle(result1.X + (index == 1 ? result1.Width : -2), result1.Y, 2, result1.Height);
         }
-        if (!Rectangle.op_Inequality(empty, Rectangle.get_Empty()))
+        if (!(r != Rectangle.Empty))
           return;
-        this.DrawBound(sb, empty, 1 + this.dragging.ToInt());
+        this.DrawBound(sb, r, 1 + this.dragging.ToInt());
       }
 
       private void DrawBound(SpriteBatch sb, Rectangle r, int mode)
       {
         if (mode == 0)
-          sb.Draw(Main.magicPixel, r, Color.get_Silver());
+          sb.Draw(Main.magicPixel, r, Color.Silver);
         else if (mode == 1)
         {
-          Rectangle rectangle;
-          // ISSUE: explicit reference operation
-          ((Rectangle) @rectangle).\u002Ector(r.X - 2, (int) r.Y, r.Width + 4, (int) r.Height);
-          sb.Draw(Main.magicPixel, rectangle, Color.get_White());
-          // ISSUE: explicit reference operation
-          ((Rectangle) @rectangle).\u002Ector((int) r.X, r.Y - 2, (int) r.Width, r.Height + 4);
-          sb.Draw(Main.magicPixel, rectangle, Color.get_White());
-          sb.Draw(Main.magicPixel, r, Color.get_White());
+          Rectangle destinationRectangle = new Rectangle(r.X - 2, r.Y, r.Width + 4, r.Height);
+          sb.Draw(Main.magicPixel, destinationRectangle, Color.White);
+          destinationRectangle = new Rectangle(r.X, r.Y - 2, r.Width, r.Height + 4);
+          sb.Draw(Main.magicPixel, destinationRectangle, Color.White);
+          sb.Draw(Main.magicPixel, r, Color.White);
         }
         else
         {
           if (mode != 2)
             return;
-          Rectangle rectangle;
-          // ISSUE: explicit reference operation
-          ((Rectangle) @rectangle).\u002Ector(r.X - 2, (int) r.Y, r.Width + 4, (int) r.Height);
-          sb.Draw(Main.magicPixel, rectangle, Color.get_Gold());
-          // ISSUE: explicit reference operation
-          ((Rectangle) @rectangle).\u002Ector((int) r.X, r.Y - 2, (int) r.Width, r.Height + 4);
-          sb.Draw(Main.magicPixel, rectangle, Color.get_Gold());
-          sb.Draw(Main.magicPixel, r, Color.get_Gold());
+          Rectangle destinationRectangle = new Rectangle(r.X - 2, r.Y, r.Width + 4, r.Height);
+          sb.Draw(Main.magicPixel, destinationRectangle, Color.Gold);
+          destinationRectangle = new Rectangle(r.X, r.Y - 2, r.Width, r.Height + 4);
+          sb.Draw(Main.magicPixel, destinationRectangle, Color.Gold);
+          sb.Draw(Main.magicPixel, r, Color.Gold);
         }
       }
     }
@@ -1267,25 +1168,17 @@ namespace Terraria.Graphics.Capture
 
       private Rectangle GetRect()
       {
-        Rectangle rectangle;
-        // ISSUE: explicit reference operation
-        ((Rectangle) @rectangle).\u002Ector(0, 0, 224, 170);
+        Rectangle rectangle = new Rectangle(0, 0, 224, 170);
         if (CaptureInterface.Settings.ScreenAnchor == 0)
         {
-          rectangle.X = (__Null) (227 - rectangle.Width / 2);
-          rectangle.Y = (__Null) 80;
+          rectangle.X = 227 - rectangle.Width / 2;
+          rectangle.Y = 80;
           int index = 0;
           Player player = Main.player[Main.myPlayer];
           while (index < player.buffTime.Length && player.buffTime[index] > 0)
             ++index;
-          int num1 = index / 11 + (index % 11 >= 3 ? 1 : 0);
-          // ISSUE: explicit reference operation
-          // ISSUE: variable of a reference type
-          Rectangle& local = @rectangle;
-          // ISSUE: explicit reference operation
-          int num2 = (^local).Y + 48 * num1;
-          // ISSUE: explicit reference operation
-          (^local).Y = (__Null) num2;
+          int num = index / 11 + (index % 11 >= 3 ? 1 : 0);
+          rectangle.Y += 48 * num;
         }
         return rectangle;
       }
@@ -1337,9 +1230,7 @@ namespace Terraria.Graphics.Capture
 
       private void DrawWaterChoices(SpriteBatch spritebatch, Point start, Point mouse)
       {
-        Rectangle r;
-        // ISSUE: explicit reference operation
-        ((Rectangle) @r).\u002Ector(0, 0, 20, 20);
+        Rectangle r = new Rectangle(0, 0, 20, 20);
         for (int index1 = 0; index1 < 2; ++index1)
         {
           for (int index2 = 0; index2 < 5; ++index2)
@@ -1347,21 +1238,12 @@ namespace Terraria.Graphics.Capture
             if (index1 != 1 || index2 != 3)
             {
               int index3 = index2 + index1 * 5;
-              r.X = (__Null) (start.X + 24 * index2 + 12 * index1);
-              r.Y = (__Null) (start.Y + 24 * index1);
+              r.X = start.X + 24 * index2 + 12 * index1;
+              r.Y = start.Y + 24 * index1;
               if (index1 == 1 && index2 == 4)
-              {
-                // ISSUE: explicit reference operation
-                // ISSUE: variable of a reference type
-                Rectangle& local = @r;
-                // ISSUE: explicit reference operation
-                int num = (^local).X - 24;
-                // ISSUE: explicit reference operation
-                (^local).X = (__Null) num;
-              }
+                r.X -= 24;
               int num1 = 0;
-              // ISSUE: explicit reference operation
-              if (((Rectangle) @r).Contains(mouse))
+              if (r.Contains(mouse))
               {
                 if (Main.mouseLeft && Main.mouseLeftRelease)
                   CaptureInterface.Settings.BiomeChoice = this.BiomeWater(index3);
@@ -1369,17 +1251,17 @@ namespace Terraria.Graphics.Capture
               }
               if (CaptureInterface.Settings.BiomeChoice == this.BiomeWater(index3))
                 num1 += 2;
-              Texture2D texture2D = Main.liquidTexture[this.BiomeWater(index3)];
-              int num2 = (int) Main.wFrame * 18;
-              Color.get_White();
-              float num3 = 1f;
+              Texture2D texture = Main.liquidTexture[this.BiomeWater(index3)];
+              int x = (int) Main.wFrame * 18;
+              Color white = Color.White;
+              float num2 = 1f;
               if (num1 < 2)
-                num3 *= 0.5f;
+                num2 *= 0.5f;
               if (num1 % 2 == 1)
-                spritebatch.Draw(Main.magicPixel, r.TopLeft(), new Rectangle?(new Rectangle(0, 0, 1, 1)), Color.get_Gold(), 0.0f, Vector2.get_Zero(), new Vector2(20f), (SpriteEffects) 0, 0.0f);
+                spritebatch.Draw(Main.magicPixel, r.TopLeft(), new Rectangle?(new Rectangle(0, 0, 1, 1)), Color.Gold, 0.0f, Vector2.Zero, new Vector2(20f), SpriteEffects.None, 0.0f);
               else
-                spritebatch.Draw(Main.magicPixel, r.TopLeft(), new Rectangle?(new Rectangle(0, 0, 1, 1)), Color.op_Multiply(Color.get_White(), num3), 0.0f, Vector2.get_Zero(), new Vector2(20f), (SpriteEffects) 0, 0.0f);
-              spritebatch.Draw(texture2D, Vector2.op_Addition(r.TopLeft(), new Vector2(2f)), new Rectangle?(new Rectangle(num2, 0, 16, 16)), Color.op_Multiply(Color.get_White(), num3));
+                spritebatch.Draw(Main.magicPixel, r.TopLeft(), new Rectangle?(new Rectangle(0, 0, 1, 1)), Color.White * num2, 0.0f, Vector2.Zero, new Vector2(20f), SpriteEffects.None, 0.0f);
+              spritebatch.Draw(texture, r.TopLeft() + new Vector2(2f), new Rectangle?(new Rectangle(x, 0, 16, 16)), Color.White * num2);
             }
           }
         }
@@ -1419,22 +1301,17 @@ namespace Terraria.Graphics.Capture
         if (!this.Selected || CaptureInterface.JustActivated)
           return;
         PlayerInput.SetZoom_UI();
-        Point point;
-        // ISSUE: explicit reference operation
-        ((Point) @point).\u002Ector(Main.mouseX, Main.mouseY);
+        Point point = new Point(Main.mouseX, Main.mouseY);
         this.hoveredButton = -1;
         Rectangle rect = this.GetRect();
-        // ISSUE: explicit reference operation
-        this.inUI = ((Rectangle) @rect).Contains(point);
-        // ISSUE: explicit reference operation
-        ((Rectangle) @rect).Inflate(-20, -20);
-        rect.Height = (__Null) 16;
-        int y = (int) rect.Y;
+        this.inUI = rect.Contains(point);
+        rect.Inflate(-20, -20);
+        rect.Height = 16;
+        int y = rect.Y;
         for (int index = 0; index < 7; ++index)
         {
-          rect.Y = (__Null) (y + index * 20);
-          // ISSUE: explicit reference operation
-          if (((Rectangle) @rect).Contains(point))
+          rect.Y = y + index * 20;
+          if (rect.Contains(point))
           {
             this.hoveredButton = index;
             break;
@@ -1450,27 +1327,27 @@ namespace Terraria.Graphics.Capture
         if (!this.Selected)
           return;
         sb.End();
-        sb.Begin((SpriteSortMode) 0, (BlendState) BlendState.AlphaBlend, (SamplerState) SamplerState.PointClamp, (DepthStencilState) DepthStencilState.None, (RasterizerState) RasterizerState.CullCounterClockwise, (Effect) null, Main.CurrentWantedZoomMatrix);
+        sb.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.None, RasterizerState.CullCounterClockwise, (Effect) null, Main.CurrentWantedZoomMatrix);
         PlayerInput.SetZoom_Context();
         ((CaptureInterface.ModeDragBounds) CaptureInterface.Modes[1]).currentAim = -1;
         ((CaptureInterface.ModeDragBounds) CaptureInterface.Modes[1]).DrawMarkedArea(sb);
         sb.End();
-        sb.Begin((SpriteSortMode) 0, (BlendState) BlendState.AlphaBlend, (SamplerState) SamplerState.PointClamp, (DepthStencilState) DepthStencilState.None, (RasterizerState) RasterizerState.CullCounterClockwise, (Effect) null, Main.UIScaleMatrix);
+        sb.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.None, RasterizerState.CullCounterClockwise, (Effect) null, Main.UIScaleMatrix);
         PlayerInput.SetZoom_UI();
         Rectangle rect = this.GetRect();
-        Utils.DrawInvBG(sb, rect, Color.op_Multiply(new Color(63, 65, 151, (int) byte.MaxValue), 0.485f));
+        Utils.DrawInvBG(sb, rect, new Color(63, 65, 151, (int) byte.MaxValue) * 0.485f);
         for (int button = 0; button < 7; ++button)
         {
           string key = "";
           string text = "";
           this.ButtonDraw(button, ref key, ref text);
-          Color baseColor = Color.get_White();
+          Color baseColor = Color.White;
           if (button == this.hoveredButton)
-            baseColor = Color.get_Gold();
-          ChatManager.DrawColorCodedStringWithShadow(sb, Main.fontItemStack, key, Vector2.op_Addition(rect.TopLeft(), new Vector2(20f, (float) (20 + 20 * button))), baseColor, 0.0f, Vector2.get_Zero(), Vector2.get_One(), -1f, 2f);
-          ChatManager.DrawColorCodedStringWithShadow(sb, Main.fontItemStack, text, Vector2.op_Addition(rect.TopRight(), new Vector2(-20f, (float) (20 + 20 * button))), baseColor, 0.0f, Vector2.op_Multiply(Main.fontItemStack.MeasureString(text), Vector2.get_UnitX()), Vector2.get_One(), -1f, 2f);
+            baseColor = Color.Gold;
+          ChatManager.DrawColorCodedStringWithShadow(sb, Main.fontItemStack, key, rect.TopLeft() + new Vector2(20f, (float) (20 + 20 * button)), baseColor, 0.0f, Vector2.Zero, Vector2.One, -1f, 2f);
+          ChatManager.DrawColorCodedStringWithShadow(sb, Main.fontItemStack, text, rect.TopRight() + new Vector2(-20f, (float) (20 + 20 * button)), baseColor, 0.0f, Main.fontItemStack.MeasureString(text) * Vector2.UnitX, Vector2.One, -1f, 2f);
         }
-        this.DrawWaterChoices(sb, Vector2.op_Addition(rect.TopLeft(), new Vector2((float) (rect.Width / 2 - 58), 90f)).ToPoint(), Main.MouseScreen.ToPoint());
+        this.DrawWaterChoices(sb, (rect.TopLeft() + new Vector2((float) (rect.Width / 2 - 58), 90f)).ToPoint(), Main.MouseScreen.ToPoint());
       }
 
       public override void ToggleActive(bool tickedOn)

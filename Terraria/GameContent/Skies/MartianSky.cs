@@ -1,7 +1,7 @@
 ﻿// Decompiled with JetBrains decompiler
 // Type: Terraria.GameContent.Skies.MartianSky
 // Assembly: Terraria, Version=1.3.5.1, Culture=neutral, PublicKeyToken=null
-// MVID: DF0400F4-EE47-4864-BE80-932EDB02D8A6
+// MVID: E90A5A2F-CD10-4A2C-9D2A-6B036D4E8877
 // Assembly location: F:\Steam\steamapps\common\Terraria\Terraria.exe
 
 using Microsoft.Xna.Framework;
@@ -58,7 +58,7 @@ namespace Terraria.GameContent.Skies
 
     public override void Draw(SpriteBatch spriteBatch, float minDepth, float maxDepth)
     {
-      if (Main.screenPosition.Y > 10000.0)
+      if ((double) Main.screenPosition.Y > 10000.0)
         return;
       int num1 = -1;
       int num2 = 0;
@@ -74,27 +74,19 @@ namespace Terraria.GameContent.Skies
       }
       if (num1 == -1)
         return;
-      Color color;
-      // ISSUE: explicit reference operation
-      // ISSUE: explicit reference operation
-      ((Color) @color).\u002Ector(Vector4.op_Addition(Vector4.op_Multiply(((Color) @Main.bgColor).ToVector4(), 0.9f), new Vector4(0.1f)));
-      Vector2 vector2_1 = Vector2.op_Addition(Main.screenPosition, new Vector2((float) (Main.screenWidth >> 1), (float) (Main.screenHeight >> 1)));
-      Rectangle rectangle;
-      // ISSUE: explicit reference operation
-      ((Rectangle) @rectangle).\u002Ector(-1000, -1000, 4000, 4000);
+      Color color = new Color(Main.bgColor.ToVector4() * 0.9f + new Vector4(0.1f));
+      Vector2 vector2_1 = Main.screenPosition + new Vector2((float) (Main.screenWidth >> 1), (float) (Main.screenHeight >> 1));
+      Rectangle rectangle = new Rectangle(-1000, -1000, 4000, 4000);
       for (int index = num1; index < num2; ++index)
       {
-        Vector2 vector2_2;
-        // ISSUE: explicit reference operation
-        ((Vector2) @vector2_2).\u002Ector(1f / this._ufos[index].Depth, 0.9f / this._ufos[index].Depth);
-        Vector2 vector2_3 = this._ufos[index].Position;
-        vector2_3 = Vector2.op_Subtraction(Vector2.op_Addition(Vector2.op_Multiply(Vector2.op_Subtraction(vector2_3, vector2_1), vector2_2), vector2_1), Main.screenPosition);
-        // ISSUE: explicit reference operation
-        if (this._ufos[index].IsActive && ((Rectangle) @rectangle).Contains((int) vector2_3.X, (int) vector2_3.Y))
+        Vector2 vector2_2 = new Vector2(1f / this._ufos[index].Depth, 0.9f / this._ufos[index].Depth);
+        Vector2 position = this._ufos[index].Position;
+        position = (position - vector2_1) * vector2_2 + vector2_1 - Main.screenPosition;
+        if (this._ufos[index].IsActive && rectangle.Contains((int) position.X, (int) position.Y))
         {
-          spriteBatch.Draw(this._ufos[index].Texture, vector2_3, new Rectangle?(this._ufos[index].GetSourceRectangle()), Color.op_Multiply(color, this._ufos[index].Opacity), this._ufos[index].Rotation, Vector2.get_Zero(), (float) (vector2_2.X * 5.0) * this._ufos[index].Scale, (SpriteEffects) 0, 0.0f);
+          spriteBatch.Draw(this._ufos[index].Texture, position, new Rectangle?(this._ufos[index].GetSourceRectangle()), color * this._ufos[index].Opacity, this._ufos[index].Rotation, Vector2.Zero, vector2_2.X * 5f * this._ufos[index].Scale, SpriteEffects.None, 0.0f);
           if (this._ufos[index].GlowTexture != null)
-            spriteBatch.Draw(this._ufos[index].GlowTexture, vector2_3, new Rectangle?(this._ufos[index].GetSourceRectangle()), Color.op_Multiply(Color.get_White(), this._ufos[index].Opacity), this._ufos[index].Rotation, Vector2.get_Zero(), (float) (vector2_2.X * 5.0) * this._ufos[index].Scale, (SpriteEffects) 0, 0.0f);
+            spriteBatch.Draw(this._ufos[index].GlowTexture, position, new Rectangle?(this._ufos[index].GetSourceRectangle()), Color.White * this._ufos[index].Opacity, this._ufos[index].Rotation, Vector2.Zero, vector2_2.X * 5f * this._ufos[index].Scale, SpriteEffects.None, 0.0f);
         }
       }
     }
@@ -158,8 +150,8 @@ namespace Terraria.GameContent.Skies
 
       public override void InitializeUfo(ref MartianSky.Ufo ufo)
       {
-        ufo.Position.X = (__Null) (double) ((float) MartianSky.Ufo.Random.NextDouble() * (float) (Main.maxTilesX << 4));
-        ufo.Position.Y = (__Null) (MartianSky.Ufo.Random.NextDouble() * 5000.0);
+        ufo.Position.X = (float) MartianSky.Ufo.Random.NextDouble() * (float) (Main.maxTilesX << 4);
+        ufo.Position.Y = (float) (MartianSky.Ufo.Random.NextDouble() * 5000.0);
         ufo.Opacity = 0.0f;
         float num1 = (float) (MartianSky.Ufo.Random.NextDouble() * 5.0 + 10.0);
         double num2 = MartianSky.Ufo.Random.NextDouble() * 0.600000023841858 - 0.300000011920929;
@@ -177,13 +169,7 @@ namespace Terraria.GameContent.Skies
           ufo.Opacity += 0.1f;
         else if (this._ticks > this._maxTicks - 10)
           ufo.Opacity -= 0.1f;
-        // ISSUE: explicit reference operation
-        // ISSUE: variable of a reference type
-        MartianSky.Ufo& local = @ufo;
-        // ISSUE: explicit reference operation
-        Vector2 vector2 = Vector2.op_Addition((^local).Position, this._speed);
-        // ISSUE: explicit reference operation
-        (^local).Position = vector2;
+        ufo.Position += this._speed;
         if (this._ticks == this._maxTicks)
           return false;
         ++this._ticks;
@@ -198,8 +184,8 @@ namespace Terraria.GameContent.Skies
 
       public override void InitializeUfo(ref MartianSky.Ufo ufo)
       {
-        ufo.Position.X = (__Null) (double) ((float) MartianSky.Ufo.Random.NextDouble() * (float) (Main.maxTilesX << 4));
-        ufo.Position.Y = (__Null) (MartianSky.Ufo.Random.NextDouble() * 5000.0);
+        ufo.Position.X = (float) MartianSky.Ufo.Random.NextDouble() * (float) (Main.maxTilesX << 4);
+        ufo.Position.Y = (float) (MartianSky.Ufo.Random.NextDouble() * 5000.0);
         ufo.Opacity = 0.0f;
         ufo.Rotation = 0.0f;
         this._ticks = 0;
@@ -258,8 +244,8 @@ namespace Terraria.GameContent.Skies
         set
         {
           this._texture = value;
-          this.FrameWidth = value.get_Width();
-          this.FrameHeight = value.get_Height() / 3;
+          this.FrameWidth = value.Width;
+          this.FrameHeight = value.Height / 3;
         }
       }
 
@@ -279,12 +265,12 @@ namespace Terraria.GameContent.Skies
       public Ufo(Texture2D texture, float depth = 1f)
       {
         this._frame = 0;
-        this.Position = Vector2.get_Zero();
+        this.Position = Vector2.Zero;
         this._texture = texture;
         this.Depth = depth;
         this.Scale = 1f;
-        this.FrameWidth = texture.get_Width();
-        this.FrameHeight = texture.get_Height() / 3;
+        this.FrameWidth = texture.Width;
+        this.FrameHeight = texture.Height / 3;
         this.GlowTexture = (Texture2D) null;
         this.Opacity = 0.0f;
         this.Rotation = 0.0f;
