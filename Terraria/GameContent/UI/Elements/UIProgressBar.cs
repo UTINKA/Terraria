@@ -1,8 +1,8 @@
 ﻿// Decompiled with JetBrains decompiler
 // Type: Terraria.GameContent.UI.Elements.UIProgressBar
-// Assembly: Terraria, Version=1.3.5.1, Culture=neutral, PublicKeyToken=null
-// MVID: E90A5A2F-CD10-4A2C-9D2A-6B036D4E8877
-// Assembly location: F:\Steam\steamapps\common\Terraria\Terraria.exe
+// Assembly: Terraria, Version=1.3.5.3, Culture=neutral, PublicKeyToken=null
+// MVID: 68659D26-2BE6-448F-8663-74FA559E6F08
+// Assembly location: H:\Steam\steamapps\common\Terraria\Terraria.exe
 
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -43,7 +43,7 @@ namespace Terraria.GameContent.UI.Elements
       protected override void DrawSelf(SpriteBatch spriteBatch)
       {
         CalculatedStyle dimensions = this.GetDimensions();
-        spriteBatch.Draw(Main.magicPixel, new Vector2(dimensions.X, dimensions.Y), new Rectangle?(), Color.Blue, 0.0f, Vector2.Zero, new Vector2(dimensions.Width, dimensions.Height / 1000f), SpriteEffects.None, 0.0f);
+        spriteBatch.Draw(Main.magicPixel, new Vector2(dimensions.X, dimensions.Y), new Rectangle?(), Color.get_Blue(), 0.0f, Vector2.get_Zero(), new Vector2(dimensions.Width, dimensions.Height / 1000f), (SpriteEffects) 0, 0.0f);
       }
     }
   }

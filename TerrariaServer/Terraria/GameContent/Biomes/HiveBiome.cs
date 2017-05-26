@@ -1,8 +1,8 @@
 ﻿// Decompiled with JetBrains decompiler
 // Type: Terraria.GameContent.Biomes.HiveBiome
-// Assembly: TerrariaServer, Version=1.3.5.1, Culture=neutral, PublicKeyToken=null
-// MVID: C2103E81-0935-4BEA-9E98-4159FC80C2BB
-// Assembly location: F:\Steam\steamapps\common\Terraria\TerrariaServer.exe
+// Assembly: TerrariaServer, Version=1.3.5.3, Culture=neutral, PublicKeyToken=null
+// MVID: 8A63A7A2-328D-424C-BC9D-BF23F93646F7
+// Assembly location: H:\Steam\steamapps\common\Terraria\TerrariaServer.exe
 
 using Microsoft.Xna.Framework;
 using System;
@@ -26,10 +26,10 @@ namespace Terraria.GameContent.Biomes
       {
         (ushort) 60
       }), (GenAction) new Actions.Scanner(count4)));
-      if ((double) count2.Value / (double) count1.Value < 0.75 || count4.Value < 2 || !structures.CanPlace(new Microsoft.Xna.Framework.Rectangle(origin.X - 50, origin.Y - 50, 100, 100), 0))
+      if ((double) count2.Value / (double) count1.Value < 0.75 || count4.Value < 2 || !structures.CanPlace(new Rectangle(origin.X - 50, origin.Y - 50, 100, 100), 0))
         return false;
-      int x1 = origin.X;
-      int y1 = origin.Y;
+      int x1 = (int) origin.X;
+      int y1 = (int) origin.Y;
       int num1 = 150;
       int index1 = x1 - num1;
       while (index1 < x1 + num1)
@@ -46,12 +46,14 @@ namespace Terraria.GameContent.Biomes
         }
         index1 += 10;
       }
-      int x2 = origin.X;
-      int y2 = origin.Y;
+      int x2 = (int) origin.X;
+      int y2 = (int) origin.Y;
       int index3 = 0;
       int[] numArray1 = new int[10];
       int[] numArray2 = new int[10];
-      Vector2 vector2_1 = new Vector2((float) x2, (float) y2);
+      Vector2 vector2_1;
+      // ISSUE: explicit reference operation
+      ((Vector2) @vector2_1).\u002Ector((float) x2, (float) y2);
       Vector2 vector2_2 = vector2_1;
       int num2 = WorldGen.genRand.Next(2, 5);
       for (int index2 = 0; index2 < num2; ++index2)
@@ -158,7 +160,7 @@ namespace Terraria.GameContent.Biomes
           }
         }
       }
-      structures.AddStructure(new Microsoft.Xna.Framework.Rectangle(origin.X - 50, origin.Y - 50, 100, 100), 5);
+      structures.AddStructure(new Rectangle(origin.X - 50, origin.Y - 50, 100, 100), 5);
       return true;
     }
   }

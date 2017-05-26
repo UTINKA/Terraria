@@ -1,8 +1,8 @@
 ﻿// Decompiled with JetBrains decompiler
 // Type: Terraria.Graphics.Effects.OverlayManager
-// Assembly: TerrariaServer, Version=1.3.5.1, Culture=neutral, PublicKeyToken=null
-// MVID: C2103E81-0935-4BEA-9E98-4159FC80C2BB
-// Assembly location: F:\Steam\steamapps\common\Terraria\TerrariaServer.exe
+// Assembly: TerrariaServer, Version=1.3.5.3, Culture=neutral, PublicKeyToken=null
+// MVID: 8A63A7A2-328D-424C-BC9D-BF23F93646F7
+// Assembly location: H:\Steam\steamapps\common\Terraria\TerrariaServer.exe
 
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -31,7 +31,7 @@ namespace Terraria.Graphics.Effects
       if (overlay.Mode == OverlayMode.FadeOut)
       {
         activeOverlay.Remove(overlay);
-        --this._overlayCount;
+        this._overlayCount = this._overlayCount - 1;
       }
       else
         overlay.Opacity = 0.0f;
@@ -41,7 +41,7 @@ namespace Terraria.Graphics.Effects
           overlay1.Mode = OverlayMode.FadeOut;
       }
       activeOverlay.AddLast(overlay);
-      ++this._overlayCount;
+      this._overlayCount = this._overlayCount + 1;
     }
 
     public void Update(GameTime gameTime)
@@ -57,7 +57,7 @@ namespace Terraria.Graphics.Effects
           switch (overlay.Mode)
           {
             case OverlayMode.FadeIn:
-              overlay.Opacity += (float) (gameTime.ElapsedGameTime.TotalSeconds * 1.0);
+              overlay.Opacity += (float) (gameTime.get_ElapsedGameTime().TotalSeconds * 1.0);
               if ((double) overlay.Opacity >= 1.0)
               {
                 overlay.Opacity = 1f;
@@ -66,16 +66,16 @@ namespace Terraria.Graphics.Effects
               }
               break;
             case OverlayMode.Active:
-              overlay.Opacity = Math.Min(1f, overlay.Opacity + (float) (gameTime.ElapsedGameTime.TotalSeconds * 1.0));
+              overlay.Opacity = Math.Min(1f, overlay.Opacity + (float) (gameTime.get_ElapsedGameTime().TotalSeconds * 1.0));
               break;
             case OverlayMode.FadeOut:
-              overlay.Opacity -= (float) (gameTime.ElapsedGameTime.TotalSeconds * 1.0);
+              overlay.Opacity -= (float) (gameTime.get_ElapsedGameTime().TotalSeconds * 1.0);
               if ((double) overlay.Opacity <= 0.0)
               {
                 overlay.Opacity = 0.0f;
                 overlay.Mode = OverlayMode.Inactive;
                 this._activeOverlays[index].Remove(node);
-                --this._overlayCount;
+                this._overlayCount = this._overlayCount - 1;
                 break;
               }
               break;
@@ -98,7 +98,7 @@ namespace Terraria.Graphics.Effects
           {
             if (!flag)
             {
-              spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, SamplerState.LinearClamp, DepthStencilState.Default, RasterizerState.CullNone, (Effect) null, Main.Transform);
+              spriteBatch.Begin((SpriteSortMode) 1, (BlendState) BlendState.AlphaBlend, (SamplerState) SamplerState.LinearClamp, (DepthStencilState) DepthStencilState.Default, (RasterizerState) RasterizerState.CullNone, (Effect) null, Main.Transform);
               flag = true;
             }
             overlay.Draw(spriteBatch);

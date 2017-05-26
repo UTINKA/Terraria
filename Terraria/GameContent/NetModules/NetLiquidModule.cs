@@ -1,8 +1,8 @@
 ﻿// Decompiled with JetBrains decompiler
 // Type: Terraria.GameContent.NetModules.NetLiquidModule
-// Assembly: Terraria, Version=1.3.5.1, Culture=neutral, PublicKeyToken=null
-// MVID: E90A5A2F-CD10-4A2C-9D2A-6B036D4E8877
-// Assembly location: F:\Steam\steamapps\common\Terraria\Terraria.exe
+// Assembly: Terraria, Version=1.3.5.3, Culture=neutral, PublicKeyToken=null
+// MVID: 68659D26-2BE6-448F-8663-74FA559E6F08
+// Assembly location: H:\Steam\steamapps\common\Terraria\Terraria.exe
 
 using System.Collections.Generic;
 using System.IO;
@@ -35,8 +35,10 @@ namespace Terraria.GameContent.NetModules
         int num2 = reader.ReadInt32();
         byte num3 = reader.ReadByte();
         byte num4 = reader.ReadByte();
-        int index2 = num2 >> 16 & (int) ushort.MaxValue;
-        int index3 = num2 & (int) ushort.MaxValue;
+        int num5 = 16;
+        int index2 = num2 >> num5 & (int) ushort.MaxValue;
+        int maxValue = (int) ushort.MaxValue;
+        int index3 = num2 & maxValue;
         Tile tile = Main.tile[index2, index3];
         if (tile != null)
         {

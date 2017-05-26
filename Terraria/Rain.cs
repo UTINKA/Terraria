@@ -1,8 +1,8 @@
 ﻿// Decompiled with JetBrains decompiler
 // Type: Terraria.Rain
-// Assembly: Terraria, Version=1.3.5.1, Culture=neutral, PublicKeyToken=null
-// MVID: E90A5A2F-CD10-4A2C-9D2A-6B036D4E8877
-// Assembly location: F:\Steam\steamapps\common\Terraria\Terraria.exe
+// Assembly: Terraria, Version=1.3.5.3, Culture=neutral, PublicKeyToken=null
+// MVID: 68659D26-2BE6-448F-8663-74FA559E6F08
+// Assembly location: H:\Steam\steamapps\common\Terraria\Terraria.exe
 
 using Microsoft.Xna.Framework;
 using System;
@@ -30,17 +30,33 @@ namespace Terraria
       for (int index = 0; (double) index < (double) num1; ++index)
       {
         int num2 = 600;
-        if ((double) Main.player[Main.myPlayer].velocity.Y < 0.0)
-          num2 += (int) ((double) Math.Abs(Main.player[Main.myPlayer].velocity.Y) * 30.0);
+        if (Main.player[Main.myPlayer].velocity.Y < 0.0)
+          num2 += (int) ((double) Math.Abs((float) Main.player[Main.myPlayer].velocity.Y) * 30.0);
         Vector2 Position;
-        Position.X = (float) Main.rand.Next((int) Main.screenPosition.X - num2, (int) Main.screenPosition.X + Main.screenWidth + num2);
-        Position.Y = Main.screenPosition.Y - (float) Main.rand.Next(20, 100);
-        Position.X -= (float) ((double) Main.windSpeed * 15.0 * 40.0);
-        Position.X += Main.player[Main.myPlayer].velocity.X * 40f;
-        if ((double) Position.X < 0.0)
-          Position.X = 0.0f;
-        if ((double) Position.X > (double) ((Main.maxTilesX - 1) * 16))
-          Position.X = (float) ((Main.maxTilesX - 1) * 16);
+        Position.X = (__Null) (double) Main.rand.Next((int) Main.screenPosition.X - num2, (int) Main.screenPosition.X + Main.screenWidth + num2);
+        Position.Y = (__Null) (Main.screenPosition.Y - (double) Main.rand.Next(20, 100));
+        // ISSUE: explicit reference operation
+        // ISSUE: variable of a reference type
+        __Null& local1 = @Position.X;
+        // ISSUE: cast to a reference type
+        // ISSUE: explicit reference operation
+        double num3 = (double) ^(float&) local1 - (double) Main.windSpeed * 15.0 * 40.0;
+        // ISSUE: cast to a reference type
+        // ISSUE: explicit reference operation
+        ^(float&) local1 = (float) num3;
+        // ISSUE: explicit reference operation
+        // ISSUE: variable of a reference type
+        __Null& local2 = @Position.X;
+        // ISSUE: cast to a reference type
+        // ISSUE: explicit reference operation
+        double num4 = (double) ^(float&) local2 + Main.player[Main.myPlayer].velocity.X * 40.0;
+        // ISSUE: cast to a reference type
+        // ISSUE: explicit reference operation
+        ^(float&) local2 = (float) num4;
+        if (Position.X < 0.0)
+          Position.X = (__Null) 0.0;
+        if (Position.X > (double) ((Main.maxTilesX - 1) * 16))
+          Position.X = (__Null) (double) ((Main.maxTilesX - 1) * 16);
         int i = (int) Position.X / 16;
         int j = (int) Position.Y / 16;
         if (i < 0)
@@ -49,7 +65,9 @@ namespace Terraria
           i = Main.maxTilesX - 1;
         if (Main.gameMenu || !WorldGen.SolidTile(i, j) && (int) Main.tile[i, j].wall <= 0)
         {
-          Vector2 Velocity = new Vector2(Main.windSpeed * 12f, 14f);
+          Vector2 Velocity;
+          // ISSUE: explicit reference operation
+          ((Vector2) @Velocity).\u002Ector(Main.windSpeed * 12f, 14f);
           Rain.NewRain(Position, Velocity);
         }
       }
@@ -57,8 +75,8 @@ namespace Terraria
 
     public void Update()
     {
-      this.position += this.velocity;
-      if (!Collision.SolidCollision(this.position, 2, 2) && (double) this.position.Y <= (double) Main.screenPosition.Y + (double) Main.screenHeight + 100.0 && !Collision.WetCollision(this.position, 2, 2))
+      this.position = Vector2.op_Addition(this.position, this.velocity);
+      if (!Collision.SolidCollision(this.position, 2, 2) && this.position.Y <= Main.screenPosition.Y + (double) Main.screenHeight + 100.0 && !Collision.WetCollision(this.position, 2, 2))
         return;
       this.active = false;
       if ((double) Main.rand.Next(100) >= (double) Main.gfxQuality * 100.0)
@@ -66,11 +84,23 @@ namespace Terraria
       int Type = 154;
       if ((int) this.type == 3 || (int) this.type == 4 || (int) this.type == 5)
         Type = 218;
-      int index = Dust.NewDust(this.position - this.velocity, 2, 2, Type, 0.0f, 0.0f, 0, new Color(), 1f);
-      Main.dust[index].position.X -= 2f;
+      int index = Dust.NewDust(Vector2.op_Subtraction(this.position, this.velocity), 2, 2, Type, 0.0f, 0.0f, 0, (Color) null, 1f);
+      // ISSUE: explicit reference operation
+      // ISSUE: variable of a reference type
+      __Null& local = @Main.dust[index].position.X;
+      // ISSUE: cast to a reference type
+      // ISSUE: explicit reference operation
+      double num = (double) ^(float&) local - 2.0;
+      // ISSUE: cast to a reference type
+      // ISSUE: explicit reference operation
+      ^(float&) local = (float) num;
       Main.dust[index].alpha = 38;
-      Main.dust[index].velocity *= 0.1f;
-      Main.dust[index].velocity += -this.velocity * 0.025f;
+      Dust dust1 = Main.dust[index];
+      Vector2 vector2_1 = Vector2.op_Multiply(dust1.velocity, 0.1f);
+      dust1.velocity = vector2_1;
+      Dust dust2 = Main.dust[index];
+      Vector2 vector2_2 = Vector2.op_Addition(dust2.velocity, Vector2.op_Multiply(Vector2.op_UnaryNegation(this.velocity), 0.025f));
+      dust2.velocity = vector2_2;
       Main.dust[index].scale = 0.75f;
     }
 
@@ -81,7 +111,7 @@ namespace Terraria
       if (num1 > Main.maxRain)
         num1 = Main.maxRain;
       float num2 = (float) Main.maxTilesX / 6400f;
-      float num3 = Math.Max(0.0f, Math.Min(1f, (float) (((double) Main.player[Main.myPlayer].position.Y / 16.0 - 85.0 * (double) num2) / (60.0 * (double) num2))));
+      float num3 = Math.Max(0.0f, Math.Min(1f, (float) ((Main.player[Main.myPlayer].position.Y / 16.0 - 85.0 * (double) num2) / (60.0 * (double) num2))));
       float num4 = num3 * num3;
       int num5 = (int) ((double) num1 * (double) num4);
       float num6 = (float) ((1.0 + (double) Main.gfxQuality) / 2.0);
@@ -106,8 +136,8 @@ namespace Terraria
       rain.active = true;
       rain.position = Position;
       rain.scale = (float) (1.0 + (double) Main.rand.Next(-20, 21) * 0.00999999977648258);
-      rain.velocity = Velocity * rain.scale;
-      rain.rotation = (float) Math.Atan2((double) rain.velocity.X, -(double) rain.velocity.Y);
+      rain.velocity = Vector2.op_Multiply(Velocity, rain.scale);
+      rain.rotation = (float) Math.Atan2((double) rain.velocity.X, (double) -rain.velocity.Y);
       rain.type = (byte) Main.rand.Next(3);
       if (Main.bloodMoon)
         rain.type += (byte) 3;

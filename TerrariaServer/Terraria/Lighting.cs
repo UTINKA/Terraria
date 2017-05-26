@@ -1,8 +1,8 @@
 ﻿// Decompiled with JetBrains decompiler
 // Type: Terraria.Lighting
-// Assembly: TerrariaServer, Version=1.3.5.1, Culture=neutral, PublicKeyToken=null
-// MVID: C2103E81-0935-4BEA-9E98-4159FC80C2BB
-// Assembly location: F:\Steam\steamapps\common\Terraria\TerrariaServer.exe
+// Assembly: TerrariaServer, Version=1.3.5.3, Culture=neutral, PublicKeyToken=null
+// MVID: 8A63A7A2-328D-424C-BC9D-BF23F93646F7
+// Assembly location: H:\Steam\steamapps\common\Terraria\TerrariaServer.exe
 
 using Microsoft.Xna.Framework;
 using System;
@@ -140,9 +140,12 @@ namespace Terraria
     {
       Main.render = true;
       Lighting.oldSkyColor = Lighting.skyColor;
-      float num1 = (float) Main.tileColor.R / (float) byte.MaxValue;
-      float num2 = (float) Main.tileColor.G / (float) byte.MaxValue;
-      float num3 = (float) Main.tileColor.B / (float) byte.MaxValue;
+      // ISSUE: explicit reference operation
+      float num1 = (float) ((Color) @Main.tileColor).get_R() / (float) byte.MaxValue;
+      // ISSUE: explicit reference operation
+      float num2 = (float) ((Color) @Main.tileColor).get_G() / (float) byte.MaxValue;
+      // ISSUE: explicit reference operation
+      float num3 = (float) ((Color) @Main.tileColor).get_B() / (float) byte.MaxValue;
       Lighting.skyColor = (float) (((double) num1 + (double) num2 + (double) num3) / 3.0);
       if (Lighting.lightMode < 2)
       {
@@ -178,8 +181,8 @@ namespace Terraria
       if (Main.renderCount == 2)
       {
         Vector2 screenPosition = Main.screenPosition;
-        int num6 = (int) Math.Floor((double) Main.screenPosition.X / 16.0) - Lighting.scrX;
-        int num7 = (int) Math.Floor((double) Main.screenPosition.Y / 16.0) - Lighting.scrY;
+        int num6 = (int) Math.Floor(Main.screenPosition.X / 16.0) - Lighting.scrX;
+        int num7 = (int) Math.Floor(Main.screenPosition.Y / 16.0) - Lighting.scrY;
         if (num6 > 16)
           num6 = 0;
         if (num7 > 16)
@@ -212,9 +215,12 @@ namespace Terraria
             {
               Lighting.LightingState lightingState1 = state1[index2];
               Lighting.LightingState lightingState2 = state2[index2 + num7];
-              lightingState1.r = lightingState2.r2;
-              lightingState1.g = lightingState2.g2;
-              lightingState1.b = lightingState2.b2;
+              double r2 = (double) lightingState2.r2;
+              lightingState1.r = (float) r2;
+              double g2 = (double) lightingState2.g2;
+              lightingState1.g = (float) g2;
+              double b2 = (double) lightingState2.b2;
+              lightingState1.b = (float) b2;
             }
           }
         }
@@ -234,16 +240,19 @@ namespace Terraria
             {
               Lighting.LightingState lightingState1 = state1[index2];
               Lighting.LightingState lightingState2 = state2[index2 + num7];
-              lightingState1.r = lightingState2.r2;
-              lightingState1.g = lightingState2.r2;
-              lightingState1.b = lightingState2.r2;
+              double r2_1 = (double) lightingState2.r2;
+              lightingState1.r = (float) r2_1;
+              double r2_2 = (double) lightingState2.r2;
+              lightingState1.g = (float) r2_2;
+              double r2_3 = (double) lightingState2.r2;
+              lightingState1.b = (float) r2_3;
             }
           }
         }
       }
       else if (!Main.renderNow)
       {
-        int num6 = (int) Math.Floor((double) Main.screenPosition.X / 16.0) - (int) Math.Floor((double) screenLastPosition.X / 16.0);
+        int num6 = (int) Math.Floor(Main.screenPosition.X / 16.0) - (int) Math.Floor(screenLastPosition.X / 16.0);
         if (num6 > 5 || num6 < -5)
           num6 = 0;
         int num7;
@@ -262,7 +271,7 @@ namespace Terraria
           num8 = 0;
           num9 = num4 - num6;
         }
-        int num10 = (int) Math.Floor((double) Main.screenPosition.Y / 16.0) - (int) Math.Floor((double) screenLastPosition.Y / 16.0);
+        int num10 = (int) Math.Floor(Main.screenPosition.Y / 16.0) - (int) Math.Floor(screenLastPosition.Y / 16.0);
         if (num10 > 5 || num10 < -5)
           num10 = 0;
         int num11;
@@ -293,9 +302,12 @@ namespace Terraria
             {
               Lighting.LightingState lightingState1 = state1[index2];
               Lighting.LightingState lightingState2 = state2[index2 + num10 * num11];
-              lightingState1.r = lightingState2.r;
-              lightingState1.g = lightingState2.g;
-              lightingState1.b = lightingState2.b;
+              double r = (double) lightingState2.r;
+              lightingState1.r = (float) r;
+              double g = (double) lightingState2.g;
+              lightingState1.g = (float) g;
+              double b = (double) lightingState2.b;
+              lightingState1.b = (float) b;
               index2 += num11;
             }
             index1 += num7;
@@ -390,9 +402,12 @@ namespace Terraria
 
     public static void PreRenderPhase()
     {
-      float num1 = (float) Main.tileColor.R / (float) byte.MaxValue;
-      float num2 = (float) Main.tileColor.G / (float) byte.MaxValue;
-      float num3 = (float) Main.tileColor.B / (float) byte.MaxValue;
+      // ISSUE: explicit reference operation
+      float num1 = (float) ((Color) @Main.tileColor).get_R() / (float) byte.MaxValue;
+      // ISSUE: explicit reference operation
+      float num2 = (float) ((Color) @Main.tileColor).get_G() / (float) byte.MaxValue;
+      // ISSUE: explicit reference operation
+      float num3 = (float) ((Color) @Main.tileColor).get_B() / (float) byte.MaxValue;
       Stopwatch stopwatch = new Stopwatch();
       stopwatch.Start();
       int num4 = 0;
@@ -410,12 +425,18 @@ namespace Terraria
         for (int index2 = num6; index2 < num7; ++index2)
         {
           Lighting.LightingState lightingState = state[index2];
-          lightingState.r2 = 0.0f;
-          lightingState.g2 = 0.0f;
-          lightingState.b2 = 0.0f;
-          lightingState.stopLight = false;
-          lightingState.wetLight = false;
-          lightingState.honeyLight = false;
+          double num8 = 0.0;
+          lightingState.r2 = (float) num8;
+          double num9 = 0.0;
+          lightingState.g2 = (float) num9;
+          double num10 = 0.0;
+          lightingState.b2 = (float) num10;
+          int num11 = 0;
+          lightingState.stopLight = num11 != 0;
+          int num12 = 0;
+          lightingState.wetLight = num12 != 0;
+          int num13 = 0;
+          lightingState.honeyLight = num13 != 0;
         }
       }
       if (Main.wof >= 0)
@@ -425,7 +446,7 @@ namespace Terraria
           try
           {
             int num8 = (int) Main.screenPosition.Y / 16 - 10;
-            int num9 = (int) ((double) Main.screenPosition.Y + (double) Main.screenHeight) / 16 + 10;
+            int num9 = (int) (Main.screenPosition.Y + (double) Main.screenHeight) / 16 + 10;
             int num10 = (int) Main.npc[Main.wof].position.X / 16;
             int num11 = Main.npc[Main.wof].direction <= 0 ? num10 + 2 : num10 - 3;
             int num12 = num11 + 8;
@@ -829,9 +850,9 @@ namespace Terraria
                       if ((int) type != 4)
                       {
                         if ((int) type == 17)
-                          goto label_348;
+                          goto label_355;
                         else
-                          goto label_424;
+                          goto label_431;
                       }
                       else if ((int) tile.frameX < 66)
                       {
@@ -841,91 +862,91 @@ namespace Terraria
                             num8 = 1f;
                             num9 = 0.95f;
                             num10 = 0.8f;
-                            goto label_424;
+                            goto label_431;
                           case 1:
                             num8 = 0.0f;
                             num9 = 0.1f;
                             num10 = 1.3f;
-                            goto label_424;
+                            goto label_431;
                           case 2:
                             num8 = 1f;
                             num9 = 0.1f;
                             num10 = 0.1f;
-                            goto label_424;
+                            goto label_431;
                           case 3:
                             num8 = 0.0f;
                             num9 = 1f;
                             num10 = 0.1f;
-                            goto label_424;
+                            goto label_431;
                           case 4:
                             num8 = 0.9f;
                             num9 = 0.0f;
                             num10 = 0.9f;
-                            goto label_424;
+                            goto label_431;
                           case 5:
                             num8 = 1.3f;
                             num9 = 1.3f;
                             num10 = 1.3f;
-                            goto label_424;
+                            goto label_431;
                           case 6:
                             num8 = 0.9f;
                             num9 = 0.9f;
                             num10 = 0.0f;
-                            goto label_424;
+                            goto label_431;
                           case 7:
                             num8 = (float) (0.5 * (double) Main.demonTorch + 1.0 * (1.0 - (double) Main.demonTorch));
                             num9 = 0.3f;
                             num10 = (float) (1.0 * (double) Main.demonTorch + 0.5 * (1.0 - (double) Main.demonTorch));
-                            goto label_424;
+                            goto label_431;
                           case 8:
                             num8 = 0.85f;
                             num9 = 1f;
                             num10 = 0.7f;
-                            goto label_424;
+                            goto label_431;
                           case 9:
                             num8 = 0.7f;
                             num9 = 0.85f;
                             num10 = 1f;
-                            goto label_424;
+                            goto label_431;
                           case 10:
                             num8 = 1f;
                             num9 = 0.5f;
                             num10 = 0.0f;
-                            goto label_424;
+                            goto label_431;
                           case 11:
                             num8 = 1.25f;
                             num9 = 1.25f;
                             num10 = 0.8f;
-                            goto label_424;
+                            goto label_431;
                           case 12:
                             num8 = 0.75f;
                             num9 = 1.2825f;
                             num10 = 1.2f;
-                            goto label_424;
+                            goto label_431;
                           case 13:
                             num8 = 0.95f;
                             num9 = 0.65f;
                             num10 = 1.3f;
-                            goto label_424;
+                            goto label_431;
                           case 14:
                             num8 = (float) Main.DiscoR / (float) byte.MaxValue;
                             num9 = (float) Main.DiscoG / (float) byte.MaxValue;
                             num10 = (float) Main.DiscoB / (float) byte.MaxValue;
-                            goto label_424;
+                            goto label_431;
                           case 15:
                             num8 = 1f;
                             num9 = 0.0f;
                             num10 = 1f;
-                            goto label_424;
+                            goto label_431;
                           default:
                             num8 = 1f;
                             num9 = 0.95f;
                             num10 = 0.8f;
-                            goto label_424;
+                            goto label_431;
                         }
                       }
                       else
-                        goto label_424;
+                        goto label_431;
                     }
                     else
                     {
@@ -941,7 +962,7 @@ namespace Terraria
                             num8 = (float) (0.5 + (double) num11 * 2.0);
                             num9 = 0.2f + num11;
                             num10 = 0.1f;
-                            goto label_424;
+                            goto label_431;
                           }
                           else
                           {
@@ -949,17 +970,17 @@ namespace Terraria
                             num8 = 0.31f + num11;
                             num9 = 0.1f;
                             num10 = (float) (0.439999997615814 + (double) num11 * 2.0);
-                            goto label_424;
+                            goto label_431;
                           }
                         case 27:
                           if ((int) tile.frameY < 36)
                           {
                             num8 = 0.3f;
                             num9 = 0.27f;
-                            goto label_424;
+                            goto label_431;
                           }
                           else
-                            goto label_424;
+                            goto label_431;
                         case 33:
                           if ((int) tile.frameX == 0)
                           {
@@ -969,67 +990,69 @@ namespace Terraria
                                 num8 = 0.37f;
                                 num9 = 0.8f;
                                 num10 = 1f;
-                                goto label_424;
+                                goto label_431;
                               case 20:
                                 num8 = 0.0f;
                                 num9 = 0.9f;
                                 num10 = 1f;
-                                goto label_424;
+                                goto label_431;
                               case 21:
                                 num8 = 0.25f;
                                 num9 = 0.7f;
                                 num10 = 1f;
-                                goto label_424;
+                                goto label_431;
                               case 25:
                                 num8 = (float) (0.5 * (double) Main.demonTorch + 1.0 * (1.0 - (double) Main.demonTorch));
                                 num9 = 0.3f;
                                 num10 = (float) (1.0 * (double) Main.demonTorch + 0.5 * (1.0 - (double) Main.demonTorch));
-                                goto label_424;
+                                goto label_431;
                               case 28:
                                 num8 = 0.9f;
                                 num9 = 0.75f;
                                 num10 = 1f;
-                                goto label_424;
+                                goto label_431;
                               case 30:
-                                Vector3 vector3_1 = Main.hslToRgb((float) ((double) Main.demonTorch * 0.119999997317791 + 0.689999997615814), 1f, 0.75f).ToVector3() * 1.2f;
-                                num8 = vector3_1.X;
-                                num9 = vector3_1.Y;
-                                num10 = vector3_1.Z;
-                                goto label_424;
+                                Color rgb1 = Main.hslToRgb((float) ((double) Main.demonTorch * 0.119999997317791 + 0.689999997615814), 1f, 0.75f);
+                                // ISSUE: explicit reference operation
+                                Vector3 vector3_1 = Vector3.op_Multiply(((Color) @rgb1).ToVector3(), 1.2f);
+                                num8 = (float) vector3_1.X;
+                                num9 = (float) vector3_1.Y;
+                                num10 = (float) vector3_1.Z;
+                                goto label_431;
                               case 0:
                                 num8 = 1f;
                                 num9 = 0.95f;
                                 num10 = 0.65f;
-                                goto label_424;
+                                goto label_431;
                               case 1:
                                 num8 = 0.55f;
                                 num9 = 0.85f;
                                 num10 = 0.35f;
-                                goto label_424;
+                                goto label_431;
                               case 2:
                                 num8 = 0.65f;
                                 num9 = 0.95f;
                                 num10 = 0.5f;
-                                goto label_424;
+                                goto label_431;
                               case 3:
                                 num8 = 0.2f;
                                 num9 = 0.75f;
                                 num10 = 1f;
-                                goto label_424;
+                                goto label_431;
                               case 14:
                                 num8 = 1f;
                                 num9 = 1f;
                                 num10 = 0.6f;
-                                goto label_424;
+                                goto label_431;
                               default:
                                 num8 = 1f;
                                 num9 = 0.95f;
                                 num10 = 0.65f;
-                                goto label_424;
+                                goto label_431;
                             }
                           }
                           else
-                            goto label_424;
+                            goto label_431;
                         case 34:
                           if ((int) tile.frameX % 108 < 54)
                           {
@@ -1039,105 +1062,107 @@ namespace Terraria
                                 num8 = 0.95f;
                                 num9 = 0.95f;
                                 num10 = 0.5f;
-                                goto label_424;
+                                goto label_431;
                               case 8:
                                 num8 = 0.85f;
                                 num9 = 0.6f;
                                 num10 = 1f;
-                                goto label_424;
+                                goto label_431;
                               case 9:
                                 num8 = 1f;
                                 num9 = 0.6f;
                                 num10 = 0.6f;
-                                goto label_424;
+                                goto label_431;
                               case 11:
                               case 17:
                                 num8 = 0.75f;
                                 num9 = 0.9f;
                                 num10 = 1f;
-                                goto label_424;
+                                goto label_431;
                               case 15:
                                 num8 = 1f;
                                 num9 = 1f;
                                 num10 = 0.7f;
-                                goto label_424;
+                                goto label_431;
                               case 18:
                                 num8 = 1f;
                                 num9 = 1f;
                                 num10 = 0.6f;
-                                goto label_424;
+                                goto label_431;
                               case 24:
                                 num8 = 0.37f;
                                 num9 = 0.8f;
                                 num10 = 1f;
-                                goto label_424;
+                                goto label_431;
                               case 25:
                                 num8 = 0.0f;
                                 num9 = 0.9f;
                                 num10 = 1f;
-                                goto label_424;
+                                goto label_431;
                               case 26:
                                 num8 = 0.25f;
                                 num9 = 0.7f;
                                 num10 = 1f;
-                                goto label_424;
+                                goto label_431;
                               case 27:
                                 num8 = 0.55f;
                                 num9 = 0.85f;
                                 num10 = 0.35f;
-                                goto label_424;
+                                goto label_431;
                               case 28:
                                 num8 = 0.65f;
                                 num9 = 0.95f;
                                 num10 = 0.5f;
-                                goto label_424;
+                                goto label_431;
                               case 29:
                                 num8 = 0.2f;
                                 num9 = 0.75f;
                                 num10 = 1f;
-                                goto label_424;
+                                goto label_431;
                               case 32:
                                 num8 = (float) (0.5 * (double) Main.demonTorch + 1.0 * (1.0 - (double) Main.demonTorch));
                                 num9 = 0.3f;
                                 num10 = (float) (1.0 * (double) Main.demonTorch + 0.5 * (1.0 - (double) Main.demonTorch));
-                                goto label_424;
+                                goto label_431;
                               case 35:
                                 num8 = 0.9f;
                                 num9 = 0.75f;
                                 num10 = 1f;
-                                goto label_424;
+                                goto label_431;
                               case 37:
-                                Vector3 vector3_2 = Main.hslToRgb((float) ((double) Main.demonTorch * 0.119999997317791 + 0.689999997615814), 1f, 0.75f).ToVector3() * 1.2f;
-                                num8 = vector3_2.X;
-                                num9 = vector3_2.Y;
-                                num10 = vector3_2.Z;
-                                goto label_424;
+                                Color rgb2 = Main.hslToRgb((float) ((double) Main.demonTorch * 0.119999997317791 + 0.689999997615814), 1f, 0.75f);
+                                // ISSUE: explicit reference operation
+                                Vector3 vector3_2 = Vector3.op_Multiply(((Color) @rgb2).ToVector3(), 1.2f);
+                                num8 = (float) vector3_2.X;
+                                num9 = (float) vector3_2.Y;
+                                num10 = (float) vector3_2.Z;
+                                goto label_431;
                               default:
                                 num8 = 1f;
                                 num9 = 0.95f;
                                 num10 = 0.8f;
-                                goto label_424;
+                                goto label_431;
                             }
                           }
                           else
-                            goto label_424;
+                            goto label_431;
                         case 35:
                           if ((int) tile.frameX < 36)
                           {
                             num8 = 0.75f;
                             num9 = 0.6f;
                             num10 = 0.3f;
-                            goto label_424;
+                            goto label_431;
                           }
                           else
-                            goto label_424;
+                            goto label_431;
                         case 37:
                           num8 = 0.56f;
                           num9 = 0.43f;
                           num10 = 0.15f;
-                          goto label_424;
+                          goto label_431;
                         default:
-                          goto label_424;
+                          goto label_431;
                       }
                     }
                   }
@@ -1150,10 +1175,10 @@ namespace Terraria
                         num8 = 0.0f;
                         num9 = 0.35f;
                         num10 = 0.8f;
-                        goto label_424;
+                        goto label_431;
                       }
                       else
-                        goto label_424;
+                        goto label_431;
                     }
                     else if ((int) tile.frameX == 0)
                     {
@@ -1163,151 +1188,137 @@ namespace Terraria
                           num8 = 0.7f;
                           num9 = 0.65f;
                           num10 = 0.55f;
-                          goto label_424;
+                          goto label_431;
                         case 1:
                           num8 = 0.9f;
                           num9 = 0.75f;
                           num10 = 0.6f;
-                          goto label_424;
+                          goto label_431;
                         case 2:
                           num8 = 0.8f;
                           num9 = 0.6f;
                           num10 = 0.6f;
-                          goto label_424;
+                          goto label_431;
                         case 3:
                           num8 = 0.65f;
                           num9 = 0.5f;
                           num10 = 0.2f;
-                          goto label_424;
+                          goto label_431;
                         case 4:
                           num8 = 0.5f;
                           num9 = 0.7f;
                           num10 = 0.4f;
-                          goto label_424;
+                          goto label_431;
                         case 5:
                           num8 = 0.9f;
                           num9 = 0.4f;
                           num10 = 0.2f;
-                          goto label_424;
+                          goto label_431;
                         case 6:
                           num8 = 0.7f;
                           num9 = 0.75f;
                           num10 = 0.3f;
-                          goto label_424;
+                          goto label_431;
                         case 7:
                           float num12 = Main.demonTorch * 0.2f;
                           num8 = 0.9f - num12;
                           num9 = 0.9f - num12;
                           num10 = 0.7f + num12;
-                          goto label_424;
+                          goto label_431;
                         case 8:
                           num8 = 0.75f;
                           num9 = 0.6f;
                           num10 = 0.3f;
-                          goto label_424;
+                          goto label_431;
                         case 9:
                           float num14 = 1f;
                           float num15 = 0.3f;
                           num10 = 0.5f + Main.demonTorch * 0.2f;
                           num8 = num14 - Main.demonTorch * 0.1f;
                           num9 = num15 - Main.demonTorch * 0.2f;
-                          goto label_424;
+                          goto label_431;
                         case 28:
                           num8 = 0.37f;
                           num9 = 0.8f;
                           num10 = 1f;
-                          goto label_424;
+                          goto label_431;
                         case 29:
                           num8 = 0.0f;
                           num9 = 0.9f;
                           num10 = 1f;
-                          goto label_424;
+                          goto label_431;
                         case 30:
                           num8 = 0.25f;
                           num9 = 0.7f;
                           num10 = 1f;
-                          goto label_424;
+                          goto label_431;
                         case 32:
                           num8 = (float) (0.5 * (double) Main.demonTorch + 1.0 * (1.0 - (double) Main.demonTorch));
                           num9 = 0.3f;
                           num10 = (float) (1.0 * (double) Main.demonTorch + 0.5 * (1.0 - (double) Main.demonTorch));
-                          goto label_424;
+                          goto label_431;
                         case 35:
                           num8 = 0.7f;
                           num9 = 0.6f;
                           num10 = 0.9f;
-                          goto label_424;
+                          goto label_431;
                         case 37:
-                          Vector3 vector3_3 = Main.hslToRgb((float) ((double) Main.demonTorch * 0.119999997317791 + 0.689999997615814), 1f, 0.75f).ToVector3() * 1.2f;
-                          num8 = vector3_3.X;
-                          num9 = vector3_3.Y;
-                          num10 = vector3_3.Z;
-                          goto label_424;
+                          Color rgb3 = Main.hslToRgb((float) ((double) Main.demonTorch * 0.119999997317791 + 0.689999997615814), 1f, 0.75f);
+                          // ISSUE: explicit reference operation
+                          Vector3 vector3_3 = Vector3.op_Multiply(((Color) @rgb3).ToVector3(), 1.2f);
+                          num8 = (float) vector3_3.X;
+                          num9 = (float) vector3_3.Y;
+                          num10 = (float) vector3_3.Z;
+                          goto label_431;
                         default:
                           num8 = 1f;
                           num9 = 1f;
                           num10 = 1f;
-                          goto label_424;
+                          goto label_431;
                       }
                     }
                     else
-                      goto label_424;
+                      goto label_431;
                   }
-                  else
+                  else if ((int) type != 61)
                   {
-                    switch (type)
+                    if ((uint) type - 70U > 2U)
                     {
-                      case 61:
-                        if ((int) tile.frameX == 144)
-                        {
-                          float num11 = (float) (1.0 + (double) (270 - (int) Main.mouseTextColor) / 400.0);
-                          float num16 = (float) (0.800000011920929 - (double) (270 - (int) Main.mouseTextColor) / 400.0);
-                          num8 = 0.42f * num16;
-                          num9 = 0.81f * num11;
-                          num10 = 0.52f * num16;
-                          goto label_424;
-                        }
-                        else
-                          goto label_424;
-                      case 70:
-                      case 71:
-                      case 72:
-                        goto label_389;
-                      case 77:
+                      if ((int) type == 77)
+                      {
                         num8 = 0.75f;
                         num9 = 0.45f;
                         num10 = 0.25f;
-                        goto label_424;
-                      default:
-                        goto label_424;
+                        goto label_431;
+                      }
+                      else
+                        goto label_431;
                     }
+                    else
+                      goto label_396;
                   }
+                  else if ((int) tile.frameX == 144)
+                  {
+                    float num11 = (float) (1.0 + (double) (270 - (int) Main.mouseTextColor) / 400.0);
+                    float num16 = (float) (0.800000011920929 - (double) (270 - (int) Main.mouseTextColor) / 400.0);
+                    num8 = 0.42f * num16;
+                    num9 = 0.81f * num11;
+                    num10 = 0.52f * num16;
+                    goto label_431;
+                  }
+                  else
+                    goto label_431;
                 }
                 else
                 {
                   if ((uint) type <= 133U)
                   {
-                    if ((uint) type <= 100U)
+                    if ((uint) type <= 84U)
                     {
-                      switch (type)
+                      if ((int) type != 83)
                       {
-                        case 83:
-                          if ((int) tile.frameX == 18 && !Main.dayTime)
-                          {
-                            num8 = 0.1f;
-                            num9 = 0.4f;
-                            num10 = 0.6f;
-                          }
-                          if ((int) tile.frameX == 90 && !Main.raining && Main.time > 40500.0)
-                          {
-                            num8 = 0.9f;
-                            num9 = 0.72f;
-                            num10 = 0.18f;
-                            goto label_424;
-                          }
-                          else
-                            goto label_424;
-                        case 84:
+                        if ((int) type == 84)
+                        {
                           int num11 = (int) tile.frameX / 18;
                           if (num11 == 2)
                           {
@@ -1319,7 +1330,7 @@ namespace Terraria
                             num8 = num16 * 0.7f;
                             num9 = num16;
                             num10 = num16 * 0.1f;
-                            goto label_424;
+                            goto label_431;
                           }
                           else if (num11 == 5)
                           {
@@ -1327,27 +1338,54 @@ namespace Terraria
                             num8 = num16;
                             num9 = num16 * 0.8f;
                             num10 = num16 * 0.2f;
-                            goto label_424;
+                            goto label_431;
                           }
                           else if (num11 == 6)
                           {
                             float num16 = 0.08f;
                             num9 = num16 * 0.8f;
                             num10 = num16;
-                            goto label_424;
+                            goto label_431;
                           }
                           else
-                            goto label_424;
+                            goto label_431;
+                        }
+                        else
+                          goto label_431;
+                      }
+                      else
+                      {
+                        if ((int) tile.frameX == 18 && !Main.dayTime)
+                        {
+                          num8 = 0.1f;
+                          num9 = 0.4f;
+                          num10 = 0.6f;
+                        }
+                        if ((int) tile.frameX == 90 && !Main.raining && Main.time > 40500.0)
+                        {
+                          num8 = 0.9f;
+                          num9 = 0.72f;
+                          num10 = 0.18f;
+                          goto label_431;
+                        }
+                        else
+                          goto label_431;
+                      }
+                    }
+                    else
+                    {
+                      switch (type)
+                      {
                         case 92:
                           if ((int) tile.frameY <= 18 && (int) tile.frameX == 0)
                           {
                             num8 = 1f;
                             num9 = 1f;
                             num10 = 1f;
-                            goto label_424;
+                            goto label_431;
                           }
                           else
-                            goto label_424;
+                            goto label_431;
                         case 93:
                           if ((int) tile.frameX == 0)
                           {
@@ -1357,143 +1395,137 @@ namespace Terraria
                                 num8 = 0.95f;
                                 num9 = 0.95f;
                                 num10 = 0.5f;
-                                goto label_424;
+                                goto label_431;
                               case 2:
                                 num8 = 0.85f;
                                 num9 = 0.6f;
                                 num10 = 1f;
-                                goto label_424;
+                                goto label_431;
                               case 3:
                                 num8 = 0.75f;
                                 num9 = 1f;
                                 num10 = 0.6f;
-                                goto label_424;
+                                goto label_431;
                               case 4:
                               case 5:
                                 num8 = 0.75f;
                                 num9 = 0.9f;
                                 num10 = 1f;
-                                goto label_424;
+                                goto label_431;
                               case 9:
                                 num8 = 1f;
                                 num9 = 1f;
                                 num10 = 0.7f;
-                                goto label_424;
+                                goto label_431;
                               case 13:
                                 num8 = 1f;
                                 num9 = 1f;
                                 num10 = 0.6f;
-                                goto label_424;
+                                goto label_431;
                               case 19:
                                 num8 = 0.37f;
                                 num9 = 0.8f;
                                 num10 = 1f;
-                                goto label_424;
+                                goto label_431;
                               case 20:
                                 num8 = 0.0f;
                                 num9 = 0.9f;
                                 num10 = 1f;
-                                goto label_424;
+                                goto label_431;
                               case 21:
                                 num8 = 0.25f;
                                 num9 = 0.7f;
                                 num10 = 1f;
-                                goto label_424;
+                                goto label_431;
                               case 23:
                                 num8 = (float) (0.5 * (double) Main.demonTorch + 1.0 * (1.0 - (double) Main.demonTorch));
                                 num9 = 0.3f;
                                 num10 = (float) (1.0 * (double) Main.demonTorch + 0.5 * (1.0 - (double) Main.demonTorch));
-                                goto label_424;
+                                goto label_431;
                               case 24:
                                 num8 = 0.35f;
                                 num9 = 0.5f;
                                 num10 = 0.3f;
-                                goto label_424;
+                                goto label_431;
                               case 25:
                                 num8 = 0.34f;
                                 num9 = 0.4f;
                                 num10 = 0.31f;
-                                goto label_424;
+                                goto label_431;
                               case 26:
                                 num8 = 0.25f;
                                 num9 = 0.32f;
                                 num10 = 0.5f;
-                                goto label_424;
+                                goto label_431;
                               case 29:
                                 num8 = 0.9f;
                                 num9 = 0.75f;
                                 num10 = 1f;
-                                goto label_424;
+                                goto label_431;
                               case 31:
-                                Vector3 vector3_4 = Main.hslToRgb((float) ((double) Main.demonTorch * 0.119999997317791 + 0.689999997615814), 1f, 0.75f).ToVector3() * 1.2f;
-                                num8 = vector3_4.X;
-                                num9 = vector3_4.Y;
-                                num10 = vector3_4.Z;
-                                goto label_424;
+                                Color rgb4 = Main.hslToRgb((float) ((double) Main.demonTorch * 0.119999997317791 + 0.689999997615814), 1f, 0.75f);
+                                // ISSUE: explicit reference operation
+                                Vector3 vector3_4 = Vector3.op_Multiply(((Color) @rgb4).ToVector3(), 1.2f);
+                                num8 = (float) vector3_4.X;
+                                num9 = (float) vector3_4.Y;
+                                num10 = (float) vector3_4.Z;
+                                goto label_431;
                               default:
                                 num8 = 1f;
                                 num9 = 0.97f;
                                 num10 = 0.85f;
-                                goto label_424;
+                                goto label_431;
                             }
                           }
                           else
-                            goto label_424;
+                            goto label_431;
                         case 95:
                           if ((int) tile.frameX < 36)
                           {
                             num8 = 1f;
                             num9 = 0.95f;
                             num10 = 0.8f;
-                            goto label_424;
+                            goto label_431;
                           }
                           else
-                            goto label_424;
+                            goto label_431;
                         case 96:
                           if ((int) tile.frameX >= 36)
                           {
                             num8 = 0.5f;
                             num9 = 0.35f;
                             num10 = 0.1f;
-                            goto label_424;
+                            goto label_431;
                           }
                           else
-                            goto label_424;
+                            goto label_431;
                         case 98:
                           if ((int) tile.frameY == 0)
                           {
                             num8 = 1f;
                             num9 = 0.97f;
                             num10 = 0.85f;
-                            goto label_424;
+                            goto label_431;
                           }
                           else
-                            goto label_424;
+                            goto label_431;
                         case 100:
                           break;
-                        default:
-                          goto label_424;
-                      }
-                    }
-                    else
-                    {
-                      switch (type)
-                      {
                         case 125:
                           float num17 = (float) Main.rand.Next(28, 42) * 0.01f + (float) (270 - (int) Main.mouseTextColor) / 800f;
                           num9 = lightingState.g2 = 0.3f * num17;
                           num10 = lightingState.b2 = 0.6f * num17;
-                          goto label_424;
+                          goto label_431;
                         case 126:
                           if ((int) tile.frameX < 36)
                           {
                             num8 = (float) Main.DiscoR / (float) byte.MaxValue;
                             num9 = (float) Main.DiscoG / (float) byte.MaxValue;
                             num10 = (float) Main.DiscoB / (float) byte.MaxValue;
-                            goto label_424;
+                            goto label_431;
                           }
                           else
-                            goto label_424;
+                            goto label_431;
                         case 129:
                           switch ((int) tile.frameX / 18 % 3)
                           {
@@ -1501,24 +1533,24 @@ namespace Terraria
                               num8 = 0.0f;
                               num9 = 0.05f;
                               num10 = 0.25f;
-                              goto label_424;
+                              goto label_431;
                             case 1:
                               num8 = 0.2f;
                               num9 = 0.0f;
                               num10 = 0.15f;
-                              goto label_424;
+                              goto label_431;
                             case 2:
                               num8 = 0.1f;
                               num9 = 0.0f;
                               num10 = 0.2f;
-                              goto label_424;
+                              goto label_431;
                             default:
-                              goto label_424;
+                              goto label_431;
                           }
                         case 133:
-                          goto label_348;
+                          goto label_355;
                         default:
-                          goto label_424;
+                          goto label_431;
                       }
                     }
                   }
@@ -1549,13 +1581,13 @@ namespace Terraria
                         num8 *= (float) Main.rand.Next(970, 1031) * (1f / 1000f);
                         num9 *= (float) Main.rand.Next(970, 1031) * (1f / 1000f);
                         num10 *= (float) Main.rand.Next(970, 1031) * (1f / 1000f);
-                        goto label_424;
+                        goto label_431;
                       }
                       else
-                        goto label_424;
+                        goto label_431;
                     }
                     else
-                      goto label_351;
+                      goto label_358;
                   }
                   else
                   {
@@ -1565,7 +1597,7 @@ namespace Terraria
                         num8 = (float) ((double) Main.DiscoR / (double) byte.MaxValue * 0.25);
                         num9 = (float) ((double) Main.DiscoG / (double) byte.MaxValue * 0.25);
                         num10 = (float) ((double) Main.DiscoB / (double) byte.MaxValue * 0.25);
-                        goto label_424;
+                        goto label_431;
                       case 171:
                         int index3 = index1;
                         int index4 = index2;
@@ -1629,7 +1661,7 @@ namespace Terraria
                         num8 *= 0.5f;
                         num9 *= 0.5f;
                         num10 *= 0.5f;
-                        goto label_424;
+                        goto label_431;
                       case 173:
                         break;
                       case 174:
@@ -1638,22 +1670,22 @@ namespace Terraria
                           num8 = 1f;
                           num9 = 0.95f;
                           num10 = 0.65f;
-                          goto label_424;
+                          goto label_431;
                         }
                         else
-                          goto label_424;
+                          goto label_431;
                       case 184:
                         if ((int) tile.frameX == 110)
                         {
                           num8 = 0.25f;
                           num9 = 0.1f;
                           num10 = 0.0f;
-                          goto label_424;
+                          goto label_431;
                         }
                         else
-                          goto label_424;
+                          goto label_431;
                       default:
-                        goto label_424;
+                        goto label_431;
                     }
                   }
                   if ((int) tile.frameX < 36)
@@ -1664,472 +1696,493 @@ namespace Terraria
                         num8 = 0.95f;
                         num9 = 0.95f;
                         num10 = 0.5f;
-                        goto label_424;
+                        goto label_431;
                       case 3:
                         num8 = 1f;
                         num9 = 0.6f;
                         num10 = 0.6f;
-                        goto label_424;
+                        goto label_431;
                       case 6:
                       case 9:
                         num8 = 0.75f;
                         num9 = 0.9f;
                         num10 = 1f;
-                        goto label_424;
+                        goto label_431;
                       case 11:
                         num8 = 1f;
                         num9 = 1f;
                         num10 = 0.7f;
-                        goto label_424;
+                        goto label_431;
                       case 13:
                         num8 = 1f;
                         num9 = 1f;
                         num10 = 0.6f;
-                        goto label_424;
+                        goto label_431;
                       case 19:
                         num8 = 0.37f;
                         num9 = 0.8f;
                         num10 = 1f;
-                        goto label_424;
+                        goto label_431;
                       case 20:
                         num8 = 0.0f;
                         num9 = 0.9f;
                         num10 = 1f;
-                        goto label_424;
+                        goto label_431;
                       case 21:
                         num8 = 0.25f;
                         num9 = 0.7f;
                         num10 = 1f;
-                        goto label_424;
+                        goto label_431;
                       case 22:
                         num8 = 0.35f;
                         num9 = 0.5f;
                         num10 = 0.3f;
-                        goto label_424;
+                        goto label_431;
                       case 23:
                         num8 = 0.34f;
                         num9 = 0.4f;
                         num10 = 0.31f;
-                        goto label_424;
+                        goto label_431;
                       case 24:
                         num8 = 0.25f;
                         num9 = 0.32f;
                         num10 = 0.5f;
-                        goto label_424;
+                        goto label_431;
                       case 25:
                         num8 = (float) (0.5 * (double) Main.demonTorch + 1.0 * (1.0 - (double) Main.demonTorch));
                         num9 = 0.3f;
                         num10 = (float) (1.0 * (double) Main.demonTorch + 0.5 * (1.0 - (double) Main.demonTorch));
-                        goto label_424;
+                        goto label_431;
                       case 29:
                         num8 = 0.9f;
                         num9 = 0.75f;
                         num10 = 1f;
-                        goto label_424;
+                        goto label_431;
                       case 31:
-                        Vector3 vector3_5 = Main.hslToRgb((float) ((double) Main.demonTorch * 0.119999997317791 + 0.689999997615814), 1f, 0.75f).ToVector3() * 1.2f;
-                        num8 = vector3_5.X;
-                        num9 = vector3_5.Y;
-                        num10 = vector3_5.Z;
-                        goto label_424;
+                        Color rgb5 = Main.hslToRgb((float) ((double) Main.demonTorch * 0.119999997317791 + 0.689999997615814), 1f, 0.75f);
+                        // ISSUE: explicit reference operation
+                        Vector3 vector3_5 = Vector3.op_Multiply(((Color) @rgb5).ToVector3(), 1.2f);
+                        num8 = (float) vector3_5.X;
+                        num9 = (float) vector3_5.Y;
+                        num10 = (float) vector3_5.Z;
+                        goto label_431;
                       default:
                         num8 = 1f;
                         num9 = 0.95f;
                         num10 = 0.65f;
-                        goto label_424;
+                        goto label_431;
                     }
                   }
                   else
-                    goto label_424;
+                    goto label_431;
                 }
-label_351:
+label_358:
                 num8 = 0.12f;
                 num9 = 0.07f;
                 num10 = 0.32f;
-                goto label_424;
+                goto label_431;
               }
               else
               {
-                if ((uint) type <= 318U)
+                if ((uint) type <= 327U)
                 {
-                  if ((uint) type <= 215U)
+                  if ((uint) type <= 238U)
                   {
                     if ((uint) type <= 204U)
                     {
                       if ((int) type != 190)
                       {
                         if ((int) type != 204)
-                          goto label_424;
+                          goto label_431;
                       }
                       else
-                        goto label_389;
-                    }
-                    else if ((int) type != 209)
-                    {
-                      if ((int) type == 215 && (int) tile.frameY < 36)
-                      {
-                        float num11 = (float) Main.rand.Next(28, 42) * 0.005f + (float) (270 - (int) Main.mouseTextColor) / 700f;
-                        float num12;
-                        float num14;
-                        float num15;
-                        switch ((int) tile.frameX / 54)
-                        {
-                          case 1:
-                            num12 = 0.7f;
-                            num14 = 1f;
-                            num15 = 0.5f;
-                            break;
-                          case 2:
-                            num12 = (float) (0.5 * (double) Main.demonTorch + 1.0 * (1.0 - (double) Main.demonTorch));
-                            num14 = 0.3f;
-                            num15 = (float) (1.0 * (double) Main.demonTorch + 0.5 * (1.0 - (double) Main.demonTorch));
-                            break;
-                          case 3:
-                            num12 = 0.45f;
-                            num14 = 0.75f;
-                            num15 = 1f;
-                            break;
-                          case 4:
-                            num12 = 1.15f;
-                            num14 = 1.15f;
-                            num15 = 0.5f;
-                            break;
-                          case 5:
-                            num12 = (float) Main.DiscoR / (float) byte.MaxValue;
-                            num14 = (float) Main.DiscoG / (float) byte.MaxValue;
-                            num15 = (float) Main.DiscoB / (float) byte.MaxValue;
-                            break;
-                          case 6:
-                            num12 = 0.75f;
-                            num14 = 1.2825f;
-                            num15 = 1.2f;
-                            break;
-                          case 7:
-                            num12 = 0.95f;
-                            num14 = 0.65f;
-                            num15 = 1.3f;
-                            break;
-                          default:
-                            num12 = 0.9f;
-                            num14 = 0.3f;
-                            num15 = 0.1f;
-                            break;
-                        }
-                        num8 = num12 + num11;
-                        num9 = num14 + num11;
-                        num10 = num15 + num11;
-                        goto label_424;
-                      }
-                      else
-                        goto label_424;
-                    }
-                    else if ((int) tile.frameX == 234 || (int) tile.frameX == 252)
-                    {
-                      Vector3 vector3 = PortalHelper.GetPortalColor(Main.myPlayer, 0).ToVector3() * 0.65f;
-                      num8 = vector3.X;
-                      num9 = vector3.Y;
-                      num10 = vector3.Z;
-                      goto label_424;
-                    }
-                    else if ((int) tile.frameX == 306 || (int) tile.frameX == 324)
-                    {
-                      Vector3 vector3 = PortalHelper.GetPortalColor(Main.myPlayer, 1).ToVector3() * 0.65f;
-                      num8 = vector3.X;
-                      num9 = vector3.Y;
-                      num10 = vector3.Z;
-                      goto label_424;
+                        goto label_396;
                     }
                     else
-                      goto label_424;
+                    {
+                      switch (type)
+                      {
+                        case 209:
+                          if ((int) tile.frameX == 234 || (int) tile.frameX == 252)
+                          {
+                            Color portalColor = PortalHelper.GetPortalColor(Main.myPlayer, 0);
+                            // ISSUE: explicit reference operation
+                            Vector3 vector3 = Vector3.op_Multiply(((Color) @portalColor).ToVector3(), 0.65f);
+                            num8 = (float) vector3.X;
+                            num9 = (float) vector3.Y;
+                            num10 = (float) vector3.Z;
+                            goto label_431;
+                          }
+                          else if ((int) tile.frameX == 306 || (int) tile.frameX == 324)
+                          {
+                            Color portalColor = PortalHelper.GetPortalColor(Main.myPlayer, 1);
+                            // ISSUE: explicit reference operation
+                            Vector3 vector3 = Vector3.op_Multiply(((Color) @portalColor).ToVector3(), 0.65f);
+                            num8 = (float) vector3.X;
+                            num9 = (float) vector3.Y;
+                            num10 = (float) vector3.Z;
+                            goto label_431;
+                          }
+                          else
+                            goto label_431;
+                        case 215:
+                          if ((int) tile.frameY < 36)
+                          {
+                            float num11 = (float) Main.rand.Next(28, 42) * 0.005f + (float) (270 - (int) Main.mouseTextColor) / 700f;
+                            float num12;
+                            float num14;
+                            float num15;
+                            switch ((int) tile.frameX / 54)
+                            {
+                              case 1:
+                                num12 = 0.7f;
+                                num14 = 1f;
+                                num15 = 0.5f;
+                                break;
+                              case 2:
+                                num12 = (float) (0.5 * (double) Main.demonTorch + 1.0 * (1.0 - (double) Main.demonTorch));
+                                num14 = 0.3f;
+                                num15 = (float) (1.0 * (double) Main.demonTorch + 0.5 * (1.0 - (double) Main.demonTorch));
+                                break;
+                              case 3:
+                                num12 = 0.45f;
+                                num14 = 0.75f;
+                                num15 = 1f;
+                                break;
+                              case 4:
+                                num12 = 1.15f;
+                                num14 = 1.15f;
+                                num15 = 0.5f;
+                                break;
+                              case 5:
+                                num12 = (float) Main.DiscoR / (float) byte.MaxValue;
+                                num14 = (float) Main.DiscoG / (float) byte.MaxValue;
+                                num15 = (float) Main.DiscoB / (float) byte.MaxValue;
+                                break;
+                              case 6:
+                                num12 = 0.75f;
+                                num14 = 1.2825f;
+                                num15 = 1.2f;
+                                break;
+                              case 7:
+                                num12 = 0.95f;
+                                num14 = 0.65f;
+                                num15 = 1.3f;
+                                break;
+                              default:
+                                num12 = 0.9f;
+                                num14 = 0.3f;
+                                num15 = 0.1f;
+                                break;
+                            }
+                            num8 = num12 + num11;
+                            num9 = num14 + num11;
+                            num10 = num15 + num11;
+                            goto label_431;
+                          }
+                          else
+                            goto label_431;
+                        case 235:
+                          if ((double) lightingState.r2 < 0.6)
+                            lightingState.r2 = 0.6f;
+                          if ((double) lightingState.g2 < 0.6)
+                          {
+                            lightingState.g2 = 0.6f;
+                            goto label_431;
+                          }
+                          else
+                            goto label_431;
+                        case 237:
+                          num8 = 0.1f;
+                          num9 = 0.1f;
+                          goto label_431;
+                        case 238:
+                          if ((double) lightingState.r2 < 0.5)
+                            lightingState.r2 = 0.5f;
+                          if ((double) lightingState.b2 < 0.5)
+                          {
+                            lightingState.b2 = 0.5f;
+                            goto label_431;
+                          }
+                          else
+                            goto label_431;
+                        default:
+                          goto label_431;
+                      }
+                    }
                   }
-                  else if ((uint) type <= 271U)
+                  else if ((uint) type <= 286U)
                   {
                     switch (type)
                     {
-                      case 235:
-                        if ((double) lightingState.r2 < 0.6)
-                          lightingState.r2 = 0.6f;
-                        if ((double) lightingState.g2 < 0.6)
-                        {
-                          lightingState.g2 = 0.6f;
-                          goto label_424;
-                        }
-                        else
-                          goto label_424;
-                      case 237:
-                        num8 = 0.1f;
-                        num9 = 0.1f;
-                        goto label_424;
-                      case 238:
-                        if ((double) lightingState.r2 < 0.5)
-                          lightingState.r2 = 0.5f;
-                        if ((double) lightingState.b2 < 0.5)
-                        {
-                          lightingState.b2 = 0.5f;
-                          goto label_424;
-                        }
-                        else
-                          goto label_424;
                       case 262:
                         num8 = 0.75f;
                         num10 = 0.75f;
-                        goto label_424;
+                        goto label_431;
                       case 263:
                         num8 = 0.75f;
                         num9 = 0.75f;
-                        goto label_424;
+                        goto label_431;
                       case 264:
                         num10 = 0.75f;
-                        goto label_424;
+                        goto label_431;
                       case 265:
                         num9 = 0.75f;
-                        goto label_424;
+                        goto label_431;
                       case 266:
                         num8 = 0.75f;
-                        goto label_424;
+                        goto label_431;
                       case 267:
                         num8 = 0.75f;
                         num9 = 0.75f;
                         num10 = 0.75f;
-                        goto label_424;
+                        goto label_431;
                       case 268:
                         num8 = 0.75f;
                         num9 = 0.375f;
-                        goto label_424;
+                        goto label_431;
                       case 270:
                         num8 = 0.73f;
                         num9 = 1f;
                         num10 = 0.41f;
-                        goto label_424;
+                        goto label_431;
                       case 271:
                         num8 = 0.45f;
                         num9 = 0.95f;
                         num10 = 1f;
-                        goto label_424;
-                      default:
-                        goto label_424;
-                    }
-                  }
-                  else
-                  {
-                    switch (type)
-                    {
+                        goto label_431;
                       case 286:
                         num8 = 0.1f;
                         num9 = 0.2f;
                         num10 = 0.7f;
-                        goto label_424;
-                      case 302:
-                        goto label_348;
-                      case 316:
-                      case 317:
-                      case 318:
-                        int index3 = (index1 - (int) tile.frameX / 18) / 2 * ((index2 - (int) tile.frameY / 18) / 3) % Main.cageFrames;
-                        bool flag1 = (int) Main.jellyfishCageMode[(int) tile.type - 316, index3] == 2;
-                        if ((int) tile.type == 316)
-                        {
-                          if (flag1)
-                          {
-                            num8 = 0.2f;
-                            num9 = 0.3f;
-                            num10 = 0.8f;
-                          }
-                          else
-                          {
-                            num8 = 0.1f;
-                            num9 = 0.2f;
-                            num10 = 0.5f;
-                          }
-                        }
-                        if ((int) tile.type == 317)
-                        {
-                          if (flag1)
-                          {
-                            num8 = 0.2f;
-                            num9 = 0.7f;
-                            num10 = 0.3f;
-                          }
-                          else
-                          {
-                            num8 = 0.05f;
-                            num9 = 0.45f;
-                            num10 = 0.1f;
-                          }
-                        }
-                        if ((int) tile.type == 318)
-                        {
-                          if (flag1)
-                          {
-                            num8 = 0.7f;
-                            num9 = 0.2f;
-                            num10 = 0.5f;
-                            goto label_424;
-                          }
-                          else
-                          {
-                            num8 = 0.4f;
-                            num9 = 0.1f;
-                            num10 = 0.25f;
-                            goto label_424;
-                          }
-                        }
-                        else
-                          goto label_424;
+                        goto label_431;
                       default:
-                        goto label_424;
+                        goto label_431;
                     }
                   }
+                  else if ((int) type != 302)
+                  {
+                    if ((uint) type - 316U > 2U)
+                    {
+                      if ((int) type == 327)
+                      {
+                        float num11 = 0.5f + (float) (270 - (int) Main.mouseTextColor) / 1500f + (float) Main.rand.Next(0, 50) * 0.0005f;
+                        num8 = 1f * num11;
+                        num9 = 0.5f * num11;
+                        num10 = 0.1f * num11;
+                        goto label_431;
+                      }
+                      else
+                        goto label_431;
+                    }
+                    else
+                    {
+                      int num11 = index1 - (int) tile.frameX / 18;
+                      int num12 = index2 - (int) tile.frameY / 18;
+                      int num14 = 2;
+                      int index3 = num11 / num14 * (num12 / 3) % Main.cageFrames;
+                      bool flag = (int) Main.jellyfishCageMode[(int) tile.type - 316, index3] == 2;
+                      if ((int) tile.type == 316)
+                      {
+                        if (flag)
+                        {
+                          num8 = 0.2f;
+                          num9 = 0.3f;
+                          num10 = 0.8f;
+                        }
+                        else
+                        {
+                          num8 = 0.1f;
+                          num9 = 0.2f;
+                          num10 = 0.5f;
+                        }
+                      }
+                      if ((int) tile.type == 317)
+                      {
+                        if (flag)
+                        {
+                          num8 = 0.2f;
+                          num9 = 0.7f;
+                          num10 = 0.3f;
+                        }
+                        else
+                        {
+                          num8 = 0.05f;
+                          num9 = 0.45f;
+                          num10 = 0.1f;
+                        }
+                      }
+                      if ((int) tile.type == 318)
+                      {
+                        if (flag)
+                        {
+                          num8 = 0.7f;
+                          num9 = 0.2f;
+                          num10 = 0.5f;
+                          goto label_431;
+                        }
+                        else
+                        {
+                          num8 = 0.4f;
+                          num9 = 0.1f;
+                          num10 = 0.25f;
+                          goto label_431;
+                        }
+                      }
+                      else
+                        goto label_431;
+                    }
+                  }
+                  else
+                    goto label_355;
                 }
-                else if ((uint) type <= 381U)
+                else if ((uint) type <= 390U)
                 {
-                  if ((uint) type <= 350U)
+                  if ((uint) type <= 370U)
                   {
                     switch (type)
                     {
-                      case 327:
-                        float num16 = 0.5f + (float) (270 - (int) Main.mouseTextColor) / 1500f + (float) Main.rand.Next(0, 50) * 0.0005f;
-                        num8 = 1f * num16;
-                        num9 = 0.5f * num16;
-                        num10 = 0.1f * num16;
-                        goto label_424;
                       case 336:
                         num8 = 0.85f;
                         num9 = 0.5f;
                         num10 = 0.3f;
-                        goto label_424;
+                        goto label_431;
                       case 340:
                         num8 = 0.45f;
                         num9 = 1f;
                         num10 = 0.45f;
-                        goto label_424;
+                        goto label_431;
                       case 341:
                         num8 = (float) (0.400000005960464 * (double) Main.demonTorch + 0.600000023841858 * (1.0 - (double) Main.demonTorch));
                         num9 = 0.35f;
                         num10 = (float) (1.0 * (double) Main.demonTorch + 0.600000023841858 * (1.0 - (double) Main.demonTorch));
-                        goto label_424;
+                        goto label_431;
                       case 342:
                         num8 = 0.5f;
                         num9 = 0.5f;
                         num10 = 1.1f;
-                        goto label_424;
+                        goto label_431;
                       case 343:
                         num8 = 0.85f;
                         num9 = 0.85f;
                         num10 = 0.3f;
-                        goto label_424;
+                        goto label_431;
                       case 344:
                         num8 = 0.6f;
                         num9 = 1.026f;
                         num10 = 0.96f;
-                        goto label_424;
+                        goto label_431;
                       case 347:
                         break;
                       case 348:
                       case 349:
-                        goto label_389;
+                        goto label_396;
                       case 350:
-                        double num17 = Main.time * 0.08;
-                        float num18 = (float) (-Math.Cos((int) (num17 / 6.283) % 3 == 1 ? num17 : 0.0) * 0.1 + 0.1);
-                        num8 = num18;
-                        num9 = num18;
-                        num10 = num18;
-                        goto label_424;
-                      default:
-                        goto label_424;
-                    }
-                  }
-                  else
-                  {
-                    switch (type)
-                    {
+                        double num16 = Main.time * 0.08;
+                        double d = (int) (num16 / 6.283) % 3 == 1 ? num16 : 0.0;
+                        double num17;
+                        num8 = (float) (num17 = -Math.Cos(d) * 0.1 + 0.1);
+                        num9 = (float) num17;
+                        num10 = (float) num17;
+                        goto label_431;
                       case 370:
                         num8 = 0.32f;
                         num9 = 0.16f;
                         num10 = 0.12f;
-                        goto label_424;
-                      case 372:
-                        if ((int) tile.frameX == 0)
-                        {
-                          num8 = 0.9f;
-                          num9 = 0.1f;
-                          num10 = 0.75f;
-                          goto label_424;
-                        }
-                        else
-                          goto label_424;
-                      case 381:
-                        num8 = 0.25f;
-                        num9 = 0.1f;
-                        num10 = 0.0f;
-                        goto label_424;
+                        goto label_431;
                       default:
-                        goto label_424;
+                        goto label_431;
                     }
                   }
+                  else if ((int) type != 372)
+                  {
+                    if ((int) type != 381)
+                    {
+                      if ((int) type == 390)
+                      {
+                        num8 = 0.4f;
+                        num9 = 0.2f;
+                        num10 = 0.1f;
+                        goto label_431;
+                      }
+                      else
+                        goto label_431;
+                    }
+                    else
+                    {
+                      num8 = 0.25f;
+                      num9 = 0.1f;
+                      num10 = 0.0f;
+                      goto label_431;
+                    }
+                  }
+                  else if ((int) tile.frameX == 0)
+                  {
+                    num8 = 0.9f;
+                    num9 = 0.1f;
+                    num10 = 0.75f;
+                    goto label_431;
+                  }
+                  else
+                    goto label_431;
                 }
                 else if ((uint) type <= 405U)
                 {
-                  switch (type)
+                  if ((int) type != 391)
                   {
-                    case 390:
-                      num8 = 0.4f;
-                      num9 = 0.2f;
-                      num10 = 0.1f;
-                      goto label_424;
-                    case 391:
-                      num8 = 0.3f;
-                      num9 = 0.1f;
-                      num10 = 0.25f;
-                      goto label_424;
-                    case 405:
-                      if ((int) tile.frameX < 54)
+                    if ((int) type == 405 && (int) tile.frameX < 54)
+                    {
+                      float num11 = (float) Main.rand.Next(28, 42) * 0.005f + (float) (270 - (int) Main.mouseTextColor) / 700f;
+                      float num12;
+                      float num14;
+                      float num15;
+                      switch ((int) tile.frameX / 54)
                       {
-                        float num11 = (float) Main.rand.Next(28, 42) * 0.005f + (float) (270 - (int) Main.mouseTextColor) / 700f;
-                        float num12;
-                        float num14;
-                        float num15;
-                        switch ((int) tile.frameX / 54)
-                        {
-                          case 1:
-                            num12 = 0.7f;
-                            num14 = 1f;
-                            num15 = 0.5f;
-                            break;
-                          case 2:
-                            num12 = (float) (0.5 * (double) Main.demonTorch + 1.0 * (1.0 - (double) Main.demonTorch));
-                            num14 = 0.3f;
-                            num15 = (float) (1.0 * (double) Main.demonTorch + 0.5 * (1.0 - (double) Main.demonTorch));
-                            break;
-                          case 3:
-                            num12 = 0.45f;
-                            num14 = 0.75f;
-                            num15 = 1f;
-                            break;
-                          case 4:
-                            num12 = 1.15f;
-                            num14 = 1.15f;
-                            num15 = 0.5f;
-                            break;
-                          case 5:
-                            num12 = (float) Main.DiscoR / (float) byte.MaxValue;
-                            num14 = (float) Main.DiscoG / (float) byte.MaxValue;
-                            num15 = (float) Main.DiscoB / (float) byte.MaxValue;
-                            break;
-                          default:
-                            num12 = 0.9f;
-                            num14 = 0.3f;
-                            num15 = 0.1f;
-                            break;
-                        }
-                        num8 = num12 + num11;
-                        num9 = num14 + num11;
-                        num10 = num15 + num11;
-                        goto label_424;
+                        case 1:
+                          num12 = 0.7f;
+                          num14 = 1f;
+                          num15 = 0.5f;
+                          break;
+                        case 2:
+                          num12 = (float) (0.5 * (double) Main.demonTorch + 1.0 * (1.0 - (double) Main.demonTorch));
+                          num14 = 0.3f;
+                          num15 = (float) (1.0 * (double) Main.demonTorch + 0.5 * (1.0 - (double) Main.demonTorch));
+                          break;
+                        case 3:
+                          num12 = 0.45f;
+                          num14 = 0.75f;
+                          num15 = 1f;
+                          break;
+                        case 4:
+                          num12 = 1.15f;
+                          num14 = 1.15f;
+                          num15 = 0.5f;
+                          break;
+                        case 5:
+                          num12 = (float) Main.DiscoR / (float) byte.MaxValue;
+                          num14 = (float) Main.DiscoG / (float) byte.MaxValue;
+                          num15 = (float) Main.DiscoB / (float) byte.MaxValue;
+                          break;
+                        default:
+                          num12 = 0.9f;
+                          num14 = 0.3f;
+                          num15 = 0.1f;
+                          break;
                       }
-                      else
-                        goto label_424;
-                    default:
-                      goto label_424;
+                      num8 = num12 + num11;
+                      num9 = num14 + num11;
+                      num10 = num15 + num11;
+                      goto label_431;
+                    }
+                    else
+                      goto label_431;
+                  }
+                  else
+                  {
+                    num8 = 0.3f;
+                    num9 = 0.1f;
+                    num10 = 0.25f;
+                    goto label_431;
                   }
                 }
                 else
@@ -2140,60 +2193,64 @@ label_351:
                       num8 = 0.7f;
                       num9 = 0.5f;
                       num10 = 0.1f;
-                      goto label_424;
+                      goto label_431;
                     case 416:
                       num8 = 0.0f;
                       num9 = 0.6f;
                       num10 = 0.7f;
-                      goto label_424;
+                      goto label_431;
                     case 417:
                       num8 = 0.6f;
                       num9 = 0.2f;
                       num10 = 0.6f;
-                      goto label_424;
+                      goto label_431;
                     case 418:
                       num8 = 0.6f;
                       num9 = 0.6f;
                       num10 = 0.9f;
-                      goto label_424;
+                      goto label_431;
                     case 429:
-                      int num25 = (int) tile.frameX / 18;
-                      bool flag2 = num25 % 2 >= 1;
-                      bool flag3 = num25 % 4 >= 2;
-                      bool flag4 = num25 % 8 >= 4;
-                      bool flag5 = num25 % 16 >= 8;
-                      if (flag2)
+                      int num18 = (int) tile.frameX / 18;
+                      int num25 = 2;
+                      bool flag1 = num18 % num25 >= 1;
+                      int num26 = 4;
+                      bool flag2 = num18 % num26 >= 2;
+                      int num27 = 8;
+                      bool flag3 = num18 % num27 >= 4;
+                      int num28 = 16;
+                      int num29 = num18 % num28 >= 8 ? 1 : 0;
+                      if (flag1)
                         num8 += 0.5f;
-                      if (flag3)
+                      if (flag2)
                         num9 += 0.5f;
-                      if (flag4)
+                      if (flag3)
                         num10 += 0.5f;
-                      if (flag5)
+                      if (num29 != 0)
                       {
                         num8 += 0.2f;
                         num9 += 0.2f;
-                        goto label_424;
+                        goto label_431;
                       }
                       else
-                        goto label_424;
+                        goto label_431;
                     case 463:
                       num8 = 0.2f;
                       num9 = 0.4f;
                       num10 = 0.8f;
-                      goto label_424;
+                      goto label_431;
                     default:
-                      goto label_424;
+                      goto label_431;
                   }
                 }
                 num8 = 0.35f;
-                goto label_424;
+                goto label_431;
               }
-label_348:
+label_355:
               num8 = 0.83f;
               num9 = 0.6f;
               num10 = 0.5f;
-              goto label_424;
-label_389:
+              goto label_431;
+label_396:
               if ((int) tile.type != 349 || (int) tile.frameX >= 36)
               {
                 float num11 = (float) Main.rand.Next(28, 42) * 0.005f + (float) (270 - (int) Main.mouseTextColor) / 1000f;
@@ -2203,7 +2260,7 @@ label_389:
               }
             }
           }
-label_424:
+label_431:
           if (Lighting.RGB)
           {
             if ((double) lightingState.r2 < (double) num8)
@@ -2345,8 +2402,8 @@ label_424:
       Lighting.firstToLightY27 = Lighting.firstTileY - Lighting.offScreenTiles2;
       Lighting.lastToLightX27 = Lighting.lastTileX + Lighting.offScreenTiles2;
       Lighting.lastToLightY27 = Lighting.lastTileY + Lighting.offScreenTiles2;
-      Lighting.scrX = (int) Math.Floor((double) Main.screenPosition.X / 16.0);
-      Lighting.scrY = (int) Math.Floor((double) Main.screenPosition.Y / 16.0);
+      Lighting.scrX = (int) Math.Floor(Main.screenPosition.X / 16.0);
+      Lighting.scrY = (int) Math.Floor(Main.screenPosition.Y / 16.0);
       Main.renderCount = 0;
       TimeLogger.LightingTime(0, stopwatch.Elapsed.TotalMilliseconds);
       Lighting.doColors();
@@ -2582,8 +2639,10 @@ label_424:
         else
         {
           int num3 = Lighting.swipe.outerLoopEnd - Lighting.swipe.outerLoopStart;
-          int num4 = num3 / lightingThreads;
-          int num5 = num3 % lightingThreads;
+          int num4 = lightingThreads;
+          int num5 = num3 / num4;
+          int num6 = lightingThreads;
+          int num7 = num3 % num6;
           int outerLoopStart = Lighting.swipe.outerLoopStart;
           Lighting.countdown.Reset(lightingThreads);
           for (int index2 = 0; index2 < lightingThreads; ++index2)
@@ -2591,11 +2650,11 @@ label_424:
             Lighting.LightingSwipeData threadSwipe = Lighting.threadSwipes[index2];
             threadSwipe.CopyFrom(Lighting.swipe);
             threadSwipe.outerLoopStart = outerLoopStart;
-            outerLoopStart += num4;
-            if (num5 > 0)
+            outerLoopStart += num5;
+            if (num7 > 0)
             {
               ++outerLoopStart;
-              --num5;
+              --num7;
             }
             threadSwipe.outerLoopEnd = outerLoopStart;
             ThreadPool.QueueUserWorkItem(new WaitCallback(Lighting.callback_LightingSwipe), (object) threadSwipe);
@@ -2956,12 +3015,12 @@ label_35:
 
     public static void AddLight(Vector2 position, Vector3 rgb)
     {
-      Lighting.AddLight((int) ((double) position.X / 16.0), (int) ((double) position.Y / 16.0), rgb.X, rgb.Y, rgb.Z);
+      Lighting.AddLight((int) (position.X / 16.0), (int) (position.Y / 16.0), (float) rgb.X, (float) rgb.Y, (float) rgb.Z);
     }
 
     public static void AddLight(Vector2 position, float R, float G, float B)
     {
-      Lighting.AddLight((int) ((double) position.X / 16.0), (int) ((double) position.Y / 16.0), R, G, B);
+      Lighting.AddLight((int) (position.X / 16.0), (int) (position.Y / 16.0), R, G, B);
     }
 
     public static void AddLight(int i, int j, float R, float G, float B)
@@ -3020,9 +3079,12 @@ label_35:
         for (int index2 = 0; index2 < num2; ++index2)
         {
           Lighting.LightingState lightingState = state[index2];
-          lightingState.r = 0.0f;
-          lightingState.g = 0.0f;
-          lightingState.b = 0.0f;
+          double num3 = 0.0;
+          lightingState.r = (float) num3;
+          double num4 = 0.0;
+          lightingState.g = (float) num4;
+          double num5 = 0.0;
+          lightingState.b = (float) num5;
         }
       }
     }
@@ -3034,21 +3096,27 @@ label_35:
       if (Main.gameMenu)
         return oldColor;
       if (index1 < 0 || index2 < 0 || (index1 >= Main.screenWidth / 16 + Lighting.offScreenTiles * 2 + 10 || index2 >= Main.screenHeight / 16 + Lighting.offScreenTiles * 2 + 10))
-        return Color.Black;
-      Color white = Color.White;
+        return Color.get_Black();
+      Color white = Color.get_White();
       Lighting.LightingState lightingState = Lighting.states[index1][index2];
-      int num1 = (int) ((double) oldColor.R * (double) lightingState.r * (double) Lighting.brightness);
-      int num2 = (int) ((double) oldColor.G * (double) lightingState.g * (double) Lighting.brightness);
-      int num3 = (int) ((double) oldColor.B * (double) lightingState.b * (double) Lighting.brightness);
+      // ISSUE: explicit reference operation
+      int num1 = (int) ((double) ((Color) @oldColor).get_R() * (double) lightingState.r * (double) Lighting.brightness);
+      // ISSUE: explicit reference operation
+      int num2 = (int) ((double) ((Color) @oldColor).get_G() * (double) lightingState.g * (double) Lighting.brightness);
+      // ISSUE: explicit reference operation
+      int num3 = (int) ((double) ((Color) @oldColor).get_B() * (double) lightingState.b * (double) Lighting.brightness);
       if (num1 > (int) byte.MaxValue)
         num1 = (int) byte.MaxValue;
       if (num2 > (int) byte.MaxValue)
         num2 = (int) byte.MaxValue;
       if (num3 > (int) byte.MaxValue)
         num3 = (int) byte.MaxValue;
-      white.R = (byte) num1;
-      white.G = (byte) num2;
-      white.B = (byte) num3;
+      // ISSUE: explicit reference operation
+      ((Color) @white).set_R((byte) num1);
+      // ISSUE: explicit reference operation
+      ((Color) @white).set_G((byte) num2);
+      // ISSUE: explicit reference operation
+      ((Color) @white).set_B((byte) num3);
       return white;
     }
 
@@ -3057,9 +3125,9 @@ label_35:
       int index1 = x - Lighting.firstTileX + Lighting.offScreenTiles;
       int index2 = y - Lighting.firstTileY + Lighting.offScreenTiles;
       if (Main.gameMenu)
-        return Color.White;
+        return Color.get_White();
       if (index1 < 0 || index2 < 0 || (index1 >= Main.screenWidth / 16 + Lighting.offScreenTiles * 2 + 10 || index2 >= Main.screenHeight / 16 + Lighting.offScreenTiles * 2))
-        return Color.Black;
+        return Color.get_Black();
       Lighting.LightingState lightingState = Lighting.states[index1][index2];
       int num1 = (int) ((double) byte.MaxValue * (double) lightingState.r * (double) Lighting.brightness);
       int num2 = (int) ((double) byte.MaxValue * (double) lightingState.g * (double) Lighting.brightness);
@@ -3080,7 +3148,7 @@ label_35:
       if (num1 <= 0 || num2 <= 0 || (num1 >= Main.screenWidth / 16 + Lighting.offScreenTiles * 2 + 10 - 1 || num2 >= Main.screenHeight / 16 + Lighting.offScreenTiles * 2 - 1))
       {
         for (int index = 0; index < 9; ++index)
-          slices[index] = Color.Black;
+          slices[index] = Color.get_Black();
       }
       else
       {
@@ -3110,17 +3178,22 @@ label_35:
 
     public static Vector3 GetSubLight(Vector2 position)
     {
-      Vector2 vector2_1 = position / 16f - new Vector2(0.5f, 0.5f);
-      Vector2 vector2_2 = new Vector2(vector2_1.X % 1f, vector2_1.Y % 1f);
+      Vector2 vector2_1 = Vector2.op_Subtraction(Vector2.op_Division(position, 16f), new Vector2(0.5f, 0.5f));
+      Vector2 vector2_2;
+      // ISSUE: explicit reference operation
+      ((Vector2) @vector2_2).\u002Ector((float) (vector2_1.X % 1.0), (float) (vector2_1.Y % 1.0));
       int index1 = (int) vector2_1.X - Lighting.firstTileX + Lighting.offScreenTiles;
       int index2 = (int) vector2_1.Y - Lighting.firstTileY + Lighting.offScreenTiles;
       if (index1 <= 0 || index2 <= 0 || (index1 >= Main.screenWidth / 16 + Lighting.offScreenTiles * 2 + 10 - 1 || index2 >= Main.screenHeight / 16 + Lighting.offScreenTiles * 2 - 1))
-        return Vector3.One;
+        return Vector3.get_One();
       Vector3 vector3_1 = Lighting.states[index1][index2].ToVector3();
       Vector3 vector3_2 = Lighting.states[index1 + 1][index2].ToVector3();
       Vector3 vector3_3 = Lighting.states[index1][index2 + 1].ToVector3();
       Vector3 vector3_4 = Lighting.states[index1 + 1][index2 + 1].ToVector3();
-      return Vector3.Lerp(Vector3.Lerp(vector3_1, vector3_2, vector2_2.X), Vector3.Lerp(vector3_3, vector3_4, vector2_2.X), vector2_2.Y);
+      Vector3 vector3_5 = vector3_2;
+      // ISSUE: variable of the null type
+      __Null x = vector2_2.X;
+      return Vector3.Lerp(Vector3.Lerp(vector3_1, vector3_5, (float) x), Vector3.Lerp(vector3_3, vector3_4, (float) vector2_2.X), (float) vector2_2.Y);
     }
 
     public static void GetColor4Slice_New(int centerX, int centerY, out VertexColors vertices, float scale = 1f)
@@ -3129,10 +3202,10 @@ label_35:
       int index2 = centerY - Lighting.firstTileY + Lighting.offScreenTiles;
       if (index1 <= 0 || index2 <= 0 || (index1 >= Main.screenWidth / 16 + Lighting.offScreenTiles * 2 + 10 - 1 || index2 >= Main.screenHeight / 16 + Lighting.offScreenTiles * 2 - 1))
       {
-        vertices.BottomLeftColor = Color.Black;
-        vertices.BottomRightColor = Color.Black;
-        vertices.TopLeftColor = Color.Black;
-        vertices.TopRightColor = Color.Black;
+        vertices.BottomLeftColor = Color.get_Black();
+        vertices.BottomRightColor = Color.get_Black();
+        vertices.TopLeftColor = Color.get_Black();
+        vertices.TopRightColor = Color.get_Black();
       }
       else
       {
@@ -3195,16 +3268,19 @@ label_35:
       int index2 = centerY - Lighting.firstTileY + Lighting.offScreenTiles;
       if (index1 <= 0 || index2 <= 0 || (index1 >= Main.screenWidth / 16 + Lighting.offScreenTiles * 2 + 10 - 1 || index2 >= Main.screenHeight / 16 + Lighting.offScreenTiles * 2 - 1))
       {
-        vertices.BottomLeftColor = Color.Black;
-        vertices.BottomRightColor = Color.Black;
-        vertices.TopLeftColor = Color.Black;
-        vertices.TopRightColor = Color.Black;
+        vertices.BottomLeftColor = Color.get_Black();
+        vertices.BottomRightColor = Color.get_Black();
+        vertices.TopLeftColor = Color.get_Black();
+        vertices.TopRightColor = Color.get_Black();
       }
       else
       {
-        float num1 = (float) centerColor.R / (float) byte.MaxValue;
-        float num2 = (float) centerColor.G / (float) byte.MaxValue;
-        float num3 = (float) centerColor.B / (float) byte.MaxValue;
+        // ISSUE: explicit reference operation
+        float num1 = (float) ((Color) @centerColor).get_R() / (float) byte.MaxValue;
+        // ISSUE: explicit reference operation
+        float num2 = (float) ((Color) @centerColor).get_G() / (float) byte.MaxValue;
+        // ISSUE: explicit reference operation
+        float num3 = (float) ((Color) @centerColor).get_B() / (float) byte.MaxValue;
         Lighting.LightingState lightingState1 = Lighting.states[index1][index2 - 1];
         Lighting.LightingState lightingState2 = Lighting.states[index1][index2 + 1];
         Lighting.LightingState lightingState3 = Lighting.states[index1 - 1][index2];
@@ -3264,7 +3340,7 @@ label_35:
       if (index1 <= 0 || index2 <= 0 || (index1 >= Main.screenWidth / 16 + Lighting.offScreenTiles * 2 + 10 - 1 || index2 >= Main.screenHeight / 16 + Lighting.offScreenTiles * 2 - 1))
       {
         for (int index3 = 0; index3 < 4; ++index3)
-          slices[index3] = Color.Black;
+          slices[index3] = Color.get_Black();
       }
       else
       {
@@ -3272,113 +3348,115 @@ label_35:
         Lighting.LightingState lightingState2 = Lighting.states[index1][index2 + 1];
         Lighting.LightingState lightingState3 = Lighting.states[index1 - 1][index2];
         Lighting.LightingState lightingState4 = Lighting.states[index1 + 1][index2];
-        float num1 = lightingState1.r + lightingState1.g + lightingState1.b;
+        double num1 = (double) lightingState1.r + (double) lightingState1.g + (double) lightingState1.b;
         float num2 = lightingState2.r + lightingState2.g + lightingState2.b;
         float num3 = lightingState4.r + lightingState4.g + lightingState4.b;
         float num4 = lightingState3.r + lightingState3.g + lightingState3.b;
-        if ((double) num1 >= (double) num4)
+        double num5 = (double) num4;
+        if (num1 >= num5)
         {
-          int num5 = (int) ((double) byte.MaxValue * (double) lightingState3.r * (double) Lighting.brightness);
-          int num6 = (int) ((double) byte.MaxValue * (double) lightingState3.g * (double) Lighting.brightness);
-          int num7 = (int) ((double) byte.MaxValue * (double) lightingState3.b * (double) Lighting.brightness);
-          if (num5 > (int) byte.MaxValue)
-            num5 = (int) byte.MaxValue;
+          int num6 = (int) ((double) byte.MaxValue * (double) lightingState3.r * (double) Lighting.brightness);
+          int num7 = (int) ((double) byte.MaxValue * (double) lightingState3.g * (double) Lighting.brightness);
+          int num8 = (int) ((double) byte.MaxValue * (double) lightingState3.b * (double) Lighting.brightness);
           if (num6 > (int) byte.MaxValue)
             num6 = (int) byte.MaxValue;
           if (num7 > (int) byte.MaxValue)
             num7 = (int) byte.MaxValue;
-          slices[0] = new Color((int) (byte) num5, (int) (byte) num6, (int) (byte) num7, (int) byte.MaxValue);
+          if (num8 > (int) byte.MaxValue)
+            num8 = (int) byte.MaxValue;
+          slices[0] = new Color((int) (byte) num6, (int) (byte) num7, (int) (byte) num8, (int) byte.MaxValue);
         }
         else
         {
-          int num5 = (int) ((double) byte.MaxValue * (double) lightingState1.r * (double) Lighting.brightness);
-          int num6 = (int) ((double) byte.MaxValue * (double) lightingState1.g * (double) Lighting.brightness);
-          int num7 = (int) ((double) byte.MaxValue * (double) lightingState1.b * (double) Lighting.brightness);
-          if (num5 > (int) byte.MaxValue)
-            num5 = (int) byte.MaxValue;
+          int num6 = (int) ((double) byte.MaxValue * (double) lightingState1.r * (double) Lighting.brightness);
+          int num7 = (int) ((double) byte.MaxValue * (double) lightingState1.g * (double) Lighting.brightness);
+          int num8 = (int) ((double) byte.MaxValue * (double) lightingState1.b * (double) Lighting.brightness);
           if (num6 > (int) byte.MaxValue)
             num6 = (int) byte.MaxValue;
           if (num7 > (int) byte.MaxValue)
             num7 = (int) byte.MaxValue;
-          slices[0] = new Color((int) (byte) num5, (int) (byte) num6, (int) (byte) num7, (int) byte.MaxValue);
+          if (num8 > (int) byte.MaxValue)
+            num8 = (int) byte.MaxValue;
+          slices[0] = new Color((int) (byte) num6, (int) (byte) num7, (int) (byte) num8, (int) byte.MaxValue);
         }
-        if ((double) num1 >= (double) num3)
+        double num9 = (double) num3;
+        if (num1 >= num9)
         {
-          int num5 = (int) ((double) byte.MaxValue * (double) lightingState4.r * (double) Lighting.brightness);
-          int num6 = (int) ((double) byte.MaxValue * (double) lightingState4.g * (double) Lighting.brightness);
-          int num7 = (int) ((double) byte.MaxValue * (double) lightingState4.b * (double) Lighting.brightness);
-          if (num5 > (int) byte.MaxValue)
-            num5 = (int) byte.MaxValue;
+          int num6 = (int) ((double) byte.MaxValue * (double) lightingState4.r * (double) Lighting.brightness);
+          int num7 = (int) ((double) byte.MaxValue * (double) lightingState4.g * (double) Lighting.brightness);
+          int num8 = (int) ((double) byte.MaxValue * (double) lightingState4.b * (double) Lighting.brightness);
           if (num6 > (int) byte.MaxValue)
             num6 = (int) byte.MaxValue;
           if (num7 > (int) byte.MaxValue)
             num7 = (int) byte.MaxValue;
-          slices[1] = new Color((int) (byte) num5, (int) (byte) num6, (int) (byte) num7, (int) byte.MaxValue);
+          if (num8 > (int) byte.MaxValue)
+            num8 = (int) byte.MaxValue;
+          slices[1] = new Color((int) (byte) num6, (int) (byte) num7, (int) (byte) num8, (int) byte.MaxValue);
         }
         else
         {
-          int num5 = (int) ((double) byte.MaxValue * (double) lightingState1.r * (double) Lighting.brightness);
-          int num6 = (int) ((double) byte.MaxValue * (double) lightingState1.g * (double) Lighting.brightness);
-          int num7 = (int) ((double) byte.MaxValue * (double) lightingState1.b * (double) Lighting.brightness);
-          if (num5 > (int) byte.MaxValue)
-            num5 = (int) byte.MaxValue;
+          int num6 = (int) ((double) byte.MaxValue * (double) lightingState1.r * (double) Lighting.brightness);
+          int num7 = (int) ((double) byte.MaxValue * (double) lightingState1.g * (double) Lighting.brightness);
+          int num8 = (int) ((double) byte.MaxValue * (double) lightingState1.b * (double) Lighting.brightness);
           if (num6 > (int) byte.MaxValue)
             num6 = (int) byte.MaxValue;
           if (num7 > (int) byte.MaxValue)
             num7 = (int) byte.MaxValue;
-          slices[1] = new Color((int) (byte) num5, (int) (byte) num6, (int) (byte) num7, (int) byte.MaxValue);
+          if (num8 > (int) byte.MaxValue)
+            num8 = (int) byte.MaxValue;
+          slices[1] = new Color((int) (byte) num6, (int) (byte) num7, (int) (byte) num8, (int) byte.MaxValue);
         }
         if ((double) num2 >= (double) num4)
         {
-          int num5 = (int) ((double) byte.MaxValue * (double) lightingState3.r * (double) Lighting.brightness);
-          int num6 = (int) ((double) byte.MaxValue * (double) lightingState3.g * (double) Lighting.brightness);
-          int num7 = (int) ((double) byte.MaxValue * (double) lightingState3.b * (double) Lighting.brightness);
-          if (num5 > (int) byte.MaxValue)
-            num5 = (int) byte.MaxValue;
+          int num6 = (int) ((double) byte.MaxValue * (double) lightingState3.r * (double) Lighting.brightness);
+          int num7 = (int) ((double) byte.MaxValue * (double) lightingState3.g * (double) Lighting.brightness);
+          int num8 = (int) ((double) byte.MaxValue * (double) lightingState3.b * (double) Lighting.brightness);
           if (num6 > (int) byte.MaxValue)
             num6 = (int) byte.MaxValue;
           if (num7 > (int) byte.MaxValue)
             num7 = (int) byte.MaxValue;
-          slices[2] = new Color((int) (byte) num5, (int) (byte) num6, (int) (byte) num7, (int) byte.MaxValue);
+          if (num8 > (int) byte.MaxValue)
+            num8 = (int) byte.MaxValue;
+          slices[2] = new Color((int) (byte) num6, (int) (byte) num7, (int) (byte) num8, (int) byte.MaxValue);
         }
         else
         {
-          int num5 = (int) ((double) byte.MaxValue * (double) lightingState2.r * (double) Lighting.brightness);
-          int num6 = (int) ((double) byte.MaxValue * (double) lightingState2.g * (double) Lighting.brightness);
-          int num7 = (int) ((double) byte.MaxValue * (double) lightingState2.b * (double) Lighting.brightness);
-          if (num5 > (int) byte.MaxValue)
-            num5 = (int) byte.MaxValue;
+          int num6 = (int) ((double) byte.MaxValue * (double) lightingState2.r * (double) Lighting.brightness);
+          int num7 = (int) ((double) byte.MaxValue * (double) lightingState2.g * (double) Lighting.brightness);
+          int num8 = (int) ((double) byte.MaxValue * (double) lightingState2.b * (double) Lighting.brightness);
           if (num6 > (int) byte.MaxValue)
             num6 = (int) byte.MaxValue;
           if (num7 > (int) byte.MaxValue)
             num7 = (int) byte.MaxValue;
-          slices[2] = new Color((int) (byte) num5, (int) (byte) num6, (int) (byte) num7, (int) byte.MaxValue);
+          if (num8 > (int) byte.MaxValue)
+            num8 = (int) byte.MaxValue;
+          slices[2] = new Color((int) (byte) num6, (int) (byte) num7, (int) (byte) num8, (int) byte.MaxValue);
         }
         if ((double) num2 >= (double) num3)
         {
-          int num5 = (int) ((double) byte.MaxValue * (double) lightingState4.r * (double) Lighting.brightness);
-          int num6 = (int) ((double) byte.MaxValue * (double) lightingState4.g * (double) Lighting.brightness);
-          int num7 = (int) ((double) byte.MaxValue * (double) lightingState4.b * (double) Lighting.brightness);
-          if (num5 > (int) byte.MaxValue)
-            num5 = (int) byte.MaxValue;
+          int num6 = (int) ((double) byte.MaxValue * (double) lightingState4.r * (double) Lighting.brightness);
+          int num7 = (int) ((double) byte.MaxValue * (double) lightingState4.g * (double) Lighting.brightness);
+          int num8 = (int) ((double) byte.MaxValue * (double) lightingState4.b * (double) Lighting.brightness);
           if (num6 > (int) byte.MaxValue)
             num6 = (int) byte.MaxValue;
           if (num7 > (int) byte.MaxValue)
             num7 = (int) byte.MaxValue;
-          slices[3] = new Color((int) (byte) num5, (int) (byte) num6, (int) (byte) num7, (int) byte.MaxValue);
+          if (num8 > (int) byte.MaxValue)
+            num8 = (int) byte.MaxValue;
+          slices[3] = new Color((int) (byte) num6, (int) (byte) num7, (int) (byte) num8, (int) byte.MaxValue);
         }
         else
         {
-          int num5 = (int) ((double) byte.MaxValue * (double) lightingState2.r * (double) Lighting.brightness);
-          int num6 = (int) ((double) byte.MaxValue * (double) lightingState2.g * (double) Lighting.brightness);
-          int num7 = (int) ((double) byte.MaxValue * (double) lightingState2.b * (double) Lighting.brightness);
-          if (num5 > (int) byte.MaxValue)
-            num5 = (int) byte.MaxValue;
+          int num6 = (int) ((double) byte.MaxValue * (double) lightingState2.r * (double) Lighting.brightness);
+          int num7 = (int) ((double) byte.MaxValue * (double) lightingState2.g * (double) Lighting.brightness);
+          int num8 = (int) ((double) byte.MaxValue * (double) lightingState2.b * (double) Lighting.brightness);
           if (num6 > (int) byte.MaxValue)
             num6 = (int) byte.MaxValue;
           if (num7 > (int) byte.MaxValue)
             num7 = (int) byte.MaxValue;
-          slices[3] = new Color((int) (byte) num5, (int) (byte) num6, (int) (byte) num7, (int) byte.MaxValue);
+          if (num8 > (int) byte.MaxValue)
+            num8 = (int) byte.MaxValue;
+          slices[3] = new Color((int) (byte) num6, (int) (byte) num7, (int) (byte) num8, (int) byte.MaxValue);
         }
       }
     }
@@ -3388,7 +3466,7 @@ label_35:
       int index1 = x - Lighting.firstTileX + Lighting.offScreenTiles;
       int index2 = y - Lighting.firstTileY + Lighting.offScreenTiles;
       if (index1 < 0 || index2 < 0 || (index1 >= Main.screenWidth / 16 + Lighting.offScreenTiles * 2 + 10 || index2 >= Main.screenHeight / 16 + Lighting.offScreenTiles * 2 + 10))
-        return Color.Black;
+        return Color.get_Black();
       return new Color(0, 0, 0, (int) (byte) ((double) byte.MaxValue - (double) byte.MaxValue * (double) Lighting.states[index1][index2].r));
     }
 

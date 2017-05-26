@@ -1,8 +1,8 @@
 ﻿// Decompiled with JetBrains decompiler
 // Type: Terraria.GameContent.Tile_Entities.TELogicSensor
-// Assembly: Terraria, Version=1.3.5.1, Culture=neutral, PublicKeyToken=null
-// MVID: E90A5A2F-CD10-4A2C-9D2A-6B036D4E8877
-// Assembly location: F:\Steam\steamapps\common\Terraria\Terraria.exe
+// Assembly: Terraria, Version=1.3.5.3, Culture=neutral, PublicKeyToken=null
+// MVID: 68659D26-2BE6-448F-8663-74FA559E6F08
+// Assembly location: H:\Steam\steamapps\common\Terraria\Terraria.exe
 
 using Microsoft.Xna.Framework;
 using System;
@@ -91,25 +91,20 @@ namespace Terraria.GameContent.Tile_Entities
     public override void Update()
     {
       bool state = TELogicSensor.GetState((int) this.Position.X, (int) this.Position.Y, this.logicCheck, this);
-      switch (this.logicCheck)
+      TELogicSensor.LogicCheckType logicCheck = this.logicCheck;
+      if ((uint) (logicCheck - 1) > 1U)
       {
-        case TELogicSensor.LogicCheckType.Day:
-        case TELogicSensor.LogicCheckType.Night:
-          if (!this.On && state)
-            this.ChangeState(true, true);
-          if (!this.On || state)
-            break;
-          this.ChangeState(false, false);
-          break;
-        case TELogicSensor.LogicCheckType.PlayerAbove:
-        case TELogicSensor.LogicCheckType.Water:
-        case TELogicSensor.LogicCheckType.Lava:
-        case TELogicSensor.LogicCheckType.Honey:
-        case TELogicSensor.LogicCheckType.Liquid:
-          if (this.On == state)
-            break;
-          this.ChangeState(state, true);
-          break;
+        if ((uint) (logicCheck - 3) > 4U || this.On == state)
+          return;
+        this.ChangeState(state, true);
+      }
+      else
+      {
+        if (!this.On & state)
+          this.ChangeState(true, true);
+        if (!this.On || state)
+          return;
+        this.ChangeState(false, false);
       }
     }
 
@@ -178,13 +173,20 @@ namespace Terraria.GameContent.Tile_Entities
           return !Main.dayTime;
         case TELogicSensor.LogicCheckType.PlayerAbove:
           bool flag1 = false;
-          Rectangle rectangle = new Rectangle(x * 16 - 32 - 1, y * 16 - 160 - 1, 82, 162);
-          foreach (KeyValuePair<int, Rectangle> keyValuePair in TELogicSensor.playerBox)
+          Rectangle rectangle1;
+          // ISSUE: explicit reference operation
+          ((Rectangle) @rectangle1).\u002Ector(x * 16 - 32 - 1, y * 16 - 160 - 1, 82, 162);
+          using (Dictionary<int, Rectangle>.Enumerator enumerator = TELogicSensor.playerBox.GetEnumerator())
           {
-            if (keyValuePair.Value.Intersects(rectangle))
+            while (enumerator.MoveNext())
             {
-              flag1 = true;
-              break;
+              Rectangle rectangle2 = enumerator.Current.Value;
+              // ISSUE: explicit reference operation
+              if (((Rectangle) @rectangle2).Intersects(rectangle1))
+              {
+                flag1 = true;
+                break;
+              }
             }
           }
           return flag1;

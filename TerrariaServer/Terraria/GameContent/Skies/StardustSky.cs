@@ -1,8 +1,8 @@
 ﻿// Decompiled with JetBrains decompiler
 // Type: Terraria.GameContent.Skies.StardustSky
-// Assembly: TerrariaServer, Version=1.3.5.1, Culture=neutral, PublicKeyToken=null
-// MVID: C2103E81-0935-4BEA-9E98-4159FC80C2BB
-// Assembly location: F:\Steam\steamapps\common\Terraria\TerrariaServer.exe
+// Assembly: TerrariaServer, Version=1.3.5.3, Culture=neutral, PublicKeyToken=null
+// MVID: 8A63A7A2-328D-424C-BC9D-BF23F93646F7
+// Assembly location: H:\Steam\steamapps\common\Terraria\TerrariaServer.exe
 
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -42,18 +42,21 @@ namespace Terraria.GameContent.Skies
 
     public override Color OnTileColor(Color inColor)
     {
-      return new Color(Vector4.Lerp(inColor.ToVector4(), Vector4.One, this._fadeOpacity * 0.5f));
+      // ISSUE: explicit reference operation
+      return new Color(Vector4.Lerp(((Color) @inColor).ToVector4(), Vector4.get_One(), this._fadeOpacity * 0.5f));
     }
 
     public override void Draw(SpriteBatch spriteBatch, float minDepth, float maxDepth)
     {
       if ((double) maxDepth >= 3.40282346638529E+38 && (double) minDepth < 3.40282346638529E+38)
       {
-        spriteBatch.Draw(Main.blackTileTexture, new Rectangle(0, 0, Main.screenWidth, Main.screenHeight), Color.Black * this._fadeOpacity);
-        spriteBatch.Draw(this._bgTexture, new Rectangle(0, Math.Max(0, (int) ((Main.worldSurface * 16.0 - (double) Main.screenPosition.Y - 2400.0) * 0.100000001490116)), Main.screenWidth, Main.screenHeight), Color.White * Math.Min(1f, (float) (((double) Main.screenPosition.Y - 800.0) / 1000.0) * this._fadeOpacity));
-        Vector2 vector2_1 = new Vector2((float) (Main.screenWidth >> 1), (float) (Main.screenHeight >> 1));
-        Vector2 vector2_2 = 0.01f * (new Vector2((float) Main.maxTilesX * 8f, (float) Main.worldSurface / 2f) - Main.screenPosition);
-        spriteBatch.Draw(this._planetTexture, vector2_1 + new Vector2(-200f, -200f) + vector2_2, new Rectangle?(), Color.White * 0.9f * this._fadeOpacity, 0.0f, new Vector2((float) (this._planetTexture.Width >> 1), (float) (this._planetTexture.Height >> 1)), 1f, SpriteEffects.None, 1f);
+        spriteBatch.Draw(Main.blackTileTexture, new Rectangle(0, 0, Main.screenWidth, Main.screenHeight), Color.op_Multiply(Color.get_Black(), this._fadeOpacity));
+        spriteBatch.Draw(this._bgTexture, new Rectangle(0, Math.Max(0, (int) ((Main.worldSurface * 16.0 - (double) Main.screenPosition.Y - 2400.0) * 0.100000001490116)), Main.screenWidth, Main.screenHeight), Color.op_Multiply(Color.get_White(), Math.Min(1f, (float) ((Main.screenPosition.Y - 800.0) / 1000.0) * this._fadeOpacity)));
+        Vector2 vector2_1;
+        // ISSUE: explicit reference operation
+        ((Vector2) @vector2_1).\u002Ector((float) (Main.screenWidth >> 1), (float) (Main.screenHeight >> 1));
+        Vector2 vector2_2 = Vector2.op_Multiply(0.01f, Vector2.op_Subtraction(new Vector2((float) Main.maxTilesX * 8f, (float) Main.worldSurface / 2f), Main.screenPosition));
+        spriteBatch.Draw(this._planetTexture, Vector2.op_Addition(Vector2.op_Addition(vector2_1, new Vector2(-200f, -200f)), vector2_2), new Rectangle?(), Color.op_Multiply(Color.op_Multiply(Color.get_White(), 0.9f), this._fadeOpacity), 0.0f, new Vector2((float) (this._planetTexture.get_Width() >> 1), (float) (this._planetTexture.get_Height() >> 1)), 1f, (SpriteEffects) 0, 1f);
       }
       int num1 = -1;
       int num2 = 0;
@@ -69,20 +72,25 @@ namespace Terraria.GameContent.Skies
       }
       if (num1 == -1)
         return;
-      float num3 = Math.Min(1f, (float) (((double) Main.screenPosition.Y - 1000.0) / 1000.0));
-      Vector2 vector2_3 = Main.screenPosition + new Vector2((float) (Main.screenWidth >> 1), (float) (Main.screenHeight >> 1));
-      Rectangle rectangle = new Rectangle(-1000, -1000, 4000, 4000);
+      float num3 = Math.Min(1f, (float) ((Main.screenPosition.Y - 1000.0) / 1000.0));
+      Vector2 vector2_3 = Vector2.op_Addition(Main.screenPosition, new Vector2((float) (Main.screenWidth >> 1), (float) (Main.screenHeight >> 1)));
+      Rectangle rectangle;
+      // ISSUE: explicit reference operation
+      ((Rectangle) @rectangle).\u002Ector(-1000, -1000, 4000, 4000);
       for (int index = num1; index < num2; ++index)
       {
-        Vector2 vector2_1 = new Vector2(1f / this._stars[index].Depth, 1.1f / this._stars[index].Depth);
-        Vector2 position = (this._stars[index].Position - vector2_3) * vector2_1 + vector2_3 - Main.screenPosition;
-        if (rectangle.Contains((int) position.X, (int) position.Y))
+        Vector2 vector2_1;
+        // ISSUE: explicit reference operation
+        ((Vector2) @vector2_1).\u002Ector(1f / this._stars[index].Depth, 1.1f / this._stars[index].Depth);
+        Vector2 vector2_2 = Vector2.op_Subtraction(Vector2.op_Addition(Vector2.op_Multiply(Vector2.op_Subtraction(this._stars[index].Position, vector2_3), vector2_1), vector2_3), Main.screenPosition);
+        // ISSUE: explicit reference operation
+        if (((Rectangle) @rectangle).Contains((int) vector2_2.X, (int) vector2_2.Y))
         {
           float num4 = (float) Math.Sin((double) this._stars[index].AlphaFrequency * (double) Main.GlobalTime + (double) this._stars[index].SinOffset) * this._stars[index].AlphaAmplitude + this._stars[index].AlphaAmplitude;
           float num5 = (float) (Math.Sin((double) this._stars[index].AlphaFrequency * (double) Main.GlobalTime * 5.0 + (double) this._stars[index].SinOffset) * 0.100000001490116 - 0.100000001490116);
           float num6 = MathHelper.Clamp(num4, 0.0f, 1f);
           Texture2D starTexture = this._starTextures[this._stars[index].TextureIndex];
-          spriteBatch.Draw(starTexture, position, new Rectangle?(), Color.White * num3 * num6 * 0.8f * (1f - num5) * this._fadeOpacity, 0.0f, new Vector2((float) (starTexture.Width >> 1), (float) (starTexture.Height >> 1)), (float) (((double) vector2_1.X * 0.5 + 0.5) * ((double) num6 * 0.300000011920929 + 0.699999988079071)), SpriteEffects.None, 0.0f);
+          spriteBatch.Draw(starTexture, vector2_2, new Rectangle?(), Color.op_Multiply(Color.op_Multiply(Color.op_Multiply(Color.op_Multiply(Color.op_Multiply(Color.get_White(), num3), num6), 0.8f), 1f - num5), this._fadeOpacity), 0.0f, new Vector2((float) (starTexture.get_Width() >> 1), (float) (starTexture.get_Height() >> 1)), (float) ((vector2_1.X * 0.5 + 0.5) * ((double) num6 * 0.300000011920929 + 0.699999988079071)), (SpriteEffects) 0, 0.0f);
         }
       }
     }
@@ -106,8 +114,8 @@ namespace Terraria.GameContent.Skies
         for (int index3 = 0; index3 < num2; ++index3)
         {
           float num4 = (float) index3 / (float) num2;
-          this._stars[index1].Position.X = (float) ((double) num3 * (double) Main.maxTilesX * 16.0);
-          this._stars[index1].Position.Y = (float) ((double) num4 * (Main.worldSurface * 16.0 + 2000.0) - 1000.0);
+          this._stars[index1].Position.X = (__Null) ((double) num3 * (double) Main.maxTilesX * 16.0);
+          this._stars[index1].Position.Y = (__Null) ((double) num4 * (Main.worldSurface * 16.0 + 2000.0) - 1000.0);
           this._stars[index1].Depth = (float) ((double) this._random.NextFloat() * 8.0 + 1.5);
           this._stars[index1].TextureIndex = this._random.Next(this._starTextures.Length);
           this._stars[index1].SinOffset = this._random.NextFloat() * 6.28f;

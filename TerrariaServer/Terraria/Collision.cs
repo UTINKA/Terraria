@@ -1,8 +1,8 @@
 ﻿// Decompiled with JetBrains decompiler
 // Type: Terraria.Collision
-// Assembly: TerrariaServer, Version=1.3.5.1, Culture=neutral, PublicKeyToken=null
-// MVID: C2103E81-0935-4BEA-9E98-4159FC80C2BB
-// Assembly location: F:\Steam\steamapps\common\Terraria\TerrariaServer.exe
+// Assembly: TerrariaServer, Version=1.3.5.3, Culture=neutral, PublicKeyToken=null
+// MVID: 8A63A7A2-328D-424C-BC9D-BF23F93646F7
+// Assembly location: H:\Steam\steamapps\common\Terraria\TerrariaServer.exe
 
 using Microsoft.Xna.Framework;
 using System;
@@ -25,27 +25,32 @@ namespace Terraria
 
     public static Vector2[] CheckLinevLine(Vector2 a1, Vector2 a2, Vector2 b1, Vector2 b2)
     {
-      if (a1.Equals(a2) && b1.Equals(b2))
+      // ISSUE: explicit reference operation
+      // ISSUE: explicit reference operation
+      if (((Vector2) @a1).Equals(a2) && ((Vector2) @b1).Equals(b2))
       {
-        if (!a1.Equals(b1))
+        // ISSUE: explicit reference operation
+        if (!((Vector2) @a1).Equals(b1))
           return new Vector2[0];
         return new Vector2[1]{ a1 };
       }
-      if (b1.Equals(b2))
+      // ISSUE: explicit reference operation
+      if (((Vector2) @b1).Equals(b2))
       {
         if (!Collision.PointOnLine(b1, a1, a2))
           return new Vector2[0];
         return new Vector2[1]{ b1 };
       }
-      if (a1.Equals(a2))
+      // ISSUE: explicit reference operation
+      if (((Vector2) @a1).Equals(a2))
       {
         if (!Collision.PointOnLine(a1, b1, b2))
           return new Vector2[0];
         return new Vector2[1]{ a1 };
       }
-      float num1 = (float) (((double) b2.X - (double) b1.X) * ((double) a1.Y - (double) b1.Y) - ((double) b2.Y - (double) b1.Y) * ((double) a1.X - (double) b1.X));
-      float num2 = (float) (((double) a2.X - (double) a1.X) * ((double) a1.Y - (double) b1.Y) - ((double) a2.Y - (double) a1.Y) * ((double) a1.X - (double) b1.X));
-      float num3 = (float) (((double) b2.Y - (double) b1.Y) * ((double) a2.X - (double) a1.X) - ((double) b2.X - (double) b1.X) * ((double) a2.Y - (double) a1.Y));
+      float num1 = (float) ((b2.X - b1.X) * (a1.Y - b1.Y) - (b2.Y - b1.Y) * (a1.X - b1.X));
+      float num2 = (float) ((a2.X - a1.X) * (a1.Y - b1.Y) - (a2.Y - a1.Y) * (a1.X - b1.X));
+      float num3 = (float) ((b2.Y - b1.Y) * (a2.X - a1.X) - (b2.X - b1.X) * (a2.Y - a1.Y));
       if (-(double) Collision.Epsilon >= (double) num3 || (double) num3 >= (double) Collision.Epsilon)
       {
         float num4 = num1 / num3;
@@ -54,26 +59,28 @@ namespace Terraria
           return new Vector2[0];
         return new Vector2[1]
         {
-          new Vector2(a1.X + num4 * (a2.X - a1.X), a1.Y + num4 * (a2.Y - a1.Y))
+          new Vector2((float) (a1.X + (double) num4 * (a2.X - a1.X)), (float) (a1.Y + (double) num4 * (a2.Y - a1.Y)))
         };
       }
       if ((-(double) Collision.Epsilon >= (double) num1 || (double) num1 >= (double) Collision.Epsilon) && (-(double) Collision.Epsilon >= (double) num2 || (double) num2 >= (double) Collision.Epsilon))
         return new Vector2[0];
-      if (a1.Equals(a2))
+      // ISSUE: explicit reference operation
+      if (((Vector2) @a1).Equals(a2))
         return Collision.OneDimensionalIntersection(b1, b2, a1, a2);
       return Collision.OneDimensionalIntersection(a1, a2, b1, b2);
     }
 
     private static double DistFromSeg(Vector2 p, Vector2 q0, Vector2 q1, double radius, ref float u)
     {
-      double num1 = (double) q1.X - (double) q0.X;
-      double num2 = (double) q1.Y - (double) q0.Y;
-      double num3 = (double) q0.X - (double) p.X;
-      double num4 = (double) q0.Y - (double) p.Y;
+      double num1 = (double) (q1.X - q0.X);
+      double num2 = (double) (q1.Y - q0.Y);
+      double num3 = (double) (q0.X - p.X);
+      double num4 = (double) (q0.Y - p.Y);
       double num5 = Math.Sqrt(num1 * num1 + num2 * num2);
       if (num5 < (double) Collision.Epsilon)
         throw new Exception("Expected line segment, not point.");
-      return Math.Abs(num1 * num4 - num3 * num2) / num5;
+      double num6 = num4;
+      return Math.Abs(num1 * num6 - num3 * num2) / num5;
     }
 
     private static bool PointOnLine(Vector2 p, Vector2 a1, Vector2 a2)
@@ -84,26 +91,26 @@ namespace Terraria
 
     private static Vector2[] OneDimensionalIntersection(Vector2 a1, Vector2 a2, Vector2 b1, Vector2 b2)
     {
-      float num1 = a2.X - a1.X;
-      float num2 = a2.Y - a1.Y;
+      float num1 = (float) (a2.X - a1.X);
+      float num2 = (float) (a2.Y - a1.Y);
       float relativePoint1;
       float relativePoint2;
       if ((double) Math.Abs(num1) > (double) Math.Abs(num2))
       {
-        relativePoint1 = (b1.X - a1.X) / num1;
-        relativePoint2 = (b2.X - a1.X) / num1;
+        relativePoint1 = (float) (b1.X - a1.X) / num1;
+        relativePoint2 = (float) (b2.X - a1.X) / num1;
       }
       else
       {
-        relativePoint1 = (b1.Y - a1.Y) / num2;
-        relativePoint2 = (b2.Y - a1.Y) / num2;
+        relativePoint1 = (float) (b1.Y - a1.Y) / num2;
+        relativePoint2 = (float) (b2.Y - a1.Y) / num2;
       }
       List<Vector2> vector2List = new List<Vector2>();
       foreach (float overlapPoint in Collision.FindOverlapPoints(relativePoint1, relativePoint2))
       {
-        float x = (float) ((double) a2.X * (double) overlapPoint + (double) a1.X * (1.0 - (double) overlapPoint));
-        float y = (float) ((double) a2.Y * (double) overlapPoint + (double) a1.Y * (1.0 - (double) overlapPoint));
-        vector2List.Add(new Vector2(x, y));
+        float num3 = (float) (a2.X * (double) overlapPoint + a1.X * (1.0 - (double) overlapPoint));
+        float num4 = (float) (a2.Y * (double) overlapPoint + a1.Y * (1.0 - (double) overlapPoint));
+        vector2List.Add(new Vector2(num3, num4));
       }
       return vector2List.ToArray();
     }
@@ -123,27 +130,27 @@ namespace Terraria
 
     public static bool CheckAABBvAABBCollision(Vector2 position1, Vector2 dimensions1, Vector2 position2, Vector2 dimensions2)
     {
-      if ((double) position1.X < (double) position2.X + (double) dimensions2.X && (double) position1.Y < (double) position2.Y + (double) dimensions2.Y && (double) position1.X + (double) dimensions1.X > (double) position2.X)
-        return (double) position1.Y + (double) dimensions1.Y > (double) position2.Y;
+      if (position1.X < position2.X + dimensions2.X && position1.Y < position2.Y + dimensions2.Y && position1.X + dimensions1.X > position2.X)
+        return position1.Y + dimensions1.Y > position2.Y;
       return false;
     }
 
     private static int collisionOutcode(Vector2 aabbPosition, Vector2 aabbDimensions, Vector2 point)
     {
-      float num1 = aabbPosition.X + aabbDimensions.X;
-      float num2 = aabbPosition.Y + aabbDimensions.Y;
+      float num1 = (float) (aabbPosition.X + aabbDimensions.X);
+      float num2 = (float) (aabbPosition.Y + aabbDimensions.Y);
       int num3 = 0;
-      if ((double) aabbDimensions.X <= 0.0)
+      if (aabbDimensions.X <= 0.0)
         num3 |= 5;
-      else if ((double) point.X < (double) aabbPosition.X)
+      else if (point.X < aabbPosition.X)
         num3 |= 1;
-      else if ((double) point.X - (double) num1 > 0.0)
+      else if (point.X - (double) num1 > 0.0)
         num3 |= 4;
-      if ((double) aabbDimensions.Y <= 0.0)
+      if (aabbDimensions.Y <= 0.0)
         num3 |= 10;
-      else if ((double) point.Y < (double) aabbPosition.Y)
+      else if (point.Y < aabbPosition.Y)
         num3 |= 2;
-      else if ((double) point.Y - (double) num2 > 0.0)
+      else if (point.Y - (double) num2 > 0.0)
         num3 |= 8;
       return num3;
     }
@@ -160,19 +167,35 @@ namespace Terraria
           return false;
         if ((num2 & 5) != 0)
         {
-          float x = aabbPosition.X;
+          float x = (float) aabbPosition.X;
           if ((num2 & 4) != 0)
-            x += aabbDimensions.X;
-          lineStart.Y += (float) (((double) x - (double) lineStart.X) * ((double) lineEnd.Y - (double) lineStart.Y) / ((double) lineEnd.X - (double) lineStart.X));
-          lineStart.X = x;
+            x += (float) aabbDimensions.X;
+          // ISSUE: explicit reference operation
+          // ISSUE: variable of a reference type
+          __Null& local = @lineStart.Y;
+          // ISSUE: cast to a reference type
+          // ISSUE: explicit reference operation
+          double num3 = (double) ^(float&) local + ((double) x - lineStart.X) * (lineEnd.Y - lineStart.Y) / (lineEnd.X - lineStart.X);
+          // ISSUE: cast to a reference type
+          // ISSUE: explicit reference operation
+          ^(float&) local = (float) num3;
+          lineStart.X = (__Null) (double) x;
         }
         else
         {
-          float y = aabbPosition.Y;
+          float y = (float) aabbPosition.Y;
           if ((num2 & 8) != 0)
-            y += aabbDimensions.Y;
-          lineStart.X += (float) (((double) y - (double) lineStart.Y) * ((double) lineEnd.X - (double) lineStart.X) / ((double) lineEnd.Y - (double) lineStart.Y));
-          lineStart.Y = y;
+            y += (float) aabbDimensions.Y;
+          // ISSUE: explicit reference operation
+          // ISSUE: variable of a reference type
+          __Null& local = @lineStart.X;
+          // ISSUE: cast to a reference type
+          // ISSUE: explicit reference operation
+          double num3 = (double) ^(float&) local + ((double) y - lineStart.Y) * (lineEnd.X - lineStart.X) / (lineEnd.Y - lineStart.Y);
+          // ISSUE: cast to a reference type
+          // ISSUE: explicit reference operation
+          ^(float&) local = (float) num3;
+          lineStart.Y = (__Null) (double) y;
         }
       }
       return true;
@@ -181,99 +204,160 @@ namespace Terraria
     public static bool CheckAABBvLineCollision2(Vector2 aabbPosition, Vector2 aabbDimensions, Vector2 lineStart, Vector2 lineEnd)
     {
       float collisionPoint = 0.0f;
-      if (!Utils.RectangleLineCollision(aabbPosition, aabbPosition + aabbDimensions, lineStart, lineEnd))
+      if (!Utils.RectangleLineCollision(aabbPosition, Vector2.op_Addition(aabbPosition, aabbDimensions), lineStart, lineEnd))
         return Collision.CheckAABBvLineCollision(aabbPosition, aabbDimensions, lineStart, lineEnd, 0.0001f, ref collisionPoint);
       return true;
     }
 
     public static bool CheckAABBvLineCollision(Vector2 objectPosition, Vector2 objectDimensions, Vector2 lineStart, Vector2 lineEnd, float lineWidth, ref float collisionPoint)
     {
-      float y = lineWidth * 0.5f;
+      float num1 = lineWidth * 0.5f;
       Vector2 position2 = lineStart;
-      Vector2 dimensions2 = lineEnd - lineStart;
-      if ((double) dimensions2.X > 0.0)
+      Vector2 dimensions2 = Vector2.op_Subtraction(lineEnd, lineStart);
+      if (dimensions2.X > 0.0)
       {
-        dimensions2.X += lineWidth;
-        position2.X -= y;
+        // ISSUE: explicit reference operation
+        // ISSUE: variable of a reference type
+        __Null& local1 = @dimensions2.X;
+        // ISSUE: cast to a reference type
+        // ISSUE: explicit reference operation
+        double num2 = (double) ^(float&) local1 + (double) lineWidth;
+        // ISSUE: cast to a reference type
+        // ISSUE: explicit reference operation
+        ^(float&) local1 = (float) num2;
+        // ISSUE: explicit reference operation
+        // ISSUE: variable of a reference type
+        __Null& local2 = @position2.X;
+        // ISSUE: cast to a reference type
+        // ISSUE: explicit reference operation
+        double num3 = (double) ^(float&) local2 - (double) num1;
+        // ISSUE: cast to a reference type
+        // ISSUE: explicit reference operation
+        ^(float&) local2 = (float) num3;
       }
       else
       {
-        position2.X += dimensions2.X - y;
-        dimensions2.X = -dimensions2.X + lineWidth;
+        // ISSUE: explicit reference operation
+        // ISSUE: variable of a reference type
+        __Null& local = @position2.X;
+        // ISSUE: cast to a reference type
+        // ISSUE: explicit reference operation
+        double num2 = (double) ^(float&) local + (dimensions2.X - (double) num1);
+        // ISSUE: cast to a reference type
+        // ISSUE: explicit reference operation
+        ^(float&) local = (float) num2;
+        dimensions2.X = (__Null) (-dimensions2.X + (double) lineWidth);
       }
-      if ((double) dimensions2.Y > 0.0)
+      if (dimensions2.Y > 0.0)
       {
-        dimensions2.Y += lineWidth;
-        position2.Y -= y;
+        // ISSUE: explicit reference operation
+        // ISSUE: variable of a reference type
+        __Null& local1 = @dimensions2.Y;
+        // ISSUE: cast to a reference type
+        // ISSUE: explicit reference operation
+        double num2 = (double) ^(float&) local1 + (double) lineWidth;
+        // ISSUE: cast to a reference type
+        // ISSUE: explicit reference operation
+        ^(float&) local1 = (float) num2;
+        // ISSUE: explicit reference operation
+        // ISSUE: variable of a reference type
+        __Null& local2 = @position2.Y;
+        // ISSUE: cast to a reference type
+        // ISSUE: explicit reference operation
+        double num3 = (double) ^(float&) local2 - (double) num1;
+        // ISSUE: cast to a reference type
+        // ISSUE: explicit reference operation
+        ^(float&) local2 = (float) num3;
       }
       else
       {
-        position2.Y += dimensions2.Y - y;
-        dimensions2.Y = -dimensions2.Y + lineWidth;
+        // ISSUE: explicit reference operation
+        // ISSUE: variable of a reference type
+        __Null& local = @position2.Y;
+        // ISSUE: cast to a reference type
+        // ISSUE: explicit reference operation
+        double num2 = (double) ^(float&) local + (dimensions2.Y - (double) num1);
+        // ISSUE: cast to a reference type
+        // ISSUE: explicit reference operation
+        ^(float&) local = (float) num2;
+        dimensions2.Y = (__Null) (-dimensions2.Y + (double) lineWidth);
       }
       if (!Collision.CheckAABBvAABBCollision(objectPosition, objectDimensions, position2, dimensions2))
         return false;
-      Vector2 spinningpoint1 = objectPosition - lineStart;
-      Vector2 spinningpoint2 = spinningpoint1 + objectDimensions;
-      Vector2 spinningpoint3 = new Vector2(spinningpoint1.X, spinningpoint2.Y);
-      Vector2 spinningpoint4 = new Vector2(spinningpoint2.X, spinningpoint1.Y);
-      Vector2 vector2_1 = lineEnd - lineStart;
-      float x = vector2_1.Length();
-      float num1 = (float) Math.Atan2((double) vector2_1.Y, (double) vector2_1.X);
+      Vector2 spinningpoint1 = Vector2.op_Subtraction(objectPosition, lineStart);
+      Vector2 spinningpoint2 = Vector2.op_Addition(spinningpoint1, objectDimensions);
+      Vector2 spinningpoint3;
+      // ISSUE: explicit reference operation
+      ((Vector2) @spinningpoint3).\u002Ector((float) spinningpoint1.X, (float) spinningpoint2.Y);
+      Vector2 spinningpoint4;
+      // ISSUE: explicit reference operation
+      ((Vector2) @spinningpoint4).\u002Ector((float) spinningpoint2.X, (float) spinningpoint1.Y);
+      Vector2 vector2_1 = Vector2.op_Subtraction(lineEnd, lineStart);
+      // ISSUE: explicit reference operation
+      float num4 = ((Vector2) @vector2_1).Length();
+      float num5 = (float) Math.Atan2((double) vector2_1.Y, (double) vector2_1.X);
       Vector2[] vector2Array = new Vector2[4]
       {
-        spinningpoint1.RotatedBy(-(double) num1, new Vector2()),
-        spinningpoint4.RotatedBy(-(double) num1, new Vector2()),
-        spinningpoint2.RotatedBy(-(double) num1, new Vector2()),
-        spinningpoint3.RotatedBy(-(double) num1, new Vector2())
+        spinningpoint1.RotatedBy(-(double) num5, (Vector2) null),
+        spinningpoint4.RotatedBy(-(double) num5, (Vector2) null),
+        spinningpoint2.RotatedBy(-(double) num5, (Vector2) null),
+        spinningpoint3.RotatedBy(-(double) num5, (Vector2) null)
       };
-      collisionPoint = x;
+      collisionPoint = num4;
       bool flag = false;
       for (int index = 0; index < vector2Array.Length; ++index)
       {
-        if ((double) Math.Abs(vector2Array[index].Y) < (double) y && (double) vector2Array[index].X < (double) collisionPoint && (double) vector2Array[index].X >= 0.0)
+        if ((double) Math.Abs((float) vector2Array[index].Y) < (double) num1 && vector2Array[index].X < (double) collisionPoint && vector2Array[index].X >= 0.0)
         {
-          collisionPoint = vector2Array[index].X;
+          collisionPoint = (float) vector2Array[index].X;
           flag = true;
         }
       }
-      Vector2 vector2_2 = new Vector2(0.0f, y);
-      Vector2 vector2_3 = new Vector2(x, y);
-      Vector2 vector2_4 = new Vector2(0.0f, -y);
-      Vector2 vector2_5 = new Vector2(x, -y);
+      Vector2 vector2_2;
+      // ISSUE: explicit reference operation
+      ((Vector2) @vector2_2).\u002Ector(0.0f, num1);
+      Vector2 vector2_3;
+      // ISSUE: explicit reference operation
+      ((Vector2) @vector2_3).\u002Ector(num4, num1);
+      Vector2 vector2_4;
+      // ISSUE: explicit reference operation
+      ((Vector2) @vector2_4).\u002Ector(0.0f, -num1);
+      Vector2 vector2_5;
+      // ISSUE: explicit reference operation
+      ((Vector2) @vector2_5).\u002Ector(num4, -num1);
       for (int index1 = 0; index1 < vector2Array.Length; ++index1)
       {
         int index2 = (index1 + 1) % vector2Array.Length;
-        Vector2 vector2_6 = vector2_3 - vector2_2;
-        Vector2 vector2_7 = vector2Array[index2] - vector2Array[index1];
-        float num2 = (float) ((double) vector2_6.X * (double) vector2_7.Y - (double) vector2_6.Y * (double) vector2_7.X);
+        Vector2 vector2_6 = Vector2.op_Subtraction(vector2_3, vector2_2);
+        Vector2 vector2_7 = Vector2.op_Subtraction(vector2Array[index2], vector2Array[index1]);
+        float num2 = (float) (vector2_6.X * vector2_7.Y - vector2_6.Y * vector2_7.X);
         if ((double) num2 != 0.0)
         {
-          Vector2 vector2_8 = vector2Array[index1] - vector2_2;
-          float num3 = (float) ((double) vector2_8.X * (double) vector2_7.Y - (double) vector2_8.Y * (double) vector2_7.X) / num2;
+          Vector2 vector2_8 = Vector2.op_Subtraction(vector2Array[index1], vector2_2);
+          float num3 = (float) (vector2_8.X * vector2_7.Y - vector2_8.Y * vector2_7.X) / num2;
           if ((double) num3 >= 0.0 && (double) num3 <= 1.0)
           {
-            float num4 = (float) ((double) vector2_8.X * (double) vector2_6.Y - (double) vector2_8.Y * (double) vector2_6.X) / num2;
-            if ((double) num4 >= 0.0 && (double) num4 <= 1.0)
+            float num6 = (float) (vector2_8.X * vector2_6.Y - vector2_8.Y * vector2_6.X) / num2;
+            if ((double) num6 >= 0.0 && (double) num6 <= 1.0)
             {
               flag = true;
-              collisionPoint = Math.Min(collisionPoint, vector2_2.X + num3 * vector2_6.X);
+              collisionPoint = Math.Min(collisionPoint, (float) (vector2_2.X + (double) num3 * vector2_6.X));
             }
           }
         }
-        vector2_6 = vector2_5 - vector2_4;
-        float num5 = (float) ((double) vector2_6.X * (double) vector2_7.Y - (double) vector2_6.Y * (double) vector2_7.X);
-        if ((double) num5 != 0.0)
+        Vector2 vector2_9 = Vector2.op_Subtraction(vector2_5, vector2_4);
+        float num7 = (float) (vector2_9.X * vector2_7.Y - vector2_9.Y * vector2_7.X);
+        if ((double) num7 != 0.0)
         {
-          Vector2 vector2_8 = vector2Array[index1] - vector2_4;
-          float num3 = (float) ((double) vector2_8.X * (double) vector2_7.Y - (double) vector2_8.Y * (double) vector2_7.X) / num5;
+          Vector2 vector2_8 = Vector2.op_Subtraction(vector2Array[index1], vector2_4);
+          float num3 = (float) (vector2_8.X * vector2_7.Y - vector2_8.Y * vector2_7.X) / num7;
           if ((double) num3 >= 0.0 && (double) num3 <= 1.0)
           {
-            float num4 = (float) ((double) vector2_8.X * (double) vector2_6.Y - (double) vector2_8.Y * (double) vector2_6.X) / num5;
-            if ((double) num4 >= 0.0 && (double) num4 <= 1.0)
+            float num6 = (float) (vector2_8.X * vector2_9.Y - vector2_8.Y * vector2_9.X) / num7;
+            if ((double) num6 >= 0.0 && (double) num6 <= 1.0)
             {
               flag = true;
-              collisionPoint = Math.Min(collisionPoint, vector2_4.X + num3 * vector2_6.X);
+              collisionPoint = Math.Min(collisionPoint, (float) (vector2_4.X + (double) num3 * vector2_9.X));
             }
           }
         }
@@ -283,10 +367,10 @@ namespace Terraria
 
     public static bool CanHit(Vector2 Position1, int Width1, int Height1, Vector2 Position2, int Width2, int Height2)
     {
-      int index1 = (int) (((double) Position1.X + (double) (Width1 / 2)) / 16.0);
-      int index2 = (int) (((double) Position1.Y + (double) (Height1 / 2)) / 16.0);
-      int num1 = (int) (((double) Position2.X + (double) (Width2 / 2)) / 16.0);
-      int num2 = (int) (((double) Position2.Y + (double) (Height2 / 2)) / 16.0);
+      int index1 = (int) ((Position1.X + (double) (Width1 / 2)) / 16.0);
+      int index2 = (int) ((Position1.Y + (double) (Height1 / 2)) / 16.0);
+      int num1 = (int) ((Position2.X + (double) (Width2 / 2)) / 16.0);
+      int num2 = (int) ((Position2.Y + (double) (Height2 / 2)) / 16.0);
       if (index1 <= 1)
         index1 = 1;
       if (index1 >= Main.maxTilesX)
@@ -341,10 +425,10 @@ namespace Terraria
 
     public static bool CanHitWithCheck(Vector2 Position1, int Width1, int Height1, Vector2 Position2, int Width2, int Height2, Utils.PerLinePoint check)
     {
-      int x = (int) (((double) Position1.X + (double) (Width1 / 2)) / 16.0);
-      int y = (int) (((double) Position1.Y + (double) (Height1 / 2)) / 16.0);
-      int num1 = (int) (((double) Position2.X + (double) (Width2 / 2)) / 16.0);
-      int num2 = (int) (((double) Position2.Y + (double) (Height2 / 2)) / 16.0);
+      int x = (int) ((Position1.X + (double) (Width1 / 2)) / 16.0);
+      int y = (int) ((Position1.Y + (double) (Height1 / 2)) / 16.0);
+      int num1 = (int) ((Position2.X + (double) (Width2 / 2)) / 16.0);
+      int num2 = (int) ((Position2.Y + (double) (Height2 / 2)) / 16.0);
       if (x <= 1)
         x = 1;
       if (x >= Main.maxTilesX)
@@ -399,10 +483,10 @@ namespace Terraria
 
     public static bool CanHitLine(Vector2 Position1, int Width1, int Height1, Vector2 Position2, int Width2, int Height2)
     {
-      int index1 = (int) (((double) Position1.X + (double) (Width1 / 2)) / 16.0);
-      int index2 = (int) (((double) Position1.Y + (double) (Height1 / 2)) / 16.0);
-      int num1 = (int) (((double) Position2.X + (double) (Width2 / 2)) / 16.0);
-      int num2 = (int) (((double) Position2.Y + (double) (Height2 / 2)) / 16.0);
+      int index1 = (int) ((Position1.X + (double) (Width1 / 2)) / 16.0);
+      int index2 = (int) ((Position1.Y + (double) (Height1 / 2)) / 16.0);
+      int num1 = (int) ((Position2.X + (double) (Width2 / 2)) / 16.0);
+      int num2 = (int) ((Position2.Y + (double) (Height2 / 2)) / 16.0);
       if (index1 <= 1)
         index1 = 1;
       if (index1 >= Main.maxTilesX)
@@ -511,7 +595,7 @@ namespace Terraria
           if (!tile.inActive() && tile.active() && (Main.tileSolid[(int) tile.type] && !Main.tileSolidTop[(int) tile.type]))
             return false;
         }
-        while (!flag1 && !flag2);
+        while (!(flag1 | flag2));
         return true;
       }
       catch
@@ -679,7 +763,7 @@ namespace Terraria
             return true;
           }
         }
-        while (!flag1 && !flag2);
+        while (!(flag1 | flag2));
         col = new Tuple<int, int>(index1, index2);
         return true;
       }
@@ -796,7 +880,7 @@ namespace Terraria
           if (Collision.HitWallSubstep(x, y))
             return new Tuple<int, int>(x, y);
         }
-        while (!flag1 && !flag2);
+        while (!(flag1 | flag2));
         return new Tuple<int, int>(x, y);
       }
       catch
@@ -823,7 +907,7 @@ namespace Terraria
           }
         }
       }
-      if (Main.tile[x, y].active() && flag1)
+      if (Main.tile[x, y].active() & flag1)
       {
         bool flag2 = true;
         for (int index1 = -1; index1 < 2; ++index1)
@@ -846,17 +930,21 @@ namespace Terraria
 
     public static bool EmptyTile(int i, int j, bool ignoreTiles = false)
     {
-      Rectangle rectangle = new Rectangle(i * 16, j * 16, 16, 16);
+      Rectangle rectangle;
+      // ISSUE: explicit reference operation
+      ((Rectangle) @rectangle).\u002Ector(i * 16, j * 16, 16, 16);
       if (Main.tile[i, j].active() && !ignoreTiles)
         return false;
       for (int index = 0; index < (int) byte.MaxValue; ++index)
       {
-        if (Main.player[index].active && rectangle.Intersects(new Rectangle((int) Main.player[index].position.X, (int) Main.player[index].position.Y, Main.player[index].width, Main.player[index].height)))
+        // ISSUE: explicit reference operation
+        if (Main.player[index].active && ((Rectangle) @rectangle).Intersects(new Rectangle((int) Main.player[index].position.X, (int) Main.player[index].position.Y, Main.player[index].width, Main.player[index].height)))
           return false;
       }
       for (int index = 0; index < 200; ++index)
       {
-        if (Main.npc[index].active && rectangle.Intersects(new Rectangle((int) Main.npc[index].position.X, (int) Main.npc[index].position.Y, Main.npc[index].width, Main.npc[index].height)))
+        // ISSUE: explicit reference operation
+        if (Main.npc[index].active && ((Rectangle) @rectangle).Intersects(new Rectangle((int) Main.npc[index].position.X, (int) Main.npc[index].position.Y, Main.npc[index].width, Main.npc[index].height)))
           return false;
       }
       return true;
@@ -864,40 +952,63 @@ namespace Terraria
 
     public static bool DrownCollision(Vector2 Position, int Width, int Height, float gravDir = -1f)
     {
-      Vector2 vector2_1 = new Vector2(Position.X + (float) (Width / 2), Position.Y + (float) (Height / 2));
+      Vector2 vector2_1;
+      // ISSUE: explicit reference operation
+      ((Vector2) @vector2_1).\u002Ector((float) Position.X + (float) (Width / 2), (float) Position.Y + (float) (Height / 2));
       int num1 = 10;
       int num2 = 12;
       if (num1 > Width)
         num1 = Width;
       if (num2 > Height)
         num2 = Height;
-      vector2_1 = new Vector2(vector2_1.X - (float) (num1 / 2), Position.Y - 2f);
+      // ISSUE: explicit reference operation
+      ((Vector2) @vector2_1).\u002Ector((float) vector2_1.X - (float) (num1 / 2), (float) (Position.Y - 2.0));
       if ((double) gravDir == -1.0)
-        vector2_1.Y += (float) (Height / 2 - 6);
-      int num3 = (int) ((double) Position.X / 16.0) - 1;
-      int num4 = (int) (((double) Position.X + (double) Width) / 16.0) + 2;
-      int num5 = (int) ((double) Position.Y / 16.0) - 1;
-      int num6 = (int) (((double) Position.Y + (double) Height) / 16.0) + 2;
-      int num7 = Utils.Clamp<int>(num3, 0, Main.maxTilesX - 1);
-      int num8 = Utils.Clamp<int>(num4, 0, Main.maxTilesX - 1);
-      int num9 = Utils.Clamp<int>(num5, 0, Main.maxTilesY - 1);
-      int num10 = Utils.Clamp<int>(num6, 0, Main.maxTilesY - 1);
-      int num11 = (double) gravDir == 1.0 ? num9 : num10 - 1;
-      for (int index1 = num7; index1 < num8; ++index1)
       {
-        for (int index2 = num9; index2 < num10; ++index2)
+        // ISSUE: explicit reference operation
+        // ISSUE: variable of a reference type
+        __Null& local = @vector2_1.Y;
+        // ISSUE: cast to a reference type
+        // ISSUE: explicit reference operation
+        double num3 = (double) ^(float&) local + (double) (Height / 2 - 6);
+        // ISSUE: cast to a reference type
+        // ISSUE: explicit reference operation
+        ^(float&) local = (float) num3;
+      }
+      int num4 = (int) (Position.X / 16.0) - 1;
+      int num5 = (int) ((Position.X + (double) Width) / 16.0) + 2;
+      int num6 = (int) (Position.Y / 16.0) - 1;
+      int num7 = (int) ((Position.Y + (double) Height) / 16.0) + 2;
+      int min = 0;
+      int max = Main.maxTilesX - 1;
+      int num8 = Utils.Clamp<int>(num4, min, max);
+      int num9 = Utils.Clamp<int>(num5, 0, Main.maxTilesX - 1);
+      int num10 = Utils.Clamp<int>(num6, 0, Main.maxTilesY - 1);
+      int num11 = Utils.Clamp<int>(num7, 0, Main.maxTilesY - 1);
+      int num12 = (double) gravDir == 1.0 ? num10 : num11 - 1;
+      for (int index1 = num8; index1 < num9; ++index1)
+      {
+        for (int index2 = num10; index2 < num11; ++index2)
         {
           Tile tile = Main.tile[index1, index2];
-          if (tile != null && (int) tile.liquid > 0 && !tile.lava() && (index2 != num11 || !tile.active() || (!Main.tileSolid[(int) tile.type] || Main.tileSolidTop[(int) tile.type])))
+          if (tile != null && (int) tile.liquid > 0 && !tile.lava() && (index2 != num12 || !tile.active() || (!Main.tileSolid[(int) tile.type] || Main.tileSolidTop[(int) tile.type])))
           {
             Vector2 vector2_2;
-            vector2_2.X = (float) (index1 * 16);
-            vector2_2.Y = (float) (index2 * 16);
-            int num12 = 16;
+            vector2_2.X = (__Null) (double) (index1 * 16);
+            vector2_2.Y = (__Null) (double) (index2 * 16);
+            int num3 = 16;
             float num13 = (float) (256 - (int) Main.tile[index1, index2].liquid) / 32f;
-            vector2_2.Y += num13 * 2f;
-            int num14 = num12 - (int) ((double) num13 * 2.0);
-            if ((double) vector2_1.X + (double) num1 > (double) vector2_2.X && (double) vector2_1.X < (double) vector2_2.X + 16.0 && ((double) vector2_1.Y + (double) num2 > (double) vector2_2.Y && (double) vector2_1.Y < (double) vector2_2.Y + (double) num14))
+            // ISSUE: explicit reference operation
+            // ISSUE: variable of a reference type
+            __Null& local = @vector2_2.Y;
+            // ISSUE: cast to a reference type
+            // ISSUE: explicit reference operation
+            double num14 = (double) ^(float&) local + (double) num13 * 2.0;
+            // ISSUE: cast to a reference type
+            // ISSUE: explicit reference operation
+            ^(float&) local = (float) num14;
+            int num15 = num3 - (int) ((double) num13 * 2.0);
+            if (vector2_1.X + (double) num1 > vector2_2.X && vector2_1.X < vector2_2.X + 16.0 && (vector2_1.Y + (double) num2 > vector2_2.Y && vector2_1.Y < vector2_2.Y + (double) num15))
               return true;
           }
         }
@@ -908,19 +1019,24 @@ namespace Terraria
     public static bool WetCollision(Vector2 Position, int Width, int Height)
     {
       Collision.honey = false;
-      Vector2 vector2_1 = new Vector2(Position.X + (float) (Width / 2), Position.Y + (float) (Height / 2));
+      Vector2 vector2_1;
+      // ISSUE: explicit reference operation
+      ((Vector2) @vector2_1).\u002Ector((float) Position.X + (float) (Width / 2), (float) Position.Y + (float) (Height / 2));
       int num1 = 10;
       int num2 = Height / 2;
       if (num1 > Width)
         num1 = Width;
       if (num2 > Height)
         num2 = Height;
-      vector2_1 = new Vector2(vector2_1.X - (float) (num1 / 2), vector2_1.Y - (float) (num2 / 2));
-      int num3 = (int) ((double) Position.X / 16.0) - 1;
-      int num4 = (int) (((double) Position.X + (double) Width) / 16.0) + 2;
-      int num5 = (int) ((double) Position.Y / 16.0) - 1;
-      int num6 = (int) (((double) Position.Y + (double) Height) / 16.0) + 2;
-      int num7 = Utils.Clamp<int>(num3, 0, Main.maxTilesX - 1);
+      // ISSUE: explicit reference operation
+      ((Vector2) @vector2_1).\u002Ector((float) vector2_1.X - (float) (num1 / 2), (float) vector2_1.Y - (float) (num2 / 2));
+      int num3 = (int) (Position.X / 16.0) - 1;
+      int num4 = (int) ((Position.X + (double) Width) / 16.0) + 2;
+      int num5 = (int) (Position.Y / 16.0) - 1;
+      int num6 = (int) ((Position.Y + (double) Height) / 16.0) + 2;
+      int min = 0;
+      int max = Main.maxTilesX - 1;
+      int num7 = Utils.Clamp<int>(num3, min, max);
       int num8 = Utils.Clamp<int>(num4, 0, Main.maxTilesX - 1);
       int num9 = Utils.Clamp<int>(num5, 0, Main.maxTilesY - 1);
       int num10 = Utils.Clamp<int>(num6, 0, Main.maxTilesY - 1);
@@ -933,13 +1049,21 @@ namespace Terraria
           {
             if ((int) Main.tile[index1, index2].liquid > 0)
             {
-              vector2_2.X = (float) (index1 * 16);
-              vector2_2.Y = (float) (index2 * 16);
+              vector2_2.X = (__Null) (double) (index1 * 16);
+              vector2_2.Y = (__Null) (double) (index2 * 16);
               int num11 = 16;
               float num12 = (float) (256 - (int) Main.tile[index1, index2].liquid) / 32f;
-              vector2_2.Y += num12 * 2f;
-              int num13 = num11 - (int) ((double) num12 * 2.0);
-              if ((double) vector2_1.X + (double) num1 > (double) vector2_2.X && (double) vector2_1.X < (double) vector2_2.X + 16.0 && ((double) vector2_1.Y + (double) num2 > (double) vector2_2.Y && (double) vector2_1.Y < (double) vector2_2.Y + (double) num13))
+              // ISSUE: explicit reference operation
+              // ISSUE: variable of a reference type
+              __Null& local = @vector2_2.Y;
+              // ISSUE: cast to a reference type
+              // ISSUE: explicit reference operation
+              double num13 = (double) ^(float&) local + (double) num12 * 2.0;
+              // ISSUE: cast to a reference type
+              // ISSUE: explicit reference operation
+              ^(float&) local = (float) num13;
+              int num14 = num11 - (int) ((double) num12 * 2.0);
+              if (vector2_1.X + (double) num1 > vector2_2.X && vector2_1.X < vector2_2.X + 16.0 && (vector2_1.Y + (double) num2 > vector2_2.Y && vector2_1.Y < vector2_2.Y + (double) num14))
               {
                 if (Main.tile[index1, index2].honey())
                   Collision.honey = true;
@@ -948,10 +1072,10 @@ namespace Terraria
             }
             else if (Main.tile[index1, index2].active() && (int) Main.tile[index1, index2].slope() != 0 && (index2 > 0 && Main.tile[index1, index2 - 1] != null) && (int) Main.tile[index1, index2 - 1].liquid > 0)
             {
-              vector2_2.X = (float) (index1 * 16);
-              vector2_2.Y = (float) (index2 * 16);
+              vector2_2.X = (__Null) (double) (index1 * 16);
+              vector2_2.Y = (__Null) (double) (index2 * 16);
               int num11 = 16;
-              if ((double) vector2_1.X + (double) num1 > (double) vector2_2.X && (double) vector2_1.X < (double) vector2_2.X + 16.0 && ((double) vector2_1.Y + (double) num2 > (double) vector2_2.Y && (double) vector2_1.Y < (double) vector2_2.Y + (double) num11))
+              if (vector2_1.X + (double) num1 > vector2_2.X && vector2_1.X < vector2_2.X + 16.0 && (vector2_1.Y + (double) num2 > vector2_2.Y && vector2_1.Y < vector2_2.Y + (double) num11))
               {
                 if (Main.tile[index1, index2 - 1].honey())
                   Collision.honey = true;
@@ -967,11 +1091,13 @@ namespace Terraria
     public static bool LavaCollision(Vector2 Position, int Width, int Height)
     {
       int num1 = Height;
-      int num2 = (int) ((double) Position.X / 16.0) - 1;
-      int num3 = (int) (((double) Position.X + (double) Width) / 16.0) + 2;
-      int num4 = (int) ((double) Position.Y / 16.0) - 1;
-      int num5 = (int) (((double) Position.Y + (double) Height) / 16.0) + 2;
-      int num6 = Utils.Clamp<int>(num2, 0, Main.maxTilesX - 1);
+      int num2 = (int) (Position.X / 16.0) - 1;
+      int num3 = (int) ((Position.X + (double) Width) / 16.0) + 2;
+      int num4 = (int) (Position.Y / 16.0) - 1;
+      int num5 = (int) ((Position.Y + (double) Height) / 16.0) + 2;
+      int min = 0;
+      int max = Main.maxTilesX - 1;
+      int num6 = Utils.Clamp<int>(num2, min, max);
       int num7 = Utils.Clamp<int>(num3, 0, Main.maxTilesX - 1);
       int num8 = Utils.Clamp<int>(num4, 0, Main.maxTilesY - 1);
       int num9 = Utils.Clamp<int>(num5, 0, Main.maxTilesY - 1);
@@ -982,13 +1108,21 @@ namespace Terraria
           if (Main.tile[index1, index2] != null && (int) Main.tile[index1, index2].liquid > 0 && Main.tile[index1, index2].lava())
           {
             Vector2 vector2;
-            vector2.X = (float) (index1 * 16);
-            vector2.Y = (float) (index2 * 16);
+            vector2.X = (__Null) (double) (index1 * 16);
+            vector2.Y = (__Null) (double) (index2 * 16);
             int num10 = 16;
             float num11 = (float) (256 - (int) Main.tile[index1, index2].liquid) / 32f;
-            vector2.Y += num11 * 2f;
-            int num12 = num10 - (int) ((double) num11 * 2.0);
-            if ((double) Position.X + (double) Width > (double) vector2.X && (double) Position.X < (double) vector2.X + 16.0 && ((double) Position.Y + (double) num1 > (double) vector2.Y && (double) Position.Y < (double) vector2.Y + (double) num12))
+            // ISSUE: explicit reference operation
+            // ISSUE: variable of a reference type
+            __Null& local = @vector2.Y;
+            // ISSUE: cast to a reference type
+            // ISSUE: explicit reference operation
+            double num12 = (double) ^(float&) local + (double) num11 * 2.0;
+            // ISSUE: cast to a reference type
+            // ISSUE: explicit reference operation
+            ^(float&) local = (float) num12;
+            int num13 = num10 - (int) ((double) num11 * 2.0);
+            if (Position.X + (double) Width > vector2.X && Position.X < vector2.X + 16.0 && (Position.Y + (double) num1 > vector2.Y && Position.Y < vector2.Y + (double) num13))
               return true;
           }
         }
@@ -998,12 +1132,12 @@ namespace Terraria
 
     public static Vector4 WalkDownSlope(Vector2 Position, Vector2 Velocity, int Width, int Height, float gravity = 0.0f)
     {
-      if ((double) Velocity.Y != (double) gravity)
-        return new Vector4(Position, Velocity.X, Velocity.Y);
+      if (Velocity.Y != (double) gravity)
+        return new Vector4(Position, (float) Velocity.X, (float) Velocity.Y);
       Vector2 vector2_1 = Position;
-      int num1 = (int) ((double) vector2_1.X / 16.0);
-      int num2 = (int) (((double) vector2_1.X + (double) Width) / 16.0);
-      int num3 = (int) (((double) Position.Y + (double) Height + 4.0) / 16.0);
+      int num1 = (int) (vector2_1.X / 16.0);
+      int num2 = (int) ((vector2_1.X + (double) Width) / 16.0);
+      int num3 = (int) ((Position.Y + (double) Height + 4.0) / 16.0);
       int num4 = Utils.Clamp<int>(num1, 0, Main.maxTilesX - 1);
       int num5 = Utils.Clamp<int>(num2, 0, Main.maxTilesX - 1);
       int num6 = Utils.Clamp<int>(num3, 0, Main.maxTilesY - 3);
@@ -1011,7 +1145,7 @@ namespace Terraria
       int index1 = -1;
       int index2 = -1;
       int num8 = 1;
-      if ((double) Velocity.X < 0.0)
+      if (Velocity.X < 0.0)
         num8 = 2;
       for (int index3 = num4; index3 <= num5; ++index3)
       {
@@ -1024,7 +1158,11 @@ namespace Terraria
             int num9 = index4 * 16;
             if (Main.tile[index3, index4].halfBrick())
               num9 += 8;
-            if (new Rectangle(index3 * 16, index4 * 16 - 17, 16, 16).Intersects(new Rectangle((int) Position.X, (int) Position.Y, Width, Height)) && (double) num9 <= (double) num7)
+            Rectangle rectangle;
+            // ISSUE: explicit reference operation
+            ((Rectangle) @rectangle).\u002Ector(index3 * 16, index4 * 16 - 17, 16, 16);
+            // ISSUE: explicit reference operation
+            if (((Rectangle) @rectangle).Intersects(new Rectangle((int) Position.X, (int) Position.Y, Width, Height)) && (double) num9 <= (double) num7)
             {
               if ((double) num7 == (double) num9)
               {
@@ -1063,22 +1201,42 @@ namespace Terraria
       {
         int num9 = (int) Main.tile[index5, index6].slope();
         Vector2 vector2_2;
-        vector2_2.X = (float) (index5 * 16);
-        vector2_2.Y = (float) (index6 * 16);
+        vector2_2.X = (__Null) (double) (index5 * 16);
+        vector2_2.Y = (__Null) (double) (index6 * 16);
         if (num9 == 2)
         {
-          float num10 = (float) ((double) vector2_2.X + 16.0 - ((double) Position.X + (double) Width));
-          if ((double) Position.Y + (double) Height >= (double) vector2_2.Y + (double) num10 && (double) Velocity.X < 0.0)
-            Velocity.Y += Math.Abs(Velocity.X);
+          float num10 = (float) (vector2_2.X + 16.0 - (Position.X + (double) Width));
+          if (Position.Y + (double) Height >= vector2_2.Y + (double) num10 && Velocity.X < 0.0)
+          {
+            // ISSUE: explicit reference operation
+            // ISSUE: variable of a reference type
+            __Null& local = @Velocity.Y;
+            // ISSUE: cast to a reference type
+            // ISSUE: explicit reference operation
+            double num11 = (double) ^(float&) local + (double) Math.Abs((float) Velocity.X);
+            // ISSUE: cast to a reference type
+            // ISSUE: explicit reference operation
+            ^(float&) local = (float) num11;
+          }
         }
         else if (num9 == 1)
         {
-          float num10 = Position.X - vector2_2.X;
-          if ((double) Position.Y + (double) Height >= (double) vector2_2.Y + (double) num10 && (double) Velocity.X > 0.0)
-            Velocity.Y += Math.Abs(Velocity.X);
+          float num10 = (float) (Position.X - vector2_2.X);
+          if (Position.Y + (double) Height >= vector2_2.Y + (double) num10 && Velocity.X > 0.0)
+          {
+            // ISSUE: explicit reference operation
+            // ISSUE: variable of a reference type
+            __Null& local = @Velocity.Y;
+            // ISSUE: cast to a reference type
+            // ISSUE: explicit reference operation
+            double num11 = (double) ^(float&) local + (double) Math.Abs((float) Velocity.X);
+            // ISSUE: cast to a reference type
+            // ISSUE: explicit reference operation
+            ^(float&) local = (float) num11;
+          }
         }
       }
-      return new Vector4(Position, Velocity.X, Velocity.Y);
+      return new Vector4(Position, (float) Velocity.X, (float) Velocity.Y);
     }
 
     public static Vector4 SlopeCollision(Vector2 Position, Vector2 Velocity, int Width, int Height, float gravity = 0.0f, bool fall = false)
@@ -1086,17 +1244,19 @@ namespace Terraria
       Collision.stair = false;
       Collision.stairFall = false;
       bool[] flagArray = new bool[5];
-      float y1 = Position.Y;
-      float y2 = Position.Y;
+      float y1 = (float) Position.Y;
+      float y2 = (float) Position.Y;
       Collision.sloping = false;
       Vector2 vector2_1 = Position;
       Vector2 vector2_2 = Position;
       Vector2 vector2_3 = Velocity;
-      int num1 = (int) ((double) Position.X / 16.0) - 1;
-      int num2 = (int) (((double) Position.X + (double) Width) / 16.0) + 2;
-      int num3 = (int) ((double) Position.Y / 16.0) - 1;
-      int num4 = (int) (((double) Position.Y + (double) Height) / 16.0) + 2;
-      int num5 = Utils.Clamp<int>(num1, 0, Main.maxTilesX - 1);
+      int num1 = (int) (Position.X / 16.0) - 1;
+      int num2 = (int) ((Position.X + (double) Width) / 16.0) + 2;
+      int num3 = (int) (Position.Y / 16.0) - 1;
+      int num4 = (int) ((Position.Y + (double) Height) / 16.0) + 2;
+      int min = 0;
+      int max = Main.maxTilesX - 1;
+      int num5 = Utils.Clamp<int>(num1, min, max);
       int num6 = Utils.Clamp<int>(num2, 0, Main.maxTilesX - 1);
       int num7 = Utils.Clamp<int>(num3, 0, Main.maxTilesY - 1);
       int num8 = Utils.Clamp<int>(num4, 0, Main.maxTilesY - 1);
@@ -1107,39 +1267,47 @@ namespace Terraria
           if (Main.tile[index1, index2] != null && Main.tile[index1, index2].active() && !Main.tile[index1, index2].inActive() && (Main.tileSolid[(int) Main.tile[index1, index2].type] || Main.tileSolidTop[(int) Main.tile[index1, index2].type] && (int) Main.tile[index1, index2].frameY == 0))
           {
             Vector2 vector2_4;
-            vector2_4.X = (float) (index1 * 16);
-            vector2_4.Y = (float) (index2 * 16);
+            vector2_4.X = (__Null) (double) (index1 * 16);
+            vector2_4.Y = (__Null) (double) (index2 * 16);
             int num9 = 16;
             if (Main.tile[index1, index2].halfBrick())
             {
-              vector2_4.Y += 8f;
+              // ISSUE: explicit reference operation
+              // ISSUE: variable of a reference type
+              __Null& local = @vector2_4.Y;
+              // ISSUE: cast to a reference type
+              // ISSUE: explicit reference operation
+              double num10 = (double) ^(float&) local + 8.0;
+              // ISSUE: cast to a reference type
+              // ISSUE: explicit reference operation
+              ^(float&) local = (float) num10;
               num9 -= 8;
             }
-            if ((double) Position.X + (double) Width > (double) vector2_4.X && (double) Position.X < (double) vector2_4.X + 16.0 && ((double) Position.Y + (double) Height > (double) vector2_4.Y && (double) Position.Y < (double) vector2_4.Y + (double) num9))
+            if (Position.X + (double) Width > vector2_4.X && Position.X < vector2_4.X + 16.0 && (Position.Y + (double) Height > vector2_4.Y && Position.Y < vector2_4.Y + (double) num9))
             {
               bool flag1 = true;
               if ((int) Main.tile[index1, index2].slope() > 0)
               {
                 if ((int) Main.tile[index1, index2].slope() > 2)
                 {
-                  if ((int) Main.tile[index1, index2].slope() == 3 && (double) vector2_1.Y + (double) Math.Abs(Velocity.X) + 1.0 >= (double) vector2_4.Y && (double) vector2_1.X >= (double) vector2_4.X)
+                  if ((int) Main.tile[index1, index2].slope() == 3 && vector2_1.Y + (double) Math.Abs((float) Velocity.X) + 1.0 >= vector2_4.Y && vector2_1.X >= vector2_4.X)
                     flag1 = true;
-                  if ((int) Main.tile[index1, index2].slope() == 4 && (double) vector2_1.Y + (double) Math.Abs(Velocity.X) + 1.0 >= (double) vector2_4.Y && (double) vector2_1.X + (double) Width <= (double) vector2_4.X + 16.0)
+                  if ((int) Main.tile[index1, index2].slope() == 4 && vector2_1.Y + (double) Math.Abs((float) Velocity.X) + 1.0 >= vector2_4.Y && vector2_1.X + (double) Width <= vector2_4.X + 16.0)
                     flag1 = true;
                 }
                 else
                 {
-                  if ((int) Main.tile[index1, index2].slope() == 1 && (double) vector2_1.Y + (double) Height - (double) Math.Abs(Velocity.X) - 1.0 <= (double) vector2_4.Y + (double) num9 && (double) vector2_1.X >= (double) vector2_4.X)
+                  if ((int) Main.tile[index1, index2].slope() == 1 && vector2_1.Y + (double) Height - (double) Math.Abs((float) Velocity.X) - 1.0 <= vector2_4.Y + (double) num9 && vector2_1.X >= vector2_4.X)
                     flag1 = true;
-                  if ((int) Main.tile[index1, index2].slope() == 2 && (double) vector2_1.Y + (double) Height - (double) Math.Abs(Velocity.X) - 1.0 <= (double) vector2_4.Y + (double) num9 && (double) vector2_1.X + (double) Width <= (double) vector2_4.X + 16.0)
+                  if ((int) Main.tile[index1, index2].slope() == 2 && vector2_1.Y + (double) Height - (double) Math.Abs((float) Velocity.X) - 1.0 <= vector2_4.Y + (double) num9 && vector2_1.X + (double) Width <= vector2_4.X + 16.0)
                     flag1 = true;
                 }
               }
               if (TileID.Sets.Platforms[(int) Main.tile[index1, index2].type])
               {
-                if ((double) Velocity.Y < 0.0)
+                if (Velocity.Y < 0.0)
                   flag1 = false;
-                if ((double) Position.Y + (double) Height < (double) (index2 * 16) || (double) Position.Y + (double) Height - (1.0 + (double) Math.Abs(Velocity.X)) > (double) (index2 * 16 + 16))
+                if (Position.Y + (double) Height < (double) (index2 * 16) || Position.Y + (double) Height - (1.0 + (double) Math.Abs((float) Velocity.X)) > (double) (index2 * 16 + 16))
                   flag1 = false;
               }
               if (flag1)
@@ -1148,55 +1316,55 @@ namespace Terraria
                 if (fall && TileID.Sets.Platforms[(int) Main.tile[index1, index2].type])
                   flag2 = true;
                 int index3 = (int) Main.tile[index1, index2].slope();
-                vector2_4.X = (float) (index1 * 16);
-                vector2_4.Y = (float) (index2 * 16);
-                if ((double) Position.X + (double) Width > (double) vector2_4.X && (double) Position.X < (double) vector2_4.X + 16.0 && ((double) Position.Y + (double) Height > (double) vector2_4.Y && (double) Position.Y < (double) vector2_4.Y + 16.0))
+                vector2_4.X = (__Null) (double) (index1 * 16);
+                vector2_4.Y = (__Null) (double) (index2 * 16);
+                if (Position.X + (double) Width > vector2_4.X && Position.X < vector2_4.X + 16.0 && (Position.Y + (double) Height > vector2_4.Y && Position.Y < vector2_4.Y + 16.0))
                 {
                   float num10 = 0.0f;
                   if (index3 == 3 || index3 == 4)
                   {
                     if (index3 == 3)
-                      num10 = Position.X - vector2_4.X;
+                      num10 = (float) (Position.X - vector2_4.X);
                     if (index3 == 4)
-                      num10 = (float) ((double) vector2_4.X + 16.0 - ((double) Position.X + (double) Width));
+                      num10 = (float) (vector2_4.X + 16.0 - (Position.X + (double) Width));
                     if ((double) num10 >= 0.0)
                     {
-                      if ((double) Position.Y <= (double) vector2_4.Y + 16.0 - (double) num10)
+                      if (Position.Y <= vector2_4.Y + 16.0 - (double) num10)
                       {
-                        float num11 = vector2_4.Y + 16f - vector2_1.Y - num10;
-                        if ((double) Position.Y + (double) num11 > (double) y2)
+                        float num11 = (float) (vector2_4.Y + 16.0 - vector2_1.Y) - num10;
+                        if (Position.Y + (double) num11 > (double) y2)
                         {
-                          vector2_2.Y = Position.Y + num11;
-                          y2 = vector2_2.Y;
-                          if ((double) vector2_3.Y < 0.0100999996066093)
-                            vector2_3.Y = 0.0101f;
+                          vector2_2.Y = (__Null) (Position.Y + (double) num11);
+                          y2 = (float) vector2_2.Y;
+                          if (vector2_3.Y < 0.0100999996066093)
+                            vector2_3.Y = (__Null) 0.0100999996066093;
                           flagArray[index3] = true;
                         }
                       }
                     }
-                    else if ((double) Position.Y > (double) vector2_4.Y)
+                    else if (Position.Y > vector2_4.Y)
                     {
-                      float num11 = vector2_4.Y + 16f;
-                      if ((double) vector2_2.Y < (double) num11)
+                      float num11 = (float) (vector2_4.Y + 16.0);
+                      if (vector2_2.Y < (double) num11)
                       {
-                        vector2_2.Y = num11;
-                        if ((double) vector2_3.Y < 0.0100999996066093)
-                          vector2_3.Y = 0.0101f;
+                        vector2_2.Y = (__Null) (double) num11;
+                        if (vector2_3.Y < 0.0100999996066093)
+                          vector2_3.Y = (__Null) 0.0100999996066093;
                       }
                     }
                   }
                   if (index3 == 1 || index3 == 2)
                   {
                     if (index3 == 1)
-                      num10 = Position.X - vector2_4.X;
+                      num10 = (float) (Position.X - vector2_4.X);
                     if (index3 == 2)
-                      num10 = (float) ((double) vector2_4.X + 16.0 - ((double) Position.X + (double) Width));
+                      num10 = (float) (vector2_4.X + 16.0 - (Position.X + (double) Width));
                     if ((double) num10 >= 0.0)
                     {
-                      if ((double) Position.Y + (double) Height >= (double) vector2_4.Y + (double) num10)
+                      if (Position.Y + (double) Height >= vector2_4.Y + (double) num10)
                       {
-                        float num11 = vector2_4.Y - (vector2_1.Y + (float) Height) + num10;
-                        if ((double) Position.Y + (double) num11 < (double) y1)
+                        float num11 = (float) (vector2_4.Y - (vector2_1.Y + (double) Height)) + num10;
+                        if (Position.Y + (double) num11 < (double) y1)
                         {
                           if (flag2)
                           {
@@ -1205,24 +1373,24 @@ namespace Terraria
                           else
                           {
                             Collision.stair = TileID.Sets.Platforms[(int) Main.tile[index1, index2].type];
-                            vector2_2.Y = Position.Y + num11;
-                            y1 = vector2_2.Y;
-                            if ((double) vector2_3.Y > 0.0)
-                              vector2_3.Y = 0.0f;
+                            vector2_2.Y = (__Null) (Position.Y + (double) num11);
+                            y1 = (float) vector2_2.Y;
+                            if (vector2_3.Y > 0.0)
+                              vector2_3.Y = (__Null) 0.0;
                             flagArray[index3] = true;
                           }
                         }
                       }
                     }
-                    else if (TileID.Sets.Platforms[(int) Main.tile[index1, index2].type] && (double) Position.Y + (double) Height - 4.0 - (double) Math.Abs(Velocity.X) > (double) vector2_4.Y)
+                    else if (TileID.Sets.Platforms[(int) Main.tile[index1, index2].type] && Position.Y + (double) Height - 4.0 - (double) Math.Abs((float) Velocity.X) > vector2_4.Y)
                     {
                       if (flag2)
                         Collision.stairFall = true;
                     }
                     else
                     {
-                      float num11 = vector2_4.Y - (float) Height;
-                      if ((double) vector2_2.Y > (double) num11)
+                      float num11 = (float) vector2_4.Y - (float) Height;
+                      if (vector2_2.Y > (double) num11)
                       {
                         if (flag2)
                         {
@@ -1231,9 +1399,9 @@ namespace Terraria
                         else
                         {
                           Collision.stair = TileID.Sets.Platforms[(int) Main.tile[index1, index2].type];
-                          vector2_2.Y = num11;
-                          if ((double) vector2_3.Y > 0.0)
-                            vector2_3.Y = 0.0f;
+                          vector2_2.Y = (__Null) (double) num11;
+                          if (vector2_3.Y > 0.0)
+                            vector2_3.Y = (__Null) 0.0;
                         }
                       }
                     }
@@ -1245,32 +1413,38 @@ namespace Terraria
         }
       }
       Vector2 Position1 = Position;
-      Vector2 Velocity1 = vector2_2 - Position;
-      Vector2 vector2_5 = Collision.TileCollision(Position1, Velocity1, Width, Height, false, false, 1);
-      if ((double) vector2_5.Y > (double) Velocity1.Y)
+      Vector2 vector2_5 = Vector2.op_Subtraction(vector2_2, Position);
+      Vector2 Velocity1 = vector2_5;
+      int Width1 = Width;
+      int Height1 = Height;
+      int num12 = 0;
+      int num13 = 0;
+      int gravDir = 1;
+      Vector2 vector2_6 = Collision.TileCollision(Position1, Velocity1, Width1, Height1, num12 != 0, num13 != 0, gravDir);
+      if (vector2_6.Y > vector2_5.Y)
       {
-        float num9 = Velocity1.Y - vector2_5.Y;
-        vector2_2.Y = Position.Y + vector2_5.Y;
+        float num9 = (float) (vector2_5.Y - vector2_6.Y);
+        vector2_2.Y = Position.Y + vector2_6.Y;
         if (flagArray[1])
-          vector2_2.X = Position.X - num9;
+          vector2_2.X = (__Null) (Position.X - (double) num9);
         if (flagArray[2])
-          vector2_2.X = Position.X + num9;
-        vector2_3.X = 0.0f;
-        vector2_3.Y = 0.0f;
+          vector2_2.X = (__Null) (Position.X + (double) num9);
+        vector2_3.X = (__Null) 0.0;
+        vector2_3.Y = (__Null) 0.0;
         Collision.up = false;
       }
-      else if ((double) vector2_5.Y < (double) Velocity1.Y)
+      else if (vector2_6.Y < vector2_5.Y)
       {
-        float num9 = vector2_5.Y - Velocity1.Y;
-        vector2_2.Y = Position.Y + vector2_5.Y;
+        float num9 = (float) (vector2_6.Y - vector2_5.Y);
+        vector2_2.Y = Position.Y + vector2_6.Y;
         if (flagArray[3])
-          vector2_2.X = Position.X - num9;
+          vector2_2.X = (__Null) (Position.X - (double) num9);
         if (flagArray[4])
-          vector2_2.X = Position.X + num9;
-        vector2_3.X = 0.0f;
-        vector2_3.Y = 0.0f;
+          vector2_2.X = (__Null) (Position.X + (double) num9);
+        vector2_3.X = (__Null) 0.0;
+        vector2_3.Y = (__Null) 0.0;
       }
-      return new Vector4(vector2_2, vector2_3.X, vector2_3.Y);
+      return new Vector4(vector2_2, (float) vector2_3.X, (float) vector2_3.Y);
     }
 
     public static Vector2 noSlopeCollision(Vector2 Position, Vector2 Velocity, int Width, int Height, bool fallThrough = false, bool fall2 = false)
@@ -1279,17 +1453,19 @@ namespace Terraria
       Collision.down = false;
       Vector2 vector2_1 = Velocity;
       Vector2 vector2_2 = Velocity;
-      Vector2 vector2_3 = Position + Velocity;
+      Vector2 vector2_3 = Vector2.op_Addition(Position, Velocity);
       Vector2 vector2_4 = Position;
-      int num1 = (int) ((double) Position.X / 16.0) - 1;
-      int num2 = (int) (((double) Position.X + (double) Width) / 16.0) + 2;
-      int num3 = (int) ((double) Position.Y / 16.0) - 1;
-      int num4 = (int) (((double) Position.Y + (double) Height) / 16.0) + 2;
+      int num1 = (int) (Position.X / 16.0) - 1;
+      int num2 = (int) ((Position.X + (double) Width) / 16.0) + 2;
+      int num3 = (int) (Position.Y / 16.0) - 1;
+      int num4 = (int) ((Position.Y + (double) Height) / 16.0) + 2;
       int num5 = -1;
       int num6 = -1;
       int num7 = -1;
       int num8 = -1;
-      int num9 = Utils.Clamp<int>(num1, 0, Main.maxTilesX - 1);
+      int min = 0;
+      int max = Main.maxTilesX - 1;
+      int num9 = Utils.Clamp<int>(num1, min, max);
       int num10 = Utils.Clamp<int>(num2, 0, Main.maxTilesX - 1);
       int num11 = Utils.Clamp<int>(num3, 0, Main.maxTilesY - 1);
       int num12 = Utils.Clamp<int>(num4, 0, Main.maxTilesY - 1);
@@ -1301,20 +1477,28 @@ namespace Terraria
           if (Main.tile[index1, index2] != null && Main.tile[index1, index2].active() && (Main.tileSolid[(int) Main.tile[index1, index2].type] || Main.tileSolidTop[(int) Main.tile[index1, index2].type] && (int) Main.tile[index1, index2].frameY == 0))
           {
             Vector2 vector2_5;
-            vector2_5.X = (float) (index1 * 16);
-            vector2_5.Y = (float) (index2 * 16);
+            vector2_5.X = (__Null) (double) (index1 * 16);
+            vector2_5.Y = (__Null) (double) (index2 * 16);
             int num14 = 16;
             if (Main.tile[index1, index2].halfBrick())
             {
-              vector2_5.Y += 8f;
+              // ISSUE: explicit reference operation
+              // ISSUE: variable of a reference type
+              __Null& local = @vector2_5.Y;
+              // ISSUE: cast to a reference type
+              // ISSUE: explicit reference operation
+              double num15 = (double) ^(float&) local + 8.0;
+              // ISSUE: cast to a reference type
+              // ISSUE: explicit reference operation
+              ^(float&) local = (float) num15;
               num14 -= 8;
             }
-            if ((double) vector2_3.X + (double) Width > (double) vector2_5.X && (double) vector2_3.X < (double) vector2_5.X + 16.0 && ((double) vector2_3.Y + (double) Height > (double) vector2_5.Y && (double) vector2_3.Y < (double) vector2_5.Y + (double) num14))
+            if (vector2_3.X + (double) Width > vector2_5.X && vector2_3.X < vector2_5.X + 16.0 && (vector2_3.Y + (double) Height > vector2_5.Y && vector2_3.Y < vector2_5.Y + (double) num14))
             {
-              if ((double) vector2_4.Y + (double) Height <= (double) vector2_5.Y)
+              if (vector2_4.Y + (double) Height <= vector2_5.Y)
               {
                 Collision.down = true;
-                if ((!Main.tileSolidTop[(int) Main.tile[index1, index2].type] || !fallThrough || (double) Velocity.Y > 1.0 && !fall2) && (double) num13 > (double) vector2_5.Y)
+                if ((!(Main.tileSolidTop[(int) Main.tile[index1, index2].type] & fallThrough) || !(Velocity.Y <= 1.0 | fall2)) && (double) num13 > vector2_5.Y)
                 {
                   num7 = index1;
                   num8 = index2;
@@ -1322,35 +1506,35 @@ namespace Terraria
                     ++num8;
                   if (num7 != num5)
                   {
-                    vector2_1.Y = vector2_5.Y - (vector2_4.Y + (float) Height);
-                    num13 = vector2_5.Y;
+                    vector2_1.Y = (__Null) (vector2_5.Y - (vector2_4.Y + (double) Height));
+                    num13 = (float) vector2_5.Y;
                   }
                 }
               }
-              else if ((double) vector2_4.X + (double) Width <= (double) vector2_5.X && !Main.tileSolidTop[(int) Main.tile[index1, index2].type])
+              else if (vector2_4.X + (double) Width <= vector2_5.X && !Main.tileSolidTop[(int) Main.tile[index1, index2].type])
               {
                 num5 = index1;
                 num6 = index2;
                 if (num6 != num8)
-                  vector2_1.X = vector2_5.X - (vector2_4.X + (float) Width);
+                  vector2_1.X = (__Null) (vector2_5.X - (vector2_4.X + (double) Width));
                 if (num7 == num5)
                   vector2_1.Y = vector2_2.Y;
               }
-              else if ((double) vector2_4.X >= (double) vector2_5.X + 16.0 && !Main.tileSolidTop[(int) Main.tile[index1, index2].type])
+              else if (vector2_4.X >= vector2_5.X + 16.0 && !Main.tileSolidTop[(int) Main.tile[index1, index2].type])
               {
                 num5 = index1;
                 num6 = index2;
                 if (num6 != num8)
-                  vector2_1.X = vector2_5.X + 16f - vector2_4.X;
+                  vector2_1.X = (__Null) (vector2_5.X + 16.0 - vector2_4.X);
                 if (num7 == num5)
                   vector2_1.Y = vector2_2.Y;
               }
-              else if ((double) vector2_4.Y >= (double) vector2_5.Y + (double) num14 && !Main.tileSolidTop[(int) Main.tile[index1, index2].type])
+              else if (vector2_4.Y >= vector2_5.Y + (double) num14 && !Main.tileSolidTop[(int) Main.tile[index1, index2].type])
               {
                 Collision.up = true;
                 num7 = index1;
                 num8 = index2;
-                vector2_1.Y = (float) ((double) vector2_5.Y + (double) num14 - (double) vector2_4.Y + 0.00999999977648258);
+                vector2_1.Y = (__Null) (vector2_5.Y + (double) num14 - vector2_4.Y + 0.00999999977648258);
                 if (num8 == num6)
                   vector2_1.X = vector2_2.X;
               }
@@ -1367,17 +1551,19 @@ namespace Terraria
       Collision.down = false;
       Vector2 vector2_1 = Velocity;
       Vector2 vector2_2 = Velocity;
-      Vector2 vector2_3 = Position + Velocity;
+      Vector2 vector2_3 = Vector2.op_Addition(Position, Velocity);
       Vector2 vector2_4 = Position;
-      int num1 = (int) ((double) Position.X / 16.0) - 1;
-      int num2 = (int) (((double) Position.X + (double) Width) / 16.0) + 2;
-      int num3 = (int) ((double) Position.Y / 16.0) - 1;
-      int num4 = (int) (((double) Position.Y + (double) Height) / 16.0) + 2;
+      int num1 = (int) (Position.X / 16.0) - 1;
+      int num2 = (int) ((Position.X + (double) Width) / 16.0) + 2;
+      int num3 = (int) (Position.Y / 16.0) - 1;
+      int num4 = (int) ((Position.Y + (double) Height) / 16.0) + 2;
       int num5 = -1;
       int num6 = -1;
       int num7 = -1;
       int num8 = -1;
-      int num9 = Utils.Clamp<int>(num1, 0, Main.maxTilesX - 1);
+      int min = 0;
+      int max = Main.maxTilesX - 1;
+      int num9 = Utils.Clamp<int>(num1, min, max);
       int num10 = Utils.Clamp<int>(num2, 0, Main.maxTilesX - 1);
       int num11 = Utils.Clamp<int>(num3, 0, Main.maxTilesY - 1);
       int num12 = Utils.Clamp<int>(num4, 0, Main.maxTilesY - 1);
@@ -1389,39 +1575,47 @@ namespace Terraria
           if (Main.tile[index1, index2] != null && Main.tile[index1, index2].active() && !Main.tile[index1, index2].inActive() && (Main.tileSolid[(int) Main.tile[index1, index2].type] || Main.tileSolidTop[(int) Main.tile[index1, index2].type] && (int) Main.tile[index1, index2].frameY == 0))
           {
             Vector2 vector2_5;
-            vector2_5.X = (float) (index1 * 16);
-            vector2_5.Y = (float) (index2 * 16);
+            vector2_5.X = (__Null) (double) (index1 * 16);
+            vector2_5.Y = (__Null) (double) (index2 * 16);
             int num14 = 16;
             if (Main.tile[index1, index2].halfBrick())
             {
-              vector2_5.Y += 8f;
+              // ISSUE: explicit reference operation
+              // ISSUE: variable of a reference type
+              __Null& local = @vector2_5.Y;
+              // ISSUE: cast to a reference type
+              // ISSUE: explicit reference operation
+              double num15 = (double) ^(float&) local + 8.0;
+              // ISSUE: cast to a reference type
+              // ISSUE: explicit reference operation
+              ^(float&) local = (float) num15;
               num14 -= 8;
             }
-            if ((double) vector2_3.X + (double) Width > (double) vector2_5.X && (double) vector2_3.X < (double) vector2_5.X + 16.0 && ((double) vector2_3.Y + (double) Height > (double) vector2_5.Y && (double) vector2_3.Y < (double) vector2_5.Y + (double) num14))
+            if (vector2_3.X + (double) Width > vector2_5.X && vector2_3.X < vector2_5.X + 16.0 && (vector2_3.Y + (double) Height > vector2_5.Y && vector2_3.Y < vector2_5.Y + (double) num14))
             {
               bool flag1 = false;
               bool flag2 = false;
               if ((int) Main.tile[index1, index2].slope() > 2)
               {
-                if ((int) Main.tile[index1, index2].slope() == 3 && (double) vector2_4.Y + (double) Math.Abs(Velocity.X) >= (double) vector2_5.Y && (double) vector2_4.X >= (double) vector2_5.X)
+                if ((int) Main.tile[index1, index2].slope() == 3 && vector2_4.Y + (double) Math.Abs((float) Velocity.X) >= vector2_5.Y && vector2_4.X >= vector2_5.X)
                   flag2 = true;
-                if ((int) Main.tile[index1, index2].slope() == 4 && (double) vector2_4.Y + (double) Math.Abs(Velocity.X) >= (double) vector2_5.Y && (double) vector2_4.X + (double) Width <= (double) vector2_5.X + 16.0)
+                if ((int) Main.tile[index1, index2].slope() == 4 && vector2_4.Y + (double) Math.Abs((float) Velocity.X) >= vector2_5.Y && vector2_4.X + (double) Width <= vector2_5.X + 16.0)
                   flag2 = true;
               }
               else if ((int) Main.tile[index1, index2].slope() > 0)
               {
                 flag1 = true;
-                if ((int) Main.tile[index1, index2].slope() == 1 && (double) vector2_4.Y + (double) Height - (double) Math.Abs(Velocity.X) <= (double) vector2_5.Y + (double) num14 && (double) vector2_4.X >= (double) vector2_5.X)
+                if ((int) Main.tile[index1, index2].slope() == 1 && vector2_4.Y + (double) Height - (double) Math.Abs((float) Velocity.X) <= vector2_5.Y + (double) num14 && vector2_4.X >= vector2_5.X)
                   flag2 = true;
-                if ((int) Main.tile[index1, index2].slope() == 2 && (double) vector2_4.Y + (double) Height - (double) Math.Abs(Velocity.X) <= (double) vector2_5.Y + (double) num14 && (double) vector2_4.X + (double) Width <= (double) vector2_5.X + 16.0)
+                if ((int) Main.tile[index1, index2].slope() == 2 && vector2_4.Y + (double) Height - (double) Math.Abs((float) Velocity.X) <= vector2_5.Y + (double) num14 && vector2_4.X + (double) Width <= vector2_5.X + 16.0)
                   flag2 = true;
               }
               if (!flag2)
               {
-                if ((double) vector2_4.Y + (double) Height <= (double) vector2_5.Y)
+                if (vector2_4.Y + (double) Height <= vector2_5.Y)
                 {
                   Collision.down = true;
-                  if ((!Main.tileSolidTop[(int) Main.tile[index1, index2].type] || !fallThrough || (double) Velocity.Y > 1.0 && !fall2) && (double) num13 > (double) vector2_5.Y)
+                  if ((!(Main.tileSolidTop[(int) Main.tile[index1, index2].type] & fallThrough) || !(Velocity.Y <= 1.0 | fall2)) && (double) num13 > vector2_5.Y)
                   {
                     num7 = index1;
                     num8 = index2;
@@ -1429,12 +1623,12 @@ namespace Terraria
                       ++num8;
                     if (num7 != num5 && !flag1)
                     {
-                      vector2_1.Y = (float) ((double) vector2_5.Y - ((double) vector2_4.Y + (double) Height) + (gravDir == -1 ? -0.00999999977648258 : 0.0));
-                      num13 = vector2_5.Y;
+                      vector2_1.Y = (__Null) (vector2_5.Y - (vector2_4.Y + (double) Height) + (gravDir == -1 ? -0.00999999977648258 : 0.0));
+                      num13 = (float) vector2_5.Y;
                     }
                   }
                 }
-                else if ((double) vector2_4.X + (double) Width <= (double) vector2_5.X && !Main.tileSolidTop[(int) Main.tile[index1, index2].type])
+                else if (vector2_4.X + (double) Width <= vector2_5.X && !Main.tileSolidTop[(int) Main.tile[index1, index2].type])
                 {
                   if (Main.tile[index1 - 1, index2] == null)
                     Main.tile[index1 - 1, index2] = new Tile();
@@ -1443,12 +1637,12 @@ namespace Terraria
                     num5 = index1;
                     num6 = index2;
                     if (num6 != num8)
-                      vector2_1.X = vector2_5.X - (vector2_4.X + (float) Width);
+                      vector2_1.X = (__Null) (vector2_5.X - (vector2_4.X + (double) Width));
                     if (num7 == num5)
                       vector2_1.Y = vector2_2.Y;
                   }
                 }
-                else if ((double) vector2_4.X >= (double) vector2_5.X + 16.0 && !Main.tileSolidTop[(int) Main.tile[index1, index2].type])
+                else if (vector2_4.X >= vector2_5.X + 16.0 && !Main.tileSolidTop[(int) Main.tile[index1, index2].type])
                 {
                   if (Main.tile[index1 + 1, index2] == null)
                     Main.tile[index1 + 1, index2] = new Tile();
@@ -1457,17 +1651,17 @@ namespace Terraria
                     num5 = index1;
                     num6 = index2;
                     if (num6 != num8)
-                      vector2_1.X = vector2_5.X + 16f - vector2_4.X;
+                      vector2_1.X = (__Null) (vector2_5.X + 16.0 - vector2_4.X);
                     if (num7 == num5)
                       vector2_1.Y = vector2_2.Y;
                   }
                 }
-                else if ((double) vector2_4.Y >= (double) vector2_5.Y + (double) num14 && !Main.tileSolidTop[(int) Main.tile[index1, index2].type])
+                else if (vector2_4.Y >= vector2_5.Y + (double) num14 && !Main.tileSolidTop[(int) Main.tile[index1, index2].type])
                 {
                   Collision.up = true;
                   num7 = index1;
                   num8 = index2;
-                  vector2_1.Y = (float) ((double) vector2_5.Y + (double) num14 - (double) vector2_4.Y + (gravDir == 1 ? 0.00999999977648258 : 0.0));
+                  vector2_1.Y = (__Null) (vector2_5.Y + (double) num14 - vector2_4.Y + (gravDir == 1 ? 0.00999999977648258 : 0.0));
                   if (num8 == num6)
                     vector2_1.X = vector2_2.X;
                 }
@@ -1483,36 +1677,41 @@ namespace Terraria
     {
       if (checkCardinals)
       {
-        Vector2 Velocity1 = Vector2.UnitX * testMagnitude;
-        if (Collision.TileCollision(position - Velocity1, Velocity1, Width, Height, fallThrough, fall2, gravDir) != Velocity1)
+        Vector2 Velocity1 = Vector2.op_Multiply(Vector2.get_UnitX(), testMagnitude);
+        if (Vector2.op_Inequality(Collision.TileCollision(Vector2.op_Subtraction(position, Velocity1), Velocity1, Width, Height, fallThrough, fall2, gravDir), Velocity1))
           return false;
-        Vector2 Velocity2 = -Vector2.UnitX * testMagnitude;
-        if (Collision.TileCollision(position - Velocity2, Velocity2, Width, Height, fallThrough, fall2, gravDir) != Velocity2)
+        Vector2 Velocity2 = Vector2.op_Multiply(Vector2.op_UnaryNegation(Vector2.get_UnitX()), testMagnitude);
+        if (Vector2.op_Inequality(Collision.TileCollision(Vector2.op_Subtraction(position, Velocity2), Velocity2, Width, Height, fallThrough, fall2, gravDir), Velocity2))
           return false;
-        Vector2 Velocity3 = Vector2.UnitY * testMagnitude;
-        if (Collision.TileCollision(position - Velocity3, Velocity3, Width, Height, fallThrough, fall2, gravDir) != Velocity3)
+        Vector2 Velocity3 = Vector2.op_Multiply(Vector2.get_UnitY(), testMagnitude);
+        if (Vector2.op_Inequality(Collision.TileCollision(Vector2.op_Subtraction(position, Velocity3), Velocity3, Width, Height, fallThrough, fall2, gravDir), Velocity3))
           return false;
-        Vector2 Velocity4 = -Vector2.UnitY * testMagnitude;
-        if (Collision.TileCollision(position - Velocity4, Velocity4, Width, Height, fallThrough, fall2, gravDir) != Velocity4)
+        Vector2 Velocity4 = Vector2.op_Multiply(Vector2.op_UnaryNegation(Vector2.get_UnitY()), testMagnitude);
+        if (Vector2.op_Inequality(Collision.TileCollision(Vector2.op_Subtraction(position, Velocity4), Velocity4, Width, Height, fallThrough, fall2, gravDir), Velocity4))
           return false;
       }
       if (checkSlopes)
       {
-        Vector2 Velocity1 = Vector2.UnitX * testMagnitude;
-        Vector4 vector4 = new Vector4(position, testMagnitude, 0.0f);
-        if (Collision.SlopeCollision(position, Velocity1, Width, Height, (float) gravDir, fallThrough) != vector4)
+        Vector2 Velocity1 = Vector2.op_Multiply(Vector2.get_UnitX(), testMagnitude);
+        Vector4 vector4;
+        // ISSUE: explicit reference operation
+        ((Vector4) @vector4).\u002Ector(position, testMagnitude, 0.0f);
+        if (Vector4.op_Inequality(Collision.SlopeCollision(position, Velocity1, Width, Height, (float) gravDir, fallThrough), vector4))
           return false;
-        Vector2 Velocity2 = -Vector2.UnitX * testMagnitude;
-        vector4 = new Vector4(position, -testMagnitude, 0.0f);
-        if (Collision.SlopeCollision(position, Velocity2, Width, Height, (float) gravDir, fallThrough) != vector4)
+        Vector2 Velocity2 = Vector2.op_Multiply(Vector2.op_UnaryNegation(Vector2.get_UnitX()), testMagnitude);
+        // ISSUE: explicit reference operation
+        ((Vector4) @vector4).\u002Ector(position, -testMagnitude, 0.0f);
+        if (Vector4.op_Inequality(Collision.SlopeCollision(position, Velocity2, Width, Height, (float) gravDir, fallThrough), vector4))
           return false;
-        Vector2 Velocity3 = Vector2.UnitY * testMagnitude;
-        vector4 = new Vector4(position, 0.0f, testMagnitude);
-        if (Collision.SlopeCollision(position, Velocity3, Width, Height, (float) gravDir, fallThrough) != vector4)
+        Vector2 Velocity3 = Vector2.op_Multiply(Vector2.get_UnitY(), testMagnitude);
+        // ISSUE: explicit reference operation
+        ((Vector4) @vector4).\u002Ector(position, 0.0f, testMagnitude);
+        if (Vector4.op_Inequality(Collision.SlopeCollision(position, Velocity3, Width, Height, (float) gravDir, fallThrough), vector4))
           return false;
-        Vector2 Velocity4 = -Vector2.UnitY * testMagnitude;
-        vector4 = new Vector4(position, 0.0f, -testMagnitude);
-        if (Collision.SlopeCollision(position, Velocity4, Width, Height, (float) gravDir, fallThrough) != vector4)
+        Vector2 Velocity4 = Vector2.op_Multiply(Vector2.op_UnaryNegation(Vector2.get_UnitY()), testMagnitude);
+        // ISSUE: explicit reference operation
+        ((Vector4) @vector4).\u002Ector(position, 0.0f, -testMagnitude);
+        if (Vector4.op_Inequality(Collision.SlopeCollision(position, Velocity4, Width, Height, (float) gravDir, fallThrough), vector4))
           return false;
       }
       return true;
@@ -1521,96 +1720,88 @@ namespace Terraria
     public static List<Point> FindCollisionTile(int Direction, Vector2 position, float testMagnitude, int Width, int Height, bool fallThrough = false, bool fall2 = false, int gravDir = 1, bool checkCardinals = true, bool checkSlopes = false)
     {
       List<Point> pointList = new List<Point>();
-      switch (Direction)
+      if ((uint) Direction > 1U)
       {
-        case 0:
-        case 1:
-          Vector2 Velocity1 = Direction == 0 ? Vector2.UnitX * testMagnitude : -Vector2.UnitX * testMagnitude;
-          Vector4 vec1 = new Vector4(position, Velocity1.X, Velocity1.Y);
-          int x = (int) ((double) position.X + (Direction == 0 ? (double) Width : 0.0)) / 16;
-          float num1 = Math.Min((float) (16.0 - (double) position.Y % 16.0), (float) Height);
-          float num2 = num1;
-          if (checkCardinals && Collision.TileCollision(position - Velocity1, Velocity1, Width, (int) num1, fallThrough, fall2, gravDir) != Velocity1)
-            pointList.Add(new Point(x, (int) position.Y / 16));
-          else if (checkSlopes && Collision.SlopeCollision(position, Velocity1, Width, (int) num1, (float) gravDir, fallThrough).XZW() != vec1.XZW())
-            pointList.Add(new Point(x, (int) position.Y / 16));
-          while ((double) num2 + 16.0 <= (double) (Height - 16))
+        if ((uint) (Direction - 2) <= 1U)
+        {
+          Vector2 Velocity = Direction == 2 ? Vector2.op_Multiply(Vector2.get_UnitY(), testMagnitude) : Vector2.op_Multiply(Vector2.op_UnaryNegation(Vector2.get_UnitY()), testMagnitude);
+          Vector4 vec;
+          // ISSUE: explicit reference operation
+          ((Vector4) @vec).\u002Ector(position, (float) Velocity.X, (float) Velocity.Y);
+          int num1 = (int) (position.Y + (Direction == 2 ? (double) Height : 0.0)) / 16;
+          float num2 = Math.Min((float) (16.0 - position.X % 16.0), (float) Width);
+          float num3 = num2;
+          if (checkCardinals && Vector2.op_Inequality(Collision.TileCollision(Vector2.op_Subtraction(position, Velocity), Velocity, (int) num2, Height, fallThrough, fall2, gravDir), Velocity))
+            pointList.Add(new Point((int) position.X / 16, num1));
+          else if (checkSlopes && Vector3.op_Inequality(Collision.SlopeCollision(position, Velocity, (int) num2, Height, (float) gravDir, fallThrough).YZW(), vec.YZW()))
+            pointList.Add(new Point((int) position.X / 16, num1));
+          while ((double) num3 + 16.0 <= (double) (Width - 16))
           {
-            if (checkCardinals && Collision.TileCollision(position - Velocity1 + Vector2.UnitY * num2, Velocity1, Width, 16, fallThrough, fall2, gravDir) != Velocity1)
-              pointList.Add(new Point(x, (int) ((double) position.Y + (double) num2) / 16));
-            else if (checkSlopes && Collision.SlopeCollision(position + Vector2.UnitY * num2, Velocity1, Width, 16, (float) gravDir, fallThrough).XZW() != vec1.XZW())
-              pointList.Add(new Point(x, (int) ((double) position.Y + (double) num2) / 16));
-            num2 += 16f;
+            if (checkCardinals && Vector2.op_Inequality(Collision.TileCollision(Vector2.op_Addition(Vector2.op_Subtraction(position, Velocity), Vector2.op_Multiply(Vector2.get_UnitX(), num3)), Velocity, 16, Height, fallThrough, fall2, gravDir), Velocity))
+              pointList.Add(new Point((int) (position.X + (double) num3) / 16, num1));
+            else if (checkSlopes && Vector3.op_Inequality(Collision.SlopeCollision(Vector2.op_Addition(position, Vector2.op_Multiply(Vector2.get_UnitX(), num3)), Velocity, 16, Height, (float) gravDir, fallThrough).YZW(), vec.YZW()))
+              pointList.Add(new Point((int) (position.X + (double) num3) / 16, num1));
+            num3 += 16f;
           }
-          int Height1 = Height - (int) num2;
-          if (checkCardinals && Collision.TileCollision(position - Velocity1 + Vector2.UnitY * num2, Velocity1, Width, Height1, fallThrough, fall2, gravDir) != Velocity1)
-          {
-            pointList.Add(new Point(x, (int) ((double) position.Y + (double) num2) / 16));
-            break;
-          }
-          if (checkSlopes && Collision.SlopeCollision(position + Vector2.UnitY * num2, Velocity1, Width, Height1, (float) gravDir, fallThrough).XZW() != vec1.XZW())
-          {
-            pointList.Add(new Point(x, (int) ((double) position.Y + (double) num2) / 16));
-            break;
-          }
-          break;
-        case 2:
-        case 3:
-          Vector2 Velocity2 = Direction == 2 ? Vector2.UnitY * testMagnitude : -Vector2.UnitY * testMagnitude;
-          Vector4 vec2 = new Vector4(position, Velocity2.X, Velocity2.Y);
-          int y = (int) ((double) position.Y + (Direction == 2 ? (double) Height : 0.0)) / 16;
-          float num3 = Math.Min((float) (16.0 - (double) position.X % 16.0), (float) Width);
-          float num4 = num3;
-          if (checkCardinals && Collision.TileCollision(position - Velocity2, Velocity2, (int) num3, Height, fallThrough, fall2, gravDir) != Velocity2)
-            pointList.Add(new Point((int) position.X / 16, y));
-          else if (checkSlopes && Collision.SlopeCollision(position, Velocity2, (int) num3, Height, (float) gravDir, fallThrough).YZW() != vec2.YZW())
-            pointList.Add(new Point((int) position.X / 16, y));
-          while ((double) num4 + 16.0 <= (double) (Width - 16))
-          {
-            if (checkCardinals && Collision.TileCollision(position - Velocity2 + Vector2.UnitX * num4, Velocity2, 16, Height, fallThrough, fall2, gravDir) != Velocity2)
-              pointList.Add(new Point((int) ((double) position.X + (double) num4) / 16, y));
-            else if (checkSlopes && Collision.SlopeCollision(position + Vector2.UnitX * num4, Velocity2, 16, Height, (float) gravDir, fallThrough).YZW() != vec2.YZW())
-              pointList.Add(new Point((int) ((double) position.X + (double) num4) / 16, y));
-            num4 += 16f;
-          }
-          int Width1 = Width - (int) num4;
-          if (checkCardinals && Collision.TileCollision(position - Velocity2 + Vector2.UnitX * num4, Velocity2, Width1, Height, fallThrough, fall2, gravDir) != Velocity2)
-          {
-            pointList.Add(new Point((int) ((double) position.X + (double) num4) / 16, y));
-            break;
-          }
-          if (checkSlopes && Collision.SlopeCollision(position + Vector2.UnitX * num4, Velocity2, Width1, Height, (float) gravDir, fallThrough).YZW() != vec2.YZW())
-          {
-            pointList.Add(new Point((int) ((double) position.X + (double) num4) / 16, y));
-            break;
-          }
-          break;
+          int Width1 = Width - (int) num3;
+          if (checkCardinals && Vector2.op_Inequality(Collision.TileCollision(Vector2.op_Addition(Vector2.op_Subtraction(position, Velocity), Vector2.op_Multiply(Vector2.get_UnitX(), num3)), Velocity, Width1, Height, fallThrough, fall2, gravDir), Velocity))
+            pointList.Add(new Point((int) (position.X + (double) num3) / 16, num1));
+          else if (checkSlopes && Vector3.op_Inequality(Collision.SlopeCollision(Vector2.op_Addition(position, Vector2.op_Multiply(Vector2.get_UnitX(), num3)), Velocity, Width1, Height, (float) gravDir, fallThrough).YZW(), vec.YZW()))
+            pointList.Add(new Point((int) (position.X + (double) num3) / 16, num1));
+        }
+      }
+      else
+      {
+        Vector2 Velocity = Direction == 0 ? Vector2.op_Multiply(Vector2.get_UnitX(), testMagnitude) : Vector2.op_Multiply(Vector2.op_UnaryNegation(Vector2.get_UnitX()), testMagnitude);
+        Vector4 vec;
+        // ISSUE: explicit reference operation
+        ((Vector4) @vec).\u002Ector(position, (float) Velocity.X, (float) Velocity.Y);
+        int num1 = (int) (position.X + (Direction == 0 ? (double) Width : 0.0)) / 16;
+        float num2 = Math.Min((float) (16.0 - position.Y % 16.0), (float) Height);
+        float num3 = num2;
+        if (checkCardinals && Vector2.op_Inequality(Collision.TileCollision(Vector2.op_Subtraction(position, Velocity), Velocity, Width, (int) num2, fallThrough, fall2, gravDir), Velocity))
+          pointList.Add(new Point(num1, (int) position.Y / 16));
+        else if (checkSlopes && Vector3.op_Inequality(Collision.SlopeCollision(position, Velocity, Width, (int) num2, (float) gravDir, fallThrough).XZW(), vec.XZW()))
+          pointList.Add(new Point(num1, (int) position.Y / 16));
+        while ((double) num3 + 16.0 <= (double) (Height - 16))
+        {
+          if (checkCardinals && Vector2.op_Inequality(Collision.TileCollision(Vector2.op_Addition(Vector2.op_Subtraction(position, Velocity), Vector2.op_Multiply(Vector2.get_UnitY(), num3)), Velocity, Width, 16, fallThrough, fall2, gravDir), Velocity))
+            pointList.Add(new Point(num1, (int) (position.Y + (double) num3) / 16));
+          else if (checkSlopes && Vector3.op_Inequality(Collision.SlopeCollision(Vector2.op_Addition(position, Vector2.op_Multiply(Vector2.get_UnitY(), num3)), Velocity, Width, 16, (float) gravDir, fallThrough).XZW(), vec.XZW()))
+            pointList.Add(new Point(num1, (int) (position.Y + (double) num3) / 16));
+          num3 += 16f;
+        }
+        int Height1 = Height - (int) num3;
+        if (checkCardinals && Vector2.op_Inequality(Collision.TileCollision(Vector2.op_Addition(Vector2.op_Subtraction(position, Velocity), Vector2.op_Multiply(Vector2.get_UnitY(), num3)), Velocity, Width, Height1, fallThrough, fall2, gravDir), Velocity))
+          pointList.Add(new Point(num1, (int) (position.Y + (double) num3) / 16));
+        else if (checkSlopes && Vector3.op_Inequality(Collision.SlopeCollision(Vector2.op_Addition(position, Vector2.op_Multiply(Vector2.get_UnitY(), num3)), Velocity, Width, Height1, (float) gravDir, fallThrough).XZW(), vec.XZW()))
+          pointList.Add(new Point(num1, (int) (position.Y + (double) num3) / 16));
       }
       return pointList;
     }
 
     public static bool FindCollisionDirection(out int Direction, Vector2 position, int Width, int Height, bool fallThrough = false, bool fall2 = false, int gravDir = 1)
     {
-      Vector2 Velocity1 = Vector2.UnitX * 16f;
-      if (Collision.TileCollision(position - Velocity1, Velocity1, Width, Height, fallThrough, fall2, gravDir) != Velocity1)
+      Vector2 Velocity1 = Vector2.op_Multiply(Vector2.get_UnitX(), 16f);
+      if (Vector2.op_Inequality(Collision.TileCollision(Vector2.op_Subtraction(position, Velocity1), Velocity1, Width, Height, fallThrough, fall2, gravDir), Velocity1))
       {
         Direction = 0;
         return true;
       }
-      Vector2 Velocity2 = -Vector2.UnitX * 16f;
-      if (Collision.TileCollision(position - Velocity2, Velocity2, Width, Height, fallThrough, fall2, gravDir) != Velocity2)
+      Vector2 Velocity2 = Vector2.op_Multiply(Vector2.op_UnaryNegation(Vector2.get_UnitX()), 16f);
+      if (Vector2.op_Inequality(Collision.TileCollision(Vector2.op_Subtraction(position, Velocity2), Velocity2, Width, Height, fallThrough, fall2, gravDir), Velocity2))
       {
         Direction = 1;
         return true;
       }
-      Vector2 Velocity3 = Vector2.UnitY * 16f;
-      if (Collision.TileCollision(position - Velocity3, Velocity3, Width, Height, fallThrough, fall2, gravDir) != Velocity3)
+      Vector2 Velocity3 = Vector2.op_Multiply(Vector2.get_UnitY(), 16f);
+      if (Vector2.op_Inequality(Collision.TileCollision(Vector2.op_Subtraction(position, Velocity3), Velocity3, Width, Height, fallThrough, fall2, gravDir), Velocity3))
       {
         Direction = 2;
         return true;
       }
-      Vector2 Velocity4 = -Vector2.UnitY * 16f;
-      if (Collision.TileCollision(position - Velocity4, Velocity4, Width, Height, fallThrough, fall2, gravDir) != Velocity4)
+      Vector2 Velocity4 = Vector2.op_Multiply(Vector2.op_UnaryNegation(Vector2.get_UnitY()), 16f);
+      if (Vector2.op_Inequality(Collision.TileCollision(Vector2.op_Subtraction(position, Velocity4), Velocity4, Width, Height, fallThrough, fall2, gravDir), Velocity4))
       {
         Direction = 3;
         return true;
@@ -1621,11 +1812,13 @@ namespace Terraria
 
     public static bool SolidCollision(Vector2 Position, int Width, int Height)
     {
-      int num1 = (int) ((double) Position.X / 16.0) - 1;
-      int num2 = (int) (((double) Position.X + (double) Width) / 16.0) + 2;
-      int num3 = (int) ((double) Position.Y / 16.0) - 1;
-      int num4 = (int) (((double) Position.Y + (double) Height) / 16.0) + 2;
-      int num5 = Utils.Clamp<int>(num1, 0, Main.maxTilesX - 1);
+      int num1 = (int) (Position.X / 16.0) - 1;
+      int num2 = (int) ((Position.X + (double) Width) / 16.0) + 2;
+      int num3 = (int) (Position.Y / 16.0) - 1;
+      int num4 = (int) ((Position.Y + (double) Height) / 16.0) + 2;
+      int min = 0;
+      int max = Main.maxTilesX - 1;
+      int num5 = Utils.Clamp<int>(num1, min, max);
       int num6 = Utils.Clamp<int>(num2, 0, Main.maxTilesX - 1);
       int num7 = Utils.Clamp<int>(num3, 0, Main.maxTilesY - 1);
       int num8 = Utils.Clamp<int>(num4, 0, Main.maxTilesY - 1);
@@ -1636,15 +1829,23 @@ namespace Terraria
           if (Main.tile[index1, index2] != null && !Main.tile[index1, index2].inActive() && (Main.tile[index1, index2].active() && Main.tileSolid[(int) Main.tile[index1, index2].type]) && !Main.tileSolidTop[(int) Main.tile[index1, index2].type])
           {
             Vector2 vector2;
-            vector2.X = (float) (index1 * 16);
-            vector2.Y = (float) (index2 * 16);
+            vector2.X = (__Null) (double) (index1 * 16);
+            vector2.Y = (__Null) (double) (index2 * 16);
             int num9 = 16;
             if (Main.tile[index1, index2].halfBrick())
             {
-              vector2.Y += 8f;
+              // ISSUE: explicit reference operation
+              // ISSUE: variable of a reference type
+              __Null& local = @vector2.Y;
+              // ISSUE: cast to a reference type
+              // ISSUE: explicit reference operation
+              double num10 = (double) ^(float&) local + 8.0;
+              // ISSUE: cast to a reference type
+              // ISSUE: explicit reference operation
+              ^(float&) local = (float) num10;
               num9 -= 8;
             }
-            if ((double) Position.X + (double) Width > (double) vector2.X && (double) Position.X < (double) vector2.X + 16.0 && ((double) Position.Y + (double) Height > (double) vector2.Y && (double) Position.Y < (double) vector2.Y + (double) num9))
+            if (Position.X + (double) Width > vector2.X && Position.X < vector2.X + 16.0 && (Position.Y + (double) Height > vector2.Y && Position.Y < vector2.Y + (double) num9))
               return true;
           }
         }
@@ -1655,13 +1856,15 @@ namespace Terraria
     public static Vector2 WaterCollision(Vector2 Position, Vector2 Velocity, int Width, int Height, bool fallThrough = false, bool fall2 = false, bool lavaWalk = true)
     {
       Vector2 vector2_1 = Velocity;
-      Vector2 vector2_2 = Position + Velocity;
+      Vector2 vector2_2 = Vector2.op_Addition(Position, Velocity);
       Vector2 vector2_3 = Position;
-      int num1 = (int) ((double) Position.X / 16.0) - 1;
-      int num2 = (int) (((double) Position.X + (double) Width) / 16.0) + 2;
-      int num3 = (int) ((double) Position.Y / 16.0) - 1;
-      int num4 = (int) (((double) Position.Y + (double) Height) / 16.0) + 2;
-      int num5 = Utils.Clamp<int>(num1, 0, Main.maxTilesX - 1);
+      int num1 = (int) (Position.X / 16.0) - 1;
+      int num2 = (int) ((Position.X + (double) Width) / 16.0) + 2;
+      int num3 = (int) (Position.Y / 16.0) - 1;
+      int num4 = (int) ((Position.Y + (double) Height) / 16.0) + 2;
+      int min = 0;
+      int max = Main.maxTilesX - 1;
+      int num5 = Utils.Clamp<int>(num1, min, max);
       int num6 = Utils.Clamp<int>(num2, 0, Main.maxTilesX - 1);
       int num7 = Utils.Clamp<int>(num3, 0, Main.maxTilesY - 1);
       int num8 = Utils.Clamp<int>(num4, 0, Main.maxTilesY - 1);
@@ -1673,10 +1876,10 @@ namespace Terraria
           {
             int num9 = (int) Main.tile[index1, index2].liquid / 32 * 2 + 2;
             Vector2 vector2_4;
-            vector2_4.X = (float) (index1 * 16);
-            vector2_4.Y = (float) (index2 * 16 + 16 - num9);
-            if ((double) vector2_2.X + (double) Width > (double) vector2_4.X && (double) vector2_2.X < (double) vector2_4.X + 16.0 && ((double) vector2_2.Y + (double) Height > (double) vector2_4.Y && (double) vector2_2.Y < (double) vector2_4.Y + (double) num9) && ((double) vector2_3.Y + (double) Height <= (double) vector2_4.Y && !fallThrough))
-              vector2_1.Y = vector2_4.Y - (vector2_3.Y + (float) Height);
+            vector2_4.X = (__Null) (double) (index1 * 16);
+            vector2_4.Y = (__Null) (double) (index2 * 16 + 16 - num9);
+            if (vector2_2.X + (double) Width > vector2_4.X && vector2_2.X < vector2_4.X + 16.0 && (vector2_2.Y + (double) Height > vector2_4.Y && vector2_2.Y < vector2_4.Y + (double) num9) && (vector2_3.Y + (double) Height <= vector2_4.Y && !fallThrough))
+              vector2_1.Y = (__Null) (vector2_4.Y - (vector2_3.Y + (double) Height));
           }
         }
       }
@@ -1687,12 +1890,12 @@ namespace Terraria
     {
       Vector2 vector2_1 = Velocity;
       Vector2 vector2_2 = Velocity;
-      Vector2 vector2_3 = Position + Velocity;
+      Vector2 vector2_3 = Vector2.op_Addition(Position, Velocity);
       Vector2 vector2_4 = Position;
-      int num1 = (int) ((double) Position.X / 16.0) - 1;
-      int num2 = (int) (((double) Position.X + (double) Width) / 16.0) + 2;
-      int num3 = (int) ((double) Position.Y / 16.0) - 1;
-      int num4 = (int) (((double) Position.Y + (double) Height) / 16.0) + 2;
+      int num1 = (int) (Position.X / 16.0) - 1;
+      int num2 = (int) ((Position.X + (double) Width) / 16.0) + 2;
+      int num3 = (int) (Position.Y / 16.0) - 1;
+      int num4 = (int) ((Position.Y + (double) Height) / 16.0) + 2;
       int num5 = -1;
       int num6 = -1;
       int num7 = -1;
@@ -1712,48 +1915,56 @@ namespace Terraria
           if (Main.tile[index1, index2] != null && Main.tile[index1, index2].active() && (evenActuated || !Main.tile[index1, index2].inActive()))
           {
             Vector2 vector2_5;
-            vector2_5.X = (float) (index1 * 16);
-            vector2_5.Y = (float) (index2 * 16);
+            vector2_5.X = (__Null) (double) (index1 * 16);
+            vector2_5.Y = (__Null) (double) (index2 * 16);
             int num9 = 16;
             if (Main.tile[index1, index2].halfBrick())
             {
-              vector2_5.Y += 8f;
+              // ISSUE: explicit reference operation
+              // ISSUE: variable of a reference type
+              __Null& local = @vector2_5.Y;
+              // ISSUE: cast to a reference type
+              // ISSUE: explicit reference operation
+              double num10 = (double) ^(float&) local + 8.0;
+              // ISSUE: cast to a reference type
+              // ISSUE: explicit reference operation
+              ^(float&) local = (float) num10;
               num9 -= 8;
             }
-            if ((double) vector2_3.X + (double) Width > (double) vector2_5.X && (double) vector2_3.X < (double) vector2_5.X + 16.0 && ((double) vector2_3.Y + (double) Height > (double) vector2_5.Y && (double) vector2_3.Y < (double) vector2_5.Y + (double) num9))
+            if (vector2_3.X + (double) Width > vector2_5.X && vector2_3.X < vector2_5.X + 16.0 && (vector2_3.Y + (double) Height > vector2_5.Y && vector2_3.Y < vector2_5.Y + (double) num9))
             {
-              if ((double) vector2_4.Y + (double) Height <= (double) vector2_5.Y)
+              if (vector2_4.Y + (double) Height <= vector2_5.Y)
               {
                 num7 = index1;
                 num8 = index2;
                 if (num7 != num5)
-                  vector2_1.Y = vector2_5.Y - (vector2_4.Y + (float) Height);
+                  vector2_1.Y = (__Null) (vector2_5.Y - (vector2_4.Y + (double) Height));
               }
-              else if ((double) vector2_4.X + (double) Width <= (double) vector2_5.X && !Main.tileSolidTop[(int) Main.tile[index1, index2].type])
+              else if (vector2_4.X + (double) Width <= vector2_5.X && !Main.tileSolidTop[(int) Main.tile[index1, index2].type])
               {
                 num5 = index1;
                 num6 = index2;
                 if (num6 != num8)
-                  vector2_1.X = vector2_5.X - (vector2_4.X + (float) Width);
+                  vector2_1.X = (__Null) (vector2_5.X - (vector2_4.X + (double) Width));
                 if (num7 == num5)
                   vector2_1.Y = vector2_2.Y;
               }
-              else if ((double) vector2_4.X >= (double) vector2_5.X + 16.0 && !Main.tileSolidTop[(int) Main.tile[index1, index2].type])
+              else if (vector2_4.X >= vector2_5.X + 16.0 && !Main.tileSolidTop[(int) Main.tile[index1, index2].type])
               {
                 num5 = index1;
                 num6 = index2;
                 if (num6 != num8)
-                  vector2_1.X = vector2_5.X + 16f - vector2_4.X;
+                  vector2_1.X = (__Null) (vector2_5.X + 16.0 - vector2_4.X);
                 if (num7 == num5)
                   vector2_1.Y = vector2_2.Y;
               }
-              else if ((double) vector2_4.Y >= (double) vector2_5.Y + (double) num9 && !Main.tileSolidTop[(int) Main.tile[index1, index2].type])
+              else if (vector2_4.Y >= vector2_5.Y + (double) num9 && !Main.tileSolidTop[(int) Main.tile[index1, index2].type])
               {
                 num7 = index1;
                 num8 = index2;
-                vector2_1.Y = (float) ((double) vector2_5.Y + (double) num9 - (double) vector2_4.Y + 0.00999999977648258);
+                vector2_1.Y = (__Null) (vector2_5.Y + (double) num9 - vector2_4.Y + 0.00999999977648258);
                 if (num8 == num6)
-                  vector2_1.X = vector2_2.X + 0.01f;
+                  vector2_1.X = (__Null) (vector2_2.X + 0.00999999977648258);
               }
             }
           }
@@ -1764,11 +1975,11 @@ namespace Terraria
 
     public static void HitTiles(Vector2 Position, Vector2 Velocity, int Width, int Height)
     {
-      Vector2 vector2_1 = Position + Velocity;
-      int num1 = (int) ((double) Position.X / 16.0) - 1;
-      int num2 = (int) (((double) Position.X + (double) Width) / 16.0) + 2;
-      int num3 = (int) ((double) Position.Y / 16.0) - 1;
-      int num4 = (int) (((double) Position.Y + (double) Height) / 16.0) + 2;
+      Vector2 vector2_1 = Vector2.op_Addition(Position, Velocity);
+      int num1 = (int) (Position.X / 16.0) - 1;
+      int num2 = (int) ((Position.X + (double) Width) / 16.0) + 2;
+      int num3 = (int) (Position.Y / 16.0) - 1;
+      int num4 = (int) ((Position.Y + (double) Height) / 16.0) + 2;
       if (num1 < 0)
         num1 = 0;
       if (num2 > Main.maxTilesX)
@@ -1784,15 +1995,23 @@ namespace Terraria
           if (Main.tile[i, j] != null && !Main.tile[i, j].inActive() && Main.tile[i, j].active() && (Main.tileSolid[(int) Main.tile[i, j].type] || Main.tileSolidTop[(int) Main.tile[i, j].type] && (int) Main.tile[i, j].frameY == 0))
           {
             Vector2 vector2_2;
-            vector2_2.X = (float) (i * 16);
-            vector2_2.Y = (float) (j * 16);
+            vector2_2.X = (__Null) (double) (i * 16);
+            vector2_2.Y = (__Null) (double) (j * 16);
             int num5 = 16;
             if (Main.tile[i, j].halfBrick())
             {
-              vector2_2.Y += 8f;
+              // ISSUE: explicit reference operation
+              // ISSUE: variable of a reference type
+              __Null& local = @vector2_2.Y;
+              // ISSUE: cast to a reference type
+              // ISSUE: explicit reference operation
+              double num6 = (double) ^(float&) local + 8.0;
+              // ISSUE: cast to a reference type
+              // ISSUE: explicit reference operation
+              ^(float&) local = (float) num6;
               num5 -= 8;
             }
-            if ((double) vector2_1.X + (double) Width >= (double) vector2_2.X && (double) vector2_1.X <= (double) vector2_2.X + 16.0 && ((double) vector2_1.Y + (double) Height >= (double) vector2_2.Y && (double) vector2_1.Y <= (double) vector2_2.Y + (double) num5))
+            if (vector2_1.X + (double) Width >= vector2_2.X && vector2_1.X <= vector2_2.X + 16.0 && (vector2_1.Y + (double) Height >= vector2_2.Y && vector2_1.Y <= vector2_2.Y + (double) num5))
               WorldGen.KillTile(i, j, true, true, false);
           }
         }
@@ -1802,10 +2021,10 @@ namespace Terraria
     public static Vector2 HurtTiles(Vector2 Position, Vector2 Velocity, int Width, int Height, bool fireImmune = false)
     {
       Vector2 vector2_1 = Position;
-      int num1 = (int) ((double) Position.X / 16.0) - 1;
-      int num2 = (int) (((double) Position.X + (double) Width) / 16.0) + 2;
-      int num3 = (int) ((double) Position.Y / 16.0) - 1;
-      int num4 = (int) (((double) Position.Y + (double) Height) / 16.0) + 2;
+      int num1 = (int) (Position.X / 16.0) - 1;
+      int num2 = (int) ((Position.X + (double) Width) / 16.0) + 2;
+      int num3 = (int) (Position.Y / 16.0) - 1;
+      int num4 = (int) ((Position.Y + (double) Height) / 16.0) + 2;
       if (num1 < 0)
         num1 = 0;
       if (num2 > Main.maxTilesX)
@@ -1821,22 +2040,30 @@ namespace Terraria
           if (Main.tile[i, j] != null && (int) Main.tile[i, j].slope() == 0 && (!Main.tile[i, j].inActive() && Main.tile[i, j].active()) && ((int) Main.tile[i, j].type == 32 || (int) Main.tile[i, j].type == 37 || ((int) Main.tile[i, j].type == 48 || (int) Main.tile[i, j].type == 232) || ((int) Main.tile[i, j].type == 53 || (int) Main.tile[i, j].type == 57 || ((int) Main.tile[i, j].type == 58 || (int) Main.tile[i, j].type == 69)) || ((int) Main.tile[i, j].type == 76 || (int) Main.tile[i, j].type == 112 || ((int) Main.tile[i, j].type == 116 || (int) Main.tile[i, j].type == 123) || ((int) Main.tile[i, j].type == 224 || (int) Main.tile[i, j].type == 234 || (int) Main.tile[i, j].type == 352))))
           {
             Vector2 vector2_2;
-            vector2_2.X = (float) (i * 16);
-            vector2_2.Y = (float) (j * 16);
+            vector2_2.X = (__Null) (double) (i * 16);
+            vector2_2.Y = (__Null) (double) (j * 16);
             int num5 = 0;
             int type = (int) Main.tile[i, j].type;
             int num6 = 16;
             if (Main.tile[i, j].halfBrick())
             {
-              vector2_2.Y += 8f;
+              // ISSUE: explicit reference operation
+              // ISSUE: variable of a reference type
+              __Null& local = @vector2_2.Y;
+              // ISSUE: cast to a reference type
+              // ISSUE: explicit reference operation
+              double num7 = (double) ^(float&) local + 8.0;
+              // ISSUE: cast to a reference type
+              // ISSUE: explicit reference operation
+              ^(float&) local = (float) num7;
               num6 -= 8;
             }
             if (type == 32 || type == 69 || (type == 80 || type == 352) || type == 80 && Main.expertMode)
             {
-              if ((double) vector2_1.X + (double) Width > (double) vector2_2.X && (double) vector2_1.X < (double) vector2_2.X + 16.0 && ((double) vector2_1.Y + (double) Height > (double) vector2_2.Y && (double) vector2_1.Y < (double) vector2_2.Y + (double) num6 + 11.0 / 1000.0))
+              if (vector2_1.X + (double) Width > vector2_2.X && vector2_1.X < vector2_2.X + 16.0 && (vector2_1.Y + (double) Height > vector2_2.Y && vector2_1.Y < vector2_2.Y + (double) num6 + 11.0 / 1000.0))
               {
                 int num7 = 1;
-                if ((double) vector2_1.X + (double) (Width / 2) < (double) vector2_2.X + 8.0)
+                if (vector2_1.X + (double) (Width / 2) < vector2_2.X + 8.0)
                   num7 = -1;
                 int num8 = 10;
                 if (type == 69)
@@ -1854,19 +2081,19 @@ namespace Terraria
             }
             else if (type == 53 || type == 112 || (type == 116 || type == 123) || (type == 224 || type == 234))
             {
-              if ((double) vector2_1.X + (double) Width - 2.0 >= (double) vector2_2.X && (double) vector2_1.X + 2.0 <= (double) vector2_2.X + 16.0 && ((double) vector2_1.Y + (double) Height - 2.0 >= (double) vector2_2.Y && (double) vector2_1.Y + 2.0 <= (double) vector2_2.Y + (double) num6))
+              if (vector2_1.X + (double) Width - 2.0 >= vector2_2.X && vector2_1.X + 2.0 <= vector2_2.X + 16.0 && (vector2_1.Y + (double) Height - 2.0 >= vector2_2.Y && vector2_1.Y + 2.0 <= vector2_2.Y + (double) num6))
               {
                 int num7 = 1;
-                if ((double) vector2_1.X + (double) (Width / 2) < (double) vector2_2.X + 8.0)
+                if (vector2_1.X + (double) (Width / 2) < vector2_2.X + 8.0)
                   num7 = -1;
                 int num8 = 15;
                 return new Vector2((float) num7, (float) num8);
               }
             }
-            else if ((double) vector2_1.X + (double) Width >= (double) vector2_2.X && (double) vector2_1.X <= (double) vector2_2.X + 16.0 && ((double) vector2_1.Y + (double) Height >= (double) vector2_2.Y && (double) vector2_1.Y <= (double) vector2_2.Y + (double) num6 + 11.0 / 1000.0))
+            else if (vector2_1.X + (double) Width >= vector2_2.X && vector2_1.X <= vector2_2.X + 16.0 && (vector2_1.Y + (double) Height >= vector2_2.Y && vector2_1.Y <= vector2_2.Y + (double) num6 + 11.0 / 1000.0))
             {
               int num7 = 1;
-              if ((double) vector2_1.X + (double) (Width / 2) < (double) vector2_2.X + 8.0)
+              if (vector2_1.X + (double) (Width / 2) < vector2_2.X + 8.0)
                 num7 = -1;
               if (!fireImmune && (type == 37 || type == 58 || type == 76))
                 num5 = 20;
@@ -1879,15 +2106,15 @@ namespace Terraria
           }
         }
       }
-      return new Vector2();
+      return (Vector2) null;
     }
 
     public static bool SwitchTiles(Vector2 Position, int Width, int Height, Vector2 oldPosition, int objType)
     {
-      int num1 = (int) ((double) Position.X / 16.0) - 1;
-      int num2 = (int) (((double) Position.X + (double) Width) / 16.0) + 2;
-      int num3 = (int) ((double) Position.Y / 16.0) - 1;
-      int num4 = (int) (((double) Position.Y + (double) Height) / 16.0) + 2;
+      int num1 = (int) (Position.X / 16.0) - 1;
+      int num2 = (int) ((Position.X + (double) Width) / 16.0) + 2;
+      int num3 = (int) (Position.Y / 16.0) - 1;
+      int num4 = (int) ((Position.Y + (double) Height) / 16.0) + 2;
       if (num1 < 0)
         num1 = 0;
       if (num2 > Main.maxTilesX)
@@ -1906,8 +2133,8 @@ namespace Terraria
             if (Main.tile[index, j].active() && (type == 135 || type == 210 || type == 442))
             {
               Vector2 vector2;
-              vector2.X = (float) (index * 16);
-              vector2.Y = (float) (j * 16 + 12);
+              vector2.X = (__Null) (double) (index * 16);
+              vector2.Y = (__Null) (double) (j * 16 + 12);
               bool flag1 = false;
               if (objType == 4)
               {
@@ -1944,7 +2171,7 @@ namespace Terraria
                       r1Height = 16f;
                       break;
                   }
-                  if (Utils.FloatIntersect(r1StartX, r1StartY, r1Width, r1Height, Position.X, Position.Y, (float) Width, (float) Height) && !Utils.FloatIntersect(r1StartX, r1StartY, r1Width, r1Height, oldPosition.X, oldPosition.Y, (float) Width, (float) Height))
+                  if (Utils.FloatIntersect(r1StartX, r1StartY, r1Width, r1Height, (float) Position.X, (float) Position.Y, (float) Width, (float) Height) && !Utils.FloatIntersect(r1StartX, r1StartY, r1Width, r1Height, (float) oldPosition.X, (float) oldPosition.Y, (float) Width, (float) Height))
                   {
                     Wiring.HitSwitch(index, j);
                     NetMessage.SendData(59, -1, -1, (NetworkText) null, index, (float) j, 0.0f, 0.0f, 0, 0, 0);
@@ -1953,11 +2180,11 @@ namespace Terraria
                 }
                 flag1 = true;
               }
-              if (!flag1 && (double) Position.X + (double) Width > (double) vector2.X && ((double) Position.X < (double) vector2.X + 16.0 && (double) Position.Y + (double) Height > (double) vector2.Y) && (double) Position.Y < (double) vector2.Y + 4.01)
+              if (!flag1 && Position.X + (double) Width > vector2.X && (Position.X < vector2.X + 16.0 && Position.Y + (double) Height > vector2.Y) && (double) Position.Y < (double) vector2.Y + 4.01)
               {
                 if (type == 210)
                   WorldGen.ExplodeMine(index, j);
-                else if (type != 442 && ((double) oldPosition.X + (double) Width <= (double) vector2.X || (double) oldPosition.X >= (double) vector2.X + 16.0 || ((double) oldPosition.Y + (double) Height <= (double) vector2.Y || (double) oldPosition.Y >= (double) vector2.Y + 16.01)))
+                else if (type != 442 && (oldPosition.X + (double) Width <= vector2.X || oldPosition.X >= vector2.X + 16.0 || (oldPosition.Y + (double) Height <= vector2.Y || (double) oldPosition.Y >= (double) vector2.Y + 16.01)))
                 {
                   int num5 = (int) Main.tile[index, j].frameY / 18;
                   bool flag2 = true;
@@ -1983,11 +2210,11 @@ namespace Terraria
     public bool SwitchTilesNew(Vector2 Position, int Width, int Height, Vector2 oldPosition, int objType)
     {
       Point tileCoordinates1 = Position.ToTileCoordinates();
-      Point tileCoordinates2 = (Position + new Vector2((float) Width, (float) Height)).ToTileCoordinates();
-      int num1 = Utils.Clamp<int>(tileCoordinates1.X, 0, Main.maxTilesX - 1);
-      int num2 = Utils.Clamp<int>(tileCoordinates1.Y, 0, Main.maxTilesY - 1);
-      int num3 = Utils.Clamp<int>(tileCoordinates2.X, 0, Main.maxTilesX - 1);
-      int num4 = Utils.Clamp<int>(tileCoordinates2.Y, 0, Main.maxTilesY - 1);
+      Point tileCoordinates2 = Vector2.op_Addition(Position, new Vector2((float) Width, (float) Height)).ToTileCoordinates();
+      int num1 = Utils.Clamp<int>((int) tileCoordinates1.X, 0, Main.maxTilesX - 1);
+      int num2 = Utils.Clamp<int>((int) tileCoordinates1.Y, 0, Main.maxTilesY - 1);
+      int num3 = Utils.Clamp<int>((int) tileCoordinates2.X, 0, Main.maxTilesX - 1);
+      int num4 = Utils.Clamp<int>((int) tileCoordinates2.Y, 0, Main.maxTilesY - 1);
       for (int index1 = num1; index1 <= num3; ++index1)
       {
         for (int index2 = num2; index2 <= num4; ++index2)
@@ -2004,10 +2231,10 @@ namespace Terraria
     public static Vector2 StickyTiles(Vector2 Position, Vector2 Velocity, int Width, int Height)
     {
       Vector2 vector2_1 = Position;
-      int num1 = (int) ((double) Position.X / 16.0) - 1;
-      int num2 = (int) (((double) Position.X + (double) Width) / 16.0) + 2;
-      int num3 = (int) ((double) Position.Y / 16.0) - 1;
-      int num4 = (int) (((double) Position.Y + (double) Height) / 16.0) + 2;
+      int num1 = (int) (Position.X / 16.0) - 1;
+      int num2 = (int) ((Position.X + (double) Width) / 16.0) + 2;
+      int num3 = (int) (Position.Y / 16.0) - 1;
+      int num4 = (int) ((Position.Y + (double) Height) / 16.0) + 2;
       if (num1 < 0)
         num1 = 0;
       if (num2 > Main.maxTilesX)
@@ -2026,30 +2253,38 @@ namespace Terraria
             if ((int) Main.tile[index1, index2].type == 51)
             {
               int num5 = 0;
-              vector2_2.X = (float) (index1 * 16);
-              vector2_2.Y = (float) (index2 * 16);
-              if ((double) vector2_1.X + (double) Width > (double) vector2_2.X - (double) num5 && (double) vector2_1.X < (double) vector2_2.X + 16.0 + (double) num5 && ((double) vector2_1.Y + (double) Height > (double) vector2_2.Y && (double) vector2_1.Y < (double) vector2_2.Y + 16.01))
+              vector2_2.X = (__Null) (double) (index1 * 16);
+              vector2_2.Y = (__Null) (double) (index2 * 16);
+              if (vector2_1.X + (double) Width > vector2_2.X - (double) num5 && vector2_1.X < vector2_2.X + 16.0 + (double) num5 && (vector2_1.Y + (double) Height > vector2_2.Y && (double) vector2_1.Y < (double) vector2_2.Y + 16.01))
               {
-                if ((int) Main.tile[index1, index2].type == 51 && (double) Math.Abs(Velocity.X) + (double) Math.Abs(Velocity.Y) > 0.7 && Main.rand.Next(30) == 0)
-                  Dust.NewDust(new Vector2((float) (index1 * 16), (float) (index2 * 16)), 16, 16, 30, 0.0f, 0.0f, 0, new Color(), 1f);
+                if ((int) Main.tile[index1, index2].type == 51 && (double) Math.Abs((float) Velocity.X) + (double) Math.Abs((float) Velocity.Y) > 0.7 && Main.rand.Next(30) == 0)
+                  Dust.NewDust(new Vector2((float) (index1 * 16), (float) (index2 * 16)), 16, 16, 30, 0.0f, 0.0f, 0, (Color) null, 1f);
                 return new Vector2((float) index1, (float) index2);
               }
             }
             else if ((int) Main.tile[index1, index2].type == 229 && (int) Main.tile[index1, index2].slope() == 0)
             {
               int num5 = 1;
-              vector2_2.X = (float) (index1 * 16);
-              vector2_2.Y = (float) (index2 * 16);
+              vector2_2.X = (__Null) (double) (index1 * 16);
+              vector2_2.Y = (__Null) (double) (index2 * 16);
               float num6 = 16.01f;
               if (Main.tile[index1, index2].halfBrick())
               {
-                vector2_2.Y += 8f;
+                // ISSUE: explicit reference operation
+                // ISSUE: variable of a reference type
+                __Null& local = @vector2_2.Y;
+                // ISSUE: cast to a reference type
+                // ISSUE: explicit reference operation
+                double num7 = (double) ^(float&) local + 8.0;
+                // ISSUE: cast to a reference type
+                // ISSUE: explicit reference operation
+                ^(float&) local = (float) num7;
                 num6 -= 8f;
               }
-              if ((double) vector2_1.X + (double) Width > (double) vector2_2.X - (double) num5 && (double) vector2_1.X < (double) vector2_2.X + 16.0 + (double) num5 && ((double) vector2_1.Y + (double) Height > (double) vector2_2.Y && (double) vector2_1.Y < (double) vector2_2.Y + (double) num6))
+              if (vector2_1.X + (double) Width > vector2_2.X - (double) num5 && vector2_1.X < vector2_2.X + 16.0 + (double) num5 && (vector2_1.Y + (double) Height > vector2_2.Y && vector2_1.Y < vector2_2.Y + (double) num6))
               {
-                if ((int) Main.tile[index1, index2].type == 51 && (double) Math.Abs(Velocity.X) + (double) Math.Abs(Velocity.Y) > 0.7 && Main.rand.Next(30) == 0)
-                  Dust.NewDust(new Vector2((float) (index1 * 16), (float) (index2 * 16)), 16, 16, 30, 0.0f, 0.0f, 0, new Color(), 1f);
+                if ((int) Main.tile[index1, index2].type == 51 && (double) Math.Abs((float) Velocity.X) + (double) Math.Abs((float) Velocity.Y) > 0.7 && Main.rand.Next(30) == 0)
+                  Dust.NewDust(new Vector2((float) (index1 * 16), (float) (index2 * 16)), 16, 16, 30, 0.0f, 0.0f, 0, (Color) null, 1f);
                 return new Vector2((float) index1, (float) index2);
               }
             }
@@ -2088,18 +2323,26 @@ namespace Terraria
     public static void StepDown(ref Vector2 position, ref Vector2 velocity, int width, int height, ref float stepSpeed, ref float gfxOffY, int gravDir = 1, bool waterWalk = false)
     {
       Vector2 vector2 = position;
-      vector2.X += velocity.X;
-      vector2.Y = (float) Math.Floor(((double) vector2.Y + (double) height) / 16.0) * 16f - (float) height;
+      // ISSUE: explicit reference operation
+      // ISSUE: variable of a reference type
+      __Null& local = @vector2.X;
+      // ISSUE: cast to a reference type
+      // ISSUE: explicit reference operation
+      double num1 = (double) ^(float&) local + velocity.X;
+      // ISSUE: cast to a reference type
+      // ISSUE: explicit reference operation
+      ^(float&) local = (float) num1;
+      vector2.Y = (__Null) (Math.Floor((vector2.Y + (double) height) / 16.0) * 16.0 - (double) height);
       bool flag = false;
-      int num1 = (int) ((double) vector2.X / 16.0);
-      int num2 = (int) (((double) vector2.X + (double) width) / 16.0);
-      int num3 = (int) (((double) vector2.Y + (double) height + 4.0) / 16.0);
-      int num4 = height / 16 + (height % 16 == 0 ? 0 : 1);
-      float num5 = (float) ((num3 + num4) * 16);
-      float num6 = (float) ((double) Main.bottomWorld / 16.0 - 42.0);
-      for (int x = num1; x <= num2; ++x)
+      int num2 = (int) (vector2.X / 16.0);
+      int num3 = (int) ((vector2.X + (double) width) / 16.0);
+      int num4 = (int) ((vector2.Y + (double) height + 4.0) / 16.0);
+      int num5 = height / 16 + (height % 16 == 0 ? 0 : 1);
+      float num6 = (float) ((num4 + num5) * 16);
+      float num7 = (float) ((double) Main.bottomWorld / 16.0 - 42.0);
+      for (int x = num2; x <= num3; ++x)
       {
-        for (int y = num3; y <= num3 + 1; ++y)
+        for (int y = num4; y <= num4 + 1; ++y)
         {
           if (WorldGen.InWorld(x, y, 1))
           {
@@ -2111,65 +2354,77 @@ namespace Terraria
               flag = true;
             if (waterWalk && (int) Main.tile[x, y].liquid > 0 && (int) Main.tile[x, y - 1].liquid == 0)
             {
-              int num7 = (int) Main.tile[x, y].liquid / 32 * 2 + 2;
-              int num8 = y * 16 + 16 - num7;
-              if (new Rectangle(x * 16, y * 16 - 17, 16, 16).Intersects(new Rectangle((int) position.X, (int) position.Y, width, height)) && (double) num8 < (double) num5)
-                num5 = (float) num8;
+              int num8 = (int) Main.tile[x, y].liquid / 32 * 2 + 2;
+              int num9 = y * 16 + 16 - num8;
+              Rectangle rectangle;
+              // ISSUE: explicit reference operation
+              ((Rectangle) @rectangle).\u002Ector(x * 16, y * 16 - 17, 16, 16);
+              // ISSUE: explicit reference operation
+              if (((Rectangle) @rectangle).Intersects(new Rectangle((int) position.X, (int) position.Y, width, height)) && (double) num9 < (double) num6)
+                num6 = (float) num9;
             }
-            if ((double) y >= (double) num6 || Main.tile[x, y].nactive() && (Main.tileSolid[(int) Main.tile[x, y].type] || Main.tileSolidTop[(int) Main.tile[x, y].type]))
+            if ((double) y >= (double) num7 || Main.tile[x, y].nactive() && (Main.tileSolid[(int) Main.tile[x, y].type] || Main.tileSolidTop[(int) Main.tile[x, y].type]))
             {
-              int num7 = y * 16;
+              int num8 = y * 16;
               if (Main.tile[x, y].halfBrick())
-                num7 += 8;
-              if (Utils.FloatIntersect((float) (x * 16), (float) (y * 16 - 17), 16f, 16f, position.X, position.Y, (float) width, (float) height) && (double) num7 < (double) num5)
-                num5 = (float) num7;
+                num8 += 8;
+              if (Utils.FloatIntersect((float) (x * 16), (float) (y * 16 - 17), 16f, 16f, (float) position.X, (float) position.Y, (float) width, (float) height) && (double) num8 < (double) num6)
+                num6 = (float) num8;
             }
           }
         }
       }
-      float num9 = num5 - (position.Y + (float) height);
-      if ((double) num9 <= 7.0 || (double) num9 >= 17.0 || flag)
+      float num10 = num6 - ((float) position.Y + (float) height);
+      if ((double) num10 <= 7.0 || (double) num10 >= 17.0 || flag)
         return;
       stepSpeed = 1.5f;
-      if ((double) num9 > 9.0)
+      if ((double) num10 > 9.0)
         stepSpeed = 2.5f;
-      gfxOffY += position.Y + (float) height - num5;
-      position.Y = num5 - (float) height;
+      gfxOffY = gfxOffY + ((float) position.Y + (float) height - num6);
+      position.Y = (__Null) ((double) num6 - (double) height);
     }
 
     public static void StepUp(ref Vector2 position, ref Vector2 velocity, int width, int height, ref float stepSpeed, ref float gfxOffY, int gravDir = 1, bool holdsMatching = false, int specialChecksMode = 0)
     {
       int num1 = 0;
-      if ((double) velocity.X < 0.0)
+      if (velocity.X < 0.0)
         num1 = -1;
-      if ((double) velocity.X > 0.0)
+      if (velocity.X > 0.0)
         num1 = 1;
       Vector2 vector2 = position;
-      vector2.X += velocity.X;
-      int x = (int) (((double) vector2.X + (double) (width / 2) + (double) ((width / 2 + 1) * num1)) / 16.0);
+      // ISSUE: explicit reference operation
+      // ISSUE: variable of a reference type
+      __Null& local = @vector2.X;
+      // ISSUE: cast to a reference type
+      // ISSUE: explicit reference operation
+      double num2 = (double) ^(float&) local + velocity.X;
+      // ISSUE: cast to a reference type
+      // ISSUE: explicit reference operation
+      ^(float&) local = (float) num2;
+      int x = (int) ((vector2.X + (double) (width / 2) + (double) ((width / 2 + 1) * num1)) / 16.0);
       int index1 = (int) (((double) vector2.Y + 0.1) / 16.0);
       if (gravDir == 1)
-        index1 = (int) (((double) vector2.Y + (double) height - 1.0) / 16.0);
-      int num2 = height / 16 + (height % 16 == 0 ? 0 : 1);
+        index1 = (int) ((vector2.Y + (double) height - 1.0) / 16.0);
+      int num3 = height / 16 + (height % 16 == 0 ? 0 : 1);
       bool flag1 = true;
       bool flag2 = true;
       if (Main.tile[x, index1] == null)
         return;
-      for (int index2 = 1; index2 < num2 + 2; ++index2)
+      for (int index2 = 1; index2 < num3 + 2; ++index2)
       {
         if (!WorldGen.InWorld(x, index1 - index2 * gravDir, 0) || Main.tile[x, index1 - index2 * gravDir] == null)
           return;
       }
-      if (!WorldGen.InWorld(x - num1, index1 - num2 * gravDir, 0) || Main.tile[x - num1, index1 - num2 * gravDir] == null)
+      if (!WorldGen.InWorld(x - num1, index1 - num3 * gravDir, 0) || Main.tile[x - num1, index1 - num3 * gravDir] == null)
         return;
-      for (int index2 = 2; index2 < num2 + 1; ++index2)
+      for (int index2 = 2; index2 < num3 + 1; ++index2)
       {
         if (!WorldGen.InWorld(x, index1 - index2 * gravDir, 0) || Main.tile[x, index1 - index2 * gravDir] == null)
           return;
         Tile tile = Main.tile[x, index1 - index2 * gravDir];
         flag1 = flag1 && (!tile.nactive() || !Main.tileSolid[(int) tile.type] || Main.tileSolidTop[(int) tile.type]);
       }
-      Tile tile1 = Main.tile[x - num1, index1 - num2 * gravDir];
+      Tile tile1 = Main.tile[x - num1, index1 - num3 * gravDir];
       bool flag3 = flag2 && (!tile1.nactive() || !Main.tileSolid[(int) tile1.type] || Main.tileSolidTop[(int) tile1.type]);
       bool flag4 = true;
       bool flag5 = true;
@@ -2178,63 +2433,63 @@ namespace Terraria
       bool flag8;
       if (gravDir == 1)
       {
-        if (Main.tile[x, index1 - gravDir] == null || Main.tile[x, index1 - (num2 + 1) * gravDir] == null)
+        if (Main.tile[x, index1 - gravDir] == null || Main.tile[x, index1 - (num3 + 1) * gravDir] == null)
           return;
         Tile tile2 = Main.tile[x, index1 - gravDir];
-        Tile tile3 = Main.tile[x, index1 - (num2 + 1) * gravDir];
-        flag7 = flag4 && (!tile2.nactive() || !Main.tileSolid[(int) tile2.type] || Main.tileSolidTop[(int) tile2.type] || ((int) tile2.slope() == 1 && (double) position.X + (double) (width / 2) > (double) (x * 16) || (int) tile2.slope() == 2 && (double) position.X + (double) (width / 2) < (double) (x * 16 + 16)) || tile2.halfBrick() && (!tile3.nactive() || !Main.tileSolid[(int) tile3.type] || Main.tileSolidTop[(int) tile3.type]));
+        Tile tile3 = Main.tile[x, index1 - (num3 + 1) * gravDir];
+        flag7 = flag4 && (!tile2.nactive() || !Main.tileSolid[(int) tile2.type] || Main.tileSolidTop[(int) tile2.type] || ((int) tile2.slope() == 1 && position.X + (double) (width / 2) > (double) (x * 16) || (int) tile2.slope() == 2 && position.X + (double) (width / 2) < (double) (x * 16 + 16)) || tile2.halfBrick() && (!tile3.nactive() || !Main.tileSolid[(int) tile3.type] || Main.tileSolidTop[(int) tile3.type]));
         Tile tile4 = Main.tile[x, index1];
         Tile tile5 = Main.tile[x, index1 - 1];
         if (specialChecksMode == 1)
           flag6 = (int) tile4.type != 16 && (int) tile4.type != 18 && (int) tile4.type != 134;
-        flag8 = ((!flag5 ? (false ? 1 : 0) : (!tile4.nactive() || tile4.topSlope() && ((int) tile4.slope() != 1 || (double) position.X + (double) (width / 2) >= (double) (x * 16)) && ((int) tile4.slope() != 2 || (double) position.X + (double) (width / 2) <= (double) (x * 16 + 16)) || tile4.topSlope() && (double) position.Y + (double) height <= (double) (index1 * 16) || (!Main.tileSolid[(int) tile4.type] || Main.tileSolidTop[(int) tile4.type]) && (!holdsMatching || (!Main.tileSolidTop[(int) tile4.type] || (int) tile4.frameY != 0) && !TileID.Sets.Platforms[(int) tile4.type] || (Main.tileSolid[(int) tile5.type] && tile5.nactive() || !flag6)) ? (!tile5.halfBrick() ? (false ? 1 : 0) : (tile5.nactive() ? 1 : 0)) : (true ? 1 : 0))) & (!Main.tileSolidTop[(int) tile4.type] ? 1 : (!Main.tileSolidTop[(int) tile5.type] ? 1 : 0))) != 0;
+        flag8 = ((!flag5 ? (false ? 1 : 0) : (!tile4.nactive() || tile4.topSlope() && ((int) tile4.slope() != 1 || position.X + (double) (width / 2) >= (double) (x * 16)) && ((int) tile4.slope() != 2 || position.X + (double) (width / 2) <= (double) (x * 16 + 16)) || tile4.topSlope() && position.Y + (double) height <= (double) (index1 * 16) || (!Main.tileSolid[(int) tile4.type] || Main.tileSolidTop[(int) tile4.type]) && ((!holdsMatching || (!Main.tileSolidTop[(int) tile4.type] || (int) tile4.frameY != 0) && !TileID.Sets.Platforms[(int) tile4.type] ? 0 : (!Main.tileSolid[(int) tile5.type] ? 1 : (!tile5.nactive() ? 1 : 0))) & (flag6 ? 1 : 0)) == 0 ? (!tile5.halfBrick() ? (false ? 1 : 0) : (tile5.nactive() ? 1 : 0)) : (true ? 1 : 0))) & (!Main.tileSolidTop[(int) tile4.type] ? 1 : (!Main.tileSolidTop[(int) tile5.type] ? 1 : 0))) != 0;
       }
       else
       {
         Tile tile2 = Main.tile[x, index1 - gravDir];
-        Tile tile3 = Main.tile[x, index1 - (num2 + 1) * gravDir];
+        Tile tile3 = Main.tile[x, index1 - (num3 + 1) * gravDir];
         flag7 = flag4 && (!tile2.nactive() || !Main.tileSolid[(int) tile2.type] || (Main.tileSolidTop[(int) tile2.type] || (int) tile2.slope() != 0) || tile2.halfBrick() && (!tile3.nactive() || !Main.tileSolid[(int) tile3.type] || Main.tileSolidTop[(int) tile3.type]));
         Tile tile4 = Main.tile[x, index1];
         Tile tile5 = Main.tile[x, index1 + 1];
         flag8 = flag5 && (tile4.nactive() && (Main.tileSolid[(int) tile4.type] && !Main.tileSolidTop[(int) tile4.type] || holdsMatching && Main.tileSolidTop[(int) tile4.type] && (int) tile4.frameY == 0 && (!Main.tileSolid[(int) tile5.type] || !tile5.nactive())) || tile5.halfBrick() && tile5.nactive());
       }
-      if ((double) (x * 16) >= (double) vector2.X + (double) width || (double) (x * 16 + 16) <= (double) vector2.X)
+      if ((double) (x * 16) >= vector2.X + (double) width || (double) (x * 16 + 16) <= vector2.X)
         return;
       if (gravDir == 1)
       {
-        if (!flag8 || !flag7 || (!flag1 || !flag3))
+        if (!(flag8 & flag7 & flag1 & flag3))
           return;
-        float num3 = (float) (index1 * 16);
+        float num4 = (float) (index1 * 16);
         if (Main.tile[x, index1 - 1].halfBrick())
-          num3 -= 8f;
+          num4 -= 8f;
         else if (Main.tile[x, index1].halfBrick())
-          num3 += 8f;
-        if ((double) num3 >= (double) vector2.Y + (double) height)
+          num4 += 8f;
+        if ((double) num4 >= vector2.Y + (double) height)
           return;
-        float num4 = vector2.Y + (float) height - num3;
-        if ((double) num4 > 16.1)
+        float num5 = (float) vector2.Y + (float) height - num4;
+        if ((double) num5 > 16.1)
           return;
-        gfxOffY += position.Y + (float) height - num3;
-        position.Y = num3 - (float) height;
-        if ((double) num4 < 9.0)
+        gfxOffY = gfxOffY + ((float) position.Y + (float) height - num4);
+        position.Y = (__Null) ((double) num4 - (double) height);
+        if ((double) num5 < 9.0)
           stepSpeed = 1f;
         else
           stepSpeed = 2f;
       }
       else
       {
-        if (!flag8 || !flag7 || (!flag1 || !flag3) || Main.tile[x, index1].bottomSlope())
+        if (!(flag8 & flag7 & flag1 & flag3) || Main.tile[x, index1].bottomSlope())
           return;
-        float num3 = (float) (index1 * 16 + 16);
-        if ((double) num3 <= (double) vector2.Y)
+        float num4 = (float) (index1 * 16 + 16);
+        if ((double) num4 <= vector2.Y)
           return;
-        float num4 = num3 - vector2.Y;
-        if ((double) num4 > 16.1)
+        float num5 = num4 - (float) vector2.Y;
+        if ((double) num5 > 16.1)
           return;
-        gfxOffY -= num3 - position.Y;
-        position.Y = num3;
-        velocity.Y = 0.0f;
-        if ((double) num4 < 9.0)
+        gfxOffY = gfxOffY - (num4 - (float) position.Y);
+        position.Y = (__Null) (double) num4;
+        velocity.Y = (__Null) 0.0;
+        if ((double) num5 < 9.0)
           stepSpeed = 1f;
         else
           stepSpeed = 2f;
@@ -2248,9 +2503,9 @@ namespace Terraria
 
     public static float GetTileRotation(Vector2 position)
     {
-      float num1 = position.Y % 16f;
-      int index1 = (int) ((double) position.X / 16.0);
-      int index2 = (int) ((double) position.Y / 16.0);
+      float num1 = (float) (position.Y % 16.0);
+      int index1 = (int) (position.X / 16.0);
+      int index2 = (int) (position.Y / 16.0);
       Tile tile = Main.tile[index1, index2];
       bool flag = false;
       for (int index3 = 2; index3 >= 0; --index3)
@@ -2263,7 +2518,7 @@ namespace Terraria
             if ((int) tile.type == 19)
             {
               int num3 = (int) tile.frameX / 18;
-              if ((num3 >= 0 && num3 <= 7 || num3 >= 12 && num3 <= 16) && ((double) num1 == 0.0 || flag))
+              if ((num3 >= 0 && num3 <= 7 || num3 >= 12 && num3 <= 16) && (double) num1 == 0.0 | flag)
                 return 0.0f;
               switch (num3)
               {
@@ -2297,7 +2552,7 @@ namespace Terraria
               return num2 == 3 ? -0.7853982f : 0.0f;
             }
           }
-          else if (Main.tileSolidTop[(int) tile.type] && (int) tile.frameY == 0 && flag)
+          else if (((!Main.tileSolidTop[(int) tile.type] ? 0 : ((int) tile.frameY == 0 ? 1 : 0)) & (flag ? 1 : 0)) != 0)
             return 0.0f;
         }
         ++index2;
@@ -2326,21 +2581,21 @@ namespace Terraria
       int num3 = x2 / 16 - x1 / 16 + 1;
       int num4 = y2 / 16 - y1 / 16;
       List<Point> pointList = new List<Point>();
-      int x3 = x1 / 16;
-      int y3 = y1 / 16;
-      for (int x4 = x3; x4 < x3 + num3; ++x4)
+      int num5 = x1 / 16;
+      int num6 = y1 / 16;
+      for (int index = num5; index < num5 + num3; ++index)
       {
         if (up)
-          pointList.Add(new Point(x4, y3));
+          pointList.Add(new Point(index, num6));
         if (down)
-          pointList.Add(new Point(x4, y3 + num4));
+          pointList.Add(new Point(index, num6 + num4));
       }
-      for (int y4 = y3; y4 < y3 + num4; ++y4)
+      for (int index = num6; index < num6 + num4; ++index)
       {
         if (left)
-          pointList.Add(new Point(x3, y4));
+          pointList.Add(new Point(num5, index));
         if (right)
-          pointList.Add(new Point(x3 + num3, y4));
+          pointList.Add(new Point(num5 + num3, index));
       }
       return pointList;
     }
@@ -2358,63 +2613,71 @@ namespace Terraria
       bool flag = false;
       int y = (int) entity.position.Y;
       int height = entity.height;
-      entity.Hitbox.Inflate(2, 2);
+      Rectangle hitbox = entity.Hitbox;
+      // ISSUE: explicit reference operation
+      ((Rectangle) @hitbox).Inflate(2, 2);
       Vector2 topLeft = entity.TopLeft;
       Vector2 topRight = entity.TopRight;
       Vector2 bottomLeft = entity.BottomLeft;
       Vector2 bottomRight = entity.BottomRight;
       List<Point> entityEdgeTiles = Collision.GetEntityEdgeTiles(entity, false, false, true, true);
-      Vector2 vector2_1 = new Vector2(0.0001f);
-      foreach (Point point in entityEdgeTiles)
+      Vector2 vector2_1;
+      // ISSUE: explicit reference operation
+      ((Vector2) @vector2_1).\u002Ector(0.0001f);
+      using (List<Point>.Enumerator enumerator = entityEdgeTiles.GetEnumerator())
       {
-        Tile tile = Main.tile[point.X, point.Y];
-        if (tile != null && tile.active() && tile.nactive())
+        while (enumerator.MoveNext())
         {
-          int num3 = TileID.Sets.ConveyorDirection[(int) tile.type];
-          if (num3 != 0)
+          Point current = enumerator.Current;
+          Tile tile = Main.tile[(int) current.X, (int) current.Y];
+          if (tile != null && tile.active() && tile.nactive())
           {
-            Vector2 lineStart1;
-            Vector2 lineStart2;
-            lineStart1.X = lineStart2.X = (float) (point.X * 16);
-            Vector2 lineEnd1;
-            Vector2 lineEnd2;
-            lineEnd1.X = lineEnd2.X = (float) (point.X * 16 + 16);
-            switch (tile.slope())
+            int num3 = TileID.Sets.ConveyorDirection[(int) tile.type];
+            if (num3 != 0)
             {
-              case 1:
-                lineStart2.Y = (float) (point.Y * 16);
-                lineEnd2.Y = lineEnd1.Y = lineStart1.Y = (float) (point.Y * 16 + 16);
-                break;
-              case 2:
-                lineEnd2.Y = (float) (point.Y * 16);
-                lineStart2.Y = lineEnd1.Y = lineStart1.Y = (float) (point.Y * 16 + 16);
-                break;
-              case 3:
-                lineEnd1.Y = lineStart2.Y = lineEnd2.Y = (float) (point.Y * 16);
-                lineStart1.Y = (float) (point.Y * 16 + 16);
-                break;
-              case 4:
-                lineStart1.Y = lineStart2.Y = lineEnd2.Y = (float) (point.Y * 16);
-                lineEnd1.Y = (float) (point.Y * 16 + 16);
-                break;
-              default:
-                lineStart2.Y = !tile.halfBrick() ? (lineEnd2.Y = (float) (point.Y * 16)) : (lineEnd2.Y = (float) (point.Y * 16 + 8));
-                lineStart1.Y = lineEnd1.Y = (float) (point.Y * 16 + 16);
-                break;
-            }
-            int num4 = 0;
-            if (!TileID.Sets.Platforms[(int) tile.type] && Collision.CheckAABBvLineCollision2(entity.position - vector2_1, entity.Size + vector2_1 * 2f, lineStart1, lineEnd1))
-              --num4;
-            if (Collision.CheckAABBvLineCollision2(entity.position - vector2_1, entity.Size + vector2_1 * 2f, lineStart2, lineEnd2))
-              ++num4;
-            if (num4 != 0)
-            {
-              flag = true;
-              num1 += num3 * num4 * (int) gravDir;
-              if (tile.leftSlope())
-                num2 += (int) gravDir * -num3;
-              if (tile.rightSlope())
-                num2 -= (int) gravDir * -num3;
+              Vector2 lineStart1;
+              Vector2 lineStart2;
+              lineStart1.X = (__Null) (double) (lineStart2.X = (__Null) (float) (current.X * 16));
+              Vector2 lineEnd1;
+              Vector2 lineEnd2;
+              lineEnd1.X = (__Null) (double) (lineEnd2.X = (__Null) (float) (current.X * 16 + 16));
+              switch (tile.slope())
+              {
+                case 1:
+                  lineStart2.Y = (__Null) (double) (current.Y * 16);
+                  lineEnd2.Y = (__Null) (double) (lineEnd1.Y = lineStart1.Y = (__Null) (float) (current.Y * 16 + 16));
+                  break;
+                case 2:
+                  lineEnd2.Y = (__Null) (double) (current.Y * 16);
+                  lineStart2.Y = (__Null) (double) (lineEnd1.Y = lineStart1.Y = (__Null) (float) (current.Y * 16 + 16));
+                  break;
+                case 3:
+                  lineEnd1.Y = (__Null) (double) (lineStart2.Y = lineEnd2.Y = (__Null) (float) (current.Y * 16));
+                  lineStart1.Y = (__Null) (double) (current.Y * 16 + 16);
+                  break;
+                case 4:
+                  lineStart1.Y = (__Null) (double) (lineStart2.Y = lineEnd2.Y = (__Null) (float) (current.Y * 16));
+                  lineEnd1.Y = (__Null) (double) (current.Y * 16 + 16);
+                  break;
+                default:
+                  lineStart2.Y = !tile.halfBrick() ? (__Null) (double) (lineEnd2.Y = (__Null) (float) (current.Y * 16)) : (__Null) (double) (lineEnd2.Y = (__Null) (float) (current.Y * 16 + 8));
+                  lineStart1.Y = (__Null) (double) (lineEnd1.Y = (__Null) (float) (current.Y * 16 + 16));
+                  break;
+              }
+              int num4 = 0;
+              if (!TileID.Sets.Platforms[(int) tile.type] && Collision.CheckAABBvLineCollision2(Vector2.op_Subtraction(entity.position, vector2_1), Vector2.op_Addition(entity.Size, Vector2.op_Multiply(vector2_1, 2f)), lineStart1, lineEnd1))
+                --num4;
+              if (Collision.CheckAABBvLineCollision2(Vector2.op_Subtraction(entity.position, vector2_1), Vector2.op_Addition(entity.Size, Vector2.op_Multiply(vector2_1, 2f)), lineStart2, lineEnd2))
+                ++num4;
+              if (num4 != 0)
+              {
+                flag = true;
+                num1 += num3 * num4 * (int) gravDir;
+                if (tile.leftSlope())
+                  num2 += (int) gravDir * -num3;
+                if (tile.rightSlope())
+                  num2 -= (int) gravDir * -num3;
+              }
             }
           }
         }
@@ -2423,12 +2686,17 @@ namespace Terraria
         return;
       int num5 = Math.Sign(num1);
       int num6 = Math.Sign(num2);
-      Vector2 Velocity = Vector2.Normalize(new Vector2((float) num5 * gravDir, (float) num6)) * 2.5f;
+      Vector2 Velocity = Vector2.op_Multiply(Vector2.Normalize(new Vector2((float) num5 * gravDir, (float) num6)), 2.5f);
       Vector2 vector2_2 = Collision.TileCollision(entity.position, Velocity, entity.width, entity.height, false, false, (int) gravDir);
-      entity.position += vector2_2;
-      Velocity = new Vector2(0.0f, 2.5f * gravDir);
-      Vector2 vector2_3 = Collision.TileCollision(entity.position, Velocity, entity.width, entity.height, false, false, (int) gravDir);
-      entity.position += vector2_3;
+      Entity entity1 = entity;
+      Vector2 vector2_3 = Vector2.op_Addition(entity1.position, vector2_2);
+      entity1.position = vector2_3;
+      // ISSUE: explicit reference operation
+      ((Vector2) @Velocity).\u002Ector(0.0f, 2.5f * gravDir);
+      Vector2 vector2_4 = Collision.TileCollision(entity.position, Velocity, entity.width, entity.height, false, false, (int) gravDir);
+      Entity entity2 = entity;
+      Vector2 vector2_5 = Vector2.op_Addition(entity2.position, vector2_4);
+      entity2.position = vector2_5;
     }
 
     public static List<Point> GetTilesIn(Vector2 TopLeft, Vector2 BottomRight)
@@ -2436,16 +2704,16 @@ namespace Terraria
       List<Point> pointList = new List<Point>();
       Point tileCoordinates1 = TopLeft.ToTileCoordinates();
       Point tileCoordinates2 = BottomRight.ToTileCoordinates();
-      int num1 = Utils.Clamp<int>(tileCoordinates1.X, 0, Main.maxTilesX - 1);
-      int num2 = Utils.Clamp<int>(tileCoordinates1.Y, 0, Main.maxTilesY - 1);
-      int num3 = Utils.Clamp<int>(tileCoordinates2.X, 0, Main.maxTilesX - 1);
-      int num4 = Utils.Clamp<int>(tileCoordinates2.Y, 0, Main.maxTilesY - 1);
-      for (int x = num1; x <= num3; ++x)
+      int num1 = Utils.Clamp<int>((int) tileCoordinates1.X, 0, Main.maxTilesX - 1);
+      int num2 = Utils.Clamp<int>((int) tileCoordinates1.Y, 0, Main.maxTilesY - 1);
+      int num3 = Utils.Clamp<int>((int) tileCoordinates2.X, 0, Main.maxTilesX - 1);
+      int num4 = Utils.Clamp<int>((int) tileCoordinates2.Y, 0, Main.maxTilesY - 1);
+      for (int index1 = num1; index1 <= num3; ++index1)
       {
-        for (int y = num2; y <= num4; ++y)
+        for (int index2 = num2; index2 <= num4; ++index2)
         {
-          if (Main.tile[x, y] != null)
-            pointList.Add(new Point(x, y));
+          if (Main.tile[index1, index2] != null)
+            pointList.Add(new Point(index1, index2));
         }
       }
       return pointList;
@@ -2458,9 +2726,9 @@ namespace Terraria
       if (!WorldGen.InWorld(startX, startY, 10))
         return;
       for (int index = 0; index < maxExpandUp && topY > 0 && (topY >= 10 && Main.tile[startX, topY] != null && !WorldGen.SolidTile3(startX, topY)); ++index)
-        --topY;
+        topY = topY - 1;
       for (int index = 0; index < maxExpandDown && bottomY < Main.maxTilesY - 10 && (bottomY <= Main.maxTilesY - 10 && Main.tile[startX, bottomY] != null && !WorldGen.SolidTile3(startX, bottomY)); ++index)
-        ++bottomY;
+        bottomY = bottomY + 1;
     }
 
     public static Vector2 AdvancedTileCollision(bool[] forcedIgnoredTiles, Vector2 Position, Vector2 Velocity, int Width, int Height, bool fallThrough = false, bool fall2 = false, int gravDir = 1)
@@ -2469,17 +2737,19 @@ namespace Terraria
       Collision.down = false;
       Vector2 vector2_1 = Velocity;
       Vector2 vector2_2 = Velocity;
-      Vector2 vector2_3 = Position + Velocity;
+      Vector2 vector2_3 = Vector2.op_Addition(Position, Velocity);
       Vector2 vector2_4 = Position;
-      int num1 = (int) ((double) Position.X / 16.0) - 1;
-      int num2 = (int) (((double) Position.X + (double) Width) / 16.0) + 2;
-      int num3 = (int) ((double) Position.Y / 16.0) - 1;
-      int num4 = (int) (((double) Position.Y + (double) Height) / 16.0) + 2;
+      int num1 = (int) (Position.X / 16.0) - 1;
+      int num2 = (int) ((Position.X + (double) Width) / 16.0) + 2;
+      int num3 = (int) (Position.Y / 16.0) - 1;
+      int num4 = (int) ((Position.Y + (double) Height) / 16.0) + 2;
       int num5 = -1;
       int num6 = -1;
       int num7 = -1;
       int num8 = -1;
-      int num9 = Utils.Clamp<int>(num1, 0, Main.maxTilesX - 1);
+      int min = 0;
+      int max = Main.maxTilesX - 1;
+      int num9 = Utils.Clamp<int>(num1, min, max);
       int num10 = Utils.Clamp<int>(num2, 0, Main.maxTilesX - 1);
       int num11 = Utils.Clamp<int>(num3, 0, Main.maxTilesY - 1);
       int num12 = Utils.Clamp<int>(num4, 0, Main.maxTilesY - 1);
@@ -2492,39 +2762,47 @@ namespace Terraria
           if (tile != null && tile.active() && (!tile.inActive() && !forcedIgnoredTiles[(int) tile.type]) && (Main.tileSolid[(int) tile.type] || Main.tileSolidTop[(int) tile.type] && (int) tile.frameY == 0))
           {
             Vector2 vector2_5;
-            vector2_5.X = (float) (index1 * 16);
-            vector2_5.Y = (float) (index2 * 16);
+            vector2_5.X = (__Null) (double) (index1 * 16);
+            vector2_5.Y = (__Null) (double) (index2 * 16);
             int num14 = 16;
             if (tile.halfBrick())
             {
-              vector2_5.Y += 8f;
+              // ISSUE: explicit reference operation
+              // ISSUE: variable of a reference type
+              __Null& local = @vector2_5.Y;
+              // ISSUE: cast to a reference type
+              // ISSUE: explicit reference operation
+              double num15 = (double) ^(float&) local + 8.0;
+              // ISSUE: cast to a reference type
+              // ISSUE: explicit reference operation
+              ^(float&) local = (float) num15;
               num14 -= 8;
             }
-            if ((double) vector2_3.X + (double) Width > (double) vector2_5.X && (double) vector2_3.X < (double) vector2_5.X + 16.0 && ((double) vector2_3.Y + (double) Height > (double) vector2_5.Y && (double) vector2_3.Y < (double) vector2_5.Y + (double) num14))
+            if (vector2_3.X + (double) Width > vector2_5.X && vector2_3.X < vector2_5.X + 16.0 && (vector2_3.Y + (double) Height > vector2_5.Y && vector2_3.Y < vector2_5.Y + (double) num14))
             {
               bool flag1 = false;
               bool flag2 = false;
               if ((int) tile.slope() > 2)
               {
-                if ((int) tile.slope() == 3 && (double) vector2_4.Y + (double) Math.Abs(Velocity.X) >= (double) vector2_5.Y && (double) vector2_4.X >= (double) vector2_5.X)
+                if ((int) tile.slope() == 3 && vector2_4.Y + (double) Math.Abs((float) Velocity.X) >= vector2_5.Y && vector2_4.X >= vector2_5.X)
                   flag2 = true;
-                if ((int) tile.slope() == 4 && (double) vector2_4.Y + (double) Math.Abs(Velocity.X) >= (double) vector2_5.Y && (double) vector2_4.X + (double) Width <= (double) vector2_5.X + 16.0)
+                if ((int) tile.slope() == 4 && vector2_4.Y + (double) Math.Abs((float) Velocity.X) >= vector2_5.Y && vector2_4.X + (double) Width <= vector2_5.X + 16.0)
                   flag2 = true;
               }
               else if ((int) tile.slope() > 0)
               {
                 flag1 = true;
-                if ((int) tile.slope() == 1 && (double) vector2_4.Y + (double) Height - (double) Math.Abs(Velocity.X) <= (double) vector2_5.Y + (double) num14 && (double) vector2_4.X >= (double) vector2_5.X)
+                if ((int) tile.slope() == 1 && vector2_4.Y + (double) Height - (double) Math.Abs((float) Velocity.X) <= vector2_5.Y + (double) num14 && vector2_4.X >= vector2_5.X)
                   flag2 = true;
-                if ((int) tile.slope() == 2 && (double) vector2_4.Y + (double) Height - (double) Math.Abs(Velocity.X) <= (double) vector2_5.Y + (double) num14 && (double) vector2_4.X + (double) Width <= (double) vector2_5.X + 16.0)
+                if ((int) tile.slope() == 2 && vector2_4.Y + (double) Height - (double) Math.Abs((float) Velocity.X) <= vector2_5.Y + (double) num14 && vector2_4.X + (double) Width <= vector2_5.X + 16.0)
                   flag2 = true;
               }
               if (!flag2)
               {
-                if ((double) vector2_4.Y + (double) Height <= (double) vector2_5.Y)
+                if (vector2_4.Y + (double) Height <= vector2_5.Y)
                 {
                   Collision.down = true;
-                  if ((!Main.tileSolidTop[(int) tile.type] || !fallThrough || (double) Velocity.Y > 1.0 && !fall2) && (double) num13 > (double) vector2_5.Y)
+                  if ((!(Main.tileSolidTop[(int) tile.type] & fallThrough) || !(Velocity.Y <= 1.0 | fall2)) && (double) num13 > vector2_5.Y)
                   {
                     num7 = index1;
                     num8 = index2;
@@ -2532,12 +2810,12 @@ namespace Terraria
                       ++num8;
                     if (num7 != num5 && !flag1)
                     {
-                      vector2_1.Y = (float) ((double) vector2_5.Y - ((double) vector2_4.Y + (double) Height) + (gravDir == -1 ? -0.00999999977648258 : 0.0));
-                      num13 = vector2_5.Y;
+                      vector2_1.Y = (__Null) (vector2_5.Y - (vector2_4.Y + (double) Height) + (gravDir == -1 ? -0.00999999977648258 : 0.0));
+                      num13 = (float) vector2_5.Y;
                     }
                   }
                 }
-                else if ((double) vector2_4.X + (double) Width <= (double) vector2_5.X && !Main.tileSolidTop[(int) tile.type])
+                else if (vector2_4.X + (double) Width <= vector2_5.X && !Main.tileSolidTop[(int) tile.type])
                 {
                   if (Main.tile[index1 - 1, index2] == null)
                     Main.tile[index1 - 1, index2] = new Tile();
@@ -2546,12 +2824,12 @@ namespace Terraria
                     num5 = index1;
                     num6 = index2;
                     if (num6 != num8)
-                      vector2_1.X = vector2_5.X - (vector2_4.X + (float) Width);
+                      vector2_1.X = (__Null) (vector2_5.X - (vector2_4.X + (double) Width));
                     if (num7 == num5)
                       vector2_1.Y = vector2_2.Y;
                   }
                 }
-                else if ((double) vector2_4.X >= (double) vector2_5.X + 16.0 && !Main.tileSolidTop[(int) tile.type])
+                else if (vector2_4.X >= vector2_5.X + 16.0 && !Main.tileSolidTop[(int) tile.type])
                 {
                   if (Main.tile[index1 + 1, index2] == null)
                     Main.tile[index1 + 1, index2] = new Tile();
@@ -2560,17 +2838,17 @@ namespace Terraria
                     num5 = index1;
                     num6 = index2;
                     if (num6 != num8)
-                      vector2_1.X = vector2_5.X + 16f - vector2_4.X;
+                      vector2_1.X = (__Null) (vector2_5.X + 16.0 - vector2_4.X);
                     if (num7 == num5)
                       vector2_1.Y = vector2_2.Y;
                   }
                 }
-                else if ((double) vector2_4.Y >= (double) vector2_5.Y + (double) num14 && !Main.tileSolidTop[(int) tile.type])
+                else if (vector2_4.Y >= vector2_5.Y + (double) num14 && !Main.tileSolidTop[(int) tile.type])
                 {
                   Collision.up = true;
                   num7 = index1;
                   num8 = index2;
-                  vector2_1.Y = (float) ((double) vector2_5.Y + (double) num14 - (double) vector2_4.Y + (gravDir == 1 ? 0.00999999977648258 : 0.0));
+                  vector2_1.Y = (__Null) (vector2_5.Y + (double) num14 - vector2_4.Y + (gravDir == 1 ? 0.00999999977648258 : 0.0));
                   if (num8 == num6)
                     vector2_1.X = vector2_2.X;
                 }
@@ -2587,14 +2865,37 @@ namespace Terraria
       for (int index = 0; index < samples.Length; ++index)
       {
         float num1 = (float) index / (float) (samples.Length - 1);
-        Vector2 vector2_1 = samplingPoint + directionUnit.RotatedBy(1.57079637050629, new Vector2()) * (num1 - 0.5f) * samplingWidth;
-        int x1 = (int) vector2_1.X / 16;
-        int y1 = (int) vector2_1.Y / 16;
-        Vector2 vector2_2 = vector2_1 + directionUnit * maxDistance;
-        int x2 = (int) vector2_2.X / 16;
-        int y2 = (int) vector2_2.Y / 16;
+        Vector2 vector2_1 = samplingPoint;
+        Vector2 spinningpoint = directionUnit;
+        double radians = 1.57079637050629;
+        Vector2 vector2_2 = (Vector2) null;
+        Vector2 center = vector2_2;
+        Vector2 vector2_3 = Vector2.op_Multiply(Vector2.op_Multiply(spinningpoint.RotatedBy(radians, center), num1 - 0.5f), samplingWidth);
+        Vector2 vector2_4 = Vector2.op_Addition(vector2_1, vector2_3);
+        int x1 = (int) vector2_4.X / 16;
+        int y1 = (int) vector2_4.Y / 16;
+        Vector2 vector2_5 = Vector2.op_Multiply(directionUnit, maxDistance);
+        Vector2 vector2_6 = Vector2.op_Addition(vector2_4, vector2_5);
+        int x2 = (int) vector2_6.X / 16;
+        int y2 = (int) vector2_6.Y / 16;
         Tuple<int, int> col;
-        float num2 = Collision.TupleHitLine(x1, y1, x2, y2, 0, 0, new List<Tuple<int, int>>(), out col) ? (col.Item1 != x2 || col.Item2 != y2 ? new Vector2((float) Math.Abs(x1 - col.Item1), (float) Math.Abs(y1 - col.Item2)).Length() * 16f : maxDistance) : new Vector2((float) Math.Abs(x1 - col.Item1), (float) Math.Abs(y1 - col.Item2)).Length() * 16f;
+        float num2;
+        if (!Collision.TupleHitLine(x1, y1, x2, y2, 0, 0, new List<Tuple<int, int>>(), out col))
+        {
+          vector2_2 = new Vector2((float) Math.Abs(x1 - col.Item1), (float) Math.Abs(y1 - col.Item2));
+          // ISSUE: explicit reference operation
+          num2 = ((Vector2) @vector2_2).Length() * 16f;
+        }
+        else if (col.Item1 == x2 && col.Item2 == y2)
+        {
+          num2 = maxDistance;
+        }
+        else
+        {
+          vector2_2 = new Vector2((float) Math.Abs(x1 - col.Item1), (float) Math.Abs(y1 - col.Item2));
+          // ISSUE: explicit reference operation
+          num2 = ((Vector2) @vector2_2).Length() * 16f;
+        }
         samples[index] = num2;
       }
     }

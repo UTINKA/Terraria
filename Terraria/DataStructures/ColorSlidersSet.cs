@@ -1,8 +1,8 @@
 ﻿// Decompiled with JetBrains decompiler
 // Type: Terraria.DataStructures.ColorSlidersSet
-// Assembly: Terraria, Version=1.3.5.1, Culture=neutral, PublicKeyToken=null
-// MVID: E90A5A2F-CD10-4A2C-9D2A-6B036D4E8877
-// Assembly location: F:\Steam\steamapps\common\Terraria\Terraria.exe
+// Assembly: Terraria, Version=1.3.5.3, Culture=neutral, PublicKeyToken=null
+// MVID: 68659D26-2BE6-448F-8663-74FA559E6F08
+// Assembly location: H:\Steam\steamapps\common\Terraria\Terraria.exe
 
 using Microsoft.Xna.Framework;
 
@@ -18,22 +18,23 @@ namespace Terraria.DataStructures
     public void SetHSL(Color color)
     {
       Vector3 hsl = Main.rgbToHsl(color);
-      this.Hue = hsl.X;
-      this.Saturation = hsl.Y;
-      this.Luminance = hsl.Z;
+      this.Hue = (float) hsl.X;
+      this.Saturation = (float) hsl.Y;
+      this.Luminance = (float) hsl.Z;
     }
 
     public void SetHSL(Vector3 vector)
     {
-      this.Hue = vector.X;
-      this.Saturation = vector.Y;
-      this.Luminance = vector.Z;
+      this.Hue = (float) vector.X;
+      this.Saturation = (float) vector.Y;
+      this.Luminance = (float) vector.Z;
     }
 
     public Color GetColor()
     {
       Color rgb = Main.hslToRgb(this.Hue, this.Saturation, this.Luminance);
-      rgb.A = (byte) ((double) this.Alpha * (double) byte.MaxValue);
+      // ISSUE: explicit reference operation
+      ((Color) @rgb).set_A((byte) ((double) this.Alpha * (double) byte.MaxValue));
       return rgb;
     }
 

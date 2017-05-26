@@ -1,8 +1,8 @@
 ﻿// Decompiled with JetBrains decompiler
 // Type: Terraria.WorldGen
-// Assembly: TerrariaServer, Version=1.3.5.1, Culture=neutral, PublicKeyToken=null
-// MVID: C2103E81-0935-4BEA-9E98-4159FC80C2BB
-// Assembly location: F:\Steam\steamapps\common\Terraria\TerrariaServer.exe
+// Assembly: TerrariaServer, Version=1.3.5.3, Culture=neutral, PublicKeyToken=null
+// MVID: 8A63A7A2-328D-424C-BC9D-BF23F93646F7
+// Assembly location: H:\Steam\steamapps\common\Terraria\TerrariaServer.exe
 
 using Microsoft.Xna.Framework;
 using System;
@@ -130,7 +130,7 @@ namespace Terraria
     public static int bestX = 0;
     public static int bestY = 0;
     public static int hiScore = 0;
-    public static Vector2 lastDungeonHall = Vector2.Zero;
+    public static Vector2 lastDungeonHall = Vector2.get_Zero();
     public static int maxDRooms = 100;
     public static int numDRooms = 0;
     public static int[] dRoomX = new int[WorldGen.maxDRooms];
@@ -170,7 +170,7 @@ namespace Terraria
       10,
       18
     });
-    public static Microsoft.Xna.Framework.Rectangle UndergroundDesertLocation = Microsoft.Xna.Framework.Rectangle.Empty;
+    public static Rectangle UndergroundDesertLocation = Rectangle.get_Empty();
     private static bool currentlyTryingToUseAlternateHousingSpot = false;
     public static TownNPCRoomCheckFailureReason roomCheckFailureReason = TownNPCRoomCheckFailureReason.None;
     private static int[,] trapDiag = new int[4, 2];
@@ -462,16 +462,25 @@ namespace Terraria
       }
       if (number < 0)
         return;
-      int num1 = (int) ((double) Main.npc[number].Center.X / 16.0);
-      int num2 = (int) ((double) Main.npc[number].Center.Y / 16.0);
+      int num1 = (int) (Main.npc[number].Center.X / 16.0);
+      int num2 = (int) (Main.npc[number].Center.Y / 16.0);
       bool flag = true;
-      Microsoft.Xna.Framework.Rectangle rectangle = new Microsoft.Xna.Framework.Rectangle(num1 * 16 + 8 - NPC.sWidth / 2 - NPC.safeRangeX, num2 * 16 + 8 - NPC.sHeight / 2 - NPC.safeRangeY, NPC.sWidth + NPC.safeRangeX * 2, NPC.sHeight + NPC.safeRangeY * 2);
+      Rectangle rectangle1;
+      // ISSUE: explicit reference operation
+      ((Rectangle) @rectangle1).\u002Ector(num1 * 16 + 8 - NPC.sWidth / 2 - NPC.safeRangeX, num2 * 16 + 8 - NPC.sHeight / 2 - NPC.safeRangeY, NPC.sWidth + NPC.safeRangeX * 2, NPC.sHeight + NPC.safeRangeY * 2);
       for (int index = 0; index < (int) byte.MaxValue; ++index)
       {
-        if (Main.player[index].active && new Microsoft.Xna.Framework.Rectangle((int) Main.player[index].position.X, (int) Main.player[index].position.Y, Main.player[index].width, Main.player[index].height).Intersects(rectangle))
+        if (Main.player[index].active)
         {
-          flag = false;
-          break;
+          Rectangle rectangle2;
+          // ISSUE: explicit reference operation
+          ((Rectangle) @rectangle2).\u002Ector((int) Main.player[index].position.X, (int) Main.player[index].position.Y, Main.player[index].width, Main.player[index].height);
+          // ISSUE: explicit reference operation
+          if (((Rectangle) @rectangle2).Intersects(rectangle1))
+          {
+            flag = false;
+            break;
+          }
         }
       }
       if (!flag)
@@ -563,13 +572,22 @@ namespace Terraria
                   if ((int) Main.tile[index3, index4 - 3].liquid == 0 && (int) Main.tile[index3, index4 - 2].liquid == 0 && ((int) Main.tile[index3, index4 - 1].liquid == 0 && !Collision.SolidTiles(index3 - 1, index3 + 1, index4 - 3, index4 - 1)))
                   {
                     flag = true;
-                    Microsoft.Xna.Framework.Rectangle rectangle = new Microsoft.Xna.Framework.Rectangle(index3 * 16 + 8 - NPC.sWidth / 2 - NPC.safeRangeX, index4 * 16 + 8 - NPC.sHeight / 2 - NPC.safeRangeY, NPC.sWidth + NPC.safeRangeX * 2, NPC.sHeight + NPC.safeRangeY * 2);
+                    Rectangle rectangle1;
+                    // ISSUE: explicit reference operation
+                    ((Rectangle) @rectangle1).\u002Ector(index3 * 16 + 8 - NPC.sWidth / 2 - NPC.safeRangeX, index4 * 16 + 8 - NPC.sHeight / 2 - NPC.safeRangeY, NPC.sWidth + NPC.safeRangeX * 2, NPC.sHeight + NPC.safeRangeY * 2);
                     for (int index7 = 0; index7 < (int) byte.MaxValue; ++index7)
                     {
-                      if (Main.player[index7].active && new Microsoft.Xna.Framework.Rectangle((int) Main.player[index7].position.X, (int) Main.player[index7].position.Y, Main.player[index7].width, Main.player[index7].height).Intersects(rectangle))
+                      if (Main.player[index7].active)
                       {
-                        flag = false;
-                        break;
+                        Rectangle rectangle2;
+                        // ISSUE: explicit reference operation
+                        ((Rectangle) @rectangle2).\u002Ector((int) Main.player[index7].position.X, (int) Main.player[index7].position.Y, Main.player[index7].width, Main.player[index7].height);
+                        // ISSUE: explicit reference operation
+                        if (((Rectangle) @rectangle2).Intersects(rectangle1))
+                        {
+                          flag = false;
+                          break;
+                        }
                       }
                     }
                     break;
@@ -643,7 +661,7 @@ namespace Terraria
           int bestX = WorldGen.bestX;
           int bestY = WorldGen.bestY;
           WorldGen.currentlyTryingToUseAlternateHousingSpot = true;
-          TownNPCSpawnResult townNpcSpawnResult = WorldGen.SpawnTownNPC(roomPosition.X, roomPosition.Y - 2);
+          TownNPCSpawnResult townNpcSpawnResult = WorldGen.SpawnTownNPC((int) roomPosition.X, roomPosition.Y - 2);
           WorldGen.currentlyTryingToUseAlternateHousingSpot = false;
           WorldGen.bestX = bestX;
           WorldGen.bestY = bestY;
@@ -668,13 +686,22 @@ namespace Terraria
         if (!flag2)
         {
           flag2 = true;
-          Microsoft.Xna.Framework.Rectangle rectangle = new Microsoft.Xna.Framework.Rectangle(index2 * 16 + 8 - NPC.sWidth / 2 - NPC.safeRangeX, index3 * 16 + 8 - NPC.sHeight / 2 - NPC.safeRangeY, NPC.sWidth + NPC.safeRangeX * 2, NPC.sHeight + NPC.safeRangeY * 2);
+          Rectangle rectangle1;
+          // ISSUE: explicit reference operation
+          ((Rectangle) @rectangle1).\u002Ector(index2 * 16 + 8 - NPC.sWidth / 2 - NPC.safeRangeX, index3 * 16 + 8 - NPC.sHeight / 2 - NPC.safeRangeY, NPC.sWidth + NPC.safeRangeX * 2, NPC.sHeight + NPC.safeRangeY * 2);
           for (int index4 = 0; index4 < (int) byte.MaxValue; ++index4)
           {
-            if (Main.player[index4].active && new Microsoft.Xna.Framework.Rectangle((int) Main.player[index4].position.X, (int) Main.player[index4].position.Y, Main.player[index4].width, Main.player[index4].height).Intersects(rectangle))
+            if (Main.player[index4].active)
             {
-              flag2 = false;
-              break;
+              Rectangle rectangle2;
+              // ISSUE: explicit reference operation
+              ((Rectangle) @rectangle2).\u002Ector((int) Main.player[index4].position.X, (int) Main.player[index4].position.Y, Main.player[index4].width, Main.player[index4].height);
+              // ISSUE: explicit reference operation
+              if (((Rectangle) @rectangle2).Intersects(rectangle1))
+              {
+                flag2 = false;
+                break;
+              }
             }
           }
         }
@@ -701,13 +728,22 @@ namespace Terraria
                     if (!Collision.SolidTiles(index2 - 1, index2 + 1, index3 - 3, index3 - 1))
                     {
                       flag2 = true;
-                      Microsoft.Xna.Framework.Rectangle rectangle = new Microsoft.Xna.Framework.Rectangle(index2 * 16 + 8 - NPC.sWidth / 2 - NPC.safeRangeX, index3 * 16 + 8 - NPC.sHeight / 2 - NPC.safeRangeY, NPC.sWidth + NPC.safeRangeX * 2, NPC.sHeight + NPC.safeRangeY * 2);
+                      Rectangle rectangle1;
+                      // ISSUE: explicit reference operation
+                      ((Rectangle) @rectangle1).\u002Ector(index2 * 16 + 8 - NPC.sWidth / 2 - NPC.safeRangeX, index3 * 16 + 8 - NPC.sHeight / 2 - NPC.safeRangeY, NPC.sWidth + NPC.safeRangeX * 2, NPC.sHeight + NPC.safeRangeY * 2);
                       for (int index7 = 0; index7 < (int) byte.MaxValue; ++index7)
                       {
-                        if (Main.player[index7].active && new Microsoft.Xna.Framework.Rectangle((int) Main.player[index7].position.X, (int) Main.player[index7].position.Y, Main.player[index7].width, Main.player[index7].height).Intersects(rectangle))
+                        if (Main.player[index7].active)
                         {
-                          flag2 = false;
-                          break;
+                          Rectangle rectangle2;
+                          // ISSUE: explicit reference operation
+                          ((Rectangle) @rectangle2).\u002Ector((int) Main.player[index7].position.X, (int) Main.player[index7].position.Y, Main.player[index7].width, Main.player[index7].height);
+                          // ISSUE: explicit reference operation
+                          if (((Rectangle) @rectangle2).Intersects(rectangle1))
+                          {
+                            flag2 = false;
+                            break;
+                          }
                         }
                       }
                       break;
@@ -916,7 +952,13 @@ namespace Terraria
         case TileScanGroup.Hallow:
           return tileTypeCounts[109] + tileTypeCounts[110] + tileTypeCounts[113] + tileTypeCounts[117] + tileTypeCounts[116] + tileTypeCounts[164] + tileTypeCounts[403] + tileTypeCounts[402];
         case TileScanGroup.TotalGoodEvil:
-          return WorldGen.GetTileTypeCountByCategory(tileTypeCounts, TileScanGroup.Hallow) - (WorldGen.GetTileTypeCountByCategory(tileTypeCounts, TileScanGroup.Corruption) + WorldGen.GetTileTypeCountByCategory(tileTypeCounts, TileScanGroup.Crimson) + 5 * tileTypeCounts[27]);
+          int typeCountByCategory1 = WorldGen.GetTileTypeCountByCategory(tileTypeCounts, TileScanGroup.Hallow);
+          int typeCountByCategory2 = WorldGen.GetTileTypeCountByCategory(tileTypeCounts, TileScanGroup.Corruption);
+          int typeCountByCategory3 = WorldGen.GetTileTypeCountByCategory(tileTypeCounts, TileScanGroup.Crimson);
+          int num1 = 5 * tileTypeCounts[27];
+          int num2 = typeCountByCategory3;
+          int num3 = typeCountByCategory2 + num2 + num1;
+          return typeCountByCategory1 - num3;
         default:
           return 0;
       }
@@ -949,14 +991,19 @@ namespace Terraria
         if (num6 > Main.maxTilesY)
           num6 = Main.maxTilesY - 1;
         int[] tileTypeCounts = new int[470];
-        WorldGen.CountTileTypesInArea(tileTypeCounts, num3 + 1, num4 - 1, num5 + 2, num6 + 1);
-        int num7 = -WorldGen.GetTileTypeCountByCategory(tileTypeCounts, TileScanGroup.TotalGoodEvil);
-        if (num7 < 50)
-          num7 = 0;
-        int num8 = num1 - num7;
-        if (num8 <= -250)
+        int startX = num3 + 1;
+        int endX = num4 - 1;
+        int startY = num5 + 2;
+        int endY = num6 + 1;
+        WorldGen.CountTileTypesInArea(tileTypeCounts, startX, endX, startY, endY);
+        int num7 = 4;
+        int num8 = -WorldGen.GetTileTypeCountByCategory(tileTypeCounts, (TileScanGroup) num7);
+        if (num8 < 50)
+          num8 = 0;
+        int num9 = num1 - num8;
+        if (num9 <= -250)
         {
-          WorldGen.hiScore = num8;
+          WorldGen.hiScore = num9;
           WorldGen.roomEvil = true;
         }
         else
@@ -971,11 +1018,11 @@ namespace Terraria
             {
               if (Main.tile[i, j].nactive())
               {
-                int num9 = num8;
+                int num10 = num9;
                 if (Main.tileSolid[(int) Main.tile[i, j].type] && !Main.tileSolidTop[(int) Main.tile[i, j].type] && (!Collision.SolidTiles(i - 1, i + 1, j - 3, j - 1) && Main.tile[i - 1, j].nactive()) && (Main.tileSolid[(int) Main.tile[i - 1, j].type] && Main.tile[i + 1, j].nactive() && Main.tileSolid[(int) Main.tile[i + 1, j].type]))
                 {
-                  int num10 = 0;
                   int num11 = 0;
+                  int num12 = 0;
                   for (int x = i - 2; x < i + 3; ++x)
                   {
                     for (int y = j - 4; y < j; ++y)
@@ -984,38 +1031,38 @@ namespace Terraria
                       {
                         if (x == i)
                         {
-                          ++num10;
+                          ++num11;
                         }
                         else
                         {
                           Tile tile = Main.tile[x, y];
                           if (TileID.Sets.BasicChest[(int) tile.type])
-                            ++num11;
+                            ++num12;
                           else if ((int) tile.type == 10 || (int) tile.type == 388)
-                            num9 -= 20;
+                            num10 -= 20;
                           else if (WorldGen.IsOpenDoorAnchorFrame(x, y))
-                            num9 -= 20;
+                            num10 -= 20;
                           else if (Main.tileSolid[(int) tile.type])
-                            num9 -= 5;
+                            num10 -= 5;
                           else
-                            num9 += 5;
+                            num10 += 5;
                         }
                       }
                     }
                   }
-                  if (num9 > 0 && num11 > 0)
+                  if (num10 > 0 && num12 > 0)
                   {
-                    num9 -= 30 * num11;
-                    if (num9 < 1)
-                      num9 = 1;
+                    num10 -= 30 * num12;
+                    if (num10 < 1)
+                      num10 = 1;
                   }
-                  if (num9 > 0 && num10 > 0)
+                  if (num10 > 0 && num11 > 0)
                   {
-                    num9 -= 15 * num10;
-                    if (num9 <= 0)
-                      num9 = 0;
+                    num10 -= 15 * num11;
+                    if (num10 <= 0)
+                      num10 = 0;
                   }
-                  if (num9 > WorldGen.hiScore)
+                  if (num10 > WorldGen.hiScore)
                   {
                     bool flag1 = WorldGen.Housing_CheckIfInRoom(i, j);
                     bool[] flagArray = new bool[3];
@@ -1036,7 +1083,7 @@ namespace Terraria
                     }
                     if (flag1 && !WorldGen.Housing_CheckIfIsCeiling(i, j))
                     {
-                      WorldGen.hiScore = num9;
+                      WorldGen.hiScore = num10;
                       WorldGen.bestX = i;
                       WorldGen.bestY = j;
                     }
@@ -1071,7 +1118,7 @@ namespace Terraria
       }
       if (num < 50)
         num = 0;
-      startScore -= num;
+      startScore = startScore - num;
     }
 
     private static bool Housing_CheckIfIsCeiling(int i, int j)
@@ -1304,13 +1351,18 @@ namespace Terraria
       if (i < 50 || i > Main.maxTilesX - 50 || (j < 50 || j > Main.maxTilesY - 50))
         return false;
       int num1 = 35;
-      Microsoft.Xna.Framework.Rectangle rectangle1 = new Microsoft.Xna.Framework.Rectangle((i - num1) * 16, (j - num1) * 16, num1 * 2 * 16, num1 * 2 * 16);
+      Rectangle rectangle1;
+      // ISSUE: explicit reference operation
+      ((Rectangle) @rectangle1).\u002Ector((i - num1) * 16, (j - num1) * 16, num1 * 2 * 16, num1 * 2 * 16);
       for (int index = 0; index < (int) byte.MaxValue; ++index)
       {
         if (Main.player[index].active)
         {
-          Microsoft.Xna.Framework.Rectangle rectangle2 = new Microsoft.Xna.Framework.Rectangle((int) ((double) Main.player[index].position.X + (double) (Main.player[index].width / 2) - (double) (NPC.sWidth / 2) - (double) NPC.safeRangeX), (int) ((double) Main.player[index].position.Y + (double) (Main.player[index].height / 2) - (double) (NPC.sHeight / 2) - (double) NPC.safeRangeY), NPC.sWidth + NPC.safeRangeX * 2, NPC.sHeight + NPC.safeRangeY * 2);
-          if (rectangle1.Intersects(rectangle2))
+          Rectangle rectangle2;
+          // ISSUE: explicit reference operation
+          ((Rectangle) @rectangle2).\u002Ector((int) (Main.player[index].position.X + (double) (Main.player[index].width / 2) - (double) (NPC.sWidth / 2) - (double) NPC.safeRangeX), (int) (Main.player[index].position.Y + (double) (Main.player[index].height / 2) - (double) (NPC.sHeight / 2) - (double) NPC.safeRangeY), NPC.sWidth + NPC.safeRangeX * 2, NPC.sHeight + NPC.safeRangeY * 2);
+          // ISSUE: explicit reference operation
+          if (((Rectangle) @rectangle1).Intersects(rectangle2))
             return false;
         }
       }
@@ -1318,8 +1370,11 @@ namespace Terraria
       {
         if (Main.npc[index].active)
         {
-          Microsoft.Xna.Framework.Rectangle rectangle2 = new Microsoft.Xna.Framework.Rectangle((int) Main.npc[index].position.X, (int) Main.npc[index].position.Y, Main.npc[index].width, Main.npc[index].height);
-          if (rectangle1.Intersects(rectangle2))
+          Rectangle rectangle2;
+          // ISSUE: explicit reference operation
+          ((Rectangle) @rectangle2).\u002Ector((int) Main.npc[index].position.X, (int) Main.npc[index].position.Y, Main.npc[index].width, Main.npc[index].height);
+          // ISSUE: explicit reference operation
+          if (((Rectangle) @rectangle1).Intersects(rectangle2))
             return false;
         }
       }
@@ -1339,9 +1394,9 @@ namespace Terraria
         {
           if (index2 > j + Main.rand.Next(-2, 3) - 5)
           {
-            float num3 = (float) Math.Abs(i - index1);
+            double num3 = (double) Math.Abs(i - index1);
             float num4 = (float) Math.Abs(j - index2);
-            if (Math.Sqrt((double) num3 * (double) num3 + (double) num4 * (double) num4) < (double) num2 * 0.9 + (double) Main.rand.Next(-4, 5))
+            if (Math.Sqrt(num3 * num3 + (double) num4 * (double) num4) < (double) num2 * 0.9 + (double) Main.rand.Next(-4, 5))
             {
               if (!Main.tileSolid[(int) Main.tile[index1, index2].type])
                 Main.tile[index1, index2].active(false);
@@ -1357,9 +1412,9 @@ namespace Terraria
         {
           if (index2 > j + Main.rand.Next(-2, 3) - 4)
           {
-            float num3 = (float) Math.Abs(i - index1);
+            double num3 = (double) Math.Abs(i - index1);
             float num4 = (float) Math.Abs(j - index2);
-            if (Math.Sqrt((double) num3 * (double) num3 + (double) num4 * (double) num4) < (double) num5 * 0.8 + (double) Main.rand.Next(-3, 4))
+            if (Math.Sqrt(num3 * num3 + (double) num4 * (double) num4) < (double) num5 * 0.8 + (double) Main.rand.Next(-3, 4))
               Main.tile[index1, index2].active(false);
           }
         }
@@ -1369,9 +1424,9 @@ namespace Terraria
       {
         for (int j1 = j - num6; j1 < j + num6; ++j1)
         {
-          float num3 = (float) Math.Abs(i - i1);
+          double num3 = (double) Math.Abs(i - i1);
           float num4 = (float) Math.Abs(j - j1);
-          if (Math.Sqrt((double) num3 * (double) num3 + (double) num4 * (double) num4) < (double) num6 * 0.7)
+          if (Math.Sqrt(num3 * num3 + (double) num4 * (double) num4) < (double) num6 * 0.7)
           {
             if ((int) Main.tile[i1, j1].type == 5 || (int) Main.tile[i1, j1].type == 32 || (int) Main.tile[i1, j1].type == 352)
               WorldGen.KillTile(i1, j1, false, false, false);
@@ -1395,9 +1450,9 @@ namespace Terraria
         {
           if (j1 > j + WorldGen.genRand.Next(-3, 4) - 3 && Main.tile[i1, j1].active() && Main.rand.Next(10) == 0)
           {
-            float num3 = (float) Math.Abs(i - i1);
+            double num3 = (double) Math.Abs(i - i1);
             float num4 = (float) Math.Abs(j - j1);
-            if (Math.Sqrt((double) num3 * (double) num3 + (double) num4 * (double) num4) < (double) num7 * 0.8)
+            if (Math.Sqrt(num3 * num3 + (double) num4 * (double) num4) < (double) num7 * 0.8)
             {
               if ((int) Main.tile[i1, j1].type == 5 || (int) Main.tile[i1, j1].type == 32 || (int) Main.tile[i1, j1].type == 352)
                 WorldGen.KillTile(i1, j1, false, false, false);
@@ -1414,9 +1469,9 @@ namespace Terraria
         {
           if (j1 > j + WorldGen.genRand.Next(-2, 3) && Main.tile[i1, j1].active() && Main.rand.Next(20) == 0)
           {
-            float num3 = (float) Math.Abs(i - i1);
+            double num3 = (double) Math.Abs(i - i1);
             float num4 = (float) Math.Abs(j - j1);
-            if (Math.Sqrt((double) num3 * (double) num3 + (double) num4 * (double) num4) < (double) num8 * 0.85)
+            if (Math.Sqrt(num3 * num3 + (double) num4 * (double) num4) < (double) num8 * 0.85)
             {
               if ((int) Main.tile[i1, j1].type == 5 || (int) Main.tile[i1, j1].type == 32 || (int) Main.tile[i1, j1].type == 352)
                 WorldGen.KillTile(i1, j1, false, false, false);
@@ -2359,7 +2414,7 @@ namespace Terraria
           flag2 = false;
         int num4;
         int i6;
-        if (flag1 && flag2)
+        if (flag1 & flag2)
         {
           num4 = 1;
           i6 = i3;
@@ -2394,16 +2449,17 @@ namespace Terraria
           num5 = 2;
         int num6 = Math.Abs(i6 - i1);
         int style = 1;
-        if (num6 < 10 && WorldGen.genRand.Next(3) != 0)
+        int num7 = 10;
+        if (num6 < num7 && WorldGen.genRand.Next(3) != 0)
           style = 2;
         WorldGen.PlaceTile(i6, j3, 137, true, true, -1, style);
         if (num4 == 1)
           Main.tile[i6, j3].frameX += (short) 18;
-        int num7 = WorldGen.genRand.Next(5);
+        int num8 = WorldGen.genRand.Next(5);
         int j4 = j3;
-        while (num7 > 0)
+        while (num8 > 0)
         {
-          --num7;
+          --num8;
           --j4;
           if (WorldGen.SolidTile(i6, j4) && WorldGen.SolidTile(i6 - num4, j4) && !WorldGen.SolidTile(i6 + num4, j4))
           {
@@ -2463,18 +2519,18 @@ namespace Terraria
         if ((double) j5 < Main.worldSurface)
           return false;
       }
-      int num8 = Math.Abs(j5 - j2);
-      if (num8 < 3)
+      int num9 = Math.Abs(j5 - j2);
+      if (num9 < 3)
         return false;
-      int num9 = WorldGen.genRand.Next(3);
+      int num10 = WorldGen.genRand.Next(3);
       if (Main.tile[i1, j2].wire())
-        num9 = 0;
+        num10 = 0;
       if (Main.tile[i1, j2].wire2())
-        num9 = 1;
+        num10 = 1;
       if (Main.tile[i1, j2].wire3())
-        num9 = 2;
+        num10 = 2;
       int style1 = 3;
-      if (num8 < 16 && WorldGen.genRand.Next(3) != 0)
+      if (num9 < 16 && WorldGen.genRand.Next(3) != 0)
         style1 = 4;
       if ((int) Main.tile[i7, j5].type == 135 || (int) Main.tile[i7, j5].type == 137 || ((int) Main.tile[i7, j5].type == 232 || (int) Main.tile[i7, j5].wall != 87))
         return false;
@@ -2494,11 +2550,11 @@ namespace Terraria
           if (WorldGen.SolidTile(i2, j5 - 1) && !WorldGen.SolidTile(i2, j5 + 1))
           {
             WorldGen.PlaceTile(i2, j5, 137, true, true, -1, style1);
-            if (num9 == 0)
+            if (num10 == 0)
               Main.tile[i2, j5].wire(true);
-            else if (num9 == 1)
+            else if (num10 == 1)
               Main.tile[i2, j5].wire2(true);
-            else if (num9 == 2)
+            else if (num10 == 2)
               Main.tile[i2, j5].wire3(true);
           }
           else
@@ -2509,31 +2565,31 @@ namespace Terraria
       int index4 = j2;
       while (index3 != i7 || index4 != j5)
       {
-        if (num9 == 0)
+        if (num10 == 0)
           Main.tile[index3, index4].wire(true);
-        else if (num9 == 1)
+        else if (num10 == 1)
           Main.tile[index3, index4].wire2(true);
-        else if (num9 == 2)
+        else if (num10 == 2)
           Main.tile[index3, index4].wire3(true);
         if (index3 > i7)
           --index3;
         if (index3 < i7)
           ++index3;
-        if (num9 == 0)
+        if (num10 == 0)
           Main.tile[index3, index4].wire(true);
-        else if (num9 == 1)
+        else if (num10 == 1)
           Main.tile[index3, index4].wire2(true);
-        else if (num9 == 2)
+        else if (num10 == 2)
           Main.tile[index3, index4].wire3(true);
         if (index4 > j5)
           --index4;
         if (index4 < j5)
           ++index4;
-        if (num9 == 0)
+        if (num10 == 0)
           Main.tile[index3, index4].wire(true);
-        else if (num9 == 1)
+        else if (num10 == 1)
           Main.tile[index3, index4].wire2(true);
-        else if (num9 == 2)
+        else if (num10 == 2)
           Main.tile[index3, index4].wire3(true);
       }
       return true;
@@ -2604,7 +2660,7 @@ namespace Terraria
           flag4 = false;
         int num3;
         int i5;
-        if (flag3 && flag4)
+        if (flag3 & flag4)
         {
           num3 = 1;
           i5 = i2;
@@ -4074,16 +4130,16 @@ namespace Terraria
         int num1 = dungeonSide;
         int maxValue = Main.maxTilesX / 2;
         int num2 = WorldGen.genRand.Next(maxValue) / 8 + maxValue / 8;
-        int x = maxValue + num2 * -num1;
-        int num3 = 0;
-        while (!Terraria.World.Generation.Biomes<DesertBiome>.Place(new Point(x, (int) worldSurface), structures))
+        int num3 = maxValue + num2 * -num1;
+        int num4 = 0;
+        while (!Terraria.World.Generation.Biomes<DesertBiome>.Place(new Point(num3, (int) worldSurface), structures))
         {
-          int num4 = WorldGen.genRand.Next(maxValue) / 2 + maxValue / 8;
-          x = maxValue + num4 * -num1;
-          if (++num3 > 1000)
+          int num5 = WorldGen.genRand.Next(maxValue) / 2 + maxValue / 8;
+          num3 = maxValue + num5 * -num1;
+          if (++num4 > 1000)
           {
             num1 *= -1;
-            num3 = 0;
+            num4 = 0;
           }
         }
       }));
@@ -4143,7 +4199,7 @@ namespace Terraria
       WorldGen.AddGenerationPass("Mushroom Patches", (WorldGenLegacyMethod) (progress =>
       {
         progress.Message = Lang.gen[13].Value;
-        for (int index = 0; index < Main.maxTilesX / 500; ++index)
+        for (int index1 = 0; index1 < Main.maxTilesX / 500; ++index1)
         {
           int num1 = 0;
           bool flag = true;
@@ -4153,25 +4209,26 @@ namespace Terraria
             int j = WorldGen.genRand.Next((int) Main.rockLayer, Main.maxTilesY - 350);
             flag = false;
             int num2 = 60;
-            int x = i - num2;
-            while (x < i + num2)
+            int index2 = i - num2;
+            while (index2 < i + num2)
             {
-              int y = j - num2;
-              while (y < j + num2)
+              int index3 = j - num2;
+              while (index3 < j + num2)
               {
-                if ((int) Main.tile[x, y].type == 147 || (int) Main.tile[x, y].type == 161 || (int) Main.tile[x, y].type == 162)
+                if ((int) Main.tile[index2, index3].type == 147 || (int) Main.tile[index2, index3].type == 161 || (int) Main.tile[index2, index3].type == 162)
                 {
                   flag = true;
                   break;
                 }
-                if (WorldGen.UndergroundDesertLocation.Contains(new Point(x, y)))
+                // ISSUE: explicit reference operation
+                if (((Rectangle) @WorldGen.UndergroundDesertLocation).Contains(new Point(index2, index3)))
                 {
                   flag = true;
                   break;
                 }
-                y += 3;
+                index3 += 3;
               }
-              x += 3;
+              index2 += 3;
             }
             if (!flag)
               WorldGen.ShroomPatch(i, j);
@@ -4816,9 +4873,12 @@ namespace Terraria
         for (int index = 0; index < WorldGen.numMCaves; ++index)
         {
           int i = WorldGen.mCaveX[index];
-          int j = WorldGen.mCaveY[index];
-          WorldGen.CaveOpenater(i, j);
-          WorldGen.Cavinator(i, j, WorldGen.genRand.Next(40, 50));
+          int num = WorldGen.mCaveY[index];
+          int j1 = num;
+          WorldGen.CaveOpenater(i, j1);
+          int j2 = num;
+          int steps = WorldGen.genRand.Next(40, 50);
+          WorldGen.Cavinator(i, j2, steps);
         }
       }));
       WorldGen.AddGenerationPass("Beaches", (WorldGenLegacyMethod) (progress =>
@@ -5368,9 +5428,9 @@ label_6:
                 if (num5 < num4 && num6 > 0)
                 {
                   float num7 = (float) ((double) WorldGen.genRand.NextFloat() * 60.0 + 30.0);
-                  float num8 = WorldGen.genRand.NextFloat() * 6.283185f;
-                  x = (int) (Math.Cos((double) num8) * (double) num7) + origin.X;
-                  y = (int) (Math.Sin((double) num8) * (double) num7) + origin.Y;
+                  double a;
+                  x = (int) (Math.Cos(a = (double) WorldGen.genRand.NextFloat() * 6.28318548202515) * (double) num7) + origin.X;
+                  y = (int) (Math.Sin(a) * (double) num7) + origin.Y;
                   --num6;
                 }
                 else
@@ -5724,8 +5784,8 @@ label_6:
         {
           progress.Set((float) (1.0 - (double) num1 / (double) num2));
           Point point = WorldGen.RandomWorldPoint((int) worldSurface, 2, 190, 2);
-          Tile tile1 = Main.tile[point.X, point.Y];
-          Tile tile2 = Main.tile[point.X, point.Y - 1];
+          Tile tile1 = Main.tile[(int) point.X, (int) point.Y];
+          Tile tile2 = Main.tile[(int) point.X, point.Y - 1];
           byte type = 0;
           if ((int) tile1.type == 59 || (int) tile1.type == 60)
             type = (byte) (204 + WorldGen.genRand.Next(4));
@@ -5734,7 +5794,7 @@ label_6:
           if (tile1.active() && (int) type != 0 && !tile2.active())
           {
             bool foundInvalidTile = false;
-            bool flag = WorldUtils.Gen(new Point(point.X, point.Y - 1), (GenShape) new ShapeFloodFill(1000), Actions.Chain((GenAction) new Modifiers.IsNotSolid(), new Actions.Blank().Output(data), (GenAction) new Actions.ContinueWrapper(Actions.Chain((GenAction) new Modifiers.IsTouching(true, new ushort[5]
+            bool flag = WorldUtils.Gen(new Point((int) point.X, point.Y - 1), (GenShape) new ShapeFloodFill(1000), Actions.Chain((GenAction) new Modifiers.IsNotSolid(), new Actions.Blank().Output(data), (GenAction) new Actions.ContinueWrapper(Actions.Chain((GenAction) new Modifiers.IsTouching(true, new ushort[5]
             {
               (ushort) 60,
               (ushort) 147,
@@ -5746,9 +5806,9 @@ label_6:
               foundInvalidTile = true;
               return true;
             }))))));
-            if (data.Count > 50 && flag && !foundInvalidTile)
+            if (data.Count > 50 & flag && !foundInvalidTile)
             {
-              WorldUtils.Gen(new Point(point.X, point.Y), (GenShape) new ModShapes.OuterOutline(data, true, true), (GenAction) new Actions.PlaceWall(type, true));
+              WorldUtils.Gen(new Point((int) point.X, (int) point.Y), (GenShape) new ModShapes.OuterOutline(data, true, true), (GenAction) new Actions.PlaceWall(type, true));
               --num1;
             }
             data.Clear();
@@ -7004,13 +7064,15 @@ label_6:
         {
           int num1 = Main.maxTilesX / 2;
           int num2 = WorldGen.genRand.Next(Main.maxTilesX);
-          int num3 = num2 - WorldGen.genRand.Next(10) - 7;
-          int num4 = num2 + WorldGen.genRand.Next(10) + 7;
-          if (num3 < 0)
-            num3 = 0;
-          if (num4 > Main.maxTilesX - 1)
-            num4 = Main.maxTilesX - 1;
-          for (int i = num3; i < num4; ++i)
+          int num3 = WorldGen.genRand.Next(10);
+          int num4 = num2 - num3 - 7;
+          int num5 = WorldGen.genRand.Next(10);
+          int num6 = num2 + num5 + 7;
+          if (num4 < 0)
+            num4 = 0;
+          if (num6 > Main.maxTilesX - 1)
+            num6 = Main.maxTilesX - 1;
+          for (int i = num4; i < num6; ++i)
           {
             for (int index2 = 1; (double) index2 < Main.worldSurface - 1.0; ++index2)
             {
@@ -7860,8 +7922,8 @@ label_6:
         while (num6 < num5)
         {
           Point origin;
-          origin.Y = (int) worldSurface + WorldGen.genRand.Next(50, 100);
-          origin.X = WorldGen.genRand.Next(2) != 0 ? WorldGen.genRand.Next((int) ((double) Main.maxTilesX * 0.699999988079071), Main.maxTilesX - 50) : WorldGen.genRand.Next(50, (int) ((double) Main.maxTilesX * 0.300000011920929));
+          origin.Y = (__Null) ((int) worldSurface + WorldGen.genRand.Next(50, 100));
+          origin.X = WorldGen.genRand.Next(2) != 0 ? (__Null) WorldGen.genRand.Next((int) ((double) Main.maxTilesX * 0.699999988079071), Main.maxTilesX - 50) : (__Null) WorldGen.genRand.Next(50, (int) ((double) Main.maxTilesX * 0.300000011920929));
           if (Terraria.World.Generation.Biomes<EnchantedSwordBiome>.Place(origin, structures))
             ++num6;
         }
@@ -7944,9 +8006,9 @@ label_6:
       Main.WorldFileMetadata = FileMetadata.FromCurrentSettings(FileType.World);
     }
 
-    public static Point RandomRectanglePoint(Microsoft.Xna.Framework.Rectangle rectangle)
+    public static Point RandomRectanglePoint(Rectangle rectangle)
     {
-      return new Point(WorldGen.genRand.Next(rectangle.X, rectangle.X + rectangle.Width), WorldGen.genRand.Next(rectangle.Y, rectangle.Y + rectangle.Height));
+      return new Point(WorldGen.genRand.Next((int) rectangle.X, (int) (rectangle.X + rectangle.Width)), WorldGen.genRand.Next((int) rectangle.Y, (int) (rectangle.Y + rectangle.Height)));
     }
 
     public static Point RandomRectanglePoint(int x, int y, int width, int height)
@@ -8038,7 +8100,7 @@ label_6:
             int num4 = WorldGen.genRand.Next(10);
             if (index2 == index1 - 1 || index2 == index1 - num2)
               num4 = 0;
-            while ((num4 == 5 || num4 == 7) && flag1 || (num4 == 6 || num4 == 7) && flag2)
+            while (((num4 == 5 ? 1 : (num4 == 7 ? 1 : 0)) & (flag1 ? 1 : 0)) != 0 || ((num4 == 6 ? 1 : (num4 == 7 ? 1 : 0)) & (flag2 ? 1 : 0)) != 0)
               num4 = WorldGen.genRand.Next(10);
             flag1 = false;
             flag2 = false;
@@ -9346,7 +9408,7 @@ label_6:
 
     public static void TreeGrowFX(int x, int y, int height, int treeGore)
     {
-      Vector2 vector2 = new Vector2((float) x, (float) y) * 16f + new Vector2(8f, 8f);
+      Vector2 vector2 = Vector2.op_Addition(Vector2.op_Multiply(new Vector2((float) x, (float) y), 16f), new Vector2(8f, 8f));
       int Type = treeGore;
       int num = 4;
       int maxValue = 2;
@@ -9355,18 +9417,18 @@ label_6:
         if (index1 > -height / 2 && Main.rand.Next(3) != 0)
         {
           for (int index2 = 0; index2 < 5; ++index2)
-            Dust.NewDust(vector2 + new Vector2(-16f, (float) (index1 * 16)) + Utils.RandomVector2(Main.rand, -20f, 20f), 4, 4, num + Main.rand.Next(maxValue), 0.0f, -4f, 100, new Color(), 1f);
+            Dust.NewDust(Vector2.op_Addition(Vector2.op_Addition(vector2, new Vector2(-16f, (float) (index1 * 16))), Utils.RandomVector2(Main.rand, -20f, 20f)), 4, 4, num + Main.rand.Next(maxValue), 0.0f, -4f, 100, (Color) null, 1f);
         }
         else
         {
           float max = 10f;
-          Gore.NewGore(vector2 + new Vector2(-16f, (float) (index1 * 16)), Utils.RandomVector2(Main.rand, -max, max), Type, (float) (0.699999988079071 + (double) Main.rand.NextFloat() * 0.600000023841858));
-          Gore.NewGore(vector2 + new Vector2(0.0f, (float) (index1 * 16)), Utils.RandomVector2(Main.rand, -max, max), Type, (float) (0.699999988079071 + (double) Main.rand.NextFloat() * 0.600000023841858));
-          Gore.NewGore(vector2 + new Vector2(16f, (float) (index1 * 16)), Utils.RandomVector2(Main.rand, -max, max), Type, (float) (0.699999988079071 + (double) Main.rand.NextFloat() * 0.600000023841858));
+          Gore.NewGore(Vector2.op_Addition(vector2, new Vector2(-16f, (float) (index1 * 16))), Utils.RandomVector2(Main.rand, -max, max), Type, (float) (0.699999988079071 + (double) Main.rand.NextFloat() * 0.600000023841858));
+          Gore.NewGore(Vector2.op_Addition(vector2, new Vector2(0.0f, (float) (index1 * 16))), Utils.RandomVector2(Main.rand, -max, max), Type, (float) (0.699999988079071 + (double) Main.rand.NextFloat() * 0.600000023841858));
+          Gore.NewGore(Vector2.op_Addition(vector2, new Vector2(16f, (float) (index1 * 16))), Utils.RandomVector2(Main.rand, -max, max), Type, (float) (0.699999988079071 + (double) Main.rand.NextFloat() * 0.600000023841858));
           if (index1 == -height + 1)
           {
             for (int index2 = 0; index2 < 20; ++index2)
-              Gore.NewGore(vector2 + new Vector2(0.0f, (float) (index1 * 16 - 40)) + Utils.RandomVector2(Main.rand, -40f, 40f), Utils.RandomVector2(Main.rand, -10f, 10f), Type, (float) (0.699999988079071 + (double) Main.rand.NextFloat() * 0.600000023841858));
+              Gore.NewGore(Vector2.op_Addition(Vector2.op_Addition(vector2, new Vector2(0.0f, (float) (index1 * 16 - 40))), Utils.RandomVector2(Main.rand, -40f, 40f)), Utils.RandomVector2(Main.rand, -10f, 10f), Type, (float) (0.699999988079071 + (double) Main.rand.NextFloat() * 0.600000023841858));
           }
         }
       }
@@ -9397,7 +9459,7 @@ label_6:
         int num5 = WorldGen.genRand.Next(10);
         if (index2 == index1 - 1 || index2 == index1 - num3)
           num5 = 0;
-        while ((num5 == 5 || num5 == 7) && flag1 || (num5 == 6 || num5 == 7) && flag2)
+        while (((num5 == 5 ? 1 : (num5 == 7 ? 1 : 0)) & (flag1 ? 1 : 0)) != 0 || ((num5 == 6 ? 1 : (num5 == 7 ? 1 : 0)) & (flag2 ? 1 : 0)) != 0)
           num5 = WorldGen.genRand.Next(10);
         flag1 = false;
         flag2 = false;
@@ -9823,7 +9885,7 @@ label_6:
         int num5 = WorldGen.genRand.Next(10);
         if (index2 == index1 - 1 || index2 == index1 - num2)
           num5 = 0;
-        while ((num5 == 5 || num5 == 7) && flag1 || (num5 == 6 || num5 == 7) && flag2)
+        while (((num5 == 5 ? 1 : (num5 == 7 ? 1 : 0)) & (flag1 ? 1 : 0)) != 0 || ((num5 == 6 ? 1 : (num5 == 7 ? 1 : 0)) & (flag2 ? 1 : 0)) != 0)
           num5 = WorldGen.genRand.Next(10);
         flag1 = false;
         flag2 = false;
@@ -10243,29 +10305,33 @@ label_6:
           Main.tile[i, index2].frameX = (short) 0;
           Main.tile[i, index2].frameY = (short) 0;
         }
-        if (num2 == 1)
+        int num3 = 1;
+        if (num2 == num3)
         {
           Main.tile[i, index2].frameX = (short) 0;
           Main.tile[i, index2].frameY = (short) 18;
         }
-        if (num2 == 2)
+        int num4 = 2;
+        if (num2 == num4)
         {
           Main.tile[i, index2].frameX = (short) 0;
           Main.tile[i, index2].frameY = (short) 36;
         }
       }
-      int num3 = WorldGen.genRand.Next(3);
-      if (num3 == 0)
+      int num5 = WorldGen.genRand.Next(3);
+      if (num5 == 0)
       {
         Main.tile[i, index1 - num1].frameX = (short) 36;
         Main.tile[i, index1 - num1].frameY = (short) 0;
       }
-      if (num3 == 1)
+      int num6 = 1;
+      if (num5 == num6)
       {
         Main.tile[i, index1 - num1].frameX = (short) 36;
         Main.tile[i, index1 - num1].frameY = (short) 18;
       }
-      if (num3 == 2)
+      int num7 = 2;
+      if (num5 == num7)
       {
         Main.tile[i, index1 - num1].frameX = (short) 36;
         Main.tile[i, index1 - num1].frameY = (short) 36;
@@ -10333,13 +10399,10 @@ label_6:
                   if ((int) type == 3 || (int) type == 20 || (int) type == 24)
                     continue;
                 }
-                else
+                else if ((int) type != 32 && (uint) type - 61U > 1U)
                 {
                   switch (type)
                   {
-                    case 32:
-                    case 61:
-                    case 62:
                     case 69:
                     case 71:
                     case 73:
@@ -10347,18 +10410,13 @@ label_6:
                       continue;
                   }
                 }
+                else
+                  continue;
               }
               else if ((uint) type <= 113U)
               {
-                switch (type)
-                {
-                  case 82:
-                  case 83:
-                  case 84:
-                  case 110:
-                  case 113:
-                    continue;
-                }
+                if ((uint) type - 82U <= 2U || (int) type == 110 || (int) type == 113)
+                  continue;
               }
               else if ((int) type == 201 || (int) type == 233 || (int) type == 352)
                 continue;
@@ -10419,8 +10477,8 @@ label_6:
         if (++num6 % 15000 == 0)
           --num5;
         Point point = WorldGen.RandomWorldPoint((int) Main.worldSurface - 100, 1, 190, 1);
-        Tile tile1 = Main.tile[point.X, point.Y];
-        Tile tile2 = Main.tile[point.X, point.Y - 1];
+        Tile tile1 = Main.tile[(int) point.X, (int) point.Y];
+        Tile tile2 = Main.tile[(int) point.X, point.Y - 1];
         byte type = 0;
         if (TileID.Sets.Crimson[(int) tile1.type])
           type = (byte) (192 + WorldGen.genRand.Next(4));
@@ -10430,7 +10488,7 @@ label_6:
           type = (byte) (200 + WorldGen.genRand.Next(4));
         if (tile1.active() && (int) type != 0 && !tile2.active())
         {
-          bool flag = WorldUtils.Gen(new Point(point.X, point.Y - 1), (GenShape) new ShapeFloodFill(1000), Actions.Chain((GenAction) new Modifiers.IsNotSolid(), (GenAction) new Modifiers.OnlyWalls(new byte[30]
+          bool flag = WorldUtils.Gen(new Point((int) point.X, point.Y - 1), (GenShape) new ShapeFloodFill(1000), Actions.Chain((GenAction) new Modifiers.IsNotSolid(), (GenAction) new Modifiers.OnlyWalls(new byte[30]
           {
             (byte) 0,
             (byte) 54,
@@ -10463,9 +10521,9 @@ label_6:
             (byte) 211,
             (byte) 71
           }), new Actions.Blank().Output(data)));
-          if (data.Count > 50 && flag)
+          if (data.Count > 50 & flag)
           {
-            WorldUtils.Gen(new Point(point.X, point.Y), (GenShape) new ModShapes.OuterOutline(data, true, true), (GenAction) new Actions.PlaceWall(type, true));
+            WorldUtils.Gen(new Point((int) point.X, (int) point.Y), (GenShape) new ModShapes.OuterOutline(data, true, true), (GenAction) new Actions.PlaceWall(type, true));
             --num5;
           }
           data.Clear();
@@ -10993,7 +11051,10 @@ label_6:
         int num11 = index12 - 1;
         int num12 = (num7 + num8) / 2;
         int num13 = (num9 + num11) / 2;
-        if (num8 - num7 > 7 && num11 - num9 > 5)
+        int num14 = num8 - num7;
+        int num15 = num11 - num9;
+        int num16 = 7;
+        if (num14 > num16 && num15 > 5)
         {
           int num2 = 0;
           if (WorldGen.nearPicture2(num12, num13))
@@ -11018,8 +11079,8 @@ label_6:
         numArray[1] = WorldGen.genRand.Next(16, 22);
       while (numArray[2] == numArray[0] || numArray[2] == numArray[1])
         numArray[2] = WorldGen.genRand.Next(16, 22);
-      float num14 = 420000f / (float) Main.maxTilesX;
-      for (int index1 = 0; (double) index1 < (double) num14; ++index1)
+      float num17 = 420000f / (float) Main.maxTilesX;
+      for (int index1 = 0; (double) index1 < (double) num17; ++index1)
       {
         int i;
         int j1;
@@ -11066,15 +11127,8 @@ label_6:
                   ushort type = tile.type;
                   if ((uint) type <= 34U)
                   {
-                    switch (type)
-                    {
-                      case 10:
-                      case 11:
-                      case 34:
-                        break;
-                      default:
-                        continue;
-                    }
+                    if ((uint) type - 10U > 1U && (int) type != 34)
+                      continue;
                   }
                   else if ((int) type != 42 && (int) type != 91)
                     continue;
@@ -11539,9 +11593,9 @@ label_6:
         {
           for (int index5 = num4 - num5; index5 <= num4 + num5; ++index5)
           {
-            float num7 = (float) Math.Abs(index2 - num3);
+            double num7 = (double) Math.Abs(index2 - num3);
             float num8 = (float) Math.Abs(index5 - num4);
-            if (Math.Sqrt((double) num7 * (double) num7 + (double) num8 * (double) num8) < (double) num5 * 0.4)
+            if (Math.Sqrt(num7 * num7 + (double) num8 * (double) num8) < (double) num5 * 0.4)
             {
               try
               {
@@ -11683,7 +11737,7 @@ label_6:
 
     public static void makeTemple(int x, int y)
     {
-      Microsoft.Xna.Framework.Rectangle[] rectangleArray = new Microsoft.Xna.Framework.Rectangle[40];
+      Rectangle[] rectangleArray = new Rectangle[40];
       float num1 = (float) (Main.maxTilesX / 4200);
       int maxValue = WorldGen.genRand.Next((int) ((double) num1 * 10.0), (int) ((double) num1 * 16.0));
       int num2 = 1;
@@ -11703,47 +11757,51 @@ label_6:
         int num11 = num6;
         int num12 = num7;
         bool flag = true;
-        int width1 = 0;
-        int height1 = 0;
-        int num13 = -10;
-        Microsoft.Xna.Framework.Rectangle rectangle = new Microsoft.Xna.Framework.Rectangle(num11 - width1 / 2, num12 - height1 / 2, width1, height1);
+        int num13 = 0;
+        int num14 = 0;
+        int num15 = -10;
+        Rectangle rectangle;
+        // ISSUE: explicit reference operation
+        ((Rectangle) @rectangle).\u002Ector(num11 - num13 / 2, num12 - num14 / 2, num13, num14);
         while (flag)
         {
-          int num14 = num6;
-          int num15 = num7;
-          int width2 = WorldGen.genRand.Next(25, 50);
-          int height2 = WorldGen.genRand.Next(20, 35);
-          if (height2 > width2)
-            height2 = width2;
+          int num16 = num6;
+          int num17 = num7;
+          int num18 = WorldGen.genRand.Next(25, 50);
+          int num19 = WorldGen.genRand.Next(20, 35);
+          if (num19 > num18)
+            num19 = num18;
           if (index1 == maxValue - 1)
           {
-            int num16 = WorldGen.genRand.Next(55, 65);
-            int num17 = WorldGen.genRand.Next(45, 50);
-            if (num17 > num16)
-              num17 = num16;
-            width2 = (int) ((double) num16 * 1.6);
-            height2 = (int) ((double) num17 * 1.35);
-            num15 += WorldGen.genRand.Next(5, 10);
+            int num20 = WorldGen.genRand.Next(55, 65);
+            int num21 = WorldGen.genRand.Next(45, 50);
+            if (num21 > num20)
+              num21 = num20;
+            num18 = (int) ((double) num20 * 1.6);
+            num19 = (int) ((double) num21 * 1.35);
+            num17 += WorldGen.genRand.Next(5, 10);
           }
           if (num9 > num8)
           {
-            num12 = num15 + (WorldGen.genRand.Next(height2 + 1, height2 + 3) + num13);
-            num11 = num14 + WorldGen.genRand.Next(-5, 6);
+            num12 = num17 + (WorldGen.genRand.Next(num19 + 1, num19 + 3) + num15);
+            num11 = num16 + WorldGen.genRand.Next(-5, 6);
             num10 = num2 * -1;
           }
           else
           {
-            num11 = num14 + (WorldGen.genRand.Next(width2 + 1, width2 + 3) + num13) * num10;
-            num12 = num15 + WorldGen.genRand.Next(-5, 6);
+            num11 = num16 + (WorldGen.genRand.Next(num18 + 1, num18 + 3) + num15) * num10;
+            num12 = num17 + WorldGen.genRand.Next(-5, 6);
           }
           flag = false;
-          rectangle = new Microsoft.Xna.Framework.Rectangle(num11 - width2 / 2, num12 - height2 / 2, width2, height2);
+          // ISSUE: explicit reference operation
+          ((Rectangle) @rectangle).\u002Ector(num11 - num18 / 2, num12 - num19 / 2, num18, num19);
           for (int index2 = 0; index2 < index1; ++index2)
           {
-            if (rectangle.Intersects(rectangleArray[index2]))
+            // ISSUE: explicit reference operation
+            if (((Rectangle) @rectangle).Intersects(rectangleArray[index2]))
               flag = true;
             if (WorldGen.genRand.Next(100) == 0)
-              ++num13;
+              ++num15;
           }
         }
         if (num9 > num8)
@@ -11764,15 +11822,15 @@ label_6:
           {
             for (int index4 = 0; index4 < 2; ++index4)
             {
-              int x1 = rectangleArray[index1].X;
+              int x1 = (int) rectangleArray[index1].X;
               if (index2 == 1)
                 x1 += rectangleArray[index1].Width - 1;
-              int y1 = rectangleArray[index1].Y;
+              int y1 = (int) rectangleArray[index1].Y;
               int num10 = y1 + rectangleArray[index1].Height;
-              int x2 = rectangleArray[index3].X;
+              int x2 = (int) rectangleArray[index3].X;
               if (index4 == 1)
                 x2 += rectangleArray[index3].Width - 1;
-              int y2 = rectangleArray[index3].Y;
+              int y2 = (int) rectangleArray[index3].Y;
               int num11 = y2 + rectangleArray[index3].Height;
               while (x1 != x2 || y1 != y2 || num10 != num11)
               {
@@ -11806,9 +11864,9 @@ label_6:
       {
         if (WorldGen.genRand.Next(1) == 0)
         {
-          for (int x1 = rectangleArray[index1].X; x1 < rectangleArray[index1].X + rectangleArray[index1].Width; ++x1)
+          for (int x1 = (int) rectangleArray[index1].X; x1 < rectangleArray[index1].X + rectangleArray[index1].Width; ++x1)
           {
-            for (int y1 = rectangleArray[index1].Y; y1 < rectangleArray[index1].Y + rectangleArray[index1].Height; ++y1)
+            for (int y1 = (int) rectangleArray[index1].Y; y1 < rectangleArray[index1].Y + rectangleArray[index1].Height; ++y1)
             {
               Main.tile[x1, y1].active(true);
               Main.tile[x1, y1].type = (ushort) 226;
@@ -11817,9 +11875,9 @@ label_6:
               Main.tile[x1, y1].halfBrick(false);
             }
           }
-          int x2 = rectangleArray[index1].X;
+          int x2 = (int) rectangleArray[index1].X;
           int num10 = x2 + rectangleArray[index1].Width;
-          int y2 = rectangleArray[index1].Y;
+          int y2 = (int) rectangleArray[index1].Y;
           int num11 = y2 + rectangleArray[index1].Height;
           int num12 = x2 + WorldGen.genRand.Next(3, 8);
           int num13 = num10 - WorldGen.genRand.Next(3, 8);
@@ -11903,21 +11961,55 @@ label_6:
           }
         }
       }
-      Vector2 templePath = new Vector2((float) num4, (float) num5);
+      Vector2 templePath;
+      // ISSUE: explicit reference operation
+      ((Vector2) @templePath).\u002Ector((float) num4, (float) num5);
       for (int index1 = 0; index1 < maxValue; ++index1)
       {
-        Microsoft.Xna.Framework.Rectangle rectangle = rectangleArray[index1];
-        rectangle.X += 8;
-        rectangle.Y += 8;
-        rectangle.Width -= 16;
-        rectangle.Height -= 16;
+        Rectangle rectangle = rectangleArray[index1];
+        // ISSUE: explicit reference operation
+        // ISSUE: variable of a reference type
+        __Null& local1 = @rectangle.X;
+        // ISSUE: cast to a reference type
+        // ISSUE: explicit reference operation
+        int num10 = ^(int&) local1 + 8;
+        // ISSUE: cast to a reference type
+        // ISSUE: explicit reference operation
+        ^(int&) local1 = num10;
+        // ISSUE: explicit reference operation
+        // ISSUE: variable of a reference type
+        __Null& local2 = @rectangle.Y;
+        // ISSUE: cast to a reference type
+        // ISSUE: explicit reference operation
+        int num11 = ^(int&) local2 + 8;
+        // ISSUE: cast to a reference type
+        // ISSUE: explicit reference operation
+        ^(int&) local2 = num11;
+        // ISSUE: explicit reference operation
+        // ISSUE: variable of a reference type
+        __Null& local3 = @rectangle.Width;
+        // ISSUE: cast to a reference type
+        // ISSUE: explicit reference operation
+        int num12 = ^(int&) local3 - 16;
+        // ISSUE: cast to a reference type
+        // ISSUE: explicit reference operation
+        ^(int&) local3 = num12;
+        // ISSUE: explicit reference operation
+        // ISSUE: variable of a reference type
+        __Null& local4 = @rectangle.Height;
+        // ISSUE: cast to a reference type
+        // ISSUE: explicit reference operation
+        int num13 = ^(int&) local4 - 16;
+        // ISSUE: cast to a reference type
+        // ISSUE: explicit reference operation
+        ^(int&) local4 = num13;
         bool flag1 = true;
         while (flag1)
         {
-          int destX = WorldGen.genRand.Next(rectangle.X, rectangle.X + rectangle.Width);
-          int destY = WorldGen.genRand.Next(rectangle.Y, rectangle.Y + rectangle.Height);
+          int destX = WorldGen.genRand.Next((int) rectangle.X, (int) (rectangle.X + rectangle.Width));
+          int destY = WorldGen.genRand.Next((int) rectangle.Y, (int) (rectangle.Y + rectangle.Height));
           templePath = WorldGen.templePather(templePath, destX, destY);
-          if ((double) templePath.X == (double) destX && (double) templePath.Y == (double) destY)
+          if (templePath.X == (double) destX && templePath.Y == (double) destY)
             flag1 = false;
         }
         if (index1 < maxValue - 1)
@@ -11929,40 +12021,60 @@ label_6:
             {
               rectangle.X = rectangleArray[index2].X;
               if (rectangleArray[index2].X < rectangleArray[index1].X)
-                rectangle.X += (int) ((double) rectangleArray[index2].Width * 0.2);
+              {
+                // ISSUE: explicit reference operation
+                // ISSUE: variable of a reference type
+                __Null& local5 = @rectangle.X;
+                // ISSUE: cast to a reference type
+                // ISSUE: explicit reference operation
+                int num14 = ^(int&) local5 + (int) ((double) (float) rectangleArray[index2].Width * 0.2);
+                // ISSUE: cast to a reference type
+                // ISSUE: explicit reference operation
+                ^(int&) local5 = num14;
+              }
               else
-                rectangle.X += (int) ((double) rectangleArray[index2].Width * 0.8);
+              {
+                // ISSUE: explicit reference operation
+                // ISSUE: variable of a reference type
+                __Null& local5 = @rectangle.X;
+                // ISSUE: cast to a reference type
+                // ISSUE: explicit reference operation
+                int num14 = ^(int&) local5 + (int) ((double) (float) rectangleArray[index2].Width * 0.8);
+                // ISSUE: cast to a reference type
+                // ISSUE: explicit reference operation
+                ^(int&) local5 = num14;
+              }
               rectangle.Y = rectangleArray[index2].Y;
             }
             else
             {
-              rectangle.X = (rectangleArray[index1].X + rectangleArray[index1].Width / 2 + (rectangleArray[index2].X + rectangleArray[index2].Width / 2)) / 2;
-              rectangle.Y = (int) ((double) rectangleArray[index2].Y + (double) rectangleArray[index2].Height * 0.8);
+              rectangle.X = (__Null) ((rectangleArray[index1].X + rectangleArray[index1].Width / 2 + (rectangleArray[index2].X + rectangleArray[index2].Width / 2)) / 2);
+              rectangle.Y = (__Null) (int) ((double) rectangleArray[index2].Y + (double) rectangleArray[index2].Height * 0.8);
             }
-            int x1 = rectangle.X;
-            int y1 = rectangle.Y;
+            int x1 = (int) rectangle.X;
+            int y1 = (int) rectangle.Y;
             bool flag2 = true;
             while (flag2)
             {
               int destX = WorldGen.genRand.Next(x1 - 6, x1 + 7);
               int destY = WorldGen.genRand.Next(y1 - 6, y1 + 7);
               templePath = WorldGen.templePather(templePath, destX, destY);
-              if ((double) templePath.X == (double) destX && (double) templePath.Y == (double) destY)
+              if (templePath.X == (double) destX && templePath.Y == (double) destY)
                 flag2 = false;
             }
           }
           else
           {
             int index2 = index1 + 1;
-            int num10 = (rectangleArray[index1].X + rectangleArray[index1].Width / 2 + (rectangleArray[index2].X + rectangleArray[index2].Width / 2)) / 2;
-            int num11 = (rectangleArray[index1].Y + rectangleArray[index1].Height / 2 + (rectangleArray[index2].Y + rectangleArray[index2].Height / 2)) / 2;
+            int num14 = (rectangleArray[index1].X + rectangleArray[index1].Width / 2 + (rectangleArray[index2].X + rectangleArray[index2].Width / 2)) / 2;
+            int num15 = (rectangleArray[index1].Y + rectangleArray[index1].Height / 2 + (rectangleArray[index2].Y + rectangleArray[index2].Height / 2)) / 2;
             bool flag2 = true;
             while (flag2)
             {
-              int destX = WorldGen.genRand.Next(num10 - 6, num10 + 7);
-              int destY = WorldGen.genRand.Next(num11 - 6, num11 + 7);
+              int destX = WorldGen.genRand.Next(num14 - 6, num14 + 7);
+              int destY = WorldGen.genRand.Next(num15 - 6, num15 + 7);
               templePath = WorldGen.templePather(templePath, destX, destY);
-              if ((double) templePath.X == (double) destX && (double) templePath.Y == (double) destY)
+              if (templePath.X == (double) destX && templePath.Y == (double) destY)
                 flag2 = false;
             }
           }
@@ -11975,13 +12087,13 @@ label_6:
       for (int index = 0; index < maxValue; ++index)
       {
         if (rectangleArray[index].X < num22)
-          num22 = rectangleArray[index].X;
+          num22 = (int) rectangleArray[index].X;
         if (rectangleArray[index].X + rectangleArray[index].Width > num23)
-          num23 = rectangleArray[index].X + rectangleArray[index].Width;
+          num23 = (int) (rectangleArray[index].X + rectangleArray[index].Width);
         if (rectangleArray[index].Y < num24)
-          num24 = rectangleArray[index].Y;
+          num24 = (int) rectangleArray[index].Y;
         if (rectangleArray[index].Y + rectangleArray[index].Height > num25)
-          num25 = rectangleArray[index].Y + rectangleArray[index].Height;
+          num25 = (int) (rectangleArray[index].Y + rectangleArray[index].Height);
       }
       int num26 = num22 - 10;
       int num27 = num23 + 10;
@@ -12008,7 +12120,9 @@ label_6:
           WorldGen.outerTempled(x1, y1);
       }
       int num30 = -num3;
-      Vector2 vector2 = new Vector2((float) num4, (float) num5);
+      Vector2 vector2;
+      // ISSUE: explicit reference operation
+      ((Vector2) @vector2).\u002Ector((float) num4, (float) num5);
       int num31 = WorldGen.genRand.Next(2, 5);
       bool flag3 = true;
       int num32 = 0;
@@ -12019,12 +12133,28 @@ label_6:
         if (num32 >= num33)
         {
           num32 = 0;
-          --vector2.Y;
+          // ISSUE: explicit reference operation
+          // ISSUE: variable of a reference type
+          __Null& local = @vector2.Y;
+          // ISSUE: cast to a reference type
+          // ISSUE: explicit reference operation
+          double num10 = (double) ^(float&) local - 1.0;
+          // ISSUE: cast to a reference type
+          // ISSUE: explicit reference operation
+          ^(float&) local = (float) num10;
         }
-        vector2.X += (float) num30;
+        // ISSUE: explicit reference operation
+        // ISSUE: variable of a reference type
+        __Null& local1 = @vector2.X;
+        // ISSUE: cast to a reference type
+        // ISSUE: explicit reference operation
+        double num11 = (double) ^(float&) local1 + (double) num30;
+        // ISSUE: cast to a reference type
+        // ISSUE: explicit reference operation
+        ^(float&) local1 = (float) num11;
         int x1 = (int) vector2.X;
         flag3 = false;
-        for (int index = (int) vector2.Y - num31; (double) index < (double) vector2.Y + (double) num31; ++index)
+        for (int index = (int) vector2.Y - num31; (double) index < vector2.Y + (double) num31; ++index)
         {
           if ((int) Main.tile[x1, index].wall == 87 || Main.tile[x1, index].active() && (int) Main.tile[x1, index].type == 226)
             flag3 = true;
@@ -12114,13 +12244,13 @@ label_6:
         }
       }
       int num35 = 0;
-      Microsoft.Xna.Framework.Rectangle rectangle1;
+      Rectangle rectangle1;
       do
       {
         ++num35;
         rectangle1 = rectangleArray[maxValue - 1];
-        int i2 = rectangle1.X + WorldGen.genRand.Next(rectangle1.Width);
-        int j2 = rectangle1.Y + WorldGen.genRand.Next(rectangle1.Height);
+        int i2 = rectangle1.X + WorldGen.genRand.Next((int) rectangle1.Width);
+        int j2 = rectangle1.Y + WorldGen.genRand.Next((int) rectangle1.Height);
         WorldGen.PlaceTile(i2, j2, 237, false, false, -1, 0);
         if ((int) Main.tile[i2, j2].type == 237)
         {
@@ -12180,8 +12310,8 @@ label_278:
       {
         ++num41;
         int index1 = WorldGen.genRand.Next(maxValue);
-        int index2 = WorldGen.genRand.Next(rectangleArray[index1].X, rectangleArray[index1].X + rectangleArray[index1].Width);
-        int index3 = WorldGen.genRand.Next(rectangleArray[index1].Y, rectangleArray[index1].Y + rectangleArray[index1].Height);
+        int index2 = WorldGen.genRand.Next((int) rectangleArray[index1].X, (int) (rectangleArray[index1].X + rectangleArray[index1].Width));
+        int index3 = WorldGen.genRand.Next((int) rectangleArray[index1].Y, (int) (rectangleArray[index1].Y + rectangleArray[index1].Height));
         if ((int) Main.tile[index2, index3].wall == 87 && !Main.tile[index2, index3].active())
         {
           bool flag1 = false;
@@ -12887,9 +13017,9 @@ label_278:
             {
               if ((double) y1 > Main.worldSurface)
               {
-                float num18 = (float) Math.Abs(num13 - x1);
+                double num18 = (double) Math.Abs(num13 - x1);
                 float num19 = (float) Math.Abs(num14 - y1);
-                if (Math.Sqrt((double) num18 * (double) num18 + (double) num19 * (double) num19) < (double) num12 * 0.4 && Main.wallDungeon[(int) Main.tile[x1, y1].wall])
+                if (Math.Sqrt(num18 * num18 + (double) num19 * (double) num19) < (double) num12 * 0.4 && Main.wallDungeon[(int) Main.tile[x1, y1].wall])
                   WorldGen.Spread.WallDungeon(x1, y1, roomWall[index2]);
               }
             }
@@ -13224,7 +13354,7 @@ label_278:
     {
       while (numAdd < Main.maxTilesX / 500)
       {
-        ++failCount;
+        failCount = failCount + 1;
         int x2 = WorldGen.genRand.Next(WorldGen.dMinX, WorldGen.dMaxX);
         int y2 = WorldGen.genRand.Next(WorldGen.dMinY, WorldGen.dMaxY);
         while ((double) y2 < Main.worldSurface)
@@ -13233,7 +13363,7 @@ label_278:
           failCount = failMax;
         if (failCount > failMax)
         {
-          ++numAdd;
+          numAdd = numAdd + 1;
           failCount = 0;
         }
       }
@@ -13254,7 +13384,7 @@ label_278:
         numArray[2] = WorldGen.genRand.Next(7);
       while (numAdd < Main.maxTilesX / 150)
       {
-        ++failCount;
+        failCount = failCount + 1;
         int index1 = WorldGen.genRand.Next(WorldGen.dMinX, WorldGen.dMaxX);
         int index2 = WorldGen.genRand.Next(WorldGen.dMinY, WorldGen.dMaxY);
         if (Main.wallDungeon[(int) Main.tile[index1, index2].wall])
@@ -13310,7 +13440,7 @@ label_278:
                   {
                     flag2 = true;
                     failCount = 0;
-                    ++numAdd;
+                    numAdd = numAdd + 1;
                     for (int index3 = 0; index3 < 1000; ++index3)
                     {
                       int i = index1 + WorldGen.genRand.Next(-12, 13);
@@ -13358,7 +13488,7 @@ label_278:
                   if ((int) Main.tile[index1, y].type == 42)
                   {
                     failCount = 0;
-                    ++numAdd;
+                    numAdd = numAdd + 1;
                     for (int index3 = 0; index3 < 1000; ++index3)
                     {
                       int i = index1 + WorldGen.genRand.Next(-12, 13);
@@ -13405,7 +13535,7 @@ label_278:
         }
         if (failCount > failMax)
         {
-          ++numAdd;
+          numAdd = numAdd + 1;
           failCount = 0;
         }
       }
@@ -13530,11 +13660,11 @@ label_278:
           }
           else if (index4 == 1)
           {
-            Vector2 vector2 = WorldGen.randPictureTile();
+            Vector2 vector2_1 = WorldGen.randPictureTile();
             if ((int) Main.tile[index13, index14].wall != roomWall[0])
-              vector2 = WorldGen.randBoneTile();
-            int x1 = (int) vector2.X;
-            int y1 = (int) vector2.Y;
+              vector2_1 = WorldGen.randBoneTile();
+            int x1 = (int) vector2_1.X;
+            int y1 = (int) vector2_1.Y;
             if (!Main.tile[index13, index14].active())
               WorldGen.PlaceTile(index13, index14, x1, true, false, -1, y1);
             int num1 = index13;
@@ -13552,11 +13682,11 @@ label_278:
                 ++index8;
               int num4 = index8 - 1;
               index5 = (num3 + num4) / 2;
-              vector2 = WorldGen.randPictureTile();
+              Vector2 vector2_2 = WorldGen.randPictureTile();
               if ((int) Main.tile[index13, index5].wall != roomWall[0])
-                vector2 = WorldGen.randBoneTile();
-              int x2 = (int) vector2.X;
-              int y2 = (int) vector2.Y;
+                vector2_2 = WorldGen.randBoneTile();
+              int x2 = (int) vector2_2.X;
+              int y2 = (int) vector2_2.Y;
               if (Math.Abs(num2 - index5) < 4 && !WorldGen.nearPicture(index13, index5))
                 WorldGen.PlaceTile(index13, index5, x2, true, false, -1, y2);
               else
@@ -13576,11 +13706,11 @@ label_278:
                 ++index8;
               int num4 = index8 - 1;
               index15 = (num3 + num4) / 2;
-              vector2 = WorldGen.randPictureTile();
+              Vector2 vector2_2 = WorldGen.randPictureTile();
               if ((int) Main.tile[index16, index15].wall != roomWall[0])
-                vector2 = WorldGen.randBoneTile();
-              int x2 = (int) vector2.X;
-              int y2 = (int) vector2.Y;
+                vector2_2 = WorldGen.randBoneTile();
+              int x2 = (int) vector2_2.X;
+              int y2 = (int) vector2_2.Y;
               if (Math.Abs(num2 - index15) < 4 && !WorldGen.nearPicture(index16, index15))
                 WorldGen.PlaceTile(index16, index15, x2, true, false, -1, y2);
               else
@@ -13589,11 +13719,11 @@ label_278:
           }
           else if (index4 == 2)
           {
-            Vector2 vector2 = WorldGen.randPictureTile();
+            Vector2 vector2_1 = WorldGen.randPictureTile();
             if ((int) Main.tile[index13, index14].wall != roomWall[0])
-              vector2 = WorldGen.randBoneTile();
-            int x1 = (int) vector2.X;
-            int y1 = (int) vector2.Y;
+              vector2_1 = WorldGen.randBoneTile();
+            int x1 = (int) vector2_1.X;
+            int y1 = (int) vector2_1.Y;
             if (!Main.tile[index13, index14].active())
               WorldGen.PlaceTile(index13, index14, x1, true, false, -1, y1);
             int num1 = index14;
@@ -13611,11 +13741,11 @@ label_278:
                 ++index8;
               int num4 = index8 - 1;
               index5 = (num3 + num4) / 2;
-              vector2 = WorldGen.randPictureTile();
+              Vector2 vector2_2 = WorldGen.randPictureTile();
               if ((int) Main.tile[index5, index14].wall != roomWall[0])
-                vector2 = WorldGen.randBoneTile();
-              int x2 = (int) vector2.X;
-              int y2 = (int) vector2.Y;
+                vector2_2 = WorldGen.randBoneTile();
+              int x2 = (int) vector2_2.X;
+              int y2 = (int) vector2_2.Y;
               if (Math.Abs(num2 - index5) < 4 && !WorldGen.nearPicture(index5, index14))
                 WorldGen.PlaceTile(index5, index14, x2, true, false, -1, y2);
               else
@@ -13635,11 +13765,11 @@ label_278:
                 ++index8;
               int num4 = index8 - 1;
               index15 = (num3 + num4) / 2;
-              vector2 = WorldGen.randPictureTile();
+              Vector2 vector2_2 = WorldGen.randPictureTile();
               if ((int) Main.tile[index15, index16].wall != roomWall[0])
-                vector2 = WorldGen.randBoneTile();
-              int x2 = (int) vector2.X;
-              int y2 = (int) vector2.Y;
+                vector2_2 = WorldGen.randBoneTile();
+              int x2 = (int) vector2_2.X;
+              int y2 = (int) vector2_2.Y;
               if (Math.Abs(num2 - index15) < 4 && !WorldGen.nearPicture(index15, index16))
                 WorldGen.PlaceTile(index15, index16, x2, true, false, -1, y2);
               else
@@ -14172,29 +14302,59 @@ label_278:
 
     public static void DungeonStairs(int i, int j, ushort tileType, int wallType)
     {
-      Vector2 zero = Vector2.Zero;
+      Vector2 zero = Vector2.get_Zero();
       double num1 = (double) WorldGen.genRand.Next(5, 9);
       Vector2 vector2;
-      vector2.X = (float) i;
-      vector2.Y = (float) j;
+      vector2.X = (__Null) (double) i;
+      vector2.Y = (__Null) (double) j;
       int num2 = WorldGen.genRand.Next(10, 30);
       int num3 = i <= WorldGen.dEnteranceX ? 1 : -1;
       if (i > Main.maxTilesX - 400)
         num3 = -1;
       else if (i < 400)
         num3 = 1;
-      zero.Y = -1f;
-      zero.X = (float) num3;
+      zero.Y = (__Null) -1.0;
+      zero.X = (__Null) (double) num3;
       if (WorldGen.genRand.Next(3) != 0)
-        zero.X *= (float) (1.0 + (double) WorldGen.genRand.Next(0, 200) * 0.00999999977648258);
+      {
+        // ISSUE: explicit reference operation
+        // ISSUE: variable of a reference type
+        __Null& local = @zero.X;
+        // ISSUE: cast to a reference type
+        // ISSUE: explicit reference operation
+        double num4 = (double) ^(float&) local * (1.0 + (double) WorldGen.genRand.Next(0, 200) * 0.00999999977648258);
+        // ISSUE: cast to a reference type
+        // ISSUE: explicit reference operation
+        ^(float&) local = (float) num4;
+      }
       else if (WorldGen.genRand.Next(3) == 0)
-        zero.X *= (float) WorldGen.genRand.Next(50, 76) * 0.01f;
+      {
+        // ISSUE: explicit reference operation
+        // ISSUE: variable of a reference type
+        __Null& local = @zero.X;
+        // ISSUE: cast to a reference type
+        // ISSUE: explicit reference operation
+        double num4 = (double) ^(float&) local * ((double) WorldGen.genRand.Next(50, 76) * 0.00999999977648258);
+        // ISSUE: cast to a reference type
+        // ISSUE: explicit reference operation
+        ^(float&) local = (float) num4;
+      }
       else if (WorldGen.genRand.Next(6) == 0)
-        zero.Y *= 2f;
-      if (WorldGen.dungeonX < Main.maxTilesX / 2 && (double) zero.X < 0.0 && (double) zero.X < 0.5)
-        zero.X = -0.5f;
-      if (WorldGen.dungeonX > Main.maxTilesX / 2 && (double) zero.X > 0.0 && (double) zero.X > 0.5)
-        zero.X = -0.5f;
+      {
+        // ISSUE: explicit reference operation
+        // ISSUE: variable of a reference type
+        __Null& local = @zero.Y;
+        // ISSUE: cast to a reference type
+        // ISSUE: explicit reference operation
+        double num4 = (double) ^(float&) local * 2.0;
+        // ISSUE: cast to a reference type
+        // ISSUE: explicit reference operation
+        ^(float&) local = (float) num4;
+      }
+      if (WorldGen.dungeonX < Main.maxTilesX / 2 && zero.X < 0.0 && (double) zero.X < 0.5)
+        zero.X = (__Null) -0.5;
+      if (WorldGen.dungeonX > Main.maxTilesX / 2 && zero.X > 0.0 && (double) zero.X > 0.5)
+        zero.X = (__Null) -0.5;
       while (num2 > 0)
       {
         --num2;
@@ -14211,9 +14371,9 @@ label_278:
         if (num7 > Main.maxTilesY)
           num7 = Main.maxTilesY;
         int num8 = 1;
-        if ((double) vector2.X > (double) (Main.maxTilesX / 2))
+        if (vector2.X > (double) (Main.maxTilesX / 2))
           num8 = -1;
-        int i1 = (int) ((double) vector2.X + WorldGen.dxStrength1 * 0.600000023841858 * (double) num8 + WorldGen.dxStrength2 * (double) num8);
+        int i1 = (int) (vector2.X + WorldGen.dxStrength1 * 0.600000023841858 * (double) num8 + WorldGen.dxStrength2 * (double) num8);
         int num9 = (int) (WorldGen.dyStrength2 * 0.5);
         if ((double) vector2.Y < Main.worldSurface - 5.0 && (int) Main.tile[i1, (int) ((double) vector2.Y - num1 - 6.0 + (double) num9)].wall == 0 && ((int) Main.tile[i1, (int) ((double) vector2.Y - num1 - 7.0 + (double) num9)].wall == 0 && (int) Main.tile[i1, (int) ((double) vector2.Y - num1 - 8.0 + (double) num9)].wall == 0))
         {
@@ -14263,9 +14423,19 @@ label_278:
         }
         if (WorldGen.dSurface)
           num2 = 0;
-        vector2 += zero;
+        vector2 = Vector2.op_Addition(vector2, zero);
         if ((double) vector2.Y < Main.worldSurface)
-          zero.Y *= 0.98f;
+        {
+          // ISSUE: explicit reference operation
+          // ISSUE: variable of a reference type
+          __Null& local = @zero.Y;
+          // ISSUE: cast to a reference type
+          // ISSUE: explicit reference operation
+          double num15 = (double) ^(float&) local * 0.980000019073486;
+          // ISSUE: cast to a reference type
+          // ISSUE: explicit reference operation
+          ^(float&) local = (float) num15;
+        }
       }
       WorldGen.dungeonX = (int) vector2.X;
       WorldGen.dungeonY = (int) vector2.Y;
@@ -14273,19 +14443,19 @@ label_278:
 
     public static void DungeonHalls(int i, int j, ushort tileType, int wallType, bool forceX = false)
     {
-      Vector2 zero1 = Vector2.Zero;
+      Vector2 zero1 = Vector2.get_Zero();
       double num1 = (double) WorldGen.genRand.Next(4, 6);
       double num2 = num1;
-      Vector2 zero2 = Vector2.Zero;
-      Vector2 zero3 = Vector2.Zero;
+      Vector2 zero2 = Vector2.get_Zero();
+      Vector2 zero3 = Vector2.get_Zero();
       Vector2 vector2;
-      vector2.X = (float) i;
-      vector2.Y = (float) j;
+      vector2.X = (__Null) (double) i;
+      vector2.Y = (__Null) (double) j;
       int num3 = WorldGen.genRand.Next(35, 80);
       if (forceX)
       {
         num3 += 20;
-        WorldGen.lastDungeonHall = Vector2.Zero;
+        WorldGen.lastDungeonHall = Vector2.get_Zero();
       }
       else if (WorldGen.genRand.Next(5) == 0)
       {
@@ -14380,7 +14550,7 @@ label_278:
             {
               num6 = WorldGen.genRand.Next(4);
             }
-            while ((num6 != 0 || !flag5) && (num6 != 1 || !flag6) && ((num6 != 2 || !flag7) && (num6 != 3 || !flag8)));
+            while (!(num6 == 0 & flag5) && !(num6 == 1 & flag6) && (!(num6 == 2 & flag7) && !(num6 == 3 & flag8)));
             if (num6 == 0)
               num4 = -1;
             else if (num6 == 1)
@@ -14405,109 +14575,109 @@ label_278:
           flag4 = true;
         if (flag4)
         {
-          zero2.Y = 0.0f;
-          zero2.X = (float) num4;
-          zero3.Y = 0.0f;
-          zero3.X = (float) -num4;
-          zero1.Y = 0.0f;
-          zero1.X = (float) num4;
+          zero2.Y = (__Null) 0.0;
+          zero2.X = (__Null) (double) num4;
+          zero3.Y = (__Null) 0.0;
+          zero3.X = (__Null) (double) -num4;
+          zero1.Y = (__Null) 0.0;
+          zero1.X = (__Null) (double) num4;
           if (WorldGen.genRand.Next(3) == 0)
-            zero1.Y = WorldGen.genRand.Next(2) != 0 ? 0.2f : -0.2f;
+            zero1.Y = WorldGen.genRand.Next(2) != 0 ? (__Null) 0.200000002980232 : (__Null) -0.200000002980232;
         }
         else
         {
           ++num1;
-          zero1.Y = (float) num4;
-          zero1.X = 0.0f;
-          zero2.X = 0.0f;
-          zero2.Y = (float) num4;
-          zero3.X = 0.0f;
-          zero3.Y = (float) -num4;
+          zero1.Y = (__Null) (double) num4;
+          zero1.X = (__Null) 0.0;
+          zero2.X = (__Null) 0.0;
+          zero2.Y = (__Null) (double) num4;
+          zero3.X = (__Null) 0.0;
+          zero3.Y = (__Null) (double) -num4;
           if (WorldGen.genRand.Next(3) != 0)
           {
             flag2 = true;
-            zero1.X = WorldGen.genRand.Next(2) != 0 ? (float) -WorldGen.genRand.Next(10, 20) * 0.1f : (float) WorldGen.genRand.Next(10, 20) * 0.1f;
+            zero1.X = WorldGen.genRand.Next(2) != 0 ? (__Null) ((double) -WorldGen.genRand.Next(10, 20) * 0.100000001490116) : (__Null) ((double) WorldGen.genRand.Next(10, 20) * 0.100000001490116);
           }
           else if (WorldGen.genRand.Next(2) == 0)
-            zero1.X = WorldGen.genRand.Next(2) != 0 ? (float) -WorldGen.genRand.Next(20, 40) * 0.01f : (float) WorldGen.genRand.Next(20, 40) * 0.01f;
+            zero1.X = WorldGen.genRand.Next(2) != 0 ? (__Null) ((double) -WorldGen.genRand.Next(20, 40) * 0.00999999977648258) : (__Null) ((double) WorldGen.genRand.Next(20, 40) * 0.00999999977648258);
           else
             num3 /= 2;
         }
-        if (WorldGen.lastDungeonHall != zero3)
+        if (Vector2.op_Inequality(WorldGen.lastDungeonHall, zero3))
           flag1 = true;
       }
       int num7 = 0;
       if (!forceX)
       {
-        if ((double) vector2.X > (double) (WorldGen.lastMaxTilesX - 200))
+        if (vector2.X > (double) (WorldGen.lastMaxTilesX - 200))
         {
           int num4 = -1;
-          zero2.Y = 0.0f;
-          zero2.X = (float) num4;
-          zero1.Y = 0.0f;
-          zero1.X = (float) num4;
+          zero2.Y = (__Null) 0.0;
+          zero2.X = (__Null) (double) num4;
+          zero1.Y = (__Null) 0.0;
+          zero1.X = (__Null) (double) num4;
           if (WorldGen.genRand.Next(3) == 0)
-            zero1.Y = WorldGen.genRand.Next(2) != 0 ? 0.2f : -0.2f;
+            zero1.Y = WorldGen.genRand.Next(2) != 0 ? (__Null) 0.200000002980232 : (__Null) -0.200000002980232;
         }
-        else if ((double) vector2.X < 200.0)
+        else if (vector2.X < 200.0)
         {
           int num4 = 1;
-          zero2.Y = 0.0f;
-          zero2.X = (float) num4;
-          zero1.Y = 0.0f;
-          zero1.X = (float) num4;
+          zero2.Y = (__Null) 0.0;
+          zero2.X = (__Null) (double) num4;
+          zero1.Y = (__Null) 0.0;
+          zero1.X = (__Null) (double) num4;
           if (WorldGen.genRand.Next(3) == 0)
-            zero1.Y = WorldGen.genRand.Next(2) != 0 ? 0.2f : -0.2f;
+            zero1.Y = WorldGen.genRand.Next(2) != 0 ? (__Null) 0.200000002980232 : (__Null) -0.200000002980232;
         }
-        else if ((double) vector2.Y > (double) (WorldGen.lastMaxTilesY - 300))
+        else if (vector2.Y > (double) (WorldGen.lastMaxTilesY - 300))
         {
           int num4 = -1;
           ++num1;
-          zero1.Y = (float) num4;
-          zero1.X = 0.0f;
-          zero2.X = 0.0f;
-          zero2.Y = (float) num4;
+          zero1.Y = (__Null) (double) num4;
+          zero1.X = (__Null) 0.0;
+          zero2.X = (__Null) 0.0;
+          zero2.Y = (__Null) (double) num4;
           if (WorldGen.genRand.Next(2) == 0)
-            zero1.X = WorldGen.genRand.Next(2) != 0 ? (float) -WorldGen.genRand.Next(20, 50) * 0.01f : (float) WorldGen.genRand.Next(20, 50) * 0.01f;
+            zero1.X = WorldGen.genRand.Next(2) != 0 ? (__Null) ((double) -WorldGen.genRand.Next(20, 50) * 0.00999999977648258) : (__Null) ((double) WorldGen.genRand.Next(20, 50) * 0.00999999977648258);
         }
         else if ((double) vector2.Y < Main.rockLayer + 100.0)
         {
           int num4 = 1;
           ++num1;
-          zero1.Y = (float) num4;
-          zero1.X = 0.0f;
-          zero2.X = 0.0f;
-          zero2.Y = (float) num4;
+          zero1.Y = (__Null) (double) num4;
+          zero1.X = (__Null) 0.0;
+          zero2.X = (__Null) 0.0;
+          zero2.Y = (__Null) (double) num4;
           if (WorldGen.genRand.Next(3) != 0)
           {
             flag2 = true;
-            zero1.X = WorldGen.genRand.Next(2) != 0 ? (float) -WorldGen.genRand.Next(10, 20) * 0.1f : (float) WorldGen.genRand.Next(10, 20) * 0.1f;
+            zero1.X = WorldGen.genRand.Next(2) != 0 ? (__Null) ((double) -WorldGen.genRand.Next(10, 20) * 0.100000001490116) : (__Null) ((double) WorldGen.genRand.Next(10, 20) * 0.100000001490116);
           }
           else if (WorldGen.genRand.Next(2) == 0)
-            zero1.X = WorldGen.genRand.Next(2) != 0 ? (float) WorldGen.genRand.Next(20, 50) * 0.01f : (float) WorldGen.genRand.Next(20, 50) * 0.01f;
+            zero1.X = WorldGen.genRand.Next(2) != 0 ? (__Null) ((double) WorldGen.genRand.Next(20, 50) * 0.00999999977648258) : (__Null) ((double) WorldGen.genRand.Next(20, 50) * 0.00999999977648258);
         }
-        else if ((double) vector2.X < (double) (Main.maxTilesX / 2) && (double) vector2.X > (double) Main.maxTilesX * 0.25)
+        else if (vector2.X < (double) (Main.maxTilesX / 2) && (double) vector2.X > (double) Main.maxTilesX * 0.25)
         {
           int num4 = -1;
-          zero2.Y = 0.0f;
-          zero2.X = (float) num4;
-          zero1.Y = 0.0f;
-          zero1.X = (float) num4;
+          zero2.Y = (__Null) 0.0;
+          zero2.X = (__Null) (double) num4;
+          zero1.Y = (__Null) 0.0;
+          zero1.X = (__Null) (double) num4;
           if (WorldGen.genRand.Next(3) == 0)
-            zero1.Y = WorldGen.genRand.Next(2) != 0 ? 0.2f : -0.2f;
+            zero1.Y = WorldGen.genRand.Next(2) != 0 ? (__Null) 0.200000002980232 : (__Null) -0.200000002980232;
         }
-        else if ((double) vector2.X > (double) (Main.maxTilesX / 2) && (double) vector2.X < (double) Main.maxTilesX * 0.75)
+        else if (vector2.X > (double) (Main.maxTilesX / 2) && (double) vector2.X < (double) Main.maxTilesX * 0.75)
         {
           int num4 = 1;
-          zero2.Y = 0.0f;
-          zero2.X = (float) num4;
-          zero1.Y = 0.0f;
-          zero1.X = (float) num4;
+          zero2.Y = (__Null) 0.0;
+          zero2.X = (__Null) (double) num4;
+          zero1.Y = (__Null) 0.0;
+          zero1.X = (__Null) (double) num4;
           if (WorldGen.genRand.Next(3) == 0)
-            zero1.Y = WorldGen.genRand.Next(2) != 0 ? 0.2f : -0.2f;
+            zero1.Y = WorldGen.genRand.Next(2) != 0 ? (__Null) 0.200000002980232 : (__Null) -0.200000002980232;
         }
       }
-      if ((double) zero2.Y == 0.0)
+      if (zero2.Y == 0.0)
       {
         WorldGen.DDoorX[WorldGen.numDDoors] = (int) vector2.X;
         WorldGen.DDoorY[WorldGen.numDDoors] = (int) vector2.Y;
@@ -14521,18 +14691,18 @@ label_278:
         ++WorldGen.numDPlats;
       }
       WorldGen.lastDungeonHall = zero2;
-      if ((double) Math.Abs(zero1.X) > (double) Math.Abs(zero1.Y) && WorldGen.genRand.Next(3) != 0)
+      if ((double) Math.Abs((float) zero1.X) > (double) Math.Abs((float) zero1.Y) && WorldGen.genRand.Next(3) != 0)
         num1 = (double) (int) (num2 * ((double) WorldGen.genRand.Next(110, 150) * 0.01));
       while (num3 > 0)
       {
         ++num7;
-        if ((double) zero2.X > 0.0 && (double) vector2.X > (double) (Main.maxTilesX - 100))
+        if (zero2.X > 0.0 && vector2.X > (double) (Main.maxTilesX - 100))
           num3 = 0;
-        else if ((double) zero2.X < 0.0 && (double) vector2.X < 100.0)
+        else if (zero2.X < 0.0 && vector2.X < 100.0)
           num3 = 0;
-        else if ((double) zero2.Y > 0.0 && (double) vector2.Y > (double) (Main.maxTilesY - 100))
+        else if (zero2.Y > 0.0 && vector2.Y > (double) (Main.maxTilesY - 100))
           num3 = 0;
-        else if ((double) zero2.Y < 0.0 && (double) vector2.Y < Main.rockLayer + 50.0)
+        else if (zero2.Y < 0.0 && (double) vector2.Y < Main.rockLayer + 50.0)
           num3 = 0;
         --num3;
         int num4 = (int) ((double) vector2.X - num1 - 4.0 - (double) WorldGen.genRand.Next(6));
@@ -14571,9 +14741,9 @@ label_278:
             Main.tile[index1, index2].wall = (byte) wallType;
         }
         int num9 = 0;
-        if ((double) zero1.Y == 0.0 && WorldGen.genRand.Next((int) num1 + 1) == 0)
+        if (zero1.Y == 0.0 && WorldGen.genRand.Next((int) num1 + 1) == 0)
           num9 = WorldGen.genRand.Next(1, 3);
-        else if ((double) zero1.X == 0.0 && WorldGen.genRand.Next((int) num1 - 1) == 0)
+        else if (zero1.X == 0.0 && WorldGen.genRand.Next((int) num1 - 1) == 0)
           num9 = WorldGen.genRand.Next(1, 3);
         else if (WorldGen.genRand.Next((int) num1 * 3) == 0)
           num9 = WorldGen.genRand.Next(1, 3);
@@ -14597,16 +14767,24 @@ label_278:
             Main.tile[index1, index2].wall = (byte) wallType;
           }
         }
-        vector2 += zero1;
+        vector2 = Vector2.op_Addition(vector2, zero1);
         if (flag2 && num7 > WorldGen.genRand.Next(10, 20))
         {
           num7 = 0;
-          zero1.X *= -1f;
+          // ISSUE: explicit reference operation
+          // ISSUE: variable of a reference type
+          __Null& local = @zero1.X;
+          // ISSUE: cast to a reference type
+          // ISSUE: explicit reference operation
+          double num14 = (double) ^(float&) local * -1.0;
+          // ISSUE: cast to a reference type
+          // ISSUE: explicit reference operation
+          ^(float&) local = (float) num14;
         }
       }
       WorldGen.dungeonX = (int) vector2.X;
       WorldGen.dungeonY = (int) vector2.Y;
-      if ((double) zero2.Y == 0.0)
+      if (zero2.Y == 0.0)
       {
         WorldGen.DDoorX[WorldGen.numDDoors] = (int) vector2.X;
         WorldGen.DDoorY[WorldGen.numDDoors] = (int) vector2.Y;
@@ -14625,11 +14803,11 @@ label_278:
     {
       double num1 = (double) WorldGen.genRand.Next(15, 30);
       Vector2 vector2_1;
-      vector2_1.X = (float) WorldGen.genRand.Next(-10, 11) * 0.1f;
-      vector2_1.Y = (float) WorldGen.genRand.Next(-10, 11) * 0.1f;
+      vector2_1.X = (__Null) ((double) WorldGen.genRand.Next(-10, 11) * 0.100000001490116);
+      vector2_1.Y = (__Null) ((double) WorldGen.genRand.Next(-10, 11) * 0.100000001490116);
       Vector2 vector2_2;
-      vector2_2.X = (float) i;
-      vector2_2.Y = (float) j - (float) num1 / 2f;
+      vector2_2.X = (__Null) (double) i;
+      vector2_2.Y = (__Null) ((double) j - num1 / 2.0);
       int num2 = WorldGen.genRand.Next(10, 20);
       double num3 = (double) vector2_2.X;
       double num4 = (double) vector2_2.X;
@@ -14701,17 +14879,33 @@ label_278:
             Main.tile[index1, index2].wall = (byte) wallType;
           }
         }
-        vector2_2 += vector2_1;
-        vector2_1.X += (float) WorldGen.genRand.Next(-10, 11) * 0.05f;
-        vector2_1.Y += (float) WorldGen.genRand.Next(-10, 11) * 0.05f;
-        if ((double) vector2_1.X > 1.0)
-          vector2_1.X = 1f;
-        if ((double) vector2_1.X < -1.0)
-          vector2_1.X = -1f;
-        if ((double) vector2_1.Y > 1.0)
-          vector2_1.Y = 1f;
-        if ((double) vector2_1.Y < -1.0)
-          vector2_1.Y = -1f;
+        vector2_2 = Vector2.op_Addition(vector2_2, vector2_1);
+        // ISSUE: explicit reference operation
+        // ISSUE: variable of a reference type
+        __Null& local1 = @vector2_1.X;
+        // ISSUE: cast to a reference type
+        // ISSUE: explicit reference operation
+        double num15 = (double) ^(float&) local1 + (double) WorldGen.genRand.Next(-10, 11) * 0.0500000007450581;
+        // ISSUE: cast to a reference type
+        // ISSUE: explicit reference operation
+        ^(float&) local1 = (float) num15;
+        // ISSUE: explicit reference operation
+        // ISSUE: variable of a reference type
+        __Null& local2 = @vector2_1.Y;
+        // ISSUE: cast to a reference type
+        // ISSUE: explicit reference operation
+        double num16 = (double) ^(float&) local2 + (double) WorldGen.genRand.Next(-10, 11) * 0.0500000007450581;
+        // ISSUE: cast to a reference type
+        // ISSUE: explicit reference operation
+        ^(float&) local2 = (float) num16;
+        if (vector2_1.X > 1.0)
+          vector2_1.X = (__Null) 1.0;
+        if (vector2_1.X < -1.0)
+          vector2_1.X = (__Null) -1.0;
+        if (vector2_1.Y > 1.0)
+          vector2_1.Y = (__Null) 1.0;
+        if (vector2_1.Y < -1.0)
+          vector2_1.Y = (__Null) -1.0;
       }
       WorldGen.dRoomX[WorldGen.numDRooms] = (int) vector2_2.X;
       WorldGen.dRoomY[WorldGen.numDRooms] = (int) vector2_2.Y;
@@ -14738,8 +14932,8 @@ label_278:
       double dxStrength1 = WorldGen.dxStrength1;
       double dyStrength1 = WorldGen.dyStrength1;
       Vector2 vector2;
-      vector2.X = (float) i;
-      vector2.Y = (float) j - (float) dyStrength1 / 2f;
+      vector2.X = (__Null) (double) i;
+      vector2.Y = (__Null) ((double) j - dyStrength1 / 2.0);
       WorldGen.dMinY = (int) vector2.Y;
       int num2 = 1;
       if (i > Main.maxTilesX / 2)
@@ -14908,27 +15102,59 @@ label_278:
           break;
         }
       }
-      vector2.X += (float) (dxStrength1 * 0.600000023841858) * (float) num2;
-      vector2.Y += (float) dyStrength1 * 0.5f;
+      // ISSUE: explicit reference operation
+      // ISSUE: variable of a reference type
+      __Null& local1 = @vector2.X;
+      // ISSUE: cast to a reference type
+      // ISSUE: explicit reference operation
+      double num30 = (double) ^(float&) local1 + dxStrength1 * 0.600000023841858 * (double) num2;
+      // ISSUE: cast to a reference type
+      // ISSUE: explicit reference operation
+      ^(float&) local1 = (float) num30;
+      // ISSUE: explicit reference operation
+      // ISSUE: variable of a reference type
+      __Null& local2 = @vector2.Y;
+      // ISSUE: cast to a reference type
+      // ISSUE: explicit reference operation
+      double num31 = (double) ^(float&) local2 + dyStrength1 * 0.5;
+      // ISSUE: cast to a reference type
+      // ISSUE: explicit reference operation
+      ^(float&) local2 = (float) num31;
       double dxStrength2 = WorldGen.dxStrength2;
       double dyStrength2 = WorldGen.dyStrength2;
-      vector2.X += (float) (dxStrength2 * 0.550000011920929) * (float) num2;
-      vector2.Y -= (float) dyStrength2 * 0.5f;
-      int num30 = (int) ((double) vector2.X - dxStrength2 * 0.600000023841858 - (double) WorldGen.genRand.Next(1, 3));
-      int num31 = (int) ((double) vector2.X + dxStrength2 * 0.600000023841858 + (double) WorldGen.genRand.Next(1, 3));
-      int num32 = (int) ((double) vector2.Y - dyStrength2 * 0.600000023841858 - (double) WorldGen.genRand.Next(1, 3));
-      int num33 = (int) ((double) vector2.Y + dyStrength2 * 0.600000023841858 + (double) WorldGen.genRand.Next(6, 16));
-      if (num30 < 0)
-        num30 = 0;
-      if (num31 > Main.maxTilesX)
-        num31 = Main.maxTilesX;
-      if (num32 < 0)
-        num32 = 0;
-      if (num33 > Main.maxTilesY)
-        num33 = Main.maxTilesY;
-      for (int index1 = num30; index1 < num31; ++index1)
+      // ISSUE: explicit reference operation
+      // ISSUE: variable of a reference type
+      __Null& local3 = @vector2.X;
+      // ISSUE: cast to a reference type
+      // ISSUE: explicit reference operation
+      double num32 = (double) ^(float&) local3 + dxStrength2 * 0.550000011920929 * (double) num2;
+      // ISSUE: cast to a reference type
+      // ISSUE: explicit reference operation
+      ^(float&) local3 = (float) num32;
+      // ISSUE: explicit reference operation
+      // ISSUE: variable of a reference type
+      __Null& local4 = @vector2.Y;
+      // ISSUE: cast to a reference type
+      // ISSUE: explicit reference operation
+      double num33 = (double) ^(float&) local4 - dyStrength2 * 0.5;
+      // ISSUE: cast to a reference type
+      // ISSUE: explicit reference operation
+      ^(float&) local4 = (float) num33;
+      int num34 = (int) ((double) vector2.X - dxStrength2 * 0.600000023841858 - (double) WorldGen.genRand.Next(1, 3));
+      int num35 = (int) ((double) vector2.X + dxStrength2 * 0.600000023841858 + (double) WorldGen.genRand.Next(1, 3));
+      int num36 = (int) ((double) vector2.Y - dyStrength2 * 0.600000023841858 - (double) WorldGen.genRand.Next(1, 3));
+      int num37 = (int) ((double) vector2.Y + dyStrength2 * 0.600000023841858 + (double) WorldGen.genRand.Next(6, 16));
+      if (num34 < 0)
+        num34 = 0;
+      if (num35 > Main.maxTilesX)
+        num35 = Main.maxTilesX;
+      if (num36 < 0)
+        num36 = 0;
+      if (num37 > Main.maxTilesY)
+        num37 = Main.maxTilesY;
+      for (int index1 = num34; index1 < num35; ++index1)
       {
-        for (int index2 = num32; index2 < num33; ++index2)
+        for (int index2 = num36; index2 < num37; ++index2)
         {
           if ((int) Main.tile[index1, index2].wall != wallType)
           {
@@ -14949,9 +15175,9 @@ label_278:
           }
         }
       }
-      for (int index1 = num30; index1 < num31; ++index1)
+      for (int index1 = num34; index1 < num35; ++index1)
       {
-        for (int index2 = num33; (double) index2 < Main.worldSurface; ++index2)
+        for (int index2 = num37; (double) index2 < Main.worldSurface; ++index2)
         {
           if (!Main.wallDungeon[(int) Main.tile[index1, index2].wall])
           {
@@ -14961,29 +15187,14 @@ label_278:
           Main.tile[index1, index2].wall = (byte) wallType;
         }
       }
-      int num34 = (int) ((double) vector2.X - dxStrength2 * 0.5);
-      int num35 = (int) ((double) vector2.X + dxStrength2 * 0.5);
-      int num36 = num34;
+      int num38 = (int) ((double) vector2.X - dxStrength2 * 0.5);
+      int num39 = (int) ((double) vector2.X + dxStrength2 * 0.5);
+      int num40 = num38;
       if (num2 < 0)
-        ++num36;
-      int num37 = num36 + 5 + WorldGen.genRand.Next(4);
-      int num38 = num32 - 3 - WorldGen.genRand.Next(3);
-      int num39 = num32;
-      for (int index1 = num36; index1 < num37; ++index1)
-      {
-        for (int index2 = num38; index2 < num39; ++index2)
-        {
-          if ((int) Main.tile[index1, index2].wall != wallType)
-          {
-            Main.tile[index1, index2].active(true);
-            Main.tile[index1, index2].type = tileType;
-          }
-        }
-      }
-      int num40 = num35 - 5 - WorldGen.genRand.Next(4);
-      int num41 = num35;
-      int num42 = num32 - 3 - WorldGen.genRand.Next(3);
-      int num43 = num32;
+        ++num40;
+      int num41 = num40 + 5 + WorldGen.genRand.Next(4);
+      int num42 = num36 - 3 - WorldGen.genRand.Next(3);
+      int num43 = num36;
       for (int index1 = num40; index1 < num41; ++index1)
       {
         for (int index2 = num42; index2 < num43; ++index2)
@@ -14995,14 +15206,13 @@ label_278:
           }
         }
       }
-      int num44 = 1 + WorldGen.genRand.Next(2);
-      int num45 = 2 + WorldGen.genRand.Next(4);
-      int num46 = 0;
-      if (num2 < 0)
-        ++num35;
-      for (int index1 = num34 + 1; index1 < num35 - 1; ++index1)
+      int num44 = num39 - 5 - WorldGen.genRand.Next(4);
+      int num45 = num39;
+      int num46 = num36 - 3 - WorldGen.genRand.Next(3);
+      int num47 = num36;
+      for (int index1 = num44; index1 < num45; ++index1)
       {
-        for (int index2 = num32 - num44; index2 < num32; ++index2)
+        for (int index2 = num46; index2 < num47; ++index2)
         {
           if ((int) Main.tile[index1, index2].wall != wallType)
           {
@@ -15010,51 +15220,67 @@ label_278:
             Main.tile[index1, index2].type = tileType;
           }
         }
-        ++num46;
-        if (num46 >= num45)
+      }
+      int num48 = 1 + WorldGen.genRand.Next(2);
+      int num49 = 2 + WorldGen.genRand.Next(4);
+      int num50 = 0;
+      if (num2 < 0)
+        ++num39;
+      for (int index1 = num38 + 1; index1 < num39 - 1; ++index1)
+      {
+        for (int index2 = num36 - num48; index2 < num36; ++index2)
         {
-          index1 += num45;
-          num46 = 0;
+          if ((int) Main.tile[index1, index2].wall != wallType)
+          {
+            Main.tile[index1, index2].active(true);
+            Main.tile[index1, index2].type = tileType;
+          }
+        }
+        ++num50;
+        if (num50 >= num49)
+        {
+          index1 += num49;
+          num50 = 0;
         }
       }
-      int num47 = (int) ((double) vector2.X - dxStrength2 * 0.6);
-      int num48 = (int) ((double) vector2.X + dxStrength2 * 0.6);
-      int num49 = (int) ((double) vector2.Y - dyStrength2 * 0.6);
-      int num50 = (int) ((double) vector2.Y + dyStrength2 * 0.6);
-      if (num47 < 0)
-        num47 = 0;
-      if (num48 > Main.maxTilesX)
-        num48 = Main.maxTilesX;
-      if (num49 < 0)
-        num49 = 0;
-      if (num50 > Main.maxTilesY)
-        num50 = Main.maxTilesY;
-      for (int index1 = num47; index1 < num48; ++index1)
-      {
-        for (int index2 = num49; index2 < num50; ++index2)
-          Main.tile[index1, index2].wall = (byte) 0;
-      }
-      int num51 = (int) ((double) vector2.X - dxStrength2 * 0.5);
-      int num52 = (int) ((double) vector2.X + dxStrength2 * 0.5);
-      int num53 = (int) ((double) vector2.Y - dyStrength2 * 0.5);
-      int index5 = (int) ((double) vector2.Y + dyStrength2 * 0.5);
+      int num51 = (int) ((double) vector2.X - dxStrength2 * 0.6);
+      int num52 = (int) ((double) vector2.X + dxStrength2 * 0.6);
+      int num53 = (int) ((double) vector2.Y - dyStrength2 * 0.6);
+      int num54 = (int) ((double) vector2.Y + dyStrength2 * 0.6);
       if (num51 < 0)
         num51 = 0;
       if (num52 > Main.maxTilesX)
         num52 = Main.maxTilesX;
       if (num53 < 0)
         num53 = 0;
-      if (index5 > Main.maxTilesY)
-        index5 = Main.maxTilesY;
+      if (num54 > Main.maxTilesY)
+        num54 = Main.maxTilesY;
       for (int index1 = num51; index1 < num52; ++index1)
       {
-        for (int index2 = num53; index2 < index5; ++index2)
+        for (int index2 = num53; index2 < num54; ++index2)
+          Main.tile[index1, index2].wall = (byte) 0;
+      }
+      int num55 = (int) ((double) vector2.X - dxStrength2 * 0.5);
+      int num56 = (int) ((double) vector2.X + dxStrength2 * 0.5);
+      int num57 = (int) ((double) vector2.Y - dyStrength2 * 0.5);
+      int index5 = (int) ((double) vector2.Y + dyStrength2 * 0.5);
+      if (num55 < 0)
+        num55 = 0;
+      if (num56 > Main.maxTilesX)
+        num56 = Main.maxTilesX;
+      if (num57 < 0)
+        num57 = 0;
+      if (index5 > Main.maxTilesY)
+        index5 = Main.maxTilesY;
+      for (int index1 = num55; index1 < num56; ++index1)
+      {
+        for (int index2 = num57; index2 < index5; ++index2)
         {
           Main.tile[index1, index2].active(false);
           Main.tile[index1, index2].wall = (byte) 0;
         }
       }
-      for (int index1 = num51; index1 < num52; ++index1)
+      for (int index1 = num55; index1 < num56; ++index1)
       {
         if (!Main.tile[index1, index5].active())
         {
@@ -15076,11 +15302,11 @@ label_278:
       Main.npc[index6].homeTileY = Main.dungeonY;
       if (num2 == 1)
       {
-        int num54 = 0;
-        for (int index1 = num52; index1 < num52 + 50; ++index1)
+        int num58 = 0;
+        for (int index1 = num56; index1 < num56 + 50; ++index1)
         {
-          ++num54;
-          for (int index2 = index5 + num54; index2 < index5 + 50; ++index2)
+          ++num58;
+          for (int index2 = index5 + num58; index2 < index5 + 50; ++index2)
           {
             if (!Main.wallDungeon[(int) Main.tile[index1, index2].wall])
             {
@@ -15092,11 +15318,11 @@ label_278:
       }
       else
       {
-        int num54 = 0;
-        for (int index1 = num51; index1 > num51 - 50; --index1)
+        int num58 = 0;
+        for (int index1 = num55; index1 > num55 - 50; --index1)
         {
-          ++num54;
-          for (int index2 = index5 + num54; index2 < index5 + 50; ++index2)
+          ++num58;
+          for (int index2 = index5 + num58; index2 < index5 + 50; ++index2)
           {
             if (!Main.wallDungeon[(int) Main.tile[index1, index2].wall])
             {
@@ -15106,54 +15332,88 @@ label_278:
           }
         }
       }
-      int num55 = 1 + WorldGen.genRand.Next(2);
-      int num56 = 2 + WorldGen.genRand.Next(4);
-      int num57 = 0;
-      int num58 = (int) ((double) vector2.X - dxStrength2 * 0.5);
-      int num59 = (int) ((double) vector2.X + dxStrength2 * 0.5);
-      int num60 = num58 + 2;
-      int num61 = num59 - 2;
-      for (int i1 = num60; i1 < num61; ++i1)
+      int num59 = 1 + WorldGen.genRand.Next(2);
+      int num60 = 2 + WorldGen.genRand.Next(4);
+      int num61 = 0;
+      int num62 = (int) ((double) vector2.X - dxStrength2 * 0.5);
+      int num63 = (int) ((double) vector2.X + dxStrength2 * 0.5);
+      int num64 = num62 + 2;
+      int num65 = num63 - 2;
+      for (int i1 = num64; i1 < num65; ++i1)
       {
-        for (int j1 = num53; j1 < index5; ++j1)
+        for (int j1 = num57; j1 < index5; ++j1)
           WorldGen.PlaceWall(i1, j1, wallType, true);
-        ++num57;
-        if (num57 >= num56)
+        ++num61;
+        if (num61 >= num60)
         {
-          i1 += num56 * 2;
-          num57 = 0;
+          i1 += num60 * 2;
+          num61 = 0;
         }
       }
-      vector2.X -= (float) (dxStrength2 * 0.600000023841858) * (float) num2;
-      vector2.Y += (float) dyStrength2 * 0.5f;
-      double num62 = 15.0;
-      double num63 = 3.0;
-      vector2.Y -= (float) num63 * 0.5f;
-      int num64 = (int) ((double) vector2.X - num62 * 0.5);
-      int num65 = (int) ((double) vector2.X + num62 * 0.5);
-      int num66 = (int) ((double) vector2.Y - num63 * 0.5);
-      int num67 = (int) ((double) vector2.Y + num63 * 0.5);
-      if (num64 < 0)
-        num64 = 0;
-      if (num65 > Main.maxTilesX)
-        num65 = Main.maxTilesX;
-      if (num66 < 0)
-        num66 = 0;
-      if (num67 > Main.maxTilesY)
-        num67 = Main.maxTilesY;
-      for (int index1 = num64; index1 < num65; ++index1)
+      // ISSUE: explicit reference operation
+      // ISSUE: variable of a reference type
+      __Null& local5 = @vector2.X;
+      // ISSUE: cast to a reference type
+      // ISSUE: explicit reference operation
+      double num66 = (double) ^(float&) local5 - dxStrength2 * 0.600000023841858 * (double) num2;
+      // ISSUE: cast to a reference type
+      // ISSUE: explicit reference operation
+      ^(float&) local5 = (float) num66;
+      // ISSUE: explicit reference operation
+      // ISSUE: variable of a reference type
+      __Null& local6 = @vector2.Y;
+      // ISSUE: cast to a reference type
+      // ISSUE: explicit reference operation
+      double num67 = (double) ^(float&) local6 + dyStrength2 * 0.5;
+      // ISSUE: cast to a reference type
+      // ISSUE: explicit reference operation
+      ^(float&) local6 = (float) num67;
+      double num68 = 15.0;
+      double num69 = 3.0;
+      // ISSUE: explicit reference operation
+      // ISSUE: variable of a reference type
+      __Null& local7 = @vector2.Y;
+      // ISSUE: cast to a reference type
+      // ISSUE: explicit reference operation
+      double num70 = (double) ^(float&) local7 - num69 * 0.5;
+      // ISSUE: cast to a reference type
+      // ISSUE: explicit reference operation
+      ^(float&) local7 = (float) num70;
+      int num71 = (int) ((double) vector2.X - num68 * 0.5);
+      int num72 = (int) ((double) vector2.X + num68 * 0.5);
+      int num73 = (int) ((double) vector2.Y - num69 * 0.5);
+      int num74 = (int) ((double) vector2.Y + num69 * 0.5);
+      if (num71 < 0)
+        num71 = 0;
+      if (num72 > Main.maxTilesX)
+        num72 = Main.maxTilesX;
+      if (num73 < 0)
+        num73 = 0;
+      if (num74 > Main.maxTilesY)
+        num74 = Main.maxTilesY;
+      for (int index1 = num71; index1 < num72; ++index1)
       {
-        for (int index2 = num66; index2 < num67; ++index2)
+        for (int index2 = num73; index2 < num74; ++index2)
           Main.tile[index1, index2].active(false);
       }
       if (num2 < 0)
-        --vector2.X;
+      {
+        // ISSUE: explicit reference operation
+        // ISSUE: variable of a reference type
+        __Null& local8 = @vector2.X;
+        // ISSUE: cast to a reference type
+        // ISSUE: explicit reference operation
+        double num58 = (double) ^(float&) local8 - 1.0;
+        // ISSUE: cast to a reference type
+        // ISSUE: explicit reference operation
+        ^(float&) local8 = (float) num58;
+      }
       WorldGen.PlaceTile((int) vector2.X, (int) vector2.Y + 1, 10, true, false, -1, 13);
     }
 
     public static bool AddBuriedChest(Point point, int contain = 0, bool notNearOtherChests = false, int Style = -1)
     {
-      return WorldGen.AddBuriedChest(point.X, point.Y, contain, notNearOtherChests, Style);
+      return WorldGen.AddBuriedChest((int) point.X, (int) point.Y, contain, notNearOtherChests, Style);
     }
 
     public static bool AddBuriedChest(int i, int j, int contain = 0, bool notNearOtherChests = false, int Style = -1)
@@ -15242,7 +15502,8 @@ label_278:
               flag3 = true;
             }
           }
-          int index1 = WorldGen.PlaceChest(num1 - 1, num2 - 1, (ushort) 21, notNearOtherChests, style);
+          int num3 = 1;
+          int index1 = WorldGen.PlaceChest(num1 - num3, num2 - 1, (ushort) 21, notNearOtherChests, style);
           if (index1 < 0)
             return false;
           if (flag3)
@@ -15274,58 +15535,68 @@ label_278:
               }
               else
               {
-                int num3 = WorldGen.genRand.Next(11);
-                if (num3 == 0)
+                int num4 = WorldGen.genRand.Next(11);
+                if (num4 == 0)
                 {
                   Main.chest[index1].item[index2].SetDefaults(280, false);
                   Main.chest[index1].item[index2].Prefix(-1);
                 }
-                if (num3 == 1)
+                int num5 = 1;
+                if (num4 == num5)
                 {
                   Main.chest[index1].item[index2].SetDefaults(281, false);
                   Main.chest[index1].item[index2].Prefix(-1);
                 }
-                if (num3 == 2)
+                int num6 = 2;
+                if (num4 == num6)
                 {
                   Main.chest[index1].item[index2].SetDefaults(284, false);
                   Main.chest[index1].item[index2].Prefix(-1);
                 }
-                if (num3 == 3)
+                int num7 = 3;
+                if (num4 == num7)
                 {
                   Main.chest[index1].item[index2].SetDefaults(282, false);
                   Main.chest[index1].item[index2].stack = WorldGen.genRand.Next(40, 75);
                 }
-                if (num3 == 4)
+                int num8 = 4;
+                if (num4 == num8)
                 {
                   Main.chest[index1].item[index2].SetDefaults(279, false);
                   Main.chest[index1].item[index2].stack = WorldGen.genRand.Next(70, 150);
                 }
-                if (num3 == 5)
+                int num9 = 5;
+                if (num4 == num9)
                 {
                   Main.chest[index1].item[index2].SetDefaults(285, false);
                   Main.chest[index1].item[index2].Prefix(-1);
                 }
-                if (num3 == 6)
+                int num10 = 6;
+                if (num4 == num10)
                 {
                   Main.chest[index1].item[index2].SetDefaults(953, false);
                   Main.chest[index1].item[index2].Prefix(-1);
                 }
-                if (num3 == 7)
+                int num11 = 7;
+                if (num4 == num11)
                 {
                   Main.chest[index1].item[index2].SetDefaults(946, false);
                   Main.chest[index1].item[index2].Prefix(-1);
                 }
-                if (num3 == 8)
+                int num12 = 8;
+                if (num4 == num12)
                 {
                   Main.chest[index1].item[index2].SetDefaults(3068, false);
                   Main.chest[index1].item[index2].Prefix(-1);
                 }
-                if (num3 == 9)
+                int num13 = 9;
+                if (num4 == num13)
                 {
                   Main.chest[index1].item[index2].SetDefaults(3069, false);
                   Main.chest[index1].item[index2].Prefix(-1);
                 }
-                if (num3 == 10)
+                int num14 = 10;
+                if (num4 == num14)
                 {
                   Main.chest[index1].item[index2].SetDefaults(3084, false);
                   Main.chest[index1].item[index2].Prefix(-1);
@@ -15350,40 +15621,42 @@ label_278:
               }
               if (WorldGen.genRand.Next(2) == 0)
               {
-                int num3 = WorldGen.genRand.Next(2);
-                int num4 = WorldGen.genRand.Next(8) + 3;
-                if (num3 == 0)
+                int num4 = WorldGen.genRand.Next(2);
+                int num5 = WorldGen.genRand.Next(8) + 3;
+                if (num4 == 0)
                   Main.chest[index1].item[index2].SetDefaults(WorldGen.copperBar, false);
-                if (num3 == 1)
+                int num6 = 1;
+                if (num4 == num6)
                   Main.chest[index1].item[index2].SetDefaults(WorldGen.ironBar, false);
-                Main.chest[index1].item[index2].stack = num4;
+                Main.chest[index1].item[index2].stack = num5;
                 ++index2;
               }
               if (WorldGen.genRand.Next(2) == 0)
               {
-                int num3 = WorldGen.genRand.Next(50, 101);
+                int num4 = WorldGen.genRand.Next(50, 101);
                 Main.chest[index1].item[index2].SetDefaults(965, false);
-                Main.chest[index1].item[index2].stack = num3;
+                Main.chest[index1].item[index2].stack = num4;
                 ++index2;
               }
               if (WorldGen.genRand.Next(3) != 0)
               {
-                int num3 = WorldGen.genRand.Next(2);
-                int num4 = WorldGen.genRand.Next(26) + 25;
-                if (num3 == 0)
+                int num4 = WorldGen.genRand.Next(2);
+                int num5 = WorldGen.genRand.Next(26) + 25;
+                if (num4 == 0)
                   Main.chest[index1].item[index2].SetDefaults(40, false);
-                if (num3 == 1)
+                int num6 = 1;
+                if (num4 == num6)
                   Main.chest[index1].item[index2].SetDefaults(42, false);
-                Main.chest[index1].item[index2].stack = num4;
+                Main.chest[index1].item[index2].stack = num5;
                 ++index2;
               }
               if (WorldGen.genRand.Next(2) == 0)
               {
-                int num3 = WorldGen.genRand.Next(1);
-                int num4 = WorldGen.genRand.Next(3) + 3;
-                if (num3 == 0)
+                int num4 = WorldGen.genRand.Next(1);
+                int num5 = WorldGen.genRand.Next(3) + 3;
+                if (num4 == 0)
                   Main.chest[index1].item[index2].SetDefaults(28, false);
-                Main.chest[index1].item[index2].stack = num4;
+                Main.chest[index1].item[index2].stack = num5;
                 ++index2;
               }
               if (WorldGen.genRand.Next(3) != 0)
@@ -15394,32 +15667,38 @@ label_278:
               }
               if (WorldGen.genRand.Next(3) > 0)
               {
-                int num3 = WorldGen.genRand.Next(6);
-                int num4 = WorldGen.genRand.Next(1, 3);
-                if (num3 == 0)
+                int num4 = WorldGen.genRand.Next(6);
+                int num5 = WorldGen.genRand.Next(1, 3);
+                if (num4 == 0)
                   Main.chest[index1].item[index2].SetDefaults(292, false);
-                if (num3 == 1)
+                int num6 = 1;
+                if (num4 == num6)
                   Main.chest[index1].item[index2].SetDefaults(298, false);
-                if (num3 == 2)
+                int num7 = 2;
+                if (num4 == num7)
                   Main.chest[index1].item[index2].SetDefaults(299, false);
-                if (num3 == 3)
+                int num8 = 3;
+                if (num4 == num8)
                   Main.chest[index1].item[index2].SetDefaults(290, false);
-                if (num3 == 4)
+                int num9 = 4;
+                if (num4 == num9)
                   Main.chest[index1].item[index2].SetDefaults(2322, false);
-                if (num3 == 5)
+                int num10 = 5;
+                if (num4 == num10)
                   Main.chest[index1].item[index2].SetDefaults(2325, false);
-                Main.chest[index1].item[index2].stack = num4;
+                Main.chest[index1].item[index2].stack = num5;
                 ++index2;
               }
               if (WorldGen.genRand.Next(2) == 0)
               {
-                int num3 = WorldGen.genRand.Next(2);
-                int num4 = WorldGen.genRand.Next(11) + 10;
-                if (num3 == 0)
+                int num4 = WorldGen.genRand.Next(2);
+                int num5 = WorldGen.genRand.Next(11) + 10;
+                if (num4 == 0)
                   Main.chest[index1].item[index2].SetDefaults(8, false);
-                if (num3 == 1)
+                int num6 = 1;
+                if (num4 == num6)
                   Main.chest[index1].item[index2].SetDefaults(31, false);
-                Main.chest[index1].item[index2].stack = num4;
+                Main.chest[index1].item[index2].stack = num5;
                 ++index2;
               }
               if (WorldGen.genRand.Next(2) == 0)
@@ -15444,7 +15723,7 @@ label_278:
               }
               else
               {
-                int num3 = WorldGen.genRand.Next(7);
+                int num4 = WorldGen.genRand.Next(7);
                 if (WorldGen.genRand.Next(20) == 0)
                 {
                   Main.chest[index1].item[index2].SetDefaults(997, false);
@@ -15452,37 +15731,37 @@ label_278:
                 }
                 else
                 {
-                  if (num3 == 0)
+                  if (num4 == 0)
                   {
                     Main.chest[index1].item[index2].SetDefaults(49, false);
                     Main.chest[index1].item[index2].Prefix(-1);
                   }
-                  if (num3 == 1)
+                  if (num4 == 1)
                   {
                     Main.chest[index1].item[index2].SetDefaults(50, false);
                     Main.chest[index1].item[index2].Prefix(-1);
                   }
-                  if (num3 == 2)
+                  if (num4 == 2)
                   {
                     Main.chest[index1].item[index2].SetDefaults(53, false);
                     Main.chest[index1].item[index2].Prefix(-1);
                   }
-                  if (num3 == 3)
+                  if (num4 == 3)
                   {
                     Main.chest[index1].item[index2].SetDefaults(54, false);
                     Main.chest[index1].item[index2].Prefix(-1);
                   }
-                  if (num3 == 4)
+                  if (num4 == 4)
                   {
                     Main.chest[index1].item[index2].SetDefaults(55, false);
                     Main.chest[index1].item[index2].Prefix(-1);
                   }
-                  if (num3 == 5)
+                  if (num4 == 5)
                   {
                     Main.chest[index1].item[index2].SetDefaults(975, false);
                     Main.chest[index1].item[index2].Prefix(-1);
                   }
-                  if (num3 == 6)
+                  if (num4 == 6)
                   {
                     Main.chest[index1].item[index2].SetDefaults(930, false);
                     Main.chest[index1].item[index2].Prefix(-1);
@@ -15506,82 +15785,92 @@ label_278:
               }
               if (WorldGen.genRand.Next(3) == 0)
               {
-                int num3 = WorldGen.genRand.Next(50, 101);
+                int num4 = WorldGen.genRand.Next(50, 101);
                 Main.chest[index1].item[index2].SetDefaults(965, false);
-                Main.chest[index1].item[index2].stack = num3;
+                Main.chest[index1].item[index2].stack = num4;
                 ++index2;
               }
               if (WorldGen.genRand.Next(2) == 0)
               {
-                int num3 = WorldGen.genRand.Next(2);
-                int num4 = WorldGen.genRand.Next(10) + 5;
-                if (num3 == 0)
+                int num4 = WorldGen.genRand.Next(2);
+                int num5 = WorldGen.genRand.Next(10) + 5;
+                if (num4 == 0)
                   Main.chest[index1].item[index2].SetDefaults(WorldGen.ironBar, false);
-                if (num3 == 1)
+                int num6 = 1;
+                if (num4 == num6)
                   Main.chest[index1].item[index2].SetDefaults(WorldGen.silverBar, false);
-                Main.chest[index1].item[index2].stack = num4;
+                Main.chest[index1].item[index2].stack = num5;
                 ++index2;
               }
               if (WorldGen.genRand.Next(2) == 0)
               {
-                int num3 = WorldGen.genRand.Next(2);
-                int num4 = WorldGen.genRand.Next(25) + 25;
-                if (num3 == 0)
+                int num4 = WorldGen.genRand.Next(2);
+                int num5 = WorldGen.genRand.Next(25) + 25;
+                if (num4 == 0)
                   Main.chest[index1].item[index2].SetDefaults(40, false);
-                if (num3 == 1)
+                int num6 = 1;
+                if (num4 == num6)
                   Main.chest[index1].item[index2].SetDefaults(42, false);
-                Main.chest[index1].item[index2].stack = num4;
+                Main.chest[index1].item[index2].stack = num5;
                 ++index2;
               }
               if (WorldGen.genRand.Next(2) == 0)
               {
-                int num3 = WorldGen.genRand.Next(1);
-                int num4 = WorldGen.genRand.Next(3) + 3;
-                if (num3 == 0)
+                int num4 = WorldGen.genRand.Next(1);
+                int num5 = WorldGen.genRand.Next(3) + 3;
+                if (num4 == 0)
                   Main.chest[index1].item[index2].SetDefaults(28, false);
-                Main.chest[index1].item[index2].stack = num4;
+                Main.chest[index1].item[index2].stack = num5;
                 ++index2;
               }
               if (WorldGen.genRand.Next(3) > 0)
               {
-                int num3 = WorldGen.genRand.Next(9);
-                int num4 = WorldGen.genRand.Next(1, 3);
-                if (num3 == 0)
+                int num4 = WorldGen.genRand.Next(9);
+                int num5 = WorldGen.genRand.Next(1, 3);
+                if (num4 == 0)
                   Main.chest[index1].item[index2].SetDefaults(289, false);
-                if (num3 == 1)
+                int num6 = 1;
+                if (num4 == num6)
                   Main.chest[index1].item[index2].SetDefaults(298, false);
-                if (num3 == 2)
+                int num7 = 2;
+                if (num4 == num7)
                   Main.chest[index1].item[index2].SetDefaults(299, false);
-                if (num3 == 3)
+                int num8 = 3;
+                if (num4 == num8)
                   Main.chest[index1].item[index2].SetDefaults(290, false);
-                if (num3 == 4)
+                int num9 = 4;
+                if (num4 == num9)
                   Main.chest[index1].item[index2].SetDefaults(303, false);
-                if (num3 == 5)
+                int num10 = 5;
+                if (num4 == num10)
                   Main.chest[index1].item[index2].SetDefaults(291, false);
-                if (num3 == 6)
+                int num11 = 6;
+                if (num4 == num11)
                   Main.chest[index1].item[index2].SetDefaults(304, false);
-                if (num3 == 7)
+                int num12 = 7;
+                if (num4 == num12)
                   Main.chest[index1].item[index2].SetDefaults(2322, false);
-                if (num3 == 8)
+                int num13 = 8;
+                if (num4 == num13)
                   Main.chest[index1].item[index2].SetDefaults(2329, false);
-                Main.chest[index1].item[index2].stack = num4;
+                Main.chest[index1].item[index2].stack = num5;
                 ++index2;
               }
               if (WorldGen.genRand.Next(3) != 0)
               {
-                int num3 = WorldGen.genRand.Next(1, 3);
+                int num4 = WorldGen.genRand.Next(1, 3);
                 Main.chest[index1].item[index2].SetDefaults(2350, false);
-                Main.chest[index1].item[index2].stack = num3;
+                Main.chest[index1].item[index2].stack = num4;
                 ++index2;
               }
               if (WorldGen.genRand.Next(2) == 0)
               {
-                int num3 = WorldGen.genRand.Next(11) + 10;
+                int num4 = WorldGen.genRand.Next(11) + 10;
                 if (style == 11)
                   Main.chest[index1].item[index2].SetDefaults(974, false);
                 else
                   Main.chest[index1].item[index2].SetDefaults(8, false);
-                Main.chest[index1].item[index2].stack = num3;
+                Main.chest[index1].item[index2].stack = num4;
                 ++index2;
               }
               if (WorldGen.genRand.Next(2) == 0)
@@ -15607,19 +15896,19 @@ label_278:
                 {
                   Item[] objArray1 = Main.chest[index1].item;
                   int index3 = index2;
-                  int num3 = 1;
-                  int num4 = index3 + num3;
+                  int num4 = 1;
+                  int num5 = index3 + num4;
                   objArray1[index3].SetDefaults(3360, false);
                   Item[] objArray2 = Main.chest[index1].item;
-                  int index4 = num4;
-                  int num5 = 1;
-                  index2 = index4 + num5;
+                  int index4 = num5;
+                  int num6 = 1;
+                  index2 = index4 + num6;
                   objArray2[index4].SetDefaults(3361, false);
                 }
               }
               else
               {
-                int num3 = WorldGen.genRand.Next(7);
+                int num4 = WorldGen.genRand.Next(7);
                 if (WorldGen.genRand.Next(40) == 0)
                 {
                   Main.chest[index1].item[index2].SetDefaults(906, false);
@@ -15632,37 +15921,37 @@ label_278:
                 }
                 else
                 {
-                  if (num3 == 0)
+                  if (num4 == 0)
                   {
                     Main.chest[index1].item[index2].SetDefaults(49, false);
                     Main.chest[index1].item[index2].Prefix(-1);
                   }
-                  if (num3 == 1)
+                  if (num4 == 1)
                   {
                     Main.chest[index1].item[index2].SetDefaults(50, false);
                     Main.chest[index1].item[index2].Prefix(-1);
                   }
-                  if (num3 == 2)
+                  if (num4 == 2)
                   {
                     Main.chest[index1].item[index2].SetDefaults(53, false);
                     Main.chest[index1].item[index2].Prefix(-1);
                   }
-                  if (num3 == 3)
+                  if (num4 == 3)
                   {
                     Main.chest[index1].item[index2].SetDefaults(54, false);
                     Main.chest[index1].item[index2].Prefix(-1);
                   }
-                  if (num3 == 4)
+                  if (num4 == 4)
                   {
                     Main.chest[index1].item[index2].SetDefaults(55, false);
                     Main.chest[index1].item[index2].Prefix(-1);
                   }
-                  if (num3 == 5)
+                  if (num4 == 5)
                   {
                     Main.chest[index1].item[index2].SetDefaults(975, false);
                     Main.chest[index1].item[index2].Prefix(-1);
                   }
-                  if (num3 == 6)
+                  if (num4 == 6)
                   {
                     Main.chest[index1].item[index2].SetDefaults(930, false);
                     Main.chest[index1].item[index2].Prefix(-1);
@@ -15691,96 +15980,110 @@ label_278:
               }
               if (WorldGen.genRand.Next(2) == 0)
               {
-                int num3 = WorldGen.genRand.Next(2);
-                int num4 = WorldGen.genRand.Next(8) + 3;
-                if (num3 == 0)
+                int num4 = WorldGen.genRand.Next(2);
+                int num5 = WorldGen.genRand.Next(8) + 3;
+                if (num4 == 0)
                   Main.chest[index1].item[index2].SetDefaults(WorldGen.goldBar, false);
-                if (num3 == 1)
+                int num6 = 1;
+                if (num4 == num6)
                   Main.chest[index1].item[index2].SetDefaults(WorldGen.silverBar, false);
-                Main.chest[index1].item[index2].stack = num4;
+                Main.chest[index1].item[index2].stack = num5;
                 ++index2;
               }
               if (WorldGen.genRand.Next(2) == 0)
               {
-                int num3 = WorldGen.genRand.Next(2);
-                int num4 = WorldGen.genRand.Next(26) + 25;
-                if (num3 == 0)
+                int num4 = WorldGen.genRand.Next(2);
+                int num5 = WorldGen.genRand.Next(26) + 25;
+                if (num4 == 0)
                   Main.chest[index1].item[index2].SetDefaults(41, false);
-                if (num3 == 1)
+                int num6 = 1;
+                if (num4 == num6)
                   Main.chest[index1].item[index2].SetDefaults(279, false);
-                Main.chest[index1].item[index2].stack = num4;
+                Main.chest[index1].item[index2].stack = num5;
                 ++index2;
               }
               if (WorldGen.genRand.Next(2) == 0)
               {
-                int num3 = WorldGen.genRand.Next(1);
-                int num4 = WorldGen.genRand.Next(3) + 3;
-                if (num3 == 0)
+                int num4 = WorldGen.genRand.Next(1);
+                int num5 = WorldGen.genRand.Next(3) + 3;
+                if (num4 == 0)
                   Main.chest[index1].item[index2].SetDefaults(188, false);
-                Main.chest[index1].item[index2].stack = num4;
+                Main.chest[index1].item[index2].stack = num5;
                 ++index2;
               }
               if (WorldGen.genRand.Next(3) > 0)
               {
-                int num3 = WorldGen.genRand.Next(6);
-                int num4 = WorldGen.genRand.Next(1, 3);
-                if (num3 == 0)
+                int num4 = WorldGen.genRand.Next(6);
+                int num5 = WorldGen.genRand.Next(1, 3);
+                if (num4 == 0)
                   Main.chest[index1].item[index2].SetDefaults(296, false);
-                if (num3 == 1)
+                int num6 = 1;
+                if (num4 == num6)
                   Main.chest[index1].item[index2].SetDefaults(295, false);
-                if (num3 == 2)
+                int num7 = 2;
+                if (num4 == num7)
                   Main.chest[index1].item[index2].SetDefaults(299, false);
-                if (num3 == 3)
+                int num8 = 3;
+                if (num4 == num8)
                   Main.chest[index1].item[index2].SetDefaults(302, false);
-                if (num3 == 4)
+                int num9 = 4;
+                if (num4 == num9)
                   Main.chest[index1].item[index2].SetDefaults(303, false);
-                if (num3 == 5)
+                int num10 = 5;
+                if (num4 == num10)
                   Main.chest[index1].item[index2].SetDefaults(305, false);
-                Main.chest[index1].item[index2].stack = num4;
+                Main.chest[index1].item[index2].stack = num5;
                 ++index2;
               }
               if (WorldGen.genRand.Next(3) > 1)
               {
-                int num3 = WorldGen.genRand.Next(7);
-                int num4 = WorldGen.genRand.Next(1, 3);
-                if (num3 == 0)
+                int num4 = WorldGen.genRand.Next(7);
+                int num5 = WorldGen.genRand.Next(1, 3);
+                if (num4 == 0)
                   Main.chest[index1].item[index2].SetDefaults(301, false);
-                if (num3 == 1)
+                int num6 = 1;
+                if (num4 == num6)
                   Main.chest[index1].item[index2].SetDefaults(302, false);
-                if (num3 == 2)
+                int num7 = 2;
+                if (num4 == num7)
                   Main.chest[index1].item[index2].SetDefaults(297, false);
-                if (num3 == 3)
+                int num8 = 3;
+                if (num4 == num8)
                   Main.chest[index1].item[index2].SetDefaults(304, false);
-                if (num3 == 4)
+                int num9 = 4;
+                if (num4 == num9)
                   Main.chest[index1].item[index2].SetDefaults(2329, false);
-                if (num3 == 5)
+                int num10 = 5;
+                if (num4 == num10)
                   Main.chest[index1].item[index2].SetDefaults(2351, false);
-                if (num3 == 6)
+                int num11 = 6;
+                if (num4 == num11)
                   Main.chest[index1].item[index2].SetDefaults(2329, false);
+                Main.chest[index1].item[index2].stack = num5;
+                ++index2;
+              }
+              if (WorldGen.genRand.Next(2) == 0)
+              {
+                int num4 = WorldGen.genRand.Next(1, 3);
+                Main.chest[index1].item[index2].SetDefaults(2350, false);
                 Main.chest[index1].item[index2].stack = num4;
                 ++index2;
               }
               if (WorldGen.genRand.Next(2) == 0)
               {
-                int num3 = WorldGen.genRand.Next(1, 3);
-                Main.chest[index1].item[index2].SetDefaults(2350, false);
-                Main.chest[index1].item[index2].stack = num3;
-                ++index2;
-              }
-              if (WorldGen.genRand.Next(2) == 0)
-              {
-                int num3 = WorldGen.genRand.Next(2);
-                int num4 = WorldGen.genRand.Next(15) + 15;
-                if (num3 == 0)
+                int num4 = WorldGen.genRand.Next(2);
+                int num5 = WorldGen.genRand.Next(15) + 15;
+                if (num4 == 0)
                 {
                   if (style == 11)
                     Main.chest[index1].item[index2].SetDefaults(974, false);
                   else
                     Main.chest[index1].item[index2].SetDefaults(8, false);
                 }
-                if (num3 == 1)
+                int num6 = 1;
+                if (num4 == num6)
                   Main.chest[index1].item[index2].SetDefaults(282, false);
-                Main.chest[index1].item[index2].stack = num4;
+                Main.chest[index1].item[index2].stack = num5;
                 ++index2;
               }
               if (WorldGen.genRand.Next(2) == 0)
@@ -15800,23 +16103,26 @@ label_278:
               }
               else
               {
-                int num3 = WorldGen.genRand.Next(4);
-                if (num3 == 0)
+                int num4 = WorldGen.genRand.Next(4);
+                if (num4 == 0)
                 {
                   Main.chest[index1].item[index2].SetDefaults(49, false);
                   Main.chest[index1].item[index2].Prefix(-1);
                 }
-                if (num3 == 1)
+                int num5 = 1;
+                if (num4 == num5)
                 {
                   Main.chest[index1].item[index2].SetDefaults(50, false);
                   Main.chest[index1].item[index2].Prefix(-1);
                 }
-                if (num3 == 2)
+                int num6 = 2;
+                if (num4 == num6)
                 {
                   Main.chest[index1].item[index2].SetDefaults(53, false);
                   Main.chest[index1].item[index2].Prefix(-1);
                 }
-                if (num3 == 3)
+                int num7 = 3;
+                if (num4 == num7)
                 {
                   Main.chest[index1].item[index2].SetDefaults(54, false);
                   Main.chest[index1].item[index2].Prefix(-1);
@@ -15830,99 +16136,117 @@ label_278:
               }
               if (WorldGen.genRand.Next(2) == 0)
               {
-                int num3 = WorldGen.genRand.Next(2);
-                int num4 = WorldGen.genRand.Next(15) + 15;
-                if (num3 == 0)
+                int num4 = WorldGen.genRand.Next(2);
+                int num5 = WorldGen.genRand.Next(15) + 15;
+                if (num4 == 0)
                   Main.chest[index1].item[index2].SetDefaults(117, false);
-                if (num3 == 1)
+                int num6 = 1;
+                if (num4 == num6)
                   Main.chest[index1].item[index2].SetDefaults(WorldGen.goldBar, false);
-                Main.chest[index1].item[index2].stack = num4;
+                Main.chest[index1].item[index2].stack = num5;
                 ++index2;
               }
               if (WorldGen.genRand.Next(2) == 0)
               {
-                int num3 = WorldGen.genRand.Next(2);
-                int num4 = WorldGen.genRand.Next(25) + 50;
-                if (num3 == 0)
+                int num4 = WorldGen.genRand.Next(2);
+                int num5 = WorldGen.genRand.Next(25) + 50;
+                if (num4 == 0)
                   Main.chest[index1].item[index2].SetDefaults(265, false);
-                if (num3 == 1)
+                int num6 = 1;
+                if (num4 == num6)
                   Main.chest[index1].item[index2].SetDefaults(278, false);
-                Main.chest[index1].item[index2].stack = num4;
+                Main.chest[index1].item[index2].stack = num5;
                 ++index2;
               }
               if (WorldGen.genRand.Next(2) == 0)
               {
-                int num3 = WorldGen.genRand.Next(2);
-                int num4 = WorldGen.genRand.Next(6) + 15;
-                if (num3 == 0)
+                int num4 = WorldGen.genRand.Next(2);
+                int num5 = WorldGen.genRand.Next(6) + 15;
+                if (num4 == 0)
                   Main.chest[index1].item[index2].SetDefaults(226, false);
-                if (num3 == 1)
+                int num6 = 1;
+                if (num4 == num6)
                   Main.chest[index1].item[index2].SetDefaults(227, false);
-                Main.chest[index1].item[index2].stack = num4;
+                Main.chest[index1].item[index2].stack = num5;
                 ++index2;
               }
               if (WorldGen.genRand.Next(4) > 0)
               {
-                int num3 = WorldGen.genRand.Next(8);
-                int num4 = WorldGen.genRand.Next(1, 3);
-                if (num3 == 0)
+                int num4 = WorldGen.genRand.Next(8);
+                int num5 = WorldGen.genRand.Next(1, 3);
+                if (num4 == 0)
                   Main.chest[index1].item[index2].SetDefaults(296, false);
-                if (num3 == 1)
+                int num6 = 1;
+                if (num4 == num6)
                   Main.chest[index1].item[index2].SetDefaults(295, false);
-                if (num3 == 2)
+                int num7 = 2;
+                if (num4 == num7)
                   Main.chest[index1].item[index2].SetDefaults(293, false);
-                if (num3 == 3)
+                int num8 = 3;
+                if (num4 == num8)
                   Main.chest[index1].item[index2].SetDefaults(288, false);
-                if (num3 == 4)
+                int num9 = 4;
+                if (num4 == num9)
                   Main.chest[index1].item[index2].SetDefaults(294, false);
-                if (num3 == 5)
+                int num10 = 5;
+                if (num4 == num10)
                   Main.chest[index1].item[index2].SetDefaults(297, false);
-                if (num3 == 6)
+                int num11 = 6;
+                if (num4 == num11)
                   Main.chest[index1].item[index2].SetDefaults(304, false);
-                if (num3 == 7)
+                int num12 = 7;
+                if (num4 == num12)
                   Main.chest[index1].item[index2].SetDefaults(2323, false);
-                Main.chest[index1].item[index2].stack = num4;
+                Main.chest[index1].item[index2].stack = num5;
                 ++index2;
               }
               if (WorldGen.genRand.Next(3) > 0)
               {
-                int num3 = WorldGen.genRand.Next(8);
-                int num4 = WorldGen.genRand.Next(1, 3);
-                if (num3 == 0)
+                int num4 = WorldGen.genRand.Next(8);
+                int num5 = WorldGen.genRand.Next(1, 3);
+                if (num4 == 0)
                   Main.chest[index1].item[index2].SetDefaults(305, false);
-                if (num3 == 1)
+                int num6 = 1;
+                if (num4 == num6)
                   Main.chest[index1].item[index2].SetDefaults(301, false);
-                if (num3 == 2)
+                int num7 = 2;
+                if (num4 == num7)
                   Main.chest[index1].item[index2].SetDefaults(302, false);
-                if (num3 == 3)
+                int num8 = 3;
+                if (num4 == num8)
                   Main.chest[index1].item[index2].SetDefaults(288, false);
-                if (num3 == 4)
+                int num9 = 4;
+                if (num4 == num9)
                   Main.chest[index1].item[index2].SetDefaults(300, false);
-                if (num3 == 5)
+                int num10 = 5;
+                if (num4 == num10)
                   Main.chest[index1].item[index2].SetDefaults(2351, false);
-                if (num3 == 6)
+                int num11 = 6;
+                if (num4 == num11)
                   Main.chest[index1].item[index2].SetDefaults(2348, false);
-                if (num3 == 7)
+                int num12 = 7;
+                if (num4 == num12)
                   Main.chest[index1].item[index2].SetDefaults(2345, false);
-                Main.chest[index1].item[index2].stack = num4;
+                Main.chest[index1].item[index2].stack = num5;
                 ++index2;
               }
               if (WorldGen.genRand.Next(3) == 0)
               {
-                int num3 = WorldGen.genRand.Next(1, 3);
+                int num4 = WorldGen.genRand.Next(1, 3);
                 Main.chest[index1].item[index2].SetDefaults(2350, false);
-                Main.chest[index1].item[index2].stack = num3;
+                Main.chest[index1].item[index2].stack = num4;
                 ++index2;
               }
               if (WorldGen.genRand.Next(2) == 0)
               {
-                int num3 = WorldGen.genRand.Next(2);
-                int num4 = WorldGen.genRand.Next(15) + 15;
-                if (num3 == 0)
+                int num4 = WorldGen.genRand.Next(2);
+                int num5 = WorldGen.genRand.Next(15) + 15;
+                if (num4 == 0)
                   Main.chest[index1].item[index2].SetDefaults(8, false);
-                if (num3 == 1)
+                int num6 = 1;
+                if (num4 == num6)
                   Main.chest[index1].item[index2].SetDefaults(282, false);
-                Main.chest[index1].item[index2].stack = num4;
+                Main.chest[index1].item[index2].stack = num5;
                 ++index2;
               }
               if (WorldGen.genRand.Next(2) == 0)
@@ -16005,7 +16329,7 @@ label_278:
           Main.tile[index1, index3] = new Tile();
         Main.tile[index1, index3].frameY += (short) 54;
         for (int index4 = 0; index4 < 4; ++index4)
-          Dust.NewDust(new Vector2((float) (index1 * 16), (float) (index3 * 16)), 16, 16, 11, 0.0f, 0.0f, 0, new Color(), 1f);
+          Dust.NewDust(new Vector2((float) (index1 * 16), (float) (index3 * 16)), 16, 16, 11, 0.0f, 0.0f, 0, (Color) null, 1f);
       }
     }
 
@@ -17560,116 +17884,171 @@ label_278:
 
     public static Color paintColor(int color)
     {
-      Color white = Color.White;
+      Color white = Color.get_White();
       int num = color;
       if (num == 1 || num == 13)
       {
-        white.R = byte.MaxValue;
-        white.G = (byte) 0;
-        white.B = (byte) 0;
+        // ISSUE: explicit reference operation
+        ((Color) @white).set_R(byte.MaxValue);
+        // ISSUE: explicit reference operation
+        ((Color) @white).set_G((byte) 0);
+        // ISSUE: explicit reference operation
+        ((Color) @white).set_B((byte) 0);
       }
       if (num == 2 || num == 14)
       {
-        white.R = byte.MaxValue;
-        white.G = (byte) 127;
-        white.B = (byte) 0;
+        // ISSUE: explicit reference operation
+        ((Color) @white).set_R(byte.MaxValue);
+        // ISSUE: explicit reference operation
+        ((Color) @white).set_G((byte) 127);
+        // ISSUE: explicit reference operation
+        ((Color) @white).set_B((byte) 0);
       }
       if (num == 3 || num == 15)
       {
-        white.R = byte.MaxValue;
-        white.G = byte.MaxValue;
-        white.B = (byte) 0;
+        // ISSUE: explicit reference operation
+        ((Color) @white).set_R(byte.MaxValue);
+        // ISSUE: explicit reference operation
+        ((Color) @white).set_G(byte.MaxValue);
+        // ISSUE: explicit reference operation
+        ((Color) @white).set_B((byte) 0);
       }
       if (num == 4 || num == 16)
       {
-        white.R = (byte) 127;
-        white.G = byte.MaxValue;
-        white.B = (byte) 0;
+        // ISSUE: explicit reference operation
+        ((Color) @white).set_R((byte) 127);
+        // ISSUE: explicit reference operation
+        ((Color) @white).set_G(byte.MaxValue);
+        // ISSUE: explicit reference operation
+        ((Color) @white).set_B((byte) 0);
       }
       if (num == 5 || num == 17)
       {
-        white.R = (byte) 0;
-        white.G = byte.MaxValue;
-        white.B = (byte) 0;
+        // ISSUE: explicit reference operation
+        ((Color) @white).set_R((byte) 0);
+        // ISSUE: explicit reference operation
+        ((Color) @white).set_G(byte.MaxValue);
+        // ISSUE: explicit reference operation
+        ((Color) @white).set_B((byte) 0);
       }
       if (num == 6 || num == 18)
       {
-        white.R = (byte) 0;
-        white.G = byte.MaxValue;
-        white.B = (byte) 127;
+        // ISSUE: explicit reference operation
+        ((Color) @white).set_R((byte) 0);
+        // ISSUE: explicit reference operation
+        ((Color) @white).set_G(byte.MaxValue);
+        // ISSUE: explicit reference operation
+        ((Color) @white).set_B((byte) 127);
       }
       if (num == 7 || num == 19)
       {
-        white.R = (byte) 0;
-        white.G = byte.MaxValue;
-        white.B = byte.MaxValue;
+        // ISSUE: explicit reference operation
+        ((Color) @white).set_R((byte) 0);
+        // ISSUE: explicit reference operation
+        ((Color) @white).set_G(byte.MaxValue);
+        // ISSUE: explicit reference operation
+        ((Color) @white).set_B(byte.MaxValue);
       }
       if (num == 8 || num == 20)
       {
-        white.R = (byte) 0;
-        white.G = (byte) 127;
-        white.B = byte.MaxValue;
+        // ISSUE: explicit reference operation
+        ((Color) @white).set_R((byte) 0);
+        // ISSUE: explicit reference operation
+        ((Color) @white).set_G((byte) 127);
+        // ISSUE: explicit reference operation
+        ((Color) @white).set_B(byte.MaxValue);
       }
       if (num == 9 || num == 21)
       {
-        white.R = (byte) 0;
-        white.G = (byte) 0;
-        white.B = byte.MaxValue;
+        // ISSUE: explicit reference operation
+        ((Color) @white).set_R((byte) 0);
+        // ISSUE: explicit reference operation
+        ((Color) @white).set_G((byte) 0);
+        // ISSUE: explicit reference operation
+        ((Color) @white).set_B(byte.MaxValue);
       }
       if (num == 10 || num == 22)
       {
-        white.R = (byte) 127;
-        white.G = (byte) 0;
-        white.B = byte.MaxValue;
+        // ISSUE: explicit reference operation
+        ((Color) @white).set_R((byte) 127);
+        // ISSUE: explicit reference operation
+        ((Color) @white).set_G((byte) 0);
+        // ISSUE: explicit reference operation
+        ((Color) @white).set_B(byte.MaxValue);
       }
       if (num == 11 || num == 23)
       {
-        white.R = byte.MaxValue;
-        white.G = (byte) 0;
-        white.B = byte.MaxValue;
+        // ISSUE: explicit reference operation
+        ((Color) @white).set_R(byte.MaxValue);
+        // ISSUE: explicit reference operation
+        ((Color) @white).set_G((byte) 0);
+        // ISSUE: explicit reference operation
+        ((Color) @white).set_B(byte.MaxValue);
       }
       if (num == 12 || num == 24)
       {
-        white.R = byte.MaxValue;
-        white.G = (byte) 0;
-        white.B = (byte) 127;
+        // ISSUE: explicit reference operation
+        ((Color) @white).set_R(byte.MaxValue);
+        // ISSUE: explicit reference operation
+        ((Color) @white).set_G((byte) 0);
+        // ISSUE: explicit reference operation
+        ((Color) @white).set_B((byte) 127);
       }
       if (num == 25)
       {
-        white.R = (byte) 75;
-        white.G = (byte) 75;
-        white.B = (byte) 75;
+        // ISSUE: explicit reference operation
+        ((Color) @white).set_R((byte) 75);
+        // ISSUE: explicit reference operation
+        ((Color) @white).set_G((byte) 75);
+        // ISSUE: explicit reference operation
+        ((Color) @white).set_B((byte) 75);
       }
       if (num == 26)
       {
-        white.R = byte.MaxValue;
-        white.G = byte.MaxValue;
-        white.B = byte.MaxValue;
+        // ISSUE: explicit reference operation
+        ((Color) @white).set_R(byte.MaxValue);
+        // ISSUE: explicit reference operation
+        ((Color) @white).set_G(byte.MaxValue);
+        // ISSUE: explicit reference operation
+        ((Color) @white).set_B(byte.MaxValue);
       }
       if (num == 27)
       {
-        white.R = (byte) 175;
-        white.G = (byte) 175;
-        white.B = (byte) 175;
+        // ISSUE: explicit reference operation
+        ((Color) @white).set_R((byte) 175);
+        // ISSUE: explicit reference operation
+        ((Color) @white).set_G((byte) 175);
+        // ISSUE: explicit reference operation
+        ((Color) @white).set_B((byte) 175);
       }
       if (num == 28)
       {
-        white.R = byte.MaxValue;
-        white.G = (byte) 178;
-        white.B = (byte) 125;
+        // ISSUE: explicit reference operation
+        ((Color) @white).set_R(byte.MaxValue);
+        // ISSUE: explicit reference operation
+        ((Color) @white).set_G((byte) 178);
+        // ISSUE: explicit reference operation
+        ((Color) @white).set_B((byte) 125);
       }
       if (num == 29)
       {
-        white.R = (byte) 25;
-        white.G = (byte) 25;
-        white.B = (byte) 25;
+        // ISSUE: explicit reference operation
+        ((Color) @white).set_R((byte) 25);
+        // ISSUE: explicit reference operation
+        ((Color) @white).set_G((byte) 25);
+        // ISSUE: explicit reference operation
+        ((Color) @white).set_B((byte) 25);
       }
       if (num == 30)
       {
-        white.R = (byte) 200;
-        white.G = (byte) 200;
-        white.B = (byte) 200;
-        white.A = (byte) 150;
+        // ISSUE: explicit reference operation
+        ((Color) @white).set_R((byte) 200);
+        // ISSUE: explicit reference operation
+        ((Color) @white).set_G((byte) 200);
+        // ISSUE: explicit reference operation
+        ((Color) @white).set_B((byte) 200);
+        // ISSUE: explicit reference operation
+        ((Color) @white).set_A((byte) 150);
       }
       return white;
     }
@@ -19035,7 +19414,7 @@ label_278:
         for (int index2 = j - num3; index2 < j - num3 + 3; ++index2)
           Main.tile[index1, index2].frameY = (short) ((on ? 54 : 0) + (index2 - j + num3) * 18);
       }
-      if (Type != -1 && flag)
+      if (Type != -1 & flag)
         Item.NewItem(i * 16, j * 16, 32, 32, Type, 1, false, 0, false, false);
       WorldGen.SquareTileFrame(i, j, true);
       NetMessage.SendTileSquare(-1, i - num2 + 1, j - num3 + 1, 3, TileChangeType.None);
@@ -19832,7 +20211,7 @@ label_278:
           int plr = 0;
           for (int index = 0; index < (int) byte.MaxValue; ++index)
           {
-            float num11 = Math.Abs(Main.player[index].position.X - num8) + Math.Abs(Main.player[index].position.Y - num9);
+            float num11 = Math.Abs((float) Main.player[index].position.X - num8) + Math.Abs((float) Main.player[index].position.Y - num9);
             if ((double) num11 < (double) num10 || (double) num10 == -1.0)
             {
               plr = index;
@@ -19915,27 +20294,27 @@ label_278:
       bool flag2 = type == 443;
       bool flag3 = type == 444;
       TileObjectData tileData = TileObjectData.GetTileData(type, style, 0);
-      bool styleHorizontal = tileData.StyleHorizontal;
+      int num1 = tileData.StyleHorizontal ? 1 : 0;
       int width = tileData.Width;
       int height = tileData.Height;
-      int num1 = x;
-      int num2 = y;
-      int num3 = num1 - (int) tile.frameX / 18 % width;
-      int j = num2 - (int) tile.frameY / 18 % height;
-      int num4 = 0;
+      int num2 = x;
+      int num3 = y;
+      int num4 = num2 - (int) tile.frameX / 18 % width;
+      int j = num3 - (int) tile.frameY / 18 % height;
       int num5 = 0;
-      if (styleHorizontal)
-        num4 = (int) tile.frameX / tileData.CoordinateFullWidth;
+      int num6 = 0;
+      if (num1 != 0)
+        num5 = (int) tile.frameX / tileData.CoordinateFullWidth;
       else
-        num5 = (int) tile.frameY / tileData.CoordinateFullHeight;
+        num6 = (int) tile.frameY / tileData.CoordinateFullHeight;
       bool flag4 = false;
       bool flag5 = false;
       for (int index1 = 0; index1 < width; ++index1)
       {
         for (int index2 = 0; index2 < height; ++index2)
         {
-          Tile tileSafely = Framing.GetTileSafely(num3 + index1, j + index2);
-          if (!tileSafely.active() || (int) tileSafely.type != type || ((int) tileSafely.frameX != num4 * tileData.CoordinateFullWidth + index1 * (tileData.CoordinateWidth + 2) || (int) tileSafely.frameY != num5 * tileData.CoordinateFullHeight + index2 * (tileData.CoordinateHeights[0] + 2)))
+          Tile tileSafely = Framing.GetTileSafely(num4 + index1, j + index2);
+          if (!tileSafely.active() || (int) tileSafely.type != type || ((int) tileSafely.frameX != num5 * tileData.CoordinateFullWidth + index1 * (tileData.CoordinateWidth + 2) || (int) tileSafely.frameY != num6 * tileData.CoordinateFullHeight + index2 * (tileData.CoordinateHeights[0] + 2)))
             flag4 = true;
         }
       }
@@ -19943,7 +20322,7 @@ label_278:
       {
         for (int index = 0; index < width; ++index)
         {
-          Tile tileSafely = Framing.GetTileSafely(num3 + index, j + height);
+          Tile tileSafely = Framing.GetTileSafely(num4 + index, j + height);
           if (!tileSafely.active() || !Main.tileSolid[(int) tileSafely.type] && !Main.tileTable[(int) tileSafely.type])
             flag4 = true;
           if (tileSafely.halfBrick())
@@ -19956,27 +20335,27 @@ label_278:
         bool flag7 = true;
         for (int index = 0; index < width; ++index)
         {
-          if (!WorldGen.AnchorValid(Framing.GetTileSafely(num3 + index, j + height), AnchorType.SolidTile | AnchorType.SolidWithTop | AnchorType.SolidSide))
+          if (!WorldGen.AnchorValid(Framing.GetTileSafely(num4 + index, j + height), AnchorType.SolidTile | AnchorType.SolidWithTop | AnchorType.SolidSide))
             flag7 = false;
-          if (!WorldGen.AnchorValid(Framing.GetTileSafely(num3 + index, j - 1), AnchorType.SolidBottom))
+          if (!WorldGen.AnchorValid(Framing.GetTileSafely(num4 + index, j - 1), AnchorType.SolidBottom))
             flag6 = false;
         }
         if (!flag6 && !flag7)
           flag4 = true;
         if (!flag4)
         {
-          int num6 = 0;
+          int num7 = 0;
           if (Main.netMode != 1)
           {
             if (flag7)
             {
               for (int index = 0; index < width; ++index)
-                Framing.GetTileSafely(num3 + index, j).frameX = (short) (index * 18 + style / 2 * 36 + num6 * 36);
+                Framing.GetTileSafely(num4 + index, j).frameX = (short) (index * 18 + style / 2 * 36 + num7 * 36);
             }
             else
             {
               for (int index = 0; index < width; ++index)
-                Framing.GetTileSafely(num3 + index, j).frameX = (short) (index * 18 + (style - 2) / 2 * 36 + 72 + num6 * 36);
+                Framing.GetTileSafely(num4 + index, j).frameX = (short) (index * 18 + (style - 2) / 2 * 36 + 72 + num7 * 36);
             }
           }
         }
@@ -19986,7 +20365,7 @@ label_278:
         bool flag6 = true;
         for (int index = 0; index < width; ++index)
         {
-          if (!WorldGen.AnchorValid(Framing.GetTileSafely(num3 + index, j - 1), AnchorType.SolidTile))
+          if (!WorldGen.AnchorValid(Framing.GetTileSafely(num4 + index, j - 1), AnchorType.SolidTile))
             flag6 = false;
         }
         if (!flag6)
@@ -19995,7 +20374,7 @@ label_278:
         {
           for (int index2 = 0; index2 < height; ++index2)
           {
-            if ((int) Framing.GetTileSafely(num3 + index1, j + index2).liquid > 0)
+            if ((int) Framing.GetTileSafely(num4 + index1, j + index2).liquid > 0)
             {
               flag4 = true;
               flag5 = true;
@@ -20010,8 +20389,8 @@ label_278:
       {
         for (int index2 = 0; index2 < height; ++index2)
         {
-          if ((int) Main.tile[num3 + index1, j + index2].type == type && Main.tile[num3 + index1, j + index2].active())
-            WorldGen.KillTile(num3 + index1, j + index2, false, false, false);
+          if ((int) Main.tile[num4 + index1, j + index2].type == type && Main.tile[num4 + index1, j + index2].active())
+            WorldGen.KillTile(num4 + index1, j + index2, false, false, false);
         }
       }
       int Type = 0;
@@ -20020,14 +20399,14 @@ label_278:
       if (type == 443)
         Type = 3722;
       if (type == 444 && Main.netMode != 1 && !flag5)
-        Projectile.NewProjectile((float) (num3 * 16 + 16), (float) (j * 16 + 16), 0.0f, 0.0f, 655, 0, 0.0f, Main.myPlayer, 0.0f, 0.0f);
+        Projectile.NewProjectile((float) (num4 * 16 + 16), (float) (j * 16 + 16), 0.0f, 0.0f, 655, 0, 0.0f, Main.myPlayer, 0.0f, 0.0f);
       if (Type != 0)
-        Item.NewItem(num3 * 16, j * 16, tileData.CoordinateFullWidth, tileData.CoordinateFullHeight, Type, 1, false, 0, false, false);
+        Item.NewItem(num4 * 16, j * 16, tileData.CoordinateFullWidth, tileData.CoordinateFullHeight, Type, 1, false, 0, false, false);
       WorldGen.destroyObject = false;
       for (int index1 = -1; index1 < width + 1; ++index1)
       {
         for (int index2 = -1; index2 < height + 1; ++index2)
-          WorldGen.TileFrame(num3 + index1, j + index2, false, false);
+          WorldGen.TileFrame(num4 + index1, j + index2, false, false);
       }
     }
 
@@ -20080,7 +20459,7 @@ label_278:
       {
         ushort type1 = Main.tile[i1, index1 - 1].type;
         ushort type2 = Main.tile[i1 + 1, index1 - 1].type;
-        if (!TileID.Sets.BasicChest[(int) type1] && !TileID.Sets.BasicChest[(int) type2] && ((int) type1 != 88 && (int) type2 != 88) && !TileID.Sets.BasicChestFake[(int) type1] && !TileID.Sets.BasicChestFake[(int) type2] && !WorldGen.SolidTileAllowBottomSlope(i1, index1 + 2) && !WorldGen.SolidTileAllowBottomSlope(i1 + 1, index1 + 2))
+        if ((TileID.Sets.BasicChest[(int) type1] || TileID.Sets.BasicChest[(int) type2] || ((int) type1 == 88 || (int) type2 == 88) || TileID.Sets.BasicChestFake[(int) type1] ? 1 : (TileID.Sets.BasicChestFake[(int) type2] ? 1 : 0)) == 0 && !WorldGen.SolidTileAllowBottomSlope(i1, index1 + 2) && !WorldGen.SolidTileAllowBottomSlope(i1 + 1, index1 + 2))
           flag1 = true;
       }
       else if (type == 132)
@@ -20273,14 +20652,14 @@ label_278:
       double num1 = strength;
       float num2 = (float) steps;
       Vector2 vector2_1;
-      vector2_1.X = (float) i;
-      vector2_1.Y = (float) j;
+      vector2_1.X = (__Null) (double) i;
+      vector2_1.Y = (__Null) (double) j;
       Vector2 vector2_2;
-      vector2_2.X = (float) WorldGen.genRand.Next(-10, 11) * 0.1f;
-      vector2_2.Y = (float) WorldGen.genRand.Next(-10, 11) * 0.1f;
+      vector2_2.X = (__Null) ((double) WorldGen.genRand.Next(-10, 11) * 0.100000001490116);
+      vector2_2.Y = (__Null) ((double) WorldGen.genRand.Next(-10, 11) * 0.100000001490116);
       while (num1 > 0.0 && (double) num2 > 0.0)
       {
-        if ((double) vector2_1.Y < 0.0 && (double) num2 > 0.0 && (int) type == 59)
+        if (vector2_1.Y < 0.0 && (double) num2 > 0.0 && (int) type == 59)
           num2 = 0.0f;
         num1 = strength * ((double) num2 / (double) steps);
         --num2;
@@ -20300,7 +20679,7 @@ label_278:
         {
           for (int index2 = num5; index2 < num6; ++index2)
           {
-            if ((double) Math.Abs((float) index1 - vector2_1.X) + (double) Math.Abs((float) index2 - vector2_1.Y) < strength * 0.5 * (1.0 + (double) WorldGen.genRand.Next(-10, 11) * 0.015) && Main.tile[index1, index2].active() && ((int) Main.tile[index1, index2].type == 0 || (int) Main.tile[index1, index2].type == 1 || ((int) Main.tile[index1, index2].type == 23 || (int) Main.tile[index1, index2].type == 25) || ((int) Main.tile[index1, index2].type == 40 || (int) Main.tile[index1, index2].type == 53 || ((int) Main.tile[index1, index2].type == 57 || (int) Main.tile[index1, index2].type == 59)) || ((int) Main.tile[index1, index2].type == 60 || (int) Main.tile[index1, index2].type == 70 || ((int) Main.tile[index1, index2].type == 109 || (int) Main.tile[index1, index2].type == 112) || ((int) Main.tile[index1, index2].type == 116 || (int) Main.tile[index1, index2].type == 117 || ((int) Main.tile[index1, index2].type == 147 || (int) Main.tile[index1, index2].type == 161))) || ((int) Main.tile[index1, index2].type == 163 || (int) Main.tile[index1, index2].type == 164 || (Main.tileMoss[(int) Main.tile[index1, index2].type] || (int) Main.tile[index1, index2].type == 199) || ((int) Main.tile[index1, index2].type == 200 || (int) Main.tile[index1, index2].type == 203 || (int) Main.tile[index1, index2].type == 234))))
+            if ((double) Math.Abs((float) index1 - (float) vector2_1.X) + (double) Math.Abs((float) index2 - (float) vector2_1.Y) < strength * 0.5 * (1.0 + (double) WorldGen.genRand.Next(-10, 11) * 0.015) && Main.tile[index1, index2].active() && ((int) Main.tile[index1, index2].type == 0 || (int) Main.tile[index1, index2].type == 1 || ((int) Main.tile[index1, index2].type == 23 || (int) Main.tile[index1, index2].type == 25) || ((int) Main.tile[index1, index2].type == 40 || (int) Main.tile[index1, index2].type == 53 || ((int) Main.tile[index1, index2].type == 57 || (int) Main.tile[index1, index2].type == 59)) || ((int) Main.tile[index1, index2].type == 60 || (int) Main.tile[index1, index2].type == 70 || ((int) Main.tile[index1, index2].type == 109 || (int) Main.tile[index1, index2].type == 112) || ((int) Main.tile[index1, index2].type == 116 || (int) Main.tile[index1, index2].type == 117 || ((int) Main.tile[index1, index2].type == 147 || (int) Main.tile[index1, index2].type == 161))) || ((int) Main.tile[index1, index2].type == 163 || (int) Main.tile[index1, index2].type == 164 || (Main.tileMoss[(int) Main.tile[index1, index2].type] || (int) Main.tile[index1, index2].type == 199) || ((int) Main.tile[index1, index2].type == 200 || (int) Main.tile[index1, index2].type == 203 || (int) Main.tile[index1, index2].type == 234))))
             {
               Main.tile[index1, index2].type = type;
               WorldGen.SquareTileFrame(index1, index2, true);
@@ -20309,12 +20688,20 @@ label_278:
             }
           }
         }
-        vector2_1 += vector2_2;
-        vector2_2.X += (float) WorldGen.genRand.Next(-10, 11) * 0.05f;
-        if ((double) vector2_2.X > 1.0)
-          vector2_2.X = 1f;
-        if ((double) vector2_2.X < -1.0)
-          vector2_2.X = -1f;
+        vector2_1 = Vector2.op_Addition(vector2_1, vector2_2);
+        // ISSUE: explicit reference operation
+        // ISSUE: variable of a reference type
+        __Null& local = @vector2_2.X;
+        // ISSUE: cast to a reference type
+        // ISSUE: explicit reference operation
+        double num7 = (double) ^(float&) local + (double) WorldGen.genRand.Next(-10, 11) * 0.0500000007450581;
+        // ISSUE: cast to a reference type
+        // ISSUE: explicit reference operation
+        ^(float&) local = (float) num7;
+        if (vector2_2.X > 1.0)
+          vector2_2.X = (__Null) 1.0;
+        if (vector2_2.X < -1.0)
+          vector2_2.X = (__Null) -1.0;
       }
     }
 
@@ -20398,17 +20785,20 @@ label_278:
         if (num6 == 111 || num6 == 223)
           num7 = (Main.rockLayer + Main.rockLayer + (double) Main.maxTilesY) / 3.0;
         int j1 = WorldGen.genRand.Next((int) num7, Main.maxTilesY - 150);
-        WorldGen.OreRunner(i1, j1, (double) WorldGen.genRand.Next(5, 9 + num4), WorldGen.genRand.Next(5, 9 + num4), (ushort) num6);
+        double strength = (double) WorldGen.genRand.Next(5, 9 + num4);
+        int steps = WorldGen.genRand.Next(5, 9 + num4);
+        int num8 = (int) (ushort) num6;
+        WorldGen.OreRunner(i1, j1, strength, steps, (ushort) num8);
       }
-      int num8 = WorldGen.genRand.Next(3);
-      int num9 = 0;
-      while (num8 != 2 && num9++ < 1000)
+      int num9 = WorldGen.genRand.Next(3);
+      int num10 = 0;
+      while (num9 != 2 && num10++ < 1000)
       {
         int tileX = WorldGen.genRand.Next(100, Main.maxTilesX - 100);
         int tileY = WorldGen.genRand.Next((int) Main.rockLayer + 50, Main.maxTilesY - 300);
         if (Main.tile[tileX, tileY].active() && (int) Main.tile[tileX, tileY].type == 1)
         {
-          Main.tile[tileX, tileY].type = num8 != 0 ? (ushort) 117 : (!WorldGen.crimson ? (ushort) 25 : (ushort) 203);
+          Main.tile[tileX, tileY].type = num9 != 0 ? (ushort) 117 : (!WorldGen.crimson ? (ushort) 25 : (ushort) 203);
           if (Main.netMode == 2)
           {
             NetMessage.SendTileSquare(-1, tileX, tileY, 1, TileChangeType.None);
@@ -21068,19 +21458,39 @@ label_278:
         num2 = -10f;
         num3 = 0.0f;
       }
-      Vector2 vector2 = new Vector2((float) ((x + 2) * 16), (float) ((y + 2) * 16));
+      Vector2 vector2;
+      // ISSUE: explicit reference operation
+      ((Vector2) @vector2).\u002Ector((float) ((x + 2) * 16), (float) ((y + 2) * 16));
       float num5 = num2;
       float num6 = num3;
       float num7 = (float) Math.Sqrt((double) num5 * (double) num5 + (double) num6 * (double) num6);
       if (ammo == 4 || ammo == 5)
       {
         if (angle == 4)
-          vector2.X += 5f;
-        vector2.Y += 5f;
+        {
+          // ISSUE: explicit reference operation
+          // ISSUE: variable of a reference type
+          __Null& local = @vector2.X;
+          // ISSUE: cast to a reference type
+          // ISSUE: explicit reference operation
+          double num8 = (double) ^(float&) local + 5.0;
+          // ISSUE: cast to a reference type
+          // ISSUE: explicit reference operation
+          ^(float&) local = (float) num8;
+        }
+        // ISSUE: explicit reference operation
+        // ISSUE: variable of a reference type
+        __Null& local1 = @vector2.Y;
+        // ISSUE: cast to a reference type
+        // ISSUE: explicit reference operation
+        double num9 = (double) ^(float&) local1 + 5.0;
+        // ISSUE: cast to a reference type
+        // ISSUE: explicit reference operation
+        ^(float&) local1 = (float) num9;
       }
-      float num8 = num1 / num7;
-      float SpeedX = num5 * num8;
-      float SpeedY = num6 * num8;
+      float num10 = num1 / num7;
+      float SpeedX = num5 * num10;
+      float SpeedY = num6 * num10;
       if (Main.myPlayer != owner && Main.netMode == 2 && (ammo == 4 || ammo == 5))
       {
         NetMessage.SendData(108, owner, -1, (NetworkText) null, Damage, KnockBack, (float) x, (float) y, angle, ammo, owner);
@@ -21089,7 +21499,7 @@ label_278:
       {
         if (Main.netMode == 2)
           owner = Main.myPlayer;
-        Projectile.NewProjectile(vector2.X, vector2.Y, SpeedX, SpeedY, Type, Damage, KnockBack, owner, (float) num4, 0.0f);
+        Projectile.NewProjectile((float) vector2.X, (float) vector2.Y, SpeedX, SpeedY, Type, Damage, KnockBack, owner, (float) num4, 0.0f);
       }
     }
 
@@ -21588,7 +21998,7 @@ label_278:
       if ((int) tileSafely1.type == 386 && onlyCloseOrOpen != 1)
       {
         Point topLeftAndStyles = WorldGen.GetTopLeftAndStyles(ref x, ref y, 2, 2, 18, 18);
-        if (topLeftAndStyles.X == 0)
+        if (topLeftAndStyles.X == null)
         {
           if (Main.netMode != 1 && Wiring.running)
           {
@@ -21700,21 +22110,21 @@ label_278:
       bool flag = false;
       int w = 0;
       int h = 0;
-      Point point = new Point();
+      Point point = (Point) null;
       if (type == 387)
       {
         w = 2;
         h = 1;
         point = WorldGen.GetTopLeftAndStyles(ref x, ref y, w, h, 18, 18);
-        flag = flag || !WorldGen.CheckTileFrames(type, x, y, w, h, point.X, 18, point.Y, 18) || !WorldGen.CheckTileAnchors(x, y, w, h, 1, AnchorType.SolidTile);
+        flag = flag || !WorldGen.CheckTileFrames(type, x, y, w, h, (int) point.X, 18, (int) point.Y, 18) || !WorldGen.CheckTileAnchors(x, y, w, h, 1, AnchorType.SolidTile);
       }
       if (type == 386)
       {
         w = 2;
         h = 2;
         point = WorldGen.GetTopLeftAndStyles(ref x, ref y, w, h, 18, 18);
-        flag = flag || !WorldGen.CheckTileFrames(type, x, y, w, h, point.X, 18, point.Y, 18);
-        if (point.X == 0)
+        flag = flag || !WorldGen.CheckTileFrames(type, x, y, w, h, (int) point.X, 18, (int) point.Y, 18);
+        if (point.X == null)
           flag = flag || !WorldGen.CheckTileAnchors(x, y + 1, w, 1, 1, AnchorType.SolidTile);
         else if (point.X == 1)
           flag = flag || !WorldGen.CheckTileAnchors(x, y, w, 1, 1, AnchorType.SolidTile);
@@ -21728,7 +22138,7 @@ label_278:
           WorldGen.KillTile(i, j, false, false, false);
       }
       int Type = 3239;
-      if (point.Y == 0)
+      if (point.Y == null)
         Type = 3239;
       Item.NewItem(x * 16, y * 16, w * 16, h * 16, Type, 1, false, 0, false, false);
       for (int i = x - 1; i < x + w + 1; ++i)
@@ -21745,9 +22155,11 @@ label_278:
         return;
       bool flag = false;
       Tile tileSafely1 = Framing.GetTileSafely(x, y);
-      Point point = new Point((int) tileSafely1.frameX / 18, 0);
-      TileObjectData tileData = TileObjectData.GetTileData(type, point.X, 0);
-      point.Y = (int) tileSafely1.frameY / tileData.CoordinateFullHeight;
+      Point point;
+      // ISSUE: explicit reference operation
+      ((Point) @point).\u002Ector((int) tileSafely1.frameX / 18, 0);
+      TileObjectData tileData = TileObjectData.GetTileData(type, (int) point.X, 0);
+      point.Y = (__Null) ((int) tileSafely1.frameY / tileData.CoordinateFullHeight);
       int width = tileData.Width;
       int height = tileData.Height;
       int index1 = 0;
@@ -21775,7 +22187,7 @@ label_278:
           WorldGen.KillTile(i, j, false, false, false);
       }
       int Type = 3240;
-      if (point.Y == 0)
+      if (point.Y == null)
         Type = 3240;
       Item.NewItem(x * 16, y * 16, width * 16, height * 16, Type, 1, false, 0, false, false);
       for (int i = x - 1; i < x + width + 1; ++i)
@@ -21793,9 +22205,11 @@ label_278:
       Tile tileSafely = Framing.GetTileSafely(x, y);
       if ((int) tileSafely.type != (int) num2)
         return false;
-      Point point = new Point((int) tileSafely.frameX / 18, 0);
-      TileObjectData tileData = TileObjectData.GetTileData(388, point.X, 0);
-      point.Y = (int) tileSafely.frameY / tileData.CoordinateFullHeight;
+      Point point;
+      // ISSUE: explicit reference operation
+      ((Point) @point).\u002Ector((int) tileSafely.frameX / 18, 0);
+      TileObjectData tileData = TileObjectData.GetTileData(388, (int) point.X, 0);
+      point.Y = (__Null) ((int) tileSafely.frameY / tileData.CoordinateFullHeight);
       int width = tileData.Width;
       int height = tileData.Height;
       int index1 = 0;
@@ -21829,9 +22243,10 @@ label_278:
       Tile tileSafely = Framing.GetTileSafely(x, y);
       Point point = new Point((int) tileSafely.frameX / (w * frameXinc), (int) tileSafely.frameY / (h * frameYinc));
       if (frameXinc != 0)
-        x -= (int) tileSafely.frameX / frameXinc % w;
-      if (frameYinc != 0)
-        y -= (int) tileSafely.frameY / frameYinc % h;
+        x = x - (int) tileSafely.frameX / frameXinc % w;
+      if (frameYinc == 0)
+        return point;
+      y = y - (int) tileSafely.frameY / frameYinc % h;
       return point;
     }
 
@@ -21892,16 +22307,8 @@ label_278:
         }
         if (!flag && (anchor & AnchorType.Table) == AnchorType.Table && (!TileID.Sets.Platforms[(int) tileCache.type] && Main.tileTable[(int) tileCache.type]) && tileCache.blockType() == 0)
           flag = true;
-        if (!flag && (anchor & AnchorType.SolidSide) == AnchorType.SolidSide && (Main.tileSolid[(int) tileCache.type] && !Main.tileSolidTop[(int) tileCache.type]))
-        {
-          switch (tileCache.blockType())
-          {
-            case 4:
-            case 5:
-              flag = true;
-              break;
-          }
-        }
+        if (!flag && (anchor & AnchorType.SolidSide) == AnchorType.SolidSide && (Main.tileSolid[(int) tileCache.type] && !Main.tileSolidTop[(int) tileCache.type]) && (uint) (tileCache.blockType() - 4) <= 1U)
+          flag = true;
       }
       else if (!flag && (anchor & AnchorType.EmptyTile) == AnchorType.EmptyTile)
         flag = true;
@@ -22404,15 +22811,13 @@ label_278:
       else if (type == 468)
       {
         int Type = -1;
-        switch (num5)
+        if (num5 != 0)
         {
-          case 0:
-            Type = 3886;
-            break;
-          case 1:
+          if (num5 == 1)
             Type = 3887;
-            break;
         }
+        else
+          Type = 3886;
         if (Type != -1)
           Item.NewItem(i * 16, j * 16, 32, 32, Type, 1, false, 0, false, false);
       }
@@ -22960,9 +23365,9 @@ label_278:
       {
         int num10 = (i + 1) * 16 + 8;
         int num11 = j * 16;
-        Gore.NewGore(new Vector2((float) num10, (float) num11), new Vector2(), 300, 1f);
-        Gore.NewGore(new Vector2((float) num10, (float) (num11 + 8)), new Vector2(), 301, 1f);
-        Gore.NewGore(new Vector2((float) num10, (float) (num11 + 16)), new Vector2(), 302, 1f);
+        Gore.NewGore(new Vector2((float) num10, (float) num11), (Vector2) null, 300, 1f);
+        Gore.NewGore(new Vector2((float) num10, (float) (num11 + 8)), (Vector2) null, 301, 1f);
+        Gore.NewGore(new Vector2((float) num10, (float) (num11 + 16)), (Vector2) null, 302, 1f);
         float num12 = (float) (i * 16);
         float num13 = (float) (j * 16);
         float num14 = -1f;
@@ -22971,7 +23376,7 @@ label_278:
         {
           if (Main.player[index].active && !Main.player[index].dead)
           {
-            float num15 = Math.Abs(Main.player[index].position.X - num12) + Math.Abs(Main.player[index].position.Y - num13);
+            float num15 = Math.Abs((float) Main.player[index].position.X - num12) + Math.Abs((float) Main.player[index].position.Y - num13);
             if ((double) num15 < (double) num14 || (double) num14 == -1.0)
             {
               plr = index;
@@ -23349,17 +23754,18 @@ label_278:
     {
       int frameX = (int) Main.tile[i, j].frameX;
       bool flag = false;
-      if (frameX >= 36)
+      int num1 = 36;
+      if (frameX >= num1)
         flag = true;
       if (WorldGen.destroyObject)
         return;
-      int num1 = (int) Main.tile[i, j].frameX == 0 || (int) Main.tile[i, j].frameX == 36 ? i : i - 1;
-      int num2 = (int) Main.tile[i, j].frameY != 0 ? j - 1 : j;
+      int num2 = (int) Main.tile[i, j].frameX == 0 || (int) Main.tile[i, j].frameX == 36 ? i : i - 1;
+      int num3 = (int) Main.tile[i, j].frameY != 0 ? j - 1 : j;
       for (int index1 = 0; index1 < 2; ++index1)
       {
         for (int index2 = 0; index2 < 2; ++index2)
         {
-          Tile tile = Main.tile[num1 + index1, num2 + index2];
+          Tile tile = Main.tile[num2 + index1, num3 + index2];
           if (tile != null && (!tile.nactive() || (int) tile.type != type))
           {
             WorldGen.destroyObject = true;
@@ -23370,7 +23776,7 @@ label_278:
         {
           if (type == 12)
           {
-            Tile tile = Main.tile[num1 + index1, num2 + 2];
+            Tile tile = Main.tile[num2 + index1, num3 + 2];
             if (tile != null && (!tile.nactive() || !Main.tileSolid[(int) tile.type] || tile.blockType() != 0))
             {
               WorldGen.destroyObject = true;
@@ -23383,9 +23789,9 @@ label_278:
       }
       if (!WorldGen.destroyObject)
         return;
-      for (int i1 = num1; i1 < num1 + 2; ++i1)
+      for (int i1 = num2; i1 < num2 + 2; ++i1)
       {
-        for (int j1 = num2; j1 < num2 + 2; ++j1)
+        for (int j1 = num3; j1 < num3 + 2; ++j1)
         {
           if ((int) Main.tile[i1, j1].type == type)
             WorldGen.KillTile(i1, j1, false, false, false);
@@ -23394,67 +23800,67 @@ label_278:
       if (Main.netMode != 1 && !WorldGen.noTileActions)
       {
         if (type == 12)
-          Item.NewItem(num1 * 16, num2 * 16, 32, 32, 29, 1, false, 0, false, false);
+          Item.NewItem(num2 * 16, num3 * 16, 32, 32, 29, 1, false, 0, false, false);
         else if (type == 31)
         {
           if (WorldGen.genRand.Next(2) == 0)
             WorldGen.spawnMeteor = true;
           if (flag)
           {
-            int num3 = Main.rand.Next(5);
+            int num4 = Main.rand.Next(5);
             if (!WorldGen.shadowOrbSmashed)
-              num3 = 0;
-            if (num3 == 0)
+              num4 = 0;
+            if (num4 == 0)
             {
-              Item.NewItem(num1 * 16, num2 * 16, 32, 32, 800, 1, false, -1, false, false);
+              Item.NewItem(num2 * 16, num3 * 16, 32, 32, 800, 1, false, -1, false, false);
               int Stack = WorldGen.genRand.Next(100, 101);
-              Item.NewItem(num1 * 16, num2 * 16, 32, 32, 97, Stack, false, 0, false, false);
+              Item.NewItem(num2 * 16, num3 * 16, 32, 32, 97, Stack, false, 0, false, false);
             }
-            else if (num3 == 1)
-              Item.NewItem(num1 * 16, num2 * 16, 32, 32, 1256, 1, false, -1, false, false);
-            else if (num3 == 2)
-              Item.NewItem(num1 * 16, num2 * 16, 32, 32, 802, 1, false, -1, false, false);
-            else if (num3 == 3)
-              Item.NewItem(num1 * 16, num2 * 16, 32, 32, 3062, 1, false, -1, false, false);
-            else if (num3 == 4)
-              Item.NewItem(num1 * 16, num2 * 16, 32, 32, 1290, 1, false, -1, false, false);
+            else if (num4 == 1)
+              Item.NewItem(num2 * 16, num3 * 16, 32, 32, 1256, 1, false, -1, false, false);
+            else if (num4 == 2)
+              Item.NewItem(num2 * 16, num3 * 16, 32, 32, 802, 1, false, -1, false, false);
+            else if (num4 == 3)
+              Item.NewItem(num2 * 16, num3 * 16, 32, 32, 3062, 1, false, -1, false, false);
+            else if (num4 == 4)
+              Item.NewItem(num2 * 16, num3 * 16, 32, 32, 1290, 1, false, -1, false, false);
           }
           else
           {
-            int num3 = Main.rand.Next(5);
+            int num4 = Main.rand.Next(5);
             if (!WorldGen.shadowOrbSmashed)
-              num3 = 0;
-            if (num3 == 0)
+              num4 = 0;
+            if (num4 == 0)
             {
-              Item.NewItem(num1 * 16, num2 * 16, 32, 32, 96, 1, false, -1, false, false);
+              Item.NewItem(num2 * 16, num3 * 16, 32, 32, 96, 1, false, -1, false, false);
               int Stack = WorldGen.genRand.Next(100, 101);
-              Item.NewItem(num1 * 16, num2 * 16, 32, 32, 97, Stack, false, 0, false, false);
+              Item.NewItem(num2 * 16, num3 * 16, 32, 32, 97, Stack, false, 0, false, false);
             }
-            else if (num3 == 1)
-              Item.NewItem(num1 * 16, num2 * 16, 32, 32, 64, 1, false, -1, false, false);
-            else if (num3 == 2)
-              Item.NewItem(num1 * 16, num2 * 16, 32, 32, 162, 1, false, -1, false, false);
-            else if (num3 == 3)
-              Item.NewItem(num1 * 16, num2 * 16, 32, 32, 115, 1, false, -1, false, false);
-            else if (num3 == 4)
-              Item.NewItem(num1 * 16, num2 * 16, 32, 32, 111, 1, false, -1, false, false);
+            else if (num4 == 1)
+              Item.NewItem(num2 * 16, num3 * 16, 32, 32, 64, 1, false, -1, false, false);
+            else if (num4 == 2)
+              Item.NewItem(num2 * 16, num3 * 16, 32, 32, 162, 1, false, -1, false, false);
+            else if (num4 == 3)
+              Item.NewItem(num2 * 16, num3 * 16, 32, 32, 115, 1, false, -1, false, false);
+            else if (num4 == 4)
+              Item.NewItem(num2 * 16, num3 * 16, 32, 32, 111, 1, false, -1, false, false);
           }
           WorldGen.shadowOrbSmashed = true;
           ++WorldGen.shadowOrbCount;
           if (WorldGen.shadowOrbCount >= 3)
           {
             WorldGen.shadowOrbCount = 0;
-            float num3 = (float) (num1 * 16);
             float num4 = (float) (num2 * 16);
-            float num5 = -1f;
+            float num5 = (float) (num3 * 16);
+            float num6 = -1f;
             int plr = 0;
             for (int index = 0; index < (int) byte.MaxValue; ++index)
             {
-              float num6 = Math.Abs(Main.player[index].position.X - num3) + Math.Abs(Main.player[index].position.Y - num4);
-              if ((double) num6 < (double) num5 || (double) num5 == -1.0)
+              float num7 = Math.Abs((float) Main.player[index].position.X - num4) + Math.Abs((float) Main.player[index].position.Y - num5);
+              if ((double) num7 < (double) num6 || (double) num6 == -1.0)
               {
                 plr = index;
-                num5 = num6;
+                num6 = num7;
               }
             }
             if (flag)
@@ -24532,7 +24938,7 @@ label_278:
                 flag2 = true;
             }
             int num7 = WorldGen.genRand.Next(3);
-            if (num7 == 0 && flag1)
+            if (num7 == 0 & flag1)
             {
               Main.tile[index4 - 1, index5].active(true);
               Main.tile[index4 - 1, index5].type = (ushort) 80;
@@ -24541,7 +24947,7 @@ label_278:
                 return;
               NetMessage.SendTileSquare(-1, index4 - 1, index5, 1, TileChangeType.None);
             }
-            else if (num7 == 1 && flag2)
+            else if (num7 == 1 & flag2)
             {
               Main.tile[index4 + 1, index5].active(true);
               Main.tile[index4 + 1, index5].type = (ushort) 80;
@@ -24639,50 +25045,50 @@ label_278:
       float num9 = 1f;
       if (num6 == 0)
       {
-        Gore.NewGore(new Vector2((float) (i * 16), (float) (j * 16)), new Vector2(), 51, 1f);
-        Gore.NewGore(new Vector2((float) (i * 16), (float) (j * 16)), new Vector2(), 52, 1f);
-        Gore.NewGore(new Vector2((float) (i * 16), (float) (j * 16)), new Vector2(), 53, 1f);
+        Gore.NewGore(new Vector2((float) (i * 16), (float) (j * 16)), (Vector2) null, 51, 1f);
+        Gore.NewGore(new Vector2((float) (i * 16), (float) (j * 16)), (Vector2) null, 52, 1f);
+        Gore.NewGore(new Vector2((float) (i * 16), (float) (j * 16)), (Vector2) null, 53, 1f);
       }
       else if (num6 == 1)
       {
-        Gore.NewGore(new Vector2((float) (i * 16), (float) (j * 16)), new Vector2(), 166, 1f);
-        Gore.NewGore(new Vector2((float) (i * 16), (float) (j * 16)), new Vector2(), 167, 1f);
-        Gore.NewGore(new Vector2((float) (i * 16), (float) (j * 16)), new Vector2(), 168, 1f);
+        Gore.NewGore(new Vector2((float) (i * 16), (float) (j * 16)), (Vector2) null, 166, 1f);
+        Gore.NewGore(new Vector2((float) (i * 16), (float) (j * 16)), (Vector2) null, 167, 1f);
+        Gore.NewGore(new Vector2((float) (i * 16), (float) (j * 16)), (Vector2) null, 168, 1f);
       }
       else if (num6 == 2)
       {
-        Gore.NewGore(new Vector2((float) (i * 16), (float) (j * 16)), new Vector2(), 169, 1f);
-        Gore.NewGore(new Vector2((float) (i * 16), (float) (j * 16)), new Vector2(), 170, 1f);
-        Gore.NewGore(new Vector2((float) (i * 16), (float) (j * 16)), new Vector2(), 171, 1f);
+        Gore.NewGore(new Vector2((float) (i * 16), (float) (j * 16)), (Vector2) null, 169, 1f);
+        Gore.NewGore(new Vector2((float) (i * 16), (float) (j * 16)), (Vector2) null, 170, 1f);
+        Gore.NewGore(new Vector2((float) (i * 16), (float) (j * 16)), (Vector2) null, 171, 1f);
       }
       else if (num6 == 3)
       {
-        Gore.NewGore(new Vector2((float) (i * 16), (float) (j * 16)), new Vector2(), 172, 1f);
-        Gore.NewGore(new Vector2((float) (i * 16), (float) (j * 16)), new Vector2(), 173, 1f);
-        Gore.NewGore(new Vector2((float) (i * 16), (float) (j * 16)), new Vector2(), 174, 1f);
+        Gore.NewGore(new Vector2((float) (i * 16), (float) (j * 16)), (Vector2) null, 172, 1f);
+        Gore.NewGore(new Vector2((float) (i * 16), (float) (j * 16)), (Vector2) null, 173, 1f);
+        Gore.NewGore(new Vector2((float) (i * 16), (float) (j * 16)), (Vector2) null, 174, 1f);
       }
       else if (num6 >= 4 && num6 <= 6)
       {
-        Gore.NewGore(new Vector2((float) (i * 16), (float) (j * 16)), new Vector2(), 197, 1f);
-        Gore.NewGore(new Vector2((float) (i * 16), (float) (j * 16)), new Vector2(), 198, 1f);
+        Gore.NewGore(new Vector2((float) (i * 16), (float) (j * 16)), (Vector2) null, 197, 1f);
+        Gore.NewGore(new Vector2((float) (i * 16), (float) (j * 16)), (Vector2) null, 198, 1f);
         num9 = 1.25f;
       }
       else if (num6 >= 7 && num6 <= 9)
       {
-        Gore.NewGore(new Vector2((float) (i * 16), (float) (j * 16)), new Vector2(), 199, 1f);
-        Gore.NewGore(new Vector2((float) (i * 16), (float) (j * 16)), new Vector2(), 200, 1f);
+        Gore.NewGore(new Vector2((float) (i * 16), (float) (j * 16)), (Vector2) null, 199, 1f);
+        Gore.NewGore(new Vector2((float) (i * 16), (float) (j * 16)), (Vector2) null, 200, 1f);
         num9 = 1.75f;
       }
       else if (num6 >= 10 && num6 <= 12)
       {
-        Gore.NewGore(new Vector2((float) (i * 16), (float) (j * 16)), new Vector2(), 201, 1f);
-        Gore.NewGore(new Vector2((float) (i * 16), (float) (j * 16)), new Vector2(), 202, 1f);
+        Gore.NewGore(new Vector2((float) (i * 16), (float) (j * 16)), (Vector2) null, 201, 1f);
+        Gore.NewGore(new Vector2((float) (i * 16), (float) (j * 16)), (Vector2) null, 202, 1f);
         num9 = 1.9f;
       }
       else if (num6 >= 13 && num6 <= 15)
       {
-        Gore.NewGore(new Vector2((float) (i * 16), (float) (j * 16)), new Vector2(), 203, 1f);
-        Gore.NewGore(new Vector2((float) (i * 16), (float) (j * 16)), new Vector2(), 204, 1f);
+        Gore.NewGore(new Vector2((float) (i * 16), (float) (j * 16)), (Vector2) null, 203, 1f);
+        Gore.NewGore(new Vector2((float) (i * 16), (float) (j * 16)), (Vector2) null, 204, 1f);
         num9 = 2.1f;
       }
       else if (num6 >= 16 && num6 <= 18)
@@ -24694,13 +25100,13 @@ label_278:
       else if (num6 >= 25 && num6 <= 27)
       {
         num9 = 10f;
-        Gore.NewGore(new Vector2((float) (i * 16), (float) (j * 16)), new Vector2(), WorldGen.genRand.Next(217, 220), 1f);
-        Gore.NewGore(new Vector2((float) (i * 16), (float) (j * 16)), new Vector2(), WorldGen.genRand.Next(217, 220), 1f);
+        Gore.NewGore(new Vector2((float) (i * 16), (float) (j * 16)), (Vector2) null, WorldGen.genRand.Next(217, 220), 1f);
+        Gore.NewGore(new Vector2((float) (i * 16), (float) (j * 16)), (Vector2) null, WorldGen.genRand.Next(217, 220), 1f);
       }
       else if (num6 >= 28 && num6 <= 30)
       {
-        Gore.NewGore(new Vector2((float) (i * 16), (float) (j * 16)), new Vector2(), WorldGen.genRand.Next(315, 317), 1f);
-        Gore.NewGore(new Vector2((float) (i * 16), (float) (j * 16)), new Vector2(), WorldGen.genRand.Next(315, 317), 1f);
+        Gore.NewGore(new Vector2((float) (i * 16), (float) (j * 16)), (Vector2) null, WorldGen.genRand.Next(315, 317), 1f);
+        Gore.NewGore(new Vector2((float) (i * 16), (float) (j * 16)), (Vector2) null, WorldGen.genRand.Next(315, 317), 1f);
         if (Main.hardMode)
           num9 = 4f;
       }
@@ -24708,7 +25114,7 @@ label_278:
       {
         int num8 = WorldGen.genRand.Next(2, 5);
         for (int index = 0; index < num8; ++index)
-          Gore.NewGore(new Vector2((float) (i * 16), (float) (j * 16)), new Vector2(), 698 + WorldGen.genRand.Next(6), 1f);
+          Gore.NewGore(new Vector2((float) (i * 16), (float) (j * 16)), (Vector2) null, 698 + WorldGen.genRand.Next(6), 1f);
         num9 = 2f;
       }
       float num10 = (float) (((double) num9 * 2.0 + 1.0) / 3.0);
@@ -24729,19 +25135,26 @@ label_278:
             int num8 = WorldGen.genRand.Next(10);
             if (num8 == 0)
               Item.NewItem(i * 16, j * 16, 16, 16, 292, 1, false, 0, false, false);
-            if (num8 == 1)
+            int num11 = 1;
+            if (num8 == num11)
               Item.NewItem(i * 16, j * 16, 16, 16, 298, 1, false, 0, false, false);
-            if (num8 == 2)
+            int num12 = 2;
+            if (num8 == num12)
               Item.NewItem(i * 16, j * 16, 16, 16, 299, 1, false, 0, false, false);
-            if (num8 == 3)
+            int num13 = 3;
+            if (num8 == num13)
               Item.NewItem(i * 16, j * 16, 16, 16, 290, 1, false, 0, false, false);
-            if (num8 == 4)
+            int num14 = 4;
+            if (num8 == num14)
               Item.NewItem(i * 16, j * 16, 16, 16, 2322, 1, false, 0, false, false);
-            if (num8 == 5)
+            int num15 = 5;
+            if (num8 == num15)
               Item.NewItem(i * 16, j * 16, 16, 16, 2324, 1, false, 0, false, false);
-            if (num8 == 6)
+            int num16 = 6;
+            if (num8 == num16)
               Item.NewItem(i * 16, j * 16, 16, 16, 2325, 1, false, 0, false, false);
-            if (num8 >= 7)
+            int num17 = 7;
+            if (num8 >= num17)
               Item.NewItem(i * 16, j * 16, 16, 16, 2350, 1, false, 0, false, false);
           }
           else if ((double) j < Main.rockLayer)
@@ -24749,23 +25162,32 @@ label_278:
             int num8 = WorldGen.genRand.Next(11);
             if (num8 == 0)
               Item.NewItem(i * 16, j * 16, 16, 16, 289, 1, false, 0, false, false);
-            if (num8 == 1)
+            int num11 = 1;
+            if (num8 == num11)
               Item.NewItem(i * 16, j * 16, 16, 16, 298, 1, false, 0, false, false);
-            if (num8 == 2)
+            int num12 = 2;
+            if (num8 == num12)
               Item.NewItem(i * 16, j * 16, 16, 16, 299, 1, false, 0, false, false);
-            if (num8 == 3)
+            int num13 = 3;
+            if (num8 == num13)
               Item.NewItem(i * 16, j * 16, 16, 16, 290, 1, false, 0, false, false);
-            if (num8 == 4)
+            int num14 = 4;
+            if (num8 == num14)
               Item.NewItem(i * 16, j * 16, 16, 16, 303, 1, false, 0, false, false);
-            if (num8 == 5)
+            int num15 = 5;
+            if (num8 == num15)
               Item.NewItem(i * 16, j * 16, 16, 16, 291, 1, false, 0, false, false);
-            if (num8 == 6)
+            int num16 = 6;
+            if (num8 == num16)
               Item.NewItem(i * 16, j * 16, 16, 16, 304, 1, false, 0, false, false);
-            if (num8 == 7)
+            int num17 = 7;
+            if (num8 == num17)
               Item.NewItem(i * 16, j * 16, 16, 16, 2322, 1, false, 0, false, false);
-            if (num8 == 8)
+            int num18 = 8;
+            if (num8 == num18)
               Item.NewItem(i * 16, j * 16, 16, 16, 2329, 1, false, 0, false, false);
-            if (num8 >= 9)
+            int num19 = 9;
+            if (num8 >= num19)
               Item.NewItem(i * 16, j * 16, 16, 16, 2350, 1, false, 0, false, false);
           }
           else if (j < Main.maxTilesY - 200)
@@ -24773,33 +25195,47 @@ label_278:
             int num8 = WorldGen.genRand.Next(15);
             if (num8 == 0)
               Item.NewItem(i * 16, j * 16, 16, 16, 296, 1, false, 0, false, false);
-            if (num8 == 1)
+            int num11 = 1;
+            if (num8 == num11)
               Item.NewItem(i * 16, j * 16, 16, 16, 295, 1, false, 0, false, false);
-            if (num8 == 2)
+            int num12 = 2;
+            if (num8 == num12)
               Item.NewItem(i * 16, j * 16, 16, 16, 299, 1, false, 0, false, false);
-            if (num8 == 3)
+            int num13 = 3;
+            if (num8 == num13)
               Item.NewItem(i * 16, j * 16, 16, 16, 302, 1, false, 0, false, false);
-            if (num8 == 4)
+            int num14 = 4;
+            if (num8 == num14)
               Item.NewItem(i * 16, j * 16, 16, 16, 303, 1, false, 0, false, false);
-            if (num8 == 5)
+            int num15 = 5;
+            if (num8 == num15)
               Item.NewItem(i * 16, j * 16, 16, 16, 305, 1, false, 0, false, false);
-            if (num8 == 6)
+            int num16 = 6;
+            if (num8 == num16)
               Item.NewItem(i * 16, j * 16, 16, 16, 301, 1, false, 0, false, false);
-            if (num8 == 7)
+            int num17 = 7;
+            if (num8 == num17)
               Item.NewItem(i * 16, j * 16, 16, 16, 302, 1, false, 0, false, false);
-            if (num8 == 8)
+            int num18 = 8;
+            if (num8 == num18)
               Item.NewItem(i * 16, j * 16, 16, 16, 297, 1, false, 0, false, false);
-            if (num8 == 9)
+            int num19 = 9;
+            if (num8 == num19)
               Item.NewItem(i * 16, j * 16, 16, 16, 304, 1, false, 0, false, false);
-            if (num8 == 10)
+            int num20 = 10;
+            if (num8 == num20)
               Item.NewItem(i * 16, j * 16, 16, 16, 2322, 1, false, 0, false, false);
-            if (num8 == 11)
+            int num21 = 11;
+            if (num8 == num21)
               Item.NewItem(i * 16, j * 16, 16, 16, 2323, 1, false, 0, false, false);
-            if (num8 == 12)
+            int num22 = 12;
+            if (num8 == num22)
               Item.NewItem(i * 16, j * 16, 16, 16, 2327, 1, false, 0, false, false);
-            if (num8 == 13)
+            int num23 = 13;
+            if (num8 == num23)
               Item.NewItem(i * 16, j * 16, 16, 16, 2329, 1, false, 0, false, false);
-            if (num8 == 14)
+            int num24 = 14;
+            if (num8 == num24)
               Item.NewItem(i * 16, j * 16, 16, 16, 2350, 1, false, 0, false, false);
           }
           else
@@ -24807,31 +25243,44 @@ label_278:
             int num8 = WorldGen.genRand.Next(14);
             if (num8 == 0)
               Item.NewItem(i * 16, j * 16, 16, 16, 296, 1, false, 0, false, false);
-            if (num8 == 1)
+            int num11 = 1;
+            if (num8 == num11)
               Item.NewItem(i * 16, j * 16, 16, 16, 295, 1, false, 0, false, false);
-            if (num8 == 2)
+            int num12 = 2;
+            if (num8 == num12)
               Item.NewItem(i * 16, j * 16, 16, 16, 293, 1, false, 0, false, false);
-            if (num8 == 3)
+            int num13 = 3;
+            if (num8 == num13)
               Item.NewItem(i * 16, j * 16, 16, 16, 288, 1, false, 0, false, false);
-            if (num8 == 4)
+            int num14 = 4;
+            if (num8 == num14)
               Item.NewItem(i * 16, j * 16, 16, 16, 294, 1, false, 0, false, false);
-            if (num8 == 5)
+            int num15 = 5;
+            if (num8 == num15)
               Item.NewItem(i * 16, j * 16, 16, 16, 297, 1, false, 0, false, false);
-            if (num8 == 6)
+            int num16 = 6;
+            if (num8 == num16)
               Item.NewItem(i * 16, j * 16, 16, 16, 304, 1, false, 0, false, false);
-            if (num8 == 7)
+            int num17 = 7;
+            if (num8 == num17)
               Item.NewItem(i * 16, j * 16, 16, 16, 305, 1, false, 0, false, false);
-            if (num8 == 8)
+            int num18 = 8;
+            if (num8 == num18)
               Item.NewItem(i * 16, j * 16, 16, 16, 301, 1, false, 0, false, false);
-            if (num8 == 9)
+            int num19 = 9;
+            if (num8 == num19)
               Item.NewItem(i * 16, j * 16, 16, 16, 302, 1, false, 0, false, false);
-            if (num8 == 10)
+            int num20 = 10;
+            if (num8 == num20)
               Item.NewItem(i * 16, j * 16, 16, 16, 288, 1, false, 0, false, false);
-            if (num8 == 11)
+            int num21 = 11;
+            if (num8 == num21)
               Item.NewItem(i * 16, j * 16, 16, 16, 300, 1, false, 0, false, false);
-            if (num8 == 12)
+            int num22 = 12;
+            if (num8 == num22)
               Item.NewItem(i * 16, j * 16, 16, 16, 2323, 1, false, 0, false, false);
-            if (num8 == 13)
+            int num23 = 13;
+            if (num8 == num23)
               Item.NewItem(i * 16, j * 16, 16, 16, 2326, 1, false, 0, false, false);
           }
         }
@@ -25172,7 +25621,7 @@ label_278:
       if (Main.netMode != 1)
         Item.NewItem(i * 16, j * 16, 16, 16, 849, 1, false, 0, false, false);
       for (int index = 0; index < 5; ++index)
-        Dust.NewDust(new Vector2((float) (i * 16), (float) (j * 16)), 16, 16, 50, 0.0f, 0.0f, 0, new Color(), 1f);
+        Dust.NewDust(new Vector2((float) (i * 16), (float) (j * 16)), 16, 16, 50, 0.0f, 0.0f, 0, (Color) null, 1f);
       return true;
     }
 
@@ -25194,7 +25643,7 @@ label_278:
       if (Main.netMode != 1)
         Item.NewItem(i * 16, j * 16, 16, 16, 530, 1, false, 0, false, false);
       for (int index = 0; index < 5; ++index)
-        Dust.NewDust(new Vector2((float) (i * 16), (float) (j * 16)), 16, 16, 50, 0.0f, 0.0f, 0, new Color(), 1f);
+        Dust.NewDust(new Vector2((float) (i * 16), (float) (j * 16)), 16, 16, 50, 0.0f, 0.0f, 0, (Color) null, 1f);
       return true;
     }
 
@@ -25216,7 +25665,7 @@ label_278:
       if (Main.netMode != 1)
         Item.NewItem(i * 16, j * 16, 16, 16, 530, 1, false, 0, false, false);
       for (int index = 0; index < 5; ++index)
-        Dust.NewDust(new Vector2((float) (i * 16), (float) (j * 16)), 16, 16, 50, 0.0f, 0.0f, 0, new Color(), 1f);
+        Dust.NewDust(new Vector2((float) (i * 16), (float) (j * 16)), 16, 16, 50, 0.0f, 0.0f, 0, (Color) null, 1f);
       return true;
     }
 
@@ -25238,7 +25687,7 @@ label_278:
       if (Main.netMode != 1)
         Item.NewItem(i * 16, j * 16, 16, 16, 530, 1, false, 0, false, false);
       for (int index = 0; index < 5; ++index)
-        Dust.NewDust(new Vector2((float) (i * 16), (float) (j * 16)), 16, 16, 50, 0.0f, 0.0f, 0, new Color(), 1f);
+        Dust.NewDust(new Vector2((float) (i * 16), (float) (j * 16)), 16, 16, 50, 0.0f, 0.0f, 0, (Color) null, 1f);
       return true;
     }
 
@@ -25260,7 +25709,7 @@ label_278:
       if (Main.netMode != 1)
         Item.NewItem(i * 16, j * 16, 16, 16, 530, 1, false, 0, false, false);
       for (int index = 0; index < 5; ++index)
-        Dust.NewDust(new Vector2((float) (i * 16), (float) (j * 16)), 16, 16, 50, 0.0f, 0.0f, 0, new Color(), 1f);
+        Dust.NewDust(new Vector2((float) (i * 16), (float) (j * 16)), 16, 16, 50, 0.0f, 0.0f, 0, (Color) null, 1f);
       return true;
     }
 
@@ -25789,7 +26238,7 @@ label_278:
               if (type == 22 || type == 140)
               {
                 for (int index = 0; index < 3; ++index)
-                  Dust.NewDust(new Vector2((float) (i * 16), (float) (j * 16)), 16, 16, 14, 0.0f, 0.0f, 0, new Color(), 1f);
+                  Dust.NewDust(new Vector2((float) (i * 16), (float) (j * 16)), 16, 16, 14, 0.0f, 0.0f, 0, (Color) null, 1f);
               }
             }
           }
@@ -26080,7 +26529,7 @@ label_278:
           if ((int) tile.wall == 76)
             Dust.NewDust(new Vector2((float) (i * 16), (float) (j * 16)), 16, 16, Type, 0.0f, 0.0f, 75, new Color(0, 80, (int) byte.MaxValue, 100), 0.75f);
           else if (Type >= 0)
-            Dust.NewDust(new Vector2((float) (i * 16), (float) (j * 16)), 16, 16, Type, 0.0f, 0.0f, 0, new Color(), 1f);
+            Dust.NewDust(new Vector2((float) (i * 16), (float) (j * 16)), 16, 16, Type, 0.0f, 0.0f, 0, (Color) null, 1f);
         }
       }
       if (fail)
@@ -26386,11 +26835,13 @@ label_278:
       }
       if (frameY == 18)
         --y;
-      Vector2 vector2 = new Vector2((float) (x * 16 + 8), (float) (y * 16 + 4));
+      Vector2 vector2;
+      // ISSUE: explicit reference operation
+      ((Vector2) @vector2).\u002Ector((float) (x * 16 + 8), (float) (y * 16 + 4));
       int Type = 167 + num1;
       int Damage = 150;
       int num2 = 7;
-      Projectile.NewProjectile(vector2.X, vector2.Y + 2f, 0.0f, -8f, Type, Damage, (float) num2, Main.myPlayer, 0.0f, 0.0f);
+      Projectile.NewProjectile((float) vector2.X, (float) (vector2.Y + 2.0), 0.0f, -8f, Type, Damage, (float) num2, Main.myPlayer, 0.0f, 0.0f);
       Main.tile[x, y].active(false);
       Main.tile[x, y + 1].active(false);
       NetMessage.SendTileSquare(-1, x - 1, y, 3, TileChangeType.None);
@@ -26402,11 +26853,13 @@ label_278:
         --x;
       if ((int) Main.tile[x, y].frameY == 18)
         --y;
-      Vector2 vector2 = new Vector2((float) (x * 16 + 16), (float) (y * 16));
+      Vector2 vector2;
+      // ISSUE: explicit reference operation
+      ((Vector2) @vector2).\u002Ector((float) (x * 16 + 16), (float) (y * 16));
       int Type = 415 + Main.rand.Next(4);
       int Damage = 0;
       int num = 0;
-      Projectile.NewProjectile(vector2.X, vector2.Y + 2f, 0.0f, -8f, Type, Damage, (float) num, Main.myPlayer, 0.0f, 0.0f);
+      Projectile.NewProjectile((float) vector2.X, (float) (vector2.Y + 2.0), 0.0f, -8f, Type, Damage, (float) num, Main.myPlayer, 0.0f, 0.0f);
     }
 
     public static bool CanKillTile(int i, int j)
@@ -26605,12 +27058,14 @@ label_278:
             frameX1 -= 100;
             ++index2;
           }
-          int num = (int) Main.tile[index1, j].frameY / 18;
-          if (num == 0)
+          int num1 = (int) Main.tile[index1, j].frameY / 18;
+          if (num1 == 0)
             Item.NewItem(i * 16, j * 16, 16, 16, Item.headType[index2], 1, false, 0, false, false);
-          if (num == 1)
+          int num2 = 1;
+          if (num1 == num2)
             Item.NewItem(i * 16, j * 16, 16, 16, Item.bodyType[index2], 1, false, 0, false, false);
-          if (num == 2)
+          int num3 = 2;
+          if (num1 == num3)
             Item.NewItem(i * 16, j * 16, 16, 16, Item.legType[index2], 1, false, 0, false, false);
           int frameX3 = (int) Main.tile[index1, j].frameX;
           while (frameX3 >= 100)
@@ -26786,8 +27241,8 @@ label_278:
               Type = 448;
             int index = NPC.NewNPC(i * 16 + 10, j * 16, Type, 0, 0.0f, 0.0f, 0.0f, 0.0f, (int) byte.MaxValue);
             Main.npc[index].TargetClosest(true);
-            Main.npc[index].velocity.Y = (float) WorldGen.genRand.Next(-50, -21) * 0.1f;
-            Main.npc[index].velocity.X = (float) WorldGen.genRand.Next(0, 26) * 0.1f * (float) -Main.npc[index].direction;
+            Main.npc[index].velocity.Y = (__Null) ((double) WorldGen.genRand.Next(-50, -21) * 0.100000001490116);
+            Main.npc[index].velocity.X = (__Null) ((double) WorldGen.genRand.Next(0, 26) * 0.100000001490116 * (double) -Main.npc[index].direction);
             Main.npc[index].direction *= -1;
             Main.npc[index].netUpdate = true;
           }
@@ -26798,8 +27253,8 @@ label_278:
               Type = 446;
             int index = NPC.NewNPC(i * 16 + 10, j * 16, Type, 0, 0.0f, 0.0f, 0.0f, 0.0f, (int) byte.MaxValue);
             Main.npc[index].TargetClosest(true);
-            Main.npc[index].velocity.Y = (float) WorldGen.genRand.Next(-50, -21) * 0.1f;
-            Main.npc[index].velocity.X = (float) WorldGen.genRand.Next(0, 26) * 0.1f * (float) -Main.npc[index].direction;
+            Main.npc[index].velocity.Y = (__Null) ((double) WorldGen.genRand.Next(-50, -21) * 0.100000001490116);
+            Main.npc[index].velocity.X = (__Null) ((double) WorldGen.genRand.Next(0, 26) * 0.100000001490116 * (double) -Main.npc[index].direction);
             Main.npc[index].direction *= -1;
             Main.npc[index].netUpdate = true;
           }
@@ -26812,8 +27267,8 @@ label_278:
               Type = 487;
             int index = NPC.NewNPC(i * 16 + 10, j * 16, Type, 0, 0.0f, 0.0f, 0.0f, 0.0f, (int) byte.MaxValue);
             Main.npc[index].TargetClosest(true);
-            Main.npc[index].velocity.Y = (float) WorldGen.genRand.Next(-50, -21) * 0.1f;
-            Main.npc[index].velocity.X = (float) WorldGen.genRand.Next(0, 26) * 0.1f * (float) -Main.npc[index].direction;
+            Main.npc[index].velocity.Y = (__Null) ((double) WorldGen.genRand.Next(-50, -21) * 0.100000001490116);
+            Main.npc[index].velocity.X = (__Null) ((double) WorldGen.genRand.Next(0, 26) * 0.100000001490116 * (double) -Main.npc[index].direction);
             Main.npc[index].direction *= -1;
             Main.npc[index].netUpdate = true;
           }
@@ -26928,52 +27383,74 @@ label_278:
           }
           else if ((int) tile.type == 239)
           {
-            int num = (int) tile.frameX / 18;
-            if (num == 0)
+            int num1 = (int) tile.frameX / 18;
+            if (num1 == 0)
               Type1 = 20;
-            if (num == 1)
+            int num2 = 1;
+            if (num1 == num2)
               Type1 = 703;
-            if (num == 2)
+            int num3 = 2;
+            if (num1 == num3)
               Type1 = 22;
-            if (num == 3)
+            int num4 = 3;
+            if (num1 == num4)
               Type1 = 704;
-            if (num == 4)
+            int num5 = 4;
+            if (num1 == num5)
               Type1 = 21;
-            if (num == 5)
+            int num6 = 5;
+            if (num1 == num6)
               Type1 = 705;
-            if (num == 6)
+            int num7 = 6;
+            if (num1 == num7)
               Type1 = 19;
-            if (num == 7)
+            int num8 = 7;
+            if (num1 == num8)
               Type1 = 706;
-            if (num == 8)
+            int num9 = 8;
+            if (num1 == num9)
               Type1 = 57;
-            if (num == 9)
+            int num10 = 9;
+            if (num1 == num10)
               Type1 = 117;
-            if (num == 10)
+            int num11 = 10;
+            if (num1 == num11)
               Type1 = 175;
-            if (num == 11)
+            int num12 = 11;
+            if (num1 == num12)
               Type1 = 381;
-            if (num == 12)
+            int num13 = 12;
+            if (num1 == num13)
               Type1 = 1184;
-            if (num == 13)
+            int num14 = 13;
+            if (num1 == num14)
               Type1 = 382;
-            if (num == 14)
+            int num15 = 14;
+            if (num1 == num15)
               Type1 = 1191;
-            if (num == 15)
+            int num16 = 15;
+            if (num1 == num16)
               Type1 = 391;
-            if (num == 16)
+            int num17 = 16;
+            if (num1 == num17)
               Type1 = 1198;
-            if (num == 17)
+            int num18 = 17;
+            if (num1 == num18)
               Type1 = 1006;
-            if (num == 18)
+            int num19 = 18;
+            if (num1 == num19)
               Type1 = 1225;
-            if (num == 19)
+            int num20 = 19;
+            if (num1 == num20)
               Type1 = 1257;
-            if (num == 20)
+            int num21 = 20;
+            if (num1 == num21)
               Type1 = 1552;
-            if (num == 21)
+            int num22 = 21;
+            if (num1 == num22)
               Type1 = 3261;
-            if (num == 22)
+            int num23 = 22;
+            if (num1 == num23)
               Type1 = 3467;
           }
           else if ((int) tile.type == 380)
@@ -27385,8 +27862,8 @@ label_278:
                 {
                   int Type3 = WorldGen.genRand.Next(210, 212);
                   int index2 = NPC.NewNPC(i * 16 + 8, j * 16 + 15, Type3, 1, 0.0f, 0.0f, 0.0f, 0.0f, (int) byte.MaxValue);
-                  Main.npc[index2].velocity.X = (float) WorldGen.genRand.Next(-200, 201) * (1f / 500f);
-                  Main.npc[index2].velocity.Y = (float) WorldGen.genRand.Next(-200, 201) * (1f / 500f);
+                  Main.npc[index2].velocity.X = (__Null) ((double) WorldGen.genRand.Next(-200, 201) * (1.0 / 500.0));
+                  Main.npc[index2].velocity.Y = (__Null) ((double) WorldGen.genRand.Next(-200, 201) * (1.0 / 500.0));
                   Main.npc[index2].netUpdate = true;
                 }
               }
@@ -27778,16 +28255,20 @@ label_278:
             Type1 = 3234;
           else if ((int) tile.type == 137)
           {
-            int num = (int) tile.frameY / 18;
-            if (num == 0)
+            int num1 = (int) tile.frameY / 18;
+            if (num1 == 0)
               Type1 = 539;
-            if (num == 1)
+            int num2 = 1;
+            if (num1 == num2)
               Type1 = 1146;
-            if (num == 2)
+            int num3 = 2;
+            if (num1 == num3)
               Type1 = 1147;
-            if (num == 3)
+            int num4 = 3;
+            if (num1 == num4)
               Type1 = 1148;
-            if (num == 4)
+            int num5 = 4;
+            if (num1 == num5)
               Type1 = 1149;
           }
           else if ((int) tile.type == 141)
@@ -27826,20 +28307,26 @@ label_278:
             Type1 = 937;
           else if ((int) tile.type == 135)
           {
-            int num = (int) tile.frameY / 18;
-            if (num == 0)
+            int num1 = (int) tile.frameY / 18;
+            if (num1 == 0)
               Type1 = 529;
-            if (num == 1)
+            int num2 = 1;
+            if (num1 == num2)
               Type1 = 541;
-            if (num == 2)
+            int num3 = 2;
+            if (num1 == num3)
               Type1 = 542;
-            if (num == 3)
+            int num4 = 3;
+            if (num1 == num4)
               Type1 = 543;
-            if (num == 4)
+            int num5 = 4;
+            if (num1 == num5)
               Type1 = 852;
-            if (num == 5)
+            int num6 = 5;
+            if (num1 == num6)
               Type1 = 853;
-            if (num == 6)
+            int num7 = 6;
+            if (num1 == num7)
               Type1 = 1151;
           }
           else if ((int) tile.type == 144)
@@ -28042,43 +28529,26 @@ label_278:
         Type1 = 243;
       if ((int) tileCache.type == 334)
         Type1 = 7;
-      ushort type = tileCache.type;
-      if ((uint) type <= 139U)
+      ushort type1 = tileCache.type;
+      if ((uint) type1 <= 139U)
       {
-        if ((uint) type <= 89U)
+        if ((uint) type1 <= 87U)
         {
-          switch (type)
-          {
-            case 10:
-            case 11:
-            case 87:
-            case 89:
-              break;
-            default:
-              goto label_57;
-          }
+          if ((uint) type1 - 10U > 1U && (int) type1 != 87)
+            goto label_58;
         }
-        else if ((int) type != 93 && (int) type != 139)
-          goto label_57;
+        else if ((int) type1 != 89 && (int) type1 != 93 && (int) type1 != 139)
+          goto label_58;
       }
-      else if ((uint) type <= 320U)
+      else if ((uint) type1 <= 320U)
       {
-        switch (type)
-        {
-          case 209:
-          case 319:
-          case 320:
-            break;
-          default:
-            goto label_57;
-        }
+        if ((int) type1 != 209 && (uint) type1 - 319U > 1U)
+          goto label_58;
       }
-      else
+      else if ((uint) type1 - 386U > 1U)
       {
-        switch (type)
+        switch (type1)
         {
-          case 386:
-          case 387:
           case 390:
           case 405:
           case 406:
@@ -28116,16 +28586,16 @@ label_278:
             break;
           case 407:
             Type1 = 10;
-            goto label_57;
+            goto label_58;
           case 454:
             Type1 = 139;
-            goto label_57;
+            goto label_58;
           default:
-            goto label_57;
+            goto label_58;
         }
       }
       Type1 = -1;
-label_57:
+label_58:
       if ((int) tileCache.type == 240)
       {
         int num = (int) tileCache.frameX / 54;
@@ -28389,52 +28859,74 @@ label_57:
         Type1 = 1;
       if ((int) tileCache.type == 239)
       {
-        int num = (int) tileCache.frameX / 18;
-        if (num == 0)
+        int num1 = (int) tileCache.frameX / 18;
+        if (num1 == 0)
           Type1 = 9;
-        if (num == 1)
+        int num2 = 1;
+        if (num1 == num2)
           Type1 = 81;
-        if (num == 2)
+        int num3 = 2;
+        if (num1 == num3)
           Type1 = 8;
-        if (num == 3)
+        int num4 = 3;
+        if (num1 == num4)
           Type1 = 82;
-        if (num == 4)
+        int num5 = 4;
+        if (num1 == num5)
           Type1 = 11;
-        if (num == 5)
+        int num6 = 5;
+        if (num1 == num6)
           Type1 = 83;
-        if (num == 6)
+        int num7 = 6;
+        if (num1 == num7)
           Type1 = 10;
-        if (num == 7)
+        int num8 = 7;
+        if (num1 == num8)
           Type1 = 84;
-        if (num == 8)
+        int num9 = 8;
+        if (num1 == num9)
           Type1 = 14;
-        if (num == 9)
+        int num10 = 9;
+        if (num1 == num10)
           Type1 = 23;
-        if (num == 10)
+        int num11 = 10;
+        if (num1 == num11)
           Type1 = 25;
-        if (num == 11)
+        int num12 = 11;
+        if (num1 == num12)
           Type1 = 48;
-        if (num == 12)
+        int num13 = 12;
+        if (num1 == num13)
           Type1 = 144;
-        if (num == 13)
+        int num14 = 13;
+        if (num1 == num14)
           Type1 = 49;
-        if (num == 14)
+        int num15 = 14;
+        if (num1 == num15)
           Type1 = 145;
-        if (num == 15)
+        int num16 = 15;
+        if (num1 == num16)
           Type1 = 50;
-        if (num == 16)
+        int num17 = 16;
+        if (num1 == num17)
           Type1 = 146;
-        if (num == 17)
+        int num18 = 17;
+        if (num1 == num18)
           Type1 = 128;
-        if (num == 18)
+        int num19 = 18;
+        if (num1 == num19)
           Type1 = 84;
-        if (num == 19)
+        int num20 = 19;
+        if (num1 == num20)
           Type1 = 117;
-        if (num == 20)
+        int num21 = 20;
+        if (num1 == num21)
           Type1 = 42;
-        if (num == 21)
+        int num22 = 21;
+        if (num1 == num22)
           Type1 = -1;
-        if (num == 22)
+        int num23 = 22;
+        if (num1 == num23)
           Type1 = 265;
       }
       if ((int) tileCache.type == 185)
@@ -28909,20 +29401,26 @@ label_57:
         Type1 = 49;
       if (Main.tileAlch[(int) tileCache.type])
       {
-        int num = (int) tileCache.frameX / 18;
-        if (num == 0)
+        int num1 = (int) tileCache.frameX / 18;
+        if (num1 == 0)
           Type1 = 3;
-        if (num == 1)
+        int num2 = 1;
+        if (num1 == num2)
           Type1 = 3;
-        if (num == 2)
+        int num3 = 2;
+        if (num1 == num3)
           Type1 = 7;
-        if (num == 3)
+        int num4 = 3;
+        if (num1 == num4)
           Type1 = 17;
-        if (num == 4)
+        int num5 = 4;
+        if (num1 == num5)
           Type1 = 3;
-        if (num == 5)
+        int num6 = 5;
+        if (num1 == num6)
           Type1 = 6;
-        if (num == 6)
+        int num7 = 6;
+        if (num1 == num7)
           Type1 = 224;
       }
       if ((int) tileCache.type == 58 || (int) tileCache.type == 76 || (int) tileCache.type == 77)
@@ -29025,33 +29523,19 @@ label_57:
       if ((int) tileCache.type == 322)
         Type1 = 215;
       bool flag = (int) tileCache.type == 178 || (int) tileCache.type == 440;
-      switch (tileCache.type)
-      {
-        case 178:
-        case 426:
-        case 427:
-        case 430:
-        case 431:
-        case 432:
-        case 433:
-        case 434:
-        case 435:
-        case 436:
-        case 437:
-        case 438:
-        case 439:
-        case 440:
-          flag = true;
-          break;
-      }
+      ushort type2 = tileCache.type;
+      if ((int) type2 == 178 || (uint) type2 - 426U <= 1U || (uint) type2 - 430U <= 10U)
+        flag = true;
       if (Type1 < 0)
         return 6000;
       if ((int) tileCache.type == 352 && Type1 == 5)
       {
-        int index = Dust.NewDust(new Vector2((float) (i * 16), (float) (j * 16)), 16, 16, 5, 0.0f, 0.0f, 100, new Color(), 1f);
+        int index = Dust.NewDust(new Vector2((float) (i * 16), (float) (j * 16)), 16, 16, 5, 0.0f, 0.0f, 100, (Color) null, 1f);
         Main.dust[index].scale = 1.5f;
         Main.dust[index].noGravity = true;
-        Main.dust[index].velocity *= 1.65f;
+        Dust dust = Main.dust[index];
+        Vector2 vector2 = Vector2.op_Multiply(dust.velocity, 1.65f);
+        dust.velocity = vector2;
         Main.dust[index].fadeIn = 1.6f;
         return index;
       }
@@ -29064,11 +29548,11 @@ label_57:
       if ((int) tileCache.type == 323)
       {
         int frameY = (int) tileCache.frameY;
-        return Dust.NewDust(new Vector2((float) (i * 16 + frameY), (float) (j * 16)), 16, 16, Type1, 0.0f, 0.0f, 0, new Color(), 1f);
+        return Dust.NewDust(new Vector2((float) (i * 16 + frameY), (float) (j * 16)), 16, 16, Type1, 0.0f, 0.0f, 0, (Color) null, 1f);
       }
       if ((int) tileCache.type == 314)
       {
-        int index = Dust.NewDust(new Vector2((float) (i * 16), (float) (j * 16)), 16, 16, 213, (float) WorldGen.genRand.Next(-2, 3), (float) WorldGen.genRand.Next(-2, 3), 0, new Color(), 1f);
+        int index = Dust.NewDust(new Vector2((float) (i * 16), (float) (j * 16)), 16, 16, 213, (float) WorldGen.genRand.Next(-2, 3), (float) WorldGen.genRand.Next(-2, 3), 0, (Color) null, 1f);
         Main.dust[index].noGravity = true;
         Main.dust[index].fadeIn = (float) ((double) Main.dust[index].scale + 1.0 + 0.00999999977648258 * (double) WorldGen.genRand.Next(0, 51));
         Main.dust[index].noGravity = true;
@@ -29076,7 +29560,7 @@ label_57:
       }
       if (flag)
       {
-        int index = Dust.NewDust(new Vector2((float) (i * 16), (float) (j * 16)), 16, 16, Type1, 0.0f, 0.0f, 75, new Color(), 0.75f);
+        int index = Dust.NewDust(new Vector2((float) (i * 16), (float) (j * 16)), 16, 16, Type1, 0.0f, 0.0f, 75, (Color) null, 0.75f);
         Main.dust[index].noLight = true;
         return index;
       }
@@ -29086,7 +29570,7 @@ label_57:
         return Dust.NewDust(new Vector2((float) (i * 16), (float) (j * 16)), 16, 16, Type1, 0.0f, 0.0f, 75, new Color(97, 200, (int) byte.MaxValue, 100), 0.75f);
       if ((int) tileCache.type == 185 && Type1 >= 86 && Type1 <= 91)
       {
-        int index = Dust.NewDust(new Vector2((float) (i * 16), (float) (j * 16)), 16, 16, Type1, 0.0f, 0.0f, 75, new Color(), 0.75f);
+        int index = Dust.NewDust(new Vector2((float) (i * 16), (float) (j * 16)), 16, 16, Type1, 0.0f, 0.0f, 75, (Color) null, 0.75f);
         Main.dust[index].noLight = true;
         return index;
       }
@@ -29097,9 +29581,9 @@ label_57:
         return index;
       }
       if (Type1 != 139)
-        return Dust.NewDust(new Vector2((float) (i * 16), (float) (j * 16)), 16, 16, Type1, 0.0f, 0.0f, 0, new Color(), 1f);
+        return Dust.NewDust(new Vector2((float) (i * 16), (float) (j * 16)), 16, 16, Type1, 0.0f, 0.0f, 0, (Color) null, 1f);
       int Type2 = Type1 + Main.rand.Next(4);
-      return Dust.NewDust(new Vector2((float) (i * 16), (float) (j * 16)), 16, 16, Type2, 0.0f, 0.0f, 0, new Color(), 1f);
+      return Dust.NewDust(new Vector2((float) (i * 16), (float) (j * 16)), 16, 16, Type2, 0.0f, 0.0f, 0, (Color) null, 1f);
     }
 
     public static bool IsOpenDoorAnchorFrame(int x, int y)
@@ -29185,13 +29669,18 @@ label_57:
 
     public static bool PlayerLOS(int x, int y)
     {
-      Microsoft.Xna.Framework.Rectangle rectangle1 = new Microsoft.Xna.Framework.Rectangle(x * 16, y * 16, 16, 16);
+      Rectangle rectangle1;
+      // ISSUE: explicit reference operation
+      ((Rectangle) @rectangle1).\u002Ector(x * 16, y * 16, 16, 16);
       for (int index = 0; index < (int) byte.MaxValue; ++index)
       {
         if (Main.player[index].active)
         {
-          Microsoft.Xna.Framework.Rectangle rectangle2 = new Microsoft.Xna.Framework.Rectangle((int) ((double) Main.player[index].position.X + (double) Main.player[index].width * 0.5 - (double) NPC.sWidth * 0.6), (int) ((double) Main.player[index].position.Y + (double) Main.player[index].height * 0.5 - (double) NPC.sHeight * 0.6), (int) ((double) NPC.sWidth * 1.2), (int) ((double) NPC.sHeight * 1.2));
-          if (rectangle1.Intersects(rectangle2))
+          Rectangle rectangle2;
+          // ISSUE: explicit reference operation
+          ((Rectangle) @rectangle2).\u002Ector((int) ((double) Main.player[index].position.X + (double) Main.player[index].width * 0.5 - (double) NPC.sWidth * 0.6), (int) ((double) Main.player[index].position.Y + (double) Main.player[index].height * 0.5 - (double) NPC.sHeight * 0.6), (int) ((double) NPC.sWidth * 1.2), (int) ((double) NPC.sHeight * 1.2));
+          // ISSUE: explicit reference operation
+          if (((Rectangle) @rectangle1).Intersects(rectangle2))
             return true;
         }
       }
@@ -29263,7 +29752,9 @@ label_57:
       int num2 = i + radius;
       int num3 = j - radius;
       int num4 = j + radius;
-      int num5 = Utils.Clamp<int>(num1, 0, Main.maxTilesX - 1);
+      int min = 0;
+      int max = Main.maxTilesX - 1;
+      int num5 = Utils.Clamp<int>(num1, min, max);
       int num6 = Utils.Clamp<int>(num2, 0, Main.maxTilesX - 1);
       int num7 = Utils.Clamp<int>(num3, 0, Main.maxTilesY - 1);
       int num8 = Utils.Clamp<int>(num4, 0, Main.maxTilesY - 1);
@@ -29352,14 +29843,17 @@ label_57:
         {
           int index1 = i;
           int index2 = j;
-          int num = WorldGen.genRand.Next(4);
-          if (num == 0)
+          int num1 = WorldGen.genRand.Next(4);
+          if (num1 == 0)
             ++index1;
-          if (num == 1)
+          int num2 = 1;
+          if (num1 == num2)
             --index1;
-          if (num == 2)
+          int num3 = 2;
+          if (num1 == num3)
             ++index2;
-          if (num == 3)
+          int num4 = 3;
+          if (num1 == num4)
             --index2;
           if (WorldGen.InWorld(index1, index2, 2) && Main.tile[index1, index2].active() && ((int) Main.tile[index1, index2].type == 59 || (int) Main.tile[index1, index2].type == 60) && WorldGen.Chlorophyte(index1, index2))
           {
@@ -29407,51 +29901,46 @@ label_57:
           int index1 = i + WorldGen.genRand.Next(-3, 4);
           int index2 = j + WorldGen.genRand.Next(-3, 4);
           bool flag2 = false;
-          switch (Main.tile[index1, index2].type)
+          if ((uint) Main.tile[index1, index2].type - 59U <= 1U)
           {
-            case 59:
-            case 60:
-              flag2 = WorldGen.nearbyChlorophyte(index1, index2);
-              break;
-            default:
-              bool flag3 = false;
-              int index3 = index1;
-              int index4 = index2;
-              for (int index5 = 0; index5 < 4; ++index5)
+            flag2 = WorldGen.nearbyChlorophyte(index1, index2);
+          }
+          else
+          {
+            bool flag3 = false;
+            int index3 = index1;
+            int index4 = index2;
+            for (int index5 = 0; index5 < 4; ++index5)
+            {
+              switch (index5)
               {
-                switch (index5)
-                {
-                  case 0:
-                    index3 = index1 - 1;
-                    index4 = index2;
-                    break;
-                  case 1:
-                    index3 = index1 + 1;
-                    index4 = index2;
-                    break;
-                  case 2:
-                    index3 = index1;
-                    index4 = index2 - 1;
-                    break;
-                  case 3:
-                    index3 = index1;
-                    index4 = index2 + 1;
-                    break;
-                }
-                if (Main.tile[index3, index4].active() && ((int) Main.tile[index3, index4].type == 59 || (int) Main.tile[index3, index4].type == 60))
-                {
-                  flag3 = true;
+                case 0:
+                  index3 = index1 - 1;
+                  index4 = index2;
                   break;
-                }
+                case 1:
+                  index3 = index1 + 1;
+                  index4 = index2;
+                  break;
+                case 2:
+                  index3 = index1;
+                  index4 = index2 - 1;
+                  break;
+                case 3:
+                  index3 = index1;
+                  index4 = index2 + 1;
+                  break;
               }
-              if (flag3)
+              if (Main.tile[index3, index4].active() && ((int) Main.tile[index3, index4].type == 59 || (int) Main.tile[index3, index4].type == 60))
               {
-                flag2 = WorldGen.nearbyChlorophyte(index1, index2);
+                flag3 = true;
                 break;
               }
-              break;
+            }
+            if (flag3)
+              flag2 = WorldGen.nearbyChlorophyte(index1, index2);
           }
-          if ((int) Main.tile[index1, index2 - 1].type != 27 && !flag2)
+          if (!((int) Main.tile[index1, index2 - 1].type == 27 | flag2))
           {
             if ((int) Main.tile[index1, index2].type == 2)
             {
@@ -29537,7 +30026,7 @@ label_57:
           int index1 = i + WorldGen.genRand.Next(-3, 4);
           int index2 = j + WorldGen.genRand.Next(-3, 4);
           bool flag2 = WorldGen.nearbyChlorophyte(index1, index2);
-          if ((int) Main.tile[index1, index2 - 1].type != 27 && !flag2)
+          if (!((int) Main.tile[index1, index2 - 1].type == 27 | flag2))
           {
             if ((int) Main.tile[index1, index2].type == 2)
             {
@@ -29904,11 +30393,11 @@ label_12:
       double num2 = num1;
       float num3 = (float) WorldGen.genRand.Next(10, 21);
       Vector2 vector2_1;
-      vector2_1.X = (float) i;
-      vector2_1.Y = (float) j;
+      vector2_1.X = (__Null) (double) i;
+      vector2_1.Y = (__Null) (double) j;
       Vector2 vector2_2;
-      vector2_2.X = (float) WorldGen.genRand.Next(-10, 11) * 0.2f;
-      vector2_2.Y = (float) WorldGen.genRand.Next(-10, 11) * 0.2f;
+      vector2_2.X = (__Null) ((double) WorldGen.genRand.Next(-10, 11) * 0.200000002980232);
+      vector2_2.Y = (__Null) ((double) WorldGen.genRand.Next(-10, 11) * 0.200000002980232);
       while (num1 > 0.0 && (double) num3 > 0.0)
       {
         num1 = num2 * (1.0 + (double) WorldGen.genRand.Next(-20, 20) * 0.00999999977648258);
@@ -29929,9 +30418,9 @@ label_12:
         {
           for (int j1 = num7; j1 < num8; ++j1)
           {
-            float num9 = Math.Abs((float) i1 - vector2_1.X);
-            float num10 = Math.Abs((float) j1 - vector2_1.Y);
-            double num11 = Math.Sqrt((double) num9 * (double) num9 + (double) num10 * (double) num10);
+            double num9 = (double) Math.Abs((float) i1 - (float) vector2_1.X);
+            float num10 = Math.Abs((float) j1 - (float) vector2_1.Y);
+            double num11 = Math.Sqrt(num9 * num9 + (double) num10 * (double) num10);
             if (num11 < num2 * 0.4 * (1.0 + (double) WorldGen.genRand.Next(-10, 11) * 0.005))
             {
               if (WorldGen.genRand.Next(3) == 0)
@@ -29960,12 +30449,28 @@ label_12:
             WorldGen.SquareTileFrame(i1, j1, true);
           }
         }
-        vector2_1 += vector2_2;
+        vector2_1 = Vector2.op_Addition(vector2_1, vector2_2);
         num3 = num4 - 1f;
-        vector2_2.Y += (float) WorldGen.genRand.Next(-10, 11) * 0.05f;
-        vector2_2.X += (float) WorldGen.genRand.Next(-10, 11) * 0.05f;
+        // ISSUE: explicit reference operation
+        // ISSUE: variable of a reference type
+        __Null& local1 = @vector2_2.Y;
+        // ISSUE: cast to a reference type
+        // ISSUE: explicit reference operation
+        double num12 = (double) ^(float&) local1 + (double) WorldGen.genRand.Next(-10, 11) * 0.0500000007450581;
+        // ISSUE: cast to a reference type
+        // ISSUE: explicit reference operation
+        ^(float&) local1 = (float) num12;
+        // ISSUE: explicit reference operation
+        // ISSUE: variable of a reference type
+        __Null& local2 = @vector2_2.X;
+        // ISSUE: cast to a reference type
+        // ISSUE: explicit reference operation
+        double num13 = (double) ^(float&) local2 + (double) WorldGen.genRand.Next(-10, 11) * 0.0500000007450581;
+        // ISSUE: cast to a reference type
+        // ISSUE: explicit reference operation
+        ^(float&) local2 = (float) num13;
       }
-      return new Vector2(vector2_1.X, vector2_1.Y);
+      return new Vector2((float) vector2_1.X, (float) vector2_1.Y);
     }
 
     public static void MineHouse(int i, int j)
@@ -30293,7 +30798,10 @@ label_12:
           int num16 = index12 - 1;
           int num17 = (num13 + num14) / 2;
           int num18 = (num15 + num16) / 2;
-          if (num14 - num13 > 7 && num16 - num15 > 5)
+          int num19 = num14 - num13;
+          int num20 = num16 - num15;
+          int num21 = 7;
+          if (num19 > num21 && num20 > 5)
           {
             int num8 = 0;
             if (WorldGen.nearPicture2(i, num18))
@@ -30652,7 +31160,7 @@ label_12:
           if (exoticPlant)
           {
             int type = (int) Main.tile[i, j].type;
-            if (TileID.Sets.Conversion.Grass[type] || TileID.Sets.Conversion.Moss[type] || type == 0)
+            if ((TileID.Sets.Conversion.Grass[type] || TileID.Sets.Conversion.Moss[type] ? 1 : (type == 0 ? 1 : 0)) != 0)
               WorldGen.PlaceTile(i, j - 1, 227, true, false, -1, WorldGen.genRand.Next(8, 12));
           }
           else if ((int) Main.tile[i, j].type == 60)
@@ -30963,13 +31471,13 @@ label_12:
                   }
                 }
               }
-              if (Main.netMode == 2 && flag2)
+              if (Main.netMode == 2 & flag2)
                 NetMessage.SendTileSquare(-1, index2, index3, 3, TileChangeType.None);
             }
             else if ((int) Main.tile[index2, index3].type == 20 && WorldGen.genRand.Next(20) == 0)
             {
               bool flag2 = WorldGen.PlayerLOS(index2, index3);
-              if (((int) Main.tile[index2, index3].frameX < 324 || (int) Main.tile[index2, index3].frameX >= 540 ? WorldGen.GrowTree(index2, index3) : WorldGen.GrowPalmTree(index2, index3)) && flag2)
+              if (((int) Main.tile[index2, index3].frameX < 324 || (int) Main.tile[index2, index3].frameX >= 540 ? WorldGen.GrowTree(index2, index3) : WorldGen.GrowPalmTree(index2, index3)) & flag2)
                 WorldGen.TreeGrowFXCheck(index2, index3);
             }
             if ((int) Main.tile[index2, index3].type == 3 && WorldGen.genRand.Next(20) == 0 && (int) Main.tile[index2, index3].frameX != 144)
@@ -31225,7 +31733,7 @@ label_241:
               if (WorldGen.genRand.Next(100) == 0)
               {
                 bool flag2 = WorldGen.PlayerLOS(index2, index3);
-                if (WorldGen.GrowTree(index2, index3) && flag2)
+                if (WorldGen.GrowTree(index2, index3) & flag2)
                   WorldGen.TreeGrowFXCheck(index2, index3 - 1);
               }
               bool flag3 = false;
@@ -31244,7 +31752,7 @@ label_241:
                   }
                 }
               }
-              if (Main.netMode == 2 && flag3)
+              if (Main.netMode == 2 & flag3)
                 NetMessage.SendTileSquare(-1, index2, index3, 3, TileChangeType.None);
             }
             if ((int) Main.tile[index2, index3].type == 60)
@@ -31296,7 +31804,7 @@ label_241:
                   }
                 }
               }
-              if (Main.netMode == 2 && flag2)
+              if (Main.netMode == 2 & flag2)
                 NetMessage.SendTileSquare(-1, index2, index3, 3, TileChangeType.None);
             }
             if ((int) Main.tile[index2, index3].type == 61 && WorldGen.genRand.Next(3) == 0 && (int) Main.tile[index2, index3].frameX < 144)
@@ -31519,7 +32027,7 @@ label_241:
                     }
                   }
                 }
-                if (Main.netMode == 2 && flag2)
+                if (Main.netMode == 2 & flag2)
                   NetMessage.SendTileSquare(-1, index2, index3, 3, TileChangeType.None);
               }
               if ((int) Main.tile[index2, index3].type == 60)
@@ -31625,7 +32133,7 @@ label_241:
                     }
                   }
                 }
-                if (Main.netMode == 2 && flag3)
+                if (Main.netMode == 2 & flag3)
                   NetMessage.SendTileSquare(-1, index2, index3, 3, TileChangeType.None);
               }
               if ((int) Main.tile[index2, index3].type == 61 && WorldGen.genRand.Next(3) == 0 && (int) Main.tile[index2, index3].frameX < 144)
@@ -31680,7 +32188,7 @@ label_241:
                   {
                     for (int index5 = tileY; index5 < tileY + 2; ++index5)
                     {
-                      if (Main.tile[i, index5].active() && (!Main.tileCut[(int) Main.tile[i, index5].type] || (int) Main.tile[i, index5].type == 444) || Main.tile[i, index5].lava())
+                      if ((!Main.tile[i, index5].active() || Main.tileCut[(int) Main.tile[i, index5].type] && (int) Main.tile[i, index5].type != 444 ? (!Main.tile[i, index5].lava() ? 1 : 0) : 0) == 0)
                         flag2 = false;
                       if (!flag2)
                         break;
@@ -31840,7 +32348,7 @@ label_241:
                     }
                   }
                 }
-                if (Main.netMode == 2 && flag2)
+                if (Main.netMode == 2 & flag2)
                   NetMessage.SendTileSquare(-1, index2, index3, 3, TileChangeType.None);
                 if (WorldGen.genRand.Next(6) == 0)
                 {
@@ -31878,11 +32386,8 @@ label_241:
                   if (Main.netMode == 2 && Main.tile[index2, index4].active())
                     NetMessage.SendTileSquare(-1, index2, index4, 1, TileChangeType.None);
                 }
-                if (WorldGen.genRand.Next(200) == 0)
-                {
-                  if (WorldGen.GrowShroom(index2, index3) && WorldGen.PlayerLOS(index2, index3))
-                    WorldGen.TreeGrowFXCheck(index2, index3 - 1);
-                }
+                if (WorldGen.genRand.Next(200) == 0 && WorldGen.GrowShroom(index2, index3) && WorldGen.PlayerLOS(index2, index3))
+                  WorldGen.TreeGrowFXCheck(index2, index3 - 1);
                 bool flag2 = false;
                 for (int i = num5; i < num6; ++i)
                 {
@@ -31899,7 +32404,7 @@ label_241:
                     }
                   }
                 }
-                if (Main.netMode == 2 && flag2)
+                if (Main.netMode == 2 & flag2)
                   NetMessage.SendTileSquare(-1, index2, index3, 3, TileChangeType.None);
               }
             }
@@ -31943,7 +32448,7 @@ label_241:
             if ((int) Main.tile[tileX, tileY].wall >= 63 && (int) Main.tile[tileX, tileY].wall <= 68)
             {
               bool flag2 = false;
-label_630:
+label_629:
               for (int index5 = index2 - wallDist; index5 < index2 + wallDist; ++index5)
               {
                 for (int index6 = index3 - wallDist; index6 < index3 + wallDist; ++index6)
@@ -31960,7 +32465,7 @@ label_630:
                       case 234:
                       case 352:
                         flag2 = true;
-                        goto label_630;
+                        goto label_629;
                       default:
                         continue;
                     }
@@ -31982,7 +32487,7 @@ label_630:
             if ((int) Main.tile[tileX, tileY].wall >= 63 && (int) Main.tile[tileX, tileY].wall <= 68)
             {
               bool flag2 = false;
-label_644:
+label_643:
               for (int index5 = index2 - wallDist; index5 < index2 + wallDist; ++index5)
               {
                 for (int index6 = index3 - wallDist; index6 < index3 + wallDist; ++index6)
@@ -31999,7 +32504,7 @@ label_644:
                       case 112:
                       case 163:
                         flag2 = true;
-                        goto label_644;
+                        goto label_643;
                       default:
                         continue;
                     }
@@ -32021,7 +32526,7 @@ label_644:
             if ((int) Main.tile[tileX, tileY].wall == 63 || (int) Main.tile[tileX, tileY].wall == 65 || ((int) Main.tile[tileX, tileY].wall == 66 || (int) Main.tile[tileX, tileY].wall == 68))
             {
               bool flag2 = false;
-label_658:
+label_657:
               for (int index5 = index2 - wallDist; index5 < index2 + wallDist; ++index5)
               {
                 for (int index6 = index3 - wallDist; index6 < index3 + wallDist; ++index6)
@@ -32038,7 +32543,7 @@ label_658:
                       case 117:
                       case 164:
                         flag2 = true;
-                        goto label_658;
+                        goto label_657;
                       default:
                         continue;
                     }
@@ -32062,14 +32567,18 @@ label_658:
       if ((double) Main.rand.Next(8000) >= 10.0 * (double) num15)
         return;
       int num16 = 12;
-      Vector2 vector2 = new Vector2((float) ((Main.rand.Next(Main.maxTilesX - 50) + 100) * 16), (float) (Main.rand.Next((int) ((double) Main.maxTilesY * 0.05)) * 16));
-      float num17 = (float) Main.rand.Next(-100, 101);
-      float num18 = (float) (Main.rand.Next(200) + 100);
-      float num19 = (float) Math.Sqrt((double) num17 * (double) num17 + (double) num18 * (double) num18);
-      float num20 = (float) num16 / num19;
-      float SpeedX = num17 * num20;
-      float SpeedY = num18 * num20;
-      Projectile.NewProjectile(vector2.X, vector2.Y, SpeedX, SpeedY, 12, 1000, 10f, Main.myPlayer, 0.0f, 0.0f);
+      int num17 = (Main.rand.Next(Main.maxTilesX - 50) + 100) * 16;
+      int num18 = Main.rand.Next((int) ((double) Main.maxTilesY * 0.05)) * 16;
+      Vector2 vector2;
+      // ISSUE: explicit reference operation
+      ((Vector2) @vector2).\u002Ector((float) num17, (float) num18);
+      float num19 = (float) Main.rand.Next(-100, 101);
+      float num20 = (float) (Main.rand.Next(200) + 100);
+      float num21 = (float) Math.Sqrt((double) num19 * (double) num19 + (double) num20 * (double) num20);
+      float num22 = (float) num16 / num21;
+      float SpeedX = num19 * num22;
+      float SpeedY = num20 * num22;
+      Projectile.NewProjectile((float) vector2.X, (float) vector2.Y, SpeedX, SpeedY, 12, 1000, 10f, Main.myPlayer, 0.0f, 0.0f);
     }
 
     private static void TrySpawningTownNPC(int x, int y)
@@ -32308,11 +32817,11 @@ label_658:
     {
       float num1 = (float) steps;
       Vector2 vector2_1;
-      vector2_1.X = (float) i;
-      vector2_1.Y = (float) j;
+      vector2_1.X = (__Null) (double) i;
+      vector2_1.Y = (__Null) (double) j;
       Vector2 vector2_2;
-      vector2_2.X = (float) WorldGen.genRand.Next(10, 21) * 0.1f * (float) direction;
-      vector2_2.Y = (float) WorldGen.genRand.Next(-10, 10) * 0.01f;
+      vector2_2.X = (__Null) ((double) WorldGen.genRand.Next(10, 21) * 0.100000001490116 * (double) direction);
+      vector2_2.Y = (__Null) ((double) WorldGen.genRand.Next(-10, 10) * 0.00999999977648258);
       double num2 = (double) (WorldGen.genRand.Next(5) + 7);
       while (num2 > 0.0)
       {
@@ -32347,52 +32856,88 @@ label_658:
         {
           for (int index2 = num5; index2 < num6; ++index2)
           {
-            if ((double) Math.Abs((float) index1 - vector2_1.X) + (double) Math.Abs((float) index2 - vector2_1.Y) < num2 * 0.5 * (1.0 + (double) WorldGen.genRand.Next(-10, 11) * 0.015) && (int) Main.tile[index1, index2].type != 31 && (int) Main.tile[index1, index2].type != 22)
+            if ((double) Math.Abs((float) index1 - (float) vector2_1.X) + (double) Math.Abs((float) index2 - (float) vector2_1.Y) < num2 * 0.5 * (1.0 + (double) WorldGen.genRand.Next(-10, 11) * 0.015) && (int) Main.tile[index1, index2].type != 31 && (int) Main.tile[index1, index2].type != 22)
               Main.tile[index1, index2].active(false);
           }
         }
-        vector2_1 += vector2_2;
-        vector2_2.Y += (float) WorldGen.genRand.Next(-10, 10) * 0.1f;
-        if ((double) vector2_1.Y < (double) (j - 20))
-          vector2_2.Y += (float) WorldGen.genRand.Next(20) * 0.01f;
-        if ((double) vector2_1.Y > (double) (j + 20))
-          vector2_2.Y -= (float) WorldGen.genRand.Next(20) * 0.01f;
+        vector2_1 = Vector2.op_Addition(vector2_1, vector2_2);
+        // ISSUE: explicit reference operation
+        // ISSUE: variable of a reference type
+        __Null& local1 = @vector2_2.Y;
+        // ISSUE: cast to a reference type
+        // ISSUE: explicit reference operation
+        double num7 = (double) ^(float&) local1 + (double) WorldGen.genRand.Next(-10, 10) * 0.100000001490116;
+        // ISSUE: cast to a reference type
+        // ISSUE: explicit reference operation
+        ^(float&) local1 = (float) num7;
+        if (vector2_1.Y < (double) (j - 20))
+        {
+          // ISSUE: explicit reference operation
+          // ISSUE: variable of a reference type
+          __Null& local2 = @vector2_2.Y;
+          // ISSUE: cast to a reference type
+          // ISSUE: explicit reference operation
+          double num8 = (double) ^(float&) local2 + (double) WorldGen.genRand.Next(20) * 0.00999999977648258;
+          // ISSUE: cast to a reference type
+          // ISSUE: explicit reference operation
+          ^(float&) local2 = (float) num8;
+        }
+        if (vector2_1.Y > (double) (j + 20))
+        {
+          // ISSUE: explicit reference operation
+          // ISSUE: variable of a reference type
+          __Null& local2 = @vector2_2.Y;
+          // ISSUE: cast to a reference type
+          // ISSUE: explicit reference operation
+          double num8 = (double) ^(float&) local2 - (double) WorldGen.genRand.Next(20) * 0.00999999977648258;
+          // ISSUE: cast to a reference type
+          // ISSUE: explicit reference operation
+          ^(float&) local2 = (float) num8;
+        }
         if ((double) vector2_2.Y < -0.5)
-          vector2_2.Y = -0.5f;
+          vector2_2.Y = (__Null) -0.5;
         if ((double) vector2_2.Y > 0.5)
-          vector2_2.Y = 0.5f;
-        vector2_2.X += (float) WorldGen.genRand.Next(-10, 11) * 0.01f;
+          vector2_2.Y = (__Null) 0.5;
+        // ISSUE: explicit reference operation
+        // ISSUE: variable of a reference type
+        __Null& local3 = @vector2_2.X;
+        // ISSUE: cast to a reference type
+        // ISSUE: explicit reference operation
+        double num9 = (double) ^(float&) local3 + (double) WorldGen.genRand.Next(-10, 11) * 0.00999999977648258;
+        // ISSUE: cast to a reference type
+        // ISSUE: explicit reference operation
+        ^(float&) local3 = (float) num9;
         if (direction == -1)
         {
           if ((double) vector2_2.X > -0.5)
-            vector2_2.X = -0.5f;
-          if ((double) vector2_2.X < -2.0)
-            vector2_2.X = -2f;
+            vector2_2.X = (__Null) -0.5;
+          if (vector2_2.X < -2.0)
+            vector2_2.X = (__Null) -2.0;
         }
         else if (direction == 1)
         {
           if ((double) vector2_2.X < 0.5)
-            vector2_2.X = 0.5f;
-          if ((double) vector2_2.X > 2.0)
-            vector2_2.X = 2f;
+            vector2_2.X = (__Null) 0.5;
+          if (vector2_2.X > 2.0)
+            vector2_2.X = (__Null) 2.0;
         }
-        int num7 = (int) ((double) vector2_1.X - num2 * 1.1);
-        int num8 = (int) ((double) vector2_1.X + num2 * 1.1);
-        int num9 = (int) ((double) vector2_1.Y - num2 * 1.1);
-        int num10 = (int) ((double) vector2_1.Y + num2 * 1.1);
-        if (num7 < 1)
-          num7 = 1;
-        if (num8 > Main.maxTilesX - 1)
-          num8 = Main.maxTilesX - 1;
-        if (num9 < 0)
-          num9 = 0;
-        if (num10 > Main.maxTilesY)
-          num10 = Main.maxTilesY;
-        for (int index1 = num7; index1 < num8; ++index1)
+        int num10 = (int) ((double) vector2_1.X - num2 * 1.1);
+        int num11 = (int) ((double) vector2_1.X + num2 * 1.1);
+        int num12 = (int) ((double) vector2_1.Y - num2 * 1.1);
+        int num13 = (int) ((double) vector2_1.Y + num2 * 1.1);
+        if (num10 < 1)
+          num10 = 1;
+        if (num11 > Main.maxTilesX - 1)
+          num11 = Main.maxTilesX - 1;
+        if (num12 < 0)
+          num12 = 0;
+        if (num13 > Main.maxTilesY)
+          num13 = Main.maxTilesY;
+        for (int index1 = num10; index1 < num11; ++index1)
         {
-          for (int index2 = num9; index2 < num10; ++index2)
+          for (int index2 = num12; index2 < num13; ++index2)
           {
-            if ((double) Math.Abs((float) index1 - vector2_1.X) + (double) Math.Abs((float) index2 - vector2_1.Y) < num2 * 1.1 * (1.0 + (double) WorldGen.genRand.Next(-10, 11) * 0.015) && (int) Main.tile[index1, index2].wall != 3)
+            if ((double) Math.Abs((float) index1 - (float) vector2_1.X) + (double) Math.Abs((float) index2 - (float) vector2_1.Y) < num2 * 1.1 * (1.0 + (double) WorldGen.genRand.Next(-10, 11) * 0.015) && (int) Main.tile[index1, index2].wall != 3)
             {
               if ((int) Main.tile[index1, index2].type != 25 && index2 > j + WorldGen.genRand.Next(3, 20))
                 Main.tile[index1, index2].active(true);
@@ -32404,11 +32949,11 @@ label_658:
             }
           }
         }
-        for (int i1 = num7; i1 < num8; ++i1)
+        for (int i1 = num10; i1 < num11; ++i1)
         {
-          for (int j1 = num9; j1 < num10; ++j1)
+          for (int j1 = num12; j1 < num13; ++j1)
           {
-            if ((double) Math.Abs((float) i1 - vector2_1.X) + (double) Math.Abs((float) j1 - vector2_1.Y) < num2 * 1.1 * (1.0 + (double) WorldGen.genRand.Next(-10, 11) * 0.015) && (int) Main.tile[i1, j1].wall != 3)
+            if ((double) Math.Abs((float) i1 - (float) vector2_1.X) + (double) Math.Abs((float) j1 - (float) vector2_1.Y) < num2 * 1.1 * (1.0 + (double) WorldGen.genRand.Next(-10, 11) * 0.015) && (int) Main.tile[i1, j1].wall != 3)
             {
               if ((int) Main.tile[i1, j1].type != 31 && (int) Main.tile[i1, j1].type != 22)
                 Main.tile[i1, j1].type = (ushort) 25;
@@ -32440,9 +32985,13 @@ label_658:
         ++j1;
       int num1 = i1;
       int num2 = j1;
-      Vector2 position = new Vector2((float) i1, (float) j1);
-      Vector2 vector2 = new Vector2((float) WorldGen.genRand.Next(-20, 21) * 0.1f, (float) WorldGen.genRand.Next(20, 201) * 0.01f);
-      if ((double) vector2.X < 0.0)
+      Vector2 position;
+      // ISSUE: explicit reference operation
+      ((Vector2) @position).\u002Ector((float) i1, (float) j1);
+      Vector2 vector2;
+      // ISSUE: explicit reference operation
+      ((Vector2) @vector2).\u002Ector((float) WorldGen.genRand.Next(-20, 21) * 0.1f, (float) WorldGen.genRand.Next(20, 201) * 0.01f);
+      if (vector2.X < 0.0)
         crimDir = -1;
       float num3 = (float) WorldGen.genRand.Next(15, 26);
       bool flag1 = true;
@@ -32454,81 +33003,120 @@ label_658:
           num3 = 15f;
         if ((double) num3 > 25.0)
           num3 = 25f;
-        for (int index1 = (int) ((double) position.X - (double) num3 / 2.0); (double) index1 < (double) position.X + (double) num3 / 2.0; ++index1)
+        for (int index1 = (int) (position.X - (double) num3 / 2.0); (double) index1 < position.X + (double) num3 / 2.0; ++index1)
         {
-          for (int index2 = (int) ((double) position.Y - (double) num3 / 2.0); (double) index2 < (double) position.Y + (double) num3 / 2.0; ++index2)
+          for (int index2 = (int) (position.Y - (double) num3 / 2.0); (double) index2 < position.Y + (double) num3 / 2.0; ++index2)
           {
             if (index2 > num2)
             {
-              if ((double) Math.Abs((float) index1 - position.X) + (double) Math.Abs((float) index2 - position.Y) < (double) num3 * 0.3)
+              if ((double) Math.Abs((float) index1 - (float) position.X) + (double) Math.Abs((float) index2 - (float) position.Y) < (double) num3 * 0.3)
               {
                 Main.tile[index1, index2].active(false);
                 Main.tile[index1, index2].wall = (byte) 83;
               }
-              else if ((double) Math.Abs((float) index1 - position.X) + (double) Math.Abs((float) index2 - position.Y) < (double) num3 * 0.8 && (int) Main.tile[index1, index2].wall != 83)
+              else if ((double) Math.Abs((float) index1 - (float) position.X) + (double) Math.Abs((float) index2 - (float) position.Y) < (double) num3 * 0.8 && (int) Main.tile[index1, index2].wall != 83)
               {
                 Main.tile[index1, index2].active(true);
                 Main.tile[index1, index2].type = (ushort) 203;
-                if ((double) Math.Abs((float) index1 - position.X) + (double) Math.Abs((float) index2 - position.Y) < (double) num3 * 0.6)
+                if ((double) Math.Abs((float) index1 - (float) position.X) + (double) Math.Abs((float) index2 - (float) position.Y) < (double) num3 * 0.6)
                   Main.tile[index1, index2].wall = (byte) 83;
               }
             }
-            else if ((double) Math.Abs((float) index1 - position.X) + (double) Math.Abs((float) index2 - position.Y) < (double) num3 * 0.3 && Main.tile[index1, index2].active())
+            else if ((double) Math.Abs((float) index1 - (float) position.X) + (double) Math.Abs((float) index2 - (float) position.Y) < (double) num3 * 0.3 && Main.tile[index1, index2].active())
             {
               Main.tile[index1, index2].active(false);
               Main.tile[index1, index2].wall = (byte) 83;
             }
           }
         }
-        if ((double) position.X > (double) (num1 + 50))
+        if (position.X > (double) (num1 + 50))
           num4 = -100;
-        if ((double) position.X < (double) (num1 - 50))
+        if (position.X < (double) (num1 - 50))
           num4 = 100;
         if (num4 < 0)
-          vector2.X -= (float) WorldGen.genRand.Next(20, 51) * 0.01f;
+        {
+          // ISSUE: explicit reference operation
+          // ISSUE: variable of a reference type
+          __Null& local = @vector2.X;
+          // ISSUE: cast to a reference type
+          // ISSUE: explicit reference operation
+          double num5 = (double) ^(float&) local - (double) WorldGen.genRand.Next(20, 51) * 0.00999999977648258;
+          // ISSUE: cast to a reference type
+          // ISSUE: explicit reference operation
+          ^(float&) local = (float) num5;
+        }
         else if (num4 > 0)
-          vector2.X += (float) WorldGen.genRand.Next(20, 51) * 0.01f;
+        {
+          // ISSUE: explicit reference operation
+          // ISSUE: variable of a reference type
+          __Null& local = @vector2.X;
+          // ISSUE: cast to a reference type
+          // ISSUE: explicit reference operation
+          double num5 = (double) ^(float&) local + (double) WorldGen.genRand.Next(20, 51) * 0.00999999977648258;
+          // ISSUE: cast to a reference type
+          // ISSUE: explicit reference operation
+          ^(float&) local = (float) num5;
+        }
         else
-          vector2.X += (float) WorldGen.genRand.Next(-50, 51) * 0.01f;
-        vector2.Y += (float) WorldGen.genRand.Next(-50, 51) * 0.01f;
+        {
+          // ISSUE: explicit reference operation
+          // ISSUE: variable of a reference type
+          __Null& local = @vector2.X;
+          // ISSUE: cast to a reference type
+          // ISSUE: explicit reference operation
+          double num5 = (double) ^(float&) local + (double) WorldGen.genRand.Next(-50, 51) * 0.00999999977648258;
+          // ISSUE: cast to a reference type
+          // ISSUE: explicit reference operation
+          ^(float&) local = (float) num5;
+        }
+        // ISSUE: explicit reference operation
+        // ISSUE: variable of a reference type
+        __Null& local1 = @vector2.Y;
+        // ISSUE: cast to a reference type
+        // ISSUE: explicit reference operation
+        double num6 = (double) ^(float&) local1 + (double) WorldGen.genRand.Next(-50, 51) * 0.00999999977648258;
+        // ISSUE: cast to a reference type
+        // ISSUE: explicit reference operation
+        ^(float&) local1 = (float) num6;
         if ((double) vector2.Y < 0.25)
-          vector2.Y = 0.25f;
-        if ((double) vector2.Y > 2.0)
-          vector2.Y = 2f;
-        if ((double) vector2.X < -2.0)
-          vector2.X = -2f;
-        if ((double) vector2.X > 2.0)
-          vector2.X = 2f;
-        position += vector2;
+          vector2.Y = (__Null) 0.25;
+        if (vector2.Y > 2.0)
+          vector2.Y = (__Null) 2.0;
+        if (vector2.X < -2.0)
+          vector2.X = (__Null) -2.0;
+        if (vector2.X > 2.0)
+          vector2.X = (__Null) 2.0;
+        position = Vector2.op_Addition(position, vector2);
         if ((double) position.Y > Main.worldSurface + 100.0)
           flag1 = false;
       }
-      float num5 = (float) WorldGen.genRand.Next(40, 55);
+      float num7 = (float) WorldGen.genRand.Next(40, 55);
       for (int index1 = 0; index1 < 50; ++index1)
       {
-        int num6 = (int) position.X + WorldGen.genRand.Next(-20, 21);
-        int num7 = (int) position.Y + WorldGen.genRand.Next(-20, 21);
-        for (int index2 = (int) ((double) num6 - (double) num5 / 2.0); (double) index2 < (double) num6 + (double) num5 / 2.0; ++index2)
+        int num5 = (int) position.X + WorldGen.genRand.Next(-20, 21);
+        int num6 = (int) position.Y + WorldGen.genRand.Next(-20, 21);
+        for (int index2 = (int) ((double) num5 - (double) num7 / 2.0); (double) index2 < (double) num5 + (double) num7 / 2.0; ++index2)
         {
-          for (int index3 = (int) ((double) num7 - (double) num5 / 2.0); (double) index3 < (double) num7 + (double) num5 / 2.0; ++index3)
+          for (int index3 = (int) ((double) num6 - (double) num7 / 2.0); (double) index3 < (double) num6 + (double) num7 / 2.0; ++index3)
           {
-            float num8 = (float) Math.Abs(index2 - num6);
-            float num9 = (float) Math.Abs(index3 - num7);
+            double num8 = (double) Math.Abs(index2 - num5);
+            float num9 = (float) Math.Abs(index3 - num6);
             float num10 = (float) (1.0 + (double) WorldGen.genRand.Next(-20, 21) * 0.00999999977648258);
             float num11 = (float) (1.0 + (double) WorldGen.genRand.Next(-20, 21) * 0.00999999977648258);
-            float num12 = num8 * num10;
-            float num13 = num9 * num11;
-            double num14 = Math.Sqrt((double) num12 * (double) num12 + (double) num13 * (double) num13);
-            if (num14 < (double) num5 * 0.25)
+            double num12 = (double) num10;
+            double num13 = num8 * num12;
+            float num14 = num9 * num11;
+            double num15 = Math.Sqrt(num13 * num13 + (double) num14 * (double) num14);
+            if (num15 < (double) num7 * 0.25)
             {
               Main.tile[index2, index3].active(false);
               Main.tile[index2, index3].wall = (byte) 83;
             }
-            else if (num14 < (double) num5 * 0.4 && (int) Main.tile[index2, index3].wall != 83)
+            else if (num15 < (double) num7 * 0.4 && (int) Main.tile[index2, index3].wall != 83)
             {
               Main.tile[index2, index3].active(true);
               Main.tile[index2, index3].type = (ushort) 203;
-              if (num14 < (double) num5 * 0.35)
+              if (num15 < (double) num7 * 0.35)
                 Main.tile[index2, index3].wall = (byte) 83;
             }
           }
@@ -32540,25 +33128,31 @@ label_658:
       {
         int x = (int) position.X;
         int y = (int) position.Y;
-        int num6 = 0;
+        int num5 = 0;
         bool flag2 = true;
-        Vector2 velocity = new Vector2((float) WorldGen.genRand.Next(-20, 21) * 0.15f, (float) WorldGen.genRand.Next(0, 21) * 0.15f);
+        Vector2 velocity;
+        // ISSUE: explicit reference operation
+        ((Vector2) @velocity).\u002Ector((float) WorldGen.genRand.Next(-20, 21) * 0.15f, (float) WorldGen.genRand.Next(0, 21) * 0.15f);
         while (flag2)
         {
-          velocity = new Vector2((float) WorldGen.genRand.Next(-20, 21) * 0.15f, (float) WorldGen.genRand.Next(0, 21) * 0.15f);
-          while ((double) Math.Abs(velocity.X) + (double) Math.Abs(velocity.Y) < 1.5)
-            velocity = new Vector2((float) WorldGen.genRand.Next(-20, 21) * 0.15f, (float) WorldGen.genRand.Next(0, 21) * 0.15f);
+          // ISSUE: explicit reference operation
+          ((Vector2) @velocity).\u002Ector((float) WorldGen.genRand.Next(-20, 21) * 0.15f, (float) WorldGen.genRand.Next(0, 21) * 0.15f);
+          while ((double) Math.Abs((float) velocity.X) + (double) Math.Abs((float) velocity.Y) < 1.5)
+          {
+            // ISSUE: explicit reference operation
+            ((Vector2) @velocity).\u002Ector((float) WorldGen.genRand.Next(-20, 21) * 0.15f, (float) WorldGen.genRand.Next(0, 21) * 0.15f);
+          }
           flag2 = false;
           for (int index2 = 0; index2 < index1; ++index2)
           {
             if ((double) vector2.X > (double) vector2Array[index2].X - 0.75 && (double) vector2.X < (double) vector2Array[index2].X + 0.75 && ((double) vector2.Y > (double) vector2Array[index2].Y - 0.75 && (double) vector2.Y < (double) vector2Array[index2].Y + 0.75))
             {
               flag2 = true;
-              ++num6;
+              ++num5;
               break;
             }
           }
-          if (num6 > 10000)
+          if (num5 > 10000)
             break;
         }
         vector2Array[index1] = velocity;
@@ -32566,16 +33160,16 @@ label_658:
       }
       for (int index1 = 0; index1 < WorldGen.heartCount; ++index1)
       {
-        float num6 = (float) WorldGen.genRand.Next(16, 21);
+        float num5 = (float) WorldGen.genRand.Next(16, 21);
         int x = (int) WorldGen.heartPos[index1].X;
         int y = (int) WorldGen.heartPos[index1].Y;
-        for (int index2 = (int) ((double) x - (double) num6 / 2.0); (double) index2 < (double) x + (double) num6 / 2.0; ++index2)
+        for (int index2 = (int) ((double) x - (double) num5 / 2.0); (double) index2 < (double) x + (double) num5 / 2.0; ++index2)
         {
-          for (int index3 = (int) ((double) y - (double) num6 / 2.0); (double) index3 < (double) y + (double) num6 / 2.0; ++index3)
+          for (int index3 = (int) ((double) y - (double) num5 / 2.0); (double) index3 < (double) y + (double) num5 / 2.0; ++index3)
           {
-            float num7 = (float) Math.Abs(index2 - x);
+            double num6 = (double) Math.Abs(index2 - x);
             float num8 = (float) Math.Abs(index3 - y);
-            if (Math.Sqrt((double) num7 * (double) num7 + (double) num8 * (double) num8) < (double) num6 * 0.4)
+            if (Math.Sqrt(num6 * num6 + (double) num8 * (double) num8) < (double) num5 * 0.4)
             {
               Main.tile[index2, index3].active(true);
               Main.tile[index2, index3].type = (ushort) 203;
@@ -32586,16 +33180,16 @@ label_658:
       }
       for (int index1 = 0; index1 < WorldGen.heartCount; ++index1)
       {
-        float num6 = (float) WorldGen.genRand.Next(10, 14);
+        float num5 = (float) WorldGen.genRand.Next(10, 14);
         int x = (int) WorldGen.heartPos[index1].X;
         int y = (int) WorldGen.heartPos[index1].Y;
-        for (int index2 = (int) ((double) x - (double) num6 / 2.0); (double) index2 < (double) x + (double) num6 / 2.0; ++index2)
+        for (int index2 = (int) ((double) x - (double) num5 / 2.0); (double) index2 < (double) x + (double) num5 / 2.0; ++index2)
         {
-          for (int index3 = (int) ((double) y - (double) num6 / 2.0); (double) index3 < (double) y + (double) num6 / 2.0; ++index3)
+          for (int index3 = (int) ((double) y - (double) num5 / 2.0); (double) index3 < (double) y + (double) num5 / 2.0; ++index3)
           {
-            float num7 = (float) Math.Abs(index2 - x);
+            double num6 = (double) Math.Abs(index2 - x);
             float num8 = (float) Math.Abs(index3 - y);
-            if (Math.Sqrt((double) num7 * (double) num7 + (double) num8 * (double) num8) < (double) num6 * 0.3)
+            if (Math.Sqrt(num6 * num6 + (double) num8 * (double) num8) < (double) num5 * 0.3)
             {
               Main.tile[index2, index3].active(false);
               Main.tile[index2, index3].wall = (byte) 83;
@@ -32605,56 +33199,65 @@ label_658:
       }
       for (int index = 0; index < WorldGen.heartCount; ++index)
         WorldGen.AddShadowOrb((int) WorldGen.heartPos[index].X, (int) WorldGen.heartPos[index].Y);
-      int num15 = Main.maxTilesX;
-      int num16 = 0;
-      position.X = (float) num1;
-      position.Y = (float) num2;
-      float num17 = (float) WorldGen.genRand.Next(25, 35);
-      float num18 = (float) WorldGen.genRand.Next(0, 6);
+      int num16 = Main.maxTilesX;
+      int num17 = 0;
+      position.X = (__Null) (double) num1;
+      position.Y = (__Null) (double) num2;
+      float num18 = (float) WorldGen.genRand.Next(25, 35);
+      float num19 = (float) WorldGen.genRand.Next(0, 6);
       for (int index1 = 0; index1 < 50; ++index1)
       {
-        if ((double) num18 > 0.0)
+        if ((double) num19 > 0.0)
         {
-          float num6 = (float) WorldGen.genRand.Next(10, 30) * 0.01f;
-          num18 -= num6;
-          position.Y -= num6;
+          float num5 = (float) WorldGen.genRand.Next(10, 30) * 0.01f;
+          num19 -= num5;
+          // ISSUE: explicit reference operation
+          // ISSUE: variable of a reference type
+          __Null& local = @position.Y;
+          // ISSUE: cast to a reference type
+          // ISSUE: explicit reference operation
+          double num6 = (double) ^(float&) local - (double) num5;
+          // ISSUE: cast to a reference type
+          // ISSUE: explicit reference operation
+          ^(float&) local = (float) num6;
         }
-        int num7 = (int) position.X + WorldGen.genRand.Next(-2, 3);
-        int num8 = (int) position.Y + WorldGen.genRand.Next(-2, 3);
-        for (int index2 = (int) ((double) num7 - (double) num17 / 2.0); (double) index2 < (double) num7 + (double) num17 / 2.0; ++index2)
+        int num8 = (int) position.X + WorldGen.genRand.Next(-2, 3);
+        int num9 = (int) position.Y + WorldGen.genRand.Next(-2, 3);
+        for (int index2 = (int) ((double) num8 - (double) num18 / 2.0); (double) index2 < (double) num8 + (double) num18 / 2.0; ++index2)
         {
-          for (int index3 = (int) ((double) num8 - (double) num17 / 2.0); (double) index3 < (double) num8 + (double) num17 / 2.0; ++index3)
+          for (int index3 = (int) ((double) num9 - (double) num18 / 2.0); (double) index3 < (double) num9 + (double) num18 / 2.0; ++index3)
           {
-            float num6 = (float) Math.Abs(index2 - num7);
-            float num9 = (float) Math.Abs(index3 - num8);
+            double num5 = (double) Math.Abs(index2 - num8);
+            float num6 = (float) Math.Abs(index3 - num9);
             float num10 = (float) (1.0 + (double) WorldGen.genRand.Next(-20, 21) * 0.00499999988824129);
             float num11 = (float) (1.0 + (double) WorldGen.genRand.Next(-20, 21) * 0.00499999988824129);
-            float num12 = num6 * num10;
-            float num13 = num9 * num11;
-            double num14 = Math.Sqrt((double) num12 * (double) num12 + (double) num13 * (double) num13);
-            if (num14 < (double) num17 * 0.2 * ((double) WorldGen.genRand.Next(90, 111) * 0.01))
+            double num12 = (double) num10;
+            double num13 = num5 * num12;
+            float num14 = num6 * num11;
+            double num15 = Math.Sqrt(num13 * num13 + (double) num14 * (double) num14);
+            if (num15 < (double) num18 * 0.2 * ((double) WorldGen.genRand.Next(90, 111) * 0.01))
             {
               Main.tile[index2, index3].active(false);
               Main.tile[index2, index3].wall = (byte) 83;
             }
-            else if (num14 < (double) num17 * 0.45)
+            else if (num15 < (double) num18 * 0.45)
             {
-              if (index2 < num15)
-                num15 = index2;
-              if (index2 > num16)
+              if (index2 < num16)
                 num16 = index2;
+              if (index2 > num17)
+                num17 = index2;
               if ((int) Main.tile[index2, index3].wall != 83)
               {
                 Main.tile[index2, index3].active(true);
                 Main.tile[index2, index3].type = (ushort) 203;
-                if (num14 < (double) num17 * 0.35)
+                if (num15 < (double) num18 * 0.35)
                   Main.tile[index2, index3].wall = (byte) 83;
               }
             }
           }
         }
       }
-      for (int index1 = num15; index1 <= num16; ++index1)
+      for (int index1 = num16; index1 <= num17; ++index1)
       {
         int index2 = num2;
         while ((int) Main.tile[index1, index2].type == 203 && Main.tile[index1, index2].active() || (int) Main.tile[index1, index2].wall == 83)
@@ -32674,8 +33277,18 @@ label_658:
       float num1 = 0.0f;
       float num2 = (float) WorldGen.genRand.Next(6, 11);
       bool flag = true;
-      Vector2 vector2 = new Vector2(2f, (float) WorldGen.genRand.Next(-20, 0) * 0.01f);
-      vector2.X *= (float) -crimDir;
+      Vector2 vector2;
+      // ISSUE: explicit reference operation
+      ((Vector2) @vector2).\u002Ector(2f, (float) WorldGen.genRand.Next(-20, 0) * 0.01f);
+      // ISSUE: explicit reference operation
+      // ISSUE: variable of a reference type
+      __Null& local = @vector2.X;
+      // ISSUE: cast to a reference type
+      // ISSUE: explicit reference operation
+      double num3 = (double) ^(float&) local * (double) -crimDir;
+      // ISSUE: cast to a reference type
+      // ISSUE: explicit reference operation
+      ^(float&) local = (float) num3;
       while (flag)
       {
         ++num1;
@@ -32686,13 +33299,13 @@ label_658:
           num2 = 6f;
         if ((double) num2 > 10.0)
           num2 = 10f;
-        for (int index1 = (int) ((double) position.X - (double) num2 / 2.0); (double) index1 < (double) position.X + (double) num2 / 2.0; ++index1)
+        for (int index1 = (int) (position.X - (double) num2 / 2.0); (double) index1 < position.X + (double) num2 / 2.0; ++index1)
         {
-          for (int index2 = (int) ((double) position.Y - (double) num2 / 2.0); (double) index2 < (double) position.Y + (double) num2 / 2.0; ++index2)
+          for (int index2 = (int) (position.Y - (double) num2 / 2.0); (double) index2 < position.Y + (double) num2 / 2.0; ++index2)
           {
-            float num3 = Math.Abs((float) index1 - position.X);
-            float num4 = Math.Abs((float) index2 - position.Y);
-            if (Math.Sqrt((double) num3 * (double) num3 + (double) num4 * (double) num4) < (double) num2 * 0.5 && Main.tile[index1, index2].active() && (int) Main.tile[index1, index2].type == 203)
+            double num4 = (double) Math.Abs((float) index1 - (float) position.X);
+            float num5 = Math.Abs((float) index2 - (float) position.Y);
+            if (Math.Sqrt(num4 * num4 + (double) num5 * (double) num5) < (double) num2 * 0.5 && Main.tile[index1, index2].active() && (int) Main.tile[index1, index2].type == 203)
             {
               Main.tile[index1, index2].active(false);
               flag = true;
@@ -32700,7 +33313,7 @@ label_658:
             }
           }
         }
-        position += vector2;
+        position = Vector2.op_Addition(position, vector2);
       }
     }
 
@@ -32711,7 +33324,7 @@ label_658:
       Vector2 vector2_1 = velocity;
       Vector2 vector2_2 = position;
       int num2 = WorldGen.genRand.Next(100, 150);
-      if ((double) velocity.Y < 0.0)
+      if (velocity.Y < 0.0)
         num2 -= 25;
       while (flag)
       {
@@ -32720,13 +33333,13 @@ label_658:
           num1 = 15f;
         if ((double) num1 > 25.0)
           num1 = 25f;
-        for (int index1 = (int) ((double) position.X - (double) num1 / 2.0); (double) index1 < (double) position.X + (double) num1 / 2.0; ++index1)
+        for (int index1 = (int) (position.X - (double) num1 / 2.0); (double) index1 < position.X + (double) num1 / 2.0; ++index1)
         {
-          for (int index2 = (int) ((double) position.Y - (double) num1 / 2.0); (double) index2 < (double) position.Y + (double) num1 / 2.0; ++index2)
+          for (int index2 = (int) (position.Y - (double) num1 / 2.0); (double) index2 < position.Y + (double) num1 / 2.0; ++index2)
           {
-            float num3 = Math.Abs((float) index1 - position.X);
-            float num4 = Math.Abs((float) index2 - position.Y);
-            double num5 = Math.Sqrt((double) num3 * (double) num3 + (double) num4 * (double) num4);
+            double num3 = (double) Math.Abs((float) index1 - (float) position.X);
+            float num4 = Math.Abs((float) index2 - (float) position.Y);
+            double num5 = Math.Sqrt(num3 * num3 + (double) num4 * (double) num4);
             if (num5 < (double) num1 * 0.2)
             {
               Main.tile[index1, index2].active(false);
@@ -32741,18 +33354,34 @@ label_658:
             }
           }
         }
-        velocity.X += (float) WorldGen.genRand.Next(-50, 51) * 0.05f;
-        velocity.Y += (float) WorldGen.genRand.Next(-50, 51) * 0.05f;
+        // ISSUE: explicit reference operation
+        // ISSUE: variable of a reference type
+        __Null& local1 = @velocity.X;
+        // ISSUE: cast to a reference type
+        // ISSUE: explicit reference operation
+        double num6 = (double) ^(float&) local1 + (double) WorldGen.genRand.Next(-50, 51) * 0.0500000007450581;
+        // ISSUE: cast to a reference type
+        // ISSUE: explicit reference operation
+        ^(float&) local1 = (float) num6;
+        // ISSUE: explicit reference operation
+        // ISSUE: variable of a reference type
+        __Null& local2 = @velocity.Y;
+        // ISSUE: cast to a reference type
+        // ISSUE: explicit reference operation
+        double num7 = (double) ^(float&) local2 + (double) WorldGen.genRand.Next(-50, 51) * 0.0500000007450581;
+        // ISSUE: cast to a reference type
+        // ISSUE: explicit reference operation
+        ^(float&) local2 = (float) num7;
         if ((double) velocity.Y < (double) vector2_1.Y - 0.75)
-          velocity.Y = vector2_1.Y - 0.75f;
+          velocity.Y = (__Null) (vector2_1.Y - 0.75);
         if ((double) velocity.Y > (double) vector2_1.Y + 0.75)
-          velocity.Y = vector2_1.Y + 0.75f;
+          velocity.Y = (__Null) (vector2_1.Y + 0.75);
         if ((double) velocity.X < (double) vector2_1.X - 0.75)
-          velocity.X = vector2_1.X - 0.75f;
+          velocity.X = (__Null) (vector2_1.X - 0.75);
         if ((double) velocity.X > (double) vector2_1.X + 0.75)
-          velocity.X = vector2_1.X + 0.75f;
-        position += velocity;
-        if ((double) Math.Abs(position.X - vector2_2.X) + (double) Math.Abs(position.Y - vector2_2.Y) > (double) num2)
+          velocity.X = (__Null) (vector2_1.X + 0.75);
+        position = Vector2.op_Addition(position, velocity);
+        if ((double) Math.Abs((float) (position.X - vector2_2.X)) + (double) Math.Abs((float) (position.Y - vector2_2.Y)) > (double) num2)
           flag = false;
       }
       WorldGen.heartPos[WorldGen.heartCount] = position;
@@ -32768,11 +33397,11 @@ label_658:
         flag2 = true;
       float num1 = (float) steps;
       Vector2 vector2_1;
-      vector2_1.X = (float) i;
-      vector2_1.Y = (float) j;
+      vector2_1.X = (__Null) (double) i;
+      vector2_1.Y = (__Null) (double) j;
       Vector2 vector2_2;
-      vector2_2.X = (float) WorldGen.genRand.Next(-10, 11) * 0.1f;
-      vector2_2.Y = (float) ((double) WorldGen.genRand.Next(11) * 0.200000002980232 + 0.5);
+      vector2_2.X = (__Null) ((double) WorldGen.genRand.Next(-10, 11) * 0.100000001490116);
+      vector2_2.Y = (__Null) ((double) WorldGen.genRand.Next(11) * 0.200000002980232 + 0.5);
       int num2 = 5;
       double num3 = (double) (WorldGen.genRand.Next(5) + 7);
       while (num3 > 0.0)
@@ -32816,7 +33445,7 @@ label_658:
           {
             for (int index2 = num6; index2 < num7; ++index2)
             {
-              if ((double) Math.Abs((float) index1 - vector2_1.X) + (double) Math.Abs((float) index2 - vector2_1.Y) < num3 * 0.5 * (1.0 + (double) WorldGen.genRand.Next(-10, 11) * 0.015) && (int) Main.tile[index1, index2].type != 31 && (int) Main.tile[index1, index2].type != 22)
+              if ((double) Math.Abs((float) index1 - (float) vector2_1.X) + (double) Math.Abs((float) index2 - (float) vector2_1.Y) < num3 * 0.5 * (1.0 + (double) WorldGen.genRand.Next(-10, 11) * 0.015) && (int) Main.tile[index1, index2].type != 31 && (int) Main.tile[index1, index2].type != 22)
                 Main.tile[index1, index2].active(false);
             }
           }
@@ -32866,29 +33495,37 @@ label_658:
             }
           }
         }
-        vector2_1 += vector2_2;
-        vector2_2.X += (float) WorldGen.genRand.Next(-10, 11) * 0.01f;
+        vector2_1 = Vector2.op_Addition(vector2_1, vector2_2);
+        // ISSUE: explicit reference operation
+        // ISSUE: variable of a reference type
+        __Null& local = @vector2_2.X;
+        // ISSUE: cast to a reference type
+        // ISSUE: explicit reference operation
+        double num8 = (double) ^(float&) local + (double) WorldGen.genRand.Next(-10, 11) * 0.00999999977648258;
+        // ISSUE: cast to a reference type
+        // ISSUE: explicit reference operation
+        ^(float&) local = (float) num8;
         if ((double) vector2_2.X > 0.3)
-          vector2_2.X = 0.3f;
+          vector2_2.X = (__Null) 0.300000011920929;
         if ((double) vector2_2.X < -0.3)
-          vector2_2.X = -0.3f;
-        int num8 = (int) ((double) vector2_1.X - num3 * 1.1);
-        int num9 = (int) ((double) vector2_1.X + num3 * 1.1);
-        int num10 = (int) ((double) vector2_1.Y - num3 * 1.1);
-        int num11 = (int) ((double) vector2_1.Y + num3 * 1.1);
-        if (num8 < 1)
-          num8 = 1;
-        if (num9 > Main.maxTilesX - 1)
-          num9 = Main.maxTilesX - 1;
-        if (num10 < 0)
-          num10 = 0;
-        if (num11 > Main.maxTilesY)
-          num11 = Main.maxTilesY;
-        for (int index1 = num8; index1 < num9; ++index1)
+          vector2_2.X = (__Null) -0.300000011920929;
+        int num9 = (int) ((double) vector2_1.X - num3 * 1.1);
+        int num10 = (int) ((double) vector2_1.X + num3 * 1.1);
+        int num11 = (int) ((double) vector2_1.Y - num3 * 1.1);
+        int num12 = (int) ((double) vector2_1.Y + num3 * 1.1);
+        if (num9 < 1)
+          num9 = 1;
+        if (num10 > Main.maxTilesX - 1)
+          num10 = Main.maxTilesX - 1;
+        if (num11 < 0)
+          num11 = 0;
+        if (num12 > Main.maxTilesY)
+          num12 = Main.maxTilesY;
+        for (int index1 = num9; index1 < num10; ++index1)
         {
-          for (int index2 = num10; index2 < num11; ++index2)
+          for (int index2 = num11; index2 < num12; ++index2)
           {
-            if ((double) Math.Abs((float) index1 - vector2_1.X) + (double) Math.Abs((float) index2 - vector2_1.Y) < num3 * 1.1 * (1.0 + (double) WorldGen.genRand.Next(-10, 11) * 0.015))
+            if ((double) Math.Abs((float) index1 - (float) vector2_1.X) + (double) Math.Abs((float) index2 - (float) vector2_1.Y) < num3 * 1.1 * (1.0 + (double) WorldGen.genRand.Next(-10, 11) * 0.015))
             {
               if ((int) Main.tile[index1, index2].type != 25 && index2 > j + WorldGen.genRand.Next(3, 20))
                 Main.tile[index1, index2].active(true);
@@ -32899,11 +33536,11 @@ label_658:
             }
           }
         }
-        for (int index1 = num8; index1 < num9; ++index1)
+        for (int index1 = num9; index1 < num10; ++index1)
         {
-          for (int index2 = num10; index2 < num11; ++index2)
+          for (int index2 = num11; index2 < num12; ++index2)
           {
-            if ((double) Math.Abs((float) index1 - vector2_1.X) + (double) Math.Abs((float) index2 - vector2_1.Y) < num3 * 1.1 * (1.0 + (double) WorldGen.genRand.Next(-10, 11) * 0.015))
+            if ((double) Math.Abs((float) index1 - (float) vector2_1.X) + (double) Math.Abs((float) index2 - (float) vector2_1.Y) < num3 * 1.1 * (1.0 + (double) WorldGen.genRand.Next(-10, 11) * 0.015))
             {
               if ((int) Main.tile[index1, index2].type != 31)
                 Main.tile[index1, index2].type = (ushort) 25;
@@ -32921,11 +33558,11 @@ label_658:
     {
       double num1 = (double) WorldGen.genRand.Next(5, 11);
       Vector2 vector2_1;
-      vector2_1.X = (float) i;
-      vector2_1.Y = (float) j;
+      vector2_1.X = (__Null) (double) i;
+      vector2_1.Y = (__Null) (double) j;
       Vector2 vector2_2;
-      vector2_2.X = (float) WorldGen.genRand.Next(-10, 11) * 0.1f;
-      vector2_2.Y = (float) WorldGen.genRand.Next(10, 20) * 0.1f;
+      vector2_2.X = (__Null) ((double) WorldGen.genRand.Next(-10, 11) * 0.100000001490116);
+      vector2_2.Y = (__Null) ((double) WorldGen.genRand.Next(10, 20) * 0.100000001490116);
       int num2 = 0;
       bool flag = true;
       while (flag)
@@ -32951,7 +33588,9 @@ label_658:
         int num4 = (int) ((double) vector2_1.X + num1 * 0.5);
         int num5 = (int) ((double) vector2_1.Y - num1 * 0.5);
         int num6 = (int) ((double) vector2_1.Y + num1 * 0.5);
-        int num7 = Utils.Clamp<int>(num3, 10, Main.maxTilesX - 10);
+        int min = 10;
+        int max = Main.maxTilesX - 10;
+        int num7 = Utils.Clamp<int>(num3, min, max);
         int num8 = Utils.Clamp<int>(num4, 10, Main.maxTilesX - 10);
         int num9 = Utils.Clamp<int>(num5, 10, Main.maxTilesY - 10);
         int num10 = Utils.Clamp<int>(num6, 10, Main.maxTilesY - 10);
@@ -32959,7 +33598,7 @@ label_658:
         {
           for (int j1 = num9; j1 < num10; ++j1)
           {
-            if ((double) Math.Abs((float) i1 - vector2_1.X) + (double) Math.Abs((float) j1 - vector2_1.Y) < num1 * 0.5 * (1.0 + (double) WorldGen.genRand.Next(-10, 11) * 0.015))
+            if ((double) Math.Abs((float) i1 - (float) vector2_1.X) + (double) Math.Abs((float) j1 - (float) vector2_1.Y) < num1 * 0.5 * (1.0 + (double) WorldGen.genRand.Next(-10, 11) * 0.015))
               WorldGen.KillTile(i1, j1, false, false, false);
           }
         }
@@ -32972,21 +33611,57 @@ label_658:
             num11 = 2;
           WorldGen.TileRunner((int) vector2_1.X, (int) vector2_1.Y, (double) WorldGen.genRand.Next(3, 20), WorldGen.genRand.Next(10, 100), -1, false, (float) num11, 0.0f, false, true);
         }
-        vector2_1 += vector2_2;
-        vector2_2.Y += (float) WorldGen.genRand.Next(-10, 11) * 0.01f;
-        if ((double) vector2_2.Y > 0.0)
-          vector2_2.Y = 0.0f;
-        if ((double) vector2_2.Y < -2.0)
-          vector2_2.Y = -2f;
-        vector2_2.X += (float) WorldGen.genRand.Next(-10, 11) * 0.1f;
-        if ((double) vector2_1.X < (double) (i - 200))
-          vector2_2.X += (float) WorldGen.genRand.Next(5, 21) * 0.1f;
-        if ((double) vector2_1.X > (double) (i + 200))
-          vector2_2.X -= (float) WorldGen.genRand.Next(5, 21) * 0.1f;
+        vector2_1 = Vector2.op_Addition(vector2_1, vector2_2);
+        // ISSUE: explicit reference operation
+        // ISSUE: variable of a reference type
+        __Null& local1 = @vector2_2.Y;
+        // ISSUE: cast to a reference type
+        // ISSUE: explicit reference operation
+        double num12 = (double) ^(float&) local1 + (double) WorldGen.genRand.Next(-10, 11) * 0.00999999977648258;
+        // ISSUE: cast to a reference type
+        // ISSUE: explicit reference operation
+        ^(float&) local1 = (float) num12;
+        if (vector2_2.Y > 0.0)
+          vector2_2.Y = (__Null) 0.0;
+        if (vector2_2.Y < -2.0)
+          vector2_2.Y = (__Null) -2.0;
+        // ISSUE: explicit reference operation
+        // ISSUE: variable of a reference type
+        __Null& local2 = @vector2_2.X;
+        // ISSUE: cast to a reference type
+        // ISSUE: explicit reference operation
+        double num13 = (double) ^(float&) local2 + (double) WorldGen.genRand.Next(-10, 11) * 0.100000001490116;
+        // ISSUE: cast to a reference type
+        // ISSUE: explicit reference operation
+        ^(float&) local2 = (float) num13;
+        if (vector2_1.X < (double) (i - 200))
+        {
+          // ISSUE: explicit reference operation
+          // ISSUE: variable of a reference type
+          __Null& local3 = @vector2_2.X;
+          // ISSUE: cast to a reference type
+          // ISSUE: explicit reference operation
+          double num11 = (double) ^(float&) local3 + (double) WorldGen.genRand.Next(5, 21) * 0.100000001490116;
+          // ISSUE: cast to a reference type
+          // ISSUE: explicit reference operation
+          ^(float&) local3 = (float) num11;
+        }
+        if (vector2_1.X > (double) (i + 200))
+        {
+          // ISSUE: explicit reference operation
+          // ISSUE: variable of a reference type
+          __Null& local3 = @vector2_2.X;
+          // ISSUE: cast to a reference type
+          // ISSUE: explicit reference operation
+          double num11 = (double) ^(float&) local3 - (double) WorldGen.genRand.Next(5, 21) * 0.100000001490116;
+          // ISSUE: cast to a reference type
+          // ISSUE: explicit reference operation
+          ^(float&) local3 = (float) num11;
+        }
         if ((double) vector2_2.X > 1.5)
-          vector2_2.X = 1.5f;
+          vector2_2.X = (__Null) 1.5;
         if ((double) vector2_2.X < -1.5)
-          vector2_2.X = -1.5f;
+          vector2_2.X = (__Null) -1.5;
       }
     }
 
@@ -32995,15 +33670,15 @@ label_658:
       int num1 = (int) ((double) WorldGen.genRand.Next(200, 250) * (double) (Main.maxTilesX / 4200));
       double num2 = (double) num1;
       Vector2 vector2_1;
-      vector2_1.X = (float) i;
-      vector2_1.Y = (float) j;
+      vector2_1.X = (__Null) (double) i;
+      vector2_1.Y = (__Null) (double) j;
       Vector2 vector2_2;
-      vector2_2.X = (float) WorldGen.genRand.Next(-10, 11) * 0.1f;
-      vector2_2.Y = (float) WorldGen.genRand.Next(-10, 11) * 0.1f;
+      vector2_2.X = (__Null) ((double) WorldGen.genRand.Next(-10, 11) * 0.100000001490116);
+      vector2_2.Y = (__Null) ((double) WorldGen.genRand.Next(-10, 11) * 0.100000001490116);
       if ((double) speedX != 0.0 || (double) speedY != 0.0)
       {
-        vector2_2.X = speedX;
-        vector2_2.Y = speedY;
+        vector2_2.X = (__Null) (double) speedX;
+        vector2_2.Y = (__Null) (double) speedY;
       }
       bool flag = true;
       while (flag)
@@ -33024,7 +33699,7 @@ label_658:
         {
           for (int j1 = num5; j1 < num6; ++j1)
           {
-            if ((double) Math.Abs((float) i1 - vector2_1.X) + (double) Math.Abs((float) j1 - vector2_1.Y) < (double) num1 * 0.5 * (1.0 + (double) WorldGen.genRand.Next(-10, 11) * 0.015))
+            if ((double) Math.Abs((float) i1 - (float) vector2_1.X) + (double) Math.Abs((float) j1 - (float) vector2_1.Y) < (double) num1 * 0.5 * (1.0 + (double) WorldGen.genRand.Next(-10, 11) * 0.015))
             {
               if (good)
               {
@@ -33193,13 +33868,21 @@ label_658:
             }
           }
         }
-        vector2_1 += vector2_2;
-        vector2_2.X += (float) WorldGen.genRand.Next(-10, 11) * 0.05f;
-        if ((double) vector2_2.X > (double) speedX + 1.0)
-          vector2_2.X = speedX + 1f;
-        if ((double) vector2_2.X < (double) speedX - 1.0)
-          vector2_2.X = speedX - 1f;
-        if ((double) vector2_1.X < (double) -num1 || (double) vector2_1.Y < (double) -num1 || ((double) vector2_1.X > (double) (Main.maxTilesX + num1) || (double) vector2_1.Y > (double) (Main.maxTilesX + num1)))
+        vector2_1 = Vector2.op_Addition(vector2_1, vector2_2);
+        // ISSUE: explicit reference operation
+        // ISSUE: variable of a reference type
+        __Null& local = @vector2_2.X;
+        // ISSUE: cast to a reference type
+        // ISSUE: explicit reference operation
+        double num7 = (double) ^(float&) local + (double) WorldGen.genRand.Next(-10, 11) * 0.0500000007450581;
+        // ISSUE: cast to a reference type
+        // ISSUE: explicit reference operation
+        ^(float&) local = (float) num7;
+        if (vector2_2.X > (double) speedX + 1.0)
+          vector2_2.X = (__Null) ((double) speedX + 1.0);
+        if (vector2_2.X < (double) speedX - 1.0)
+          vector2_2.X = (__Null) ((double) speedX - 1.0);
+        if (vector2_1.X < (double) -num1 || vector2_1.Y < (double) -num1 || (vector2_1.X > (double) (Main.maxTilesX + num1) || vector2_1.Y > (double) (Main.maxTilesX + num1)))
           flag = false;
       }
     }
@@ -33209,21 +33892,21 @@ label_658:
       double num1 = strength;
       float num2 = (float) steps;
       Vector2 vector2_1;
-      vector2_1.X = (float) i;
-      vector2_1.Y = (float) j;
+      vector2_1.X = (__Null) (double) i;
+      vector2_1.Y = (__Null) (double) j;
       Vector2 vector2_2;
-      vector2_2.X = (float) WorldGen.genRand.Next(-10, 11) * 0.1f;
-      vector2_2.Y = (float) WorldGen.genRand.Next(-10, 11) * 0.1f;
+      vector2_2.X = (__Null) ((double) WorldGen.genRand.Next(-10, 11) * 0.100000001490116);
+      vector2_2.Y = (__Null) ((double) WorldGen.genRand.Next(-10, 11) * 0.100000001490116);
       if ((double) speedX != 0.0 || (double) speedY != 0.0)
       {
-        vector2_2.X = speedX;
-        vector2_2.Y = speedY;
+        vector2_2.X = (__Null) (double) speedX;
+        vector2_2.Y = (__Null) (double) speedY;
       }
       bool flag1 = type == 368;
       bool flag2 = type == 367;
       while (num1 > 0.0 && (double) num2 > 0.0)
       {
-        if ((double) vector2_1.Y < 0.0 && (double) num2 > 0.0 && type == 59)
+        if (vector2_1.Y < 0.0 && (double) num2 > 0.0 && type == 59)
           num2 = 0.0f;
         num1 = strength * ((double) num2 / (double) steps);
         --num2;
@@ -33243,7 +33926,7 @@ label_658:
         {
           for (int j1 = num5; j1 < num6; ++j1)
           {
-            if ((double) Math.Abs((float) i1 - vector2_1.X) + (double) Math.Abs((float) j1 - vector2_1.Y) < strength * 0.5 * (1.0 + (double) WorldGen.genRand.Next(-10, 11) * 0.015))
+            if ((double) Math.Abs((float) i1 - (float) vector2_1.X) + (double) Math.Abs((float) j1 - (float) vector2_1.Y) < strength * 0.5 * (1.0 + (double) WorldGen.genRand.Next(-10, 11) * 0.015))
             {
               if (WorldGen.mudWall && (double) j1 > Main.worldSurface && ((int) Main.tile[i1, j1 - 1].wall != 2 && j1 < Main.maxTilesY - 210 - WorldGen.genRand.Next(3)))
               {
@@ -33267,9 +33950,9 @@ label_658:
               }
               else
               {
-                if (flag1 && (double) Math.Abs((float) i1 - vector2_1.X) + (double) Math.Abs((float) j1 - vector2_1.Y) < strength * 0.3 * (1.0 + (double) WorldGen.genRand.Next(-10, 11) * 0.01))
+                if (flag1 && (double) Math.Abs((float) i1 - (float) vector2_1.X) + (double) Math.Abs((float) j1 - (float) vector2_1.Y) < strength * 0.3 * (1.0 + (double) WorldGen.genRand.Next(-10, 11) * 0.01))
                   WorldGen.PlaceWall(i1, j1, 180, true);
-                if (flag2 && (double) Math.Abs((float) i1 - vector2_1.X) + (double) Math.Abs((float) j1 - vector2_1.Y) < strength * 0.3 * (1.0 + (double) WorldGen.genRand.Next(-10, 11) * 0.01))
+                if (flag2 && (double) Math.Abs((float) i1 - (float) vector2_1.X) + (double) Math.Abs((float) j1 - (float) vector2_1.Y) < strength * 0.3 * (1.0 + (double) WorldGen.genRand.Next(-10, 11) * 0.01))
                   WorldGen.PlaceWall(i1, j1, 178, true);
                 if (overRide || !Main.tile[i1, j1].active())
                 {
@@ -33285,20 +33968,20 @@ label_658:
                       if ((int) type1 != 1)
                       {
                         if ((int) type1 != 45)
-                          goto label_54;
+                          goto label_55;
                       }
                       else if (type == 59 && (double) j1 < Main.worldSurface + (double) WorldGen.genRand.Next(-50, 50))
                       {
                         flag3 = true;
-                        goto label_54;
+                        goto label_55;
                       }
                       else
-                        goto label_54;
+                        goto label_55;
                     }
                     else if ((int) type1 != 53)
                     {
                       if ((int) type1 != 147)
-                        goto label_54;
+                        goto label_55;
                     }
                     else
                     {
@@ -33307,47 +33990,36 @@ label_658:
                       if ((double) j1 < Main.worldSurface && type != 59)
                       {
                         flag3 = true;
-                        goto label_54;
+                        goto label_55;
                       }
                       else
-                        goto label_54;
+                        goto label_55;
                     }
                   }
                   else if ((uint) type1 <= 196U)
                   {
-                    switch (type1)
+                    if ((uint) type1 - 189U > 1U && (int) type1 != 196)
+                      goto label_55;
+                  }
+                  else if ((uint) type1 - 367U > 1U)
+                  {
+                    if ((uint) type1 - 396U <= 1U)
                     {
-                      case 189:
-                      case 190:
-                      case 196:
-                        break;
-                      default:
-                        goto label_54;
+                      flag3 = !TileID.Sets.Ore[type];
+                      goto label_55;
                     }
+                    else
+                      goto label_55;
+                  }
+                  else if (type == 59)
+                  {
+                    flag3 = true;
+                    goto label_55;
                   }
                   else
-                  {
-                    switch (type1)
-                    {
-                      case 367:
-                      case 368:
-                        if (type == 59)
-                        {
-                          flag3 = true;
-                          goto label_54;
-                        }
-                        else
-                          goto label_54;
-                      case 396:
-                      case 397:
-                        flag3 = !TileID.Sets.Ore[type];
-                        goto label_54;
-                      default:
-                        goto label_54;
-                    }
-                  }
+                    goto label_55;
                   flag3 = true;
-label_54:
+label_55:
                   if (!flag3)
                     tile.type = (ushort) type;
                 }
@@ -33368,79 +34040,271 @@ label_54:
             }
           }
         }
-        vector2_1 += vector2_2;
+        vector2_1 = Vector2.op_Addition(vector2_1, vector2_2);
         if (num1 > 50.0)
         {
-          vector2_1 += vector2_2;
+          vector2_1 = Vector2.op_Addition(vector2_1, vector2_2);
           --num2;
-          vector2_2.Y += (float) WorldGen.genRand.Next(-10, 11) * 0.05f;
-          vector2_2.X += (float) WorldGen.genRand.Next(-10, 11) * 0.05f;
+          // ISSUE: explicit reference operation
+          // ISSUE: variable of a reference type
+          __Null& local1 = @vector2_2.Y;
+          // ISSUE: cast to a reference type
+          // ISSUE: explicit reference operation
+          double num7 = (double) ^(float&) local1 + (double) WorldGen.genRand.Next(-10, 11) * 0.0500000007450581;
+          // ISSUE: cast to a reference type
+          // ISSUE: explicit reference operation
+          ^(float&) local1 = (float) num7;
+          // ISSUE: explicit reference operation
+          // ISSUE: variable of a reference type
+          __Null& local2 = @vector2_2.X;
+          // ISSUE: cast to a reference type
+          // ISSUE: explicit reference operation
+          double num8 = (double) ^(float&) local2 + (double) WorldGen.genRand.Next(-10, 11) * 0.0500000007450581;
+          // ISSUE: cast to a reference type
+          // ISSUE: explicit reference operation
+          ^(float&) local2 = (float) num8;
           if (num1 > 100.0)
           {
-            vector2_1 += vector2_2;
+            vector2_1 = Vector2.op_Addition(vector2_1, vector2_2);
             --num2;
-            vector2_2.Y += (float) WorldGen.genRand.Next(-10, 11) * 0.05f;
-            vector2_2.X += (float) WorldGen.genRand.Next(-10, 11) * 0.05f;
+            // ISSUE: explicit reference operation
+            // ISSUE: variable of a reference type
+            __Null& local3 = @vector2_2.Y;
+            // ISSUE: cast to a reference type
+            // ISSUE: explicit reference operation
+            double num9 = (double) ^(float&) local3 + (double) WorldGen.genRand.Next(-10, 11) * 0.0500000007450581;
+            // ISSUE: cast to a reference type
+            // ISSUE: explicit reference operation
+            ^(float&) local3 = (float) num9;
+            // ISSUE: explicit reference operation
+            // ISSUE: variable of a reference type
+            __Null& local4 = @vector2_2.X;
+            // ISSUE: cast to a reference type
+            // ISSUE: explicit reference operation
+            double num10 = (double) ^(float&) local4 + (double) WorldGen.genRand.Next(-10, 11) * 0.0500000007450581;
+            // ISSUE: cast to a reference type
+            // ISSUE: explicit reference operation
+            ^(float&) local4 = (float) num10;
             if (num1 > 150.0)
             {
-              vector2_1 += vector2_2;
+              vector2_1 = Vector2.op_Addition(vector2_1, vector2_2);
               --num2;
-              vector2_2.Y += (float) WorldGen.genRand.Next(-10, 11) * 0.05f;
-              vector2_2.X += (float) WorldGen.genRand.Next(-10, 11) * 0.05f;
+              // ISSUE: explicit reference operation
+              // ISSUE: variable of a reference type
+              __Null& local5 = @vector2_2.Y;
+              // ISSUE: cast to a reference type
+              // ISSUE: explicit reference operation
+              double num11 = (double) ^(float&) local5 + (double) WorldGen.genRand.Next(-10, 11) * 0.0500000007450581;
+              // ISSUE: cast to a reference type
+              // ISSUE: explicit reference operation
+              ^(float&) local5 = (float) num11;
+              // ISSUE: explicit reference operation
+              // ISSUE: variable of a reference type
+              __Null& local6 = @vector2_2.X;
+              // ISSUE: cast to a reference type
+              // ISSUE: explicit reference operation
+              double num12 = (double) ^(float&) local6 + (double) WorldGen.genRand.Next(-10, 11) * 0.0500000007450581;
+              // ISSUE: cast to a reference type
+              // ISSUE: explicit reference operation
+              ^(float&) local6 = (float) num12;
               if (num1 > 200.0)
               {
-                vector2_1 += vector2_2;
+                vector2_1 = Vector2.op_Addition(vector2_1, vector2_2);
                 --num2;
-                vector2_2.Y += (float) WorldGen.genRand.Next(-10, 11) * 0.05f;
-                vector2_2.X += (float) WorldGen.genRand.Next(-10, 11) * 0.05f;
+                // ISSUE: explicit reference operation
+                // ISSUE: variable of a reference type
+                __Null& local7 = @vector2_2.Y;
+                // ISSUE: cast to a reference type
+                // ISSUE: explicit reference operation
+                double num13 = (double) ^(float&) local7 + (double) WorldGen.genRand.Next(-10, 11) * 0.0500000007450581;
+                // ISSUE: cast to a reference type
+                // ISSUE: explicit reference operation
+                ^(float&) local7 = (float) num13;
+                // ISSUE: explicit reference operation
+                // ISSUE: variable of a reference type
+                __Null& local8 = @vector2_2.X;
+                // ISSUE: cast to a reference type
+                // ISSUE: explicit reference operation
+                double num14 = (double) ^(float&) local8 + (double) WorldGen.genRand.Next(-10, 11) * 0.0500000007450581;
+                // ISSUE: cast to a reference type
+                // ISSUE: explicit reference operation
+                ^(float&) local8 = (float) num14;
                 if (num1 > 250.0)
                 {
-                  vector2_1 += vector2_2;
+                  vector2_1 = Vector2.op_Addition(vector2_1, vector2_2);
                   --num2;
-                  vector2_2.Y += (float) WorldGen.genRand.Next(-10, 11) * 0.05f;
-                  vector2_2.X += (float) WorldGen.genRand.Next(-10, 11) * 0.05f;
+                  // ISSUE: explicit reference operation
+                  // ISSUE: variable of a reference type
+                  __Null& local9 = @vector2_2.Y;
+                  // ISSUE: cast to a reference type
+                  // ISSUE: explicit reference operation
+                  double num15 = (double) ^(float&) local9 + (double) WorldGen.genRand.Next(-10, 11) * 0.0500000007450581;
+                  // ISSUE: cast to a reference type
+                  // ISSUE: explicit reference operation
+                  ^(float&) local9 = (float) num15;
+                  // ISSUE: explicit reference operation
+                  // ISSUE: variable of a reference type
+                  __Null& local10 = @vector2_2.X;
+                  // ISSUE: cast to a reference type
+                  // ISSUE: explicit reference operation
+                  double num16 = (double) ^(float&) local10 + (double) WorldGen.genRand.Next(-10, 11) * 0.0500000007450581;
+                  // ISSUE: cast to a reference type
+                  // ISSUE: explicit reference operation
+                  ^(float&) local10 = (float) num16;
                   if (num1 > 300.0)
                   {
-                    vector2_1 += vector2_2;
+                    vector2_1 = Vector2.op_Addition(vector2_1, vector2_2);
                     --num2;
-                    vector2_2.Y += (float) WorldGen.genRand.Next(-10, 11) * 0.05f;
-                    vector2_2.X += (float) WorldGen.genRand.Next(-10, 11) * 0.05f;
+                    // ISSUE: explicit reference operation
+                    // ISSUE: variable of a reference type
+                    __Null& local11 = @vector2_2.Y;
+                    // ISSUE: cast to a reference type
+                    // ISSUE: explicit reference operation
+                    double num17 = (double) ^(float&) local11 + (double) WorldGen.genRand.Next(-10, 11) * 0.0500000007450581;
+                    // ISSUE: cast to a reference type
+                    // ISSUE: explicit reference operation
+                    ^(float&) local11 = (float) num17;
+                    // ISSUE: explicit reference operation
+                    // ISSUE: variable of a reference type
+                    __Null& local12 = @vector2_2.X;
+                    // ISSUE: cast to a reference type
+                    // ISSUE: explicit reference operation
+                    double num18 = (double) ^(float&) local12 + (double) WorldGen.genRand.Next(-10, 11) * 0.0500000007450581;
+                    // ISSUE: cast to a reference type
+                    // ISSUE: explicit reference operation
+                    ^(float&) local12 = (float) num18;
                     if (num1 > 400.0)
                     {
-                      vector2_1 += vector2_2;
+                      vector2_1 = Vector2.op_Addition(vector2_1, vector2_2);
                       --num2;
-                      vector2_2.Y += (float) WorldGen.genRand.Next(-10, 11) * 0.05f;
-                      vector2_2.X += (float) WorldGen.genRand.Next(-10, 11) * 0.05f;
+                      // ISSUE: explicit reference operation
+                      // ISSUE: variable of a reference type
+                      __Null& local13 = @vector2_2.Y;
+                      // ISSUE: cast to a reference type
+                      // ISSUE: explicit reference operation
+                      double num19 = (double) ^(float&) local13 + (double) WorldGen.genRand.Next(-10, 11) * 0.0500000007450581;
+                      // ISSUE: cast to a reference type
+                      // ISSUE: explicit reference operation
+                      ^(float&) local13 = (float) num19;
+                      // ISSUE: explicit reference operation
+                      // ISSUE: variable of a reference type
+                      __Null& local14 = @vector2_2.X;
+                      // ISSUE: cast to a reference type
+                      // ISSUE: explicit reference operation
+                      double num20 = (double) ^(float&) local14 + (double) WorldGen.genRand.Next(-10, 11) * 0.0500000007450581;
+                      // ISSUE: cast to a reference type
+                      // ISSUE: explicit reference operation
+                      ^(float&) local14 = (float) num20;
                       if (num1 > 500.0)
                       {
-                        vector2_1 += vector2_2;
+                        vector2_1 = Vector2.op_Addition(vector2_1, vector2_2);
                         --num2;
-                        vector2_2.Y += (float) WorldGen.genRand.Next(-10, 11) * 0.05f;
-                        vector2_2.X += (float) WorldGen.genRand.Next(-10, 11) * 0.05f;
+                        // ISSUE: explicit reference operation
+                        // ISSUE: variable of a reference type
+                        __Null& local15 = @vector2_2.Y;
+                        // ISSUE: cast to a reference type
+                        // ISSUE: explicit reference operation
+                        double num21 = (double) ^(float&) local15 + (double) WorldGen.genRand.Next(-10, 11) * 0.0500000007450581;
+                        // ISSUE: cast to a reference type
+                        // ISSUE: explicit reference operation
+                        ^(float&) local15 = (float) num21;
+                        // ISSUE: explicit reference operation
+                        // ISSUE: variable of a reference type
+                        __Null& local16 = @vector2_2.X;
+                        // ISSUE: cast to a reference type
+                        // ISSUE: explicit reference operation
+                        double num22 = (double) ^(float&) local16 + (double) WorldGen.genRand.Next(-10, 11) * 0.0500000007450581;
+                        // ISSUE: cast to a reference type
+                        // ISSUE: explicit reference operation
+                        ^(float&) local16 = (float) num22;
                         if (num1 > 600.0)
                         {
-                          vector2_1 += vector2_2;
+                          vector2_1 = Vector2.op_Addition(vector2_1, vector2_2);
                           --num2;
-                          vector2_2.Y += (float) WorldGen.genRand.Next(-10, 11) * 0.05f;
-                          vector2_2.X += (float) WorldGen.genRand.Next(-10, 11) * 0.05f;
+                          // ISSUE: explicit reference operation
+                          // ISSUE: variable of a reference type
+                          __Null& local17 = @vector2_2.Y;
+                          // ISSUE: cast to a reference type
+                          // ISSUE: explicit reference operation
+                          double num23 = (double) ^(float&) local17 + (double) WorldGen.genRand.Next(-10, 11) * 0.0500000007450581;
+                          // ISSUE: cast to a reference type
+                          // ISSUE: explicit reference operation
+                          ^(float&) local17 = (float) num23;
+                          // ISSUE: explicit reference operation
+                          // ISSUE: variable of a reference type
+                          __Null& local18 = @vector2_2.X;
+                          // ISSUE: cast to a reference type
+                          // ISSUE: explicit reference operation
+                          double num24 = (double) ^(float&) local18 + (double) WorldGen.genRand.Next(-10, 11) * 0.0500000007450581;
+                          // ISSUE: cast to a reference type
+                          // ISSUE: explicit reference operation
+                          ^(float&) local18 = (float) num24;
                           if (num1 > 700.0)
                           {
-                            vector2_1 += vector2_2;
+                            vector2_1 = Vector2.op_Addition(vector2_1, vector2_2);
                             --num2;
-                            vector2_2.Y += (float) WorldGen.genRand.Next(-10, 11) * 0.05f;
-                            vector2_2.X += (float) WorldGen.genRand.Next(-10, 11) * 0.05f;
+                            // ISSUE: explicit reference operation
+                            // ISSUE: variable of a reference type
+                            __Null& local19 = @vector2_2.Y;
+                            // ISSUE: cast to a reference type
+                            // ISSUE: explicit reference operation
+                            double num25 = (double) ^(float&) local19 + (double) WorldGen.genRand.Next(-10, 11) * 0.0500000007450581;
+                            // ISSUE: cast to a reference type
+                            // ISSUE: explicit reference operation
+                            ^(float&) local19 = (float) num25;
+                            // ISSUE: explicit reference operation
+                            // ISSUE: variable of a reference type
+                            __Null& local20 = @vector2_2.X;
+                            // ISSUE: cast to a reference type
+                            // ISSUE: explicit reference operation
+                            double num26 = (double) ^(float&) local20 + (double) WorldGen.genRand.Next(-10, 11) * 0.0500000007450581;
+                            // ISSUE: cast to a reference type
+                            // ISSUE: explicit reference operation
+                            ^(float&) local20 = (float) num26;
                             if (num1 > 800.0)
                             {
-                              vector2_1 += vector2_2;
+                              vector2_1 = Vector2.op_Addition(vector2_1, vector2_2);
                               --num2;
-                              vector2_2.Y += (float) WorldGen.genRand.Next(-10, 11) * 0.05f;
-                              vector2_2.X += (float) WorldGen.genRand.Next(-10, 11) * 0.05f;
+                              // ISSUE: explicit reference operation
+                              // ISSUE: variable of a reference type
+                              __Null& local21 = @vector2_2.Y;
+                              // ISSUE: cast to a reference type
+                              // ISSUE: explicit reference operation
+                              double num27 = (double) ^(float&) local21 + (double) WorldGen.genRand.Next(-10, 11) * 0.0500000007450581;
+                              // ISSUE: cast to a reference type
+                              // ISSUE: explicit reference operation
+                              ^(float&) local21 = (float) num27;
+                              // ISSUE: explicit reference operation
+                              // ISSUE: variable of a reference type
+                              __Null& local22 = @vector2_2.X;
+                              // ISSUE: cast to a reference type
+                              // ISSUE: explicit reference operation
+                              double num28 = (double) ^(float&) local22 + (double) WorldGen.genRand.Next(-10, 11) * 0.0500000007450581;
+                              // ISSUE: cast to a reference type
+                              // ISSUE: explicit reference operation
+                              ^(float&) local22 = (float) num28;
                               if (num1 > 900.0)
                               {
-                                vector2_1 += vector2_2;
+                                vector2_1 = Vector2.op_Addition(vector2_1, vector2_2);
                                 --num2;
-                                vector2_2.Y += (float) WorldGen.genRand.Next(-10, 11) * 0.05f;
-                                vector2_2.X += (float) WorldGen.genRand.Next(-10, 11) * 0.05f;
+                                // ISSUE: explicit reference operation
+                                // ISSUE: variable of a reference type
+                                __Null& local23 = @vector2_2.Y;
+                                // ISSUE: cast to a reference type
+                                // ISSUE: explicit reference operation
+                                double num29 = (double) ^(float&) local23 + (double) WorldGen.genRand.Next(-10, 11) * 0.0500000007450581;
+                                // ISSUE: cast to a reference type
+                                // ISSUE: explicit reference operation
+                                ^(float&) local23 = (float) num29;
+                                // ISSUE: explicit reference operation
+                                // ISSUE: variable of a reference type
+                                __Null& local24 = @vector2_2.X;
+                                // ISSUE: cast to a reference type
+                                // ISSUE: explicit reference operation
+                                double num30 = (double) ^(float&) local24 + (double) WorldGen.genRand.Next(-10, 11) * 0.0500000007450581;
+                                // ISSUE: cast to a reference type
+                                // ISSUE: explicit reference operation
+                                ^(float&) local24 = (float) num30;
                               }
                             }
                           }
@@ -33453,36 +34317,52 @@ label_54:
             }
           }
         }
-        vector2_2.X += (float) WorldGen.genRand.Next(-10, 11) * 0.05f;
-        if ((double) vector2_2.X > 1.0)
-          vector2_2.X = 1f;
-        if ((double) vector2_2.X < -1.0)
-          vector2_2.X = -1f;
+        // ISSUE: explicit reference operation
+        // ISSUE: variable of a reference type
+        __Null& local25 = @vector2_2.X;
+        // ISSUE: cast to a reference type
+        // ISSUE: explicit reference operation
+        double num31 = (double) ^(float&) local25 + (double) WorldGen.genRand.Next(-10, 11) * 0.0500000007450581;
+        // ISSUE: cast to a reference type
+        // ISSUE: explicit reference operation
+        ^(float&) local25 = (float) num31;
+        if (vector2_2.X > 1.0)
+          vector2_2.X = (__Null) 1.0;
+        if (vector2_2.X < -1.0)
+          vector2_2.X = (__Null) -1.0;
         if (!noYChange)
         {
-          vector2_2.Y += (float) WorldGen.genRand.Next(-10, 11) * 0.05f;
-          if ((double) vector2_2.Y > 1.0)
-            vector2_2.Y = 1f;
-          if ((double) vector2_2.Y < -1.0)
-            vector2_2.Y = -1f;
+          // ISSUE: explicit reference operation
+          // ISSUE: variable of a reference type
+          __Null& local1 = @vector2_2.Y;
+          // ISSUE: cast to a reference type
+          // ISSUE: explicit reference operation
+          double num7 = (double) ^(float&) local1 + (double) WorldGen.genRand.Next(-10, 11) * 0.0500000007450581;
+          // ISSUE: cast to a reference type
+          // ISSUE: explicit reference operation
+          ^(float&) local1 = (float) num7;
+          if (vector2_2.Y > 1.0)
+            vector2_2.Y = (__Null) 1.0;
+          if (vector2_2.Y < -1.0)
+            vector2_2.Y = (__Null) -1.0;
         }
         else if (type != 59 && num1 < 3.0)
         {
-          if ((double) vector2_2.Y > 1.0)
-            vector2_2.Y = 1f;
-          if ((double) vector2_2.Y < -1.0)
-            vector2_2.Y = -1f;
+          if (vector2_2.Y > 1.0)
+            vector2_2.Y = (__Null) 1.0;
+          if (vector2_2.Y < -1.0)
+            vector2_2.Y = (__Null) -1.0;
         }
         if (type == 59 && !noYChange)
         {
           if ((double) vector2_2.Y > 0.5)
-            vector2_2.Y = 0.5f;
+            vector2_2.Y = (__Null) 0.5;
           if ((double) vector2_2.Y < -0.5)
-            vector2_2.Y = -0.5f;
+            vector2_2.Y = (__Null) -0.5;
           if ((double) vector2_1.Y < Main.rockLayer + 100.0)
-            vector2_2.Y = 1f;
-          if ((double) vector2_1.Y > (double) (Main.maxTilesY - 300))
-            vector2_2.Y = -1f;
+            vector2_2.Y = (__Null) 1.0;
+          if (vector2_1.Y > (double) (Main.maxTilesY - 300))
+            vector2_2.Y = (__Null) -1.0;
         }
       }
     }
@@ -33493,11 +34373,11 @@ label_54:
       float num2 = (float) WorldGen.genRand.Next(5, 50);
       float num3 = num2;
       Vector2 vector2_1;
-      vector2_1.X = (float) i;
-      vector2_1.Y = (float) j;
+      vector2_1.X = (__Null) (double) i;
+      vector2_1.Y = (__Null) (double) j;
       Vector2 vector2_2;
-      vector2_2.X = (float) WorldGen.genRand.Next(-10, 11) * 0.1f;
-      vector2_2.Y = (float) WorldGen.genRand.Next(-10, 11) * 0.1f;
+      vector2_2.X = (__Null) ((double) WorldGen.genRand.Next(-10, 11) * 0.100000001490116);
+      vector2_2.Y = (__Null) ((double) WorldGen.genRand.Next(-10, 11) * 0.100000001490116);
       while (num1 > 0.0 && (double) num3 > 0.0)
       {
         double num4 = num1 * ((double) num3 / (double) num2);
@@ -33518,21 +34398,37 @@ label_54:
         {
           for (int index2 = num7; index2 < num8; ++index2)
           {
-            if ((double) Math.Abs((float) index1 - vector2_1.X) + (double) Math.Abs((float) index2 - vector2_1.Y) < num1 * 0.5 * (1.0 + (double) WorldGen.genRand.Next(-10, 11) * 0.015) && (int) Main.tile[index1, index2].wall == 2)
+            if ((double) Math.Abs((float) index1 - (float) vector2_1.X) + (double) Math.Abs((float) index2 - (float) vector2_1.Y) < num1 * 0.5 * (1.0 + (double) WorldGen.genRand.Next(-10, 11) * 0.015) && (int) Main.tile[index1, index2].wall == 2)
               Main.tile[index1, index2].wall = (byte) 59;
           }
         }
-        vector2_1 += vector2_2;
-        vector2_2.X += (float) WorldGen.genRand.Next(-10, 11) * 0.05f;
-        if ((double) vector2_2.X > 1.0)
-          vector2_2.X = 1f;
-        if ((double) vector2_2.X < -1.0)
-          vector2_2.X = -1f;
-        vector2_2.Y += (float) WorldGen.genRand.Next(-10, 11) * 0.05f;
-        if ((double) vector2_2.Y > 1.0)
-          vector2_2.Y = 1f;
-        if ((double) vector2_2.Y < -1.0)
-          vector2_2.Y = -1f;
+        vector2_1 = Vector2.op_Addition(vector2_1, vector2_2);
+        // ISSUE: explicit reference operation
+        // ISSUE: variable of a reference type
+        __Null& local1 = @vector2_2.X;
+        // ISSUE: cast to a reference type
+        // ISSUE: explicit reference operation
+        double num9 = (double) ^(float&) local1 + (double) WorldGen.genRand.Next(-10, 11) * 0.0500000007450581;
+        // ISSUE: cast to a reference type
+        // ISSUE: explicit reference operation
+        ^(float&) local1 = (float) num9;
+        if (vector2_2.X > 1.0)
+          vector2_2.X = (__Null) 1.0;
+        if (vector2_2.X < -1.0)
+          vector2_2.X = (__Null) -1.0;
+        // ISSUE: explicit reference operation
+        // ISSUE: variable of a reference type
+        __Null& local2 = @vector2_2.Y;
+        // ISSUE: cast to a reference type
+        // ISSUE: explicit reference operation
+        double num10 = (double) ^(float&) local2 + (double) WorldGen.genRand.Next(-10, 11) * 0.0500000007450581;
+        // ISSUE: cast to a reference type
+        // ISSUE: explicit reference operation
+        ^(float&) local2 = (float) num10;
+        if (vector2_2.Y > 1.0)
+          vector2_2.Y = (__Null) 1.0;
+        if (vector2_2.Y < -1.0)
+          vector2_2.Y = (__Null) -1.0;
       }
     }
 
@@ -33542,11 +34438,11 @@ label_54:
       float num2 = (float) WorldGen.genRand.Next(8, 33);
       float num3 = num2;
       Vector2 vector2_1;
-      vector2_1.X = (float) i;
-      vector2_1.Y = (float) j;
+      vector2_1.X = (__Null) (double) i;
+      vector2_1.Y = (__Null) (double) j;
       Vector2 vector2_2;
-      vector2_2.X = (float) WorldGen.genRand.Next(-10, 11) * 0.1f;
-      vector2_2.Y = (float) WorldGen.genRand.Next(-10, 11) * 0.1f;
+      vector2_2.X = (__Null) ((double) WorldGen.genRand.Next(-10, 11) * 0.100000001490116);
+      vector2_2.Y = (__Null) ((double) WorldGen.genRand.Next(-10, 11) * 0.100000001490116);
       while (num1 > 0.0 && (double) num3 > 0.0)
       {
         double num4 = num1 * ((double) num3 / (double) num2);
@@ -33567,21 +34463,37 @@ label_54:
         {
           for (int index2 = num7; index2 < num8; ++index2)
           {
-            if ((double) Math.Abs((float) index1 - vector2_1.X) + (double) Math.Abs((float) index2 - vector2_1.Y) < num1 * 0.5 * (1.0 + (double) WorldGen.genRand.Next(-10, 11) * 0.015) && (double) index2 > Main.worldSurface)
+            if ((double) Math.Abs((float) index1 - (float) vector2_1.X) + (double) Math.Abs((float) index2 - (float) vector2_1.Y) < num1 * 0.5 * (1.0 + (double) WorldGen.genRand.Next(-10, 11) * 0.015) && (double) index2 > Main.worldSurface)
               Main.tile[index1, index2].wall = (byte) 0;
           }
         }
-        vector2_1 += vector2_2;
-        vector2_2.X += (float) WorldGen.genRand.Next(-10, 11) * 0.05f;
-        if ((double) vector2_2.X > 1.0)
-          vector2_2.X = 1f;
-        if ((double) vector2_2.X < -1.0)
-          vector2_2.X = -1f;
-        vector2_2.Y += (float) WorldGen.genRand.Next(-10, 11) * 0.05f;
-        if ((double) vector2_2.Y > 1.0)
-          vector2_2.Y = 1f;
-        if ((double) vector2_2.Y < -1.0)
-          vector2_2.Y = -1f;
+        vector2_1 = Vector2.op_Addition(vector2_1, vector2_2);
+        // ISSUE: explicit reference operation
+        // ISSUE: variable of a reference type
+        __Null& local1 = @vector2_2.X;
+        // ISSUE: cast to a reference type
+        // ISSUE: explicit reference operation
+        double num9 = (double) ^(float&) local1 + (double) WorldGen.genRand.Next(-10, 11) * 0.0500000007450581;
+        // ISSUE: cast to a reference type
+        // ISSUE: explicit reference operation
+        ^(float&) local1 = (float) num9;
+        if (vector2_2.X > 1.0)
+          vector2_2.X = (__Null) 1.0;
+        if (vector2_2.X < -1.0)
+          vector2_2.X = (__Null) -1.0;
+        // ISSUE: explicit reference operation
+        // ISSUE: variable of a reference type
+        __Null& local2 = @vector2_2.Y;
+        // ISSUE: cast to a reference type
+        // ISSUE: explicit reference operation
+        double num10 = (double) ^(float&) local2 + (double) WorldGen.genRand.Next(-10, 11) * 0.0500000007450581;
+        // ISSUE: cast to a reference type
+        // ISSUE: explicit reference operation
+        ^(float&) local2 = (float) num10;
+        if (vector2_2.Y > 1.0)
+          vector2_2.Y = (__Null) 1.0;
+        if (vector2_2.Y < -1.0)
+          vector2_2.Y = (__Null) -1.0;
       }
     }
 
@@ -33595,13 +34507,13 @@ label_54:
       int num6 = i;
       int num7 = j;
       Vector2 vector2_1;
-      vector2_1.X = (float) i;
-      vector2_1.Y = (float) j;
+      vector2_1.X = (__Null) (double) i;
+      vector2_1.Y = (__Null) (double) j;
       Vector2 vector2_2;
-      vector2_2.X = (float) WorldGen.genRand.Next(-20, 21) * 0.2f;
-      while ((double) vector2_2.X > -2.0 && (double) vector2_2.X < 2.0)
-        vector2_2.X = (float) WorldGen.genRand.Next(-20, 21) * 0.2f;
-      vector2_2.Y = (float) WorldGen.genRand.Next(-20, -10) * 0.02f;
+      vector2_2.X = (__Null) ((double) WorldGen.genRand.Next(-20, 21) * 0.200000002980232);
+      while (vector2_2.X > -2.0 && vector2_2.X < 2.0)
+        vector2_2.X = (__Null) ((double) WorldGen.genRand.Next(-20, 21) * 0.200000002980232);
+      vector2_2.Y = (__Null) ((double) WorldGen.genRand.Next(-20, -10) * 0.0199999995529652);
       while (num1 > 0.0 && (double) num3 > 0.0)
       {
         num1 -= (double) WorldGen.genRand.Next(4);
@@ -33619,22 +34531,22 @@ label_54:
         if (num11 > Main.maxTilesY)
           num11 = Main.maxTilesY;
         double num12 = num1 * (double) WorldGen.genRand.Next(80, 120) * 0.01;
-        float num13 = vector2_1.Y + 1f;
+        float num13 = (float) (vector2_1.Y + 1.0);
         for (int i1 = num8; i1 < num9; ++i1)
         {
           if (WorldGen.genRand.Next(2) == 0)
             num13 += (float) WorldGen.genRand.Next(-1, 2);
-          if ((double) num13 < (double) vector2_1.Y)
-            num13 = vector2_1.Y;
-          if ((double) num13 > (double) vector2_1.Y + 2.0)
-            num13 = vector2_1.Y + 2f;
+          if ((double) num13 < vector2_1.Y)
+            num13 = (float) vector2_1.Y;
+          if ((double) num13 > vector2_1.Y + 2.0)
+            num13 = (float) (vector2_1.Y + 2.0);
           for (int j1 = num10; j1 < num11; ++j1)
           {
             if ((double) j1 > (double) num13)
             {
-              float num14 = Math.Abs((float) i1 - vector2_1.X);
-              float num15 = Math.Abs((float) j1 - vector2_1.Y) * 3f;
-              if (Math.Sqrt((double) num14 * (double) num14 + (double) num15 * (double) num15) < num12 * 0.4)
+              double num14 = (double) Math.Abs((float) i1 - (float) vector2_1.X);
+              float num15 = Math.Abs((float) j1 - (float) vector2_1.Y) * 3f;
+              if (Math.Sqrt(num14 * num14 + (double) num15 * (double) num15) < num12 * 0.4)
               {
                 if (i1 < num4)
                   num4 = i1;
@@ -33651,16 +34563,24 @@ label_54:
             }
           }
         }
-        vector2_1 += vector2_2;
-        vector2_2.X += (float) WorldGen.genRand.Next(-20, 21) * 0.05f;
-        if ((double) vector2_2.X > 1.0)
-          vector2_2.X = 1f;
-        if ((double) vector2_2.X < -1.0)
-          vector2_2.X = -1f;
+        vector2_1 = Vector2.op_Addition(vector2_1, vector2_2);
+        // ISSUE: explicit reference operation
+        // ISSUE: variable of a reference type
+        __Null& local = @vector2_2.X;
+        // ISSUE: cast to a reference type
+        // ISSUE: explicit reference operation
+        double num16 = (double) ^(float&) local + (double) WorldGen.genRand.Next(-20, 21) * 0.0500000007450581;
+        // ISSUE: cast to a reference type
+        // ISSUE: explicit reference operation
+        ^(float&) local = (float) num16;
+        if (vector2_2.X > 1.0)
+          vector2_2.X = (__Null) 1.0;
+        if (vector2_2.X < -1.0)
+          vector2_2.X = (__Null) -1.0;
         if ((double) vector2_2.Y > 0.2)
-          vector2_2.Y = -0.2f;
+          vector2_2.Y = (__Null) -0.200000002980232;
         if ((double) vector2_2.Y < -0.2)
-          vector2_2.Y = -0.2f;
+          vector2_2.Y = (__Null) -0.200000002980232;
       }
       int index1 = num4 + WorldGen.genRand.Next(5);
       while (index1 < num5)
@@ -33679,9 +34599,9 @@ label_54:
           {
             if (j1 > num6)
             {
-              float num10 = (float) Math.Abs(i1 - index1);
+              double num10 = (double) Math.Abs(i1 - index1);
               float num11 = (float) (Math.Abs(j1 - num8) * 2);
-              if (Math.Sqrt((double) num10 * (double) num10 + (double) num11 * (double) num11) < (double) (minValue + WorldGen.genRand.Next(2)))
+              if (Math.Sqrt(num10 * num10 + (double) num11 * (double) num11) < (double) (minValue + WorldGen.genRand.Next(2)))
               {
                 Main.tile[i1, j1].active(true);
                 Main.tile[i1, j1].type = (ushort) num9;
@@ -33692,23 +34612,23 @@ label_54:
         }
         index1 += WorldGen.genRand.Next(minValue, (int) ((double) minValue * 1.5));
       }
-      double num16 = (double) WorldGen.genRand.Next(80, 95);
-      num2 = num16;
-      float num17 = (float) WorldGen.genRand.Next(10, 15);
-      vector2_1.X = (float) i;
-      vector2_1.Y = (float) num6;
-      vector2_2.X = (float) WorldGen.genRand.Next(-20, 21) * 0.2f;
-      while ((double) vector2_2.X > -2.0 && (double) vector2_2.X < 2.0)
-        vector2_2.X = (float) WorldGen.genRand.Next(-20, 21) * 0.2f;
-      vector2_2.Y = (float) WorldGen.genRand.Next(-20, -10) * 0.02f;
-      while (num16 > 0.0 && (double) num17 > 0.0)
+      double num17 = (double) WorldGen.genRand.Next(80, 95);
+      num2 = num17;
+      float num18 = (float) WorldGen.genRand.Next(10, 15);
+      vector2_1.X = (__Null) (double) i;
+      vector2_1.Y = (__Null) (double) num6;
+      vector2_2.X = (__Null) ((double) WorldGen.genRand.Next(-20, 21) * 0.200000002980232);
+      while (vector2_2.X > -2.0 && vector2_2.X < 2.0)
+        vector2_2.X = (__Null) ((double) WorldGen.genRand.Next(-20, 21) * 0.200000002980232);
+      vector2_2.Y = (__Null) ((double) WorldGen.genRand.Next(-20, -10) * 0.0199999995529652);
+      while (num17 > 0.0 && (double) num18 > 0.0)
       {
-        num16 -= (double) WorldGen.genRand.Next(4);
-        --num17;
-        int num8 = (int) ((double) vector2_1.X - num16 * 0.5);
-        int num9 = (int) ((double) vector2_1.X + num16 * 0.5);
+        num17 -= (double) WorldGen.genRand.Next(4);
+        --num18;
+        int num8 = (int) ((double) vector2_1.X - num17 * 0.5);
+        int num9 = (int) ((double) vector2_1.X + num17 * 0.5);
         int num10 = num6 - 1;
-        int num11 = (int) ((double) vector2_1.Y + num16 * 0.5);
+        int num11 = (int) ((double) vector2_1.Y + num17 * 0.5);
         if (num8 < 0)
           num8 = 0;
         if (num9 > Main.maxTilesX)
@@ -33717,23 +34637,23 @@ label_54:
           num10 = 0;
         if (num11 > Main.maxTilesY)
           num11 = Main.maxTilesY;
-        double num12 = num16 * (double) WorldGen.genRand.Next(80, 120) * 0.01;
-        float num13 = vector2_1.Y + 1f;
+        double num12 = num17 * (double) WorldGen.genRand.Next(80, 120) * 0.01;
+        float num13 = (float) (vector2_1.Y + 1.0);
         for (int i1 = num8; i1 < num9; ++i1)
         {
           if (WorldGen.genRand.Next(2) == 0)
             num13 += (float) WorldGen.genRand.Next(-1, 2);
-          if ((double) num13 < (double) vector2_1.Y)
-            num13 = vector2_1.Y;
-          if ((double) num13 > (double) vector2_1.Y + 2.0)
-            num13 = vector2_1.Y + 2f;
+          if ((double) num13 < vector2_1.Y)
+            num13 = (float) vector2_1.Y;
+          if ((double) num13 > vector2_1.Y + 2.0)
+            num13 = (float) (vector2_1.Y + 2.0);
           for (int j1 = num10; j1 < num11; ++j1)
           {
             if ((double) j1 > (double) num13)
             {
-              float num14 = Math.Abs((float) i1 - vector2_1.X);
-              float num15 = Math.Abs((float) j1 - vector2_1.Y) * 3f;
-              if (Math.Sqrt((double) num14 * (double) num14 + (double) num15 * (double) num15) < num12 * 0.4 && (int) Main.tile[i1, j1].type == 189)
+              double num14 = (double) Math.Abs((float) i1 - (float) vector2_1.X);
+              float num15 = Math.Abs((float) j1 - (float) vector2_1.Y) * 3f;
+              if (Math.Sqrt(num14 * num14 + (double) num15 * (double) num15) < num12 * 0.4 && (int) Main.tile[i1, j1].type == 189)
               {
                 Main.tile[i1, j1].type = (ushort) 0;
                 WorldGen.SquareTileFrame(i1, j1, true);
@@ -33741,16 +34661,24 @@ label_54:
             }
           }
         }
-        vector2_1 += vector2_2;
-        vector2_2.X += (float) WorldGen.genRand.Next(-20, 21) * 0.05f;
-        if ((double) vector2_2.X > 1.0)
-          vector2_2.X = 1f;
-        if ((double) vector2_2.X < -1.0)
-          vector2_2.X = -1f;
+        vector2_1 = Vector2.op_Addition(vector2_1, vector2_2);
+        // ISSUE: explicit reference operation
+        // ISSUE: variable of a reference type
+        __Null& local = @vector2_2.X;
+        // ISSUE: cast to a reference type
+        // ISSUE: explicit reference operation
+        double num16 = (double) ^(float&) local + (double) WorldGen.genRand.Next(-20, 21) * 0.0500000007450581;
+        // ISSUE: cast to a reference type
+        // ISSUE: explicit reference operation
+        ^(float&) local = (float) num16;
+        if (vector2_2.X > 1.0)
+          vector2_2.X = (__Null) 1.0;
+        if (vector2_2.X < -1.0)
+          vector2_2.X = (__Null) -1.0;
         if ((double) vector2_2.Y > 0.2)
-          vector2_2.Y = -0.2f;
+          vector2_2.Y = (__Null) -0.200000002980232;
         if ((double) vector2_2.Y < -0.2)
-          vector2_2.Y = -0.2f;
+          vector2_2.Y = (__Null) -0.200000002980232;
       }
       int index3 = num4 + WorldGen.genRand.Next(5);
       while (index3 < num5)
@@ -33776,9 +34704,9 @@ label_54:
             {
               if (j1 > num6)
               {
-                float num10 = (float) Math.Abs(i1 - index3);
+                double num10 = (double) Math.Abs(i1 - index3);
                 float num11 = (float) (Math.Abs(j1 - num8) * 2);
-                if (Math.Sqrt((double) num10 * (double) num10 + (double) num11 * (double) num11) < (double) minValue)
+                if (Math.Sqrt(num10 * num10 + (double) num11 * (double) num11) < (double) minValue)
                 {
                   Main.tile[i1, j1].type = (ushort) num9;
                   WorldGen.SquareTileFrame(i1, j1, true);
@@ -33850,8 +34778,8 @@ label_54:
           WorldGen.SquareTileFrame(i1, j1, true);
         }
       }
-      int num18 = WorldGen.genRand.Next(4);
-      for (int index2 = 0; index2 <= num18; ++index2)
+      int num19 = WorldGen.genRand.Next(4);
+      for (int index2 = 0; index2 <= num19; ++index2)
       {
         int num8 = WorldGen.genRand.Next(num4 - 5, num5 + 5);
         int num9 = num6 - WorldGen.genRand.Next(20, 40);
@@ -33863,9 +34791,9 @@ label_54:
         {
           for (int j1 = num9 - num10; j1 <= num9 + num10; ++j1)
           {
-            float num12 = (float) Math.Abs(i1 - num8);
+            double num12 = (double) Math.Abs(i1 - num8);
             float num13 = (float) (Math.Abs(j1 - num9) * 2);
-            if (Math.Sqrt((double) num12 * (double) num12 + (double) num13 * (double) num13) < (double) (num10 + WorldGen.genRand.Next(-1, 2)))
+            if (Math.Sqrt(num12 * num12 + (double) num13 * (double) num13) < (double) (num10 + WorldGen.genRand.Next(-1, 2)))
             {
               Main.tile[i1, j1].active(true);
               Main.tile[i1, j1].type = (ushort) num11;
@@ -33895,13 +34823,13 @@ label_54:
       int num6 = i;
       int num7 = j;
       Vector2 vector2_1;
-      vector2_1.X = (float) i;
-      vector2_1.Y = (float) j;
+      vector2_1.X = (__Null) (double) i;
+      vector2_1.Y = (__Null) (double) j;
       Vector2 vector2_2;
-      vector2_2.X = (float) WorldGen.genRand.Next(-20, 21) * 0.2f;
-      while ((double) vector2_2.X > -2.0 && (double) vector2_2.X < 2.0)
-        vector2_2.X = (float) WorldGen.genRand.Next(-20, 21) * 0.2f;
-      vector2_2.Y = (float) WorldGen.genRand.Next(-20, -10) * 0.02f;
+      vector2_2.X = (__Null) ((double) WorldGen.genRand.Next(-20, 21) * 0.200000002980232);
+      while (vector2_2.X > -2.0 && vector2_2.X < 2.0)
+        vector2_2.X = (__Null) ((double) WorldGen.genRand.Next(-20, 21) * 0.200000002980232);
+      vector2_2.Y = (__Null) ((double) WorldGen.genRand.Next(-20, -10) * 0.0199999995529652);
       while (num1 > 0.0 && (double) num3 > 0.0)
       {
         num1 -= (double) WorldGen.genRand.Next(4);
@@ -33919,22 +34847,22 @@ label_54:
         if (num11 > Main.maxTilesY)
           num11 = Main.maxTilesY;
         double num12 = num1 * (double) WorldGen.genRand.Next(80, 120) * 0.01;
-        float num13 = vector2_1.Y + 1f;
+        float num13 = (float) (vector2_1.Y + 1.0);
         for (int i1 = num8; i1 < num9; ++i1)
         {
           if (WorldGen.genRand.Next(2) == 0)
             num13 += (float) WorldGen.genRand.Next(-1, 2);
-          if ((double) num13 < (double) vector2_1.Y)
-            num13 = vector2_1.Y;
-          if ((double) num13 > (double) vector2_1.Y + 2.0)
-            num13 = vector2_1.Y + 2f;
+          if ((double) num13 < vector2_1.Y)
+            num13 = (float) vector2_1.Y;
+          if ((double) num13 > vector2_1.Y + 2.0)
+            num13 = (float) (vector2_1.Y + 2.0);
           for (int j1 = num10; j1 < num11; ++j1)
           {
             if ((double) j1 > (double) num13)
             {
-              float num14 = Math.Abs((float) i1 - vector2_1.X);
-              float num15 = Math.Abs((float) j1 - vector2_1.Y) * 3f;
-              if (Math.Sqrt((double) num14 * (double) num14 + (double) num15 * (double) num15) < num12 * 0.4)
+              double num14 = (double) Math.Abs((float) i1 - (float) vector2_1.X);
+              float num15 = Math.Abs((float) j1 - (float) vector2_1.Y) * 3f;
+              if (Math.Sqrt(num14 * num14 + (double) num15 * (double) num15) < num12 * 0.4)
               {
                 if (i1 < num4)
                   num4 = i1;
@@ -33951,16 +34879,24 @@ label_54:
             }
           }
         }
-        vector2_1 += vector2_2;
-        vector2_2.X += (float) WorldGen.genRand.Next(-20, 21) * 0.05f;
-        if ((double) vector2_2.X > 1.0)
-          vector2_2.X = 1f;
-        if ((double) vector2_2.X < -1.0)
-          vector2_2.X = -1f;
+        vector2_1 = Vector2.op_Addition(vector2_1, vector2_2);
+        // ISSUE: explicit reference operation
+        // ISSUE: variable of a reference type
+        __Null& local = @vector2_2.X;
+        // ISSUE: cast to a reference type
+        // ISSUE: explicit reference operation
+        double num16 = (double) ^(float&) local + (double) WorldGen.genRand.Next(-20, 21) * 0.0500000007450581;
+        // ISSUE: cast to a reference type
+        // ISSUE: explicit reference operation
+        ^(float&) local = (float) num16;
+        if (vector2_2.X > 1.0)
+          vector2_2.X = (__Null) 1.0;
+        if (vector2_2.X < -1.0)
+          vector2_2.X = (__Null) -1.0;
         if ((double) vector2_2.Y > 0.2)
-          vector2_2.Y = -0.2f;
+          vector2_2.Y = (__Null) -0.200000002980232;
         if ((double) vector2_2.Y < -0.2)
-          vector2_2.Y = -0.2f;
+          vector2_2.Y = (__Null) -0.200000002980232;
       }
       int index1 = num4 + WorldGen.genRand.Next(5);
       while (index1 < num5)
@@ -33979,9 +34915,9 @@ label_54:
           {
             if (j1 > num6)
             {
-              float num10 = (float) Math.Abs(i1 - index1);
+              double num10 = (double) Math.Abs(i1 - index1);
               float num11 = (float) (Math.Abs(j1 - num8) * 2);
-              if (Math.Sqrt((double) num10 * (double) num10 + (double) num11 * (double) num11) < (double) (minValue + WorldGen.genRand.Next(2)))
+              if (Math.Sqrt(num10 * num10 + (double) num11 * (double) num11) < (double) (minValue + WorldGen.genRand.Next(2)))
               {
                 Main.tile[i1, j1].active(true);
                 Main.tile[i1, j1].type = (ushort) num9;
@@ -33992,23 +34928,23 @@ label_54:
         }
         index1 += WorldGen.genRand.Next(minValue, (int) ((double) minValue * 1.5));
       }
-      double num16 = (double) WorldGen.genRand.Next(80, 95);
-      num2 = num16;
-      float num17 = (float) WorldGen.genRand.Next(10, 15);
-      vector2_1.X = (float) i;
-      vector2_1.Y = (float) num6;
-      vector2_2.X = (float) WorldGen.genRand.Next(-20, 21) * 0.2f;
-      while ((double) vector2_2.X > -2.0 && (double) vector2_2.X < 2.0)
-        vector2_2.X = (float) WorldGen.genRand.Next(-20, 21) * 0.2f;
-      vector2_2.Y = (float) WorldGen.genRand.Next(-20, -10) * 0.02f;
-      while (num16 > 0.0 && (double) num17 > 0.0)
+      double num17 = (double) WorldGen.genRand.Next(80, 95);
+      num2 = num17;
+      float num18 = (float) WorldGen.genRand.Next(10, 15);
+      vector2_1.X = (__Null) (double) i;
+      vector2_1.Y = (__Null) (double) num6;
+      vector2_2.X = (__Null) ((double) WorldGen.genRand.Next(-20, 21) * 0.200000002980232);
+      while (vector2_2.X > -2.0 && vector2_2.X < 2.0)
+        vector2_2.X = (__Null) ((double) WorldGen.genRand.Next(-20, 21) * 0.200000002980232);
+      vector2_2.Y = (__Null) ((double) WorldGen.genRand.Next(-20, -10) * 0.0199999995529652);
+      while (num17 > 0.0 && (double) num18 > 0.0)
       {
-        num16 -= (double) WorldGen.genRand.Next(4);
-        --num17;
-        int num8 = (int) ((double) vector2_1.X - num16 * 0.5);
-        int num9 = (int) ((double) vector2_1.X + num16 * 0.5);
+        num17 -= (double) WorldGen.genRand.Next(4);
+        --num18;
+        int num8 = (int) ((double) vector2_1.X - num17 * 0.5);
+        int num9 = (int) ((double) vector2_1.X + num17 * 0.5);
         int num10 = num6 - 1;
-        int num11 = (int) ((double) vector2_1.Y + num16 * 0.5);
+        int num11 = (int) ((double) vector2_1.Y + num17 * 0.5);
         if (num8 < 0)
           num8 = 0;
         if (num9 > Main.maxTilesX)
@@ -34017,23 +34953,23 @@ label_54:
           num10 = 0;
         if (num11 > Main.maxTilesY)
           num11 = Main.maxTilesY;
-        double num12 = num16 * (double) WorldGen.genRand.Next(80, 120) * 0.01;
-        float num13 = vector2_1.Y + 1f;
+        double num12 = num17 * (double) WorldGen.genRand.Next(80, 120) * 0.01;
+        float num13 = (float) (vector2_1.Y + 1.0);
         for (int index2 = num8; index2 < num9; ++index2)
         {
           if (WorldGen.genRand.Next(2) == 0)
             num13 += (float) WorldGen.genRand.Next(-1, 2);
-          if ((double) num13 < (double) vector2_1.Y)
-            num13 = vector2_1.Y;
-          if ((double) num13 > (double) vector2_1.Y + 2.0)
-            num13 = vector2_1.Y + 2f;
+          if ((double) num13 < vector2_1.Y)
+            num13 = (float) vector2_1.Y;
+          if ((double) num13 > vector2_1.Y + 2.0)
+            num13 = (float) (vector2_1.Y + 2.0);
           for (int index3 = num10; index3 < num11; ++index3)
           {
             if ((double) index3 > (double) num13)
             {
-              float num14 = Math.Abs((float) index2 - vector2_1.X);
-              float num15 = Math.Abs((float) index3 - vector2_1.Y) * 3f;
-              if (Math.Sqrt((double) num14 * (double) num14 + (double) num15 * (double) num15) < num12 * 0.4 && (int) Main.tile[index2, index3].type == 189)
+              double num14 = (double) Math.Abs((float) index2 - (float) vector2_1.X);
+              float num15 = Math.Abs((float) index3 - (float) vector2_1.Y) * 3f;
+              if (Math.Sqrt(num14 * num14 + (double) num15 * (double) num15) < num12 * 0.4 && (int) Main.tile[index2, index3].type == 189)
               {
                 Main.tile[index2, index3].active(false);
                 Main.tile[index2, index3].liquid = byte.MaxValue;
@@ -34043,16 +34979,24 @@ label_54:
             }
           }
         }
-        vector2_1 += vector2_2;
-        vector2_2.X += (float) WorldGen.genRand.Next(-20, 21) * 0.05f;
-        if ((double) vector2_2.X > 1.0)
-          vector2_2.X = 1f;
-        if ((double) vector2_2.X < -1.0)
-          vector2_2.X = -1f;
+        vector2_1 = Vector2.op_Addition(vector2_1, vector2_2);
+        // ISSUE: explicit reference operation
+        // ISSUE: variable of a reference type
+        __Null& local = @vector2_2.X;
+        // ISSUE: cast to a reference type
+        // ISSUE: explicit reference operation
+        double num16 = (double) ^(float&) local + (double) WorldGen.genRand.Next(-20, 21) * 0.0500000007450581;
+        // ISSUE: cast to a reference type
+        // ISSUE: explicit reference operation
+        ^(float&) local = (float) num16;
+        if (vector2_2.X > 1.0)
+          vector2_2.X = (__Null) 1.0;
+        if (vector2_2.X < -1.0)
+          vector2_2.X = (__Null) -1.0;
         if ((double) vector2_2.Y > 0.2)
-          vector2_2.Y = -0.2f;
+          vector2_2.Y = (__Null) -0.200000002980232;
         if ((double) vector2_2.Y < -0.2)
-          vector2_2.Y = -0.2f;
+          vector2_2.Y = (__Null) -0.200000002980232;
       }
       for (int index2 = num4 - 20; index2 <= num5 + 20; ++index2)
       {
@@ -34112,8 +35056,8 @@ label_54:
           WorldGen.SquareTileFrame(i1, j1, true);
         }
       }
-      int num18 = WorldGen.genRand.Next(1, 4);
-      for (int index2 = 0; index2 <= num18; ++index2)
+      int num19 = WorldGen.genRand.Next(1, 4);
+      for (int index2 = 0; index2 <= num19; ++index2)
       {
         int num8 = WorldGen.genRand.Next(num4 - 5, num5 + 5);
         int num9 = num6 - WorldGen.genRand.Next(20, 40);
@@ -34125,9 +35069,9 @@ label_54:
         {
           for (int j1 = num9 - num10; j1 <= num9 + num10; ++j1)
           {
-            float num12 = (float) Math.Abs(i1 - num8);
+            double num12 = (double) Math.Abs(i1 - num8);
             float num13 = (float) (Math.Abs(j1 - num9) * 2);
-            if (Math.Sqrt((double) num12 * (double) num12 + (double) num13 * (double) num13) < (double) (num10 + WorldGen.genRand.Next(-1, 2)))
+            if (Math.Sqrt(num12 * num12 + (double) num13 * (double) num13) < (double) (num10 + WorldGen.genRand.Next(-1, 2)))
             {
               Main.tile[i1, j1].active(true);
               Main.tile[i1, j1].type = (ushort) num11;
@@ -34152,13 +35096,13 @@ label_54:
       double num1 = (double) WorldGen.genRand.Next(80, 120);
       float num2 = (float) WorldGen.genRand.Next(20, 25);
       Vector2 vector2_1;
-      vector2_1.X = (float) i;
-      vector2_1.Y = (float) j;
+      vector2_1.X = (__Null) (double) i;
+      vector2_1.Y = (__Null) (double) j;
       Vector2 vector2_2;
-      vector2_2.X = (float) WorldGen.genRand.Next(-20, 21) * 0.2f;
-      while ((double) vector2_2.X > -2.0 && (double) vector2_2.X < 2.0)
-        vector2_2.X = (float) WorldGen.genRand.Next(-20, 21) * 0.2f;
-      vector2_2.Y = (float) WorldGen.genRand.Next(-20, -10) * 0.02f;
+      vector2_2.X = (__Null) ((double) WorldGen.genRand.Next(-20, 21) * 0.200000002980232);
+      while (vector2_2.X > -2.0 && vector2_2.X < 2.0)
+        vector2_2.X = (__Null) ((double) WorldGen.genRand.Next(-20, 21) * 0.200000002980232);
+      vector2_2.Y = (__Null) ((double) WorldGen.genRand.Next(-20, -10) * 0.0199999995529652);
       while (num1 > 0.0 && (double) num2 > 0.0)
       {
         num1 -= (double) WorldGen.genRand.Next(4);
@@ -34176,22 +35120,22 @@ label_54:
         if (num6 > Main.maxTilesY)
           num6 = Main.maxTilesY;
         double num7 = num1 * (double) WorldGen.genRand.Next(80, 120) * 0.01;
-        float num8 = vector2_1.Y + 1f;
+        float num8 = (float) (vector2_1.Y + 1.0);
         for (int index1 = num3; index1 < num4; ++index1)
         {
           if (WorldGen.genRand.Next(2) == 0)
             num8 += (float) WorldGen.genRand.Next(-1, 2);
-          if ((double) num8 < (double) vector2_1.Y)
-            num8 = vector2_1.Y;
-          if ((double) num8 > (double) vector2_1.Y + 2.0)
-            num8 = vector2_1.Y + 2f;
+          if ((double) num8 < vector2_1.Y)
+            num8 = (float) vector2_1.Y;
+          if ((double) num8 > vector2_1.Y + 2.0)
+            num8 = (float) (vector2_1.Y + 2.0);
           for (int index2 = num5; index2 < num6; ++index2)
           {
             if ((double) index2 > (double) num8)
             {
-              float num9 = Math.Abs((float) index1 - vector2_1.X);
-              float num10 = Math.Abs((float) index2 - vector2_1.Y) * 2f;
-              if (Math.Sqrt((double) num9 * (double) num9 + (double) num10 * (double) num10) < num7 * 0.4)
+              double num9 = (double) Math.Abs((float) index1 - (float) vector2_1.X);
+              float num10 = Math.Abs((float) index2 - (float) vector2_1.Y) * 2f;
+              if (Math.Sqrt(num9 * num9 + (double) num10 * (double) num10) < num7 * 0.4)
               {
                 Main.tile[index1, index2].active(true);
                 if ((int) Main.tile[index1, index2].type == 59)
@@ -34217,25 +35161,33 @@ label_54:
         {
           for (int index2 = num13; index2 < num14; ++index2)
           {
-            if ((double) index2 > (double) vector2_1.Y + 2.0)
+            if ((double) index2 > vector2_1.Y + 2.0)
             {
-              float num9 = Math.Abs((float) index1 - vector2_1.X);
-              float num10 = Math.Abs((float) index2 - vector2_1.Y) * 2f;
-              if (Math.Sqrt((double) num9 * (double) num9 + (double) num10 * (double) num10) < num15 * 0.4)
+              double num9 = (double) Math.Abs((float) index1 - (float) vector2_1.X);
+              float num10 = Math.Abs((float) index2 - (float) vector2_1.Y) * 2f;
+              if (Math.Sqrt(num9 * num9 + (double) num10 * (double) num10) < num15 * 0.4)
                 Main.tile[index1, index2].wall = (byte) 2;
             }
           }
         }
-        vector2_1 += vector2_2;
-        vector2_2.Y += (float) WorldGen.genRand.Next(-10, 11) * 0.05f;
-        if ((double) vector2_2.X > 1.0)
-          vector2_2.X = 1f;
-        if ((double) vector2_2.X < -1.0)
-          vector2_2.X = -1f;
+        vector2_1 = Vector2.op_Addition(vector2_1, vector2_2);
+        // ISSUE: explicit reference operation
+        // ISSUE: variable of a reference type
+        __Null& local = @vector2_2.Y;
+        // ISSUE: cast to a reference type
+        // ISSUE: explicit reference operation
+        double num16 = (double) ^(float&) local + (double) WorldGen.genRand.Next(-10, 11) * 0.0500000007450581;
+        // ISSUE: cast to a reference type
+        // ISSUE: explicit reference operation
+        ^(float&) local = (float) num16;
+        if (vector2_2.X > 1.0)
+          vector2_2.X = (__Null) 1.0;
+        if (vector2_2.X < -1.0)
+          vector2_2.X = (__Null) -1.0;
         if ((double) vector2_2.Y > 0.2)
-          vector2_2.Y = -0.2f;
+          vector2_2.Y = (__Null) -0.200000002980232;
         if ((double) vector2_2.Y < -0.2)
-          vector2_2.Y = -0.2f;
+          vector2_2.Y = (__Null) -0.200000002980232;
       }
     }
 
@@ -34251,10 +35203,12 @@ label_54:
             xDir1 = -xDir1;
           if (WorldGen.genRand.Next(2) == 0)
             yDir1 = -yDir1;
-          Vector2 vector2_1 = new Vector2((float) X, (float) Y);
+          Vector2 vector2_1;
+          // ISSUE: explicit reference operation
+          ((Vector2) @vector2_1).\u002Ector((float) X, (float) Y);
           for (int index = 0; index < num1; ++index)
           {
-            vector2_1 = WorldGen.digTunnel(vector2_1.X, vector2_1.Y, xDir1, yDir1, WorldGen.genRand.Next(6, 20), WorldGen.genRand.Next(4, 9), false);
+            vector2_1 = WorldGen.digTunnel((float) vector2_1.X, (float) vector2_1.Y, xDir1, yDir1, WorldGen.genRand.Next(6, 20), WorldGen.genRand.Next(4, 9), false);
             xDir1 += (float) WorldGen.genRand.Next(-20, 21) * 0.1f;
             yDir1 += (float) WorldGen.genRand.Next(-20, 21) * 0.1f;
             if ((double) xDir1 < -1.5)
@@ -34271,7 +35225,7 @@ label_54:
               xDir2 = -xDir2;
             if (WorldGen.genRand.Next(2) == 0)
               yDir2 = -yDir2;
-            Vector2 vector2_2 = WorldGen.digTunnel(vector2_1.X, vector2_1.Y, xDir2, yDir2, WorldGen.genRand.Next(30, 50), WorldGen.genRand.Next(3, 6), false);
+            Vector2 vector2_2 = WorldGen.digTunnel((float) vector2_1.X, (float) vector2_1.Y, xDir2, yDir2, WorldGen.genRand.Next(30, 50), WorldGen.genRand.Next(3, 6), false);
             WorldGen.TileRunner((int) vector2_2.X, (int) vector2_2.Y, (double) WorldGen.genRand.Next(10, 20), WorldGen.genRand.Next(5, 10), -1, false, 0.0f, 0.0f, false, true);
           }
           break;
@@ -34283,10 +35237,12 @@ label_54:
             xDir3 = -xDir3;
           if (WorldGen.genRand.Next(2) == 0)
             yDir3 = -yDir3;
-          Vector2 vector2_3 = new Vector2((float) X, (float) Y);
+          Vector2 vector2_3;
+          // ISSUE: explicit reference operation
+          ((Vector2) @vector2_3).\u002Ector((float) X, (float) Y);
           for (int index = 0; index < num2; ++index)
           {
-            vector2_3 = WorldGen.digTunnel(vector2_3.X, vector2_3.Y, xDir3, yDir3, WorldGen.genRand.Next(5, 15), WorldGen.genRand.Next(2, 6), true);
+            vector2_3 = WorldGen.digTunnel((float) vector2_3.X, (float) vector2_3.Y, xDir3, yDir3, WorldGen.genRand.Next(5, 15), WorldGen.genRand.Next(2, 6), true);
             xDir3 += (float) WorldGen.genRand.Next(-20, 21) * 0.1f;
             yDir3 += (float) WorldGen.genRand.Next(-20, 21) * 0.1f;
             if ((double) xDir3 < -1.5)
@@ -34304,23 +35260,23 @@ label_54:
 
     public static Vector2 digTunnel(float X, float Y, float xDir, float yDir, int Steps, int Size, bool Wet = false)
     {
-      float x = X;
-      float y = Y;
+      float num1 = X;
+      float num2 = Y;
       try
       {
-        float num1 = 0.0f;
-        float num2 = 0.0f;
-        int num3 = Steps;
-        float num4 = (float) Size;
-        x = MathHelper.Clamp(x, num4 + 1f, (float) ((double) Main.maxTilesX - (double) num4 - 1.0));
-        y = MathHelper.Clamp(y, num4 + 1f, (float) ((double) Main.maxTilesY - (double) num4 - 1.0));
-        for (int index1 = 0; index1 < num3; ++index1)
+        float num3 = 0.0f;
+        float num4 = 0.0f;
+        int num5 = Steps;
+        float num6 = (float) Size;
+        num1 = MathHelper.Clamp(num1, num6 + 1f, (float) ((double) Main.maxTilesX - (double) num6 - 1.0));
+        num2 = MathHelper.Clamp(num2, num6 + 1f, (float) ((double) Main.maxTilesY - (double) num6 - 1.0));
+        for (int index1 = 0; index1 < num5; ++index1)
         {
-          for (int index2 = (int) ((double) x - (double) num4); (double) index2 <= (double) x + (double) num4; ++index2)
+          for (int index2 = (int) ((double) num1 - (double) num6); (double) index2 <= (double) num1 + (double) num6; ++index2)
           {
-            for (int index3 = (int) ((double) y - (double) num4); (double) index3 <= (double) y + (double) num4; ++index3)
+            for (int index3 = (int) ((double) num2 - (double) num6); (double) index3 <= (double) num2 + (double) num6; ++index3)
             {
-              if ((double) Math.Abs((float) index2 - x) + (double) Math.Abs((float) index3 - y) < (double) num4 * (1.0 + (double) WorldGen.genRand.Next(-10, 11) * 0.005) && index2 >= 0 && (index2 < Main.maxTilesX && index3 >= 0) && index3 < Main.maxTilesY)
+              if ((double) Math.Abs((float) index2 - num1) + (double) Math.Abs((float) index3 - num2) < (double) num6 * (1.0 + (double) WorldGen.genRand.Next(-10, 11) * 0.005) && index2 >= 0 && (index2 < Main.maxTilesX && index3 >= 0) && index3 < Main.maxTilesY)
               {
                 Main.tile[index2, index3].active(false);
                 if (Wet)
@@ -34328,55 +35284,57 @@ label_54:
               }
             }
           }
-          num4 += (float) WorldGen.genRand.Next(-50, 51) * 0.03f;
-          if ((double) num4 < (double) Size * 0.6)
-            num4 = (float) Size * 0.6f;
-          if ((double) num4 > (double) (Size * 2))
-            num4 = (float) Size * 2f;
-          num1 += (float) WorldGen.genRand.Next(-20, 21) * 0.01f;
-          num2 += (float) WorldGen.genRand.Next(-20, 21) * 0.01f;
-          if ((double) num1 < -1.0)
-            num1 = -1f;
-          if ((double) num1 > 1.0)
-            num1 = 1f;
-          if ((double) num2 < -1.0)
-            num2 = -1f;
-          if ((double) num2 > 1.0)
-            num2 = 1f;
-          x += (float) (((double) xDir + (double) num1) * 0.600000023841858);
-          y += (float) (((double) yDir + (double) num2) * 0.600000023841858);
+          num6 += (float) WorldGen.genRand.Next(-50, 51) * 0.03f;
+          if ((double) num6 < (double) Size * 0.6)
+            num6 = (float) Size * 0.6f;
+          if ((double) num6 > (double) (Size * 2))
+            num6 = (float) Size * 2f;
+          num3 += (float) WorldGen.genRand.Next(-20, 21) * 0.01f;
+          num4 += (float) WorldGen.genRand.Next(-20, 21) * 0.01f;
+          if ((double) num3 < -1.0)
+            num3 = -1f;
+          if ((double) num3 > 1.0)
+            num3 = 1f;
+          if ((double) num4 < -1.0)
+            num4 = -1f;
+          if ((double) num4 > 1.0)
+            num4 = 1f;
+          num1 += (float) (((double) xDir + (double) num3) * 0.600000023841858);
+          num2 += (float) (((double) yDir + (double) num4) * 0.600000023841858);
         }
       }
       catch
       {
       }
-      return new Vector2(x, y);
+      return new Vector2(num1, num2);
     }
 
     public static void IslandHouse(int i, int j)
     {
       byte num1 = 202;
       byte num2 = 82;
-      Vector2 vector2 = new Vector2((float) i, (float) j);
+      Vector2 vector2;
+      // ISSUE: explicit reference operation
+      ((Vector2) @vector2).\u002Ector((float) i, (float) j);
       int num3 = 1;
       if (WorldGen.genRand.Next(2) == 0)
         num3 = -1;
       int num4 = WorldGen.genRand.Next(7, 12);
       int num5 = WorldGen.genRand.Next(5, 7);
-      vector2.X = (float) (i + (num4 + 2) * num3);
+      vector2.X = (__Null) (double) (i + (num4 + 2) * num3);
       for (int index = j - 15; index < j + 30; ++index)
       {
         if (Main.tile[(int) vector2.X, index].active())
         {
-          vector2.Y = (float) (index - 1);
+          vector2.Y = (__Null) (double) (index - 1);
           break;
         }
       }
-      vector2.X = (float) i;
-      int num6 = (int) ((double) vector2.X - (double) num4 - 1.0);
-      int num7 = (int) ((double) vector2.X + (double) num4 + 1.0);
-      int num8 = (int) ((double) vector2.Y - (double) num5 - 1.0);
-      int num9 = (int) ((double) vector2.Y + 2.0);
+      vector2.X = (__Null) (double) i;
+      int num6 = (int) (vector2.X - (double) num4 - 1.0);
+      int num7 = (int) (vector2.X + (double) num4 + 1.0);
+      int num8 = (int) (vector2.Y - (double) num5 - 1.0);
+      int num9 = (int) (vector2.Y + 2.0);
       if (num6 < 0)
         num6 = 0;
       if (num7 > Main.maxTilesX)
@@ -34400,10 +35358,10 @@ label_54:
           }
         }
       }
-      int num10 = (int) ((double) vector2.X - (double) num4);
-      int num11 = (int) ((double) vector2.X + (double) num4);
-      int j1 = (int) ((double) vector2.Y - (double) num5);
-      int num12 = (int) ((double) vector2.Y + 1.0);
+      int num10 = (int) (vector2.X - (double) num4);
+      int num11 = (int) (vector2.X + (double) num4);
+      int j1 = (int) (vector2.Y - (double) num5);
+      int num12 = (int) (vector2.Y + 1.0);
       if (num10 < 0)
         num10 = 0;
       if (num11 > Main.maxTilesX)
@@ -34498,11 +35456,11 @@ label_54:
       double num1 = (double) WorldGen.genRand.Next(80, 120);
       float num2 = (float) WorldGen.genRand.Next(40, 55);
       Vector2 vector2_1;
-      vector2_1.X = (float) i;
-      vector2_1.Y = (float) j + num2 / 2f;
+      vector2_1.X = (__Null) (double) i;
+      vector2_1.Y = (__Null) ((double) j + (double) num2 / 2.0);
       Vector2 vector2_2;
-      vector2_2.X = (float) WorldGen.genRand.Next(-10, 11) * 0.1f;
-      vector2_2.Y = (float) WorldGen.genRand.Next(-20, -10) * 0.1f;
+      vector2_2.X = (__Null) ((double) WorldGen.genRand.Next(-10, 11) * 0.100000001490116);
+      vector2_2.Y = (__Null) ((double) WorldGen.genRand.Next(-20, -10) * 0.100000001490116);
       while (num1 > 0.0 && (double) num2 > 0.0)
       {
         num1 -= (double) WorldGen.genRand.Next(4);
@@ -34524,26 +35482,42 @@ label_54:
         {
           for (int index2 = num5; index2 < num6; ++index2)
           {
-            float num8 = Math.Abs((float) index1 - vector2_1.X);
-            float num9 = Math.Abs((float) index2 - vector2_1.Y);
-            if (Math.Sqrt((double) num8 * (double) num8 + (double) num9 * (double) num9) < num7 * 0.4 && !Main.tile[index1, index2].active())
+            double num8 = (double) Math.Abs((float) index1 - (float) vector2_1.X);
+            float num9 = Math.Abs((float) index2 - (float) vector2_1.Y);
+            if (Math.Sqrt(num8 * num8 + (double) num9 * (double) num9) < num7 * 0.4 && !Main.tile[index1, index2].active())
             {
               Main.tile[index1, index2].active(true);
               Main.tile[index1, index2].type = (ushort) 0;
             }
           }
         }
-        vector2_1 += vector2_2;
-        vector2_2.X += (float) WorldGen.genRand.Next(-10, 11) * 0.05f;
-        vector2_2.Y += (float) WorldGen.genRand.Next(-10, 11) * 0.05f;
+        vector2_1 = Vector2.op_Addition(vector2_1, vector2_2);
+        // ISSUE: explicit reference operation
+        // ISSUE: variable of a reference type
+        __Null& local1 = @vector2_2.X;
+        // ISSUE: cast to a reference type
+        // ISSUE: explicit reference operation
+        double num10 = (double) ^(float&) local1 + (double) WorldGen.genRand.Next(-10, 11) * 0.0500000007450581;
+        // ISSUE: cast to a reference type
+        // ISSUE: explicit reference operation
+        ^(float&) local1 = (float) num10;
+        // ISSUE: explicit reference operation
+        // ISSUE: variable of a reference type
+        __Null& local2 = @vector2_2.Y;
+        // ISSUE: cast to a reference type
+        // ISSUE: explicit reference operation
+        double num11 = (double) ^(float&) local2 + (double) WorldGen.genRand.Next(-10, 11) * 0.0500000007450581;
+        // ISSUE: cast to a reference type
+        // ISSUE: explicit reference operation
+        ^(float&) local2 = (float) num11;
         if ((double) vector2_2.X > 0.5)
-          vector2_2.X = 0.5f;
+          vector2_2.X = (__Null) 0.5;
         if ((double) vector2_2.X < -0.5)
-          vector2_2.X = -0.5f;
+          vector2_2.X = (__Null) -0.5;
         if ((double) vector2_2.Y > -0.5)
-          vector2_2.Y = -0.5f;
+          vector2_2.Y = (__Null) -0.5;
         if ((double) vector2_2.Y < -1.5)
-          vector2_2.Y = -1.5f;
+          vector2_2.Y = (__Null) -1.5;
       }
     }
 
@@ -34590,11 +35564,11 @@ label_54:
         num3 *= 1.2f;
       }
       Vector2 vector2_1;
-      vector2_1.X = (float) i;
-      vector2_1.Y = (float) j - num3 * 0.3f;
+      vector2_1.X = (__Null) (double) i;
+      vector2_1.Y = (__Null) ((double) j - (double) num3 * 0.300000011920929);
       Vector2 vector2_2;
-      vector2_2.X = (float) WorldGen.genRand.Next(-10, 11) * 0.1f;
-      vector2_2.Y = (float) WorldGen.genRand.Next(-20, -10) * 0.1f;
+      vector2_2.X = (__Null) ((double) WorldGen.genRand.Next(-10, 11) * 0.100000001490116);
+      vector2_2.Y = (__Null) ((double) WorldGen.genRand.Next(-20, -10) * 0.100000001490116);
       while (num1 > 0.0 && (double) num3 > 0.0)
       {
         if ((double) vector2_1.Y + num2 * 0.5 > Main.worldSurface)
@@ -34618,9 +35592,9 @@ label_54:
         {
           for (int index2 = num6; index2 < num7; ++index2)
           {
-            float num8 = Math.Abs((float) index1 - vector2_1.X);
-            float num9 = Math.Abs((float) index2 - vector2_1.Y);
-            if (Math.Sqrt((double) num8 * (double) num8 + (double) num9 * (double) num9) < num2 * 0.4)
+            double num8 = (double) Math.Abs((float) index1 - (float) vector2_1.X);
+            float num9 = Math.Abs((float) index2 - (float) vector2_1.Y);
+            if (Math.Sqrt(num8 * num8 + (double) num9 * (double) num9) < num2 * 0.4)
             {
               if (Main.tile[index1, index2].active())
                 Main.tile[index1, index2].liquid = byte.MaxValue;
@@ -34628,17 +35602,33 @@ label_54:
             }
           }
         }
-        vector2_1 += vector2_2;
-        vector2_2.X += (float) WorldGen.genRand.Next(-10, 11) * 0.05f;
-        vector2_2.Y += (float) WorldGen.genRand.Next(-10, 11) * 0.05f;
+        vector2_1 = Vector2.op_Addition(vector2_1, vector2_2);
+        // ISSUE: explicit reference operation
+        // ISSUE: variable of a reference type
+        __Null& local1 = @vector2_2.X;
+        // ISSUE: cast to a reference type
+        // ISSUE: explicit reference operation
+        double num10 = (double) ^(float&) local1 + (double) WorldGen.genRand.Next(-10, 11) * 0.0500000007450581;
+        // ISSUE: cast to a reference type
+        // ISSUE: explicit reference operation
+        ^(float&) local1 = (float) num10;
+        // ISSUE: explicit reference operation
+        // ISSUE: variable of a reference type
+        __Null& local2 = @vector2_2.Y;
+        // ISSUE: cast to a reference type
+        // ISSUE: explicit reference operation
+        double num11 = (double) ^(float&) local2 + (double) WorldGen.genRand.Next(-10, 11) * 0.0500000007450581;
+        // ISSUE: cast to a reference type
+        // ISSUE: explicit reference operation
+        ^(float&) local2 = (float) num11;
         if ((double) vector2_2.X > 0.5)
-          vector2_2.X = 0.5f;
+          vector2_2.X = (__Null) 0.5;
         if ((double) vector2_2.X < -0.5)
-          vector2_2.X = -0.5f;
+          vector2_2.X = (__Null) -0.5;
         if ((double) vector2_2.Y > 1.5)
-          vector2_2.Y = 1.5f;
+          vector2_2.Y = (__Null) 1.5;
         if ((double) vector2_2.Y < 0.5)
-          vector2_2.Y = 0.5f;
+          vector2_2.Y = (__Null) 0.5;
       }
     }
 
@@ -34654,11 +35644,11 @@ label_54:
         num3 *= 1.2f;
       }
       Vector2 vector2_1;
-      vector2_1.X = (float) i;
-      vector2_1.Y = (float) j - num3 * 0.3f;
+      vector2_1.X = (__Null) (double) i;
+      vector2_1.Y = (__Null) ((double) j - (double) num3 * 0.300000011920929);
       Vector2 vector2_2;
-      vector2_2.X = (float) WorldGen.genRand.Next(-10, 11) * 0.1f;
-      vector2_2.Y = (float) WorldGen.genRand.Next(-20, -10) * 0.1f;
+      vector2_2.X = (__Null) ((double) WorldGen.genRand.Next(-10, 11) * 0.100000001490116);
+      vector2_2.Y = (__Null) ((double) WorldGen.genRand.Next(-20, -10) * 0.100000001490116);
       while (num1 > 0.0 && (double) num3 > 0.0)
       {
         num1 -= (double) WorldGen.genRand.Next(3);
@@ -34680,9 +35670,9 @@ label_54:
         {
           for (int index2 = num6; index2 < num7; ++index2)
           {
-            float num9 = Math.Abs((float) index1 - vector2_1.X);
-            float num10 = Math.Abs((float) (((double) index2 - (double) vector2_1.Y) * 2.29999995231628));
-            if (Math.Sqrt((double) num9 * (double) num9 + (double) num10 * (double) num10) < num8 * 0.4)
+            double num9 = (double) Math.Abs((float) index1 - (float) vector2_1.X);
+            float num10 = Math.Abs((float) (((double) index2 - vector2_1.Y) * 2.29999995231628));
+            if (Math.Sqrt(num9 * num9 + (double) num10 * (double) num10) < num8 * 0.4)
             {
               if ((double) index2 < (double) vector2_1.Y + num8 * 0.02)
               {
@@ -34696,20 +35686,44 @@ label_54:
             }
           }
         }
-        vector2_1 += vector2_2;
-        vector2_1.X += vector2_2.X;
-        vector2_2.X += (float) WorldGen.genRand.Next(-10, 11) * 0.05f;
-        vector2_2.Y -= (float) WorldGen.genRand.Next(11) * 0.05f;
+        vector2_1 = Vector2.op_Addition(vector2_1, vector2_2);
+        // ISSUE: explicit reference operation
+        // ISSUE: variable of a reference type
+        __Null& local1 = @vector2_1.X;
+        // ISSUE: cast to a reference type
+        // ISSUE: explicit reference operation
+        double num11 = (double) ^(float&) local1 + vector2_2.X;
+        // ISSUE: cast to a reference type
+        // ISSUE: explicit reference operation
+        ^(float&) local1 = (float) num11;
+        // ISSUE: explicit reference operation
+        // ISSUE: variable of a reference type
+        __Null& local2 = @vector2_2.X;
+        // ISSUE: cast to a reference type
+        // ISSUE: explicit reference operation
+        double num12 = (double) ^(float&) local2 + (double) WorldGen.genRand.Next(-10, 11) * 0.0500000007450581;
+        // ISSUE: cast to a reference type
+        // ISSUE: explicit reference operation
+        ^(float&) local2 = (float) num12;
+        // ISSUE: explicit reference operation
+        // ISSUE: variable of a reference type
+        __Null& local3 = @vector2_2.Y;
+        // ISSUE: cast to a reference type
+        // ISSUE: explicit reference operation
+        double num13 = (double) ^(float&) local3 - (double) WorldGen.genRand.Next(11) * 0.0500000007450581;
+        // ISSUE: cast to a reference type
+        // ISSUE: explicit reference operation
+        ^(float&) local3 = (float) num13;
         if ((double) vector2_2.X > -0.5 && (double) vector2_2.X < 0.5)
-          vector2_2.X = (double) vector2_2.X >= 0.0 ? 0.5f : -0.5f;
-        if ((double) vector2_2.X > 2.0)
-          vector2_2.X = 1f;
-        if ((double) vector2_2.X < -2.0)
-          vector2_2.X = -1f;
-        if ((double) vector2_2.Y > 1.0)
-          vector2_2.Y = 1f;
-        if ((double) vector2_2.Y < -1.0)
-          vector2_2.Y = -1f;
+          vector2_2.X = vector2_2.X >= 0.0 ? (__Null) 0.5 : (__Null) -0.5;
+        if (vector2_2.X > 2.0)
+          vector2_2.X = (__Null) 1.0;
+        if (vector2_2.X < -2.0)
+          vector2_2.X = (__Null) -1.0;
+        if (vector2_2.Y > 1.0)
+          vector2_2.Y = (__Null) 1.0;
+        if (vector2_2.Y < -1.0)
+          vector2_2.Y = (__Null) -1.0;
         for (int index = 0; index < 2; ++index)
         {
           int i1 = (int) vector2_1.X + WorldGen.genRand.Next(-20, 20);
@@ -34732,12 +35746,12 @@ label_54:
       if (WorldGen.genRand.Next(2) == 0)
         num2 = -1;
       Vector2 vector2_1;
-      vector2_1.X = (float) i;
-      vector2_1.Y = (float) j;
+      vector2_1.X = (__Null) (double) i;
+      vector2_1.Y = (__Null) (double) j;
       int num3 = WorldGen.genRand.Next(20, 40);
       Vector2 vector2_2;
-      vector2_2.Y = (float) WorldGen.genRand.Next(10, 20) * 0.01f;
-      vector2_2.X = (float) num2;
+      vector2_2.Y = (__Null) ((double) WorldGen.genRand.Next(10, 20) * 0.00999999977648258);
+      vector2_2.X = (__Null) (double) num2;
       while (num3 > 0)
       {
         --num3;
@@ -34758,23 +35772,39 @@ label_54:
         {
           for (int index2 = num6; index2 < num7; ++index2)
           {
-            float num9 = Math.Abs((float) index1 - vector2_1.X);
-            float num10 = Math.Abs((float) index2 - vector2_1.Y);
-            if (Math.Sqrt((double) num9 * (double) num9 + (double) num10 * (double) num10) < num8 * 0.4 && TileID.Sets.CanBeClearedDuringGeneration[(int) Main.tile[index1, index2].type])
+            double num9 = (double) Math.Abs((float) index1 - (float) vector2_1.X);
+            float num10 = Math.Abs((float) index2 - (float) vector2_1.Y);
+            if (Math.Sqrt(num9 * num9 + (double) num10 * (double) num10) < num8 * 0.4 && TileID.Sets.CanBeClearedDuringGeneration[(int) Main.tile[index1, index2].type])
               Main.tile[index1, index2].active(false);
           }
         }
-        vector2_1 += vector2_2;
-        vector2_2.X += (float) WorldGen.genRand.Next(-10, 11) * 0.05f;
-        vector2_2.Y += (float) WorldGen.genRand.Next(-10, 11) * 0.05f;
-        if ((double) vector2_2.X > (double) num2 + 0.5)
-          vector2_2.X = (float) num2 + 0.5f;
-        if ((double) vector2_2.X < (double) num2 - 0.5)
-          vector2_2.X = (float) num2 - 0.5f;
-        if ((double) vector2_2.Y > 2.0)
-          vector2_2.Y = 2f;
-        if ((double) vector2_2.Y < 0.0)
-          vector2_2.Y = 0.0f;
+        vector2_1 = Vector2.op_Addition(vector2_1, vector2_2);
+        // ISSUE: explicit reference operation
+        // ISSUE: variable of a reference type
+        __Null& local1 = @vector2_2.X;
+        // ISSUE: cast to a reference type
+        // ISSUE: explicit reference operation
+        double num11 = (double) ^(float&) local1 + (double) WorldGen.genRand.Next(-10, 11) * 0.0500000007450581;
+        // ISSUE: cast to a reference type
+        // ISSUE: explicit reference operation
+        ^(float&) local1 = (float) num11;
+        // ISSUE: explicit reference operation
+        // ISSUE: variable of a reference type
+        __Null& local2 = @vector2_2.Y;
+        // ISSUE: cast to a reference type
+        // ISSUE: explicit reference operation
+        double num12 = (double) ^(float&) local2 + (double) WorldGen.genRand.Next(-10, 11) * 0.0500000007450581;
+        // ISSUE: cast to a reference type
+        // ISSUE: explicit reference operation
+        ^(float&) local2 = (float) num12;
+        if (vector2_2.X > (double) num2 + 0.5)
+          vector2_2.X = (__Null) ((double) num2 + 0.5);
+        if (vector2_2.X < (double) num2 - 0.5)
+          vector2_2.X = (__Null) ((double) num2 - 0.5);
+        if (vector2_2.Y > 2.0)
+          vector2_2.Y = (__Null) 2.0;
+        if (vector2_2.Y < 0.0)
+          vector2_2.Y = (__Null) 0.0;
       }
       if (steps <= 0 || (double) (int) vector2_1.Y >= Main.rockLayer + 50.0)
         return;
@@ -34788,12 +35818,12 @@ label_54:
       if (WorldGen.genRand.Next(2) == 0)
         num2 = -1;
       Vector2 vector2_1;
-      vector2_1.X = (float) i;
-      vector2_1.Y = (float) j;
+      vector2_1.X = (__Null) (double) i;
+      vector2_1.Y = (__Null) (double) j;
       int num3 = 100;
       Vector2 vector2_2;
-      vector2_2.Y = 0.0f;
-      vector2_2.X = (float) num2;
+      vector2_2.Y = (__Null) 0.0;
+      vector2_2.X = (__Null) (double) num2;
       while (num3 > 0)
       {
         if ((int) Main.tile[(int) vector2_1.X, (int) vector2_1.Y].wall == 0)
@@ -34816,23 +35846,39 @@ label_54:
         {
           for (int index2 = num6; index2 < num7; ++index2)
           {
-            float num9 = Math.Abs((float) index1 - vector2_1.X);
-            float num10 = Math.Abs((float) index2 - vector2_1.Y);
-            if (Math.Sqrt((double) num9 * (double) num9 + (double) num10 * (double) num10) < num8 * 0.4)
+            double num9 = (double) Math.Abs((float) index1 - (float) vector2_1.X);
+            float num10 = Math.Abs((float) index2 - (float) vector2_1.Y);
+            if (Math.Sqrt(num9 * num9 + (double) num10 * (double) num10) < num8 * 0.4)
               Main.tile[index1, index2].active(false);
           }
         }
-        vector2_1 += vector2_2;
-        vector2_2.X += (float) WorldGen.genRand.Next(-10, 11) * 0.05f;
-        vector2_2.Y += (float) WorldGen.genRand.Next(-10, 11) * 0.05f;
-        if ((double) vector2_2.X > (double) num2 + 0.5)
-          vector2_2.X = (float) num2 + 0.5f;
-        if ((double) vector2_2.X < (double) num2 - 0.5)
-          vector2_2.X = (float) num2 - 0.5f;
-        if ((double) vector2_2.Y > 0.0)
-          vector2_2.Y = 0.0f;
+        vector2_1 = Vector2.op_Addition(vector2_1, vector2_2);
+        // ISSUE: explicit reference operation
+        // ISSUE: variable of a reference type
+        __Null& local1 = @vector2_2.X;
+        // ISSUE: cast to a reference type
+        // ISSUE: explicit reference operation
+        double num11 = (double) ^(float&) local1 + (double) WorldGen.genRand.Next(-10, 11) * 0.0500000007450581;
+        // ISSUE: cast to a reference type
+        // ISSUE: explicit reference operation
+        ^(float&) local1 = (float) num11;
+        // ISSUE: explicit reference operation
+        // ISSUE: variable of a reference type
+        __Null& local2 = @vector2_2.Y;
+        // ISSUE: cast to a reference type
+        // ISSUE: explicit reference operation
+        double num12 = (double) ^(float&) local2 + (double) WorldGen.genRand.Next(-10, 11) * 0.0500000007450581;
+        // ISSUE: cast to a reference type
+        // ISSUE: explicit reference operation
+        ^(float&) local2 = (float) num12;
+        if (vector2_2.X > (double) num2 + 0.5)
+          vector2_2.X = (__Null) ((double) num2 + 0.5);
+        if (vector2_2.X < (double) num2 - 0.5)
+          vector2_2.X = (__Null) ((double) num2 - 0.5);
+        if (vector2_2.Y > 0.0)
+          vector2_2.Y = (__Null) 0.0;
         if ((double) vector2_2.Y < -0.5)
-          vector2_2.Y = -0.5f;
+          vector2_2.Y = (__Null) -0.5;
       }
     }
 
@@ -34934,7 +35980,8 @@ label_54:
       int num2 = endX + 1;
       int num3 = startY;
       int num4 = endY + 1;
-      for (int i = num1 - 1; i < num2 + 1; ++i)
+      int num5 = 1;
+      for (int i = num1 - num5; i < num2 + 1; ++i)
       {
         for (int j = num3 - 1; j < num4 + 1; ++j)
         {
@@ -35102,30 +36149,11 @@ label_54:
       ushort type1 = Main.tile[i, j].type;
       if ((uint) type1 <= 138U)
       {
-        switch (type1)
-        {
-          case 10:
-          case 48:
-          case 137:
-          case 138:
-            break;
-          default:
-            goto label_10;
-        }
+        if ((int) type1 != 10 && (int) type1 != 48 && (uint) type1 - 137U > 1U)
+          goto label_10;
       }
-      else
-      {
-        switch (type1)
-        {
-          case 232:
-          case 380:
-          case 387:
-          case 388:
-            break;
-          default:
-            goto label_10;
-        }
-      }
+      else if ((int) type1 != 232 && (int) type1 != 380 && (uint) type1 - 387U > 1U)
+        goto label_10;
       return false;
 label_10:
       if (WorldGen.gen && ((int) Main.tile[i, j].type == 190 || (int) Main.tile[i, j].type == 30))
@@ -35145,29 +36173,11 @@ label_10:
         }
         else if ((uint) type2 <= 237U)
         {
-          switch (type2)
-          {
-            case 88:
-            case 235:
-            case 237:
-              break;
-            default:
-              goto label_21;
-          }
+          if ((int) type2 != 88 && (int) type2 != 235 && (int) type2 != 237)
+            goto label_21;
         }
-        else
-        {
-          switch (type2)
-          {
-            case 323:
-            case 441:
-            case 467:
-            case 468:
-              break;
-            default:
-              goto label_21;
-          }
-        }
+        else if ((int) type2 != 323 && (int) type2 != 441 && (uint) type2 - 467U > 1U)
+          goto label_21;
         return false;
       }
 label_21:
@@ -35187,13 +36197,16 @@ label_21:
         WorldGen.SquareTileFrame(i, j, true);
         if ((int) Main.tile[i, j].slope() == 0)
         {
-          Microsoft.Xna.Framework.Rectangle rectangle = new Microsoft.Xna.Framework.Rectangle(i * 16, j * 16, 16, 16);
+          Rectangle rectangle;
+          // ISSUE: explicit reference operation
+          ((Rectangle) @rectangle).\u002Ector(i * 16, j * 16, 16, 16);
           for (int index = 0; index < (int) byte.MaxValue; ++index)
           {
-            if (Main.player[index].active && !Main.player[index].dead && rectangle.Intersects(new Microsoft.Xna.Framework.Rectangle((int) Main.player[index].position.X, (int) Main.player[index].position.Y, Main.player[index].width, Main.player[index].height)))
+            // ISSUE: explicit reference operation
+            if (Main.player[index].active && !Main.player[index].dead && ((Rectangle) @rectangle).Intersects(new Rectangle((int) Main.player[index].position.X, (int) Main.player[index].position.Y, Main.player[index].width, Main.player[index].height)))
             {
-              Main.player[index].gfxOffY += Main.player[index].position.Y + (float) Main.player[index].height - (float) rectangle.Y;
-              Main.player[index].position.Y = (float) (rectangle.Y - Main.player[index].height);
+              Main.player[index].gfxOffY += (float) Main.player[index].position.Y + (float) Main.player[index].height - (float) rectangle.Y;
+              Main.player[index].position.Y = (__Null) (double) (rectangle.Y - Main.player[index].height);
             }
           }
         }
@@ -35216,13 +36229,16 @@ label_21:
         WorldGen.SquareTileFrame(i, j, true);
         if (!Main.tile[i, j].halfBrick())
         {
-          Microsoft.Xna.Framework.Rectangle rectangle = new Microsoft.Xna.Framework.Rectangle(i * 16, j * 16, 16, 16);
+          Rectangle rectangle;
+          // ISSUE: explicit reference operation
+          ((Rectangle) @rectangle).\u002Ector(i * 16, j * 16, 16, 16);
           for (int index = 0; index < (int) byte.MaxValue; ++index)
           {
-            if (Main.player[index].active && !Main.player[index].dead && rectangle.Intersects(new Microsoft.Xna.Framework.Rectangle((int) Main.player[index].position.X, (int) Main.player[index].position.Y, Main.player[index].width, Main.player[index].height)))
+            // ISSUE: explicit reference operation
+            if (Main.player[index].active && !Main.player[index].dead && ((Rectangle) @rectangle).Intersects(new Rectangle((int) Main.player[index].position.X, (int) Main.player[index].position.Y, Main.player[index].width, Main.player[index].height)))
             {
-              Main.player[index].gfxOffY += Main.player[index].position.Y + (float) Main.player[index].height - (float) rectangle.Y;
-              Main.player[index].position.Y = (float) (rectangle.Y - Main.player[index].height);
+              Main.player[index].gfxOffY += (float) Main.player[index].position.Y + (float) Main.player[index].height - (float) rectangle.Y;
+              Main.player[index].position.Y = (__Null) (double) (rectangle.Y - Main.player[index].height);
             }
           }
         }
@@ -35525,7 +36541,9 @@ label_21:
                       index1 = 1;
                     int frameX1 = (int) centerTile.frameX;
                     int frameY1 = (int) centerTile.frameY;
-                    Microsoft.Xna.Framework.Rectangle rectangle = new Microsoft.Xna.Framework.Rectangle(-1, -1, 0, 0);
+                    Rectangle rectangle;
+                    // ISSUE: explicit reference operation
+                    ((Rectangle) @rectangle).\u002Ector(-1, -1, 0, 0);
                     if (Main.tileFrameImportant[(int) centerTile.type])
                     {
                       if (index1 == 4)
@@ -36008,7 +37026,8 @@ label_21:
                         int doorStyle = frameY2 / 54 + (int) centerTile.frameX / 72 * 36;
                         int num2 = j - frameY2 % 54 / 18;
                         bool flag = false;
-                        switch (frameX2 % 72)
+                        int num3 = 72;
+                        switch (frameX2 % num3)
                         {
                           case 0:
                             index2 = i;
@@ -36045,10 +37064,10 @@ label_21:
                           WorldGen.destroyObject = true;
                           WorldGen.DropDoorItem(i, j, doorStyle);
                         }
-                        int num3 = index2;
+                        int num4 = index2;
                         if (num1 == -1)
-                          num3 = index2 - 1;
-                        for (int i1 = num3; i1 < num3 + 2; ++i1)
+                          num4 = index2 - 1;
+                        for (int i1 = num4; i1 < num4 + 2; ++i1)
                         {
                           for (int j1 = num2; j1 < num2 + 3; ++j1)
                           {
@@ -36060,7 +37079,7 @@ label_21:
                                 WorldGen.destroyObject = true;
                                 WorldGen.DropDoorItem(i, j, doorStyle);
                                 flag = true;
-                                i1 = num3;
+                                i1 = num4;
                                 j1 = num2;
                               }
                             }
@@ -36094,7 +37113,7 @@ label_21:
                           index2 = -1;
                         if (index3 >= 0 && !Main.tileSolid[index3])
                           index3 = -1;
-                        rectangle.X = index3 != index1 || index2 != index1 ? (index3 != index1 || index2 == index1 ? (index3 == index1 || index2 != index1 ? 54 : 0) : 36) : 18;
+                        rectangle.X = index3 != index1 || index2 != index1 ? (index3 != index1 || index2 == index1 ? (index3 == index1 || index2 != index1 ? (__Null) 54 : (__Null) 0) : (__Null) 36) : (__Null) 18;
                         centerTile.frameX = (short) rectangle.X;
                         return;
                       }
@@ -36144,7 +37163,7 @@ label_21:
                           index2 = -1;
                         if (index2 == index1 && (int) tile2.slope() == 1 && index3 != index1)
                           index3 = -1;
-                        rectangle.X = (int) centerTile.slope() != 1 ? ((int) centerTile.slope() != 2 ? (index3 != index1 || index2 != index1 ? (index3 != index1 || index2 != -1 ? (index3 != -1 || index2 != index1 ? (index3 == index1 || index2 != index1 ? (index3 != index1 || index2 == index1 ? (index3 == index1 || index3 == -1 || index2 != -1 ? (index3 != -1 || index2 == index1 || index2 == -1 ? 90 : 126) : 108) : 72) : 54) : ((int) tile2.slope() != 1 ? 36 : 288)) : ((int) tile1.slope() != 2 ? 18 : 270)) : ((int) tile1.slope() != 2 || (int) tile2.slope() != 1 ? ((int) tile1.slope() != 2 ? ((int) tile2.slope() != 1 ? 0 : 234) : 216) : 252)) : (!TileID.Sets.Platforms[(int) tile1.type] || (int) tile1.slope() != 0 ? (tile3.active() || TileID.Sets.Platforms[(int) tile3.type] && (int) tile3.slope() != 1 ? (tile2.active() || TileID.Sets.Platforms[(int) tile6.type] && (int) tile6.slope() == 2 ? 144 : 378) : (tile2.active() || TileID.Sets.Platforms[(int) tile6.type] && (int) tile6.slope() == 2 ? 342 : 414)) : 450)) : (!TileID.Sets.Platforms[(int) tile2.type] || (int) tile2.slope() != 0 ? (tile4.active() || TileID.Sets.Platforms[(int) tile4.type] && (int) tile4.slope() != 2 ? (tile1.active() || TileID.Sets.Platforms[(int) tile5.type] && (int) tile5.slope() == 1 ? 180 : 396) : (tile1.active() || TileID.Sets.Platforms[(int) tile5.type] && (int) tile5.slope() == 1 ? 360 : 432)) : 468);
+                        rectangle.X = (int) centerTile.slope() != 1 ? ((int) centerTile.slope() != 2 ? (index3 != index1 || index2 != index1 ? (index3 != index1 || index2 != -1 ? (index3 != -1 || index2 != index1 ? (index3 == index1 || index2 != index1 ? (index3 != index1 || index2 == index1 ? (index3 == index1 || index3 == -1 || index2 != -1 ? (index3 != -1 || index2 == index1 || index2 == -1 ? (__Null) 90 : (__Null) 126) : (__Null) 108) : (__Null) 72) : (__Null) 54) : ((int) tile2.slope() != 1 ? (__Null) 36 : (__Null) 288)) : ((int) tile1.slope() != 2 ? (__Null) 18 : (__Null) 270)) : ((int) tile1.slope() != 2 || (int) tile2.slope() != 1 ? ((int) tile1.slope() != 2 ? ((int) tile2.slope() != 1 ? (__Null) 0 : (__Null) 234) : (__Null) 216) : (__Null) 252)) : (!TileID.Sets.Platforms[(int) tile1.type] || (int) tile1.slope() != 0 ? (tile3.active() || TileID.Sets.Platforms[(int) tile3.type] && (int) tile3.slope() != 1 ? (tile2.active() || TileID.Sets.Platforms[(int) tile6.type] && (int) tile6.slope() == 2 ? (__Null) 144 : (__Null) 378) : (tile2.active() || TileID.Sets.Platforms[(int) tile6.type] && (int) tile6.slope() == 2 ? (__Null) 342 : (__Null) 414)) : (__Null) 450)) : (!TileID.Sets.Platforms[(int) tile2.type] || (int) tile2.slope() != 0 ? (tile4.active() || TileID.Sets.Platforms[(int) tile4.type] && (int) tile4.slope() != 2 ? (tile1.active() || TileID.Sets.Platforms[(int) tile5.type] && (int) tile5.slope() == 1 ? (__Null) 180 : (__Null) 396) : (tile1.active() || TileID.Sets.Platforms[(int) tile5.type] && (int) tile5.slope() == 1 ? (__Null) 360 : (__Null) 432)) : (__Null) 468);
                         centerTile.frameX = (short) rectangle.X;
                         return;
                       }
@@ -36897,36 +37916,36 @@ label_21:
                         {
                           if (num6 == 0)
                           {
-                            rectangle.X = 0;
-                            rectangle.Y = 198;
+                            rectangle.X = (__Null) 0;
+                            rectangle.Y = (__Null) 198;
                           }
                           else if (num6 == 1)
                           {
-                            rectangle.X = 18;
-                            rectangle.Y = 198;
+                            rectangle.X = (__Null) 18;
+                            rectangle.Y = (__Null) 198;
                           }
                           else
                           {
-                            rectangle.X = 36;
-                            rectangle.Y = 198;
+                            rectangle.X = (__Null) 36;
+                            rectangle.Y = (__Null) 198;
                           }
                         }
                         else if (left == index1 && right == num1)
                         {
                           if (num6 == 0)
                           {
-                            rectangle.X = 54;
-                            rectangle.Y = 198;
+                            rectangle.X = (__Null) 54;
+                            rectangle.Y = (__Null) 198;
                           }
                           else if (num6 == 1)
                           {
-                            rectangle.X = 72;
-                            rectangle.Y = 198;
+                            rectangle.X = (__Null) 72;
+                            rectangle.Y = (__Null) 198;
                           }
                           else
                           {
-                            rectangle.X = 90;
-                            rectangle.Y = 198;
+                            rectangle.X = (__Null) 90;
+                            rectangle.Y = (__Null) 198;
                           }
                         }
                       }
@@ -36936,36 +37955,36 @@ label_21:
                         {
                           if (num6 == 0)
                           {
-                            rectangle.X = 0;
-                            rectangle.Y = 216;
+                            rectangle.X = (__Null) 0;
+                            rectangle.Y = (__Null) 216;
                           }
                           else if (num6 == 1)
                           {
-                            rectangle.X = 18;
-                            rectangle.Y = 216;
+                            rectangle.X = (__Null) 18;
+                            rectangle.Y = (__Null) 216;
                           }
                           else
                           {
-                            rectangle.X = 36;
-                            rectangle.Y = 216;
+                            rectangle.X = (__Null) 36;
+                            rectangle.Y = (__Null) 216;
                           }
                         }
                         else if (left == index1 && right == num1)
                         {
                           if (num6 == 0)
                           {
-                            rectangle.X = 54;
-                            rectangle.Y = 216;
+                            rectangle.X = (__Null) 54;
+                            rectangle.Y = (__Null) 216;
                           }
                           else if (num6 == 1)
                           {
-                            rectangle.X = 72;
-                            rectangle.Y = 216;
+                            rectangle.X = (__Null) 72;
+                            rectangle.Y = (__Null) 216;
                           }
                           else
                           {
-                            rectangle.X = 90;
-                            rectangle.Y = 216;
+                            rectangle.X = (__Null) 90;
+                            rectangle.Y = (__Null) 216;
                           }
                         }
                       }
@@ -36975,36 +37994,36 @@ label_21:
                         {
                           if (num6 == 0)
                           {
-                            rectangle.X = 72;
-                            rectangle.Y = 144;
+                            rectangle.X = (__Null) 72;
+                            rectangle.Y = (__Null) 144;
                           }
                           else if (num6 == 1)
                           {
-                            rectangle.X = 72;
-                            rectangle.Y = 162;
+                            rectangle.X = (__Null) 72;
+                            rectangle.Y = (__Null) 162;
                           }
                           else
                           {
-                            rectangle.X = 72;
-                            rectangle.Y = 180;
+                            rectangle.X = (__Null) 72;
+                            rectangle.Y = (__Null) 180;
                           }
                         }
                         else if (down == index1 && up == num1)
                         {
                           if (num6 == 0)
                           {
-                            rectangle.X = 72;
-                            rectangle.Y = 90;
+                            rectangle.X = (__Null) 72;
+                            rectangle.Y = (__Null) 90;
                           }
                           else if (num6 == 1)
                           {
-                            rectangle.X = 72;
-                            rectangle.Y = 108;
+                            rectangle.X = (__Null) 72;
+                            rectangle.Y = (__Null) 108;
                           }
                           else
                           {
-                            rectangle.X = 72;
-                            rectangle.Y = 126;
+                            rectangle.X = (__Null) 72;
+                            rectangle.Y = (__Null) 126;
                           }
                         }
                       }
@@ -37014,36 +38033,36 @@ label_21:
                         {
                           if (num6 == 0)
                           {
-                            rectangle.X = 90;
-                            rectangle.Y = 144;
+                            rectangle.X = (__Null) 90;
+                            rectangle.Y = (__Null) 144;
                           }
                           else if (num6 == 1)
                           {
-                            rectangle.X = 90;
-                            rectangle.Y = 162;
+                            rectangle.X = (__Null) 90;
+                            rectangle.Y = (__Null) 162;
                           }
                           else
                           {
-                            rectangle.X = 90;
-                            rectangle.Y = 180;
+                            rectangle.X = (__Null) 90;
+                            rectangle.Y = (__Null) 180;
                           }
                         }
                         else if (down == index1 && right == up)
                         {
                           if (num6 == 0)
                           {
-                            rectangle.X = 90;
-                            rectangle.Y = 90;
+                            rectangle.X = (__Null) 90;
+                            rectangle.Y = (__Null) 90;
                           }
                           else if (num6 == 1)
                           {
-                            rectangle.X = 90;
-                            rectangle.Y = 108;
+                            rectangle.X = (__Null) 90;
+                            rectangle.Y = (__Null) 108;
                           }
                           else
                           {
-                            rectangle.X = 90;
-                            rectangle.Y = 126;
+                            rectangle.X = (__Null) 90;
+                            rectangle.Y = (__Null) 126;
                           }
                         }
                       }
@@ -37055,196 +38074,196 @@ label_21:
                           {
                             if (num6 == 0)
                             {
-                              rectangle.X = 108;
-                              rectangle.Y = 324;
+                              rectangle.X = (__Null) 108;
+                              rectangle.Y = (__Null) 324;
                             }
                             else if (num6 == 1)
                             {
-                              rectangle.X = 126;
-                              rectangle.Y = 324;
+                              rectangle.X = (__Null) 126;
+                              rectangle.Y = (__Null) 324;
                             }
                             else
                             {
-                              rectangle.X = 144;
-                              rectangle.Y = 324;
+                              rectangle.X = (__Null) 144;
+                              rectangle.Y = (__Null) 324;
                             }
                           }
                           else if (upRight == num1)
                           {
                             if (num6 == 0)
                             {
-                              rectangle.X = 108;
-                              rectangle.Y = 342;
+                              rectangle.X = (__Null) 108;
+                              rectangle.Y = (__Null) 342;
                             }
                             else if (num6 == 1)
                             {
-                              rectangle.X = 126;
-                              rectangle.Y = 342;
+                              rectangle.X = (__Null) 126;
+                              rectangle.Y = (__Null) 342;
                             }
                             else
                             {
-                              rectangle.X = 144;
-                              rectangle.Y = 342;
+                              rectangle.X = (__Null) 144;
+                              rectangle.Y = (__Null) 342;
                             }
                           }
                           else if (downLeft == num1)
                           {
                             if (num6 == 0)
                             {
-                              rectangle.X = 108;
-                              rectangle.Y = 360;
+                              rectangle.X = (__Null) 108;
+                              rectangle.Y = (__Null) 360;
                             }
                             else if (num6 == 1)
                             {
-                              rectangle.X = 126;
-                              rectangle.Y = 360;
+                              rectangle.X = (__Null) 126;
+                              rectangle.Y = (__Null) 360;
                             }
                             else
                             {
-                              rectangle.X = 144;
-                              rectangle.Y = 360;
+                              rectangle.X = (__Null) 144;
+                              rectangle.Y = (__Null) 360;
                             }
                           }
                           else if (upLeft == num1)
                           {
                             if (num6 == 0)
                             {
-                              rectangle.X = 108;
-                              rectangle.Y = 378;
+                              rectangle.X = (__Null) 108;
+                              rectangle.Y = (__Null) 378;
                             }
                             else if (num6 == 1)
                             {
-                              rectangle.X = 126;
-                              rectangle.Y = 378;
+                              rectangle.X = (__Null) 126;
+                              rectangle.Y = (__Null) 378;
                             }
                             else
                             {
-                              rectangle.X = 144;
-                              rectangle.Y = 378;
+                              rectangle.X = (__Null) 144;
+                              rectangle.Y = (__Null) 378;
                             }
                           }
                           else if (num6 == 0)
                           {
-                            rectangle.X = 144;
-                            rectangle.Y = 234;
+                            rectangle.X = (__Null) 144;
+                            rectangle.Y = (__Null) 234;
                           }
                           else if (num6 == 1)
                           {
-                            rectangle.X = 198;
-                            rectangle.Y = 234;
+                            rectangle.X = (__Null) 198;
+                            rectangle.Y = (__Null) 234;
                           }
                           else
                           {
-                            rectangle.X = 252;
-                            rectangle.Y = 234;
+                            rectangle.X = (__Null) 252;
+                            rectangle.Y = (__Null) 234;
                           }
                         }
                         else if (upLeft != index1 && downRight != index1)
                         {
                           if (num6 == 0)
                           {
-                            rectangle.X = 36;
-                            rectangle.Y = 306;
+                            rectangle.X = (__Null) 36;
+                            rectangle.Y = (__Null) 306;
                           }
                           else if (num6 == 1)
                           {
-                            rectangle.X = 54;
-                            rectangle.Y = 306;
+                            rectangle.X = (__Null) 54;
+                            rectangle.Y = (__Null) 306;
                           }
                           else
                           {
-                            rectangle.X = 72;
-                            rectangle.Y = 306;
+                            rectangle.X = (__Null) 72;
+                            rectangle.Y = (__Null) 306;
                           }
                         }
                         else if (upRight != index1 && downLeft != index1)
                         {
                           if (num6 == 0)
                           {
-                            rectangle.X = 90;
-                            rectangle.Y = 306;
+                            rectangle.X = (__Null) 90;
+                            rectangle.Y = (__Null) 306;
                           }
                           else if (num6 == 1)
                           {
-                            rectangle.X = 108;
-                            rectangle.Y = 306;
+                            rectangle.X = (__Null) 108;
+                            rectangle.Y = (__Null) 306;
                           }
                           else
                           {
-                            rectangle.X = 126;
-                            rectangle.Y = 306;
+                            rectangle.X = (__Null) 126;
+                            rectangle.Y = (__Null) 306;
                           }
                         }
                         else if (upLeft != index1 && upRight == index1 && (downLeft == index1 && downRight == index1))
                         {
                           if (num6 == 0)
                           {
-                            rectangle.X = 54;
-                            rectangle.Y = 108;
+                            rectangle.X = (__Null) 54;
+                            rectangle.Y = (__Null) 108;
                           }
                           else if (num6 == 1)
                           {
-                            rectangle.X = 54;
-                            rectangle.Y = 144;
+                            rectangle.X = (__Null) 54;
+                            rectangle.Y = (__Null) 144;
                           }
                           else
                           {
-                            rectangle.X = 54;
-                            rectangle.Y = 180;
+                            rectangle.X = (__Null) 54;
+                            rectangle.Y = (__Null) 180;
                           }
                         }
                         else if (upLeft == index1 && upRight != index1 && (downLeft == index1 && downRight == index1))
                         {
                           if (num6 == 0)
                           {
-                            rectangle.X = 36;
-                            rectangle.Y = 108;
+                            rectangle.X = (__Null) 36;
+                            rectangle.Y = (__Null) 108;
                           }
                           else if (num6 == 1)
                           {
-                            rectangle.X = 36;
-                            rectangle.Y = 144;
+                            rectangle.X = (__Null) 36;
+                            rectangle.Y = (__Null) 144;
                           }
                           else
                           {
-                            rectangle.X = 36;
-                            rectangle.Y = 180;
+                            rectangle.X = (__Null) 36;
+                            rectangle.Y = (__Null) 180;
                           }
                         }
                         else if (upLeft == index1 && upRight == index1 && (downLeft != index1 && downRight == index1))
                         {
                           if (num6 == 0)
                           {
-                            rectangle.X = 54;
-                            rectangle.Y = 90;
+                            rectangle.X = (__Null) 54;
+                            rectangle.Y = (__Null) 90;
                           }
                           else if (num6 == 1)
                           {
-                            rectangle.X = 54;
-                            rectangle.Y = 126;
+                            rectangle.X = (__Null) 54;
+                            rectangle.Y = (__Null) 126;
                           }
                           else
                           {
-                            rectangle.X = 54;
-                            rectangle.Y = 162;
+                            rectangle.X = (__Null) 54;
+                            rectangle.Y = (__Null) 162;
                           }
                         }
                         else if (upLeft == index1 && upRight == index1 && (downLeft == index1 && downRight != index1))
                         {
                           if (num6 == 0)
                           {
-                            rectangle.X = 36;
-                            rectangle.Y = 90;
+                            rectangle.X = (__Null) 36;
+                            rectangle.Y = (__Null) 90;
                           }
                           else if (num6 == 1)
                           {
-                            rectangle.X = 36;
-                            rectangle.Y = 126;
+                            rectangle.X = (__Null) 36;
+                            rectangle.Y = (__Null) 126;
                           }
                           else
                           {
-                            rectangle.X = 36;
-                            rectangle.Y = 162;
+                            rectangle.X = (__Null) 36;
+                            rectangle.Y = (__Null) 162;
                           }
                         }
                       }
@@ -37252,72 +38271,72 @@ label_21:
                       {
                         if (num6 == 0)
                         {
-                          rectangle.X = 108;
-                          rectangle.Y = 18;
+                          rectangle.X = (__Null) 108;
+                          rectangle.Y = (__Null) 18;
                         }
                         else if (num6 == 1)
                         {
-                          rectangle.X = 126;
-                          rectangle.Y = 18;
+                          rectangle.X = (__Null) 126;
+                          rectangle.Y = (__Null) 18;
                         }
                         else
                         {
-                          rectangle.X = 144;
-                          rectangle.Y = 18;
+                          rectangle.X = (__Null) 144;
+                          rectangle.Y = (__Null) 18;
                         }
                       }
                       else if (up == num1 && down == index1 && (left == index1 && right == index1) && (downLeft == -1 && downRight == -1))
                       {
                         if (num6 == 0)
                         {
-                          rectangle.X = 108;
-                          rectangle.Y = 36;
+                          rectangle.X = (__Null) 108;
+                          rectangle.Y = (__Null) 36;
                         }
                         else if (num6 == 1)
                         {
-                          rectangle.X = 126;
-                          rectangle.Y = 36;
+                          rectangle.X = (__Null) 126;
+                          rectangle.Y = (__Null) 36;
                         }
                         else
                         {
-                          rectangle.X = 144;
-                          rectangle.Y = 36;
+                          rectangle.X = (__Null) 144;
+                          rectangle.Y = (__Null) 36;
                         }
                       }
                       else if (up == index1 && down == index1 && (left == num1 && right == index1) && (upRight == -1 && downRight == -1))
                       {
                         if (num6 == 0)
                         {
-                          rectangle.X = 198;
-                          rectangle.Y = 0;
+                          rectangle.X = (__Null) 198;
+                          rectangle.Y = (__Null) 0;
                         }
                         else if (num6 == 1)
                         {
-                          rectangle.X = 198;
-                          rectangle.Y = 18;
+                          rectangle.X = (__Null) 198;
+                          rectangle.Y = (__Null) 18;
                         }
                         else
                         {
-                          rectangle.X = 198;
-                          rectangle.Y = 36;
+                          rectangle.X = (__Null) 198;
+                          rectangle.Y = (__Null) 36;
                         }
                       }
                       else if (up == index1 && down == index1 && (left == index1 && right == num1) && (upLeft == -1 && downLeft == -1))
                       {
                         if (num6 == 0)
                         {
-                          rectangle.X = 180;
-                          rectangle.Y = 0;
+                          rectangle.X = (__Null) 180;
+                          rectangle.Y = (__Null) 0;
                         }
                         else if (num6 == 1)
                         {
-                          rectangle.X = 180;
-                          rectangle.Y = 18;
+                          rectangle.X = (__Null) 180;
+                          rectangle.Y = (__Null) 18;
                         }
                         else
                         {
-                          rectangle.X = 180;
-                          rectangle.Y = 36;
+                          rectangle.X = (__Null) 180;
+                          rectangle.Y = (__Null) 36;
                         }
                       }
                       else if (up == index1 && down == num1 && (left == index1 && right == index1))
@@ -37326,36 +38345,36 @@ label_21:
                         {
                           if (num6 == 0)
                           {
-                            rectangle.X = 54;
-                            rectangle.Y = 108;
+                            rectangle.X = (__Null) 54;
+                            rectangle.Y = (__Null) 108;
                           }
                           else if (num6 == 1)
                           {
-                            rectangle.X = 54;
-                            rectangle.Y = 144;
+                            rectangle.X = (__Null) 54;
+                            rectangle.Y = (__Null) 144;
                           }
                           else
                           {
-                            rectangle.X = 54;
-                            rectangle.Y = 180;
+                            rectangle.X = (__Null) 54;
+                            rectangle.Y = (__Null) 180;
                           }
                         }
                         else if (upLeft != -1)
                         {
                           if (num6 == 0)
                           {
-                            rectangle.X = 36;
-                            rectangle.Y = 108;
+                            rectangle.X = (__Null) 36;
+                            rectangle.Y = (__Null) 108;
                           }
                           else if (num6 == 1)
                           {
-                            rectangle.X = 36;
-                            rectangle.Y = 144;
+                            rectangle.X = (__Null) 36;
+                            rectangle.Y = (__Null) 144;
                           }
                           else
                           {
-                            rectangle.X = 36;
-                            rectangle.Y = 180;
+                            rectangle.X = (__Null) 36;
+                            rectangle.Y = (__Null) 180;
                           }
                         }
                       }
@@ -37365,36 +38384,36 @@ label_21:
                         {
                           if (num6 == 0)
                           {
-                            rectangle.X = 54;
-                            rectangle.Y = 90;
+                            rectangle.X = (__Null) 54;
+                            rectangle.Y = (__Null) 90;
                           }
                           else if (num6 == 1)
                           {
-                            rectangle.X = 54;
-                            rectangle.Y = 126;
+                            rectangle.X = (__Null) 54;
+                            rectangle.Y = (__Null) 126;
                           }
                           else
                           {
-                            rectangle.X = 54;
-                            rectangle.Y = 162;
+                            rectangle.X = (__Null) 54;
+                            rectangle.Y = (__Null) 162;
                           }
                         }
                         else if (downLeft != -1)
                         {
                           if (num6 == 0)
                           {
-                            rectangle.X = 36;
-                            rectangle.Y = 90;
+                            rectangle.X = (__Null) 36;
+                            rectangle.Y = (__Null) 90;
                           }
                           else if (num6 == 1)
                           {
-                            rectangle.X = 36;
-                            rectangle.Y = 126;
+                            rectangle.X = (__Null) 36;
+                            rectangle.Y = (__Null) 126;
                           }
                           else
                           {
-                            rectangle.X = 36;
-                            rectangle.Y = 162;
+                            rectangle.X = (__Null) 36;
+                            rectangle.Y = (__Null) 162;
                           }
                         }
                       }
@@ -37404,36 +38423,36 @@ label_21:
                         {
                           if (num6 == 0)
                           {
-                            rectangle.X = 54;
-                            rectangle.Y = 90;
+                            rectangle.X = (__Null) 54;
+                            rectangle.Y = (__Null) 90;
                           }
                           else if (num6 == 1)
                           {
-                            rectangle.X = 54;
-                            rectangle.Y = 126;
+                            rectangle.X = (__Null) 54;
+                            rectangle.Y = (__Null) 126;
                           }
                           else
                           {
-                            rectangle.X = 54;
-                            rectangle.Y = 162;
+                            rectangle.X = (__Null) 54;
+                            rectangle.Y = (__Null) 162;
                           }
                         }
                         else if (downLeft != -1)
                         {
                           if (num6 == 0)
                           {
-                            rectangle.X = 54;
-                            rectangle.Y = 108;
+                            rectangle.X = (__Null) 54;
+                            rectangle.Y = (__Null) 108;
                           }
                           else if (num6 == 1)
                           {
-                            rectangle.X = 54;
-                            rectangle.Y = 144;
+                            rectangle.X = (__Null) 54;
+                            rectangle.Y = (__Null) 144;
                           }
                           else
                           {
-                            rectangle.X = 54;
-                            rectangle.Y = 180;
+                            rectangle.X = (__Null) 54;
+                            rectangle.Y = (__Null) 180;
                           }
                         }
                       }
@@ -37443,36 +38462,36 @@ label_21:
                         {
                           if (num6 == 0)
                           {
-                            rectangle.X = 36;
-                            rectangle.Y = 90;
+                            rectangle.X = (__Null) 36;
+                            rectangle.Y = (__Null) 90;
                           }
                           else if (num6 == 1)
                           {
-                            rectangle.X = 36;
-                            rectangle.Y = 126;
+                            rectangle.X = (__Null) 36;
+                            rectangle.Y = (__Null) 126;
                           }
                           else
                           {
-                            rectangle.X = 36;
-                            rectangle.Y = 162;
+                            rectangle.X = (__Null) 36;
+                            rectangle.Y = (__Null) 162;
                           }
                         }
                         else if (downRight != -1)
                         {
                           if (num6 == 0)
                           {
-                            rectangle.X = 36;
-                            rectangle.Y = 108;
+                            rectangle.X = (__Null) 36;
+                            rectangle.Y = (__Null) 108;
                           }
                           else if (num6 == 1)
                           {
-                            rectangle.X = 36;
-                            rectangle.Y = 144;
+                            rectangle.X = (__Null) 36;
+                            rectangle.Y = (__Null) 144;
                           }
                           else
                           {
-                            rectangle.X = 36;
-                            rectangle.Y = 180;
+                            rectangle.X = (__Null) 36;
+                            rectangle.Y = (__Null) 180;
                           }
                         }
                       }
@@ -37480,18 +38499,18 @@ label_21:
                       {
                         if (num6 == 0)
                         {
-                          rectangle.X = 18;
-                          rectangle.Y = 18;
+                          rectangle.X = (__Null) 18;
+                          rectangle.Y = (__Null) 18;
                         }
                         else if (num6 == 1)
                         {
-                          rectangle.X = 36;
-                          rectangle.Y = 18;
+                          rectangle.X = (__Null) 36;
+                          rectangle.Y = (__Null) 18;
                         }
                         else
                         {
-                          rectangle.X = 54;
-                          rectangle.Y = 18;
+                          rectangle.X = (__Null) 54;
+                          rectangle.Y = (__Null) 18;
                         }
                       }
                       if ((up == index1 || up == num1) && (down == index1 || down == num1) && ((left == index1 || left == num1) && (right == index1 || right == num1)))
@@ -37500,72 +38519,72 @@ label_21:
                         {
                           if (num6 == 0)
                           {
-                            rectangle.X = 54;
-                            rectangle.Y = 108;
+                            rectangle.X = (__Null) 54;
+                            rectangle.Y = (__Null) 108;
                           }
                           else if (num6 == 1)
                           {
-                            rectangle.X = 54;
-                            rectangle.Y = 144;
+                            rectangle.X = (__Null) 54;
+                            rectangle.Y = (__Null) 144;
                           }
                           else
                           {
-                            rectangle.X = 54;
-                            rectangle.Y = 180;
+                            rectangle.X = (__Null) 54;
+                            rectangle.Y = (__Null) 180;
                           }
                         }
                         else if (upRight != index1 && upRight != num1 && (upLeft == index1 || upLeft == num1) && ((downLeft == index1 || downLeft == num1) && (downRight == index1 || downRight == num1)))
                         {
                           if (num6 == 0)
                           {
-                            rectangle.X = 36;
-                            rectangle.Y = 108;
+                            rectangle.X = (__Null) 36;
+                            rectangle.Y = (__Null) 108;
                           }
                           else if (num6 == 1)
                           {
-                            rectangle.X = 36;
-                            rectangle.Y = 144;
+                            rectangle.X = (__Null) 36;
+                            rectangle.Y = (__Null) 144;
                           }
                           else
                           {
-                            rectangle.X = 36;
-                            rectangle.Y = 180;
+                            rectangle.X = (__Null) 36;
+                            rectangle.Y = (__Null) 180;
                           }
                         }
                         else if (downLeft != index1 && downLeft != num1 && (upLeft == index1 || upLeft == num1) && ((upRight == index1 || upRight == num1) && (downRight == index1 || downRight == num1)))
                         {
                           if (num6 == 0)
                           {
-                            rectangle.X = 54;
-                            rectangle.Y = 90;
+                            rectangle.X = (__Null) 54;
+                            rectangle.Y = (__Null) 90;
                           }
                           else if (num6 == 1)
                           {
-                            rectangle.X = 54;
-                            rectangle.Y = 126;
+                            rectangle.X = (__Null) 54;
+                            rectangle.Y = (__Null) 126;
                           }
                           else
                           {
-                            rectangle.X = 54;
-                            rectangle.Y = 162;
+                            rectangle.X = (__Null) 54;
+                            rectangle.Y = (__Null) 162;
                           }
                         }
                         else if (downRight != index1 && downRight != num1 && (upLeft == index1 || upLeft == num1) && ((downLeft == index1 || downLeft == num1) && (upRight == index1 || upRight == num1)))
                         {
                           if (num6 == 0)
                           {
-                            rectangle.X = 36;
-                            rectangle.Y = 90;
+                            rectangle.X = (__Null) 36;
+                            rectangle.Y = (__Null) 90;
                           }
                           else if (num6 == 1)
                           {
-                            rectangle.X = 36;
-                            rectangle.Y = 126;
+                            rectangle.X = (__Null) 36;
+                            rectangle.Y = (__Null) 126;
                           }
                           else
                           {
-                            rectangle.X = 36;
-                            rectangle.Y = 162;
+                            rectangle.X = (__Null) 36;
+                            rectangle.Y = (__Null) 162;
                           }
                         }
                       }
@@ -37573,288 +38592,288 @@ label_21:
                       {
                         if (num6 == 0)
                         {
-                          rectangle.X = 90;
-                          rectangle.Y = 270;
+                          rectangle.X = (__Null) 90;
+                          rectangle.Y = (__Null) 270;
                         }
                         else if (num6 == 1)
                         {
-                          rectangle.X = 108;
-                          rectangle.Y = 270;
+                          rectangle.X = (__Null) 108;
+                          rectangle.Y = (__Null) 270;
                         }
                         else
                         {
-                          rectangle.X = 126;
-                          rectangle.Y = 270;
+                          rectangle.X = (__Null) 126;
+                          rectangle.Y = (__Null) 270;
                         }
                       }
                       else if (up != num1 && up != index1 && (down == index1 && left == index1) && (right != num1 && right != index1 && (downLeft != num1 && downLeft != index1)))
                       {
                         if (num6 == 0)
                         {
-                          rectangle.X = 144;
-                          rectangle.Y = 270;
+                          rectangle.X = (__Null) 144;
+                          rectangle.Y = (__Null) 270;
                         }
                         else if (num6 == 1)
                         {
-                          rectangle.X = 162;
-                          rectangle.Y = 270;
+                          rectangle.X = (__Null) 162;
+                          rectangle.Y = (__Null) 270;
                         }
                         else
                         {
-                          rectangle.X = 180;
-                          rectangle.Y = 270;
+                          rectangle.X = (__Null) 180;
+                          rectangle.Y = (__Null) 270;
                         }
                       }
                       else if (down != num1 && down != index1 && (up == index1 && left != num1) && (left != index1 && right == index1 && (upRight != num1 && upRight != index1)))
                       {
                         if (num6 == 0)
                         {
-                          rectangle.X = 90;
-                          rectangle.Y = 288;
+                          rectangle.X = (__Null) 90;
+                          rectangle.Y = (__Null) 288;
                         }
                         else if (num6 == 1)
                         {
-                          rectangle.X = 108;
-                          rectangle.Y = 288;
+                          rectangle.X = (__Null) 108;
+                          rectangle.Y = (__Null) 288;
                         }
                         else
                         {
-                          rectangle.X = 126;
-                          rectangle.Y = 288;
+                          rectangle.X = (__Null) 126;
+                          rectangle.Y = (__Null) 288;
                         }
                       }
                       else if (down != num1 && down != index1 && (up == index1 && left == index1) && (right != num1 && right != index1 && (upLeft != num1 && upLeft != index1)))
                       {
                         if (num6 == 0)
                         {
-                          rectangle.X = 144;
-                          rectangle.Y = 288;
+                          rectangle.X = (__Null) 144;
+                          rectangle.Y = (__Null) 288;
                         }
                         else if (num6 == 1)
                         {
-                          rectangle.X = 162;
-                          rectangle.Y = 288;
+                          rectangle.X = (__Null) 162;
+                          rectangle.Y = (__Null) 288;
                         }
                         else
                         {
-                          rectangle.X = 180;
-                          rectangle.Y = 288;
+                          rectangle.X = (__Null) 180;
+                          rectangle.Y = (__Null) 288;
                         }
                       }
                       else if (up != index1 && up != num1 && (down == index1 && left == index1) && (right == index1 && downLeft != index1 && (downLeft != num1 && downRight != index1)) && downRight != num1)
                       {
                         if (num6 == 0)
                         {
-                          rectangle.X = 144;
-                          rectangle.Y = 216;
+                          rectangle.X = (__Null) 144;
+                          rectangle.Y = (__Null) 216;
                         }
                         else if (num6 == 1)
                         {
-                          rectangle.X = 198;
-                          rectangle.Y = 216;
+                          rectangle.X = (__Null) 198;
+                          rectangle.Y = (__Null) 216;
                         }
                         else
                         {
-                          rectangle.X = 252;
-                          rectangle.Y = 216;
+                          rectangle.X = (__Null) 252;
+                          rectangle.Y = (__Null) 216;
                         }
                       }
                       else if (down != index1 && down != num1 && (up == index1 && left == index1) && (right == index1 && upLeft != index1 && (upLeft != num1 && upRight != index1)) && upRight != num1)
                       {
                         if (num6 == 0)
                         {
-                          rectangle.X = 144;
-                          rectangle.Y = 252;
+                          rectangle.X = (__Null) 144;
+                          rectangle.Y = (__Null) 252;
                         }
                         else if (num6 == 1)
                         {
-                          rectangle.X = 198;
-                          rectangle.Y = 252;
+                          rectangle.X = (__Null) 198;
+                          rectangle.Y = (__Null) 252;
                         }
                         else
                         {
-                          rectangle.X = 252;
-                          rectangle.Y = 252;
+                          rectangle.X = (__Null) 252;
+                          rectangle.Y = (__Null) 252;
                         }
                       }
                       else if (left != index1 && left != num1 && (down == index1 && up == index1) && (right == index1 && upRight != index1 && (upRight != num1 && downRight != index1)) && downRight != num1)
                       {
                         if (num6 == 0)
                         {
-                          rectangle.X = 126;
-                          rectangle.Y = 234;
+                          rectangle.X = (__Null) 126;
+                          rectangle.Y = (__Null) 234;
                         }
                         else if (num6 == 1)
                         {
-                          rectangle.X = 180;
-                          rectangle.Y = 234;
+                          rectangle.X = (__Null) 180;
+                          rectangle.Y = (__Null) 234;
                         }
                         else
                         {
-                          rectangle.X = 234;
-                          rectangle.Y = 234;
+                          rectangle.X = (__Null) 234;
+                          rectangle.Y = (__Null) 234;
                         }
                       }
                       else if (right != index1 && right != num1 && (down == index1 && up == index1) && (left == index1 && upLeft != index1 && (upLeft != num1 && downLeft != index1)) && downLeft != num1)
                       {
                         if (num6 == 0)
                         {
-                          rectangle.X = 162;
-                          rectangle.Y = 234;
+                          rectangle.X = (__Null) 162;
+                          rectangle.Y = (__Null) 234;
                         }
                         else if (num6 == 1)
                         {
-                          rectangle.X = 216;
-                          rectangle.Y = 234;
+                          rectangle.X = (__Null) 216;
+                          rectangle.Y = (__Null) 234;
                         }
                         else
                         {
-                          rectangle.X = 270;
-                          rectangle.Y = 234;
+                          rectangle.X = (__Null) 270;
+                          rectangle.Y = (__Null) 234;
                         }
                       }
                       else if (up != num1 && up != index1 && (down == num1 || down == index1) && (left == num1 && right == num1))
                       {
                         if (num6 == 0)
                         {
-                          rectangle.X = 36;
-                          rectangle.Y = 270;
+                          rectangle.X = (__Null) 36;
+                          rectangle.Y = (__Null) 270;
                         }
                         else if (num6 == 1)
                         {
-                          rectangle.X = 54;
-                          rectangle.Y = 270;
+                          rectangle.X = (__Null) 54;
+                          rectangle.Y = (__Null) 270;
                         }
                         else
                         {
-                          rectangle.X = 72;
-                          rectangle.Y = 270;
+                          rectangle.X = (__Null) 72;
+                          rectangle.Y = (__Null) 270;
                         }
                       }
                       else if (down != num1 && down != index1 && (up == num1 || up == index1) && (left == num1 && right == num1))
                       {
                         if (num6 == 0)
                         {
-                          rectangle.X = 36;
-                          rectangle.Y = 288;
+                          rectangle.X = (__Null) 36;
+                          rectangle.Y = (__Null) 288;
                         }
                         else if (num6 == 1)
                         {
-                          rectangle.X = 54;
-                          rectangle.Y = 288;
+                          rectangle.X = (__Null) 54;
+                          rectangle.Y = (__Null) 288;
                         }
                         else
                         {
-                          rectangle.X = 72;
-                          rectangle.Y = 288;
+                          rectangle.X = (__Null) 72;
+                          rectangle.Y = (__Null) 288;
                         }
                       }
                       else if (left != num1 && left != index1 && (right == num1 || right == index1) && (up == num1 && down == num1))
                       {
                         if (num6 == 0)
                         {
-                          rectangle.X = 0;
-                          rectangle.Y = 270;
+                          rectangle.X = (__Null) 0;
+                          rectangle.Y = (__Null) 270;
                         }
                         else if (num6 == 1)
                         {
-                          rectangle.X = 0;
-                          rectangle.Y = 288;
+                          rectangle.X = (__Null) 0;
+                          rectangle.Y = (__Null) 288;
                         }
                         else
                         {
-                          rectangle.X = 0;
-                          rectangle.Y = 306;
+                          rectangle.X = (__Null) 0;
+                          rectangle.Y = (__Null) 306;
                         }
                       }
                       else if (right != num1 && right != index1 && (left == num1 || left == index1) && (up == num1 && down == num1))
                       {
                         if (num6 == 0)
                         {
-                          rectangle.X = 18;
-                          rectangle.Y = 270;
+                          rectangle.X = (__Null) 18;
+                          rectangle.Y = (__Null) 270;
                         }
                         else if (num6 == 1)
                         {
-                          rectangle.X = 18;
-                          rectangle.Y = 288;
+                          rectangle.X = (__Null) 18;
+                          rectangle.Y = (__Null) 288;
                         }
                         else
                         {
-                          rectangle.X = 18;
-                          rectangle.Y = 306;
+                          rectangle.X = (__Null) 18;
+                          rectangle.Y = (__Null) 306;
                         }
                       }
                       else if (up == index1 && down == num1 && (left == num1 && right == num1))
                       {
                         if (num6 == 0)
                         {
-                          rectangle.X = 198;
-                          rectangle.Y = 288;
+                          rectangle.X = (__Null) 198;
+                          rectangle.Y = (__Null) 288;
                         }
                         else if (num6 == 1)
                         {
-                          rectangle.X = 216;
-                          rectangle.Y = 288;
+                          rectangle.X = (__Null) 216;
+                          rectangle.Y = (__Null) 288;
                         }
                         else
                         {
-                          rectangle.X = 234;
-                          rectangle.Y = 288;
+                          rectangle.X = (__Null) 234;
+                          rectangle.Y = (__Null) 288;
                         }
                       }
                       else if (up == num1 && down == index1 && (left == num1 && right == num1))
                       {
                         if (num6 == 0)
                         {
-                          rectangle.X = 198;
-                          rectangle.Y = 270;
+                          rectangle.X = (__Null) 198;
+                          rectangle.Y = (__Null) 270;
                         }
                         else if (num6 == 1)
                         {
-                          rectangle.X = 216;
-                          rectangle.Y = 270;
+                          rectangle.X = (__Null) 216;
+                          rectangle.Y = (__Null) 270;
                         }
                         else
                         {
-                          rectangle.X = 234;
-                          rectangle.Y = 270;
+                          rectangle.X = (__Null) 234;
+                          rectangle.Y = (__Null) 270;
                         }
                       }
                       else if (up == num1 && down == num1 && (left == index1 && right == num1))
                       {
                         if (num6 == 0)
                         {
-                          rectangle.X = 198;
-                          rectangle.Y = 306;
+                          rectangle.X = (__Null) 198;
+                          rectangle.Y = (__Null) 306;
                         }
                         else if (num6 == 1)
                         {
-                          rectangle.X = 216;
-                          rectangle.Y = 306;
+                          rectangle.X = (__Null) 216;
+                          rectangle.Y = (__Null) 306;
                         }
                         else
                         {
-                          rectangle.X = 234;
-                          rectangle.Y = 306;
+                          rectangle.X = (__Null) 234;
+                          rectangle.Y = (__Null) 306;
                         }
                       }
                       else if (up == num1 && down == num1 && (left == num1 && right == index1))
                       {
                         if (num6 == 0)
                         {
-                          rectangle.X = 144;
-                          rectangle.Y = 306;
+                          rectangle.X = (__Null) 144;
+                          rectangle.Y = (__Null) 306;
                         }
                         else if (num6 == 1)
                         {
-                          rectangle.X = 162;
-                          rectangle.Y = 306;
+                          rectangle.X = (__Null) 162;
+                          rectangle.Y = (__Null) 306;
                         }
                         else
                         {
-                          rectangle.X = 180;
-                          rectangle.Y = 306;
+                          rectangle.X = (__Null) 180;
+                          rectangle.Y = (__Null) 306;
                         }
                       }
                       if (up != index1 && up != num1 && (down == index1 && left == index1) && right == index1)
@@ -37863,36 +38882,36 @@ label_21:
                         {
                           if (num6 == 0)
                           {
-                            rectangle.X = 0;
-                            rectangle.Y = 324;
+                            rectangle.X = (__Null) 0;
+                            rectangle.Y = (__Null) 324;
                           }
                           else if (num6 == 1)
                           {
-                            rectangle.X = 18;
-                            rectangle.Y = 324;
+                            rectangle.X = (__Null) 18;
+                            rectangle.Y = (__Null) 324;
                           }
                           else
                           {
-                            rectangle.X = 36;
-                            rectangle.Y = 324;
+                            rectangle.X = (__Null) 36;
+                            rectangle.Y = (__Null) 324;
                           }
                         }
                         else if ((downRight == num1 || downRight == index1) && (downLeft != num1 && downLeft != index1))
                         {
                           if (num6 == 0)
                           {
-                            rectangle.X = 54;
-                            rectangle.Y = 324;
+                            rectangle.X = (__Null) 54;
+                            rectangle.Y = (__Null) 324;
                           }
                           else if (num6 == 1)
                           {
-                            rectangle.X = 72;
-                            rectangle.Y = 324;
+                            rectangle.X = (__Null) 72;
+                            rectangle.Y = (__Null) 324;
                           }
                           else
                           {
-                            rectangle.X = 90;
-                            rectangle.Y = 324;
+                            rectangle.X = (__Null) 90;
+                            rectangle.Y = (__Null) 324;
                           }
                         }
                       }
@@ -37902,36 +38921,36 @@ label_21:
                         {
                           if (num6 == 0)
                           {
-                            rectangle.X = 0;
-                            rectangle.Y = 342;
+                            rectangle.X = (__Null) 0;
+                            rectangle.Y = (__Null) 342;
                           }
                           else if (num6 == 1)
                           {
-                            rectangle.X = 18;
-                            rectangle.Y = 342;
+                            rectangle.X = (__Null) 18;
+                            rectangle.Y = (__Null) 342;
                           }
                           else
                           {
-                            rectangle.X = 36;
-                            rectangle.Y = 342;
+                            rectangle.X = (__Null) 36;
+                            rectangle.Y = (__Null) 342;
                           }
                         }
                         else if ((upRight == num1 || upRight == index1) && (upLeft != num1 && upLeft != index1))
                         {
                           if (num6 == 0)
                           {
-                            rectangle.X = 54;
-                            rectangle.Y = 342;
+                            rectangle.X = (__Null) 54;
+                            rectangle.Y = (__Null) 342;
                           }
                           else if (num6 == 1)
                           {
-                            rectangle.X = 72;
-                            rectangle.Y = 342;
+                            rectangle.X = (__Null) 72;
+                            rectangle.Y = (__Null) 342;
                           }
                           else
                           {
-                            rectangle.X = 90;
-                            rectangle.Y = 342;
+                            rectangle.X = (__Null) 90;
+                            rectangle.Y = (__Null) 342;
                           }
                         }
                       }
@@ -37941,36 +38960,36 @@ label_21:
                         {
                           if (num6 == 0)
                           {
-                            rectangle.X = 54;
-                            rectangle.Y = 360;
+                            rectangle.X = (__Null) 54;
+                            rectangle.Y = (__Null) 360;
                           }
                           else if (num6 == 1)
                           {
-                            rectangle.X = 72;
-                            rectangle.Y = 360;
+                            rectangle.X = (__Null) 72;
+                            rectangle.Y = (__Null) 360;
                           }
                           else
                           {
-                            rectangle.X = 90;
-                            rectangle.Y = 360;
+                            rectangle.X = (__Null) 90;
+                            rectangle.Y = (__Null) 360;
                           }
                         }
                         else if ((downRight == num1 || downRight == index1) && (upRight != num1 && upRight != index1))
                         {
                           if (num6 == 0)
                           {
-                            rectangle.X = 0;
-                            rectangle.Y = 360;
+                            rectangle.X = (__Null) 0;
+                            rectangle.Y = (__Null) 360;
                           }
                           else if (num6 == 1)
                           {
-                            rectangle.X = 18;
-                            rectangle.Y = 360;
+                            rectangle.X = (__Null) 18;
+                            rectangle.Y = (__Null) 360;
                           }
                           else
                           {
-                            rectangle.X = 36;
-                            rectangle.Y = 360;
+                            rectangle.X = (__Null) 36;
+                            rectangle.Y = (__Null) 360;
                           }
                         }
                       }
@@ -37980,36 +38999,36 @@ label_21:
                         {
                           if (num6 == 0)
                           {
-                            rectangle.X = 0;
-                            rectangle.Y = 378;
+                            rectangle.X = (__Null) 0;
+                            rectangle.Y = (__Null) 378;
                           }
                           else if (num6 == 1)
                           {
-                            rectangle.X = 18;
-                            rectangle.Y = 378;
+                            rectangle.X = (__Null) 18;
+                            rectangle.Y = (__Null) 378;
                           }
                           else
                           {
-                            rectangle.X = 36;
-                            rectangle.Y = 378;
+                            rectangle.X = (__Null) 36;
+                            rectangle.Y = (__Null) 378;
                           }
                         }
                         else if ((downLeft == num1 || downLeft == index1) && (upLeft != num1 && upLeft != index1))
                         {
                           if (num6 == 0)
                           {
-                            rectangle.X = 54;
-                            rectangle.Y = 378;
+                            rectangle.X = (__Null) 54;
+                            rectangle.Y = (__Null) 378;
                           }
                           else if (num6 == 1)
                           {
-                            rectangle.X = 72;
-                            rectangle.Y = 378;
+                            rectangle.X = (__Null) 72;
+                            rectangle.Y = (__Null) 378;
                           }
                           else
                           {
-                            rectangle.X = 90;
-                            rectangle.Y = 378;
+                            rectangle.X = (__Null) 90;
+                            rectangle.Y = (__Null) 378;
                           }
                         }
                       }
@@ -38019,34 +39038,34 @@ label_21:
                         {
                           if (num6 == 0)
                           {
-                            rectangle.X = 108;
-                            rectangle.Y = 198;
+                            rectangle.X = (__Null) 108;
+                            rectangle.Y = (__Null) 198;
                           }
                           else if (num6 == 1)
                           {
-                            rectangle.X = 126;
-                            rectangle.Y = 198;
+                            rectangle.X = (__Null) 126;
+                            rectangle.Y = (__Null) 198;
                           }
                           else
                           {
-                            rectangle.X = 144;
-                            rectangle.Y = 198;
+                            rectangle.X = (__Null) 144;
+                            rectangle.Y = (__Null) 198;
                           }
                         }
                         else if (num6 == 0)
                         {
-                          rectangle.X = 18;
-                          rectangle.Y = 18;
+                          rectangle.X = (__Null) 18;
+                          rectangle.Y = (__Null) 18;
                         }
                         else if (num6 == 1)
                         {
-                          rectangle.X = 36;
-                          rectangle.Y = 18;
+                          rectangle.X = (__Null) 36;
+                          rectangle.Y = (__Null) 18;
                         }
                         else
                         {
-                          rectangle.X = 54;
-                          rectangle.Y = 18;
+                          rectangle.X = (__Null) 54;
+                          rectangle.Y = (__Null) 18;
                         }
                       }
                       WorldGen.TileMergeAttempt(-2, num1, ref up, ref down, ref left, ref right, ref upLeft, ref upRight, ref downLeft, ref downRight);
@@ -38073,18 +39092,18 @@ label_21:
                         {
                           if (num6 == 0)
                           {
-                            rectangle.X = 144;
-                            rectangle.Y = 108;
+                            rectangle.X = (__Null) 144;
+                            rectangle.Y = (__Null) 108;
                           }
                           else if (num6 == 1)
                           {
-                            rectangle.X = 162;
-                            rectangle.Y = 108;
+                            rectangle.X = (__Null) 162;
+                            rectangle.Y = (__Null) 108;
                           }
                           else
                           {
-                            rectangle.X = 180;
-                            rectangle.Y = 108;
+                            rectangle.X = (__Null) 180;
+                            rectangle.Y = (__Null) 108;
                           }
                           WorldGen.mergeUp = true;
                         }
@@ -38092,18 +39111,18 @@ label_21:
                         {
                           if (num6 == 0)
                           {
-                            rectangle.X = 144;
-                            rectangle.Y = 90;
+                            rectangle.X = (__Null) 144;
+                            rectangle.Y = (__Null) 90;
                           }
                           else if (num6 == 1)
                           {
-                            rectangle.X = 162;
-                            rectangle.Y = 90;
+                            rectangle.X = (__Null) 162;
+                            rectangle.Y = (__Null) 90;
                           }
                           else
                           {
-                            rectangle.X = 180;
-                            rectangle.Y = 90;
+                            rectangle.X = (__Null) 180;
+                            rectangle.Y = (__Null) 90;
                           }
                           WorldGen.mergeDown = true;
                         }
@@ -38111,18 +39130,18 @@ label_21:
                         {
                           if (num6 == 0)
                           {
-                            rectangle.X = 162;
-                            rectangle.Y = 126;
+                            rectangle.X = (__Null) 162;
+                            rectangle.Y = (__Null) 126;
                           }
                           else if (num6 == 1)
                           {
-                            rectangle.X = 162;
-                            rectangle.Y = 144;
+                            rectangle.X = (__Null) 162;
+                            rectangle.Y = (__Null) 144;
                           }
                           else
                           {
-                            rectangle.X = 162;
-                            rectangle.Y = 162;
+                            rectangle.X = (__Null) 162;
+                            rectangle.Y = (__Null) 162;
                           }
                           WorldGen.mergeLeft = true;
                         }
@@ -38130,18 +39149,18 @@ label_21:
                         {
                           if (num6 == 0)
                           {
-                            rectangle.X = 144;
-                            rectangle.Y = 126;
+                            rectangle.X = (__Null) 144;
+                            rectangle.Y = (__Null) 126;
                           }
                           else if (num6 == 1)
                           {
-                            rectangle.X = 144;
-                            rectangle.Y = 144;
+                            rectangle.X = (__Null) 144;
+                            rectangle.Y = (__Null) 144;
                           }
                           else
                           {
-                            rectangle.X = 144;
-                            rectangle.Y = 162;
+                            rectangle.X = (__Null) 144;
+                            rectangle.Y = (__Null) 162;
                           }
                           WorldGen.mergeRight = true;
                         }
@@ -38149,18 +39168,18 @@ label_21:
                         {
                           if (num6 == 0)
                           {
-                            rectangle.X = 36;
-                            rectangle.Y = 90;
+                            rectangle.X = (__Null) 36;
+                            rectangle.Y = (__Null) 90;
                           }
                           else if (num6 == 1)
                           {
-                            rectangle.X = 36;
-                            rectangle.Y = 126;
+                            rectangle.X = (__Null) 36;
+                            rectangle.Y = (__Null) 126;
                           }
                           else
                           {
-                            rectangle.X = 36;
-                            rectangle.Y = 162;
+                            rectangle.X = (__Null) 36;
+                            rectangle.Y = (__Null) 162;
                           }
                           WorldGen.mergeUp = true;
                           WorldGen.mergeLeft = true;
@@ -38169,18 +39188,18 @@ label_21:
                         {
                           if (num6 == 0)
                           {
-                            rectangle.X = 54;
-                            rectangle.Y = 90;
+                            rectangle.X = (__Null) 54;
+                            rectangle.Y = (__Null) 90;
                           }
                           else if (num6 == 1)
                           {
-                            rectangle.X = 54;
-                            rectangle.Y = 126;
+                            rectangle.X = (__Null) 54;
+                            rectangle.Y = (__Null) 126;
                           }
                           else
                           {
-                            rectangle.X = 54;
-                            rectangle.Y = 162;
+                            rectangle.X = (__Null) 54;
+                            rectangle.Y = (__Null) 162;
                           }
                           WorldGen.mergeUp = true;
                           WorldGen.mergeRight = true;
@@ -38189,18 +39208,18 @@ label_21:
                         {
                           if (num6 == 0)
                           {
-                            rectangle.X = 36;
-                            rectangle.Y = 108;
+                            rectangle.X = (__Null) 36;
+                            rectangle.Y = (__Null) 108;
                           }
                           else if (num6 == 1)
                           {
-                            rectangle.X = 36;
-                            rectangle.Y = 144;
+                            rectangle.X = (__Null) 36;
+                            rectangle.Y = (__Null) 144;
                           }
                           else
                           {
-                            rectangle.X = 36;
-                            rectangle.Y = 180;
+                            rectangle.X = (__Null) 36;
+                            rectangle.Y = (__Null) 180;
                           }
                           WorldGen.mergeDown = true;
                           WorldGen.mergeLeft = true;
@@ -38209,18 +39228,18 @@ label_21:
                         {
                           if (num6 == 0)
                           {
-                            rectangle.X = 54;
-                            rectangle.Y = 108;
+                            rectangle.X = (__Null) 54;
+                            rectangle.Y = (__Null) 108;
                           }
                           else if (num6 == 1)
                           {
-                            rectangle.X = 54;
-                            rectangle.Y = 144;
+                            rectangle.X = (__Null) 54;
+                            rectangle.Y = (__Null) 144;
                           }
                           else
                           {
-                            rectangle.X = 54;
-                            rectangle.Y = 180;
+                            rectangle.X = (__Null) 54;
+                            rectangle.Y = (__Null) 180;
                           }
                           WorldGen.mergeDown = true;
                           WorldGen.mergeRight = true;
@@ -38229,18 +39248,18 @@ label_21:
                         {
                           if (num6 == 0)
                           {
-                            rectangle.X = 180;
-                            rectangle.Y = 126;
+                            rectangle.X = (__Null) 180;
+                            rectangle.Y = (__Null) 126;
                           }
                           else if (num6 == 1)
                           {
-                            rectangle.X = 180;
-                            rectangle.Y = 144;
+                            rectangle.X = (__Null) 180;
+                            rectangle.Y = (__Null) 144;
                           }
                           else
                           {
-                            rectangle.X = 180;
-                            rectangle.Y = 162;
+                            rectangle.X = (__Null) 180;
+                            rectangle.Y = (__Null) 162;
                           }
                           WorldGen.mergeLeft = true;
                           WorldGen.mergeRight = true;
@@ -38249,18 +39268,18 @@ label_21:
                         {
                           if (num6 == 0)
                           {
-                            rectangle.X = 144;
-                            rectangle.Y = 180;
+                            rectangle.X = (__Null) 144;
+                            rectangle.Y = (__Null) 180;
                           }
                           else if (num6 == 1)
                           {
-                            rectangle.X = 162;
-                            rectangle.Y = 180;
+                            rectangle.X = (__Null) 162;
+                            rectangle.Y = (__Null) 180;
                           }
                           else
                           {
-                            rectangle.X = 180;
-                            rectangle.Y = 180;
+                            rectangle.X = (__Null) 180;
+                            rectangle.Y = (__Null) 180;
                           }
                           WorldGen.mergeUp = true;
                           WorldGen.mergeDown = true;
@@ -38269,18 +39288,18 @@ label_21:
                         {
                           if (num6 == 0)
                           {
-                            rectangle.X = 198;
-                            rectangle.Y = 90;
+                            rectangle.X = (__Null) 198;
+                            rectangle.Y = (__Null) 90;
                           }
                           else if (num6 == 1)
                           {
-                            rectangle.X = 198;
-                            rectangle.Y = 108;
+                            rectangle.X = (__Null) 198;
+                            rectangle.Y = (__Null) 108;
                           }
                           else
                           {
-                            rectangle.X = 198;
-                            rectangle.Y = 126;
+                            rectangle.X = (__Null) 198;
+                            rectangle.Y = (__Null) 126;
                           }
                           WorldGen.mergeUp = true;
                           WorldGen.mergeLeft = true;
@@ -38290,18 +39309,18 @@ label_21:
                         {
                           if (num6 == 0)
                           {
-                            rectangle.X = 198;
-                            rectangle.Y = 144;
+                            rectangle.X = (__Null) 198;
+                            rectangle.Y = (__Null) 144;
                           }
                           else if (num6 == 1)
                           {
-                            rectangle.X = 198;
-                            rectangle.Y = 162;
+                            rectangle.X = (__Null) 198;
+                            rectangle.Y = (__Null) 162;
                           }
                           else
                           {
-                            rectangle.X = 198;
-                            rectangle.Y = 180;
+                            rectangle.X = (__Null) 198;
+                            rectangle.Y = (__Null) 180;
                           }
                           WorldGen.mergeDown = true;
                           WorldGen.mergeLeft = true;
@@ -38311,18 +39330,18 @@ label_21:
                         {
                           if (num6 == 0)
                           {
-                            rectangle.X = 216;
-                            rectangle.Y = 144;
+                            rectangle.X = (__Null) 216;
+                            rectangle.Y = (__Null) 144;
                           }
                           else if (num6 == 1)
                           {
-                            rectangle.X = 216;
-                            rectangle.Y = 162;
+                            rectangle.X = (__Null) 216;
+                            rectangle.Y = (__Null) 162;
                           }
                           else
                           {
-                            rectangle.X = 216;
-                            rectangle.Y = 180;
+                            rectangle.X = (__Null) 216;
+                            rectangle.Y = (__Null) 180;
                           }
                           WorldGen.mergeUp = true;
                           WorldGen.mergeDown = true;
@@ -38332,18 +39351,18 @@ label_21:
                         {
                           if (num6 == 0)
                           {
-                            rectangle.X = 216;
-                            rectangle.Y = 90;
+                            rectangle.X = (__Null) 216;
+                            rectangle.Y = (__Null) 90;
                           }
                           else if (num6 == 1)
                           {
-                            rectangle.X = 216;
-                            rectangle.Y = 108;
+                            rectangle.X = (__Null) 216;
+                            rectangle.Y = (__Null) 108;
                           }
                           else
                           {
-                            rectangle.X = 216;
-                            rectangle.Y = 126;
+                            rectangle.X = (__Null) 216;
+                            rectangle.Y = (__Null) 126;
                           }
                           WorldGen.mergeUp = true;
                           WorldGen.mergeDown = true;
@@ -38353,18 +39372,18 @@ label_21:
                         {
                           if (num6 == 0)
                           {
-                            rectangle.X = 108;
-                            rectangle.Y = 198;
+                            rectangle.X = (__Null) 108;
+                            rectangle.Y = (__Null) 198;
                           }
                           else if (num6 == 1)
                           {
-                            rectangle.X = 126;
-                            rectangle.Y = 198;
+                            rectangle.X = (__Null) 126;
+                            rectangle.Y = (__Null) 198;
                           }
                           else
                           {
-                            rectangle.X = 144;
-                            rectangle.Y = 198;
+                            rectangle.X = (__Null) 144;
+                            rectangle.Y = (__Null) 198;
                           }
                           WorldGen.mergeUp = true;
                           WorldGen.mergeDown = true;
@@ -38377,72 +39396,72 @@ label_21:
                           {
                             if (num6 == 0)
                             {
-                              rectangle.X = 18;
-                              rectangle.Y = 108;
+                              rectangle.X = (__Null) 18;
+                              rectangle.Y = (__Null) 108;
                             }
                             else if (num6 == 1)
                             {
-                              rectangle.X = 18;
-                              rectangle.Y = 144;
+                              rectangle.X = (__Null) 18;
+                              rectangle.Y = (__Null) 144;
                             }
                             else
                             {
-                              rectangle.X = 18;
-                              rectangle.Y = 180;
+                              rectangle.X = (__Null) 18;
+                              rectangle.Y = (__Null) 180;
                             }
                           }
                           if (upRight == -2)
                           {
                             if (num6 == 0)
                             {
-                              rectangle.X = 0;
-                              rectangle.Y = 108;
+                              rectangle.X = (__Null) 0;
+                              rectangle.Y = (__Null) 108;
                             }
                             else if (num6 == 1)
                             {
-                              rectangle.X = 0;
-                              rectangle.Y = 144;
+                              rectangle.X = (__Null) 0;
+                              rectangle.Y = (__Null) 144;
                             }
                             else
                             {
-                              rectangle.X = 0;
-                              rectangle.Y = 180;
+                              rectangle.X = (__Null) 0;
+                              rectangle.Y = (__Null) 180;
                             }
                           }
                           if (downLeft == -2)
                           {
                             if (num6 == 0)
                             {
-                              rectangle.X = 18;
-                              rectangle.Y = 90;
+                              rectangle.X = (__Null) 18;
+                              rectangle.Y = (__Null) 90;
                             }
                             else if (num6 == 1)
                             {
-                              rectangle.X = 18;
-                              rectangle.Y = 126;
+                              rectangle.X = (__Null) 18;
+                              rectangle.Y = (__Null) 126;
                             }
                             else
                             {
-                              rectangle.X = 18;
-                              rectangle.Y = 162;
+                              rectangle.X = (__Null) 18;
+                              rectangle.Y = (__Null) 162;
                             }
                           }
                           if (downRight == -2)
                           {
                             if (num6 == 0)
                             {
-                              rectangle.X = 0;
-                              rectangle.Y = 90;
+                              rectangle.X = (__Null) 0;
+                              rectangle.Y = (__Null) 90;
                             }
                             else if (num6 == 1)
                             {
-                              rectangle.X = 0;
-                              rectangle.Y = 126;
+                              rectangle.X = (__Null) 0;
+                              rectangle.Y = (__Null) 126;
                             }
                             else
                             {
-                              rectangle.X = 0;
-                              rectangle.Y = 162;
+                              rectangle.X = (__Null) 0;
+                              rectangle.Y = (__Null) 162;
                             }
                           }
                         }
@@ -38455,18 +39474,18 @@ label_21:
                           {
                             if (num6 == 0)
                             {
-                              rectangle.X = 234;
-                              rectangle.Y = 0;
+                              rectangle.X = (__Null) 234;
+                              rectangle.Y = (__Null) 0;
                             }
                             else if (num6 == 1)
                             {
-                              rectangle.X = 252;
-                              rectangle.Y = 0;
+                              rectangle.X = (__Null) 252;
+                              rectangle.Y = (__Null) 0;
                             }
                             else
                             {
-                              rectangle.X = 270;
-                              rectangle.Y = 0;
+                              rectangle.X = (__Null) 270;
+                              rectangle.Y = (__Null) 0;
                             }
                             WorldGen.mergeDown = true;
                           }
@@ -38474,18 +39493,18 @@ label_21:
                           {
                             if (num6 == 0)
                             {
-                              rectangle.X = 234;
-                              rectangle.Y = 18;
+                              rectangle.X = (__Null) 234;
+                              rectangle.Y = (__Null) 18;
                             }
                             else if (num6 == 1)
                             {
-                              rectangle.X = 252;
-                              rectangle.Y = 18;
+                              rectangle.X = (__Null) 252;
+                              rectangle.Y = (__Null) 18;
                             }
                             else
                             {
-                              rectangle.X = 270;
-                              rectangle.Y = 18;
+                              rectangle.X = (__Null) 270;
+                              rectangle.Y = (__Null) 18;
                             }
                             WorldGen.mergeUp = true;
                           }
@@ -38493,18 +39512,18 @@ label_21:
                           {
                             if (num6 == 0)
                             {
-                              rectangle.X = 234;
-                              rectangle.Y = 36;
+                              rectangle.X = (__Null) 234;
+                              rectangle.Y = (__Null) 36;
                             }
                             else if (num6 == 1)
                             {
-                              rectangle.X = 252;
-                              rectangle.Y = 36;
+                              rectangle.X = (__Null) 252;
+                              rectangle.Y = (__Null) 36;
                             }
                             else
                             {
-                              rectangle.X = 270;
-                              rectangle.Y = 36;
+                              rectangle.X = (__Null) 270;
+                              rectangle.Y = (__Null) 36;
                             }
                             WorldGen.mergeRight = true;
                           }
@@ -38512,18 +39531,18 @@ label_21:
                           {
                             if (num6 == 0)
                             {
-                              rectangle.X = 234;
-                              rectangle.Y = 54;
+                              rectangle.X = (__Null) 234;
+                              rectangle.Y = (__Null) 54;
                             }
                             else if (num6 == 1)
                             {
-                              rectangle.X = 252;
-                              rectangle.Y = 54;
+                              rectangle.X = (__Null) 252;
+                              rectangle.Y = (__Null) 54;
                             }
                             else
                             {
-                              rectangle.X = 270;
-                              rectangle.Y = 54;
+                              rectangle.X = (__Null) 270;
+                              rectangle.Y = (__Null) 54;
                             }
                             WorldGen.mergeLeft = true;
                           }
@@ -38534,18 +39553,18 @@ label_21:
                           {
                             if (num6 == 0)
                             {
-                              rectangle.X = 72;
-                              rectangle.Y = 144;
+                              rectangle.X = (__Null) 72;
+                              rectangle.Y = (__Null) 144;
                             }
                             else if (num6 == 1)
                             {
-                              rectangle.X = 72;
-                              rectangle.Y = 162;
+                              rectangle.X = (__Null) 72;
+                              rectangle.Y = (__Null) 162;
                             }
                             else
                             {
-                              rectangle.X = 72;
-                              rectangle.Y = 180;
+                              rectangle.X = (__Null) 72;
+                              rectangle.Y = (__Null) 180;
                             }
                             WorldGen.mergeUp = true;
                           }
@@ -38553,18 +39572,18 @@ label_21:
                           {
                             if (num6 == 0)
                             {
-                              rectangle.X = 72;
-                              rectangle.Y = 90;
+                              rectangle.X = (__Null) 72;
+                              rectangle.Y = (__Null) 90;
                             }
                             else if (num6 == 1)
                             {
-                              rectangle.X = 72;
-                              rectangle.Y = 108;
+                              rectangle.X = (__Null) 72;
+                              rectangle.Y = (__Null) 108;
                             }
                             else
                             {
-                              rectangle.X = 72;
-                              rectangle.Y = 126;
+                              rectangle.X = (__Null) 72;
+                              rectangle.Y = (__Null) 126;
                             }
                             WorldGen.mergeDown = true;
                           }
@@ -38575,18 +39594,18 @@ label_21:
                           {
                             if (num6 == 0)
                             {
-                              rectangle.X = 90;
-                              rectangle.Y = 144;
+                              rectangle.X = (__Null) 90;
+                              rectangle.Y = (__Null) 144;
                             }
                             else if (num6 == 1)
                             {
-                              rectangle.X = 90;
-                              rectangle.Y = 162;
+                              rectangle.X = (__Null) 90;
+                              rectangle.Y = (__Null) 162;
                             }
                             else
                             {
-                              rectangle.X = 90;
-                              rectangle.Y = 180;
+                              rectangle.X = (__Null) 90;
+                              rectangle.Y = (__Null) 180;
                             }
                             WorldGen.mergeUp = true;
                           }
@@ -38594,18 +39613,18 @@ label_21:
                           {
                             if (num6 == 0)
                             {
-                              rectangle.X = 90;
-                              rectangle.Y = 90;
+                              rectangle.X = (__Null) 90;
+                              rectangle.Y = (__Null) 90;
                             }
                             else if (num6 == 1)
                             {
-                              rectangle.X = 90;
-                              rectangle.Y = 108;
+                              rectangle.X = (__Null) 90;
+                              rectangle.Y = (__Null) 108;
                             }
                             else
                             {
-                              rectangle.X = 90;
-                              rectangle.Y = 126;
+                              rectangle.X = (__Null) 90;
+                              rectangle.Y = (__Null) 126;
                             }
                             WorldGen.mergeDown = true;
                           }
@@ -38616,18 +39635,18 @@ label_21:
                           {
                             if (num6 == 0)
                             {
-                              rectangle.X = 0;
-                              rectangle.Y = 198;
+                              rectangle.X = (__Null) 0;
+                              rectangle.Y = (__Null) 198;
                             }
                             else if (num6 == 1)
                             {
-                              rectangle.X = 18;
-                              rectangle.Y = 198;
+                              rectangle.X = (__Null) 18;
+                              rectangle.Y = (__Null) 198;
                             }
                             else
                             {
-                              rectangle.X = 36;
-                              rectangle.Y = 198;
+                              rectangle.X = (__Null) 36;
+                              rectangle.Y = (__Null) 198;
                             }
                             WorldGen.mergeLeft = true;
                           }
@@ -38635,18 +39654,18 @@ label_21:
                           {
                             if (num6 == 0)
                             {
-                              rectangle.X = 54;
-                              rectangle.Y = 198;
+                              rectangle.X = (__Null) 54;
+                              rectangle.Y = (__Null) 198;
                             }
                             else if (num6 == 1)
                             {
-                              rectangle.X = 72;
-                              rectangle.Y = 198;
+                              rectangle.X = (__Null) 72;
+                              rectangle.Y = (__Null) 198;
                             }
                             else
                             {
-                              rectangle.X = 90;
-                              rectangle.Y = 198;
+                              rectangle.X = (__Null) 90;
+                              rectangle.Y = (__Null) 198;
                             }
                             WorldGen.mergeRight = true;
                           }
@@ -38657,18 +39676,18 @@ label_21:
                           {
                             if (num6 == 0)
                             {
-                              rectangle.X = 0;
-                              rectangle.Y = 216;
+                              rectangle.X = (__Null) 0;
+                              rectangle.Y = (__Null) 216;
                             }
                             else if (num6 == 1)
                             {
-                              rectangle.X = 18;
-                              rectangle.Y = 216;
+                              rectangle.X = (__Null) 18;
+                              rectangle.Y = (__Null) 216;
                             }
                             else
                             {
-                              rectangle.X = 36;
-                              rectangle.Y = 216;
+                              rectangle.X = (__Null) 36;
+                              rectangle.Y = (__Null) 216;
                             }
                             WorldGen.mergeLeft = true;
                           }
@@ -38676,18 +39695,18 @@ label_21:
                           {
                             if (num6 == 0)
                             {
-                              rectangle.X = 54;
-                              rectangle.Y = 216;
+                              rectangle.X = (__Null) 54;
+                              rectangle.Y = (__Null) 216;
                             }
                             else if (num6 == 1)
                             {
-                              rectangle.X = 72;
-                              rectangle.Y = 216;
+                              rectangle.X = (__Null) 72;
+                              rectangle.Y = (__Null) 216;
                             }
                             else
                             {
-                              rectangle.X = 90;
-                              rectangle.Y = 216;
+                              rectangle.X = (__Null) 90;
+                              rectangle.Y = (__Null) 216;
                             }
                             WorldGen.mergeRight = true;
                           }
@@ -38698,18 +39717,18 @@ label_21:
                           {
                             if (num6 == 0)
                             {
-                              rectangle.X = 108;
-                              rectangle.Y = 216;
+                              rectangle.X = (__Null) 108;
+                              rectangle.Y = (__Null) 216;
                             }
                             else if (num6 == 1)
                             {
-                              rectangle.X = 108;
-                              rectangle.Y = 234;
+                              rectangle.X = (__Null) 108;
+                              rectangle.Y = (__Null) 234;
                             }
                             else
                             {
-                              rectangle.X = 108;
-                              rectangle.Y = 252;
+                              rectangle.X = (__Null) 108;
+                              rectangle.Y = (__Null) 252;
                             }
                             WorldGen.mergeUp = true;
                             WorldGen.mergeDown = true;
@@ -38718,18 +39737,18 @@ label_21:
                           {
                             if (num6 == 0)
                             {
-                              rectangle.X = 126;
-                              rectangle.Y = 144;
+                              rectangle.X = (__Null) 126;
+                              rectangle.Y = (__Null) 144;
                             }
                             else if (num6 == 1)
                             {
-                              rectangle.X = 126;
-                              rectangle.Y = 162;
+                              rectangle.X = (__Null) 126;
+                              rectangle.Y = (__Null) 162;
                             }
                             else
                             {
-                              rectangle.X = 126;
-                              rectangle.Y = 180;
+                              rectangle.X = (__Null) 126;
+                              rectangle.Y = (__Null) 180;
                             }
                             WorldGen.mergeUp = true;
                           }
@@ -38737,18 +39756,18 @@ label_21:
                           {
                             if (num6 == 0)
                             {
-                              rectangle.X = 126;
-                              rectangle.Y = 90;
+                              rectangle.X = (__Null) 126;
+                              rectangle.Y = (__Null) 90;
                             }
                             else if (num6 == 1)
                             {
-                              rectangle.X = 126;
-                              rectangle.Y = 108;
+                              rectangle.X = (__Null) 126;
+                              rectangle.Y = (__Null) 108;
                             }
                             else
                             {
-                              rectangle.X = 126;
-                              rectangle.Y = 126;
+                              rectangle.X = (__Null) 126;
+                              rectangle.Y = (__Null) 126;
                             }
                             WorldGen.mergeDown = true;
                           }
@@ -38759,18 +39778,18 @@ label_21:
                           {
                             if (num6 == 0)
                             {
-                              rectangle.X = 162;
-                              rectangle.Y = 198;
+                              rectangle.X = (__Null) 162;
+                              rectangle.Y = (__Null) 198;
                             }
                             else if (num6 == 1)
                             {
-                              rectangle.X = 180;
-                              rectangle.Y = 198;
+                              rectangle.X = (__Null) 180;
+                              rectangle.Y = (__Null) 198;
                             }
                             else
                             {
-                              rectangle.X = 198;
-                              rectangle.Y = 198;
+                              rectangle.X = (__Null) 198;
+                              rectangle.Y = (__Null) 198;
                             }
                             WorldGen.mergeLeft = true;
                             WorldGen.mergeRight = true;
@@ -38779,18 +39798,18 @@ label_21:
                           {
                             if (num6 == 0)
                             {
-                              rectangle.X = 0;
-                              rectangle.Y = 252;
+                              rectangle.X = (__Null) 0;
+                              rectangle.Y = (__Null) 252;
                             }
                             else if (num6 == 1)
                             {
-                              rectangle.X = 18;
-                              rectangle.Y = 252;
+                              rectangle.X = (__Null) 18;
+                              rectangle.Y = (__Null) 252;
                             }
                             else
                             {
-                              rectangle.X = 36;
-                              rectangle.Y = 252;
+                              rectangle.X = (__Null) 36;
+                              rectangle.Y = (__Null) 252;
                             }
                             WorldGen.mergeLeft = true;
                           }
@@ -38798,18 +39817,18 @@ label_21:
                           {
                             if (num6 == 0)
                             {
-                              rectangle.X = 54;
-                              rectangle.Y = 252;
+                              rectangle.X = (__Null) 54;
+                              rectangle.Y = (__Null) 252;
                             }
                             else if (num6 == 1)
                             {
-                              rectangle.X = 72;
-                              rectangle.Y = 252;
+                              rectangle.X = (__Null) 72;
+                              rectangle.Y = (__Null) 252;
                             }
                             else
                             {
-                              rectangle.X = 90;
-                              rectangle.Y = 252;
+                              rectangle.X = (__Null) 90;
+                              rectangle.Y = (__Null) 252;
                             }
                             WorldGen.mergeRight = true;
                           }
@@ -38818,18 +39837,18 @@ label_21:
                         {
                           if (num6 == 0)
                           {
-                            rectangle.X = 108;
-                            rectangle.Y = 144;
+                            rectangle.X = (__Null) 108;
+                            rectangle.Y = (__Null) 144;
                           }
                           else if (num6 == 1)
                           {
-                            rectangle.X = 108;
-                            rectangle.Y = 162;
+                            rectangle.X = (__Null) 108;
+                            rectangle.Y = (__Null) 162;
                           }
                           else
                           {
-                            rectangle.X = 108;
-                            rectangle.Y = 180;
+                            rectangle.X = (__Null) 108;
+                            rectangle.Y = (__Null) 180;
                           }
                           WorldGen.mergeUp = true;
                         }
@@ -38837,18 +39856,18 @@ label_21:
                         {
                           if (num6 == 0)
                           {
-                            rectangle.X = 108;
-                            rectangle.Y = 90;
+                            rectangle.X = (__Null) 108;
+                            rectangle.Y = (__Null) 90;
                           }
                           else if (num6 == 1)
                           {
-                            rectangle.X = 108;
-                            rectangle.Y = 108;
+                            rectangle.X = (__Null) 108;
+                            rectangle.Y = (__Null) 108;
                           }
                           else
                           {
-                            rectangle.X = 108;
-                            rectangle.Y = 126;
+                            rectangle.X = (__Null) 108;
+                            rectangle.Y = (__Null) 126;
                           }
                           WorldGen.mergeDown = true;
                         }
@@ -38856,18 +39875,18 @@ label_21:
                         {
                           if (num6 == 0)
                           {
-                            rectangle.X = 0;
-                            rectangle.Y = 234;
+                            rectangle.X = (__Null) 0;
+                            rectangle.Y = (__Null) 234;
                           }
                           else if (num6 == 1)
                           {
-                            rectangle.X = 18;
-                            rectangle.Y = 234;
+                            rectangle.X = (__Null) 18;
+                            rectangle.Y = (__Null) 234;
                           }
                           else
                           {
-                            rectangle.X = 36;
-                            rectangle.Y = 234;
+                            rectangle.X = (__Null) 36;
+                            rectangle.Y = (__Null) 234;
                           }
                           WorldGen.mergeLeft = true;
                         }
@@ -38875,18 +39894,18 @@ label_21:
                         {
                           if (num6 == 0)
                           {
-                            rectangle.X = 54;
-                            rectangle.Y = 234;
+                            rectangle.X = (__Null) 54;
+                            rectangle.Y = (__Null) 234;
                           }
                           else if (num6 == 1)
                           {
-                            rectangle.X = 72;
-                            rectangle.Y = 234;
+                            rectangle.X = (__Null) 72;
+                            rectangle.Y = (__Null) 234;
                           }
                           else
                           {
-                            rectangle.X = 90;
-                            rectangle.Y = 234;
+                            rectangle.X = (__Null) 90;
+                            rectangle.Y = (__Null) 234;
                           }
                           WorldGen.mergeRight = true;
                         }
@@ -38914,11 +39933,12 @@ label_21:
                           }
                           else if (num3 > num4)
                           {
-                            bool flag5 = index1 == upLeft && (int) tile15.slope() == 0;
-                            bool flag7 = index1 == downRight && (int) tile14.slope() == 0;
-                            if (flag5 && flag7)
+                            int num5 = index1 != upLeft ? 0 : ((int) tile15.slope() == 0 ? 1 : 0);
+                            bool flag5 = index1 == downRight && (int) tile14.slope() == 0;
+                            int num8 = flag5 ? 1 : 0;
+                            if ((num5 & num8) != 0)
                               num2 = 4;
-                            else if (flag7)
+                            else if (flag5)
                             {
                               num1 = 6;
                             }
@@ -38930,14 +39950,15 @@ label_21:
                           }
                           else
                           {
-                            bool flag5 = index1 == upRight && (int) tile16.slope() == 0;
-                            bool flag7 = index1 == downLeft && (int) tile13.slope() == 0;
-                            if (flag5 && flag7)
+                            int num5 = index1 != upRight ? 0 : ((int) tile16.slope() == 0 ? 1 : 0);
+                            bool flag5 = index1 == downLeft && (int) tile13.slope() == 0;
+                            int num8 = flag5 ? 1 : 0;
+                            if ((num5 & num8) != 0)
                             {
                               num2 = 4;
                               num1 = 1;
                             }
-                            else if (flag7)
+                            else if (flag5)
                             {
                               num1 = 7;
                             }
@@ -38947,29 +39968,29 @@ label_21:
                               num2 = 1;
                             }
                           }
-                          rectangle.X = (18 + num1) * 18;
-                          rectangle.Y = num2 * 18;
+                          rectangle.X = (__Null) ((18 + num1) * 18);
+                          rectangle.Y = (__Null) (num2 * 18);
                         }
                         else
                         {
-                          if (flag1 && flag2 && (index1 == down && index1 == right))
+                          if (flag1 & flag2 && index1 == down && index1 == right)
                             num2 = 2;
-                          else if (flag1 && flag3 && (index1 == down && index1 == left))
+                          else if (flag1 & flag3 && index1 == down && index1 == left)
                           {
                             num1 = 1;
                             num2 = 2;
                           }
-                          else if (flag3 && flag4 && (index1 == up && index1 == left))
+                          else if (flag3 & flag4 && index1 == up && index1 == left)
                           {
                             num1 = 1;
                             num2 = 3;
                           }
-                          else if (flag4 && flag2 && (index1 == up && index1 == right))
+                          else if (flag4 & flag2 && index1 == up && index1 == right)
                             num2 = 3;
                           if (num1 != 0 || num2 != 0)
                           {
-                            rectangle.X = (18 + num1) * 18;
-                            rectangle.Y = num2 * 18;
+                            rectangle.X = (__Null) ((18 + num1) * 18);
+                            rectangle.Y = (__Null) (num2 * 18);
                           }
                         }
                       }
@@ -39024,8 +40045,8 @@ label_21:
                             num5 += 2;
                           }
                         }
-                        rectangle.X = (18 + num4) * 18;
-                        rectangle.Y = num5 * 18;
+                        rectangle.X = (__Null) ((18 + num4) * 18);
+                        rectangle.Y = (__Null) (num5 * 18);
                       }
                     }
                     if (rectangle.X < 0 || rectangle.Y < 0)
@@ -39040,358 +40061,358 @@ label_21:
                         {
                           if (num6 == 0)
                           {
-                            rectangle.X = 108;
-                            rectangle.Y = 18;
+                            rectangle.X = (__Null) 108;
+                            rectangle.Y = (__Null) 18;
                           }
                           else if (num6 == 1)
                           {
-                            rectangle.X = 126;
-                            rectangle.Y = 18;
+                            rectangle.X = (__Null) 126;
+                            rectangle.Y = (__Null) 18;
                           }
                           else
                           {
-                            rectangle.X = 144;
-                            rectangle.Y = 18;
+                            rectangle.X = (__Null) 144;
+                            rectangle.Y = (__Null) 18;
                           }
                         }
                         else if (downLeft != index1 && downRight != index1)
                         {
                           if (num6 == 0)
                           {
-                            rectangle.X = 108;
-                            rectangle.Y = 36;
+                            rectangle.X = (__Null) 108;
+                            rectangle.Y = (__Null) 36;
                           }
                           else if (num6 == 1)
                           {
-                            rectangle.X = 126;
-                            rectangle.Y = 36;
+                            rectangle.X = (__Null) 126;
+                            rectangle.Y = (__Null) 36;
                           }
                           else
                           {
-                            rectangle.X = 144;
-                            rectangle.Y = 36;
+                            rectangle.X = (__Null) 144;
+                            rectangle.Y = (__Null) 36;
                           }
                         }
                         else if (upLeft != index1 && downLeft != index1)
                         {
                           if (num6 == 0)
                           {
-                            rectangle.X = 180;
-                            rectangle.Y = 0;
+                            rectangle.X = (__Null) 180;
+                            rectangle.Y = (__Null) 0;
                           }
                           else if (num6 == 1)
                           {
-                            rectangle.X = 180;
-                            rectangle.Y = 18;
+                            rectangle.X = (__Null) 180;
+                            rectangle.Y = (__Null) 18;
                           }
                           else
                           {
-                            rectangle.X = 180;
-                            rectangle.Y = 36;
+                            rectangle.X = (__Null) 180;
+                            rectangle.Y = (__Null) 36;
                           }
                         }
                         else if (upRight != index1 && downRight != index1)
                         {
                           if (num6 == 0)
                           {
-                            rectangle.X = 198;
-                            rectangle.Y = 0;
+                            rectangle.X = (__Null) 198;
+                            rectangle.Y = (__Null) 0;
                           }
                           else if (num6 == 1)
                           {
-                            rectangle.X = 198;
-                            rectangle.Y = 18;
+                            rectangle.X = (__Null) 198;
+                            rectangle.Y = (__Null) 18;
                           }
                           else
                           {
-                            rectangle.X = 198;
-                            rectangle.Y = 36;
+                            rectangle.X = (__Null) 198;
+                            rectangle.Y = (__Null) 36;
                           }
                         }
                         else if (num6 == 0)
                         {
-                          rectangle.X = 18;
-                          rectangle.Y = 18;
+                          rectangle.X = (__Null) 18;
+                          rectangle.Y = (__Null) 18;
                         }
                         else if (num6 == 1)
                         {
-                          rectangle.X = 36;
-                          rectangle.Y = 18;
+                          rectangle.X = (__Null) 36;
+                          rectangle.Y = (__Null) 18;
                         }
                         else
                         {
-                          rectangle.X = 54;
-                          rectangle.Y = 18;
+                          rectangle.X = (__Null) 54;
+                          rectangle.Y = (__Null) 18;
                         }
                       }
                       else if (up != index1 && down == index1 && (left == index1 && right == index1))
                       {
                         if (num6 == 0)
                         {
-                          rectangle.X = 18;
-                          rectangle.Y = 0;
+                          rectangle.X = (__Null) 18;
+                          rectangle.Y = (__Null) 0;
                         }
                         else if (num6 == 1)
                         {
-                          rectangle.X = 36;
-                          rectangle.Y = 0;
+                          rectangle.X = (__Null) 36;
+                          rectangle.Y = (__Null) 0;
                         }
                         else
                         {
-                          rectangle.X = 54;
-                          rectangle.Y = 0;
+                          rectangle.X = (__Null) 54;
+                          rectangle.Y = (__Null) 0;
                         }
                       }
                       else if (up == index1 && down != index1 && (left == index1 && right == index1))
                       {
                         if (num6 == 0)
                         {
-                          rectangle.X = 18;
-                          rectangle.Y = 36;
+                          rectangle.X = (__Null) 18;
+                          rectangle.Y = (__Null) 36;
                         }
                         else if (num6 == 1)
                         {
-                          rectangle.X = 36;
-                          rectangle.Y = 36;
+                          rectangle.X = (__Null) 36;
+                          rectangle.Y = (__Null) 36;
                         }
                         else
                         {
-                          rectangle.X = 54;
-                          rectangle.Y = 36;
+                          rectangle.X = (__Null) 54;
+                          rectangle.Y = (__Null) 36;
                         }
                       }
                       else if (up == index1 && down == index1 && (left != index1 && right == index1))
                       {
                         if (num6 == 0)
                         {
-                          rectangle.X = 0;
-                          rectangle.Y = 0;
+                          rectangle.X = (__Null) 0;
+                          rectangle.Y = (__Null) 0;
                         }
                         else if (num6 == 1)
                         {
-                          rectangle.X = 0;
-                          rectangle.Y = 18;
+                          rectangle.X = (__Null) 0;
+                          rectangle.Y = (__Null) 18;
                         }
                         else
                         {
-                          rectangle.X = 0;
-                          rectangle.Y = 36;
+                          rectangle.X = (__Null) 0;
+                          rectangle.Y = (__Null) 36;
                         }
                       }
                       else if (up == index1 && down == index1 && (left == index1 && right != index1))
                       {
                         if (num6 == 0)
                         {
-                          rectangle.X = 72;
-                          rectangle.Y = 0;
+                          rectangle.X = (__Null) 72;
+                          rectangle.Y = (__Null) 0;
                         }
                         else if (num6 == 1)
                         {
-                          rectangle.X = 72;
-                          rectangle.Y = 18;
+                          rectangle.X = (__Null) 72;
+                          rectangle.Y = (__Null) 18;
                         }
                         else
                         {
-                          rectangle.X = 72;
-                          rectangle.Y = 36;
+                          rectangle.X = (__Null) 72;
+                          rectangle.Y = (__Null) 36;
                         }
                       }
                       else if (up != index1 && down == index1 && (left != index1 && right == index1))
                       {
                         if (num6 == 0)
                         {
-                          rectangle.X = 0;
-                          rectangle.Y = 54;
+                          rectangle.X = (__Null) 0;
+                          rectangle.Y = (__Null) 54;
                         }
                         else if (num6 == 1)
                         {
-                          rectangle.X = 36;
-                          rectangle.Y = 54;
+                          rectangle.X = (__Null) 36;
+                          rectangle.Y = (__Null) 54;
                         }
                         else
                         {
-                          rectangle.X = 72;
-                          rectangle.Y = 54;
+                          rectangle.X = (__Null) 72;
+                          rectangle.Y = (__Null) 54;
                         }
                       }
                       else if (up != index1 && down == index1 && (left == index1 && right != index1))
                       {
                         if (num6 == 0)
                         {
-                          rectangle.X = 18;
-                          rectangle.Y = 54;
+                          rectangle.X = (__Null) 18;
+                          rectangle.Y = (__Null) 54;
                         }
                         else if (num6 == 1)
                         {
-                          rectangle.X = 54;
-                          rectangle.Y = 54;
+                          rectangle.X = (__Null) 54;
+                          rectangle.Y = (__Null) 54;
                         }
                         else
                         {
-                          rectangle.X = 90;
-                          rectangle.Y = 54;
+                          rectangle.X = (__Null) 90;
+                          rectangle.Y = (__Null) 54;
                         }
                       }
                       else if (up == index1 && down != index1 && (left != index1 && right == index1))
                       {
                         if (num6 == 0)
                         {
-                          rectangle.X = 0;
-                          rectangle.Y = 72;
+                          rectangle.X = (__Null) 0;
+                          rectangle.Y = (__Null) 72;
                         }
                         else if (num6 == 1)
                         {
-                          rectangle.X = 36;
-                          rectangle.Y = 72;
+                          rectangle.X = (__Null) 36;
+                          rectangle.Y = (__Null) 72;
                         }
                         else
                         {
-                          rectangle.X = 72;
-                          rectangle.Y = 72;
+                          rectangle.X = (__Null) 72;
+                          rectangle.Y = (__Null) 72;
                         }
                       }
                       else if (up == index1 && down != index1 && (left == index1 && right != index1))
                       {
                         if (num6 == 0)
                         {
-                          rectangle.X = 18;
-                          rectangle.Y = 72;
+                          rectangle.X = (__Null) 18;
+                          rectangle.Y = (__Null) 72;
                         }
                         else if (num6 == 1)
                         {
-                          rectangle.X = 54;
-                          rectangle.Y = 72;
+                          rectangle.X = (__Null) 54;
+                          rectangle.Y = (__Null) 72;
                         }
                         else
                         {
-                          rectangle.X = 90;
-                          rectangle.Y = 72;
+                          rectangle.X = (__Null) 90;
+                          rectangle.Y = (__Null) 72;
                         }
                       }
                       else if (up == index1 && down == index1 && (left != index1 && right != index1))
                       {
                         if (num6 == 0)
                         {
-                          rectangle.X = 90;
-                          rectangle.Y = 0;
+                          rectangle.X = (__Null) 90;
+                          rectangle.Y = (__Null) 0;
                         }
                         else if (num6 == 1)
                         {
-                          rectangle.X = 90;
-                          rectangle.Y = 18;
+                          rectangle.X = (__Null) 90;
+                          rectangle.Y = (__Null) 18;
                         }
                         else
                         {
-                          rectangle.X = 90;
-                          rectangle.Y = 36;
+                          rectangle.X = (__Null) 90;
+                          rectangle.Y = (__Null) 36;
                         }
                       }
                       else if (up != index1 && down != index1 && (left == index1 && right == index1))
                       {
                         if (num6 == 0)
                         {
-                          rectangle.X = 108;
-                          rectangle.Y = 72;
+                          rectangle.X = (__Null) 108;
+                          rectangle.Y = (__Null) 72;
                         }
                         else if (num6 == 1)
                         {
-                          rectangle.X = 126;
-                          rectangle.Y = 72;
+                          rectangle.X = (__Null) 126;
+                          rectangle.Y = (__Null) 72;
                         }
                         else
                         {
-                          rectangle.X = 144;
-                          rectangle.Y = 72;
+                          rectangle.X = (__Null) 144;
+                          rectangle.Y = (__Null) 72;
                         }
                       }
                       else if (up != index1 && down == index1 && (left != index1 && right != index1))
                       {
                         if (num6 == 0)
                         {
-                          rectangle.X = 108;
-                          rectangle.Y = 0;
+                          rectangle.X = (__Null) 108;
+                          rectangle.Y = (__Null) 0;
                         }
                         else if (num6 == 1)
                         {
-                          rectangle.X = 126;
-                          rectangle.Y = 0;
+                          rectangle.X = (__Null) 126;
+                          rectangle.Y = (__Null) 0;
                         }
                         else
                         {
-                          rectangle.X = 144;
-                          rectangle.Y = 0;
+                          rectangle.X = (__Null) 144;
+                          rectangle.Y = (__Null) 0;
                         }
                       }
                       else if (up == index1 && down != index1 && (left != index1 && right != index1))
                       {
                         if (num6 == 0)
                         {
-                          rectangle.X = 108;
-                          rectangle.Y = 54;
+                          rectangle.X = (__Null) 108;
+                          rectangle.Y = (__Null) 54;
                         }
                         else if (num6 == 1)
                         {
-                          rectangle.X = 126;
-                          rectangle.Y = 54;
+                          rectangle.X = (__Null) 126;
+                          rectangle.Y = (__Null) 54;
                         }
                         else
                         {
-                          rectangle.X = 144;
-                          rectangle.Y = 54;
+                          rectangle.X = (__Null) 144;
+                          rectangle.Y = (__Null) 54;
                         }
                       }
                       else if (up != index1 && down != index1 && (left != index1 && right == index1))
                       {
                         if (num6 == 0)
                         {
-                          rectangle.X = 162;
-                          rectangle.Y = 0;
+                          rectangle.X = (__Null) 162;
+                          rectangle.Y = (__Null) 0;
                         }
                         else if (num6 == 1)
                         {
-                          rectangle.X = 162;
-                          rectangle.Y = 18;
+                          rectangle.X = (__Null) 162;
+                          rectangle.Y = (__Null) 18;
                         }
                         else
                         {
-                          rectangle.X = 162;
-                          rectangle.Y = 36;
+                          rectangle.X = (__Null) 162;
+                          rectangle.Y = (__Null) 36;
                         }
                       }
                       else if (up != index1 && down != index1 && (left == index1 && right != index1))
                       {
                         if (num6 == 0)
                         {
-                          rectangle.X = 216;
-                          rectangle.Y = 0;
+                          rectangle.X = (__Null) 216;
+                          rectangle.Y = (__Null) 0;
                         }
                         else if (num6 == 1)
                         {
-                          rectangle.X = 216;
-                          rectangle.Y = 18;
+                          rectangle.X = (__Null) 216;
+                          rectangle.Y = (__Null) 18;
                         }
                         else
                         {
-                          rectangle.X = 216;
-                          rectangle.Y = 36;
+                          rectangle.X = (__Null) 216;
+                          rectangle.Y = (__Null) 36;
                         }
                       }
                       else if (up != index1 && down != index1 && (left != index1 && right != index1))
                       {
                         if (num6 == 0)
                         {
-                          rectangle.X = 162;
-                          rectangle.Y = 54;
+                          rectangle.X = (__Null) 162;
+                          rectangle.Y = (__Null) 54;
                         }
                         else if (num6 == 1)
                         {
-                          rectangle.X = 180;
-                          rectangle.Y = 54;
+                          rectangle.X = (__Null) 180;
+                          rectangle.Y = (__Null) 54;
                         }
                         else
                         {
-                          rectangle.X = 198;
-                          rectangle.Y = 54;
+                          rectangle.X = (__Null) 198;
+                          rectangle.Y = (__Null) 54;
                         }
                       }
                     }
@@ -39399,22 +40420,32 @@ label_21:
                     {
                       if (num6 <= 0)
                       {
-                        rectangle.X = 18;
-                        rectangle.Y = 18;
+                        rectangle.X = (__Null) 18;
+                        rectangle.Y = (__Null) 18;
                       }
                       else if (num6 == 1)
                       {
-                        rectangle.X = 36;
-                        rectangle.Y = 18;
+                        rectangle.X = (__Null) 36;
+                        rectangle.Y = (__Null) 18;
                       }
                       if (num6 >= 2)
                       {
-                        rectangle.X = 54;
-                        rectangle.Y = 18;
+                        rectangle.X = (__Null) 54;
+                        rectangle.Y = (__Null) 18;
                       }
                     }
                     if ((int) Main.tileLargeFrames[index1] == 1 && num6 == 3)
-                      rectangle.Y += 90;
+                    {
+                      // ISSUE: explicit reference operation
+                      // ISSUE: variable of a reference type
+                      __Null& local = @rectangle.Y;
+                      // ISSUE: cast to a reference type
+                      // ISSUE: explicit reference operation
+                      int num1 = ^(int&) local + 90;
+                      // ISSUE: cast to a reference type
+                      // ISSUE: explicit reference operation
+                      ^(int&) local = num1;
+                    }
                     centerTile.frameX = (short) rectangle.X;
                     centerTile.frameY = (short) rectangle.Y;
                     if (index1 == 52 || index1 == 62 || (index1 == 115 || index1 == 205))
@@ -39565,8 +40596,16 @@ label_21:
                           if (!flag2)
                           {
                             int index2 = Projectile.NewProjectile((float) (i * 16 + 8), (float) (j * 16 + 8), 0.0f, 2.5f, Type, Damage, 0.0f, Main.myPlayer, 0.0f, 0.0f);
-                            Main.projectile[index2].velocity.Y = 0.5f;
-                            Main.projectile[index2].position.Y += 2f;
+                            Main.projectile[index2].velocity.Y = (__Null) 0.5;
+                            // ISSUE: explicit reference operation
+                            // ISSUE: variable of a reference type
+                            __Null& local = @Main.projectile[index2].position.Y;
+                            // ISSUE: cast to a reference type
+                            // ISSUE: explicit reference operation
+                            double num1 = (double) ^(float&) local + 2.0;
+                            // ISSUE: cast to a reference type
+                            // ISSUE: explicit reference operation
+                            ^(float&) local = (float) num1;
                             Main.projectile[index2].netUpdate = true;
                           }
                           NetMessage.SendTileSquare(-1, i, j, 1, TileChangeType.None);
@@ -39585,7 +40624,7 @@ label_21:
                             ++WorldGen.tileReframeCount;
                             if (WorldGen.tileReframeCount < 55)
                             {
-                              bool mergeUp = WorldGen.mergeUp;
+                              int num1 = WorldGen.mergeUp ? 1 : 0;
                               bool mergeDown = WorldGen.mergeDown;
                               bool mergeLeft = WorldGen.mergeLeft;
                               bool mergeRight = WorldGen.mergeRight;
@@ -39593,7 +40632,7 @@ label_21:
                               WorldGen.TileFrame(i + 1, j, false, false);
                               WorldGen.TileFrame(i, j - 1, false, false);
                               WorldGen.TileFrame(i, j + 1, false, false);
-                              WorldGen.mergeUp = mergeUp;
+                              WorldGen.mergeUp = num1 != 0;
                               WorldGen.mergeDown = mergeDown;
                               WorldGen.mergeLeft = mergeLeft;
                               WorldGen.mergeRight = mergeRight;
@@ -39786,7 +40825,10 @@ label_21:
     {
       if (Main.netMode == 0)
       {
-        Main.NewText(text.ToString(), color.R, color.G, color.B, false);
+        // ISSUE: explicit reference operation
+        // ISSUE: explicit reference operation
+        // ISSUE: explicit reference operation
+        Main.NewText(text.ToString(), ((Color) @color).get_R(), ((Color) @color).get_G(), ((Color) @color).get_B(), false);
       }
       else
       {
@@ -39822,8 +40864,10 @@ label_21:
 
       public static void WorldLoaded()
       {
+        // ISSUE: reference to a compiler-generated field
         if (WorldGen.Hooks.OnWorldLoad == null)
           return;
+        // ISSUE: reference to a compiler-generated field
         WorldGen.Hooks.OnWorldLoad();
       }
 
@@ -39854,7 +40898,7 @@ label_21:
           while (pointList1.Count > 0)
           {
             Point point1 = pointList1[0];
-            if (!WorldGen.InWorld(point1.X, point1.Y, 1))
+            if (!WorldGen.InWorld((int) point1.X, (int) point1.Y, 1))
             {
               pointList1.Remove(point1);
             }
@@ -39862,8 +40906,8 @@ label_21:
             {
               pointSet.Add(point1);
               pointList1.Remove(point1);
-              Tile tile = Main.tile[point1.X, point1.Y];
-              if (WorldGen.SolidTile(point1.X, point1.Y) || (int) tile.wall != 0)
+              Tile tile = Main.tile[(int) point1.X, (int) point1.Y];
+              if (WorldGen.SolidTile((int) point1.X, (int) point1.Y) || (int) tile.wall != 0)
               {
                 if (tile.active() && (int) tile.wall == 0)
                   tile.wall = num;
@@ -39871,16 +40915,21 @@ label_21:
               else
               {
                 tile.wall = num;
-                Point point2 = new Point(point1.X - 1, point1.Y);
+                Point point2;
+                // ISSUE: explicit reference operation
+                ((Point) @point2).\u002Ector(point1.X - 1, (int) point1.Y);
                 if (!pointSet.Contains(point2))
                   pointList2.Add(point2);
-                point2 = new Point(point1.X + 1, point1.Y);
+                // ISSUE: explicit reference operation
+                ((Point) @point2).\u002Ector(point1.X + 1, (int) point1.Y);
                 if (!pointSet.Contains(point2))
                   pointList2.Add(point2);
-                point2 = new Point(point1.X, point1.Y - 1);
+                // ISSUE: explicit reference operation
+                ((Point) @point2).\u002Ector((int) point1.X, point1.Y - 1);
                 if (!pointSet.Contains(point2))
                   pointList2.Add(point2);
-                point2 = new Point(point1.X, point1.Y + 1);
+                // ISSUE: explicit reference operation
+                ((Point) @point2).\u002Ector((int) point1.X, point1.Y + 1);
                 if (!pointSet.Contains(point2))
                   pointList2.Add(point2);
               }
@@ -39908,7 +40957,7 @@ label_21:
           while (pointList1.Count > 0)
           {
             Point point1 = pointList1[0];
-            if (!WorldGen.InWorld(point1.X, point1.Y, 1))
+            if (!WorldGen.InWorld((int) point1.X, (int) point1.Y, 1))
             {
               pointList1.Remove(point1);
             }
@@ -39916,8 +40965,8 @@ label_21:
             {
               pointSet.Add(point1);
               pointList1.Remove(point1);
-              Tile tile = Main.tile[point1.X, point1.Y];
-              if (!WorldGen.SolidTile(point1.X, point1.Y) && (int) tile.wall != (int) num1 && ((int) tile.wall != 4 && (int) tile.wall != 40) && (int) tile.wall != 3)
+              Tile tile = Main.tile[(int) point1.X, (int) point1.Y];
+              if (!WorldGen.SolidTile((int) point1.X, (int) point1.Y) && (int) tile.wall != (int) num1 && ((int) tile.wall != 4 && (int) tile.wall != 40) && (int) tile.wall != 3)
               {
                 if ((int) num1 == 63 && (int) tile.wall == 0)
                 {
@@ -39933,36 +40982,47 @@ label_21:
                   else
                   {
                     tile.wall = num1;
-                    Point point2 = new Point(point1.X - 1, point1.Y);
+                    Point point2;
+                    // ISSUE: explicit reference operation
+                    ((Point) @point2).\u002Ector(point1.X - 1, (int) point1.Y);
                     if (!pointSet.Contains(point2))
                       pointList2.Add(point2);
-                    point2 = new Point(point1.X + 1, point1.Y);
+                    // ISSUE: explicit reference operation
+                    ((Point) @point2).\u002Ector(point1.X + 1, (int) point1.Y);
                     if (!pointSet.Contains(point2))
                       pointList2.Add(point2);
-                    point2 = new Point(point1.X, point1.Y - 1);
+                    // ISSUE: explicit reference operation
+                    ((Point) @point2).\u002Ector((int) point1.X, point1.Y - 1);
                     if (!pointSet.Contains(point2))
                       pointList2.Add(point2);
-                    point2 = new Point(point1.X, point1.Y + 1);
+                    // ISSUE: explicit reference operation
+                    ((Point) @point2).\u002Ector((int) point1.X, point1.Y + 1);
                     if (!pointSet.Contains(point2))
                       pointList2.Add(point2);
                     if ((int) num1 == 63)
                     {
-                      point2 = new Point(point1.X - 1, point1.Y - 1);
+                      // ISSUE: explicit reference operation
+                      ((Point) @point2).\u002Ector(point1.X - 1, point1.Y - 1);
                       if (!pointSet.Contains(point2))
                         pointList2.Add(point2);
-                      point2 = new Point(point1.X + 1, point1.Y - 1);
+                      // ISSUE: explicit reference operation
+                      ((Point) @point2).\u002Ector(point1.X + 1, point1.Y - 1);
                       if (!pointSet.Contains(point2))
                         pointList2.Add(point2);
-                      point2 = new Point(point1.X - 1, point1.Y + 1);
+                      // ISSUE: explicit reference operation
+                      ((Point) @point2).\u002Ector(point1.X - 1, point1.Y + 1);
                       if (!pointSet.Contains(point2))
                         pointList2.Add(point2);
-                      point2 = new Point(point1.X + 1, point1.Y + 1);
+                      // ISSUE: explicit reference operation
+                      ((Point) @point2).\u002Ector(point1.X + 1, point1.Y + 1);
                       if (!pointSet.Contains(point2))
                         pointList2.Add(point2);
-                      point2 = new Point(point1.X - 2, point1.Y);
+                      // ISSUE: explicit reference operation
+                      ((Point) @point2).\u002Ector(point1.X - 2, (int) point1.Y);
                       if (!pointSet.Contains(point2))
                         pointList2.Add(point2);
-                      point2 = new Point(point1.X + 2, point1.Y);
+                      // ISSUE: explicit reference operation
+                      ((Point) @point2).\u002Ector(point1.X + 2, (int) point1.Y);
                       if (!pointSet.Contains(point2))
                         pointList2.Add(point2);
                     }
@@ -39994,7 +41054,7 @@ label_21:
           while (pointList1.Count > 0)
           {
             Point point1 = pointList1[0];
-            if (!WorldGen.InWorld(point1.X, point1.Y, 1))
+            if (!WorldGen.InWorld((int) point1.X, (int) point1.Y, 1))
             {
               pointList1.Remove(point1);
             }
@@ -40002,8 +41062,8 @@ label_21:
             {
               pointSet.Add(point1);
               pointList1.Remove(point1);
-              Tile tile = Main.tile[point1.X, point1.Y];
-              if (WorldGen.SolidTile(point1.X, point1.Y) || (int) tile.wall != 0)
+              Tile tile = Main.tile[(int) point1.X, (int) point1.Y];
+              if (WorldGen.SolidTile((int) point1.X, (int) point1.Y) || (int) tile.wall != 0)
               {
                 if (tile.active())
                 {
@@ -40016,16 +41076,21 @@ label_21:
               else
               {
                 tile.wall = mossWall;
-                Point point2 = new Point(point1.X - 1, point1.Y);
+                Point point2;
+                // ISSUE: explicit reference operation
+                ((Point) @point2).\u002Ector(point1.X - 1, (int) point1.Y);
                 if (!pointSet.Contains(point2))
                   pointList2.Add(point2);
-                point2 = new Point(point1.X + 1, point1.Y);
+                // ISSUE: explicit reference operation
+                ((Point) @point2).\u002Ector(point1.X + 1, (int) point1.Y);
                 if (!pointSet.Contains(point2))
                   pointList2.Add(point2);
-                point2 = new Point(point1.X, point1.Y - 1);
+                // ISSUE: explicit reference operation
+                ((Point) @point2).\u002Ector((int) point1.X, point1.Y - 1);
                 if (!pointSet.Contains(point2))
                   pointList2.Add(point2);
-                point2 = new Point(point1.X, point1.Y + 1);
+                // ISSUE: explicit reference operation
+                ((Point) @point2).\u002Ector((int) point1.X, point1.Y + 1);
                 if (!pointSet.Contains(point2))
                   pointList2.Add(point2);
               }
@@ -40050,7 +41115,7 @@ label_21:
           while (pointList1.Count > 0)
           {
             Point point1 = pointList1[0];
-            if (!WorldGen.InWorld(point1.X, point1.Y, 1))
+            if (!WorldGen.InWorld((int) point1.X, (int) point1.Y, 1))
             {
               pointList1.Remove(point1);
             }
@@ -40058,23 +41123,23 @@ label_21:
             {
               pointSet.Add(point1);
               pointList1.Remove(point1);
-              Tile tile1 = Main.tile[point1.X, point1.Y];
-              if (WorldGen.SolidTile(point1.X, point1.Y) || (int) tile1.wall != 0)
+              Tile tile1 = Main.tile[(int) point1.X, (int) point1.Y];
+              if (WorldGen.SolidTile((int) point1.X, (int) point1.Y) || (int) tile1.wall != 0)
               {
                 if (tile1.active())
                 {
                   if (WorldGen.Spread.Gemmable((int) tile1.type))
                     tile1.type = WorldGen.randGemTile();
-                  Tile tile2 = Main.tile[point1.X - 1, point1.Y];
+                  Tile tile2 = Main.tile[point1.X - 1, (int) point1.Y];
                   if (WorldGen.Spread.Gemmable((int) tile2.type))
                     tile2.type = WorldGen.randGemTile();
-                  Tile tile3 = Main.tile[point1.X + 1, point1.Y];
+                  Tile tile3 = Main.tile[point1.X + 1, (int) point1.Y];
                   if (WorldGen.Spread.Gemmable((int) tile3.type))
                     tile3.type = WorldGen.randGemTile();
-                  Tile tile4 = Main.tile[point1.X, point1.Y - 1];
+                  Tile tile4 = Main.tile[(int) point1.X, point1.Y - 1];
                   if (WorldGen.Spread.Gemmable((int) tile4.type))
                     tile4.type = WorldGen.randGemTile();
-                  Tile tile5 = Main.tile[point1.X, point1.Y + 1];
+                  Tile tile5 = Main.tile[(int) point1.X, point1.Y + 1];
                   if (WorldGen.Spread.Gemmable((int) tile5.type))
                     tile5.type = WorldGen.randGemTile();
                 }
@@ -40083,17 +41148,22 @@ label_21:
               {
                 tile1.wall = (byte) (48 + WorldGen.randGem());
                 if (!tile1.active() && WorldGen.genRand.Next(2) == 0)
-                  WorldGen.PlaceTile(point1.X, point1.Y, 178, true, false, -1, WorldGen.randGem());
-                Point point2 = new Point(point1.X - 1, point1.Y);
+                  WorldGen.PlaceTile((int) point1.X, (int) point1.Y, 178, true, false, -1, WorldGen.randGem());
+                Point point2;
+                // ISSUE: explicit reference operation
+                ((Point) @point2).\u002Ector(point1.X - 1, (int) point1.Y);
                 if (!pointSet.Contains(point2))
                   pointList2.Add(point2);
-                point2 = new Point(point1.X + 1, point1.Y);
+                // ISSUE: explicit reference operation
+                ((Point) @point2).\u002Ector(point1.X + 1, (int) point1.Y);
                 if (!pointSet.Contains(point2))
                   pointList2.Add(point2);
-                point2 = new Point(point1.X, point1.Y - 1);
+                // ISSUE: explicit reference operation
+                ((Point) @point2).\u002Ector((int) point1.X, point1.Y - 1);
                 if (!pointSet.Contains(point2))
                   pointList2.Add(point2);
-                point2 = new Point(point1.X, point1.Y + 1);
+                // ISSUE: explicit reference operation
+                ((Point) @point2).\u002Ector((int) point1.X, point1.Y + 1);
                 if (!pointSet.Contains(point2))
                   pointList2.Add(point2);
               }
@@ -40119,7 +41189,7 @@ label_21:
           while (pointList1.Count > 0)
           {
             Point point1 = pointList1[0];
-            if (!WorldGen.InWorld(point1.X, point1.Y, 1))
+            if (!WorldGen.InWorld((int) point1.X, (int) point1.Y, 1))
             {
               pointList1.Remove(point1);
             }
@@ -40127,8 +41197,8 @@ label_21:
             {
               pointSet.Add(point1);
               pointList1.Remove(point1);
-              Tile tile = Main.tile[point1.X, point1.Y];
-              if (WorldGen.SolidTile(point1.X, point1.Y) || (int) tile.wall != 0)
+              Tile tile = Main.tile[(int) point1.X, (int) point1.Y];
+              if (WorldGen.SolidTile((int) point1.X, (int) point1.Y) || (int) tile.wall != 0)
               {
                 if (tile.active() && (int) tile.wall == 0)
                   tile.wall = num;
@@ -40136,45 +41206,50 @@ label_21:
               else
               {
                 tile.wall = num;
-                WorldGen.SquareWallFrame(point1.X, point1.Y, true);
+                WorldGen.SquareWallFrame((int) point1.X, (int) point1.Y, true);
                 if (!tile.active())
                 {
                   tile.liquid = (byte) 0;
                   tile.lava(false);
-                  if (WorldGen.SolidTile(point1.X, point1.Y + 1) && WorldGen.genRand.Next(3) == 0)
+                  if (WorldGen.SolidTile((int) point1.X, point1.Y + 1) && WorldGen.genRand.Next(3) == 0)
                   {
                     if (WorldGen.genRand.Next(15) == 0)
-                      WorldGen.AddBuriedChest(point1.X, point1.Y, 939, true, 15);
+                      WorldGen.AddBuriedChest((int) point1.X, (int) point1.Y, 939, true, 15);
                     else
-                      WorldGen.PlacePot(point1.X, point1.Y, (ushort) 28, WorldGen.genRand.Next(19, 21));
+                      WorldGen.PlacePot((int) point1.X, (int) point1.Y, (ushort) 28, WorldGen.genRand.Next(19, 21));
                   }
                   if (!tile.active())
                   {
-                    if (WorldGen.SolidTile(point1.X, point1.Y - 1) && WorldGen.genRand.Next(3) == 0)
-                      WorldGen.PlaceTight(point1.X, point1.Y, (ushort) 165, true);
-                    else if (WorldGen.SolidTile(point1.X, point1.Y + 1))
+                    if (WorldGen.SolidTile((int) point1.X, point1.Y - 1) && WorldGen.genRand.Next(3) == 0)
+                      WorldGen.PlaceTight((int) point1.X, (int) point1.Y, (ushort) 165, true);
+                    else if (WorldGen.SolidTile((int) point1.X, point1.Y + 1))
                     {
-                      WorldGen.PlaceTile(point1.X, point1.Y, 187, true, false, -1, 9 + WorldGen.genRand.Next(5));
+                      WorldGen.PlaceTile((int) point1.X, (int) point1.Y, 187, true, false, -1, 9 + WorldGen.genRand.Next(5));
                       if (WorldGen.genRand.Next(3) == 0)
                       {
                         if (!tile.active())
-                          WorldGen.PlaceSmallPile(point1.X, point1.Y, 34 + WorldGen.genRand.Next(4), 1, (ushort) 185);
+                          WorldGen.PlaceSmallPile((int) point1.X, (int) point1.Y, 34 + WorldGen.genRand.Next(4), 1, (ushort) 185);
                         if (!tile.active())
-                          WorldGen.PlaceSmallPile(point1.X, point1.Y, 48 + WorldGen.genRand.Next(6), 0, (ushort) 185);
+                          WorldGen.PlaceSmallPile((int) point1.X, (int) point1.Y, 48 + WorldGen.genRand.Next(6), 0, (ushort) 185);
                       }
                     }
                   }
                 }
-                Point point2 = new Point(point1.X - 1, point1.Y);
+                Point point2;
+                // ISSUE: explicit reference operation
+                ((Point) @point2).\u002Ector(point1.X - 1, (int) point1.Y);
                 if (!pointSet.Contains(point2))
                   pointList2.Add(point2);
-                point2 = new Point(point1.X + 1, point1.Y);
+                // ISSUE: explicit reference operation
+                ((Point) @point2).\u002Ector(point1.X + 1, (int) point1.Y);
                 if (!pointSet.Contains(point2))
                   pointList2.Add(point2);
-                point2 = new Point(point1.X, point1.Y - 1);
+                // ISSUE: explicit reference operation
+                ((Point) @point2).\u002Ector((int) point1.X, point1.Y - 1);
                 if (!pointSet.Contains(point2))
                   pointList2.Add(point2);
-                point2 = new Point(point1.X, point1.Y + 1);
+                // ISSUE: explicit reference operation
+                ((Point) @point2).\u002Ector((int) point1.X, point1.Y + 1);
                 if (!pointSet.Contains(point2))
                   pointList2.Add(point2);
               }
@@ -40200,7 +41275,7 @@ label_21:
           while (pointList1.Count > 0)
           {
             Point point1 = pointList1[0];
-            if (!WorldGen.InWorld(point1.X, point1.Y, 1))
+            if (!WorldGen.InWorld((int) point1.X, (int) point1.Y, 1))
             {
               pointList1.Remove(point1);
             }
@@ -40208,20 +41283,25 @@ label_21:
             {
               pointSet.Add(point1);
               pointList1.Remove(point1);
-              Tile tile = Main.tile[point1.X, point1.Y];
-              if (!WorldGen.SolidTile(point1.X, point1.Y) && (int) tile.wall != (int) num && (int) tile.wall > 0)
+              Tile tile = Main.tile[(int) point1.X, (int) point1.Y];
+              if (!WorldGen.SolidTile((int) point1.X, (int) point1.Y) && (int) tile.wall != (int) num && (int) tile.wall > 0)
               {
                 tile.wall = num;
-                Point point2 = new Point(point1.X - 1, point1.Y);
+                Point point2;
+                // ISSUE: explicit reference operation
+                ((Point) @point2).\u002Ector(point1.X - 1, (int) point1.Y);
                 if (!pointSet.Contains(point2))
                   pointList2.Add(point2);
-                point2 = new Point(point1.X + 1, point1.Y);
+                // ISSUE: explicit reference operation
+                ((Point) @point2).\u002Ector(point1.X + 1, (int) point1.Y);
                 if (!pointSet.Contains(point2))
                   pointList2.Add(point2);
-                point2 = new Point(point1.X, point1.Y - 1);
+                // ISSUE: explicit reference operation
+                ((Point) @point2).\u002Ector((int) point1.X, point1.Y - 1);
                 if (!pointSet.Contains(point2))
                   pointList2.Add(point2);
-                point2 = new Point(point1.X, point1.Y + 1);
+                // ISSUE: explicit reference operation
+                ((Point) @point2).\u002Ector((int) point1.X, point1.Y + 1);
                 if (!pointSet.Contains(point2))
                   pointList2.Add(point2);
               }

@@ -1,8 +1,8 @@
 ﻿// Decompiled with JetBrains decompiler
 // Type: Terraria.Graphics.Shaders.HairShaderDataSet
-// Assembly: TerrariaServer, Version=1.3.5.1, Culture=neutral, PublicKeyToken=null
-// MVID: C2103E81-0935-4BEA-9E98-4159FC80C2BB
-// Assembly location: F:\Steam\steamapps\common\Terraria\TerrariaServer.exe
+// Assembly: TerrariaServer, Version=1.3.5.3, Culture=neutral, PublicKeyToken=null
+// MVID: 8A63A7A2-328D-424C-BC9D-BF23F93646F7
+// Assembly location: H:\Steam\steamapps\common\Terraria\TerrariaServer.exe
 
 using Microsoft.Xna.Framework;
 using System;
@@ -21,7 +21,12 @@ namespace Terraria.Graphics.Shaders
     {
       if ((int) this._shaderDataCount == (int) byte.MaxValue)
         throw new Exception("Too many shaders bound.");
-      this._shaderLookupDictionary[itemId] = (short) ++this._shaderDataCount;
+      Dictionary<int, short> lookupDictionary = this._shaderLookupDictionary;
+      int index = itemId;
+      byte num1 = (byte) ((uint) this._shaderDataCount + 1U);
+      this._shaderDataCount = num1;
+      int num2 = (int) num1;
+      lookupDictionary[index] = (short) num2;
       this._shaderData.Add((HairShaderData) shaderData);
       return shaderData;
     }
@@ -31,14 +36,16 @@ namespace Terraria.Graphics.Shaders
       if ((int) shaderId != 0 && (int) shaderId <= (int) this._shaderDataCount)
         this._shaderData[(int) shaderId - 1].Apply(player, drawData);
       else
-        Main.pixelShader.CurrentTechnique.Passes[0].Apply();
+        Main.pixelShader.get_CurrentTechnique().get_Passes().get_Item(0).Apply();
     }
 
     public Color GetColor(short shaderId, Player player, Color lightColor)
     {
       if ((int) shaderId != 0 && (int) shaderId <= (int) this._shaderDataCount)
         return this._shaderData[(int) shaderId - 1].GetColor(player, lightColor);
-      return new Color(lightColor.ToVector4() * player.hairColor.ToVector4());
+      // ISSUE: explicit reference operation
+      // ISSUE: explicit reference operation
+      return new Color(Vector4.op_Multiply(((Color) @lightColor).ToVector4(), ((Color) @player.hairColor).ToVector4()));
     }
 
     public HairShaderData GetShaderFromItemId(int type)

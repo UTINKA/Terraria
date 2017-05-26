@@ -1,8 +1,8 @@
 ﻿// Decompiled with JetBrains decompiler
 // Type: Terraria.Chest
-// Assembly: TerrariaServer, Version=1.3.5.1, Culture=neutral, PublicKeyToken=null
-// MVID: C2103E81-0935-4BEA-9E98-4159FC80C2BB
-// Assembly location: F:\Steam\steamapps\common\Terraria\TerrariaServer.exe
+// Assembly: TerrariaServer, Version=1.3.5.3, Culture=neutral, PublicKeyToken=null
+// MVID: 8A63A7A2-328D-424C-BC9D-BF23F93646F7
+// Assembly location: H:\Steam\steamapps\common\Terraria\TerrariaServer.exe
 
 using Microsoft.Xna.Framework;
 using Terraria.DataStructures;
@@ -57,72 +57,180 @@ namespace Terraria
     {
       int[] chestItemSpawn = Chest.chestItemSpawn;
       int[] chestTypeToIcon = Chest.chestTypeToIcon;
-      chestTypeToIcon[0] = chestItemSpawn[0] = 48;
-      chestTypeToIcon[1] = chestItemSpawn[1] = 306;
-      chestTypeToIcon[2] = 327;
+      int index1 = 0;
+      int num1 = chestItemSpawn[0] = 48;
+      chestTypeToIcon[index1] = num1;
+      int index2 = 1;
+      int num2 = chestItemSpawn[1] = 306;
+      chestTypeToIcon[index2] = num2;
+      int index3 = 2;
+      int num3 = 327;
+      chestTypeToIcon[index3] = num3;
       chestItemSpawn[2] = 306;
-      chestTypeToIcon[3] = chestItemSpawn[3] = 328;
-      chestTypeToIcon[4] = 329;
+      int index4 = 3;
+      int num4 = chestItemSpawn[3] = 328;
+      chestTypeToIcon[index4] = num4;
+      int index5 = 4;
+      int num5 = 329;
+      chestTypeToIcon[index5] = num5;
       chestItemSpawn[4] = 328;
-      chestTypeToIcon[5] = chestItemSpawn[5] = 343;
-      chestTypeToIcon[6] = chestItemSpawn[6] = 348;
-      chestTypeToIcon[7] = chestItemSpawn[7] = 625;
-      chestTypeToIcon[8] = chestItemSpawn[8] = 626;
-      chestTypeToIcon[9] = chestItemSpawn[9] = 627;
-      chestTypeToIcon[10] = chestItemSpawn[10] = 680;
-      chestTypeToIcon[11] = chestItemSpawn[11] = 681;
-      chestTypeToIcon[12] = chestItemSpawn[12] = 831;
-      chestTypeToIcon[13] = chestItemSpawn[13] = 838;
-      chestTypeToIcon[14] = chestItemSpawn[14] = 914;
-      chestTypeToIcon[15] = chestItemSpawn[15] = 952;
-      chestTypeToIcon[16] = chestItemSpawn[16] = 1142;
-      chestTypeToIcon[17] = chestItemSpawn[17] = 1298;
-      chestTypeToIcon[18] = chestItemSpawn[18] = 1528;
-      chestTypeToIcon[19] = chestItemSpawn[19] = 1529;
-      chestTypeToIcon[20] = chestItemSpawn[20] = 1530;
-      chestTypeToIcon[21] = chestItemSpawn[21] = 1531;
-      chestTypeToIcon[22] = chestItemSpawn[22] = 1532;
-      chestTypeToIcon[23] = 1533;
+      int index6 = 5;
+      int num6 = chestItemSpawn[5] = 343;
+      chestTypeToIcon[index6] = num6;
+      int index7 = 6;
+      int num7 = chestItemSpawn[6] = 348;
+      chestTypeToIcon[index7] = num7;
+      int index8 = 7;
+      int num8 = chestItemSpawn[7] = 625;
+      chestTypeToIcon[index8] = num8;
+      int index9 = 8;
+      int num9 = chestItemSpawn[8] = 626;
+      chestTypeToIcon[index9] = num9;
+      int index10 = 9;
+      int num10 = chestItemSpawn[9] = 627;
+      chestTypeToIcon[index10] = num10;
+      int index11 = 10;
+      int num11 = chestItemSpawn[10] = 680;
+      chestTypeToIcon[index11] = num11;
+      int index12 = 11;
+      int num12 = chestItemSpawn[11] = 681;
+      chestTypeToIcon[index12] = num12;
+      int index13 = 12;
+      int num13 = chestItemSpawn[12] = 831;
+      chestTypeToIcon[index13] = num13;
+      int index14 = 13;
+      int num14 = chestItemSpawn[13] = 838;
+      chestTypeToIcon[index14] = num14;
+      int index15 = 14;
+      int num15 = chestItemSpawn[14] = 914;
+      chestTypeToIcon[index15] = num15;
+      int index16 = 15;
+      int num16 = chestItemSpawn[15] = 952;
+      chestTypeToIcon[index16] = num16;
+      int index17 = 16;
+      int num17 = chestItemSpawn[16] = 1142;
+      chestTypeToIcon[index17] = num17;
+      int index18 = 17;
+      int num18 = chestItemSpawn[17] = 1298;
+      chestTypeToIcon[index18] = num18;
+      int index19 = 18;
+      int num19 = chestItemSpawn[18] = 1528;
+      chestTypeToIcon[index19] = num19;
+      int index20 = 19;
+      int num20 = chestItemSpawn[19] = 1529;
+      chestTypeToIcon[index20] = num20;
+      int index21 = 20;
+      int num21 = chestItemSpawn[20] = 1530;
+      chestTypeToIcon[index21] = num21;
+      int index22 = 21;
+      int num22 = chestItemSpawn[21] = 1531;
+      chestTypeToIcon[index22] = num22;
+      int index23 = 22;
+      int num23 = chestItemSpawn[22] = 1532;
+      chestTypeToIcon[index23] = num23;
+      int index24 = 23;
+      int num24 = 1533;
+      chestTypeToIcon[index24] = num24;
       chestItemSpawn[23] = 1528;
-      chestTypeToIcon[24] = 1534;
+      int index25 = 24;
+      int num25 = 1534;
+      chestTypeToIcon[index25] = num25;
       chestItemSpawn[24] = 1529;
-      chestTypeToIcon[25] = 1535;
+      int index26 = 25;
+      int num26 = 1535;
+      chestTypeToIcon[index26] = num26;
       chestItemSpawn[25] = 1530;
-      chestTypeToIcon[26] = 1536;
+      int index27 = 26;
+      int num27 = 1536;
+      chestTypeToIcon[index27] = num27;
       chestItemSpawn[26] = 1531;
-      chestTypeToIcon[27] = 1537;
+      int index28 = 27;
+      int num28 = 1537;
+      chestTypeToIcon[index28] = num28;
       chestItemSpawn[27] = 1532;
-      chestTypeToIcon[28] = chestItemSpawn[28] = 2230;
-      chestTypeToIcon[29] = chestItemSpawn[29] = 2249;
-      chestTypeToIcon[30] = chestItemSpawn[30] = 2250;
-      chestTypeToIcon[31] = chestItemSpawn[31] = 2526;
-      chestTypeToIcon[32] = chestItemSpawn[32] = 2544;
-      chestTypeToIcon[33] = chestItemSpawn[33] = 2559;
-      chestTypeToIcon[34] = chestItemSpawn[34] = 2574;
-      chestTypeToIcon[35] = chestItemSpawn[35] = 2612;
-      chestTypeToIcon[36] = 327;
+      int index29 = 28;
+      int num29 = chestItemSpawn[28] = 2230;
+      chestTypeToIcon[index29] = num29;
+      int index30 = 29;
+      int num30 = chestItemSpawn[29] = 2249;
+      chestTypeToIcon[index30] = num30;
+      int index31 = 30;
+      int num31 = chestItemSpawn[30] = 2250;
+      chestTypeToIcon[index31] = num31;
+      int index32 = 31;
+      int num32 = chestItemSpawn[31] = 2526;
+      chestTypeToIcon[index32] = num32;
+      int index33 = 32;
+      int num33 = chestItemSpawn[32] = 2544;
+      chestTypeToIcon[index33] = num33;
+      int index34 = 33;
+      int num34 = chestItemSpawn[33] = 2559;
+      chestTypeToIcon[index34] = num34;
+      int index35 = 34;
+      int num35 = chestItemSpawn[34] = 2574;
+      chestTypeToIcon[index35] = num35;
+      int index36 = 35;
+      int num36 = chestItemSpawn[35] = 2612;
+      chestTypeToIcon[index36] = num36;
+      int index37 = 36;
+      int num37 = 327;
+      chestTypeToIcon[index37] = num37;
       chestItemSpawn[36] = 2612;
-      chestTypeToIcon[37] = chestItemSpawn[37] = 2613;
-      chestTypeToIcon[38] = 327;
+      int index38 = 37;
+      int num38 = chestItemSpawn[37] = 2613;
+      chestTypeToIcon[index38] = num38;
+      int index39 = 38;
+      int num39 = 327;
+      chestTypeToIcon[index39] = num39;
       chestItemSpawn[38] = 2613;
-      chestTypeToIcon[39] = chestItemSpawn[39] = 2614;
-      chestTypeToIcon[40] = 327;
+      int index40 = 39;
+      int num40 = chestItemSpawn[39] = 2614;
+      chestTypeToIcon[index40] = num40;
+      int index41 = 40;
+      int num41 = 327;
+      chestTypeToIcon[index41] = num41;
       chestItemSpawn[40] = 2614;
-      chestTypeToIcon[41] = chestItemSpawn[41] = 2615;
-      chestTypeToIcon[42] = chestItemSpawn[42] = 2616;
-      chestTypeToIcon[43] = chestItemSpawn[43] = 2617;
-      chestTypeToIcon[44] = chestItemSpawn[44] = 2618;
-      chestTypeToIcon[45] = chestItemSpawn[45] = 2619;
-      chestTypeToIcon[46] = chestItemSpawn[46] = 2620;
-      chestTypeToIcon[47] = chestItemSpawn[47] = 2748;
-      chestTypeToIcon[48] = chestItemSpawn[48] = 2814;
-      chestTypeToIcon[49] = chestItemSpawn[49] = 3180;
-      chestTypeToIcon[50] = chestItemSpawn[50] = 3125;
-      chestTypeToIcon[51] = chestItemSpawn[51] = 3181;
+      int index42 = 41;
+      int num42 = chestItemSpawn[41] = 2615;
+      chestTypeToIcon[index42] = num42;
+      int index43 = 42;
+      int num43 = chestItemSpawn[42] = 2616;
+      chestTypeToIcon[index43] = num43;
+      int index44 = 43;
+      int num44 = chestItemSpawn[43] = 2617;
+      chestTypeToIcon[index44] = num44;
+      int index45 = 44;
+      int num45 = chestItemSpawn[44] = 2618;
+      chestTypeToIcon[index45] = num45;
+      int index46 = 45;
+      int num46 = chestItemSpawn[45] = 2619;
+      chestTypeToIcon[index46] = num46;
+      int index47 = 46;
+      int num47 = chestItemSpawn[46] = 2620;
+      chestTypeToIcon[index47] = num47;
+      int index48 = 47;
+      int num48 = chestItemSpawn[47] = 2748;
+      chestTypeToIcon[index48] = num48;
+      int index49 = 48;
+      int num49 = chestItemSpawn[48] = 2814;
+      chestTypeToIcon[index49] = num49;
+      int index50 = 49;
+      int num50 = chestItemSpawn[49] = 3180;
+      chestTypeToIcon[index50] = num50;
+      int index51 = 50;
+      int num51 = chestItemSpawn[50] = 3125;
+      chestTypeToIcon[index51] = num51;
+      int index52 = 51;
+      int num52 = chestItemSpawn[51] = 3181;
+      chestTypeToIcon[index52] = num52;
       int[] chestItemSpawn2 = Chest.chestItemSpawn2;
       int[] chestTypeToIcon2 = Chest.chestTypeToIcon2;
-      chestTypeToIcon2[0] = chestItemSpawn2[0] = 3884;
-      chestTypeToIcon2[1] = chestItemSpawn2[1] = 3885;
+      int index53 = 0;
+      int num53 = chestItemSpawn2[0] = 3884;
+      chestTypeToIcon2[index53] = num53;
+      int index54 = 1;
+      int num54 = chestItemSpawn2[1] = 3885;
+      chestTypeToIcon2[index54] = num54;
       Chest.dresserTypeToIcon[0] = Chest.dresserItemSpawn[0] = 334;
       Chest.dresserTypeToIcon[1] = Chest.dresserItemSpawn[1] = 647;
       Chest.dresserTypeToIcon[2] = Chest.dresserItemSpawn[2] = 648;
@@ -186,42 +294,47 @@ namespace Terraria
       {
         bool flag1 = false;
         bool flag2 = false;
-        if (Main.chest[i] != null && !Chest.IsPlayerInChest(i) && !Chest.isLocked(Main.chest[i].x, Main.chest[i].y) && (double) (new Vector2((float) (Main.chest[i].x * 16 + 16), (float) (Main.chest[i].y * 16 + 16)) - position).Length() < 200.0)
+        if (Main.chest[i] != null && !Chest.IsPlayerInChest(i) && !Chest.isLocked(Main.chest[i].x, Main.chest[i].y))
         {
-          for (int index = 0; index < Main.chest[i].item.Length; ++index)
-          {
-            if (Main.chest[i].item[index].type > 0 && Main.chest[i].item[index].stack > 0)
-            {
-              if (item.IsTheSameAs(Main.chest[i].item[index]))
-              {
-                flag1 = true;
-                int num = Main.chest[i].item[index].maxStack - Main.chest[i].item[index].stack;
-                if (num > 0)
-                {
-                  if (num > item.stack)
-                    num = item.stack;
-                  item.stack -= num;
-                  Main.chest[i].item[index].stack += num;
-                  if (item.stack <= 0)
-                  {
-                    item.SetDefaults(0, false);
-                    return item;
-                  }
-                }
-              }
-            }
-            else
-              flag2 = true;
-          }
-          if (flag1 && flag2 && item.stack > 0)
+          Vector2 vector2 = Vector2.op_Subtraction(new Vector2((float) (Main.chest[i].x * 16 + 16), (float) (Main.chest[i].y * 16 + 16)), position);
+          // ISSUE: explicit reference operation
+          if ((double) ((Vector2) @vector2).Length() < 200.0)
           {
             for (int index = 0; index < Main.chest[i].item.Length; ++index)
             {
-              if (Main.chest[i].item[index].type == 0 || Main.chest[i].item[index].stack == 0)
+              if (Main.chest[i].item[index].type > 0 && Main.chest[i].item[index].stack > 0)
               {
-                Main.chest[i].item[index] = item.Clone();
-                item.SetDefaults(0, false);
-                return item;
+                if (item.IsTheSameAs(Main.chest[i].item[index]))
+                {
+                  flag1 = true;
+                  int num = Main.chest[i].item[index].maxStack - Main.chest[i].item[index].stack;
+                  if (num > 0)
+                  {
+                    if (num > item.stack)
+                      num = item.stack;
+                    item.stack -= num;
+                    Main.chest[i].item[index].stack += num;
+                    if (item.stack <= 0)
+                    {
+                      item.SetDefaults(0, false);
+                      return item;
+                    }
+                  }
+                }
+              }
+              else
+                flag2 = true;
+            }
+            if (flag1 & flag2 && item.stack > 0)
+            {
+              for (int index = 0; index < Main.chest[i].item.Length; ++index)
+              {
+                if (Main.chest[i].item[index].type == 0 || Main.chest[i].item[index].stack == 0)
+                {
+                  Main.chest[i].item[index] = item.Clone();
+                  item.SetDefaults(0, false);
+                  return item;
+                }
               }
             }
           }
@@ -239,47 +352,59 @@ namespace Terraria
     {
       if (Main.tile[X, Y] == null)
         return false;
-      short num;
+      int num1 = (int) Main.tile[X, Y].frameX / 36;
+      short num2;
       int Type;
-      switch ((int) Main.tile[X, Y].frameX / 36)
+      if (num1 <= 4)
       {
-        case 2:
-          num = (short) 36;
+        if (num1 != 2)
+        {
+          if (num1 == 4)
+          {
+            num2 = (short) 36;
+            Type = 11;
+            goto label_14;
+          }
+        }
+        else
+        {
+          num2 = (short) 36;
           Type = 11;
           AchievementsHelper.NotifyProgressionEvent(19);
-          break;
-        case 4:
-          num = (short) 36;
-          Type = 11;
-          break;
-        case 23:
-        case 24:
-        case 25:
-        case 26:
-        case 27:
-          if (!NPC.downedPlantBoss)
-            return false;
-          num = (short) 180;
-          Type = 11;
-          AchievementsHelper.NotifyProgressionEvent(20);
-          break;
-        case 36:
-        case 38:
-        case 40:
-          num = (short) 36;
-          Type = 11;
-          break;
-        default:
-          return false;
+          goto label_14;
+        }
       }
+      else if ((uint) (num1 - 23) > 4U)
+      {
+        switch (num1)
+        {
+          case 36:
+          case 38:
+          case 40:
+            num2 = (short) 36;
+            Type = 11;
+            goto label_14;
+        }
+      }
+      else
+      {
+        if (!NPC.downedPlantBoss)
+          return false;
+        num2 = (short) 180;
+        Type = 11;
+        AchievementsHelper.NotifyProgressionEvent(20);
+        goto label_14;
+      }
+      return false;
+label_14:
       Main.PlaySound(22, X * 16, Y * 16, 1, 1f, 0.0f);
       for (int index1 = X; index1 <= X + 1; ++index1)
       {
         for (int index2 = Y; index2 <= Y + 1; ++index2)
         {
-          Main.tile[index1, index2].frameX -= num;
+          Main.tile[index1, index2].frameX -= num2;
           for (int index3 = 0; index3 < 4; ++index3)
-            Dust.NewDust(new Vector2((float) (index1 * 16), (float) (index2 * 16)), 16, 16, Type, 0.0f, 0.0f, 0, new Color(), 1f);
+            Dust.NewDust(new Vector2((float) (index1 * 16), (float) (index2 * 16)), 16, 16, Type, 0.0f, 0.0f, 0, (Color) null, 1f);
         }
       }
       return true;
@@ -616,23 +741,9 @@ namespace Terraria
             }
             if (num3 == 3637)
             {
-              switch (Main.travelShop[index2])
-              {
-                case 3621:
-                case 3622:
-                case 3633:
-                case 3634:
-                case 3635:
-                case 3636:
-                case 3637:
-                case 3638:
-                case 3639:
-                case 3640:
-                case 3641:
-                case 3642:
-                  num3 = 0;
-                  break;
-              }
+              int num4 = Main.travelShop[index2];
+              if ((uint) (num4 - 3621) <= 1U || (uint) (num4 - 3633) <= 9U)
+                num3 = 0;
               if (num3 == 0)
                 break;
             }
@@ -1817,12 +1928,12 @@ namespace Terraria
           this.item[index1].SetDefaults(1493, false);
           ++index1;
         }
-        if ((double) Main.player[Main.myPlayer].position.Y / 16.0 < Main.worldSurface * 0.349999994039536)
+        if (Main.player[Main.myPlayer].position.Y / 16.0 < Main.worldSurface * 0.349999994039536)
         {
           this.item[index1].SetDefaults(1485, false);
           ++index1;
         }
-        if ((double) Main.player[Main.myPlayer].position.Y / 16.0 < Main.worldSurface * 0.349999994039536 && Main.hardMode)
+        if (Main.player[Main.myPlayer].position.Y / 16.0 < Main.worldSurface * 0.349999994039536 && Main.hardMode)
         {
           this.item[index1].SetDefaults(1494, false);
           ++index1;
@@ -1936,8 +2047,8 @@ namespace Terraria
         int index6 = index5 + 1;
         this.item[index6].SetDefaults(2434, false);
         index1 = index6 + 1;
-        int num = (int) (((double) Main.screenPosition.X + (double) (Main.screenWidth / 2)) / 16.0);
-        if ((double) Main.screenPosition.Y / 16.0 < Main.worldSurface + 10.0 && (num < 380 || num > Main.maxTilesX - 380))
+        int num = (int) ((Main.screenPosition.X + (double) (Main.screenWidth / 2)) / 16.0);
+        if (Main.screenPosition.Y / 16.0 < Main.worldSurface + 10.0 && (num < 380 || num > Main.maxTilesX - 380))
         {
           this.item[index1].SetDefaults(1180, false);
           ++index1;
@@ -2088,19 +2199,19 @@ namespace Terraria
       }
       else if (type == 21)
       {
-        bool flag1 = Main.hardMode && NPC.downedMechBossAny;
-        bool flag2 = Main.hardMode && NPC.downedGolemBoss;
+        bool flag = Main.hardMode && NPC.downedMechBossAny;
+        int num1 = !Main.hardMode ? 0 : (NPC.downedGolemBoss ? 1 : 0);
         this.item[index1].SetDefaults(353, false);
         int index2 = index1 + 1;
         this.item[index2].SetDefaults(3828, false);
-        this.item[index2].shopCustomPrice = !flag2 ? (!flag1 ? new int?(Item.buyPrice(0, 0, 25, 0)) : new int?(Item.buyPrice(0, 1, 0, 0))) : new int?(Item.buyPrice(0, 4, 0, 0));
+        this.item[index2].shopCustomPrice = num1 == 0 ? (!flag ? new int?(Item.buyPrice(0, 0, 25, 0)) : new int?(Item.buyPrice(0, 1, 0, 0))) : new int?(Item.buyPrice(0, 4, 0, 0));
         int index3 = index2 + 1;
         this.item[index3].SetDefaults(3816, false);
         int index4 = index3 + 1;
         this.item[index4].SetDefaults(3813, false);
         this.item[index4].shopCustomPrice = new int?(75);
         this.item[index4].shopSpecialCurrency = CustomCurrencyID.DefenderMedals;
-        int num = index4 + 1;
+        int num2 = index4 + 1;
         int index5 = 10;
         this.item[index5].SetDefaults(3818, false);
         this.item[index5].shopCustomPrice = new int?(5);
@@ -2117,7 +2228,7 @@ namespace Terraria
         this.item[index1].SetDefaults(3829, false);
         this.item[index1].shopCustomPrice = new int?(5);
         this.item[index1].shopSpecialCurrency = CustomCurrencyID.DefenderMedals;
-        if (flag1)
+        if (flag)
         {
           int index8 = 20;
           this.item[index8].SetDefaults(3819, false);
@@ -2136,7 +2247,7 @@ namespace Terraria
           this.item[index1].shopCustomPrice = new int?(25);
           this.item[index1].shopSpecialCurrency = CustomCurrencyID.DefenderMedals;
         }
-        if (flag2)
+        if (num1 != 0)
         {
           int index8 = 30;
           this.item[index8].SetDefaults(3820, false);
@@ -2155,7 +2266,7 @@ namespace Terraria
           this.item[index1].shopCustomPrice = new int?(100);
           this.item[index1].shopSpecialCurrency = CustomCurrencyID.DefenderMedals;
         }
-        if (flag1)
+        if (flag)
         {
           int index8 = 4;
           this.item[index8].SetDefaults(3800, false);
@@ -2169,7 +2280,7 @@ namespace Terraria
           this.item[index10].SetDefaults(3802, false);
           this.item[index10].shopCustomPrice = new int?(25);
           this.item[index10].shopSpecialCurrency = CustomCurrencyID.DefenderMedals;
-          num = index10 + 1;
+          num2 = index10 + 1;
           int index11 = 14;
           this.item[index11].SetDefaults(3797, false);
           this.item[index11].shopCustomPrice = new int?(25);
@@ -2182,7 +2293,7 @@ namespace Terraria
           this.item[index13].SetDefaults(3799, false);
           this.item[index13].shopCustomPrice = new int?(25);
           this.item[index13].shopSpecialCurrency = CustomCurrencyID.DefenderMedals;
-          num = index13 + 1;
+          num2 = index13 + 1;
           int index14 = 24;
           this.item[index14].SetDefaults(3803, false);
           this.item[index14].shopCustomPrice = new int?(25);
@@ -2195,7 +2306,7 @@ namespace Terraria
           this.item[index16].SetDefaults(3805, false);
           this.item[index16].shopCustomPrice = new int?(25);
           this.item[index16].shopSpecialCurrency = CustomCurrencyID.DefenderMedals;
-          num = index16 + 1;
+          num2 = index16 + 1;
           int index17 = 34;
           this.item[index17].SetDefaults(3806, false);
           this.item[index17].shopCustomPrice = new int?(25);
@@ -2210,7 +2321,7 @@ namespace Terraria
           this.item[index19].shopSpecialCurrency = CustomCurrencyID.DefenderMedals;
           index1 = index19 + 1;
         }
-        if (flag2)
+        if (num1 != 0)
         {
           int index8 = 7;
           this.item[index8].SetDefaults(3871, false);
@@ -2224,7 +2335,7 @@ namespace Terraria
           this.item[index10].SetDefaults(3873, false);
           this.item[index10].shopCustomPrice = new int?(75);
           this.item[index10].shopSpecialCurrency = CustomCurrencyID.DefenderMedals;
-          num = index10 + 1;
+          num2 = index10 + 1;
           int index11 = 17;
           this.item[index11].SetDefaults(3874, false);
           this.item[index11].shopCustomPrice = new int?(75);
@@ -2237,7 +2348,7 @@ namespace Terraria
           this.item[index13].SetDefaults(3876, false);
           this.item[index13].shopCustomPrice = new int?(75);
           this.item[index13].shopSpecialCurrency = CustomCurrencyID.DefenderMedals;
-          num = index13 + 1;
+          num2 = index13 + 1;
           int index14 = 27;
           this.item[index14].SetDefaults(3877, false);
           this.item[index14].shopCustomPrice = new int?(75);
@@ -2250,7 +2361,7 @@ namespace Terraria
           this.item[index16].SetDefaults(3879, false);
           this.item[index16].shopCustomPrice = new int?(75);
           this.item[index16].shopSpecialCurrency = CustomCurrencyID.DefenderMedals;
-          num = index16 + 1;
+          num2 = index16 + 1;
           int index17 = 37;
           this.item[index17].SetDefaults(3880, false);
           this.item[index17].shopCustomPrice = new int?(75);

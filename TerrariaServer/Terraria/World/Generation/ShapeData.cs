@@ -1,8 +1,8 @@
 ﻿// Decompiled with JetBrains decompiler
 // Type: Terraria.World.Generation.ShapeData
-// Assembly: TerrariaServer, Version=1.3.5.1, Culture=neutral, PublicKeyToken=null
-// MVID: C2103E81-0935-4BEA-9E98-4159FC80C2BB
-// Assembly location: F:\Steam\steamapps\common\Terraria\TerrariaServer.exe
+// Assembly: TerrariaServer, Version=1.3.5.3, Culture=neutral, PublicKeyToken=null
+// MVID: 8A63A7A2-328D-424C-BC9D-BF23F93646F7
+// Assembly location: H:\Steam\steamapps\common\Terraria\TerrariaServer.exe
 
 using Microsoft.Xna.Framework;
 using System;
@@ -71,7 +71,7 @@ namespace Terraria.World.Generation
         this.Remove(remoteOrigin.X - localOrigin.X + (int) point16.X, remoteOrigin.Y - localOrigin.Y + (int) point16.Y);
     }
 
-    public static Microsoft.Xna.Framework.Rectangle GetBounds(Point origin, params ShapeData[] shapes)
+    public static Rectangle GetBounds(Point origin, params ShapeData[] shapes)
     {
       int val1_1 = (int) shapes[0]._points.First<Point16>().X;
       int val1_2 = val1_1;
@@ -87,7 +87,7 @@ namespace Terraria.World.Generation
           val1_4 = Math.Min(val1_4, (int) point.Y);
         }
       }
-      return new Microsoft.Xna.Framework.Rectangle(val1_2 + origin.X, val1_4 + origin.Y, val1_1 - val1_2, val1_3 - val1_4);
+      return new Rectangle(val1_2 + origin.X, val1_4 + origin.Y, val1_1 - val1_2, val1_3 - val1_4);
     }
   }
 }

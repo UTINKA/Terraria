@@ -1,8 +1,8 @@
 ﻿// Decompiled with JetBrains decompiler
 // Type: Terraria.GameContent.UI.States.UIWorldLoad
-// Assembly: TerrariaServer, Version=1.3.5.1, Culture=neutral, PublicKeyToken=null
-// MVID: C2103E81-0935-4BEA-9E98-4159FC80C2BB
-// Assembly location: F:\Steam\steamapps\common\Terraria\TerrariaServer.exe
+// Assembly: TerrariaServer, Version=1.3.5.3, Culture=neutral, PublicKeyToken=null
+// MVID: 8A63A7A2-328D-424C-BC9D-BF23F93646F7
+// Assembly location: H:\Steam\steamapps\common\Terraria\TerrariaServer.exe
 
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -52,9 +52,9 @@ namespace Terraria.GameContent.UI.States
 
     private void UpdateGamepadSquiggle()
     {
-      Vector2 vector2 = new Vector2((float) Math.Cos((double) Main.GlobalTime * 6.28318548202515), (float) Math.Sin((double) Main.GlobalTime * 6.28318548202515 * 2.0)) * new Vector2(30f, 15f) + Vector2.UnitY * 20f;
+      Vector2 vector2 = Vector2.op_Addition(Vector2.op_Multiply(new Vector2((float) Math.Cos((double) Main.GlobalTime * 6.28318548202515), (float) Math.Sin((double) Main.GlobalTime * 6.28318548202515 * 2.0)), new Vector2(30f, 15f)), Vector2.op_Multiply(Vector2.get_UnitY(), 20f));
       UILinkPointNavigator.Points[3000].Unlink();
-      UILinkPointNavigator.SetPosition(3000, new Vector2((float) Main.screenWidth, (float) Main.screenHeight) / 2f + vector2);
+      UILinkPointNavigator.SetPosition(3000, Vector2.op_Addition(Vector2.op_Division(new Vector2((float) Main.screenWidth, (float) Main.screenHeight), 2f), vector2));
     }
 
     public string GetStatusText()

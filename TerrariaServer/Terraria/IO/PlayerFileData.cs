@@ -1,8 +1,8 @@
 ﻿// Decompiled with JetBrains decompiler
 // Type: Terraria.IO.PlayerFileData
-// Assembly: TerrariaServer, Version=1.3.5.1, Culture=neutral, PublicKeyToken=null
-// MVID: C2103E81-0935-4BEA-9E98-4159FC80C2BB
-// Assembly location: F:\Steam\steamapps\common\Terraria\TerrariaServer.exe
+// Assembly: TerrariaServer, Version=1.3.5.3, Culture=neutral, PublicKeyToken=null
+// MVID: 8A63A7A2-328D-424C-BC9D-BF23F93646F7
+// Assembly location: H:\Steam\steamapps\common\Terraria\TerrariaServer.exe
 
 using System;
 using System.Diagnostics;
@@ -71,7 +71,7 @@ namespace Terraria.IO
       if (!FileUtilities.MoveToCloud(this.Path, playerPathFromName))
         return;
       string fileName = this.GetFileName(false);
-      string path = Main.PlayerPath + (object) Path.DirectorySeparatorChar + fileName + (object) Path.DirectorySeparatorChar;
+      string path = Main.PlayerPath + Path.DirectorySeparatorChar.ToString() + fileName + Path.DirectorySeparatorChar.ToString();
       if (Directory.Exists(path))
       {
         string[] files = Directory.GetFiles(path);
@@ -147,7 +147,7 @@ namespace Terraria.IO
       this._isTimerActive = false;
       if (!this._timer.IsRunning)
         return;
-      this._playTime += this._timer.Elapsed;
+      this._playTime = this._playTime + this._timer.Elapsed;
       this._timer.Reset();
     }
 

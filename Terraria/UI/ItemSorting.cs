@@ -1,8 +1,8 @@
 ﻿// Decompiled with JetBrains decompiler
 // Type: Terraria.UI.ItemSorting
-// Assembly: Terraria, Version=1.3.5.1, Culture=neutral, PublicKeyToken=null
-// MVID: E90A5A2F-CD10-4A2C-9D2A-6B036D4E8877
-// Assembly location: F:\Steam\steamapps\common\Terraria\Terraria.exe
+// Assembly: Terraria, Version=1.3.5.3, Culture=neutral, PublicKeyToken=null
+// MVID: 68659D26-2BE6-448F-8663-74FA559E6F08
+// Assembly location: H:\Steam\steamapps\common\Terraria\Terraria.exe
 
 using System;
 using System.Collections.Generic;
@@ -231,18 +231,22 @@ namespace Terraria.UI
         objList.Add(inv[index]);
         inv[index] = new Item();
       }
-      float num = 1f / (float) intList4.Count;
-      float hue = num / 2f;
+      float num4 = 1f / (float) intList4.Count;
+      float hue = num4 / 2f;
       for (int index1 = 0; index1 < objList.Count; ++index1)
       {
         int index2 = intList2[0];
         ItemSlot.SetGlow(index2, hue, Main.player[Main.myPlayer].chest != -1);
-        List<int> intList5;
-        (intList5 = intList4)[0] = intList5[0] - 1;
+        List<int> intList5 = intList4;
+        int index3 = 0;
+        int num1 = intList5[index3];
+        int index4 = 0;
+        int num2 = num1 - 1;
+        intList5[index4] = num2;
         if (intList4[0] == 0)
         {
           intList4.RemoveAt(0);
-          hue += num;
+          hue += num4;
         }
         inv[index2] = objList[index1];
         intList2.Remove(index2);

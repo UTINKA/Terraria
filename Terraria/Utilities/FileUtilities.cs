@@ -1,8 +1,8 @@
 ﻿// Decompiled with JetBrains decompiler
 // Type: Terraria.Utilities.FileUtilities
-// Assembly: Terraria, Version=1.3.5.1, Culture=neutral, PublicKeyToken=null
-// MVID: E90A5A2F-CD10-4A2C-9D2A-6B036D4E8877
-// Assembly location: F:\Steam\steamapps\common\Terraria\Terraria.exe
+// Assembly: Terraria, Version=1.3.5.3, Culture=neutral, PublicKeyToken=null
+// MVID: 68659D26-2BE6-448F-8663-74FA559E6F08
+// Assembly location: H:\Steam\steamapps\common\Terraria\Terraria.exe
 
 using System;
 using System.IO;
@@ -149,7 +149,13 @@ namespace Terraria.Utilities
       foreach (string directory in Directory.GetDirectories(sourcePath, "*", SearchOption.AllDirectories))
         Directory.CreateDirectory(directory.Replace(sourcePath, destinationPath));
       foreach (string file in Directory.GetFiles(sourcePath, "*.*", SearchOption.AllDirectories))
-        File.Copy(file, file.Replace(sourcePath, destinationPath), true);
+      {
+        string oldValue = sourcePath;
+        string newValue = destinationPath;
+        string destFileName = file.Replace(oldValue, newValue);
+        int num = 1;
+        File.Copy(file, destFileName, num != 0);
+      }
     }
   }
 }

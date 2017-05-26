@@ -1,8 +1,8 @@
 ﻿// Decompiled with JetBrains decompiler
 // Type: Terraria.HitTile
-// Assembly: TerrariaServer, Version=1.3.5.1, Culture=neutral, PublicKeyToken=null
-// MVID: C2103E81-0935-4BEA-9E98-4159FC80C2BB
-// Assembly location: F:\Steam\steamapps\common\Terraria\TerrariaServer.exe
+// Assembly: TerrariaServer, Version=1.3.5.3, Culture=neutral, PublicKeyToken=null
+// MVID: 8A63A7A2-328D-424C-BC9D-BF23F93646F7
+// Assembly location: H:\Steam\steamapps\common\Terraria\TerrariaServer.exe
 
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -63,8 +63,10 @@ namespace Terraria
       if (tileId < 0 || tileId > 20)
         return;
       HitTile.HitTileObject hitTileObject = this.data[tileId];
-      hitTileObject.X = x;
-      hitTileObject.Y = y;
+      int num1 = x;
+      hitTileObject.X = num1;
+      int num2 = y;
+      hitTileObject.Y = num2;
     }
 
     public int AddDamage(int tileId, int damageAmount, bool updateAmount = true)
@@ -77,7 +79,7 @@ namespace Terraria
       hitTileObject.damage += damageAmount;
       hitTileObject.timeToLive = 60;
       hitTileObject.animationTimeElapsed = 0;
-      hitTileObject.animationDirection = (Main.rand.NextFloat() * 6.283185f).ToRotationVector2() * 2f;
+      hitTileObject.animationDirection = Vector2.op_Multiply((Main.rand.NextFloat() * 6.283185f).ToRotationVector2(), 2f);
       if (tileId == this.bufferLocation)
       {
         this.bufferLocation = this.order[20];
@@ -187,10 +189,12 @@ namespace Terraria
       if (!Main.SettingsEnabled_MinersWobble)
         return;
       int num1 = 1;
-      Vector2 vector2_1 = new Vector2((float) Main.offScreenRange);
+      Vector2 zero1;
+      // ISSUE: explicit reference operation
+      ((Vector2) @zero1).\u002Ector((float) Main.offScreenRange);
       if (Main.drawToScreen)
-        vector2_1 = Vector2.Zero;
-      vector2_1 = Vector2.Zero;
+        zero1 = Vector2.get_Zero();
+      zero1 = Vector2.get_Zero();
       for (int index = 0; index < this.data.Length; ++index)
       {
         if (this.data[index].type == num1)
@@ -206,7 +210,7 @@ namespace Terraria
               if (flag1 && num1 == 1)
                 flag1 = flag1 && Main.tile[x, y].active() && Main.tileSolid[(int) Main.tile[x, y].type];
               if (flag1 && num1 == 2)
-                flag1 = flag1 && (int) Main.tile[x, y].wall != 0;
+                flag1 = flag1 && (uint) Main.tile[x, y].wall > 0U;
               if (flag1)
               {
                 bool flag2 = false;
@@ -240,38 +244,46 @@ namespace Terraria
                     num2 = 1;
                   else if (damage >= 20)
                     num2 = 0;
-                  Rectangle rectangle = new Rectangle(this.data[index].crackStyle * 18, num2 * 18, 16, 16);
-                  rectangle.Inflate(-2, -2);
+                  Rectangle rectangle;
+                  // ISSUE: explicit reference operation
+                  ((Rectangle) @rectangle).\u002Ector(this.data[index].crackStyle * 18, num2 * 18, 16, 16);
+                  // ISSUE: explicit reference operation
+                  ((Rectangle) @rectangle).Inflate(-2, -2);
                   if (flag3)
-                    rectangle.X = (4 + this.data[index].crackStyle / 2) * 18;
+                    rectangle.X = (__Null) ((4 + this.data[index].crackStyle / 2) * 18);
                   int animationTimeElapsed = this.data[index].animationTimeElapsed;
                   if ((double) animationTimeElapsed < 10.0)
                   {
-                    float num3 = (float) animationTimeElapsed / 10f;
-                    float num4 = 1f;
+                    double num3 = (double) animationTimeElapsed / 10.0;
                     Color color1 = Lighting.GetColor(x, y);
-                    float rotation = 0.0f;
-                    Vector2 zero = Vector2.Zero;
-                    float num5 = num3;
-                    float num6 = 0.5f;
-                    float num7 = num5 % num6 * (1f / num6);
-                    if ((int) ((double) num5 / (double) num6) % 2 == 1)
+                    float num4 = 0.0f;
+                    Vector2 zero2 = Vector2.get_Zero();
+                    float num5 = 0.5f;
+                    double num6 = (double) num5;
+                    float num7 = (float) (num3 % num6) * (1f / num5);
+                    double num8 = (double) num5;
+                    if ((int) (num3 / num8) % 2 == 1)
                       num7 = 1f - num7;
-                    num4 = (float) ((double) num7 * 0.449999988079071 + 1.0);
                     Tile tileSafely = Framing.GetTileSafely(x, y);
                     Tile tile = tileSafely;
-                    Texture2D texture = !Main.canDrawColorTile(tileSafely.type, (int) tileSafely.color()) ? Main.tileTexture[(int) tileSafely.type] : (Texture2D) Main.tileAltTexture[(int) tileSafely.type, (int) tileSafely.color()];
-                    Vector2 origin = new Vector2(8f);
-                    Vector2 vector2_2 = new Vector2(1f);
-                    float num8 = (float) ((double) num7 * 0.200000002980232 + 1.0);
-                    float num9 = 1f - num7;
-                    float num10 = 1f;
-                    Color color2 = color1 * (float) ((double) num10 * (double) num10 * 0.800000011920929);
-                    Vector2 scale = num8 * vector2_2;
-                    Vector2 position = (new Vector2((float) (x * 16 - (int) Main.screenPosition.X), (float) (y * 16 - (int) Main.screenPosition.Y)) + vector2_1 + origin + zero).Floor();
-                    spriteBatch.Draw(texture, position, new Rectangle?(new Rectangle((int) tile.frameX, (int) tile.frameY, 16, 16)), color2, rotation, origin, scale, SpriteEffects.None, 0.0f);
-                    color2.A = (byte) 180;
-                    spriteBatch.Draw(Main.tileCrackTexture, position, new Rectangle?(rectangle), color2, rotation, origin, scale, SpriteEffects.None, 0.0f);
+                    Texture2D texture2D = !Main.canDrawColorTile(tileSafely.type, (int) tileSafely.color()) ? Main.tileTexture[(int) tileSafely.type] : (Texture2D) Main.tileAltTexture[(int) tileSafely.type, (int) tileSafely.color()];
+                    Vector2 vector2_1;
+                    // ISSUE: explicit reference operation
+                    ((Vector2) @vector2_1).\u002Ector(8f);
+                    Vector2 vector2_2;
+                    // ISSUE: explicit reference operation
+                    ((Vector2) @vector2_2).\u002Ector(1f);
+                    double num9 = (double) num7 * 0.200000002980232 + 1.0;
+                    float num10 = 1f - num7;
+                    float num11 = 1f;
+                    Color color2 = Color.op_Multiply(color1, (float) ((double) num11 * (double) num11 * 0.800000011920929));
+                    Vector2 vector2_3 = vector2_2;
+                    Vector2 vector2_4 = Vector2.op_Multiply((float) num9, vector2_3);
+                    Vector2 vector2_5 = Vector2.op_Addition(Vector2.op_Addition(Vector2.op_Addition(new Vector2((float) (x * 16 - (int) Main.screenPosition.X), (float) (y * 16 - (int) Main.screenPosition.Y)), zero1), vector2_1), zero2).Floor();
+                    spriteBatch.Draw(texture2D, vector2_5, new Rectangle?(new Rectangle((int) tile.frameX, (int) tile.frameY, 16, 16)), color2, num4, vector2_1, vector2_4, (SpriteEffects) 0, 0.0f);
+                    // ISSUE: explicit reference operation
+                    ((Color) @color2).set_A((byte) 180);
+                    spriteBatch.Draw(Main.tileCrackTexture, vector2_5, new Rectangle?(rectangle), color2, num4, vector2_1, vector2_4, (SpriteEffects) 0, 0.0f);
                   }
                 }
               }

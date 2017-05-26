@@ -1,8 +1,8 @@
 ﻿// Decompiled with JetBrains decompiler
 // Type: Terraria.GameInput.PlayerInputProfile
-// Assembly: Terraria, Version=1.3.5.1, Culture=neutral, PublicKeyToken=null
-// MVID: E90A5A2F-CD10-4A2C-9D2A-6B036D4E8877
-// Assembly location: F:\Steam\steamapps\common\Terraria\Terraria.exe
+// Assembly: Terraria, Version=1.3.5.3, Culture=neutral, PublicKeyToken=null
+// MVID: 68659D26-2BE6-448F-8663-74FA559E6F08
+// Assembly location: H:\Steam\steamapps\common\Terraria\Terraria.exe
 
 using Microsoft.Xna.Framework.Input;
 using Newtonsoft.Json;
@@ -93,32 +93,45 @@ namespace Terraria.GameInput
       }
       if (dict.TryGetValue("Settings", out obj))
       {
-        Dictionary<string, object> dictionary = (Dictionary<string, object>) JsonConvert.DeserializeObject<Dictionary<string, object>>(((object) (JObject) obj).ToString());
-        if (dictionary.TryGetValue("Edittable", out obj))
+        M0 m0 = JsonConvert.DeserializeObject<Dictionary<string, object>>(((object) (JObject) obj).ToString());
+        string key1 = "Edittable";
+        if (((Dictionary<string, object>) m0).TryGetValue(key1, out obj))
           this.AllowEditting = (bool) obj;
-        if (dictionary.TryGetValue("Gamepad - HotbarRadialHoldTime", out obj))
+        string key2 = "Gamepad - HotbarRadialHoldTime";
+        if (((Dictionary<string, object>) m0).TryGetValue(key2, out obj))
           this.HotbarRadialHoldTimeRequired = (int) (long) obj;
-        if (dictionary.TryGetValue("Gamepad - LeftThumbstickDeadzoneX", out obj))
+        string key3 = "Gamepad - LeftThumbstickDeadzoneX";
+        if (((Dictionary<string, object>) m0).TryGetValue(key3, out obj))
           this.LeftThumbstickDeadzoneX = (float) (double) obj;
-        if (dictionary.TryGetValue("Gamepad - LeftThumbstickDeadzoneY", out obj))
+        string key4 = "Gamepad - LeftThumbstickDeadzoneY";
+        if (((Dictionary<string, object>) m0).TryGetValue(key4, out obj))
           this.LeftThumbstickDeadzoneY = (float) (double) obj;
-        if (dictionary.TryGetValue("Gamepad - RightThumbstickDeadzoneX", out obj))
+        string key5 = "Gamepad - RightThumbstickDeadzoneX";
+        if (((Dictionary<string, object>) m0).TryGetValue(key5, out obj))
           this.RightThumbstickDeadzoneX = (float) (double) obj;
-        if (dictionary.TryGetValue("Gamepad - RightThumbstickDeadzoneY", out obj))
+        string key6 = "Gamepad - RightThumbstickDeadzoneY";
+        if (((Dictionary<string, object>) m0).TryGetValue(key6, out obj))
           this.RightThumbstickDeadzoneY = (float) (double) obj;
-        if (dictionary.TryGetValue("Gamepad - LeftThumbstickInvertX", out obj))
+        string key7 = "Gamepad - LeftThumbstickInvertX";
+        if (((Dictionary<string, object>) m0).TryGetValue(key7, out obj))
           this.LeftThumbstickInvertX = (bool) obj;
-        if (dictionary.TryGetValue("Gamepad - LeftThumbstickInvertY", out obj))
+        string key8 = "Gamepad - LeftThumbstickInvertY";
+        if (((Dictionary<string, object>) m0).TryGetValue(key8, out obj))
           this.LeftThumbstickInvertY = (bool) obj;
-        if (dictionary.TryGetValue("Gamepad - RightThumbstickInvertX", out obj))
+        string key9 = "Gamepad - RightThumbstickInvertX";
+        if (((Dictionary<string, object>) m0).TryGetValue(key9, out obj))
           this.RightThumbstickInvertX = (bool) obj;
-        if (dictionary.TryGetValue("Gamepad - RightThumbstickInvertY", out obj))
+        string key10 = "Gamepad - RightThumbstickInvertY";
+        if (((Dictionary<string, object>) m0).TryGetValue(key10, out obj))
           this.RightThumbstickInvertY = (bool) obj;
-        if (dictionary.TryGetValue("Gamepad - TriggersDeadzone", out obj))
+        string key11 = "Gamepad - TriggersDeadzone";
+        if (((Dictionary<string, object>) m0).TryGetValue(key11, out obj))
           this.TriggersDeadzone = (float) (double) obj;
-        if (dictionary.TryGetValue("Gamepad - InterfaceDeadzoneX", out obj))
+        string key12 = "Gamepad - InterfaceDeadzoneX";
+        if (((Dictionary<string, object>) m0).TryGetValue(key12, out obj))
           this.InterfaceDeadzoneX = (float) (double) obj;
-        if (dictionary.TryGetValue("Gamepad - InventoryMoveCD", out obj))
+        string key13 = "Gamepad - InventoryMoveCD";
+        if (((Dictionary<string, object>) m0).TryGetValue(key13, out obj))
           this.InventoryMoveCD = (int) (long) obj;
       }
       return true;
@@ -128,7 +141,10 @@ namespace Terraria.GameInput
     {
       Dictionary<string, object> dictionary1 = new Dictionary<string, object>();
       Dictionary<string, object> dictionary2 = new Dictionary<string, object>();
-      dictionary1.Add("Last Launched Version", (object) 193);
+      string key1 = "Last Launched Version";
+      // ISSUE: variable of a boxed type
+      __Boxed<int> local = (ValueType) 194;
+      dictionary1.Add(key1, (object) local);
       dictionary2.Add("Edittable", (object) this.AllowEditting);
       dictionary2.Add("Gamepad - HotbarRadialHoldTime", (object) this.HotbarRadialHoldTimeRequired);
       dictionary2.Add("Gamepad - LeftThumbstickDeadzoneX", (object) this.LeftThumbstickDeadzoneX);
@@ -142,11 +158,21 @@ namespace Terraria.GameInput
       dictionary2.Add("Gamepad - TriggersDeadzone", (object) this.TriggersDeadzone);
       dictionary2.Add("Gamepad - InterfaceDeadzoneX", (object) this.InterfaceDeadzoneX);
       dictionary2.Add("Gamepad - InventoryMoveCD", (object) this.InventoryMoveCD);
-      dictionary1.Add("Settings", (object) dictionary2);
-      dictionary1.Add("Mouse And Keyboard", (object) this.InputModes[InputMode.Keyboard].WritePreferences());
-      dictionary1.Add("Gamepad", (object) this.InputModes[InputMode.XBoxGamepad].WritePreferences());
-      dictionary1.Add("Mouse And Keyboard UI", (object) this.InputModes[InputMode.KeyboardUI].WritePreferences());
-      dictionary1.Add("Gamepad UI", (object) this.InputModes[InputMode.XBoxGamepadUI].WritePreferences());
+      string key2 = "Settings";
+      Dictionary<string, object> dictionary3 = dictionary2;
+      dictionary1.Add(key2, (object) dictionary3);
+      string key3 = "Mouse And Keyboard";
+      Dictionary<string, List<string>> dictionary4 = this.InputModes[InputMode.Keyboard].WritePreferences();
+      dictionary1.Add(key3, (object) dictionary4);
+      string key4 = "Gamepad";
+      Dictionary<string, List<string>> dictionary5 = this.InputModes[InputMode.XBoxGamepad].WritePreferences();
+      dictionary1.Add(key4, (object) dictionary5);
+      string key5 = "Mouse And Keyboard UI";
+      Dictionary<string, List<string>> dictionary6 = this.InputModes[InputMode.KeyboardUI].WritePreferences();
+      dictionary1.Add(key5, (object) dictionary6);
+      string key6 = "Gamepad UI";
+      Dictionary<string, List<string>> dictionary7 = this.InputModes[InputMode.XBoxGamepadUI].WritePreferences();
+      dictionary1.Add(key6, (object) dictionary7);
       return dictionary1;
     }
 
@@ -301,15 +327,15 @@ namespace Terraria.GameInput
 
     public bool UsingDpadHotbar()
     {
-      if (this.InputModes[InputMode.XBoxGamepad].KeyStatus["DpadRadial1"].Contains(Buttons.DPadUp.ToString()) && this.InputModes[InputMode.XBoxGamepad].KeyStatus["DpadRadial2"].Contains(Buttons.DPadRight.ToString()) && (this.InputModes[InputMode.XBoxGamepad].KeyStatus["DpadRadial3"].Contains(Buttons.DPadDown.ToString()) && this.InputModes[InputMode.XBoxGamepad].KeyStatus["DpadRadial4"].Contains(Buttons.DPadLeft.ToString())) && (this.InputModes[InputMode.XBoxGamepadUI].KeyStatus["DpadRadial1"].Contains(Buttons.DPadUp.ToString()) && this.InputModes[InputMode.XBoxGamepadUI].KeyStatus["DpadRadial2"].Contains(Buttons.DPadRight.ToString()) && this.InputModes[InputMode.XBoxGamepadUI].KeyStatus["DpadRadial3"].Contains(Buttons.DPadDown.ToString())))
-        return this.InputModes[InputMode.XBoxGamepadUI].KeyStatus["DpadRadial4"].Contains(Buttons.DPadLeft.ToString());
+      if (this.InputModes[InputMode.XBoxGamepad].KeyStatus["DpadRadial1"].Contains(((Buttons) 1).ToString()) && this.InputModes[InputMode.XBoxGamepad].KeyStatus["DpadRadial2"].Contains(((Buttons) 8).ToString()) && (this.InputModes[InputMode.XBoxGamepad].KeyStatus["DpadRadial3"].Contains(((Buttons) 2).ToString()) && this.InputModes[InputMode.XBoxGamepad].KeyStatus["DpadRadial4"].Contains(((Buttons) 4).ToString())) && (this.InputModes[InputMode.XBoxGamepadUI].KeyStatus["DpadRadial1"].Contains(((Buttons) 1).ToString()) && this.InputModes[InputMode.XBoxGamepadUI].KeyStatus["DpadRadial2"].Contains(((Buttons) 8).ToString()) && this.InputModes[InputMode.XBoxGamepadUI].KeyStatus["DpadRadial3"].Contains(((Buttons) 2).ToString())))
+        return this.InputModes[InputMode.XBoxGamepadUI].KeyStatus["DpadRadial4"].Contains(((Buttons) 4).ToString());
       return false;
     }
 
     public bool UsingDpadMovekeys()
     {
-      if (this.InputModes[InputMode.XBoxGamepad].KeyStatus["DpadSnap1"].Contains(Buttons.DPadUp.ToString()) && this.InputModes[InputMode.XBoxGamepad].KeyStatus["DpadSnap2"].Contains(Buttons.DPadRight.ToString()) && (this.InputModes[InputMode.XBoxGamepad].KeyStatus["DpadSnap3"].Contains(Buttons.DPadDown.ToString()) && this.InputModes[InputMode.XBoxGamepad].KeyStatus["DpadSnap4"].Contains(Buttons.DPadLeft.ToString())) && (this.InputModes[InputMode.XBoxGamepadUI].KeyStatus["DpadSnap1"].Contains(Buttons.DPadUp.ToString()) && this.InputModes[InputMode.XBoxGamepadUI].KeyStatus["DpadSnap2"].Contains(Buttons.DPadRight.ToString()) && this.InputModes[InputMode.XBoxGamepadUI].KeyStatus["DpadSnap3"].Contains(Buttons.DPadDown.ToString())))
-        return this.InputModes[InputMode.XBoxGamepadUI].KeyStatus["DpadSnap4"].Contains(Buttons.DPadLeft.ToString());
+      if (this.InputModes[InputMode.XBoxGamepad].KeyStatus["DpadSnap1"].Contains(((Buttons) 1).ToString()) && this.InputModes[InputMode.XBoxGamepad].KeyStatus["DpadSnap2"].Contains(((Buttons) 8).ToString()) && (this.InputModes[InputMode.XBoxGamepad].KeyStatus["DpadSnap3"].Contains(((Buttons) 2).ToString()) && this.InputModes[InputMode.XBoxGamepad].KeyStatus["DpadSnap4"].Contains(((Buttons) 4).ToString())) && (this.InputModes[InputMode.XBoxGamepadUI].KeyStatus["DpadSnap1"].Contains(((Buttons) 1).ToString()) && this.InputModes[InputMode.XBoxGamepadUI].KeyStatus["DpadSnap2"].Contains(((Buttons) 8).ToString()) && this.InputModes[InputMode.XBoxGamepadUI].KeyStatus["DpadSnap3"].Contains(((Buttons) 2).ToString())))
+        return this.InputModes[InputMode.XBoxGamepadUI].KeyStatus["DpadSnap4"].Contains(((Buttons) 4).ToString());
       return false;
     }
   }

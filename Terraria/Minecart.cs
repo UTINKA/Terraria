@@ -1,8 +1,8 @@
 ﻿// Decompiled with JetBrains decompiler
 // Type: Terraria.Minecart
-// Assembly: Terraria, Version=1.3.5.1, Culture=neutral, PublicKeyToken=null
-// MVID: E90A5A2F-CD10-4A2C-9D2A-6B036D4E8877
-// Assembly location: F:\Steam\steamapps\common\Terraria\Terraria.exe
+// Assembly: Terraria, Version=1.3.5.3, Culture=neutral, PublicKeyToken=null
+// MVID: 68659D26-2BE6-448F-8663-74FA559E6F08
+// Assembly location: H:\Steam\steamapps\common\Terraria\Terraria.exe
 
 using Microsoft.Xna.Framework;
 using System;
@@ -51,7 +51,7 @@ namespace Terraria
 
     public static void Initialize()
     {
-      if ((double) Main.minecartMountTexture.Width != 50.0)
+      if ((double) Main.minecartMountTexture.get_Width() != 50.0)
         throw new Exception("Be sure to update Minecart.textureWidth to match the actual texture size of " + (object) 50f + ".");
       Minecart._rightSideConnection = new int[36];
       Minecart._leftSideConnection = new int[36];
@@ -332,7 +332,7 @@ namespace Terraria
       Minecart._texturePosition[39] = new Vector2(0.0f, 7f);
       Minecart._texturePosition[38] = new Vector2(1f, 7f);
       for (int index1 = 0; index1 < Minecart._texturePosition.Length; ++index1)
-        Minecart._texturePosition[index1] = Minecart._texturePosition[index1] * 18f;
+        Minecart._texturePosition[index1] = Vector2.op_Multiply(Minecart._texturePosition[index1], 18f);
       for (int index1 = 0; index1 < Minecart._tileHeight.Length; ++index1)
       {
         int[] numArray = Minecart._tileHeight[index1];
@@ -444,16 +444,20 @@ namespace Terraria
 
     public static BitsByte TrackCollision(ref Vector2 Position, ref Vector2 Velocity, ref Vector2 lastBoost, int Width, int Height, bool followDown, bool followUp, int fallStart, bool trackOnly, Action<Vector2> MinecartDust)
     {
-      if (followDown && followUp)
+      if (followDown & followUp)
       {
         followDown = false;
         followUp = false;
       }
-      Vector2 vector2_1 = new Vector2((float) (Width / 2) - 25f, (float) (Height / 2));
-      Vector2 vector2_2 = Position + new Vector2((float) (Width / 2) - 25f, (float) (Height / 2)) + Minecart._trackMagnetOffset;
+      Vector2 vector2_1;
+      // ISSUE: explicit reference operation
+      ((Vector2) @vector2_1).\u002Ector((float) (Width / 2) - 25f, (float) (Height / 2));
+      Vector2 vector2_2 = Vector2.op_Addition(Vector2.op_Addition(Position, new Vector2((float) (Width / 2) - 25f, (float) (Height / 2))), Minecart._trackMagnetOffset);
       Vector2 vector2_3 = Velocity;
-      float num1 = vector2_3.Length();
-      vector2_3.Normalize();
+      // ISSUE: explicit reference operation
+      float num1 = ((Vector2) @vector2_3).Length();
+      // ISSUE: explicit reference operation
+      ((Vector2) @vector2_3).Normalize();
       Vector2 vector2_4 = vector2_2;
       Tile tileTrack = (Tile) null;
       bool flag1 = false;
@@ -466,13 +470,13 @@ namespace Terraria
       bool flag4 = false;
       bool flag5 = false;
       bool flag6 = false;
-      Vector2 vector2_5 = Vector2.Zero;
-      Vector2 vector2_6 = Vector2.Zero;
+      Vector2 vector2_5 = Vector2.get_Zero();
+      Vector2 vector2_6 = Vector2.get_Zero();
       BitsByte bitsByte = new BitsByte();
       while (true)
       {
-        int index1 = (int) ((double) vector2_4.X / 16.0);
-        int index2 = (int) ((double) vector2_4.Y / 16.0);
+        int index1 = (int) (vector2_4.X / 16.0);
+        int index2 = (int) (vector2_4.Y / 16.0);
         int index3 = (int) vector2_4.X % 16 / 2;
         if (flag2)
           num4 = index3;
@@ -480,15 +484,31 @@ namespace Terraria
         if ((trackState1 == Minecart.TrackState.OnBack || trackState1 == Minecart.TrackState.OnTrack || trackState1 == Minecart.TrackState.OnFront) && index1 != num2)
         {
           int index4 = trackState1 != Minecart.TrackState.OnBack ? (int) tileTrack.FrontTrack() : (int) tileTrack.BackTrack();
-          switch ((double) vector2_3.X >= 0.0 ? Minecart._rightSideConnection[index4] : Minecart._leftSideConnection[index4])
+          switch (vector2_3.X >= 0.0 ? Minecart._rightSideConnection[index4] : Minecart._leftSideConnection[index4])
           {
             case 0:
               --index2;
-              vector2_4.Y -= 2f;
+              // ISSUE: explicit reference operation
+              // ISSUE: variable of a reference type
+              __Null& local1 = @vector2_4.Y;
+              // ISSUE: cast to a reference type
+              // ISSUE: explicit reference operation
+              double num5 = (double) ^(float&) local1 - 2.0;
+              // ISSUE: cast to a reference type
+              // ISSUE: explicit reference operation
+              ^(float&) local1 = (float) num5;
               break;
             case 2:
               ++index2;
-              vector2_4.Y += 2f;
+              // ISSUE: explicit reference operation
+              // ISSUE: variable of a reference type
+              __Null& local2 = @vector2_4.Y;
+              // ISSUE: cast to a reference type
+              // ISSUE: explicit reference operation
+              double num6 = (double) ^(float&) local2 + 2.0;
+              // ISSUE: cast to a reference type
+              // ISSUE: explicit reference operation
+              ^(float&) local2 = (float) num6;
               break;
           }
         }
@@ -521,7 +541,7 @@ namespace Terraria
               {
                 if (trackOnly)
                 {
-                  vector2_4 -= vector2_6;
+                  vector2_4 = Vector2.op_Subtraction(vector2_4, vector2_6);
                   num1 = 0.0f;
                   trackState2 = Minecart.TrackState.OnFront;
                   flag6 = true;
@@ -536,8 +556,8 @@ namespace Terraria
               if (trackState1 == Minecart.TrackState.OnFront)
               {
                 trackState1 = Minecart.TrackState.NoTrack;
-                Matrix matrix = (double) Velocity.X <= 0.0 ? (Minecart._rightSideConnection[index4] != 2 ? Matrix.CreateRotationZ(-0.7853982f) : Matrix.CreateRotationZ(0.7853982f)) : (Minecart._leftSideConnection[index4] != 2 ? Matrix.CreateRotationZ(0.7853982f) : Matrix.CreateRotationZ(-0.7853982f));
-                vector2_5 = Vector2.Transform(new Vector2(Velocity.X, 0.0f), matrix);
+                Matrix matrix = Velocity.X <= 0.0 ? (Minecart._rightSideConnection[index4] != 2 ? Matrix.CreateRotationZ(-0.7853982f) : Matrix.CreateRotationZ(0.7853982f)) : (Minecart._leftSideConnection[index4] != 2 ? Matrix.CreateRotationZ(0.7853982f) : Matrix.CreateRotationZ(-0.7853982f));
+                vector2_5 = Vector2.Transform(new Vector2((float) Velocity.X, 0.0f), matrix);
                 vector2_5.X = Velocity.X;
                 flag4 = true;
                 num1 = 0.0f;
@@ -549,17 +569,25 @@ namespace Terraria
               {
                 if (trackOnly)
                 {
-                  vector2_4 -= vector2_6;
+                  vector2_4 = Vector2.op_Subtraction(vector2_4, vector2_6);
                   num1 = 0.0f;
                   trackState2 = Minecart.TrackState.OnFront;
                   flag6 = true;
                   break;
                 }
-                if ((double) vector2_3.X < 0.0)
+                if (vector2_3.X < 0.0)
                 {
-                  float num6 = (float) (index1 * 16 + (index3 + 1) * 2) - vector2_4.X;
-                  vector2_4.X += num6;
-                  num1 += num6 / vector2_3.X;
+                  float num6 = (float) (index1 * 16 + (index3 + 1) * 2) - (float) vector2_4.X;
+                  // ISSUE: explicit reference operation
+                  // ISSUE: variable of a reference type
+                  __Null& local = @vector2_4.X;
+                  // ISSUE: cast to a reference type
+                  // ISSUE: explicit reference operation
+                  double num7 = (double) ^(float&) local + (double) num6;
+                  // ISSUE: cast to a reference type
+                  // ISSUE: explicit reference operation
+                  ^(float&) local = (float) num7;
+                  num1 += num6 / (float) vector2_3.X;
                 }
                 vector2_3.X = -vector2_3.X;
                 bitsByte[1] = true;
@@ -570,7 +598,7 @@ namespace Terraria
             case -1:
               if (trackState1 == Minecart.TrackState.OnFront)
               {
-                vector2_4 -= vector2_6;
+                vector2_4 = Vector2.op_Subtraction(vector2_4, vector2_6);
                 num1 = 0.0f;
                 trackState2 = Minecart.TrackState.OnFront;
                 flag6 = true;
@@ -578,17 +606,17 @@ namespace Terraria
               }
               break;
             default:
-              float num7 = (float) (index2 * 16 + num5);
-              if (index1 != num2 && trackState1 == Minecart.TrackState.NoTrack && ((double) vector2_4.Y > (double) num7 && (double) vector2_4.Y - (double) num7 < 2.0))
+              float num8 = (float) (index2 * 16 + num5);
+              if (index1 != num2 && trackState1 == Minecart.TrackState.NoTrack && (vector2_4.Y > (double) num8 && vector2_4.Y - (double) num8 < 2.0))
               {
                 flag8 = false;
                 trackState1 = Minecart.TrackState.AboveFront;
               }
-              Minecart.TrackState trackState4 = (double) vector2_4.Y >= (double) num7 ? ((double) vector2_4.Y <= (double) num7 ? Minecart.TrackState.OnTrack : Minecart.TrackState.BelowTrack) : Minecart.TrackState.AboveTrack;
+              Minecart.TrackState trackState4 = vector2_4.Y >= (double) num8 ? (vector2_4.Y <= (double) num8 ? Minecart.TrackState.OnTrack : Minecart.TrackState.BelowTrack) : Minecart.TrackState.AboveTrack;
               if (index5 != -1)
               {
                 float num6 = (float) (index2 * 16 + Minecart._tileHeight[index5][index3]);
-                trackState3 = (double) vector2_4.Y >= (double) num6 ? ((double) vector2_4.Y <= (double) num6 ? Minecart.TrackState.OnTrack : Minecart.TrackState.BelowTrack) : Minecart.TrackState.AboveTrack;
+                trackState3 = vector2_4.Y >= (double) num6 ? (vector2_4.Y <= (double) num6 ? Minecart.TrackState.OnTrack : Minecart.TrackState.BelowTrack) : Minecart.TrackState.AboveTrack;
               }
               switch (trackState4)
               {
@@ -635,7 +663,7 @@ namespace Terraria
           if (trackState1 != trackState2)
           {
             bool flag9 = false;
-            if (flag7 || (double) vector2_3.Y > 0.0)
+            if (flag7 || vector2_3.Y > 0.0)
             {
               switch (trackState1)
               {
@@ -682,21 +710,18 @@ namespace Terraria
                   break;
               }
               int index4 = -1;
-              switch (trackState2)
+              if (trackState2 != Minecart.TrackState.OnTrack && trackState2 != Minecart.TrackState.OnFront)
               {
-                case Minecart.TrackState.OnTrack:
-                case Minecart.TrackState.OnFront:
-                  index4 = (int) tileTrack.FrontTrack();
-                  break;
-                case Minecart.TrackState.OnBack:
+                if (trackState2 == Minecart.TrackState.OnBack)
                   index4 = (int) tileTrack.BackTrack();
-                  break;
               }
+              else
+                index4 = (int) tileTrack.FrontTrack();
               if (index4 != -1)
               {
-                if (!flag9 && (double) Velocity.Y > (double) Player.defaultGravity)
+                if (!flag9 && Velocity.Y > (double) Player.defaultGravity)
                 {
-                  int num7 = (int) ((double) Position.Y / 16.0);
+                  int num7 = (int) (Position.Y / 16.0);
                   if (fallStart < num7 - 1)
                   {
                     Main.PlaySound(SoundID.Item53, (int) Position.X + Width / 2, (int) Position.Y + Height / 2);
@@ -705,8 +730,8 @@ namespace Terraria
                 }
                 if (trackState1 == Minecart.TrackState.AboveFront && Minecart._trackType[index4] == 1)
                   flag3 = true;
-                vector2_3.Y = 0.0f;
-                vector2_4.Y = (float) (index2 * 16 + Minecart._tileHeight[index4][index3]);
+                vector2_3.Y = (__Null) 0.0;
+                vector2_4.Y = (__Null) (double) (index2 * 16 + Minecart._tileHeight[index4][index3]);
               }
             }
           }
@@ -715,12 +740,12 @@ namespace Terraria
         {
           if (flag1 && Minecart._trackType[(int) tileTrack.FrontTrack()] == 1)
             flag3 = true;
-          vector2_3.Y = 0.0f;
+          vector2_3.Y = (__Null) 0.0;
         }
         if (trackState2 == Minecart.TrackState.OnFront)
         {
           int index4 = (int) tileTrack.FrontTrack();
-          if (Minecart._trackType[index4] == 2 && (double) lastBoost.X == 0.0 && (double) lastBoost.Y == 0.0)
+          if (Minecart._trackType[index4] == 2 && lastBoost.X == 0.0 && lastBoost.Y == 0.0)
           {
             lastBoost = new Vector2((float) index1, (float) index2);
             if (Minecart._boostLeft[index4])
@@ -735,50 +760,50 @@ namespace Terraria
         num3 = index2;
         if ((double) num1 > 0.0)
         {
-          float num5 = vector2_4.X % 2f;
-          float num6 = vector2_4.Y % 2f;
+          float num5 = (float) (vector2_4.X % 2.0);
+          float num6 = (float) (vector2_4.Y % 2.0);
           float num7 = 3f;
           float num8 = 3f;
-          if ((double) vector2_3.X < 0.0)
+          if (vector2_3.X < 0.0)
             num7 = num5 + 0.125f;
-          else if ((double) vector2_3.X > 0.0)
+          else if (vector2_3.X > 0.0)
             num7 = 2f - num5;
-          if ((double) vector2_3.Y < 0.0)
+          if (vector2_3.Y < 0.0)
             num8 = num6 + 0.125f;
-          else if ((double) vector2_3.Y > 0.0)
+          else if (vector2_3.Y > 0.0)
             num8 = 2f - num6;
           if ((double) num7 != 3.0 || (double) num8 != 3.0)
           {
-            float num9 = Math.Abs(num7 / vector2_3.X);
-            float num10 = Math.Abs(num8 / vector2_3.Y);
+            float num9 = Math.Abs(num7 / (float) vector2_3.X);
+            float num10 = Math.Abs(num8 / (float) vector2_3.Y);
             float num11 = (double) num9 < (double) num10 ? num9 : num10;
             if ((double) num11 > (double) num1)
             {
-              vector2_6 = vector2_3 * num1;
+              vector2_6 = Vector2.op_Multiply(vector2_3, num1);
               num1 = 0.0f;
             }
             else
             {
-              vector2_6 = vector2_3 * num11;
+              vector2_6 = Vector2.op_Multiply(vector2_3, num11);
               num1 -= num11;
             }
-            vector2_4 += vector2_6;
+            vector2_4 = Vector2.op_Addition(vector2_4, vector2_6);
           }
           else
-            goto label_98;
+            goto label_99;
         }
         else
           break;
       }
-      if ((double) lastBoost.X != (double) num2 || (double) lastBoost.Y != (double) num3)
-        lastBoost = Vector2.Zero;
-label_98:
+      if (lastBoost.X != (double) num2 || lastBoost.Y != (double) num3)
+        lastBoost = Vector2.get_Zero();
+label_99:
       if (flag3)
         bitsByte[3] = true;
       if (flag5)
       {
         Velocity.X = vector2_4.X - vector2_2.X;
-        Velocity.Y = Player.defaultGravity;
+        Velocity.Y = (__Null) (double) Player.defaultGravity;
       }
       else if (flag4)
       {
@@ -789,26 +814,28 @@ label_98:
       {
         Velocity.X = -Velocity.X;
         Position.X = vector2_4.X - Minecart._trackMagnetOffset.X - vector2_1.X - Velocity.X;
-        if ((double) vector2_3.Y == 0.0)
-          Velocity.Y = 0.0f;
+        if (vector2_3.Y == 0.0)
+          Velocity.Y = (__Null) 0.0;
       }
       else
       {
         if (flag6)
           Velocity.X = vector2_4.X - vector2_2.X;
-        if ((double) vector2_3.Y == 0.0)
-          Velocity.Y = 0.0f;
+        if (vector2_3.Y == 0.0)
+          Velocity.Y = (__Null) 0.0;
       }
-      Position.Y += vector2_4.Y - vector2_2.Y - Velocity.Y;
-      Position.Y = (float) Math.Round((double) Position.Y, 2);
-      switch (trackState1)
-      {
-        case Minecart.TrackState.OnTrack:
-        case Minecart.TrackState.OnFront:
-        case Minecart.TrackState.OnBack:
-          bitsByte[0] = true;
-          break;
-      }
+      // ISSUE: explicit reference operation
+      // ISSUE: variable of a reference type
+      __Null& local3 = @Position.Y;
+      // ISSUE: cast to a reference type
+      // ISSUE: explicit reference operation
+      double num12 = (double) ^(float&) local3 + (vector2_4.Y - vector2_2.Y - Velocity.Y);
+      // ISSUE: cast to a reference type
+      // ISSUE: explicit reference operation
+      ^(float&) local3 = (float) num12;
+      Position.Y = (__Null) Math.Round((double) Position.Y, 2);
+      if (trackState1 == Minecart.TrackState.OnTrack || (uint) (trackState1 - 5) <= 1U)
+        bitsByte[0] = true;
       return bitsByte;
     }
 
@@ -887,7 +914,7 @@ label_98:
         }
         if (num4 != -1)
         {
-          if (index3 == -1 || flag)
+          if (index3 == -1 | flag)
             index3 = num4;
         }
         else
@@ -989,7 +1016,7 @@ label_98:
         tileTrack.BackTrack((short) -1);
       else
         tileTrack.BackTrack((short) trackSwitchOption[index4]);
-      if (pound && flag3 && !mute)
+      if (pound & flag3 && !mute)
         WorldGen.KillTile(i, j, true, false, false);
       return true;
     }
@@ -999,8 +1026,10 @@ label_98:
       Tile tile = Main.tile[tileX, tileY];
       if ((int) tile.type != 314)
         return false;
-      Vector2 vector2_1 = new Vector2((float) (Width / 2) - 25f, (float) (Height / 2));
-      Vector2 vector2_2 = Position + vector2_1 + Minecart._trackMagnetOffset;
+      Vector2 vector2_1;
+      // ISSUE: explicit reference operation
+      ((Vector2) @vector2_1).\u002Ector((float) (Width / 2) - 25f, (float) (Height / 2));
+      Vector2 vector2_2 = Vector2.op_Addition(Vector2.op_Addition(Position, vector2_1), Minecart._trackMagnetOffset);
       int num1 = (int) vector2_2.X % 16 / 2;
       int num2 = -1;
       int num3 = 0;
@@ -1027,19 +1056,19 @@ label_98:
       }
       if (num2 == -1)
         return false;
-      vector2_2.X = (float) (tileX * 16 + num2 * 2);
-      vector2_2.Y = (float) (tileY * 16 + num3);
-      vector2_2 -= Minecart._trackMagnetOffset;
-      vector2_2 -= vector2_1;
+      vector2_2.X = (__Null) (double) (tileX * 16 + num2 * 2);
+      vector2_2.Y = (__Null) (double) (tileY * 16 + num3);
+      vector2_2 = Vector2.op_Subtraction(vector2_2, Minecart._trackMagnetOffset);
+      vector2_2 = Vector2.op_Subtraction(vector2_2, vector2_1);
       Position = vector2_2;
       return true;
     }
 
     public static bool OnTrack(Vector2 Position, int Width, int Height)
     {
-      Vector2 vector2 = Position + new Vector2((float) (Width / 2) - 25f, (float) (Height / 2)) + Minecart._trackMagnetOffset;
-      int index1 = (int) ((double) vector2.X / 16.0);
-      int index2 = (int) ((double) vector2.Y / 16.0);
+      Vector2 vector2 = Vector2.op_Addition(Vector2.op_Addition(Position, new Vector2((float) (Width / 2) - 25f, (float) (Height / 2))), Minecart._trackMagnetOffset);
+      int index1 = (int) (vector2.X / 16.0);
+      int index2 = (int) (vector2.Y / 16.0);
       if (Main.tile[index1, index2] == null)
         return false;
       return (int) Main.tile[index1, index2].type == 314;
@@ -1049,28 +1078,33 @@ label_98:
     {
       Vector2 Position1 = Position;
       Vector2 Position2 = Position;
-      Vector2 zero = Vector2.Zero;
-      Vector2 Velocity = new Vector2(-12f, 0.0f);
+      Vector2 zero = Vector2.get_Zero();
+      Vector2 Velocity;
+      // ISSUE: explicit reference operation
+      ((Vector2) @Velocity).\u002Ector(-12f, 0.0f);
       Minecart.TrackCollision(ref Position1, ref Velocity, ref zero, Width, Height, followDown, followUp, 0, true, MinecartDust);
-      Vector2 vector2_1 = Position1 + Velocity;
-      Velocity = new Vector2(12f, 0.0f);
+      Vector2 vector2_1 = Vector2.op_Addition(Position1, Velocity);
+      // ISSUE: explicit reference operation
+      ((Vector2) @Velocity).\u002Ector(12f, 0.0f);
       Minecart.TrackCollision(ref Position2, ref Velocity, ref zero, Width, Height, followDown, followUp, 0, true, MinecartDust);
-      Vector2 vector2_2 = Position2 + Velocity;
-      float num1 = vector2_2.Y - vector2_1.Y;
-      float num2 = vector2_2.X - vector2_1.X;
+      Vector2 vector2_2 = Vector2.op_Addition(Position2, Velocity);
+      float num1 = (float) (vector2_2.Y - vector2_1.Y);
+      float num2 = (float) (vector2_2.X - vector2_1.X);
       float num3 = num1 / num2;
-      float num4 = vector2_1.Y + (Position.X - vector2_1.X) * num3;
-      float num5 = (Position.X - (float) (int) Position.X) * num3;
+      double num4 = vector2_1.Y + (Position.X - vector2_1.X) * (double) num3;
+      float num5 = ((float) Position.X - (float) (int) Position.X) * num3;
       rotation = (float) Math.Atan2((double) num1, (double) num2);
-      return num4 - Position.Y + num5;
+      // ISSUE: variable of the null type
+      __Null y = Position.Y;
+      return (float) (num4 - y) + num5;
     }
 
     public static void HitTrackSwitch(Vector2 Position, int Width, int Height)
     {
       Vector2 vector2_1 = new Vector2((float) (Width / 2) - 25f, (float) (Height / 2));
-      Vector2 vector2_2 = Position + new Vector2((float) (Width / 2) - 25f, (float) (Height / 2)) + Minecart._trackMagnetOffset;
-      int num = (int) ((double) vector2_2.X / 16.0);
-      int j = (int) ((double) vector2_2.Y / 16.0);
+      Vector2 vector2_2 = Vector2.op_Addition(Vector2.op_Addition(Position, new Vector2((float) (Width / 2) - 25f, (float) (Height / 2))), Minecart._trackMagnetOffset);
+      int num = (int) (vector2_2.X / 16.0);
+      int j = (int) (vector2_2.Y / 16.0);
       Wiring.HitSwitch(num, j);
       NetMessage.SendData(59, -1, -1, (NetworkText) null, num, (float) j, 0.0f, 0.0f, 0, 0, 0);
     }
@@ -1303,16 +1337,30 @@ label_98:
       if (frameID < 0 || frameID >= 40)
         return new Rectangle(0, 0, 0, 0);
       Vector2 vector2 = Minecart._texturePosition[frameID];
-      Rectangle rectangle = new Rectangle((int) vector2.X, (int) vector2.Y, 16, 16);
+      Rectangle rectangle;
+      // ISSUE: explicit reference operation
+      ((Rectangle) @rectangle).\u002Ector((int) vector2.X, (int) vector2.Y, 16, 16);
       if (frameID < 36 && Minecart._trackType[frameID] == 2)
-        rectangle.Y += 18 * animationFrame;
+      {
+        // ISSUE: explicit reference operation
+        // ISSUE: variable of a reference type
+        __Null& local = @rectangle.Y;
+        // ISSUE: cast to a reference type
+        // ISSUE: explicit reference operation
+        int num = ^(int&) local + 18 * animationFrame;
+        // ISSUE: cast to a reference type
+        // ISSUE: explicit reference operation
+        ^(int&) local = num;
+      }
       return rectangle;
     }
 
     public static void WheelSparks(Action<Vector2> DustAction, Vector2 Position, int Width, int Height, int sparkCount)
     {
-      Vector2 vector2_1 = new Vector2((float) (Width / 2) - 25f, (float) (Height / 2));
-      Vector2 vector2_2 = Position + vector2_1 + Minecart._trackMagnetOffset;
+      Vector2 vector2_1;
+      // ISSUE: explicit reference operation
+      ((Vector2) @vector2_1).\u002Ector((float) (Width / 2) - 25f, (float) (Height / 2));
+      Vector2 vector2_2 = Vector2.op_Addition(Vector2.op_Addition(Position, vector2_1), Minecart._trackMagnetOffset);
       for (int index = 0; index < sparkCount; ++index)
         DustAction(vector2_2);
     }

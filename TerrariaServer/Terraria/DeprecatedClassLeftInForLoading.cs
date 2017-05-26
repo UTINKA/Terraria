@@ -1,8 +1,8 @@
 ﻿// Decompiled with JetBrains decompiler
 // Type: Terraria.DeprecatedClassLeftInForLoading
-// Assembly: TerrariaServer, Version=1.3.5.1, Culture=neutral, PublicKeyToken=null
-// MVID: C2103E81-0935-4BEA-9E98-4159FC80C2BB
-// Assembly location: F:\Steam\steamapps\common\Terraria\TerrariaServer.exe
+// Assembly: TerrariaServer, Version=1.3.5.3, Culture=neutral, PublicKeyToken=null
+// MVID: 8A63A7A2-328D-424C-BC9D-BF23F93646F7
+// Assembly location: H:\Steam\steamapps\common\Terraria\TerrariaServer.exe
 
 using Microsoft.Xna.Framework;
 using System.Collections.Generic;
@@ -31,10 +31,13 @@ namespace Terraria
     {
       Dictionary<int, Rectangle> dictionary = new Dictionary<int, Rectangle>();
       bool flag1 = false;
-      Rectangle rectangle = new Rectangle(0, 0, 32, 48);
-      rectangle.Inflate(1600, 1600);
-      int x = rectangle.X;
-      int y = rectangle.Y;
+      Rectangle rectangle1;
+      // ISSUE: explicit reference operation
+      ((Rectangle) @rectangle1).\u002Ector(0, 0, 32, 48);
+      // ISSUE: explicit reference operation
+      ((Rectangle) @rectangle1).Inflate(1600, 1600);
+      int x = (int) rectangle1.X;
+      int y = (int) rectangle1.Y;
       for (int index1 = 0; index1 < 1000; ++index1)
       {
         if (DeprecatedClassLeftInForLoading.dummies[index1] != null)
@@ -56,15 +59,20 @@ namespace Terraria
               }
               flag1 = true;
             }
-            rectangle.X = (int) DeprecatedClassLeftInForLoading.dummies[index1].x * 16 + x;
-            rectangle.Y = (int) DeprecatedClassLeftInForLoading.dummies[index1].y * 16 + y;
+            rectangle1.X = (__Null) ((int) DeprecatedClassLeftInForLoading.dummies[index1].x * 16 + x);
+            rectangle1.Y = (__Null) ((int) DeprecatedClassLeftInForLoading.dummies[index1].y * 16 + y);
             bool flag2 = false;
-            foreach (KeyValuePair<int, Rectangle> keyValuePair in dictionary)
+            using (Dictionary<int, Rectangle>.Enumerator enumerator = dictionary.GetEnumerator())
             {
-              if (keyValuePair.Value.Intersects(rectangle))
+              while (enumerator.MoveNext())
               {
-                flag2 = true;
-                break;
+                Rectangle rectangle2 = enumerator.Current.Value;
+                // ISSUE: explicit reference operation
+                if (((Rectangle) @rectangle2).Intersects(rectangle1))
+                {
+                  flag2 = true;
+                  break;
+                }
               }
             }
             if (flag2)

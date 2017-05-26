@@ -1,8 +1,8 @@
 ﻿// Decompiled with JetBrains decompiler
 // Type: Terraria.RemoteClient
-// Assembly: TerrariaServer, Version=1.3.5.1, Culture=neutral, PublicKeyToken=null
-// MVID: C2103E81-0935-4BEA-9E98-4159FC80C2BB
-// Assembly location: F:\Steam\steamapps\common\Terraria\TerrariaServer.exe
+// Assembly: TerrariaServer, Version=1.3.5.3, Culture=neutral, PublicKeyToken=null
+// MVID: 8A63A7A2-328D-424C-BC9D-BF23F93646F7
+// Assembly location: H:\Steam\steamapps\common\Terraria\TerrariaServer.exe
 
 using Microsoft.Xna.Framework;
 using Terraria.Localization;
@@ -62,16 +62,16 @@ namespace Terraria
           NetMessage.BootPlayer(this.Id, NetworkText.FromKey("Net.CheatingTileRemovalSpam"));
         if ((double) this.SpamWater > (double) this.SpamWaterMax)
           NetMessage.BootPlayer(this.Id, NetworkText.FromKey("Net.CheatingLiquidSpam"));
-        this.SpamProjectile -= 0.4f;
+        this.SpamProjectile = this.SpamProjectile - 0.4f;
         if ((double) this.SpamProjectile < 0.0)
           this.SpamProjectile = 0.0f;
-        this.SpamAddBlock -= 0.3f;
+        this.SpamAddBlock = this.SpamAddBlock - 0.3f;
         if ((double) this.SpamAddBlock < 0.0)
           this.SpamAddBlock = 0.0f;
-        this.SpamDeleteBlock -= 5f;
+        this.SpamDeleteBlock = this.SpamDeleteBlock - 5f;
         if ((double) this.SpamDeleteBlock < 0.0)
           this.SpamDeleteBlock = 0.0f;
-        this.SpamWater -= 0.2f;
+        this.SpamWater = this.SpamWater - 0.2f;
         if ((double) this.SpamWater >= 0.0)
           return;
         this.SpamWater = 0.0f;
@@ -89,8 +89,8 @@ namespace Terraria
     public static void CheckSection(int playerIndex, Vector2 position, int fluff = 1)
     {
       int index1 = playerIndex;
-      int sectionX = Netplay.GetSectionX((int) ((double) position.X / 16.0));
-      int sectionY1 = Netplay.GetSectionY((int) ((double) position.Y / 16.0));
+      int sectionX = Netplay.GetSectionX((int) (position.X / 16.0));
+      int sectionY1 = Netplay.GetSectionY((int) (position.Y / 16.0));
       int num = 0;
       for (int index2 = sectionX - fluff; index2 < sectionX + fluff + 1; ++index2)
       {
@@ -175,7 +175,7 @@ namespace Terraria
       --NetMessage.buffer[this.Id].spamCount;
       if (this.StatusMax <= 0)
         return;
-      ++this.StatusCount;
+      this.StatusCount = this.StatusCount + 1;
     }
 
     public void ServerReadCallBack(object state, int length)

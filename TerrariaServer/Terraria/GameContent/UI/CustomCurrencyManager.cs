@@ -1,8 +1,8 @@
 ﻿// Decompiled with JetBrains decompiler
 // Type: Terraria.GameContent.UI.CustomCurrencyManager
-// Assembly: TerrariaServer, Version=1.3.5.1, Culture=neutral, PublicKeyToken=null
-// MVID: C2103E81-0935-4BEA-9E98-4159FC80C2BB
-// Assembly location: F:\Steam\steamapps\common\Terraria\TerrariaServer.exe
+// Assembly: TerrariaServer, Version=1.3.5.3, Culture=neutral, PublicKeyToken=null
+// MVID: 8A63A7A2-328D-424C-BC9D-BF23F93646F7
+// Assembly location: H:\Steam\steamapps\common\Terraria\TerrariaServer.exe
 
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -42,12 +42,12 @@ namespace Terraria.GameContent.UI
       if (totalCoins <= 0L)
         return;
       if (num3 > 0L)
-        sb.Draw(Main.itemTexture[3813], Utils.CenteredRectangle(new Vector2(shopx + 80f, shopy + 50f), Main.itemTexture[3813].Size() * 0.65f), new Rectangle?(), Color.White);
+        sb.Draw(Main.itemTexture[3813], Utils.CenteredRectangle(new Vector2(shopx + 80f, shopy + 50f), Vector2.op_Multiply(Main.itemTexture[3813].Size(), 0.65f)), new Rectangle?(), Color.get_White());
       if (num2 > 0L)
-        sb.Draw(Main.itemTexture[346], Utils.CenteredRectangle(new Vector2(shopx + 80f, shopy + 50f), Main.itemTexture[346].Size() * 0.65f), new Rectangle?(), Color.White);
+        sb.Draw(Main.itemTexture[346], Utils.CenteredRectangle(new Vector2(shopx + 80f, shopy + 50f), Vector2.op_Multiply(Main.itemTexture[346].Size(), 0.65f)), new Rectangle?(), Color.get_White());
       if (num1 > 0L)
-        sb.Draw(Main.itemTexture[87], Utils.CenteredRectangle(new Vector2(shopx + 70f, shopy + 60f), Main.itemTexture[87].Size() * 0.65f), new Rectangle?(), Color.White);
-      Utils.DrawBorderStringFourWay(sb, Main.fontMouseText, Lang.inter[66].Value, shopx, shopy + 40f, Color.White * ((float) Main.mouseTextColor / (float) byte.MaxValue), Color.Black, Vector2.Zero, 1f);
+        sb.Draw(Main.itemTexture[87], Utils.CenteredRectangle(new Vector2(shopx + 70f, shopy + 60f), Vector2.op_Multiply(Main.itemTexture[87].Size(), 0.65f)), new Rectangle?(), Color.get_White());
+      Utils.DrawBorderStringFourWay(sb, Main.fontMouseText, Lang.inter[66].Value, shopx, shopy + 40f, Color.op_Multiply(Color.get_White(), (float) Main.mouseTextColor / (float) byte.MaxValue), Color.get_Black(), Vector2.get_Zero(), 1f);
       currency.DrawSavingsMoney(sb, Lang.inter[66].Value, shopx, shopy, totalCoins, horizontal);
     }
 
@@ -87,12 +87,12 @@ namespace Terraria.GameContent.UI
         55,
         54
       };
-      for (int x = 0; x < objArrayList.Count; ++x)
+      for (int index1 = 0; index1 < objArrayList.Count; ++index1)
       {
-        for (int y = 0; y < objArrayList[x].Length; ++y)
+        for (int index2 = 0; index2 < objArrayList[index1].Length; ++index2)
         {
-          if (!slotsToIgnore[x].Contains(y) && currency.Accepts(objArrayList[x][y]))
-            slotCoins.Add(new Point(x, y));
+          if (!slotsToIgnore[index1].Contains(index2) && currency.Accepts(objArrayList[index1][index2]))
+            slotCoins.Add(new Point(index1, index2));
         }
       }
       CustomCurrencyManager.FindEmptySlots(objArrayList, slotsToIgnore, pointList1, 0);
@@ -104,10 +104,10 @@ namespace Terraria.GameContent.UI
 
     private static void FindEmptySlots(List<Item[]> inventories, Dictionary<int, List<int>> slotsToIgnore, List<Point> emptySlots, int currentInventoryIndex)
     {
-      for (int y = inventories[currentInventoryIndex].Length - 1; y >= 0; --y)
+      for (int index = inventories[currentInventoryIndex].Length - 1; index >= 0; --index)
       {
-        if (!slotsToIgnore[currentInventoryIndex].Contains(y) && (inventories[currentInventoryIndex][y].type == 0 || inventories[currentInventoryIndex][y].stack == 0))
-          emptySlots.Add(new Point(currentInventoryIndex, y));
+        if (!slotsToIgnore[currentInventoryIndex].Contains(index) && (inventories[currentInventoryIndex][index].type == 0 || inventories[currentInventoryIndex][index].stack == 0))
+          emptySlots.Add(new Point(currentInventoryIndex, index));
       }
     }
   }

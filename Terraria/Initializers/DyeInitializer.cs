@@ -1,8 +1,8 @@
 ﻿// Decompiled with JetBrains decompiler
 // Type: Terraria.Initializers.DyeInitializer
-// Assembly: Terraria, Version=1.3.5.1, Culture=neutral, PublicKeyToken=null
-// MVID: E90A5A2F-CD10-4A2C-9D2A-6B036D4E8877
-// Assembly location: F:\Steam\steamapps\common\Terraria\Terraria.exe
+// Assembly: Terraria, Version=1.3.5.3, Culture=neutral, PublicKeyToken=null
+// MVID: 68659D26-2BE6-448F-8663-74FA559E6F08
+// Assembly location: H:\Steam\steamapps\common\Terraria\Terraria.exe
 
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -128,16 +128,22 @@ namespace Terraria.Initializers
       Ref<Effect> pixelShaderRef = Main.PixelShaderRef;
       GameShaders.Hair.BindShader<LegacyHairShaderData>(1977, new LegacyHairShaderData().UseLegacyMethod((LegacyHairShaderData.ColorProcessingMethod) ((Player player, Color newColor, ref bool lighting) =>
       {
-        newColor.R = (byte) ((double) player.statLife / (double) player.statLifeMax2 * 235.0 + 20.0);
-        newColor.B = (byte) 20;
-        newColor.G = (byte) 20;
+        // ISSUE: explicit reference operation
+        ((Color) @newColor).set_R((byte) ((double) player.statLife / (double) player.statLifeMax2 * 235.0 + 20.0));
+        // ISSUE: explicit reference operation
+        ((Color) @newColor).set_B((byte) 20);
+        // ISSUE: explicit reference operation
+        ((Color) @newColor).set_G((byte) 20);
         return newColor;
       })));
       GameShaders.Hair.BindShader<LegacyHairShaderData>(1978, new LegacyHairShaderData().UseLegacyMethod((LegacyHairShaderData.ColorProcessingMethod) ((Player player, Color newColor, ref bool lighting) =>
       {
-        newColor.R = (byte) ((1.0 - (double) player.statMana / (double) player.statManaMax2) * 200.0 + 50.0);
-        newColor.B = byte.MaxValue;
-        newColor.G = (byte) ((1.0 - (double) player.statMana / (double) player.statManaMax2) * 180.0 + 75.0);
+        // ISSUE: explicit reference operation
+        ((Color) @newColor).set_R((byte) ((1.0 - (double) player.statMana / (double) player.statManaMax2) * 200.0 + 50.0));
+        // ISSUE: explicit reference operation
+        ((Color) @newColor).set_B(byte.MaxValue);
+        // ISSUE: explicit reference operation
+        ((Color) @newColor).set_G((byte) ((1.0 - (double) player.statMana / (double) player.statManaMax2) * 180.0 + 75.0));
         return newColor;
       })));
       GameShaders.Hair.BindShader<LegacyHairShaderData>(1979, new LegacyHairShaderData().UseLegacyMethod((LegacyHairShaderData.ColorProcessingMethod) ((Player player, Color newColor, ref bool lighting) =>
@@ -147,46 +153,61 @@ namespace Terraria.Initializers
         float num3 = ((float) Main.rockLayer + (float) Main.maxTilesY) * 8f;
         float num4 = (float) (Main.maxTilesY - 150) * 16f;
         Vector2 center = player.Center;
-        if ((double) center.Y < (double) num1)
+        if (center.Y < (double) num1)
         {
-          float num5 = center.Y / num1;
+          float num5 = (float) center.Y / num1;
           float num6 = 1f - num5;
-          newColor.R = (byte) (116.0 * (double) num6 + 28.0 * (double) num5);
-          newColor.G = (byte) (160.0 * (double) num6 + 216.0 * (double) num5);
-          newColor.B = (byte) (249.0 * (double) num6 + 94.0 * (double) num5);
+          // ISSUE: explicit reference operation
+          ((Color) @newColor).set_R((byte) (116.0 * (double) num6 + 28.0 * (double) num5));
+          // ISSUE: explicit reference operation
+          ((Color) @newColor).set_G((byte) (160.0 * (double) num6 + 216.0 * (double) num5));
+          // ISSUE: explicit reference operation
+          ((Color) @newColor).set_B((byte) (249.0 * (double) num6 + 94.0 * (double) num5));
         }
-        else if ((double) center.Y < (double) num2)
+        else if (center.Y < (double) num2)
         {
           float num5 = num1;
-          float num6 = (float) (((double) center.Y - (double) num5) / ((double) num2 - (double) num5));
+          float num6 = (float) ((center.Y - (double) num5) / ((double) num2 - (double) num5));
           float num7 = 1f - num6;
-          newColor.R = (byte) (28.0 * (double) num7 + 151.0 * (double) num6);
-          newColor.G = (byte) (216.0 * (double) num7 + 107.0 * (double) num6);
-          newColor.B = (byte) (94.0 * (double) num7 + 75.0 * (double) num6);
+          // ISSUE: explicit reference operation
+          ((Color) @newColor).set_R((byte) (28.0 * (double) num7 + 151.0 * (double) num6));
+          // ISSUE: explicit reference operation
+          ((Color) @newColor).set_G((byte) (216.0 * (double) num7 + 107.0 * (double) num6));
+          // ISSUE: explicit reference operation
+          ((Color) @newColor).set_B((byte) (94.0 * (double) num7 + 75.0 * (double) num6));
         }
-        else if ((double) center.Y < (double) num3)
+        else if (center.Y < (double) num3)
         {
           float num5 = num2;
-          float num6 = (float) (((double) center.Y - (double) num5) / ((double) num3 - (double) num5));
+          float num6 = (float) ((center.Y - (double) num5) / ((double) num3 - (double) num5));
           float num7 = 1f - num6;
-          newColor.R = (byte) (151.0 * (double) num7 + 128.0 * (double) num6);
-          newColor.G = (byte) (107.0 * (double) num7 + 128.0 * (double) num6);
-          newColor.B = (byte) (75.0 * (double) num7 + 128.0 * (double) num6);
+          // ISSUE: explicit reference operation
+          ((Color) @newColor).set_R((byte) (151.0 * (double) num7 + 128.0 * (double) num6));
+          // ISSUE: explicit reference operation
+          ((Color) @newColor).set_G((byte) (107.0 * (double) num7 + 128.0 * (double) num6));
+          // ISSUE: explicit reference operation
+          ((Color) @newColor).set_B((byte) (75.0 * (double) num7 + 128.0 * (double) num6));
         }
-        else if ((double) center.Y < (double) num4)
+        else if (center.Y < (double) num4)
         {
           float num5 = num3;
-          float num6 = (float) (((double) center.Y - (double) num5) / ((double) num4 - (double) num5));
+          float num6 = (float) ((center.Y - (double) num5) / ((double) num4 - (double) num5));
           float num7 = 1f - num6;
-          newColor.R = (byte) (128.0 * (double) num7 + (double) byte.MaxValue * (double) num6);
-          newColor.G = (byte) (128.0 * (double) num7 + 50.0 * (double) num6);
-          newColor.B = (byte) (128.0 * (double) num7 + 15.0 * (double) num6);
+          // ISSUE: explicit reference operation
+          ((Color) @newColor).set_R((byte) (128.0 * (double) num7 + (double) byte.MaxValue * (double) num6));
+          // ISSUE: explicit reference operation
+          ((Color) @newColor).set_G((byte) (128.0 * (double) num7 + 50.0 * (double) num6));
+          // ISSUE: explicit reference operation
+          ((Color) @newColor).set_B((byte) (128.0 * (double) num7 + 15.0 * (double) num6));
         }
         else
         {
-          newColor.R = byte.MaxValue;
-          newColor.G = (byte) 50;
-          newColor.B = (byte) 10;
+          // ISSUE: explicit reference operation
+          ((Color) @newColor).set_R(byte.MaxValue);
+          // ISSUE: explicit reference operation
+          ((Color) @newColor).set_G((byte) 50);
+          // ISSUE: explicit reference operation
+          ((Color) @newColor).set_B((byte) 10);
         }
         return newColor;
       })));
@@ -207,35 +228,70 @@ namespace Terraria.Initializers
         float num2 = (float) Item.buyPrice(0, 5, 0, 0);
         float num3 = (float) Item.buyPrice(0, 50, 0, 0);
         float num4 = (float) Item.buyPrice(2, 0, 0, 0);
-        Color color1 = new Color(226, 118, 76);
-        Color color2 = new Color(174, 194, 196);
-        Color color3 = new Color(204, 181, 72);
-        Color color4 = new Color(161, 172, 173);
+        Color color1;
+        // ISSUE: explicit reference operation
+        ((Color) @color1).\u002Ector(226, 118, 76);
+        Color color2;
+        // ISSUE: explicit reference operation
+        ((Color) @color2).\u002Ector(174, 194, 196);
+        Color color3;
+        // ISSUE: explicit reference operation
+        ((Color) @color3).\u002Ector(204, 181, 72);
+        Color color4;
+        // ISSUE: explicit reference operation
+        ((Color) @color4).\u002Ector(161, 172, 173);
         if ((double) num1 < (double) num2)
         {
           float num5 = (float) num1 / num2;
           float num6 = 1f - num5;
-          newColor.R = (byte) ((double) color1.R * (double) num6 + (double) color2.R * (double) num5);
-          newColor.G = (byte) ((double) color1.G * (double) num6 + (double) color2.G * (double) num5);
-          newColor.B = (byte) ((double) color1.B * (double) num6 + (double) color2.B * (double) num5);
+          // ISSUE: explicit reference operation
+          // ISSUE: explicit reference operation
+          // ISSUE: explicit reference operation
+          ((Color) @newColor).set_R((byte) ((double) ((Color) @color1).get_R() * (double) num6 + (double) ((Color) @color2).get_R() * (double) num5));
+          // ISSUE: explicit reference operation
+          // ISSUE: explicit reference operation
+          // ISSUE: explicit reference operation
+          ((Color) @newColor).set_G((byte) ((double) ((Color) @color1).get_G() * (double) num6 + (double) ((Color) @color2).get_G() * (double) num5));
+          // ISSUE: explicit reference operation
+          // ISSUE: explicit reference operation
+          // ISSUE: explicit reference operation
+          ((Color) @newColor).set_B((byte) ((double) ((Color) @color1).get_B() * (double) num6 + (double) ((Color) @color2).get_B() * (double) num5));
         }
         else if ((double) num1 < (double) num3)
         {
           float num5 = num2;
           float num6 = (float) (((double) num1 - (double) num5) / ((double) num3 - (double) num5));
           float num7 = 1f - num6;
-          newColor.R = (byte) ((double) color2.R * (double) num7 + (double) color3.R * (double) num6);
-          newColor.G = (byte) ((double) color2.G * (double) num7 + (double) color3.G * (double) num6);
-          newColor.B = (byte) ((double) color2.B * (double) num7 + (double) color3.B * (double) num6);
+          // ISSUE: explicit reference operation
+          // ISSUE: explicit reference operation
+          // ISSUE: explicit reference operation
+          ((Color) @newColor).set_R((byte) ((double) ((Color) @color2).get_R() * (double) num7 + (double) ((Color) @color3).get_R() * (double) num6));
+          // ISSUE: explicit reference operation
+          // ISSUE: explicit reference operation
+          // ISSUE: explicit reference operation
+          ((Color) @newColor).set_G((byte) ((double) ((Color) @color2).get_G() * (double) num7 + (double) ((Color) @color3).get_G() * (double) num6));
+          // ISSUE: explicit reference operation
+          // ISSUE: explicit reference operation
+          // ISSUE: explicit reference operation
+          ((Color) @newColor).set_B((byte) ((double) ((Color) @color2).get_B() * (double) num7 + (double) ((Color) @color3).get_B() * (double) num6));
         }
         else if ((double) num1 < (double) num4)
         {
           float num5 = num3;
           float num6 = (float) (((double) num1 - (double) num5) / ((double) num4 - (double) num5));
           float num7 = 1f - num6;
-          newColor.R = (byte) ((double) color3.R * (double) num7 + (double) color4.R * (double) num6);
-          newColor.G = (byte) ((double) color3.G * (double) num7 + (double) color4.G * (double) num6);
-          newColor.B = (byte) ((double) color3.B * (double) num7 + (double) color4.B * (double) num6);
+          // ISSUE: explicit reference operation
+          // ISSUE: explicit reference operation
+          // ISSUE: explicit reference operation
+          ((Color) @newColor).set_R((byte) ((double) ((Color) @color3).get_R() * (double) num7 + (double) ((Color) @color4).get_R() * (double) num6));
+          // ISSUE: explicit reference operation
+          // ISSUE: explicit reference operation
+          // ISSUE: explicit reference operation
+          ((Color) @newColor).set_G((byte) ((double) ((Color) @color3).get_G() * (double) num7 + (double) ((Color) @color4).get_G() * (double) num6));
+          // ISSUE: explicit reference operation
+          // ISSUE: explicit reference operation
+          // ISSUE: explicit reference operation
+          ((Color) @newColor).set_B((byte) ((double) ((Color) @color3).get_B() * (double) num7 + (double) ((Color) @color4).get_B() * (double) num6));
         }
         else
           newColor = color4;
@@ -243,46 +299,90 @@ namespace Terraria.Initializers
       })));
       GameShaders.Hair.BindShader<LegacyHairShaderData>(1981, new LegacyHairShaderData().UseLegacyMethod((LegacyHairShaderData.ColorProcessingMethod) ((Player player, Color newColor, ref bool lighting) =>
       {
-        Color color1 = new Color(1, 142, (int) byte.MaxValue);
-        Color color2 = new Color((int) byte.MaxValue, (int) byte.MaxValue, 0);
-        Color color3 = new Color(211, 45, (int) sbyte.MaxValue);
-        Color color4 = new Color(67, 44, 118);
+        Color color1;
+        // ISSUE: explicit reference operation
+        ((Color) @color1).\u002Ector(1, 142, (int) byte.MaxValue);
+        Color color2;
+        // ISSUE: explicit reference operation
+        ((Color) @color2).\u002Ector((int) byte.MaxValue, (int) byte.MaxValue, 0);
+        Color color3;
+        // ISSUE: explicit reference operation
+        ((Color) @color3).\u002Ector(211, 45, (int) sbyte.MaxValue);
+        Color color4;
+        // ISSUE: explicit reference operation
+        ((Color) @color4).\u002Ector(67, 44, 118);
         if (Main.dayTime)
         {
           if (Main.time < 27000.0)
           {
             float num1 = (float) (Main.time / 27000.0);
             float num2 = 1f - num1;
-            newColor.R = (byte) ((double) color1.R * (double) num2 + (double) color2.R * (double) num1);
-            newColor.G = (byte) ((double) color1.G * (double) num2 + (double) color2.G * (double) num1);
-            newColor.B = (byte) ((double) color1.B * (double) num2 + (double) color2.B * (double) num1);
+            // ISSUE: explicit reference operation
+            // ISSUE: explicit reference operation
+            // ISSUE: explicit reference operation
+            ((Color) @newColor).set_R((byte) ((double) ((Color) @color1).get_R() * (double) num2 + (double) ((Color) @color2).get_R() * (double) num1));
+            // ISSUE: explicit reference operation
+            // ISSUE: explicit reference operation
+            // ISSUE: explicit reference operation
+            ((Color) @newColor).set_G((byte) ((double) ((Color) @color1).get_G() * (double) num2 + (double) ((Color) @color2).get_G() * (double) num1));
+            // ISSUE: explicit reference operation
+            // ISSUE: explicit reference operation
+            // ISSUE: explicit reference operation
+            ((Color) @newColor).set_B((byte) ((double) ((Color) @color1).get_B() * (double) num2 + (double) ((Color) @color2).get_B() * (double) num1));
           }
           else
           {
             float num1 = 27000f;
             float num2 = (float) ((Main.time - (double) num1) / (54000.0 - (double) num1));
             float num3 = 1f - num2;
-            newColor.R = (byte) ((double) color2.R * (double) num3 + (double) color3.R * (double) num2);
-            newColor.G = (byte) ((double) color2.G * (double) num3 + (double) color3.G * (double) num2);
-            newColor.B = (byte) ((double) color2.B * (double) num3 + (double) color3.B * (double) num2);
+            // ISSUE: explicit reference operation
+            // ISSUE: explicit reference operation
+            // ISSUE: explicit reference operation
+            ((Color) @newColor).set_R((byte) ((double) ((Color) @color2).get_R() * (double) num3 + (double) ((Color) @color3).get_R() * (double) num2));
+            // ISSUE: explicit reference operation
+            // ISSUE: explicit reference operation
+            // ISSUE: explicit reference operation
+            ((Color) @newColor).set_G((byte) ((double) ((Color) @color2).get_G() * (double) num3 + (double) ((Color) @color3).get_G() * (double) num2));
+            // ISSUE: explicit reference operation
+            // ISSUE: explicit reference operation
+            // ISSUE: explicit reference operation
+            ((Color) @newColor).set_B((byte) ((double) ((Color) @color2).get_B() * (double) num3 + (double) ((Color) @color3).get_B() * (double) num2));
           }
         }
         else if (Main.time < 16200.0)
         {
           float num1 = (float) (Main.time / 16200.0);
           float num2 = 1f - num1;
-          newColor.R = (byte) ((double) color3.R * (double) num2 + (double) color4.R * (double) num1);
-          newColor.G = (byte) ((double) color3.G * (double) num2 + (double) color4.G * (double) num1);
-          newColor.B = (byte) ((double) color3.B * (double) num2 + (double) color4.B * (double) num1);
+          // ISSUE: explicit reference operation
+          // ISSUE: explicit reference operation
+          // ISSUE: explicit reference operation
+          ((Color) @newColor).set_R((byte) ((double) ((Color) @color3).get_R() * (double) num2 + (double) ((Color) @color4).get_R() * (double) num1));
+          // ISSUE: explicit reference operation
+          // ISSUE: explicit reference operation
+          // ISSUE: explicit reference operation
+          ((Color) @newColor).set_G((byte) ((double) ((Color) @color3).get_G() * (double) num2 + (double) ((Color) @color4).get_G() * (double) num1));
+          // ISSUE: explicit reference operation
+          // ISSUE: explicit reference operation
+          // ISSUE: explicit reference operation
+          ((Color) @newColor).set_B((byte) ((double) ((Color) @color3).get_B() * (double) num2 + (double) ((Color) @color4).get_B() * (double) num1));
         }
         else
         {
           float num1 = 16200f;
           float num2 = (float) ((Main.time - (double) num1) / (32400.0 - (double) num1));
           float num3 = 1f - num2;
-          newColor.R = (byte) ((double) color4.R * (double) num3 + (double) color1.R * (double) num2);
-          newColor.G = (byte) ((double) color4.G * (double) num3 + (double) color1.G * (double) num2);
-          newColor.B = (byte) ((double) color4.B * (double) num3 + (double) color1.B * (double) num2);
+          // ISSUE: explicit reference operation
+          // ISSUE: explicit reference operation
+          // ISSUE: explicit reference operation
+          ((Color) @newColor).set_R((byte) ((double) ((Color) @color4).get_R() * (double) num3 + (double) ((Color) @color1).get_R() * (double) num2));
+          // ISSUE: explicit reference operation
+          // ISSUE: explicit reference operation
+          // ISSUE: explicit reference operation
+          ((Color) @newColor).set_G((byte) ((double) ((Color) @color4).get_G() * (double) num3 + (double) ((Color) @color1).get_G() * (double) num2));
+          // ISSUE: explicit reference operation
+          // ISSUE: explicit reference operation
+          // ISSUE: explicit reference operation
+          ((Color) @newColor).set_B((byte) ((double) ((Color) @color4).get_B() * (double) num3 + (double) ((Color) @color1).get_B() * (double) num2));
         }
         return newColor;
       })));
@@ -294,83 +394,282 @@ namespace Terraria.Initializers
       })));
       GameShaders.Hair.BindShader<LegacyHairShaderData>(1983, new LegacyHairShaderData().UseLegacyMethod((LegacyHairShaderData.ColorProcessingMethod) ((Player player, Color newColor, ref bool lighting) =>
       {
-        Color color1 = new Color();
-        color1 = Main.waterStyle != 2 ? (Main.waterStyle != 3 ? (Main.waterStyle != 4 ? (Main.waterStyle != 5 ? (Main.waterStyle != 6 ? (Main.waterStyle != 7 ? (Main.waterStyle != 8 ? (Main.waterStyle != 9 ? (Main.waterStyle != 10 ? new Color(28, 216, 94) : new Color(208, 80, 80)) : new Color(200, 0, 0)) : new Color(128, 128, 128)) : new Color(151, 107, 75)) : new Color(230, 219, 100)) : new Color(189, 231, (int) byte.MaxValue)) : new Color(78, 193, 227)) : new Color(143, 215, 29)) : new Color(124, 118, 242);
+        Color color1 = (Color) null;
+        if (Main.waterStyle == 2)
+        {
+          // ISSUE: explicit reference operation
+          ((Color) @color1).\u002Ector(124, 118, 242);
+        }
+        else if (Main.waterStyle == 3)
+        {
+          // ISSUE: explicit reference operation
+          ((Color) @color1).\u002Ector(143, 215, 29);
+        }
+        else if (Main.waterStyle == 4)
+        {
+          // ISSUE: explicit reference operation
+          ((Color) @color1).\u002Ector(78, 193, 227);
+        }
+        else if (Main.waterStyle == 5)
+        {
+          // ISSUE: explicit reference operation
+          ((Color) @color1).\u002Ector(189, 231, (int) byte.MaxValue);
+        }
+        else if (Main.waterStyle == 6)
+        {
+          // ISSUE: explicit reference operation
+          ((Color) @color1).\u002Ector(230, 219, 100);
+        }
+        else if (Main.waterStyle == 7)
+        {
+          // ISSUE: explicit reference operation
+          ((Color) @color1).\u002Ector(151, 107, 75);
+        }
+        else if (Main.waterStyle == 8)
+        {
+          // ISSUE: explicit reference operation
+          ((Color) @color1).\u002Ector(128, 128, 128);
+        }
+        else if (Main.waterStyle == 9)
+        {
+          // ISSUE: explicit reference operation
+          ((Color) @color1).\u002Ector(200, 0, 0);
+        }
+        else if (Main.waterStyle == 10)
+        {
+          // ISSUE: explicit reference operation
+          ((Color) @color1).\u002Ector(208, 80, 80);
+        }
+        else
+        {
+          // ISSUE: explicit reference operation
+          ((Color) @color1).\u002Ector(28, 216, 94);
+        }
         Color color2 = player.hairDyeColor;
-        if ((int) color2.A == 0)
+        // ISSUE: explicit reference operation
+        if ((int) ((Color) @color2).get_A() == 0)
           color2 = color1;
-        if ((int) color2.R > (int) color1.R)
-          --color2.R;
-        if ((int) color2.R < (int) color1.R)
-          ++color2.R;
-        if ((int) color2.G > (int) color1.G)
-          --color2.G;
-        if ((int) color2.G < (int) color1.G)
-          ++color2.G;
-        if ((int) color2.B > (int) color1.B)
-          --color2.B;
-        if ((int) color2.B < (int) color1.B)
-          ++color2.B;
+        // ISSUE: explicit reference operation
+        // ISSUE: explicit reference operation
+        if ((int) ((Color) @color2).get_R() > (int) ((Color) @color1).get_R())
+        {
+          // ISSUE: explicit reference operation
+          // ISSUE: variable of a reference type
+          Color& local = @color2;
+          int num = (int) (byte) ((uint) ((Color) local).get_R() - 1U);
+          ((Color) local).set_R((byte) num);
+        }
+        // ISSUE: explicit reference operation
+        // ISSUE: explicit reference operation
+        if ((int) ((Color) @color2).get_R() < (int) ((Color) @color1).get_R())
+        {
+          // ISSUE: explicit reference operation
+          // ISSUE: variable of a reference type
+          Color& local = @color2;
+          int num = (int) (byte) ((uint) ((Color) local).get_R() + 1U);
+          ((Color) local).set_R((byte) num);
+        }
+        // ISSUE: explicit reference operation
+        // ISSUE: explicit reference operation
+        if ((int) ((Color) @color2).get_G() > (int) ((Color) @color1).get_G())
+        {
+          // ISSUE: explicit reference operation
+          // ISSUE: variable of a reference type
+          Color& local = @color2;
+          int num = (int) (byte) ((uint) ((Color) local).get_G() - 1U);
+          ((Color) local).set_G((byte) num);
+        }
+        // ISSUE: explicit reference operation
+        // ISSUE: explicit reference operation
+        if ((int) ((Color) @color2).get_G() < (int) ((Color) @color1).get_G())
+        {
+          // ISSUE: explicit reference operation
+          // ISSUE: variable of a reference type
+          Color& local = @color2;
+          int num = (int) (byte) ((uint) ((Color) local).get_G() + 1U);
+          ((Color) local).set_G((byte) num);
+        }
+        // ISSUE: explicit reference operation
+        // ISSUE: explicit reference operation
+        if ((int) ((Color) @color2).get_B() > (int) ((Color) @color1).get_B())
+        {
+          // ISSUE: explicit reference operation
+          // ISSUE: variable of a reference type
+          Color& local = @color2;
+          int num = (int) (byte) ((uint) ((Color) local).get_B() - 1U);
+          ((Color) local).set_B((byte) num);
+        }
+        // ISSUE: explicit reference operation
+        // ISSUE: explicit reference operation
+        if ((int) ((Color) @color2).get_B() < (int) ((Color) @color1).get_B())
+        {
+          // ISSUE: explicit reference operation
+          // ISSUE: variable of a reference type
+          Color& local = @color2;
+          int num = (int) (byte) ((uint) ((Color) local).get_B() + 1U);
+          ((Color) local).set_B((byte) num);
+        }
         newColor = color2;
         return newColor;
       })));
       GameShaders.Hair.BindShader<LegacyHairShaderData>(1984, new LegacyHairShaderData().UseLegacyMethod((LegacyHairShaderData.ColorProcessingMethod) ((Player player, Color newColor, ref bool lighting) =>
       {
-        newColor = new Color(244, 22, 175);
+        // ISSUE: explicit reference operation
+        ((Color) @newColor).\u002Ector(244, 22, 175);
         if (!Main.gameMenu && !Main.gamePaused)
         {
           if (Main.rand.Next(45) == 0)
           {
             int Type = Main.rand.Next(139, 143);
-            int index = Dust.NewDust(player.position, player.width, 8, Type, 0.0f, 0.0f, 0, new Color(), 1.2f);
-            Main.dust[index].velocity.X *= (float) (1.0 + (double) Main.rand.Next(-50, 51) * 0.00999999977648258);
-            Main.dust[index].velocity.Y *= (float) (1.0 + (double) Main.rand.Next(-50, 51) * 0.00999999977648258);
-            Main.dust[index].velocity.X += (float) Main.rand.Next(-50, 51) * 0.01f;
-            Main.dust[index].velocity.Y += (float) Main.rand.Next(-50, 51) * 0.01f;
-            --Main.dust[index].velocity.Y;
+            int index = Dust.NewDust(player.position, player.width, 8, Type, 0.0f, 0.0f, 0, (Color) null, 1.2f);
+            // ISSUE: explicit reference operation
+            // ISSUE: variable of a reference type
+            __Null& local1 = @Main.dust[index].velocity.X;
+            // ISSUE: cast to a reference type
+            // ISSUE: explicit reference operation
+            double num1 = (double) ^(float&) local1 * (1.0 + (double) Main.rand.Next(-50, 51) * 0.00999999977648258);
+            // ISSUE: cast to a reference type
+            // ISSUE: explicit reference operation
+            ^(float&) local1 = (float) num1;
+            // ISSUE: explicit reference operation
+            // ISSUE: variable of a reference type
+            __Null& local2 = @Main.dust[index].velocity.Y;
+            // ISSUE: cast to a reference type
+            // ISSUE: explicit reference operation
+            double num2 = (double) ^(float&) local2 * (1.0 + (double) Main.rand.Next(-50, 51) * 0.00999999977648258);
+            // ISSUE: cast to a reference type
+            // ISSUE: explicit reference operation
+            ^(float&) local2 = (float) num2;
+            // ISSUE: explicit reference operation
+            // ISSUE: variable of a reference type
+            __Null& local3 = @Main.dust[index].velocity.X;
+            // ISSUE: cast to a reference type
+            // ISSUE: explicit reference operation
+            double num3 = (double) ^(float&) local3 + (double) Main.rand.Next(-50, 51) * 0.00999999977648258;
+            // ISSUE: cast to a reference type
+            // ISSUE: explicit reference operation
+            ^(float&) local3 = (float) num3;
+            // ISSUE: explicit reference operation
+            // ISSUE: variable of a reference type
+            __Null& local4 = @Main.dust[index].velocity.Y;
+            // ISSUE: cast to a reference type
+            // ISSUE: explicit reference operation
+            double num4 = (double) ^(float&) local4 + (double) Main.rand.Next(-50, 51) * 0.00999999977648258;
+            // ISSUE: cast to a reference type
+            // ISSUE: explicit reference operation
+            ^(float&) local4 = (float) num4;
+            // ISSUE: explicit reference operation
+            // ISSUE: variable of a reference type
+            __Null& local5 = @Main.dust[index].velocity.Y;
+            // ISSUE: cast to a reference type
+            // ISSUE: explicit reference operation
+            double num5 = (double) ^(float&) local5 - 1.0;
+            // ISSUE: cast to a reference type
+            // ISSUE: explicit reference operation
+            ^(float&) local5 = (float) num5;
             Main.dust[index].scale *= (float) (0.699999988079071 + (double) Main.rand.Next(-30, 31) * 0.00999999977648258);
-            Main.dust[index].velocity += player.velocity * 0.2f;
+            Dust dust = Main.dust[index];
+            Vector2 vector2 = Vector2.op_Addition(dust.velocity, Vector2.op_Multiply(player.velocity, 0.2f));
+            dust.velocity = vector2;
           }
           if (Main.rand.Next(225) == 0)
           {
             int Type = Main.rand.Next(276, 283);
-            int index = Gore.NewGore(new Vector2(player.position.X + (float) Main.rand.Next(player.width), player.position.Y + (float) Main.rand.Next(8)), player.velocity, Type, 1f);
-            Main.gore[index].velocity.X *= (float) (1.0 + (double) Main.rand.Next(-50, 51) * 0.00999999977648258);
-            Main.gore[index].velocity.Y *= (float) (1.0 + (double) Main.rand.Next(-50, 51) * 0.00999999977648258);
+            int index = Gore.NewGore(new Vector2((float) player.position.X + (float) Main.rand.Next(player.width), (float) player.position.Y + (float) Main.rand.Next(8)), player.velocity, Type, 1f);
+            // ISSUE: explicit reference operation
+            // ISSUE: variable of a reference type
+            __Null& local1 = @Main.gore[index].velocity.X;
+            // ISSUE: cast to a reference type
+            // ISSUE: explicit reference operation
+            double num1 = (double) ^(float&) local1 * (1.0 + (double) Main.rand.Next(-50, 51) * 0.00999999977648258);
+            // ISSUE: cast to a reference type
+            // ISSUE: explicit reference operation
+            ^(float&) local1 = (float) num1;
+            // ISSUE: explicit reference operation
+            // ISSUE: variable of a reference type
+            __Null& local2 = @Main.gore[index].velocity.Y;
+            // ISSUE: cast to a reference type
+            // ISSUE: explicit reference operation
+            double num2 = (double) ^(float&) local2 * (1.0 + (double) Main.rand.Next(-50, 51) * 0.00999999977648258);
+            // ISSUE: cast to a reference type
+            // ISSUE: explicit reference operation
+            ^(float&) local2 = (float) num2;
             Main.gore[index].scale *= (float) (1.0 + (double) Main.rand.Next(-20, 21) * 0.00999999977648258);
-            Main.gore[index].velocity.X += (float) Main.rand.Next(-50, 51) * 0.01f;
-            Main.gore[index].velocity.Y += (float) Main.rand.Next(-50, 51) * 0.01f;
-            --Main.gore[index].velocity.Y;
-            Main.gore[index].velocity += player.velocity * 0.2f;
+            // ISSUE: explicit reference operation
+            // ISSUE: variable of a reference type
+            __Null& local3 = @Main.gore[index].velocity.X;
+            // ISSUE: cast to a reference type
+            // ISSUE: explicit reference operation
+            double num3 = (double) ^(float&) local3 + (double) Main.rand.Next(-50, 51) * 0.00999999977648258;
+            // ISSUE: cast to a reference type
+            // ISSUE: explicit reference operation
+            ^(float&) local3 = (float) num3;
+            // ISSUE: explicit reference operation
+            // ISSUE: variable of a reference type
+            __Null& local4 = @Main.gore[index].velocity.Y;
+            // ISSUE: cast to a reference type
+            // ISSUE: explicit reference operation
+            double num4 = (double) ^(float&) local4 + (double) Main.rand.Next(-50, 51) * 0.00999999977648258;
+            // ISSUE: cast to a reference type
+            // ISSUE: explicit reference operation
+            ^(float&) local4 = (float) num4;
+            // ISSUE: explicit reference operation
+            // ISSUE: variable of a reference type
+            __Null& local5 = @Main.gore[index].velocity.Y;
+            // ISSUE: cast to a reference type
+            // ISSUE: explicit reference operation
+            double num5 = (double) ^(float&) local5 - 1.0;
+            // ISSUE: cast to a reference type
+            // ISSUE: explicit reference operation
+            ^(float&) local5 = (float) num5;
+            Gore gore = Main.gore[index];
+            Vector2 vector2 = Vector2.op_Addition(gore.velocity, Vector2.op_Multiply(player.velocity, 0.2f));
+            gore.velocity = vector2;
           }
         }
         return newColor;
       })));
       GameShaders.Hair.BindShader<LegacyHairShaderData>(1985, new LegacyHairShaderData().UseLegacyMethod((LegacyHairShaderData.ColorProcessingMethod) ((Player player, Color newColor, ref bool lighting) =>
       {
-        newColor = new Color(Main.DiscoR, Main.DiscoG, Main.DiscoB);
+        // ISSUE: explicit reference operation
+        ((Color) @newColor).\u002Ector(Main.DiscoR, Main.DiscoG, Main.DiscoB);
         return newColor;
       })));
       GameShaders.Hair.BindShader<LegacyHairShaderData>(1986, new LegacyHairShaderData().UseLegacyMethod((LegacyHairShaderData.ColorProcessingMethod) ((Player player, Color newColor, ref bool lighting) =>
       {
-        float num1 = Math.Abs(player.velocity.X) + Math.Abs(player.velocity.Y);
+        float num1 = Math.Abs((float) player.velocity.X) + Math.Abs((float) player.velocity.Y);
         float num2 = 10f;
         if ((double) num1 > (double) num2)
           num1 = num2;
         float num3 = num1 / num2;
         float num4 = 1f - num3;
-        newColor.R = (byte) (75.0 * (double) num3 + (double) player.hairColor.R * (double) num4);
-        newColor.G = (byte) ((double) byte.MaxValue * (double) num3 + (double) player.hairColor.G * (double) num4);
-        newColor.B = (byte) (200.0 * (double) num3 + (double) player.hairColor.B * (double) num4);
+        // ISSUE: explicit reference operation
+        // ISSUE: explicit reference operation
+        ((Color) @newColor).set_R((byte) (75.0 * (double) num3 + (double) ((Color) @player.hairColor).get_R() * (double) num4));
+        // ISSUE: explicit reference operation
+        // ISSUE: explicit reference operation
+        ((Color) @newColor).set_G((byte) ((double) byte.MaxValue * (double) num3 + (double) ((Color) @player.hairColor).get_G() * (double) num4));
+        // ISSUE: explicit reference operation
+        // ISSUE: explicit reference operation
+        ((Color) @newColor).set_B((byte) (200.0 * (double) num3 + (double) ((Color) @player.hairColor).get_B() * (double) num4));
         return newColor;
       })));
       GameShaders.Hair.BindShader<LegacyHairShaderData>(2863, new LegacyHairShaderData().UseLegacyMethod((LegacyHairShaderData.ColorProcessingMethod) ((Player player, Color newColor, ref bool lighting) =>
       {
         lighting = false;
         Color color = Lighting.GetColor((int) ((double) player.position.X + (double) player.width * 0.5) / 16, (int) (((double) player.position.Y + (double) player.height * 0.25) / 16.0));
-        newColor.R = (byte) ((int) color.R + (int) newColor.R >> 1);
-        newColor.G = (byte) ((int) color.G + (int) newColor.G >> 1);
-        newColor.B = (byte) ((int) color.B + (int) newColor.B >> 1);
+        // ISSUE: explicit reference operation
+        // ISSUE: explicit reference operation
+        // ISSUE: explicit reference operation
+        ((Color) @newColor).set_R((byte) ((int) ((Color) @color).get_R() + (int) ((Color) @newColor).get_R() >> 1));
+        // ISSUE: explicit reference operation
+        // ISSUE: explicit reference operation
+        // ISSUE: explicit reference operation
+        ((Color) @newColor).set_G((byte) ((int) ((Color) @color).get_G() + (int) ((Color) @newColor).get_G() >> 1));
+        // ISSUE: explicit reference operation
+        // ISSUE: explicit reference operation
+        // ISSUE: explicit reference operation
+        ((Color) @newColor).set_B((byte) ((int) ((Color) @color).get_B() + (int) ((Color) @newColor).get_B() >> 1));
         return newColor;
       })));
     }

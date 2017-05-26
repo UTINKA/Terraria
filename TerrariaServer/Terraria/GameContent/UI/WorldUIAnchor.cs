@@ -1,8 +1,8 @@
 ﻿// Decompiled with JetBrains decompiler
 // Type: Terraria.GameContent.UI.WorldUIAnchor
-// Assembly: TerrariaServer, Version=1.3.5.1, Culture=neutral, PublicKeyToken=null
-// MVID: C2103E81-0935-4BEA-9E98-4159FC80C2BB
-// Assembly location: F:\Steam\steamapps\common\Terraria\TerrariaServer.exe
+// Assembly: TerrariaServer, Version=1.3.5.3, Culture=neutral, PublicKeyToken=null
+// MVID: 8A63A7A2-328D-424C-BC9D-BF23F93646F7
+// Assembly location: H:\Steam\steamapps\common\Terraria\TerrariaServer.exe
 
 using Microsoft.Xna.Framework;
 using System;
@@ -11,8 +11,8 @@ namespace Terraria.GameContent.UI
 {
   public class WorldUIAnchor
   {
-    public Vector2 pos = Vector2.Zero;
-    public Vector2 size = Vector2.Zero;
+    public Vector2 pos = Vector2.get_Zero();
+    public Vector2 size = Vector2.get_Zero();
     public WorldUIAnchor.AnchorType type;
     public Entity entity;
 
@@ -36,8 +36,8 @@ namespace Terraria.GameContent.UI
     public WorldUIAnchor(int topLeftX, int topLeftY, int width, int height)
     {
       this.type = WorldUIAnchor.AnchorType.Tile;
-      this.pos = new Vector2((float) topLeftX + (float) width / 2f, (float) topLeftY + (float) height / 2f) * 16f;
-      this.size = new Vector2((float) width, (float) height) * 16f;
+      this.pos = Vector2.op_Multiply(new Vector2((float) topLeftX + (float) width / 2f, (float) topLeftY + (float) height / 2f), 16f);
+      this.size = Vector2.op_Multiply(new Vector2((float) width, (float) height), 16f);
     }
 
     public bool InRange(Vector2 target, float tileRangeX, float tileRangeY)
@@ -45,16 +45,16 @@ namespace Terraria.GameContent.UI
       switch (this.type)
       {
         case WorldUIAnchor.AnchorType.Entity:
-          if ((double) Math.Abs(target.X - this.entity.Center.X) <= (double) tileRangeX * 16.0 + (double) this.entity.width / 2.0)
-            return (double) Math.Abs(target.Y - this.entity.Center.Y) <= (double) tileRangeY * 16.0 + (double) this.entity.height / 2.0;
+          if ((double) Math.Abs((float) (target.X - this.entity.Center.X)) <= (double) tileRangeX * 16.0 + (double) this.entity.width / 2.0)
+            return (double) Math.Abs((float) (target.Y - this.entity.Center.Y)) <= (double) tileRangeY * 16.0 + (double) this.entity.height / 2.0;
           return false;
         case WorldUIAnchor.AnchorType.Tile:
-          if ((double) Math.Abs(target.X - this.pos.X) <= (double) tileRangeX * 16.0 + (double) this.size.X / 2.0)
-            return (double) Math.Abs(target.Y - this.pos.Y) <= (double) tileRangeY * 16.0 + (double) this.size.Y / 2.0;
+          if ((double) Math.Abs((float) (target.X - this.pos.X)) <= (double) tileRangeX * 16.0 + this.size.X / 2.0)
+            return (double) Math.Abs((float) (target.Y - this.pos.Y)) <= (double) tileRangeY * 16.0 + this.size.Y / 2.0;
           return false;
         case WorldUIAnchor.AnchorType.Pos:
-          if ((double) Math.Abs(target.X - this.pos.X) <= (double) tileRangeX * 16.0)
-            return (double) Math.Abs(target.Y - this.pos.Y) <= (double) tileRangeY * 16.0;
+          if ((double) Math.Abs((float) (target.X - this.pos.X)) <= (double) tileRangeX * 16.0)
+            return (double) Math.Abs((float) (target.Y - this.pos.Y)) <= (double) tileRangeY * 16.0;
           return false;
         default:
           return true;

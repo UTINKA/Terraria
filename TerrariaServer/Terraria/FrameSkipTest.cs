@@ -1,8 +1,8 @@
 ﻿// Decompiled with JetBrains decompiler
 // Type: Terraria.FrameSkipTest
-// Assembly: TerrariaServer, Version=1.3.5.1, Culture=neutral, PublicKeyToken=null
-// MVID: C2103E81-0935-4BEA-9E98-4159FC80C2BB
-// Assembly location: F:\Steam\steamapps\common\Terraria\TerrariaServer.exe
+// Assembly: TerrariaServer, Version=1.3.5.3, Culture=neutral, PublicKeyToken=null
+// MVID: 8A63A7A2-328D-424C-BC9D-BF23F93646F7
+// Assembly location: H:\Steam\steamapps\common\Terraria\TerrariaServer.exe
 
 using Microsoft.Xna.Framework;
 using ReLogic.Utilities;
@@ -17,24 +17,24 @@ namespace Terraria
     private static float DeltasThisSecond = 0.0f;
     private static List<float> DeltaSamples = new List<float>();
     private static MultiTimer serverFramerateTest = new MultiTimer(60);
-    private const int SamplesCount = 5;
     private static int LastRecordedSecondNumber;
+    private const int SamplesCount = 5;
 
     public static void Update(GameTime gameTime)
     {
-      Thread.Sleep((int) MathHelper.Clamp((1f / 60f - (float) gameTime.ElapsedGameTime.TotalSeconds) * 1000f + 1f, 0.0f, 1000f));
+      Thread.Sleep((int) MathHelper.Clamp((float) ((1.0 / 60.0 - gameTime.get_ElapsedGameTime().TotalSeconds) * 1000.0 + 1.0), 0.0f, 1000f));
     }
 
     public static void CheckReset(GameTime gameTime)
     {
-      if (FrameSkipTest.LastRecordedSecondNumber == gameTime.TotalGameTime.Seconds)
+      if (FrameSkipTest.LastRecordedSecondNumber == gameTime.get_TotalGameTime().Seconds)
         return;
       FrameSkipTest.DeltaSamples.Add(FrameSkipTest.DeltasThisSecond / FrameSkipTest.CallsThisSecond);
       if (FrameSkipTest.DeltaSamples.Count > 5)
         FrameSkipTest.DeltaSamples.RemoveAt(0);
       FrameSkipTest.CallsThisSecond = 0.0f;
       FrameSkipTest.DeltasThisSecond = 0.0f;
-      FrameSkipTest.LastRecordedSecondNumber = gameTime.TotalGameTime.Seconds;
+      FrameSkipTest.LastRecordedSecondNumber = gameTime.get_TotalGameTime().Seconds;
     }
 
     public static void UpdateServerTest()

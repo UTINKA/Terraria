@@ -1,8 +1,8 @@
 ﻿// Decompiled with JetBrains decompiler
 // Type: Terraria.BitsByte
-// Assembly: TerrariaServer, Version=1.3.5.1, Culture=neutral, PublicKeyToken=null
-// MVID: C2103E81-0935-4BEA-9E98-4159FC80C2BB
-// Assembly location: F:\Steam\steamapps\common\Terraria\TerrariaServer.exe
+// Assembly: TerrariaServer, Version=1.3.5.3, Culture=neutral, PublicKeyToken=null
+// MVID: 8A63A7A2-328D-424C-BC9D-BF23F93646F7
+// Assembly location: H:\Steam\steamapps\common\Terraria\TerrariaServer.exe
 
 using System;
 using System.Collections.Generic;
@@ -19,14 +19,14 @@ namespace Terraria
     {
       get
       {
-        return ((int) this.value & 1 << key) != 0;
+        return ((uint) this.value & (uint) (1 << key)) > 0U;
       }
       set
       {
         if (value)
-          this.value |= (byte) (1 << key);
+          this.value = (byte) ((uint) this.value | (uint) (byte) (1 << key));
         else
-          this.value &= (byte) ~(1 << key);
+          this.value = (byte) ((uint) this.value & (uint) (byte) ~(1 << key));
       }
     }
 
@@ -162,11 +162,10 @@ namespace Terraria
       BinaryWriter binaryWriter = new BinaryWriter((Stream) memoryStream);
       BinaryReader reader = new BinaryReader((Stream) memoryStream);
       int num1 = 0;
-      bool[] flagArray1 = new bool[28];
-      flagArray1[3] = true;
-      flagArray1[14] = true;
-      bool[] flagArray2 = flagArray1;
-      BitsByte[] bitsByteArray1 = BitsByte.ComposeBitsBytesChain(num1 != 0, flagArray2);
+      bool[] flagArray = new bool[28];
+      flagArray[3] = true;
+      flagArray[14] = true;
+      BitsByte[] bitsByteArray1 = BitsByte.ComposeBitsBytesChain(num1 != 0, flagArray);
       foreach (BitsByte bitsByte in bitsByteArray1)
       {
         byte num2 = (byte) bitsByte;

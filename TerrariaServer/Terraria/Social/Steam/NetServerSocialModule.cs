@@ -1,8 +1,8 @@
 ﻿// Decompiled with JetBrains decompiler
 // Type: Terraria.Social.Steam.NetServerSocialModule
-// Assembly: TerrariaServer, Version=1.3.5.1, Culture=neutral, PublicKeyToken=null
-// MVID: C2103E81-0935-4BEA-9E98-4159FC80C2BB
-// Assembly location: F:\Steam\steamapps\common\Terraria\TerrariaServer.exe
+// Assembly: TerrariaServer, Version=1.3.5.3, Culture=neutral, PublicKeyToken=null
+// MVID: 8A63A7A2-328D-424C-BC9D-BF23F93646F7
+// Assembly location: H:\Steam\steamapps\common\Terraria\TerrariaServer.exe
 
 using Steamworks;
 using System;
@@ -61,26 +61,28 @@ namespace Terraria.Social.Steam
       this._p2pSessionRequest = Callback<P2PSessionRequest_t>.Create(new Callback<P2PSessionRequest_t>.DispatchDelegate((object) this, __methodptr(OnP2PSessionRequest)));
       if (Program.LaunchParameters.ContainsKey("-lobby"))
       {
-        this._mode |= ServerMode.Lobby;
-        switch (Program.LaunchParameters["-lobby"])
+        this._mode = this._mode | ServerMode.Lobby;
+        string launchParameter = Program.LaunchParameters["-lobby"];
+        if (!(launchParameter == "private"))
         {
-          case "private":
-            // ISSUE: method pointer
-            this._lobby.Create(true, new CallResult<LobbyCreated_t>.APIDispatchDelegate((object) this, __methodptr(OnLobbyCreated)));
-            break;
-          case "friends":
-            this._mode |= ServerMode.FriendsCanJoin;
+          if (launchParameter == "friends")
+          {
+            this._mode = this._mode | ServerMode.FriendsCanJoin;
             // ISSUE: method pointer
             this._lobby.Create(false, new CallResult<LobbyCreated_t>.APIDispatchDelegate((object) this, __methodptr(OnLobbyCreated)));
-            break;
-          default:
+          }
+          else
             Console.WriteLine(Language.GetTextValue("Error.InvalidLobbyFlag", (object) "private", (object) "friends"));
-            break;
+        }
+        else
+        {
+          // ISSUE: method pointer
+          this._lobby.Create(true, new CallResult<LobbyCreated_t>.APIDispatchDelegate((object) this, __methodptr(OnLobbyCreated)));
         }
       }
       if (!Program.LaunchParameters.ContainsKey("-friendsoffriends"))
         return;
-      this._mode |= ServerMode.FriendsOfFriends;
+      this._mode = this._mode | ServerMode.FriendsOfFriends;
     }
 
     public override ulong GetLobbyId()

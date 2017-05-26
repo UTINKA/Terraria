@@ -1,8 +1,8 @@
 ﻿// Decompiled with JetBrains decompiler
 // Type: Terraria.NetMessage
-// Assembly: TerrariaServer, Version=1.3.5.1, Culture=neutral, PublicKeyToken=null
-// MVID: C2103E81-0935-4BEA-9E98-4159FC80C2BB
-// Assembly location: F:\Steam\steamapps\common\Terraria\TerrariaServer.exe
+// Assembly: TerrariaServer, Version=1.3.5.3, Culture=neutral, PublicKeyToken=null
+// MVID: 8A63A7A2-328D-424C-BC9D-BF23F93646F7
+// Assembly location: H:\Steam\steamapps\common\Terraria\TerrariaServer.exe
 
 using Ionic.Zlib;
 using Microsoft.Xna.Framework;
@@ -70,7 +70,7 @@ namespace Terraria
         switch (msgType)
         {
           case 1:
-            writer.Write("Terraria" + (object) 193);
+            writer.Write("Terraria" + (object) 194);
             break;
           case 2:
             text.Serialize(writer);
@@ -266,7 +266,7 @@ namespace Terraria
             BitsByte bitsByte11 = (BitsByte) (byte) 0;
             bitsByte11[0] = player3.pulley;
             bitsByte11[1] = player3.pulley && (int) player3.pulleyDir == 2;
-            bitsByte11[2] = player3.velocity != Vector2.Zero;
+            bitsByte11[2] = Vector2.op_Inequality(player3.velocity, Vector2.get_Zero());
             bitsByte11[3] = player3.vortexStealthActive;
             bitsByte11[4] = (double) player3.gravDir == 1.0;
             bitsByte11[5] = player3.shieldRaised;
@@ -765,10 +765,10 @@ namespace Terraria
           case 81:
             writer.Write(number2);
             writer.Write(number3);
-            writer.WriteRGB(new Color()
-            {
-              PackedValue = (uint) number
-            });
+            Color c1 = (Color) null;
+            // ISSUE: explicit reference operation
+            ((Color) @c1).set_PackedValue((uint) number);
+            writer.WriteRGB(c1);
             writer.Write((int) number4);
             break;
           case 83:
@@ -811,7 +811,10 @@ namespace Terraria
             writer.Write((byte) bitsByte17);
             Item obj4 = Main.item[number];
             if (bitsByte17[0])
-              writer.Write(obj4.color.PackedValue);
+            {
+              // ISSUE: explicit reference operation
+              writer.Write(((Color) @obj4.color).get_PackedValue());
+            }
             if (bitsByte17[1])
               writer.Write((ushort) obj4.damage);
             if (bitsByte17[2])
@@ -933,8 +936,11 @@ namespace Terraria
             writer.Write((double) number3 == 1.0);
             break;
           case 106:
-            HalfVector2 halfVector2 = new HalfVector2((float) number, number2);
-            writer.Write(halfVector2.PackedValue);
+            HalfVector2 halfVector2;
+            // ISSUE: explicit reference operation
+            ((HalfVector2) @halfVector2).\u002Ector((float) number, number2);
+            // ISSUE: explicit reference operation
+            writer.Write(((HalfVector2) @halfVector2).get_PackedValue());
             break;
           case 107:
             writer.Write((byte) number2);
@@ -1000,10 +1006,10 @@ namespace Terraria
           case 119:
             writer.Write(number2);
             writer.Write(number3);
-            writer.WriteRGB(new Color()
-            {
-              PackedValue = (uint) number
-            });
+            Color c2 = (Color) null;
+            // ISSUE: explicit reference operation
+            ((Color) @c2).set_PackedValue((uint) number);
+            writer.WriteRGB(c2);
             text.Serialize(writer);
             break;
         }
@@ -1093,11 +1099,44 @@ namespace Terraria
                 {
                   Rectangle rect1 = Main.player[index1].getRect();
                   Rectangle rect2 = npc3.getRect();
-                  rect2.X -= 2500;
-                  rect2.Y -= 2500;
-                  rect2.Width += 5000;
-                  rect2.Height += 5000;
-                  if (rect1.Intersects(rect2))
+                  // ISSUE: explicit reference operation
+                  // ISSUE: variable of a reference type
+                  __Null& local1 = @rect2.X;
+                  // ISSUE: cast to a reference type
+                  // ISSUE: explicit reference operation
+                  int num6 = ^(int&) local1 - 2500;
+                  // ISSUE: cast to a reference type
+                  // ISSUE: explicit reference operation
+                  ^(int&) local1 = num6;
+                  // ISSUE: explicit reference operation
+                  // ISSUE: variable of a reference type
+                  __Null& local2 = @rect2.Y;
+                  // ISSUE: cast to a reference type
+                  // ISSUE: explicit reference operation
+                  int num7 = ^(int&) local2 - 2500;
+                  // ISSUE: cast to a reference type
+                  // ISSUE: explicit reference operation
+                  ^(int&) local2 = num7;
+                  // ISSUE: explicit reference operation
+                  // ISSUE: variable of a reference type
+                  __Null& local3 = @rect2.Width;
+                  // ISSUE: cast to a reference type
+                  // ISSUE: explicit reference operation
+                  int num17 = ^(int&) local3 + 5000;
+                  // ISSUE: cast to a reference type
+                  // ISSUE: explicit reference operation
+                  ^(int&) local3 = num17;
+                  // ISSUE: explicit reference operation
+                  // ISSUE: variable of a reference type
+                  __Null& local4 = @rect2.Height;
+                  // ISSUE: cast to a reference type
+                  // ISSUE: explicit reference operation
+                  int num18 = ^(int&) local4 + 5000;
+                  // ISSUE: cast to a reference type
+                  // ISSUE: explicit reference operation
+                  ^(int&) local4 = num18;
+                  // ISSUE: explicit reference operation
+                  if (((Rectangle) @rect1).Intersects(rect2))
                     flag3 = true;
                 }
                 else
@@ -1139,11 +1178,44 @@ namespace Terraria
                 {
                   Rectangle rect1 = Main.player[index1].getRect();
                   Rectangle rect2 = npc3.getRect();
-                  rect2.X -= 3000;
-                  rect2.Y -= 3000;
-                  rect2.Width += 6000;
-                  rect2.Height += 6000;
-                  if (rect1.Intersects(rect2))
+                  // ISSUE: explicit reference operation
+                  // ISSUE: variable of a reference type
+                  __Null& local1 = @rect2.X;
+                  // ISSUE: cast to a reference type
+                  // ISSUE: explicit reference operation
+                  int num6 = ^(int&) local1 - 3000;
+                  // ISSUE: cast to a reference type
+                  // ISSUE: explicit reference operation
+                  ^(int&) local1 = num6;
+                  // ISSUE: explicit reference operation
+                  // ISSUE: variable of a reference type
+                  __Null& local2 = @rect2.Y;
+                  // ISSUE: cast to a reference type
+                  // ISSUE: explicit reference operation
+                  int num7 = ^(int&) local2 - 3000;
+                  // ISSUE: cast to a reference type
+                  // ISSUE: explicit reference operation
+                  ^(int&) local2 = num7;
+                  // ISSUE: explicit reference operation
+                  // ISSUE: variable of a reference type
+                  __Null& local3 = @rect2.Width;
+                  // ISSUE: cast to a reference type
+                  // ISSUE: explicit reference operation
+                  int num17 = ^(int&) local3 + 6000;
+                  // ISSUE: cast to a reference type
+                  // ISSUE: explicit reference operation
+                  ^(int&) local3 = num17;
+                  // ISSUE: explicit reference operation
+                  // ISSUE: variable of a reference type
+                  __Null& local4 = @rect2.Height;
+                  // ISSUE: cast to a reference type
+                  // ISSUE: explicit reference operation
+                  int num18 = ^(int&) local4 + 6000;
+                  // ISSUE: cast to a reference type
+                  // ISSUE: explicit reference operation
+                  ^(int&) local4 = num18;
+                  // ISSUE: explicit reference operation
+                  if (((Rectangle) @rect1).Intersects(rect2))
                     flag3 = true;
                 }
                 if (flag3)
@@ -1207,11 +1279,44 @@ namespace Terraria
                 {
                   Rectangle rect1 = Main.player[index1].getRect();
                   Rectangle rect2 = projectile2.getRect();
-                  rect2.X -= 5000;
-                  rect2.Y -= 5000;
-                  rect2.Width += 10000;
-                  rect2.Height += 10000;
-                  if (rect1.Intersects(rect2))
+                  // ISSUE: explicit reference operation
+                  // ISSUE: variable of a reference type
+                  __Null& local1 = @rect2.X;
+                  // ISSUE: cast to a reference type
+                  // ISSUE: explicit reference operation
+                  int num6 = ^(int&) local1 - 5000;
+                  // ISSUE: cast to a reference type
+                  // ISSUE: explicit reference operation
+                  ^(int&) local1 = num6;
+                  // ISSUE: explicit reference operation
+                  // ISSUE: variable of a reference type
+                  __Null& local2 = @rect2.Y;
+                  // ISSUE: cast to a reference type
+                  // ISSUE: explicit reference operation
+                  int num7 = ^(int&) local2 - 5000;
+                  // ISSUE: cast to a reference type
+                  // ISSUE: explicit reference operation
+                  ^(int&) local2 = num7;
+                  // ISSUE: explicit reference operation
+                  // ISSUE: variable of a reference type
+                  __Null& local3 = @rect2.Width;
+                  // ISSUE: cast to a reference type
+                  // ISSUE: explicit reference operation
+                  int num17 = ^(int&) local3 + 10000;
+                  // ISSUE: cast to a reference type
+                  // ISSUE: explicit reference operation
+                  ^(int&) local3 = num17;
+                  // ISSUE: explicit reference operation
+                  // ISSUE: variable of a reference type
+                  __Null& local4 = @rect2.Height;
+                  // ISSUE: cast to a reference type
+                  // ISSUE: explicit reference operation
+                  int num18 = ^(int&) local4 + 10000;
+                  // ISSUE: cast to a reference type
+                  // ISSUE: explicit reference operation
+                  ^(int&) local4 = num18;
+                  // ISSUE: explicit reference operation
+                  if (((Rectangle) @rect1).Intersects(rect2))
                     flag3 = true;
                 }
                 if (flag3)
@@ -1556,7 +1661,7 @@ namespace Terraria
         memoryStream1.Write(buffer, bufferStart, bufferLength);
         memoryStream1.Position = 0L;
         MemoryStream memoryStream2;
-        if (memoryStream1.ReadByte() != 0)
+        if ((uint) memoryStream1.ReadByte() > 0U)
         {
           MemoryStream memoryStream3 = new MemoryStream();
           using (DeflateStream deflateStream = new DeflateStream((Stream) memoryStream1, (CompressionMode) 1, true))
@@ -1915,9 +2020,10 @@ namespace Terraria
         {
           if (Main.npc[number2].active && Main.npc[number2].townNPC)
           {
-            int sectionX1 = Netplay.GetSectionX((int) ((double) Main.npc[number2].position.X / 16.0));
-            int sectionY1 = Netplay.GetSectionY((int) ((double) Main.npc[number2].position.Y / 16.0));
-            if (sectionX1 == sectionX && sectionY1 == sectionY)
+            int sectionX1 = Netplay.GetSectionX((int) (Main.npc[number2].position.X / 16.0));
+            int sectionY1 = Netplay.GetSectionY((int) (Main.npc[number2].position.Y / 16.0));
+            int num4 = sectionX;
+            if (sectionX1 == num4 && sectionY1 == sectionY)
               NetMessage.SendData(23, whoAmi, -1, (NetworkText) null, number2, 0.0f, 0.0f, 0.0f, 0, 0, 0);
           }
         }

@@ -1,8 +1,8 @@
 ﻿// Decompiled with JetBrains decompiler
 // Type: Terraria.DataStructures.DrawAnimationVertical
-// Assembly: Terraria, Version=1.3.5.1, Culture=neutral, PublicKeyToken=null
-// MVID: E90A5A2F-CD10-4A2C-9D2A-6B036D4E8877
-// Assembly location: F:\Steam\steamapps\common\Terraria\Terraria.exe
+// Assembly: Terraria, Version=1.3.5.3, Culture=neutral, PublicKeyToken=null
+// MVID: 68659D26-2BE6-448F-8663-74FA559E6F08
+// Assembly location: H:\Steam\steamapps\common\Terraria\Terraria.exe
 
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -21,10 +21,14 @@ namespace Terraria.DataStructures
 
     public override void Update()
     {
-      if (++this.FrameCounter < this.TicksPerFrame)
+      int num1 = this.FrameCounter + 1;
+      this.FrameCounter = num1;
+      if (num1 < this.TicksPerFrame)
         return;
       this.FrameCounter = 0;
-      if (++this.Frame < this.FrameCount)
+      int num2 = this.Frame + 1;
+      this.Frame = num2;
+      if (num2 < this.FrameCount)
         return;
       this.Frame = 0;
     }

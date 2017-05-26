@@ -712,6 +712,7 @@
 		"MonkStaffT2Ghast": "Phantasma",
 		"MonkStaffT3": "Fúria do Dragão Celeste",
 		"MonkStaffT3_Alt": "Fúria do Dragão Celeste",
-		"MonkStaffT3_AltShot": "Fúria do Dragão Celeste"
+		"MonkStaffT3_AltShot": "Fúria do Dragão Celeste",
+		"DD2JavelinHostileT3": "{$ProjectileName.DD2JavelinHostile}"
 	}
 }

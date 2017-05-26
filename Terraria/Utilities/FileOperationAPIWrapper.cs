@@ -1,8 +1,8 @@
 ﻿// Decompiled with JetBrains decompiler
 // Type: Terraria.Utilities.FileOperationAPIWrapper
-// Assembly: Terraria, Version=1.3.5.1, Culture=neutral, PublicKeyToken=null
-// MVID: E90A5A2F-CD10-4A2C-9D2A-6B036D4E8877
-// Assembly location: F:\Steam\steamapps\common\Terraria\Terraria.exe
+// Assembly: Terraria, Version=1.3.5.3, Culture=neutral, PublicKeyToken=null
+// MVID: 68659D26-2BE6-448F-8663-74FA559E6F08
+// Assembly location: H:\Steam\steamapps\common\Terraria\Terraria.exe
 
 using System;
 using System.Runtime.InteropServices;
@@ -21,7 +21,7 @@ namespace Terraria.Utilities
         FileOperationAPIWrapper.SHFILEOPSTRUCT FileOp = new FileOperationAPIWrapper.SHFILEOPSTRUCT()
         {
           wFunc = FileOperationAPIWrapper.FileOperationType.FO_DELETE,
-          pFrom = path + (object) char.MinValue + (object) char.MinValue,
+          pFrom = path + "\0\0",
           fFlags = FileOperationAPIWrapper.FileOperationFlags.FOF_ALLOWUNDO | flags
         };
         FileOperationAPIWrapper.SHFileOperation(ref FileOp);
@@ -50,7 +50,7 @@ namespace Terraria.Utilities
         FileOperationAPIWrapper.SHFILEOPSTRUCT FileOp = new FileOperationAPIWrapper.SHFILEOPSTRUCT()
         {
           wFunc = FileOperationAPIWrapper.FileOperationType.FO_DELETE,
-          pFrom = path + (object) char.MinValue + (object) char.MinValue,
+          pFrom = path + "\0\0",
           fFlags = flags
         };
         FileOperationAPIWrapper.SHFileOperation(ref FileOp);

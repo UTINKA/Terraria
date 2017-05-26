@@ -1,8 +1,8 @@
 ﻿// Decompiled with JetBrains decompiler
 // Type: Terraria.GameContent.Generation.ShapeRoot
-// Assembly: TerrariaServer, Version=1.3.5.1, Culture=neutral, PublicKeyToken=null
-// MVID: C2103E81-0935-4BEA-9E98-4159FC80C2BB
-// Assembly location: F:\Steam\steamapps\common\Terraria\TerrariaServer.exe
+// Assembly: TerrariaServer, Version=1.3.5.3, Culture=neutral, PublicKeyToken=null
+// MVID: 8A63A7A2-328D-424C-BC9D-BF23F93646F7
+// Assembly location: H:\Steam\steamapps\common\Terraria\TerrariaServer.exe
 
 using Microsoft.Xna.Framework;
 using System;
@@ -31,15 +31,15 @@ namespace Terraria.GameContent.Generation
       float y = (float) origin.Y;
       for (float num1 = 0.0f; (double) num1 < (double) distance * 0.850000023841858; ++num1)
       {
-        float amount = num1 / distance;
-        float num2 = MathHelper.Lerp(startingSize, this._endingSize, amount);
+        float num2 = num1 / distance;
+        float num3 = MathHelper.Lerp(startingSize, this._endingSize, num2);
         x += (float) Math.Cos((double) angle);
         y += (float) Math.Sin((double) angle);
-        angle += (float) ((double) GenBase._random.NextFloat() - 0.5 + (double) GenBase._random.NextFloat() * ((double) this._angle - 1.57079637050629) * 0.100000001490116 * (1.0 - (double) amount));
-        angle = (float) ((double) angle * 0.400000005960464 + 0.449999988079071 * (double) MathHelper.Clamp(angle, this._angle - (float) (2.0 * (1.0 - 0.5 * (double) amount)), this._angle + (float) (2.0 * (1.0 - 0.5 * (double) amount))) + (double) MathHelper.Lerp(this._angle, 1.570796f, amount) * 0.150000005960464);
-        for (int index1 = 0; index1 < (int) num2; ++index1)
+        angle += (float) ((double) GenBase._random.NextFloat() - 0.5 + (double) GenBase._random.NextFloat() * ((double) this._angle - 1.57079637050629) * 0.100000001490116 * (1.0 - (double) num2));
+        angle = (float) ((double) angle * 0.400000005960464 + 0.449999988079071 * (double) MathHelper.Clamp(angle, this._angle - (float) (2.0 * (1.0 - 0.5 * (double) num2)), this._angle + (float) (2.0 * (1.0 - 0.5 * (double) num2))) + (double) MathHelper.Lerp(this._angle, 1.570796f, num2) * 0.150000005960464);
+        for (int index1 = 0; index1 < (int) num3; ++index1)
         {
-          for (int index2 = 0; index2 < (int) num2; ++index2)
+          for (int index2 = 0; index2 < (int) num3; ++index2)
           {
             if (!this.UnitApply(action, origin, (int) x + index1, (int) y + index2) && this._quitOnFail)
               return false;

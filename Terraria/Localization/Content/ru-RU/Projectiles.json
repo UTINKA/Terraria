@@ -358,7 +358,7 @@
 		"NanoBullet": "Нанопуля",
 		"NebulaArcanum": "Туманный арканум",
 		"NebulaArcanumExplosionShot": "Туманный арканум",
-		"NebulaArcanumExplosionShotShard": "Туманный арканум",
+		"NebulaArcanumExplosionShotShard": "Туманый арканум",
 		"NebulaArcanumSubshot": "Туманный арканум",
 		"NebulaBlaze1": "Пламя туманности",
 		"NebulaBlaze2": "Пламя туманности X",
@@ -696,9 +696,9 @@
 		"DD2LightningAuraT2": "Аура света",
 		"DD2LightningAuraT3": "Аура света",
 		"DD2LightningBugZap": "Иссушающий выстрел",
-		"DD2OgreSmash": "Топот людоеда",
-		"DD2OgreSpit": "Плевок людоеда",
-		"DD2OgreStomp": "Топот людоеда",
+		"DD2OgreSmash": "Топот огра",
+		"DD2OgreSpit": "Плевок огра",
+		"DD2OgreStomp": "Топот огра",
 		"DD2PetDragon": "Жаднодракон",
 		"DD2PetGato": "Котопропеллер",
 		"DD2PetGhost": "Огонек",
@@ -712,6 +712,7 @@
 		"MonkStaffT2Ghast": "Жуть",
 		"MonkStaffT3": "Ярость небесного дракона",
 		"MonkStaffT3_Alt": "Ярость небесного дракона",
-		"MonkStaffT3_AltShot": "Ярость небесного дракона"
+		"MonkStaffT3_AltShot": "Ярость небесного дракона",
+		"DD2JavelinHostileT3": "{$ProjectileName.DD2JavelinHostile}"
 	}
 }

@@ -1,8 +1,8 @@
 ﻿// Decompiled with JetBrains decompiler
 // Type: Terraria.Social.Steam.CoreSocialModule
-// Assembly: Terraria, Version=1.3.5.1, Culture=neutral, PublicKeyToken=null
-// MVID: E90A5A2F-CD10-4A2C-9D2A-6B036D4E8877
-// Assembly location: F:\Steam\steamapps\common\Terraria\Terraria.exe
+// Assembly: Terraria, Version=1.3.5.3, Culture=neutral, PublicKeyToken=null
+// MVID: 68659D26-2BE6-448F-8663-74FA559E6F08
+// Assembly location: H:\Steam\steamapps\common\Terraria\Terraria.exe
 
 using Steamworks;
 using System;
@@ -16,8 +16,8 @@ namespace Terraria.Social.Steam
   {
     private object _steamTickLock = new object();
     private object _steamCallbackLock = new object();
-    public const int SteamAppId = 105600;
     private static CoreSocialModule _instance;
+    public const int SteamAppId = 105600;
     private bool IsSteamValid;
     private Callback<GameOverlayActivated_t> _onOverlayActivated;
 
@@ -72,8 +72,12 @@ namespace Terraria.Social.Steam
       Monitor.Enter(this._steamTickLock);
       while (this.IsSteamValid)
       {
+        // ISSUE: reference to a compiler-generated field
         if (CoreSocialModule.OnTick != null)
+        {
+          // ISSUE: reference to a compiler-generated field
           CoreSocialModule.OnTick();
+        }
         Monitor.Wait(this._steamTickLock);
       }
       Monitor.Exit(this._steamTickLock);
@@ -98,7 +102,7 @@ namespace Terraria.Social.Steam
 
     public void OnOverlayActivated(GameOverlayActivated_t result)
     {
-      Main.instance.IsMouseVisible = result.m_bActive == 1;
+      Main.instance.set_IsMouseVisible(result.m_bActive == 1);
     }
   }
 }

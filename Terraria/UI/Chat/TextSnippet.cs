@@ -1,8 +1,8 @@
 ﻿// Decompiled with JetBrains decompiler
 // Type: Terraria.UI.Chat.TextSnippet
-// Assembly: Terraria, Version=1.3.5.1, Culture=neutral, PublicKeyToken=null
-// MVID: E90A5A2F-CD10-4A2C-9D2A-6B036D4E8877
-// Assembly location: F:\Steam\steamapps\common\Terraria\Terraria.exe
+// Assembly: Terraria, Version=1.3.5.3, Culture=neutral, PublicKeyToken=null
+// MVID: 68659D26-2BE6-448F-8663-74FA559E6F08
+// Assembly location: H:\Steam\steamapps\common\Terraria\Terraria.exe
 
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -12,7 +12,7 @@ namespace Terraria.UI.Chat
 {
   public class TextSnippet
   {
-    public Color Color = Color.White;
+    public Color Color = Color.get_White();
     public float Scale = 1f;
     public string Text;
     public string TextOriginal;
@@ -50,22 +50,23 @@ namespace Terraria.UI.Chat
       return ChatManager.WaveColor(this.Color);
     }
 
-    public virtual bool UniqueDraw(bool justCheckingString, out Vector2 size, SpriteBatch spriteBatch, Vector2 position = default (Vector2), Color color = default (Color), float scale = 1f)
+    public virtual bool UniqueDraw(bool justCheckingString, out Vector2 size, SpriteBatch spriteBatch, Vector2 position = null, Color color = null, float scale = 1f)
     {
-      size = Vector2.Zero;
+      size = Vector2.get_Zero();
       return false;
     }
 
     public virtual TextSnippet CopyMorph(string newText)
     {
       TextSnippet textSnippet = (TextSnippet) this.MemberwiseClone();
-      textSnippet.Text = newText;
+      string str = newText;
+      textSnippet.Text = str;
       return textSnippet;
     }
 
     public virtual float GetStringLength(DynamicSpriteFont font)
     {
-      return font.MeasureString(this.Text).X * this.Scale;
+      return (float) font.MeasureString(this.Text).X * this.Scale;
     }
   }
 }

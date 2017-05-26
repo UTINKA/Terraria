@@ -1,8 +1,8 @@
 ﻿// Decompiled with JetBrains decompiler
 // Type: Terraria.GameContent.Biomes.CampsiteBiome
-// Assembly: TerrariaServer, Version=1.3.5.1, Culture=neutral, PublicKeyToken=null
-// MVID: C2103E81-0935-4BEA-9E98-4159FC80C2BB
-// Assembly location: F:\Steam\steamapps\common\Terraria\TerrariaServer.exe
+// Assembly: TerrariaServer, Version=1.3.5.3, Culture=neutral, PublicKeyToken=null
+// MVID: 8A63A7A2-328D-424C-BC9D-BF23F93646F7
+// Assembly location: H:\Steam\steamapps\common\Terraria\TerrariaServer.exe
 
 using Microsoft.Xna.Framework;
 using Terraria.World.Generation;
@@ -20,7 +20,7 @@ namespace Terraria.GameContent.Biomes
         return false;
       int radius = GenBase._random.Next(6, 10);
       int num1 = GenBase._random.Next(5);
-      if (!structures.CanPlace(new Microsoft.Xna.Framework.Rectangle(origin.X - radius, origin.Y - radius, radius * 2, radius * 2), 0))
+      if (!structures.CanPlace(new Rectangle(origin.X - radius, origin.Y - radius, radius * 2, radius * 2), 0))
         return false;
       ShapeData data = new ShapeData();
       WorldUtils.Gen(origin, (GenShape) new Shapes.Slime(radius), Actions.Chain(new Modifiers.Blotches(num1, num1, num1, 1, 0.3).Output(data), (GenAction) new Modifiers.Offset(0, -2), (GenAction) new Modifiers.OnlyTiles(new ushort[1]
@@ -49,18 +49,18 @@ namespace Terraria.GameContent.Biomes
         WorldGen.PlaceTile(origin.X + num5, j, 186, false, false, -1, 0);
       if (GenBase._random.Next() % 10 != 0)
       {
-        WorldGen.PlaceTile(origin.X, j, 215, true, false, -1, 0);
-        if (GenBase._tiles[origin.X, j].active() && (int) GenBase._tiles[origin.X, j].type == 215)
+        WorldGen.PlaceTile((int) origin.X, j, 215, true, false, -1, 0);
+        if (GenBase._tiles[(int) origin.X, j].active() && (int) GenBase._tiles[(int) origin.X, j].type == 215)
         {
-          GenBase._tiles[origin.X, j].frameY += (short) 36;
+          GenBase._tiles[(int) origin.X, j].frameY += (short) 36;
           GenBase._tiles[origin.X - 1, j].frameY += (short) 36;
           GenBase._tiles[origin.X + 1, j].frameY += (short) 36;
-          GenBase._tiles[origin.X, j - 1].frameY += (short) 36;
+          GenBase._tiles[(int) origin.X, j - 1].frameY += (short) 36;
           GenBase._tiles[origin.X - 1, j - 1].frameY += (short) 36;
           GenBase._tiles[origin.X + 1, j - 1].frameY += (short) 36;
         }
       }
-      structures.AddStructure(new Microsoft.Xna.Framework.Rectangle(origin.X - radius, origin.Y - radius, radius * 2, radius * 2), 4);
+      structures.AddStructure(new Rectangle(origin.X - radius, origin.Y - radius, radius * 2, radius * 2), 4);
       return true;
     }
   }

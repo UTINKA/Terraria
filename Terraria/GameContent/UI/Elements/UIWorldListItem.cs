@@ -1,8 +1,8 @@
 ﻿// Decompiled with JetBrains decompiler
 // Type: Terraria.GameContent.UI.Elements.UIWorldListItem
-// Assembly: Terraria, Version=1.3.5.1, Culture=neutral, PublicKeyToken=null
-// MVID: E90A5A2F-CD10-4A2C-9D2A-6B036D4E8877
-// Assembly location: F:\Steam\steamapps\common\Terraria\Terraria.exe
+// Assembly: Terraria, Version=1.3.5.3, Culture=neutral, PublicKeyToken=null
+// MVID: 68659D26-2BE6-448F-8663-74FA559E6F08
+// Assembly location: H:\Steam\steamapps\common\Terraria\Terraria.exe
 
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -136,7 +136,7 @@ namespace Terraria.GameContent.UI.Elements
       this.Height.Set(96f, 0.0f);
       this.Width.Set(0.0f, 1f);
       this.SetPadding(6f);
-      this.BorderColor = new Color(89, 116, 213) * 0.7f;
+      this.BorderColor = Color.op_Multiply(new Color(89, 116, 213), 0.7f);
     }
 
     private Texture2D GetIcon()
@@ -276,15 +276,15 @@ namespace Terraria.GameContent.UI.Elements
     public override void MouseOut(UIMouseEvent evt)
     {
       base.MouseOut(evt);
-      this.BackgroundColor = new Color(63, 82, 151) * 0.7f;
-      this.BorderColor = new Color(89, 116, 213) * 0.7f;
+      this.BackgroundColor = Color.op_Multiply(new Color(63, 82, 151), 0.7f);
+      this.BorderColor = Color.op_Multiply(new Color(89, 116, 213), 0.7f);
     }
 
     private void DrawPanel(SpriteBatch spriteBatch, Vector2 position, float width)
     {
-      spriteBatch.Draw(this._innerPanelTexture, position, new Rectangle?(new Rectangle(0, 0, 8, this._innerPanelTexture.Height)), Color.White);
-      spriteBatch.Draw(this._innerPanelTexture, new Vector2(position.X + 8f, position.Y), new Rectangle?(new Rectangle(8, 0, 8, this._innerPanelTexture.Height)), Color.White, 0.0f, Vector2.Zero, new Vector2((float) (((double) width - 16.0) / 8.0), 1f), SpriteEffects.None, 0.0f);
-      spriteBatch.Draw(this._innerPanelTexture, new Vector2((float) ((double) position.X + (double) width - 8.0), position.Y), new Rectangle?(new Rectangle(16, 0, 8, this._innerPanelTexture.Height)), Color.White);
+      spriteBatch.Draw(this._innerPanelTexture, position, new Rectangle?(new Rectangle(0, 0, 8, this._innerPanelTexture.get_Height())), Color.get_White());
+      spriteBatch.Draw(this._innerPanelTexture, new Vector2((float) (position.X + 8.0), (float) position.Y), new Rectangle?(new Rectangle(8, 0, 8, this._innerPanelTexture.get_Height())), Color.get_White(), 0.0f, Vector2.get_Zero(), new Vector2((float) (((double) width - 16.0) / 8.0), 1f), (SpriteEffects) 0, 0.0f);
+      spriteBatch.Draw(this._innerPanelTexture, new Vector2((float) (position.X + (double) width - 8.0), (float) position.Y), new Rectangle?(new Rectangle(16, 0, 8, this._innerPanelTexture.get_Height())), Color.get_White());
     }
 
     protected override void DrawSelf(SpriteBatch spriteBatch)
@@ -292,34 +292,60 @@ namespace Terraria.GameContent.UI.Elements
       base.DrawSelf(spriteBatch);
       CalculatedStyle innerDimensions = this.GetInnerDimensions();
       CalculatedStyle dimensions = this._worldIcon.GetDimensions();
-      float x1 = dimensions.X + dimensions.Width;
-      Color color = this._data.IsValid ? Color.White : Color.Red;
-      Utils.DrawBorderString(spriteBatch, this._data.Name, new Vector2(x1 + 6f, dimensions.Y - 2f), color, 1f, 0.0f, 0.0f, -1);
-      spriteBatch.Draw(this._dividerTexture, new Vector2(x1, innerDimensions.Y + 21f), new Rectangle?(), Color.White, 0.0f, Vector2.Zero, new Vector2((float) (((double) this.GetDimensions().X + (double) this.GetDimensions().Width - (double) x1) / 8.0), 1f), SpriteEffects.None, 0.0f);
-      Vector2 position = new Vector2(x1 + 6f, innerDimensions.Y + 29f);
+      float num1 = dimensions.X + dimensions.Width;
+      Color color = this._data.IsValid ? Color.get_White() : Color.get_Red();
+      Utils.DrawBorderString(spriteBatch, this._data.Name, new Vector2(num1 + 6f, dimensions.Y - 2f), color, 1f, 0.0f, 0.0f, -1);
+      spriteBatch.Draw(this._dividerTexture, new Vector2(num1, innerDimensions.Y + 21f), new Rectangle?(), Color.get_White(), 0.0f, Vector2.get_Zero(), new Vector2((float) (((double) this.GetDimensions().X + (double) this.GetDimensions().Width - (double) num1) / 8.0), 1f), (SpriteEffects) 0, 0.0f);
+      Vector2 position;
+      // ISSUE: explicit reference operation
+      ((Vector2) @position).\u002Ector(num1 + 6f, innerDimensions.Y + 29f);
       float width1 = 100f;
       this.DrawPanel(spriteBatch, position, width1);
       string text = this._data.IsExpertMode ? Language.GetTextValue("UI.Expert") : Language.GetTextValue("UI.Normal");
-      float x2 = Main.fontMouseText.MeasureString(text).X;
-      float x3 = (float) ((double) width1 * 0.5 - (double) x2 * 0.5);
-      Utils.DrawBorderString(spriteBatch, text, position + new Vector2(x3, 3f), this._data.IsExpertMode ? new Color(217, 143, 244) : Color.White, 1f, 0.0f, 0.0f, -1);
-      position.X += width1 + 5f;
+      float x1 = (float) Main.fontMouseText.MeasureString(text).X;
+      float num2 = (float) ((double) width1 * 0.5 - (double) x1 * 0.5);
+      Utils.DrawBorderString(spriteBatch, text, Vector2.op_Addition(position, new Vector2(num2, 3f)), this._data.IsExpertMode ? new Color(217, 143, 244) : Color.get_White(), 1f, 0.0f, 0.0f, -1);
+      // ISSUE: explicit reference operation
+      // ISSUE: variable of a reference type
+      __Null& local1 = @position.X;
+      // ISSUE: cast to a reference type
+      // ISSUE: explicit reference operation
+      double num3 = (double) ^(float&) local1 + ((double) width1 + 5.0);
+      // ISSUE: cast to a reference type
+      // ISSUE: explicit reference operation
+      ^(float&) local1 = (float) num3;
       float width2 = 150f;
       if (!GameCulture.English.IsActive)
         width2 += 40f;
       this.DrawPanel(spriteBatch, position, width2);
       string textValue1 = Language.GetTextValue("UI.WorldSizeFormat", (object) this._data.WorldSizeName);
-      float x4 = Main.fontMouseText.MeasureString(textValue1).X;
-      float x5 = (float) ((double) width2 * 0.5 - (double) x4 * 0.5);
-      Utils.DrawBorderString(spriteBatch, textValue1, position + new Vector2(x5, 3f), Color.White, 1f, 0.0f, 0.0f, -1);
-      position.X += width2 + 5f;
-      float width3 = innerDimensions.X + innerDimensions.Width - position.X;
+      float x2 = (float) Main.fontMouseText.MeasureString(textValue1).X;
+      float num4 = (float) ((double) width2 * 0.5 - (double) x2 * 0.5);
+      Utils.DrawBorderString(spriteBatch, textValue1, Vector2.op_Addition(position, new Vector2(num4, 3f)), Color.get_White(), 1f, 0.0f, 0.0f, -1);
+      // ISSUE: explicit reference operation
+      // ISSUE: variable of a reference type
+      __Null& local2 = @position.X;
+      // ISSUE: cast to a reference type
+      // ISSUE: explicit reference operation
+      double num5 = (double) ^(float&) local2 + ((double) width2 + 5.0);
+      // ISSUE: cast to a reference type
+      // ISSUE: explicit reference operation
+      ^(float&) local2 = (float) num5;
+      float width3 = (float) ((double) innerDimensions.X + (double) innerDimensions.Width - position.X);
       this.DrawPanel(spriteBatch, position, width3);
       string textValue2 = Language.GetTextValue("UI.WorldCreatedFormat", !GameCulture.English.IsActive ? (object) this._data.CreationTime.ToShortDateString() : (object) this._data.CreationTime.ToString("d MMMM yyyy"));
-      float x6 = Main.fontMouseText.MeasureString(textValue2).X;
-      float x7 = (float) ((double) width3 * 0.5 - (double) x6 * 0.5);
-      Utils.DrawBorderString(spriteBatch, textValue2, position + new Vector2(x7, 3f), Color.White, 1f, 0.0f, 0.0f, -1);
-      position.X += width3 + 5f;
+      float x3 = (float) Main.fontMouseText.MeasureString(textValue2).X;
+      float num6 = (float) ((double) width3 * 0.5 - (double) x3 * 0.5);
+      Utils.DrawBorderString(spriteBatch, textValue2, Vector2.op_Addition(position, new Vector2(num6, 3f)), Color.get_White(), 1f, 0.0f, 0.0f, -1);
+      // ISSUE: explicit reference operation
+      // ISSUE: variable of a reference type
+      __Null& local3 = @position.X;
+      // ISSUE: cast to a reference type
+      // ISSUE: explicit reference operation
+      double num7 = (double) ^(float&) local3 + ((double) width3 + 5.0);
+      // ISSUE: cast to a reference type
+      // ISSUE: explicit reference operation
+      ^(float&) local3 = (float) num7;
     }
   }
 }

@@ -1,8 +1,8 @@
 ﻿// Decompiled with JetBrains decompiler
 // Type: Terraria.GameInput.TriggersSet
-// Assembly: TerrariaServer, Version=1.3.5.1, Culture=neutral, PublicKeyToken=null
-// MVID: C2103E81-0935-4BEA-9E98-4159FC80C2BB
-// Assembly location: F:\Steam\steamapps\common\Terraria\TerrariaServer.exe
+// Assembly: TerrariaServer, Version=1.3.5.3, Culture=neutral, PublicKeyToken=null
+// MVID: 8A63A7A2-328D-424C-BC9D-BF23F93646F7
+// Assembly location: H:\Steam\steamapps\common\Terraria\TerrariaServer.exe
 
 using Microsoft.Xna.Framework;
 using System.Collections.Generic;
@@ -665,10 +665,10 @@ namespace Terraria.GameInput
     {
       bool flag1 = Main.gameMenu || Main.ingameOptionsWindow || (Main.editChest || Main.editSign) || Main.playerInventory && PlayerInput.CurrentProfile.UsingDpadMovekeys();
       bool flag2 = this.Up || flag1 && this.MenuUp;
-      bool flag3 = this.Right || flag1 && this.MenuRight;
-      bool flag4 = this.Down || flag1 && this.MenuDown;
-      bool flag5 = this.Left || flag1 && this.MenuLeft;
-      return new Vector2((float) (flag3.ToInt() - flag5.ToInt()), (float) (flag4.ToInt() - flag2.ToInt()));
+      int num = this.Right ? 1 : (!flag1 ? 0 : (this.MenuRight ? 1 : 0));
+      bool flag3 = this.Down || flag1 && this.MenuDown;
+      bool flag4 = this.Left || flag1 && this.MenuLeft;
+      return new Vector2((float) ((num != 0).ToInt() - flag4.ToInt()), (float) (flag3.ToInt() - flag2.ToInt()));
     }
 
     public void CopyInto(Player p)
@@ -711,13 +711,10 @@ namespace Terraria.GameInput
       if (PlayerInput.InBuildingMode && this.MouseRight)
         p.controlInv = true;
       bool flag = PlayerInput.Triggers.Current.HotbarPlus || PlayerInput.Triggers.Current.HotbarMinus;
-      if (flag)
-        ++this.HotbarHoldTime;
-      else
-        this.HotbarHoldTime = 0;
-      if (this.HotbarScrollCD <= 0 || this.HotbarScrollCD == 1 && flag && PlayerInput.CurrentProfile.HotbarRadialHoldTimeRequired > 0)
+      this.HotbarHoldTime = !flag ? 0 : this.HotbarHoldTime + 1;
+      if (this.HotbarScrollCD <= 0 || this.HotbarScrollCD == 1 & flag && PlayerInput.CurrentProfile.HotbarRadialHoldTimeRequired > 0)
         return;
-      --this.HotbarScrollCD;
+      this.HotbarScrollCD = this.HotbarScrollCD - 1;
     }
 
     public void CopyIntoDuringChat(Player p)
@@ -734,13 +731,10 @@ namespace Terraria.GameInput
       if (this.MouseRight && !p.mouseInterface && (!Main.blockMouse & !PlayerInput.LockTileUseButton && !PlayerInput.InBuildingMode))
         p.controlUseTile = true;
       bool flag = PlayerInput.Triggers.Current.HotbarPlus || PlayerInput.Triggers.Current.HotbarMinus;
-      if (flag)
-        ++this.HotbarHoldTime;
-      else
-        this.HotbarHoldTime = 0;
-      if (this.HotbarScrollCD <= 0 || this.HotbarScrollCD == 1 && flag && PlayerInput.CurrentProfile.HotbarRadialHoldTimeRequired > 0)
+      this.HotbarHoldTime = !flag ? 0 : this.HotbarHoldTime + 1;
+      if (this.HotbarScrollCD <= 0 || this.HotbarScrollCD == 1 & flag && PlayerInput.CurrentProfile.HotbarRadialHoldTimeRequired > 0)
         return;
-      --this.HotbarScrollCD;
+      this.HotbarScrollCD = this.HotbarScrollCD - 1;
     }
   }
 }

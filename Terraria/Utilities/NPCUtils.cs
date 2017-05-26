@@ -1,8 +1,8 @@
 ﻿// Decompiled with JetBrains decompiler
 // Type: Terraria.Utilities.NPCUtils
-// Assembly: Terraria, Version=1.3.5.1, Culture=neutral, PublicKeyToken=null
-// MVID: E90A5A2F-CD10-4A2C-9D2A-6B036D4E8877
-// Assembly location: F:\Steam\steamapps\common\Terraria\Terraria.exe
+// Assembly: Terraria, Version=1.3.5.3, Culture=neutral, PublicKeyToken=null
+// MVID: 68659D26-2BE6-448F-8663-74FA559E6F08
+// Assembly location: H:\Steam\steamapps\common\Terraria\Terraria.exe
 
 using Microsoft.Xna.Framework;
 using System;
@@ -55,7 +55,7 @@ namespace Terraria.Utilities
             float num2 = Vector2.Distance(position, entity.Center);
             float num3 = num2 - (float) entity.aggro;
             bool flag = searcher != null && entity.npcTypeNoAggro[searcher.type];
-            if (searcher != null && flag && searcher.direction == 0)
+            if (searcher != null & flag && searcher.direction == 0)
               num3 += 1000f;
             if ((double) num3 < (double) adjustedTankDistance)
             {
@@ -90,7 +90,7 @@ namespace Terraria.Utilities
         return;
       searcher.target = searchResults.NearestTargetIndex;
       searcher.targetRect = searchResults.NearestTargetHitbox;
-      if (!searcher.ShouldFaceTarget(ref searchResults, new NPCUtils.TargetType?()) || !faceTarget)
+      if (!(searcher.ShouldFaceTarget(ref searchResults, new NPCUtils.TargetType?()) & faceTarget))
         return;
       searcher.FaceTarget();
     }
@@ -105,7 +105,7 @@ namespace Terraria.Utilities
         targetType = NPCUtils.TargetType.Player;
       searcher.target = searchResults.NearestTargetIndex;
       searcher.targetRect = searchResults.NearestTargetHitbox;
-      if (!searcher.ShouldFaceTarget(ref searchResults, new NPCUtils.TargetType?(targetType)) || !faceTarget)
+      if (!(searcher.ShouldFaceTarget(ref searchResults, new NPCUtils.TargetType?(targetType)) & faceTarget))
         return;
       searcher.FaceTarget();
     }
@@ -149,16 +149,12 @@ namespace Terraria.Utilities
       {
         get
         {
-          switch (this._nearestTargetType)
-          {
-            case NPCUtils.TargetType.NPC:
-              return this.NearestNPC.WhoAmIToTargettingIndex;
-            case NPCUtils.TargetType.Player:
-            case NPCUtils.TargetType.TankPet:
-              return this._nearestTankIndex;
-            default:
-              return -1;
-          }
+          NPCUtils.TargetType nearestTargetType = this._nearestTargetType;
+          if (nearestTargetType == NPCUtils.TargetType.NPC)
+            return this.NearestNPC.WhoAmIToTargettingIndex;
+          if ((uint) (nearestTargetType - 2) <= 1U)
+            return this._nearestTankIndex;
+          return -1;
         }
       }
 
@@ -175,7 +171,7 @@ namespace Terraria.Utilities
             case NPCUtils.TargetType.TankPet:
               return Main.projectile[this.NearestTankOwner.tankPet].Hitbox;
             default:
-              return Rectangle.Empty;
+              return Rectangle.get_Empty();
           }
         }
       }
@@ -192,7 +188,7 @@ namespace Terraria.Utilities
       {
         get
         {
-          return this._nearestTargetType != NPCUtils.TargetType.None;
+          return (uint) this._nearestTargetType > 0U;
         }
       }
 

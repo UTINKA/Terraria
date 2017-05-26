@@ -1,8 +1,8 @@
 ﻿// Decompiled with JetBrains decompiler
 // Type: Terraria.DataStructures.DoubleStack`1
-// Assembly: Terraria, Version=1.3.5.1, Culture=neutral, PublicKeyToken=null
-// MVID: E90A5A2F-CD10-4A2C-9D2A-6B036D4E8877
-// Assembly location: F:\Steam\steamapps\common\Terraria\Terraria.exe
+// Assembly: Terraria, Version=1.3.5.3, Culture=neutral, PublicKeyToken=null
+// MVID: 68659D26-2BE6-448F-8663-74FA559E6F08
+// Assembly location: H:\Steam\steamapps\common\Terraria\Terraria.exe
 
 using System;
 
@@ -54,14 +54,14 @@ namespace Terraria.DataStructures
           objArray[index + 1] = this._segmentList[index];
         objArray[0] = new T1[this._segmentSize];
         this._segmentList = objArray;
-        ++this._segmentCount;
-        this._start += this._segmentSize;
-        this._end += this._segmentSize;
-        this._last += this._segmentSize;
+        this._segmentCount = this._segmentCount + 1;
+        this._start = this._start + this._segmentSize;
+        this._end = this._end + this._segmentSize;
+        this._last = this._last + this._segmentSize;
       }
-      --this._start;
+      this._start = this._start - 1;
       this._segmentList[this._start / this._segmentSize][this._start % this._segmentSize] = front;
-      ++this._size;
+      this._size = this._size + 1;
     }
 
     public T1 PopFront()
@@ -69,26 +69,29 @@ namespace Terraria.DataStructures
       if (this._size == 0)
         throw new InvalidOperationException("The DoubleStack is empty.");
       T1[] segment1 = this._segmentList[this._start / this._segmentSize];
-      int index1 = this._start % this._segmentSize;
-      T1 obj = segment1[index1];
-      segment1[index1] = default (T1);
-      ++this._start;
-      --this._size;
+      int num = this._start % this._segmentSize;
+      int index1 = num;
+      T1 obj1 = segment1[index1];
+      int index2 = num;
+      T1 obj2 = default (T1);
+      segment1[index2] = obj2;
+      this._start = this._start + 1;
+      this._size = this._size - 1;
       if (this._start >= this._segmentShiftPosition)
       {
         T1[] segment2 = this._segmentList[0];
-        for (int index2 = 0; index2 < this._segmentCount - 1; ++index2)
-          this._segmentList[index2] = this._segmentList[index2 + 1];
+        for (int index3 = 0; index3 < this._segmentCount - 1; ++index3)
+          this._segmentList[index3] = this._segmentList[index3 + 1];
         this._segmentList[this._segmentCount - 1] = segment2;
-        this._start -= this._segmentSize;
-        this._end -= this._segmentSize;
+        this._start = this._start - this._segmentSize;
+        this._end = this._end - this._segmentSize;
       }
       if (this._size == 0)
       {
         this._start = this._segmentSize / 2;
         this._end = this._start;
       }
-      return obj;
+      return obj1;
     }
 
     public T1 PeekFront()
@@ -106,13 +109,13 @@ namespace Terraria.DataStructures
         for (int index = 0; index < this._segmentCount; ++index)
           objArray[index] = this._segmentList[index];
         objArray[this._segmentCount] = new T1[this._segmentSize];
-        ++this._segmentCount;
+        this._segmentCount = this._segmentCount + 1;
         this._segmentList = objArray;
-        this._last += this._segmentSize;
+        this._last = this._last + this._segmentSize;
       }
       this._segmentList[this._end / this._segmentSize][this._end % this._segmentSize] = back;
-      ++this._end;
-      ++this._size;
+      this._end = this._end + 1;
+      this._size = this._size + 1;
     }
 
     public T1 PopBack()
@@ -120,17 +123,20 @@ namespace Terraria.DataStructures
       if (this._size == 0)
         throw new InvalidOperationException("The DoubleStack is empty.");
       T1[] segment = this._segmentList[this._end / this._segmentSize];
-      int index = this._end % this._segmentSize;
-      T1 obj = segment[index];
-      segment[index] = default (T1);
-      --this._end;
-      --this._size;
+      int num = this._end % this._segmentSize;
+      int index1 = num;
+      T1 obj1 = segment[index1];
+      int index2 = num;
+      T1 obj2 = default (T1);
+      segment[index2] = obj2;
+      this._end = this._end - 1;
+      this._size = this._size - 1;
       if (this._size == 0)
       {
         this._start = this._segmentSize / 2;
         this._end = this._start;
       }
-      return obj;
+      return obj1;
     }
 
     public T1 PeekBack()

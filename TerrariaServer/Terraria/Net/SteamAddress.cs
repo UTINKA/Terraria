@@ -1,8 +1,8 @@
 ﻿// Decompiled with JetBrains decompiler
 // Type: Terraria.Net.SteamAddress
-// Assembly: TerrariaServer, Version=1.3.5.1, Culture=neutral, PublicKeyToken=null
-// MVID: C2103E81-0935-4BEA-9E98-4159FC80C2BB
-// Assembly location: F:\Steam\steamapps\common\Terraria\TerrariaServer.exe
+// Assembly: TerrariaServer, Version=1.3.5.3, Culture=neutral, PublicKeyToken=null
+// MVID: 8A63A7A2-328D-424C-BC9D-BF23F93646F7
+// Assembly location: H:\Steam\steamapps\common\Terraria\TerrariaServer.exe
 
 using Steamworks;
 
@@ -32,7 +32,10 @@ namespace Terraria.Net
     public override bool IsLocalHost()
     {
       if (Program.LaunchParameters.ContainsKey("-localsteamid"))
-        return Program.LaunchParameters["-localsteamid"].Equals(((ulong) this.SteamId.m_SteamID).ToString());
+      {
+        // ISSUE: explicit non-virtual call
+        return Program.LaunchParameters["-localsteamid"].Equals(__nonvirtual (this.SteamId.m_SteamID.ToString()));
+      }
       return false;
     }
 

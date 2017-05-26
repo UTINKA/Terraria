@@ -1,8 +1,8 @@
 ﻿// Decompiled with JetBrains decompiler
 // Type: Terraria.ID.ItemID
-// Assembly: TerrariaServer, Version=1.3.5.1, Culture=neutral, PublicKeyToken=null
-// MVID: C2103E81-0935-4BEA-9E98-4159FC80C2BB
-// Assembly location: F:\Steam\steamapps\common\Terraria\TerrariaServer.exe
+// Assembly: TerrariaServer, Version=1.3.5.3, Culture=neutral, PublicKeyToken=null
+// MVID: 8A63A7A2-328D-424C-BC9D-BF23F93646F7
+// Assembly location: H:\Steam\steamapps\common\Terraria\TerrariaServer.exe
 
 using ReLogic.Reflection;
 using System.Collections.Generic;
@@ -12,6 +12,7 @@ namespace Terraria.ID
   public class ItemID
   {
     public static readonly IdDictionary Search = IdDictionary.Create<ItemID, short>();
+    private static Dictionary<string, short> _legacyItemLookup;
     public const short YellowPhasesaberOld = -24;
     public const short WhitePhasesaberOld = -23;
     public const short PurplePhasesaberOld = -22;
@@ -3991,7 +3992,6 @@ namespace Terraria.ID
     public const short LeinforsWings = 3928;
     public const short LeinforsAccessory = 3929;
     public const short Count = 3930;
-    private static Dictionary<string, short> _legacyItemLookup;
 
     private static Dictionary<string, short> GenerateLegacyItemDictionary()
     {
@@ -5821,14 +5821,8 @@ namespace Terraria.ID
           "Potion Statue",
           (short) 456
         },
-        {
-          "Spear Statue",
-          (short) 457
-        },
-        {
-          "Cross Statue",
-          (short) 458
-        },
+        { "Spear Statue", (short) 457 },
+        { "Cross Statue", (short) 458 },
         {
           "Jellyfish Statue",
           (short) 459

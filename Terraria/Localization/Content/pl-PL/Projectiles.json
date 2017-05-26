@@ -107,7 +107,7 @@
 		"Code1": "Jojo",
 		"Code2": "Jojo",
 		"CoinPortal": "Portal monetowy",
-		"CompanionCube": "Kostka towarzysza",
+		"CompanionCube": "Kostka towarzysząca",
 		"ConfettiGun": "Konfetti",
 		"ConfettiMelee": "Konfetti",
 		"CopperCoin": "Miedziana moneta",
@@ -162,7 +162,7 @@
 		"DemonSickle": "Demoniczny sierp",
 		"DesertDjinnCurse": "Przekleństwo ducha pustynnego",
 		"DiamondBolt": "Diamentowy pocisk",
-		"DirtBall": "Kula brudu",
+		"DirtBall": "Kula ziemi",
 		"DrillMountCrosshair": "Celownik świdra",
 		"DrManFlyFlask": "Fiolka",
 		"DryadsWardCircle": "Osłona driady",
@@ -712,6 +712,7 @@
 		"MonkStaffT2Ghast": "Upiór",
 		"MonkStaffT3": "Furia niebiańskiego smoka",
 		"MonkStaffT3_Alt": "Furia niebiańskiego smoka",
-		"MonkStaffT3_AltShot": "Furia niebiańskiego smoka"
+		"MonkStaffT3_AltShot": "Furia niebiańskiego smoka",
+		"DD2JavelinHostileT3": "{$ProjectileName.DD2JavelinHostile}"
 	}
 }

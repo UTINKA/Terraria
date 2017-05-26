@@ -1,8 +1,8 @@
 ﻿// Decompiled with JetBrains decompiler
 // Type: Terraria.GameContent.UI.Elements.UITextBox
-// Assembly: Terraria, Version=1.3.5.1, Culture=neutral, PublicKeyToken=null
-// MVID: E90A5A2F-CD10-4A2C-9D2A-6B036D4E8877
-// Assembly location: F:\Steam\steamapps\common\Terraria\Terraria.exe
+// Assembly: Terraria, Version=1.3.5.3, Culture=neutral, PublicKeyToken=null
+// MVID: 68659D26-2BE6-448F-8663-74FA559E6F08
+// Assembly location: H:\Steam\steamapps\common\Terraria\Terraria.exe
 
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -25,7 +25,7 @@ namespace Terraria.GameContent.UI.Elements
     public void Write(string text)
     {
       this.SetText(this.Text.Insert(this._cursor, text));
-      this._cursor += text.Length;
+      this._cursor = this._cursor + text.Length;
     }
 
     public override void SetText(string text, float textScale, bool large)
@@ -52,31 +52,59 @@ namespace Terraria.GameContent.UI.Elements
     {
       if (this._cursor == 0)
         return;
-      --this._cursor;
+      this._cursor = this._cursor - 1;
     }
 
     public void CursorRight()
     {
       if (this._cursor >= this.Text.Length)
         return;
-      ++this._cursor;
+      this._cursor = this._cursor + 1;
     }
 
     protected override void DrawSelf(SpriteBatch spriteBatch)
     {
       this._cursor = this.Text.Length;
       base.DrawSelf(spriteBatch);
-      ++this._frameCount;
-      if ((this._frameCount %= 40) > 20)
+      this._frameCount = this._frameCount + 1;
+      if ((this._frameCount = this._frameCount % 40) > 20)
         return;
       CalculatedStyle innerDimensions = this.GetInnerDimensions();
       Vector2 pos = innerDimensions.Position();
-      Vector2 vector2 = new Vector2((this.IsLarge ? Main.fontDeathText : Main.fontMouseText).MeasureString(this.Text.Substring(0, this._cursor)).X, this.IsLarge ? 32f : 16f) * this.TextScale;
+      Vector2 vector2 = Vector2.op_Multiply(new Vector2((float) (this.IsLarge ? Main.fontDeathText : Main.fontMouseText).MeasureString(this.Text.Substring(0, this._cursor)).X, this.IsLarge ? 32f : 16f), this.TextScale);
       if (this.IsLarge)
-        pos.Y -= 8f * this.TextScale;
+      {
+        // ISSUE: explicit reference operation
+        // ISSUE: variable of a reference type
+        __Null& local = @pos.Y;
+        // ISSUE: cast to a reference type
+        // ISSUE: explicit reference operation
+        double num = (double) ^(float&) local - 8.0 * (double) this.TextScale;
+        // ISSUE: cast to a reference type
+        // ISSUE: explicit reference operation
+        ^(float&) local = (float) num;
+      }
       else
-        pos.Y += 2f * this.TextScale;
-      pos.X += (float) (((double) innerDimensions.Width - (double) this.TextSize.X) * 0.5 + (double) vector2.X - (this.IsLarge ? 8.0 : 4.0) * (double) this.TextScale + 6.0);
+      {
+        // ISSUE: explicit reference operation
+        // ISSUE: variable of a reference type
+        __Null& local = @pos.Y;
+        // ISSUE: cast to a reference type
+        // ISSUE: explicit reference operation
+        double num = (double) ^(float&) local + 2.0 * (double) this.TextScale;
+        // ISSUE: cast to a reference type
+        // ISSUE: explicit reference operation
+        ^(float&) local = (float) num;
+      }
+      // ISSUE: explicit reference operation
+      // ISSUE: variable of a reference type
+      __Null& local1 = @pos.X;
+      // ISSUE: cast to a reference type
+      // ISSUE: explicit reference operation
+      double num1 = (double) ^(float&) local1 + (((double) innerDimensions.Width - this.TextSize.X) * 0.5 + vector2.X - (this.IsLarge ? 8.0 : 4.0) * (double) this.TextScale + 6.0);
+      // ISSUE: cast to a reference type
+      // ISSUE: explicit reference operation
+      ^(float&) local1 = (float) num1;
       if (this.IsLarge)
         Utils.DrawBorderStringBig(spriteBatch, "|", pos, this.TextColor, this.TextScale, 0.0f, 0.0f, -1);
       else

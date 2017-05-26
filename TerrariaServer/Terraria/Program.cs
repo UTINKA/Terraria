@@ -1,8 +1,8 @@
 ﻿// Decompiled with JetBrains decompiler
 // Type: Terraria.Program
-// Assembly: TerrariaServer, Version=1.3.5.1, Culture=neutral, PublicKeyToken=null
-// MVID: C2103E81-0935-4BEA-9E98-4159FC80C2BB
-// Assembly location: F:\Steam\steamapps\common\Terraria\TerrariaServer.exe
+// Assembly: TerrariaServer, Version=1.3.5.3, Culture=neutral, PublicKeyToken=null
+// MVID: 8A63A7A2-328D-424C-BC9D-BF23F93646F7
+// Assembly location: H:\Steam\steamapps\common\Terraria\TerrariaServer.exe
 
 using ReLogic.IO;
 using ReLogic.OS;
@@ -104,7 +104,7 @@ namespace Terraria
 
     private static void SetupLogging()
     {
-      if (Program.LaunchParameters.ContainsKey("-logfile"))
+      if ((Program.LaunchParameters.ContainsKey("-logfile") ? 1 : 0) != 0)
       {
         string launchParameter = Program.LaunchParameters["-logfile"];
         ConsoleOutputMirror.ToFile(launchParameter == null || launchParameter.Trim() == "" ? Path.Combine(Main.SavePath, "Logs", string.Format("Log_{0}.log", (object) DateTime.Now.ToString("yyyyMMddHHmmssfff"))) : Path.Combine(launchParameter, string.Format("Log_{0}.log", (object) DateTime.Now.ToString("yyyyMMddHHmmssfff"))));
@@ -142,8 +142,11 @@ namespace Terraria
     {
       try
       {
-        Console.OutputEncoding = Encoding.Unicode;
-        Console.InputEncoding = Encoding.Unicode;
+        Console.OutputEncoding = Encoding.UTF8;
+        if (Platform.get_IsWindows())
+          Console.InputEncoding = Encoding.Unicode;
+        else
+          Console.InputEncoding = Encoding.UTF8;
       }
       catch
       {

@@ -1,8 +1,8 @@
 ﻿// Decompiled with JetBrains decompiler
 // Type: Terraria.UI.Gamepad.UILinkPage
-// Assembly: Terraria, Version=1.3.5.1, Culture=neutral, PublicKeyToken=null
-// MVID: E90A5A2F-CD10-4A2C-9D2A-6B036D4E8877
-// Assembly location: F:\Steam\steamapps\common\Terraria\Terraria.exe
+// Assembly: Terraria, Version=1.3.5.3, Culture=neutral, PublicKeyToken=null
+// MVID: 68659D26-2BE6-448F-8663-74FA559E6F08
+// Assembly location: H:\Steam\steamapps\common\Terraria\Terraria.exe
 
 using System;
 using System.Collections.Generic;
@@ -45,36 +45,50 @@ namespace Terraria.UI.Gamepad
 
     public void Update()
     {
+      // ISSUE: reference to a compiler-generated field
       if (this.UpdateEvent == null)
         return;
+      // ISSUE: reference to a compiler-generated field
       this.UpdateEvent();
     }
 
     public void Leave()
     {
+      // ISSUE: reference to a compiler-generated field
       if (this.LeaveEvent == null)
         return;
+      // ISSUE: reference to a compiler-generated field
       this.LeaveEvent();
     }
 
     public void Enter()
     {
+      // ISSUE: reference to a compiler-generated field
       if (this.EnterEvent == null)
         return;
+      // ISSUE: reference to a compiler-generated field
       this.EnterEvent();
     }
 
     public bool IsValid()
     {
+      // ISSUE: reference to a compiler-generated field
       if (this.IsValidEvent != null)
+      {
+        // ISSUE: reference to a compiler-generated field
         return this.IsValidEvent();
+      }
       return true;
     }
 
     public bool CanEnter()
     {
+      // ISSUE: reference to a compiler-generated field
       if (this.CanEnterEvent != null)
+      {
+        // ISSUE: reference to a compiler-generated field
         return this.CanEnterEvent();
+      }
       return true;
     }
 
@@ -112,26 +126,36 @@ namespace Terraria.UI.Gamepad
     {
       if (next < 0)
       {
+        // ISSUE: reference to a compiler-generated field
         if (this.ReachEndEvent == null)
           return;
+        // ISSUE: reference to a compiler-generated field
         this.ReachEndEvent(this.CurrentPoint, next);
+        // ISSUE: reference to a compiler-generated field
         if (this.TravelEvent == null)
           return;
+        // ISSUE: reference to a compiler-generated field
         this.TravelEvent();
       }
       else
       {
         UILinkPointNavigator.ChangePoint(next);
+        // ISSUE: reference to a compiler-generated field
         if (this.TravelEvent == null)
           return;
+        // ISSUE: reference to a compiler-generated field
         this.TravelEvent();
       }
     }
 
     public string SpecialInteractions()
     {
+      // ISSUE: reference to a compiler-generated field
       if (this.OnSpecialInteracts != null)
+      {
+        // ISSUE: reference to a compiler-generated field
         return this.OnSpecialInteracts();
+      }
       return string.Empty;
     }
   }

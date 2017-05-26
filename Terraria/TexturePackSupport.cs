@@ -1,8 +1,8 @@
 ﻿// Decompiled with JetBrains decompiler
 // Type: Terraria.TexturePackSupport
-// Assembly: Terraria, Version=1.3.5.1, Culture=neutral, PublicKeyToken=null
-// MVID: E90A5A2F-CD10-4A2C-9D2A-6B036D4E8877
-// Assembly location: F:\Steam\steamapps\common\Terraria\Terraria.exe
+// Assembly: Terraria, Version=1.3.5.3, Culture=neutral, PublicKeyToken=null
+// MVID: 68659D26-2BE6-448F-8663-74FA559E6F08
+// Assembly location: H:\Steam\steamapps\common\Terraria\Terraria.exe
 
 using Ionic.Zip;
 using Microsoft.Xna.Framework;
@@ -30,7 +30,7 @@ namespace Terraria
         using (MemoryStream memoryStream = new MemoryStream())
         {
           zipEntry.Extract((Stream) memoryStream);
-          tex = TexturePackSupport.FromStreamSlow(Main.instance.GraphicsDevice, (Stream) memoryStream);
+          tex = TexturePackSupport.FromStreamSlow(Main.instance.get_GraphicsDevice(), (Stream) memoryStream);
           ++TexturePackSupport.ReplacedTextures;
           return true;
         }
@@ -45,11 +45,14 @@ namespace Terraria
     public static Texture2D FromStreamSlow(GraphicsDevice graphicsDevice, Stream stream)
     {
       Texture2D texture2D = Texture2D.FromStream(graphicsDevice, stream);
-      Color[] data = new Color[texture2D.Width * texture2D.Height];
-      texture2D.GetData<Color>(data);
-      for (int index = 0; index != data.Length; ++index)
-        data[index] = Color.FromNonPremultiplied(data[index].ToVector4());
-      texture2D.SetData<Color>(data);
+      Color[] colorArray = new Color[texture2D.get_Width() * texture2D.get_Height()];
+      texture2D.GetData<Color>((M0[]) colorArray);
+      for (int index = 0; index != colorArray.Length; ++index)
+      {
+        // ISSUE: explicit reference operation
+        colorArray[index] = Color.FromNonPremultiplied(((Color) @colorArray[index]).ToVector4());
+      }
+      texture2D.SetData<Color>((M0[]) colorArray);
       return texture2D;
     }
 

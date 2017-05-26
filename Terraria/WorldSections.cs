@@ -1,8 +1,8 @@
 ﻿// Decompiled with JetBrains decompiler
 // Type: Terraria.WorldSections
-// Assembly: Terraria, Version=1.3.5.1, Culture=neutral, PublicKeyToken=null
-// MVID: E90A5A2F-CD10-4A2C-9D2A-6B036D4E8877
-// Assembly location: F:\Steam\steamapps\common\Terraria\Terraria.exe
+// Assembly: Terraria, Version=1.3.5.3, Culture=neutral, PublicKeyToken=null
+// MVID: 68659D26-2BE6-448F-8663-74FA559E6F08
+// Assembly location: H:\Steam\steamapps\common\Terraria\Terraria.exe
 
 using Microsoft.Xna.Framework;
 using System;
@@ -72,12 +72,7 @@ namespace Terraria
       if (x < 0 || x >= this.width || (y < 0 || y >= this.height))
         return;
       if (this.data[y * this.width + x][1] != value)
-      {
-        if (value)
-          ++this.frameSectionsLeft;
-        else
-          --this.frameSectionsLeft;
-      }
+        this.frameSectionsLeft = !value ? this.frameSectionsLeft - 1 : this.frameSectionsLeft + 1;
       this.data[y * this.width + x][1] = value;
     }
 
@@ -93,12 +88,7 @@ namespace Terraria
       if (x < 0 || x >= this.width || (y < 0 || y >= this.height))
         return;
       if (this.data[y * this.width + x][1] != value)
-      {
-        if (value)
-          ++this.mapSectionsLeft;
-        else
-          --this.mapSectionsLeft;
-      }
+        this.mapSectionsLeft = !value ? this.mapSectionsLeft - 1 : this.mapSectionsLeft + 1;
       this.data[y * this.width + x][2] = value;
     }
 
@@ -115,7 +105,7 @@ namespace Terraria
       if (x < 0 || x >= this.width || (y < 0 || y >= this.height) || this.data[y * this.width + x][0])
         return;
       this.data[y * this.width + x][0] = true;
-      ++this.frameSectionsLeft;
+      this.frameSectionsLeft = this.frameSectionsLeft + 1;
     }
 
     public void SetSectionFramed(int x, int y)
@@ -123,7 +113,7 @@ namespace Terraria
       if (x < 0 || x >= this.width || (y < 0 || y >= this.height) || this.data[y * this.width + x][1])
         return;
       this.data[y * this.width + x][1] = true;
-      --this.frameSectionsLeft;
+      this.frameSectionsLeft = this.frameSectionsLeft - 1;
     }
 
     public void SetAllFramesLoaded()
@@ -133,7 +123,7 @@ namespace Terraria
         if (!this.data[index][0])
         {
           this.data[index][0] = true;
-          ++this.frameSectionsLeft;
+          this.frameSectionsLeft = this.frameSectionsLeft + 1;
         }
       }
     }
@@ -151,7 +141,7 @@ namespace Terraria
       int num1 = 0;
       int num2 = 0;
       Vector2 vector2 = this.prevMap.centerPos;
-      playerPos *= 1f / 16f;
+      playerPos = Vector2.op_Multiply(playerPos, 1f / 16f);
       int sectionX = Netplay.GetSectionX((int) playerPos.X);
       int sectionY = Netplay.GetSectionY((int) playerPos.Y);
       int num3 = Netplay.GetSectionX((int) vector2.X);
@@ -174,8 +164,8 @@ namespace Terraria
         num1 = this.prevMap.xDir;
         num2 = this.prevMap.yDir;
       }
-      int num6 = (int) ((double) playerPos.X - ((double) num3 + 0.5) * 200.0);
-      int num7 = (int) ((double) playerPos.Y - ((double) num4 + 0.5) * 150.0);
+      int num6 = (int) (playerPos.X - ((double) num3 + 0.5) * 200.0);
+      int num7 = (int) (playerPos.Y - ((double) num4 + 0.5) * 150.0);
       if (num1 == 0)
       {
         num1 = num6 <= 0 ? 1 : -1;
@@ -193,8 +183,8 @@ namespace Terraria
             flag2 = true;
             x = num3;
             y = num4;
-            num6 = (int) ((double) vector2.X - ((double) num3 + 0.5) * 200.0);
-            num7 = (int) ((double) vector2.Y - ((double) num4 + 0.5) * 150.0);
+            num6 = (int) (vector2.X - ((double) num3 + 0.5) * 200.0);
+            num7 = (int) (vector2.Y - ((double) num4 + 0.5) * 150.0);
             num1 = num6 <= 0 ? 1 : -1;
             num2 = num7 <= 0 ? 1 : -1;
             num5 = 4;
@@ -218,16 +208,16 @@ namespace Terraria
             if (num9 == 0 && num10 == 0)
             {
               if (Math.Abs(num6) > Math.Abs(num7))
-                y -= num2;
+                y = y - num2;
               else
-                x -= num1;
+                x = x - num1;
             }
             else
             {
               if (num9 != 0)
-                x += num9 / Math.Abs(num9);
+                x = x + num9 / Math.Abs(num9);
               if (num10 != 0)
-                y += num10 / Math.Abs(num10);
+                y = y + num10 / Math.Abs(num10);
             }
             num5 = 0;
             num8 = -2;
@@ -239,8 +229,8 @@ namespace Terraria
               num2 = num10 <= 0 ? 1 : -1;
             else
               num1 = num9 <= 0 ? 1 : -1;
-            x += num1;
-            y += num2;
+            x = x + num1;
+            y = y + num2;
             ++num5;
           }
           if (flag1)
@@ -250,14 +240,14 @@ namespace Terraria
         }
         else
         {
-          x += num1;
-          y += num2;
+          x = x + num1;
+          y = y + num2;
         }
       }
       throw new Exception("Infinite loop in WorldSections.GetNextMapDraw");
 label_14:
       this.data[y * this.width + x][2] = true;
-      --this.mapSectionsLeft;
+      this.mapSectionsLeft = this.mapSectionsLeft - 1;
       this.prevMap.centerPos = playerPos;
       this.prevMap.X = x;
       this.prevMap.Y = y;
@@ -281,7 +271,7 @@ label_14:
       int num1 = 0;
       int num2 = 0;
       Vector2 vector2 = this.prevFrame.centerPos;
-      playerPos *= 1f / 16f;
+      playerPos = Vector2.op_Multiply(playerPos, 1f / 16f);
       int sectionX = Netplay.GetSectionX((int) playerPos.X);
       int sectionY = Netplay.GetSectionY((int) playerPos.Y);
       int num3 = Netplay.GetSectionX((int) vector2.X);
@@ -304,8 +294,8 @@ label_14:
         num1 = this.prevFrame.xDir;
         num2 = this.prevFrame.yDir;
       }
-      int num6 = (int) ((double) playerPos.X - ((double) num3 + 0.5) * 200.0);
-      int num7 = (int) ((double) playerPos.Y - ((double) num4 + 0.5) * 150.0);
+      int num6 = (int) (playerPos.X - ((double) num3 + 0.5) * 200.0);
+      int num7 = (int) (playerPos.Y - ((double) num4 + 0.5) * 150.0);
       if (num1 == 0)
       {
         num1 = num6 <= 0 ? 1 : -1;
@@ -323,8 +313,8 @@ label_14:
             flag2 = true;
             x = num3;
             y = num4;
-            num6 = (int) ((double) vector2.X - ((double) num3 + 0.5) * 200.0);
-            num7 = (int) ((double) vector2.Y - ((double) num4 + 0.5) * 150.0);
+            num6 = (int) (vector2.X - ((double) num3 + 0.5) * 200.0);
+            num7 = (int) (vector2.Y - ((double) num4 + 0.5) * 150.0);
             num1 = num6 <= 0 ? 1 : -1;
             num2 = num7 <= 0 ? 1 : -1;
             num5 = 4;
@@ -348,16 +338,16 @@ label_14:
             if (num9 == 0 && num10 == 0)
             {
               if (Math.Abs(num6) > Math.Abs(num7))
-                y -= num2;
+                y = y - num2;
               else
-                x -= num1;
+                x = x - num1;
             }
             else
             {
               if (num9 != 0)
-                x += num9 / Math.Abs(num9);
+                x = x + num9 / Math.Abs(num9);
               if (num10 != 0)
-                y += num10 / Math.Abs(num10);
+                y = y + num10 / Math.Abs(num10);
             }
             num5 = 0;
             num8 = 0;
@@ -369,8 +359,8 @@ label_14:
               num2 = num10 <= 0 ? 1 : -1;
             else
               num1 = num9 <= 0 ? 1 : -1;
-            x += num1;
-            y += num2;
+            x = x + num1;
+            y = y + num2;
             ++num5;
           }
           if (flag1)
@@ -380,14 +370,14 @@ label_14:
         }
         else
         {
-          x += num1;
-          y += num2;
+          x = x + num1;
+          y = y + num2;
         }
       }
       throw new Exception("Infinite loop in WorldSections.GetNextTileFrame");
 label_14:
       this.data[y * this.width + x][1] = true;
-      --this.frameSectionsLeft;
+      this.frameSectionsLeft = this.frameSectionsLeft - 1;
       this.prevFrame.centerPos = playerPos;
       this.prevFrame.X = x;
       this.prevFrame.Y = y;

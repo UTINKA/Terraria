@@ -1,8 +1,8 @@
 ﻿// Decompiled with JetBrains decompiler
 // Type: Terraria.GameContent.Events.CultistRitual
-// Assembly: Terraria, Version=1.3.5.1, Culture=neutral, PublicKeyToken=null
-// MVID: E90A5A2F-CD10-4A2C-9D2A-6B036D4E8877
-// Assembly location: F:\Steam\steamapps\common\Terraria\Terraria.exe
+// Assembly: Terraria, Version=1.3.5.3, Culture=neutral, PublicKeyToken=null
+// MVID: 68659D26-2BE6-448F-8663-74FA559E6F08
+// Assembly location: H:\Steam\steamapps\common\Terraria\Terraria.exe
 
 using Microsoft.Xna.Framework;
 
@@ -74,11 +74,11 @@ namespace Terraria.GameContent.Events
         {
           for (int index = -5; index < 12; ++index)
           {
-            int num3 = tileCoordinates.X + num2 * 2;
-            int num4 = tileCoordinates.Y + index;
-            if (WorldGen.SolidTile(num3, num4) && !Collision.SolidTiles(num3 - 1, num3 + 1, num4 - 3, num4 - 1))
+            int i = tileCoordinates.X + num2 * 2;
+            int j = tileCoordinates.Y + index;
+            if (WorldGen.SolidTile(i, j) && !Collision.SolidTiles(i - 1, i + 1, j - 3, j - 1))
             {
-              pointArray[num1++] = new Point(num3, num4);
+              pointArray[num1++] = new Point(i, j);
               break;
             }
           }

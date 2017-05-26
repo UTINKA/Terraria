@@ -1,8 +1,8 @@
 ﻿// Decompiled with JetBrains decompiler
 // Type: Terraria.Item
-// Assembly: Terraria, Version=1.3.5.1, Culture=neutral, PublicKeyToken=null
-// MVID: E90A5A2F-CD10-4A2C-9D2A-6B036D4E8877
-// Assembly location: F:\Steam\steamapps\common\Terraria\Terraria.exe
+// Assembly: Terraria, Version=1.3.5.3, Culture=neutral, PublicKeyToken=null
+// MVID: 68659D26-2BE6-448F-8663-74FA559E6F08
+// Assembly location: H:\Steam\steamapps\common\Terraria\Terraria.exe
 
 using Microsoft.Xna.Framework;
 using System;
@@ -55,13 +55,12 @@ namespace Terraria
     public int useAmmo = AmmoID.None;
     public int mountType = -1;
     public int shopSpecialCurrency = -1;
-    public int? shopCustomPrice = new int?();
+    private string _nameOverride;
     public const int flaskTime = 72000;
     public const int copper = 1;
     public const int silver = 100;
     public const int gold = 10000;
     public const int platinum = 1000000;
-    private string _nameOverride;
     public bool questItem;
     public bool flame;
     public bool mech;
@@ -130,6 +129,7 @@ namespace Terraria
     public int buffTime;
     public bool cartTrack;
     public bool uniqueStack;
+    public int? shopCustomPrice;
     public bool DD2Summon;
     public int netID;
     public int crit;
@@ -239,83 +239,122 @@ namespace Terraria
             int num9 = unifiedRandom.Next(40);
             if (num9 == 0)
               num1 = 1;
-            if (num9 == 1)
+            int num10 = 1;
+            if (num9 == num10)
               num1 = 2;
-            if (num9 == 2)
+            int num11 = 2;
+            if (num9 == num11)
               num1 = 3;
-            if (num9 == 3)
+            int num12 = 3;
+            if (num9 == num12)
               num1 = 4;
-            if (num9 == 4)
+            int num13 = 4;
+            if (num9 == num13)
               num1 = 5;
-            if (num9 == 5)
+            int num14 = 5;
+            if (num9 == num14)
               num1 = 6;
-            if (num9 == 6)
+            int num15 = 6;
+            if (num9 == num15)
               num1 = 7;
-            if (num9 == 7)
+            int num16 = 7;
+            if (num9 == num16)
               num1 = 8;
-            if (num9 == 8)
+            int num17 = 8;
+            if (num9 == num17)
               num1 = 9;
-            if (num9 == 9)
+            int num18 = 9;
+            if (num9 == num18)
               num1 = 10;
-            if (num9 == 10)
+            int num19 = 10;
+            if (num9 == num19)
               num1 = 11;
-            if (num9 == 11)
+            int num20 = 11;
+            if (num9 == num20)
               num1 = 12;
-            if (num9 == 12)
+            int num21 = 12;
+            if (num9 == num21)
               num1 = 13;
-            if (num9 == 13)
+            int num22 = 13;
+            if (num9 == num22)
               num1 = 14;
-            if (num9 == 14)
+            int num23 = 14;
+            if (num9 == num23)
               num1 = 15;
-            if (num9 == 15)
+            int num24 = 15;
+            if (num9 == num24)
               num1 = 36;
-            if (num9 == 16)
+            int num25 = 16;
+            if (num9 == num25)
               num1 = 37;
-            if (num9 == 17)
+            int num26 = 17;
+            if (num9 == num26)
               num1 = 38;
-            if (num9 == 18)
+            int num27 = 18;
+            if (num9 == num27)
               num1 = 53;
-            if (num9 == 19)
+            int num28 = 19;
+            if (num9 == num28)
               num1 = 54;
-            if (num9 == 20)
+            int num29 = 20;
+            if (num9 == num29)
               num1 = 55;
-            if (num9 == 21)
+            int num30 = 21;
+            if (num9 == num30)
               num1 = 39;
-            if (num9 == 22)
+            int num31 = 22;
+            if (num9 == num31)
               num1 = 40;
-            if (num9 == 23)
+            int num32 = 23;
+            if (num9 == num32)
               num1 = 56;
-            if (num9 == 24)
+            int num33 = 24;
+            if (num9 == num33)
               num1 = 41;
-            if (num9 == 25)
+            int num34 = 25;
+            if (num9 == num34)
               num1 = 57;
-            if (num9 == 26)
+            int num35 = 26;
+            if (num9 == num35)
               num1 = 42;
-            if (num9 == 27)
+            int num36 = 27;
+            if (num9 == num36)
               num1 = 43;
-            if (num9 == 28)
+            int num37 = 28;
+            if (num9 == num37)
               num1 = 44;
-            if (num9 == 29)
+            int num38 = 29;
+            if (num9 == num38)
               num1 = 45;
-            if (num9 == 30)
+            int num39 = 30;
+            if (num9 == num39)
               num1 = 46;
-            if (num9 == 31)
+            int num40 = 31;
+            if (num9 == num40)
               num1 = 47;
-            if (num9 == 32)
+            int num41 = 32;
+            if (num9 == num41)
               num1 = 48;
-            if (num9 == 33)
+            int num42 = 33;
+            if (num9 == num42)
               num1 = 49;
-            if (num9 == 34)
+            int num43 = 34;
+            if (num9 == num43)
               num1 = 50;
-            if (num9 == 35)
+            int num44 = 35;
+            if (num9 == num44)
               num1 = 51;
-            if (num9 == 36)
+            int num45 = 36;
+            if (num9 == num45)
               num1 = 59;
-            if (num9 == 37)
+            int num46 = 37;
+            if (num9 == num46)
               num1 = 60;
-            if (num9 == 38)
+            int num47 = 38;
+            if (num9 == num47)
               num1 = 61;
-            if (num9 == 39)
+            int num48 = 39;
+            if (num9 == num48)
               num1 = 81;
           }
           else if (this.type == 162 || this.type == 160 || (this.type == 163 || this.type == 220) || (this.type == 274 || this.type == 277 || (this.type == 280 || this.type == 383)) || (this.type == 384 || this.type == 385 || (this.type == 386 || this.type == 387) || (this.type == 388 || this.type == 389 || (this.type == 390 || this.type == 406))) || (this.type == 537 || this.type == 550 || (this.type == 579 || this.type == 756) || (this.type == 759 || this.type == 801 || (this.type == 802 || this.type == 1186)) || (this.type == 1189 || this.type == 1190 || (this.type == 1193 || this.type == 1196) || (this.type == 1197 || this.type == 1200 || (this.type == 1203 || this.type == 1204)))) || (this.type == 1228 || this.type == 1231 || (this.type == 1232 || this.type == 1259) || (this.type == 1262 || this.type == 1297 || (this.type == 1314 || this.type == 1325)) || (this.type == 1947 || this.type == 2332 || (this.type == 2331 || this.type == 2342) || (this.type == 2424 || this.type == 2611 || (this.type == 2798 || this.type == 3012))) || (this.type == 3473 || this.type == 3098 || (this.type == 3368 || this.type == 3835) || (this.type == 3836 || this.type == 3858))))
@@ -323,31 +362,44 @@ namespace Terraria
             int num9 = unifiedRandom.Next(14);
             if (num9 == 0)
               num1 = 36;
-            if (num9 == 1)
+            int num10 = 1;
+            if (num9 == num10)
               num1 = 37;
-            if (num9 == 2)
+            int num11 = 2;
+            if (num9 == num11)
               num1 = 38;
-            if (num9 == 3)
+            int num12 = 3;
+            if (num9 == num12)
               num1 = 53;
-            if (num9 == 4)
+            int num13 = 4;
+            if (num9 == num13)
               num1 = 54;
-            if (num9 == 5)
+            int num14 = 5;
+            if (num9 == num14)
               num1 = 55;
-            if (num9 == 6)
+            int num15 = 6;
+            if (num9 == num15)
               num1 = 39;
-            if (num9 == 7)
+            int num16 = 7;
+            if (num9 == num16)
               num1 = 40;
-            if (num9 == 8)
+            int num17 = 8;
+            if (num9 == num17)
               num1 = 56;
-            if (num9 == 9)
+            int num18 = 9;
+            if (num9 == num18)
               num1 = 41;
-            if (num9 == 10)
+            int num19 = 10;
+            if (num9 == num19)
               num1 = 57;
-            if (num9 == 11)
+            int num20 = 11;
+            if (num9 == num20)
               num1 = 59;
-            if (num9 == 12)
+            int num21 = 12;
+            if (num9 == num21)
               num1 = 60;
-            if (num9 == 13)
+            int num22 = 13;
+            if (num9 == num22)
               num1 = 61;
           }
           else if (this.type == 39 || this.type == 44 || (this.type == 95 || this.type == 96) || (this.type == 98 || this.type == 99 || (this.type == 120 || this.type == 164)) || (this.type == 197 || this.type == 219 || (this.type == 266 || this.type == 281) || (this.type == 434 || this.type == 435 || (this.type == 436 || this.type == 481))) || (this.type == 506 || this.type == 533 || (this.type == 534 || this.type == 578) || (this.type == 655 || this.type == 658 || (this.type == 661 || this.type == 679)) || (this.type == 682 || this.type == 725 || (this.type == 758 || this.type == 759) || (this.type == 760 || this.type == 796 || (this.type == 800 || this.type == 905)))) || (this.type == 923 || this.type == 964 || (this.type == 986 || this.type == 1156) || (this.type == 1187 || this.type == 1194 || (this.type == 1201 || this.type == 1229)) || (this.type == 1254 || this.type == 1255 || (this.type == 1258 || this.type == 1265) || (this.type == 1319 || this.type == 1553 || (this.type == 1782 || this.type == 1784))) || (this.type == 1835 || this.type == 1870 || (this.type == 1910 || this.type == 1929) || (this.type == 1946 || this.type == 2223 || (this.type == 2269 || this.type == 2270)) || (this.type == 2624 || this.type == 2515 || (this.type == 2747 || this.type == 2796) || (this.type == 2797 || this.type == 3052 || (this.type == 2888 || this.type == 3019))))) || (this.type == 3029 || this.type == 3007 || (this.type == 3008 || this.type == 3210) || (this.type == 3107 || this.type == 3245 || (this.type == 3475 || this.type == 3540)) || (this.type == 3854 || this.type == 3859 || (this.type == 3821 || this.type == 3480) || (this.type == 3486 || this.type == 3492 || (this.type == 3498 || this.type == 3504))) || (this.type == 3510 || this.type == 3516 || (this.type == 3350 || this.type == 3546) || this.type == 3788)))
@@ -355,75 +407,110 @@ namespace Terraria
             int num9 = unifiedRandom.Next(36);
             if (num9 == 0)
               num1 = 16;
-            if (num9 == 1)
+            int num10 = 1;
+            if (num9 == num10)
               num1 = 17;
-            if (num9 == 2)
+            int num11 = 2;
+            if (num9 == num11)
               num1 = 18;
-            if (num9 == 3)
+            int num12 = 3;
+            if (num9 == num12)
               num1 = 19;
-            if (num9 == 4)
+            int num13 = 4;
+            if (num9 == num13)
               num1 = 20;
-            if (num9 == 5)
+            int num14 = 5;
+            if (num9 == num14)
               num1 = 21;
-            if (num9 == 6)
+            int num15 = 6;
+            if (num9 == num15)
               num1 = 22;
-            if (num9 == 7)
+            int num16 = 7;
+            if (num9 == num16)
               num1 = 23;
-            if (num9 == 8)
+            int num17 = 8;
+            if (num9 == num17)
               num1 = 24;
-            if (num9 == 9)
+            int num18 = 9;
+            if (num9 == num18)
               num1 = 25;
-            if (num9 == 10)
+            int num19 = 10;
+            if (num9 == num19)
               num1 = 58;
-            if (num9 == 11)
+            int num20 = 11;
+            if (num9 == num20)
               num1 = 36;
-            if (num9 == 12)
+            int num21 = 12;
+            if (num9 == num21)
               num1 = 37;
-            if (num9 == 13)
+            int num22 = 13;
+            if (num9 == num22)
               num1 = 38;
-            if (num9 == 14)
+            int num23 = 14;
+            if (num9 == num23)
               num1 = 53;
-            if (num9 == 15)
+            int num24 = 15;
+            if (num9 == num24)
               num1 = 54;
-            if (num9 == 16)
+            int num25 = 16;
+            if (num9 == num25)
               num1 = 55;
-            if (num9 == 17)
+            int num26 = 17;
+            if (num9 == num26)
               num1 = 39;
-            if (num9 == 18)
+            int num27 = 18;
+            if (num9 == num27)
               num1 = 40;
-            if (num9 == 19)
+            int num28 = 19;
+            if (num9 == num28)
               num1 = 56;
-            if (num9 == 20)
+            int num29 = 20;
+            if (num9 == num29)
               num1 = 41;
-            if (num9 == 21)
+            int num30 = 21;
+            if (num9 == num30)
               num1 = 57;
-            if (num9 == 22)
+            int num31 = 22;
+            if (num9 == num31)
               num1 = 42;
-            if (num9 == 23)
+            int num32 = 23;
+            if (num9 == num32)
               num1 = 43;
-            if (num9 == 24)
+            int num33 = 24;
+            if (num9 == num33)
               num1 = 44;
-            if (num9 == 25)
+            int num34 = 25;
+            if (num9 == num34)
               num1 = 45;
-            if (num9 == 26)
+            int num35 = 26;
+            if (num9 == num35)
               num1 = 46;
-            if (num9 == 27)
+            int num36 = 27;
+            if (num9 == num36)
               num1 = 47;
-            if (num9 == 28)
+            int num37 = 28;
+            if (num9 == num37)
               num1 = 48;
-            if (num9 == 29)
+            int num38 = 29;
+            if (num9 == num38)
               num1 = 49;
-            if (num9 == 30)
+            int num39 = 30;
+            if (num9 == num39)
               num1 = 50;
-            if (num9 == 31)
+            int num40 = 31;
+            if (num9 == num40)
               num1 = 51;
-            if (num9 == 32)
+            int num41 = 32;
+            if (num9 == num41)
               num1 = 59;
-            if (num9 == 33)
+            int num42 = 33;
+            if (num9 == num42)
               num1 = 60;
-            if (num9 == 34)
+            int num43 = 34;
+            if (num9 == num43)
               num1 = 61;
-            if (num9 == 35)
+            int num44 = 35;
+            if (num9 == num44)
               num1 = 82;
           }
           else if (this.type == 64 || this.type == 112 || (this.type == 113 || this.type == (int) sbyte.MaxValue) || (this.type == 157 || this.type == 165 || (this.type == 218 || this.type == 272)) || (this.type == 494 || this.type == 495 || (this.type == 496 || this.type == 514) || (this.type == 517 || this.type == 518 || (this.type == 519 || this.type == 683))) || (this.type == 726 || this.type == 739 || (this.type == 740 || this.type == 741) || (this.type == 742 || this.type == 743 || (this.type == 744 || this.type == 788)) || (this.type == 1121 || this.type == 1155 || (this.type == 1157 || this.type == 1178) || (this.type == 1244 || this.type == 1256 || (this.type == 1260 || this.type == 1264)))) || (this.type == 1266 || this.type == 1295 || (this.type == 1296 || this.type == 1308) || (this.type == 1309 || this.type == 1313 || (this.type == 1336 || this.type == 1444)) || (this.type == 1445 || this.type == 1446 || (this.type == 1572 || this.type == 1801) || (this.type == 1802 || this.type == 1930 || (this.type == 1931 || this.type == 2188))) || (this.type == 2622 || this.type == 2621 || (this.type == 2584 || this.type == 2551) || (this.type == 2366 || this.type == 2535 || (this.type == 2365 || this.type == 2364)) || (this.type == 2623 || this.type == 2750 || (this.type == 2795 || this.type == 3053) || (this.type == 3051 || this.type == 3209 || (this.type == 3014 || this.type == 3105))))) || (this.type == 2882 || this.type == 3269 || (this.type == 3006 || this.type == 3377) || (this.type == 3069 || this.type == 2749 || (this.type == 3249 || this.type == 3476)) || (this.type == 3474 || this.type == 3531 || (this.type == 3541 || this.type == 3542) || (this.type == 3569 || this.type == 3570 || (this.type == 3571 || this.type == 3779))) || (this.type == 3787 || this.type == 3531 || (this.type == 3852 || this.type == 3870) || (this.type == 3824 || this.type == 3818 || (this.type == 3829 || this.type == 3832)) || (this.type == 3825 || this.type == 3819 || (this.type == 3830 || this.type == 3833) || (this.type == 3826 || this.type == 3820 || (this.type == 3831 || this.type == 3834))))))
@@ -431,75 +518,110 @@ namespace Terraria
             int num9 = unifiedRandom.Next(36);
             if (num9 == 0)
               num1 = 26;
-            if (num9 == 1)
+            int num10 = 1;
+            if (num9 == num10)
               num1 = 27;
-            if (num9 == 2)
+            int num11 = 2;
+            if (num9 == num11)
               num1 = 28;
-            if (num9 == 3)
+            int num12 = 3;
+            if (num9 == num12)
               num1 = 29;
-            if (num9 == 4)
+            int num13 = 4;
+            if (num9 == num13)
               num1 = 30;
-            if (num9 == 5)
+            int num14 = 5;
+            if (num9 == num14)
               num1 = 31;
-            if (num9 == 6)
+            int num15 = 6;
+            if (num9 == num15)
               num1 = 32;
-            if (num9 == 7)
+            int num16 = 7;
+            if (num9 == num16)
               num1 = 33;
-            if (num9 == 8)
+            int num17 = 8;
+            if (num9 == num17)
               num1 = 34;
-            if (num9 == 9)
+            int num18 = 9;
+            if (num9 == num18)
               num1 = 35;
-            if (num9 == 10)
+            int num19 = 10;
+            if (num9 == num19)
               num1 = 52;
-            if (num9 == 11)
+            int num20 = 11;
+            if (num9 == num20)
               num1 = 36;
-            if (num9 == 12)
+            int num21 = 12;
+            if (num9 == num21)
               num1 = 37;
-            if (num9 == 13)
+            int num22 = 13;
+            if (num9 == num22)
               num1 = 38;
-            if (num9 == 14)
+            int num23 = 14;
+            if (num9 == num23)
               num1 = 53;
-            if (num9 == 15)
+            int num24 = 15;
+            if (num9 == num24)
               num1 = 54;
-            if (num9 == 16)
+            int num25 = 16;
+            if (num9 == num25)
               num1 = 55;
-            if (num9 == 17)
+            int num26 = 17;
+            if (num9 == num26)
               num1 = 39;
-            if (num9 == 18)
+            int num27 = 18;
+            if (num9 == num27)
               num1 = 40;
-            if (num9 == 19)
+            int num28 = 19;
+            if (num9 == num28)
               num1 = 56;
-            if (num9 == 20)
+            int num29 = 20;
+            if (num9 == num29)
               num1 = 41;
-            if (num9 == 21)
+            int num30 = 21;
+            if (num9 == num30)
               num1 = 57;
-            if (num9 == 22)
+            int num31 = 22;
+            if (num9 == num31)
               num1 = 42;
-            if (num9 == 23)
+            int num32 = 23;
+            if (num9 == num32)
               num1 = 43;
-            if (num9 == 24)
+            int num33 = 24;
+            if (num9 == num33)
               num1 = 44;
-            if (num9 == 25)
+            int num34 = 25;
+            if (num9 == num34)
               num1 = 45;
-            if (num9 == 26)
+            int num35 = 26;
+            if (num9 == num35)
               num1 = 46;
-            if (num9 == 27)
+            int num36 = 27;
+            if (num9 == num36)
               num1 = 47;
-            if (num9 == 28)
+            int num37 = 28;
+            if (num9 == num37)
               num1 = 48;
-            if (num9 == 29)
+            int num38 = 29;
+            if (num9 == num38)
               num1 = 49;
-            if (num9 == 30)
+            int num39 = 30;
+            if (num9 == num39)
               num1 = 50;
-            if (num9 == 31)
+            int num40 = 31;
+            if (num9 == num40)
               num1 = 51;
-            if (num9 == 32)
+            int num41 = 32;
+            if (num9 == num41)
               num1 = 59;
-            if (num9 == 33)
+            int num42 = 33;
+            if (num9 == num42)
               num1 = 60;
-            if (num9 == 34)
+            int num43 = 34;
+            if (num9 == num43)
               num1 = 61;
-            if (num9 == 35)
+            int num44 = 35;
+            if (num9 == num44)
               num1 = 83;
           }
           else if (this.type == 55 || this.type == 119 || (this.type == 191 || this.type == 284) || (this.type == 670 || this.type == 1122 || (this.type == 1513 || this.type == 1569)) || (this.type == 1571 || this.type == 1825 || (this.type == 1918 || this.type == 3054) || (this.type == 3262 || this.type >= 3278 && this.type <= 3292)) || (this.type >= 3315 && this.type <= 3317 || (this.type == 3389 || this.type == 3030) || this.type == 3543))
@@ -507,31 +629,44 @@ namespace Terraria
             int num9 = unifiedRandom.Next(14);
             if (num9 == 0)
               num1 = 36;
-            if (num9 == 1)
+            int num10 = 1;
+            if (num9 == num10)
               num1 = 37;
-            if (num9 == 2)
+            int num11 = 2;
+            if (num9 == num11)
               num1 = 38;
-            if (num9 == 3)
+            int num12 = 3;
+            if (num9 == num12)
               num1 = 53;
-            if (num9 == 4)
+            int num13 = 4;
+            if (num9 == num13)
               num1 = 54;
-            if (num9 == 5)
+            int num14 = 5;
+            if (num9 == num14)
               num1 = 55;
-            if (num9 == 6)
+            int num15 = 6;
+            if (num9 == num15)
               num1 = 39;
-            if (num9 == 7)
+            int num16 = 7;
+            if (num9 == num16)
               num1 = 40;
-            if (num9 == 8)
+            int num17 = 8;
+            if (num9 == num17)
               num1 = 56;
-            if (num9 == 9)
+            int num18 = 9;
+            if (num9 == num18)
               num1 = 41;
-            if (num9 == 10)
+            int num19 = 10;
+            if (num9 == num19)
               num1 = 57;
-            if (num9 == 11)
+            int num20 = 11;
+            if (num9 == num20)
               num1 = 59;
-            if (num9 == 12)
+            int num21 = 12;
+            if (num9 == num21)
               num1 = 60;
-            if (num9 == 13)
+            int num22 = 13;
+            if (num9 == num22)
               num1 = 61;
           }
           else
@@ -868,24 +1003,24 @@ namespace Terraria
       this.knockBack = this.knockBack * num3;
       this.scale = this.scale * num5;
       this.shootSpeed = this.shootSpeed * num6;
-      this.crit += num8;
-      float num10 = (float) (1.0 * (double) num2 * (2.0 - (double) num4) * (2.0 - (double) num7) * (double) num5 * (double) num3 * (double) num6 * (1.0 + (double) this.crit * 0.0199999995529652));
+      this.crit = this.crit + num8;
+      float num49 = (float) (1.0 * (double) num2 * (2.0 - (double) num4) * (2.0 - (double) num7) * (double) num5 * (double) num3 * (double) num6 * (1.0 + (double) this.crit * 0.0199999995529652));
       if (num1 == 62 || num1 == 69 || (num1 == 73 || num1 == 77))
-        num10 *= 1.05f;
+        num49 *= 1.05f;
       if (num1 == 63 || num1 == 70 || (num1 == 74 || num1 == 78) || num1 == 67)
-        num10 *= 1.1f;
+        num49 *= 1.1f;
       if (num1 == 64 || num1 == 71 || (num1 == 75 || num1 == 79) || num1 == 66)
-        num10 *= 1.15f;
+        num49 *= 1.15f;
       if (num1 == 65 || num1 == 72 || (num1 == 76 || num1 == 80) || num1 == 68)
-        num10 *= 1.2f;
-      if ((double) num10 >= 1.2)
-        this.rare += 2;
-      else if ((double) num10 >= 1.05)
-        ++this.rare;
-      else if ((double) num10 <= 0.8)
-        this.rare -= 2;
-      else if ((double) num10 <= 0.95)
-        --this.rare;
+        num49 *= 1.2f;
+      if ((double) num49 >= 1.2)
+        this.rare = this.rare + 2;
+      else if ((double) num49 >= 1.05)
+        this.rare = this.rare + 1;
+      else if ((double) num49 <= 0.8)
+        this.rare = this.rare - 2;
+      else if ((double) num49 <= 0.95)
+        this.rare = this.rare - 1;
       if (this.rare > -11)
       {
         if (this.rare < -1)
@@ -893,7 +1028,7 @@ namespace Terraria
         if (this.rare > 11)
           this.rare = 11;
       }
-      this.value = (int) ((double) this.value * (double) (num10 * num10));
+      this.value = (int) ((double) this.value * (double) (num49 * num49));
       this.prefix = (byte) num1;
       return true;
     }
@@ -938,21 +1073,19 @@ namespace Terraria
           }
         }
       }
-      switch (this.type)
+      int type = this.type;
+      if (type <= 543)
       {
-        case 852:
-        case 853:
-        case 1151:
-        case 529:
-        case 541:
-        case 542:
-        case 543:
-          this.material = true;
-          return true;
-        default:
-          this.material = false;
-          return false;
+        if (type != 529 && (uint) (type - 541) > 2U)
+          goto label_14;
       }
+      else if ((uint) (type - 852) > 1U && type != 1151)
+        goto label_14;
+      this.material = true;
+      return true;
+label_14:
+      this.material = false;
+      return false;
     }
 
     public void netDefaults(int type)
@@ -3399,7 +3532,7 @@ namespace Terraria
         this.width = 12;
         this.height = 12;
         this.value = 200;
-        this.tileBoost += 3;
+        this.tileBoost = this.tileBoost + 3;
       }
       else if (type == 86)
       {
@@ -14856,7 +14989,7 @@ namespace Terraria
         this.width = 12;
         this.height = 12;
         this.value = 10;
-        this.tileBoost += 3;
+        this.tileBoost = this.tileBoost + 3;
       }
       else if (type == 966)
       {
@@ -17968,7 +18101,7 @@ namespace Terraria
         this.value = 216000;
         this.melee = true;
         this.scale = 1.15f;
-        ++this.tileBoost;
+        this.tileBoost = this.tileBoost + 1;
       }
       else if (type == 1231)
       {
@@ -17989,7 +18122,7 @@ namespace Terraria
         this.noUseGraphic = true;
         this.melee = true;
         this.channel = true;
-        ++this.tileBoost;
+        this.tileBoost = this.tileBoost + 1;
       }
       else if (type == 1232)
       {
@@ -18010,7 +18143,7 @@ namespace Terraria
         this.noUseGraphic = true;
         this.melee = true;
         this.channel = true;
-        ++this.tileBoost;
+        this.tileBoost = this.tileBoost + 1;
       }
       else if (type == 1233)
       {
@@ -18029,7 +18162,7 @@ namespace Terraria
         this.value = 216000;
         this.melee = true;
         this.scale = 1.15f;
-        ++this.tileBoost;
+        this.tileBoost = this.tileBoost + 1;
       }
       else if (type == 1234)
       {
@@ -18048,7 +18181,7 @@ namespace Terraria
         this.rare = 7;
         this.value = 216000;
         this.melee = true;
-        ++this.tileBoost;
+        this.tileBoost = this.tileBoost + 1;
       }
       else if (type == 1235)
       {
@@ -18305,7 +18438,7 @@ namespace Terraria
         this.useStyle = 5;
         this.useAnimation = 36;
         this.useTime = 36;
-        this.crit += 25;
+        this.crit = this.crit + 25;
         this.width = 44;
         this.height = 14;
         this.shoot = 10;
@@ -18464,7 +18597,7 @@ namespace Terraria
         this.noUseGraphic = true;
         this.melee = true;
         this.channel = true;
-        ++this.tileBoost;
+        this.tileBoost = this.tileBoost + 1;
       }
       else if (type == 1263)
       {
@@ -18832,7 +18965,7 @@ namespace Terraria
         this.value = 216000;
         this.melee = true;
         this.scale = 1.15f;
-        ++this.tileBoost;
+        this.tileBoost = this.tileBoost + 1;
       }
       else if (type == 1295)
       {
@@ -21511,7 +21644,7 @@ namespace Terraria
         this.value = 216000;
         this.melee = true;
         this.scale = 1.15f;
-        this.tileBoost += 3;
+        this.tileBoost = this.tileBoost + 3;
       }
       else if (type == 1507)
       {
@@ -21531,7 +21664,7 @@ namespace Terraria
         this.value = 216000;
         this.melee = true;
         this.scale = 1.05f;
-        this.tileBoost += 3;
+        this.tileBoost = this.tileBoost + 3;
       }
       else if (type == 1508)
       {
@@ -21712,7 +21845,7 @@ namespace Terraria
         this.width = 24;
         this.height = 24;
         this.value = 10000;
-        this.tileBoost += 3;
+        this.tileBoost = this.tileBoost + 3;
       }
       else if (type == 1546)
       {
@@ -21795,7 +21928,7 @@ namespace Terraria
         this.autoReuse = true;
         this.useAnimation = 5;
         this.useTime = 5;
-        this.crit += 10;
+        this.crit = this.crit + 10;
         this.width = 60;
         this.height = 26;
         this.shoot = 10;
@@ -22869,7 +23002,7 @@ namespace Terraria
         this.autoReuse = true;
         this.useAnimation = 9;
         this.useTime = 9;
-        this.crit += 6;
+        this.crit = this.crit + 6;
         this.width = 60;
         this.height = 26;
         this.shoot = 311;
@@ -22903,7 +23036,7 @@ namespace Terraria
         this.autoReuse = true;
         this.useAnimation = 30;
         this.useTime = 30;
-        this.crit += 6;
+        this.crit = this.crit + 6;
         this.width = 60;
         this.height = 26;
         this.shoot = 312;
@@ -23505,7 +23638,7 @@ namespace Terraria
           this.autoReuse = true;
           this.useAnimation = 26;
           this.useTime = 26;
-          this.crit += 10;
+          this.crit = this.crit + 10;
           this.width = 40;
           this.height = 26;
           this.shoot = 323;
@@ -24663,22 +24796,29 @@ namespace Terraria
           this.makeNPC = (short) 356;
           this.placeStyle = 1 + type - 1994;
           this.noUseGraphic = true;
-          int num = type - 1994;
-          if (num == 0)
+          int num1 = type - 1994;
+          if (num1 == 0)
             this.bait = 5;
-          if (num == 4)
+          int num2 = 4;
+          if (num1 == num2)
             this.bait = 10;
-          if (num == 6)
+          int num3 = 6;
+          if (num1 == num3)
             this.bait = 15;
-          if (num == 3)
+          int num4 = 3;
+          if (num1 == num4)
             this.bait = 20;
-          if (num == 7)
+          int num5 = 7;
+          if (num1 == num5)
             this.bait = 25;
-          if (num == 2)
+          int num6 = 2;
+          if (num1 == num6)
             this.bait = 30;
-          if (num == 1)
+          int num7 = 1;
+          if (num1 == num7)
             this.bait = 35;
-          if (num != 5)
+          int num8 = 5;
+          if (num1 != num8)
             return;
           this.bait = 50;
         }
@@ -25652,7 +25792,7 @@ namespace Terraria
         this.rare = 8;
         this.value = Item.sellPrice(0, 1, 0, 0);
         this.melee = true;
-        --this.tileBoost;
+        this.tileBoost = this.tileBoost - 1;
       }
       else if (type == 2177)
       {
@@ -30221,7 +30361,7 @@ namespace Terraria
         this.value = Item.sellPrice(0, 5, 0, 0);
         this.melee = true;
         this.glowMask = (short) 1;
-        this.tileBoost += 4;
+        this.tileBoost = this.tileBoost + 4;
       }
       else if (type == 2773)
       {
@@ -30243,7 +30383,7 @@ namespace Terraria
         this.melee = true;
         this.channel = true;
         this.glowMask = (short) 20;
-        this.tileBoost += 4;
+        this.tileBoost = this.tileBoost + 4;
       }
       else if (type == 2774)
       {
@@ -30265,7 +30405,7 @@ namespace Terraria
         this.melee = true;
         this.channel = true;
         this.glowMask = (short) 21;
-        this.tileBoost += 4;
+        this.tileBoost = this.tileBoost + 4;
       }
       else if (type == 2776)
       {
@@ -30284,7 +30424,7 @@ namespace Terraria
         this.value = Item.sellPrice(0, 5, 0, 0);
         this.melee = true;
         this.glowMask = (short) 5;
-        this.tileBoost += 4;
+        this.tileBoost = this.tileBoost + 4;
       }
       else if (type == 2775)
       {
@@ -30304,7 +30444,7 @@ namespace Terraria
         this.melee = true;
         this.scale = 1.1f;
         this.glowMask = (short) 4;
-        this.tileBoost += 4;
+        this.tileBoost = this.tileBoost + 4;
       }
       else if (type == 2777)
       {
@@ -31309,7 +31449,7 @@ namespace Terraria
         this.createTile = 353;
         this.width = 12;
         this.height = 12;
-        this.tileBoost += 3;
+        this.tileBoost = this.tileBoost + 3;
       }
       else if (type == 2997)
       {
@@ -31822,7 +31962,7 @@ namespace Terraria
         this.autoReuse = true;
         this.rare = 7;
         this.value = Item.sellPrice(0, 10, 0, 0);
-        this.tileBoost += 2;
+        this.tileBoost = this.tileBoost + 2;
       }
       else if (type == 3036)
       {
@@ -32224,7 +32364,7 @@ namespace Terraria
         this.width = 12;
         this.height = 12;
         this.value = 10;
-        this.tileBoost += 3;
+        this.tileBoost = this.tileBoost + 3;
       }
       else if (type == 3078)
       {
@@ -32239,7 +32379,7 @@ namespace Terraria
         this.width = 12;
         this.height = 12;
         this.value = 10;
-        this.tileBoost += 3;
+        this.tileBoost = this.tileBoost + 3;
       }
       else if (type == 3081)
       {
@@ -35192,7 +35332,7 @@ namespace Terraria
         this.rare = 10;
         this.value = Item.sellPrice(0, 5, 0, 0);
         this.melee = true;
-        this.tileBoost += 4;
+        this.tileBoost = this.tileBoost + 4;
         switch (type)
         {
           case 3523:
@@ -35522,7 +35662,7 @@ namespace Terraria
         this.type = type;
         this.useAnimation = 20;
         this.damage = 12;
-        this.scale *= 1.025f;
+        this.scale = this.scale * 1.025f;
         this.value = 6750;
       }
       else if (type == 3489)
@@ -37146,7 +37286,7 @@ namespace Terraria
         this.maxStack = 999;
         this.consumable = true;
         this.value = Item.buyPrice(0, 0, 0, 50);
-        this.tileBoost += 3;
+        this.tileBoost = this.tileBoost + 3;
       }
       else if (type == 3742)
       {
@@ -38111,16 +38251,17 @@ namespace Terraria
         this.value = Item.sellPrice(0, 2, 0, 0);
         this.buffType = 200;
         this.shoot = 703;
-        switch (type)
+        if (type != 3856)
         {
-          case 3856:
-            this.buffType = 201;
-            this.shoot = 702;
-            break;
-          case 3857:
-            this.buffType = 202;
-            this.shoot = 701;
-            break;
+          if (type != 3857)
+            return;
+          this.buffType = 202;
+          this.shoot = 701;
+        }
+        else
+        {
+          this.buffType = 201;
+          this.shoot = 702;
         }
       }
       else if (type == 3854)
@@ -38951,22 +39092,29 @@ namespace Terraria
       }
       if (this.type >= 1994 && this.type <= 2001)
       {
-        int num = this.type - 1994;
-        if (num == 0)
+        int num1 = this.type - 1994;
+        if (num1 == 0)
           this.value = Item.sellPrice(0, 0, 5, 0);
-        if (num == 4)
+        int num2 = 4;
+        if (num1 == num2)
           this.value = Item.sellPrice(0, 0, 10, 0);
-        if (num == 6)
+        int num3 = 6;
+        if (num1 == num3)
           this.value = Item.sellPrice(0, 0, 15, 0);
-        if (num == 3)
+        int num4 = 3;
+        if (num1 == num4)
           this.value = Item.sellPrice(0, 0, 20, 0);
-        if (num == 7)
+        int num5 = 7;
+        if (num1 == num5)
           this.value = Item.sellPrice(0, 0, 30, 0);
-        if (num == 2)
+        int num6 = 2;
+        if (num1 == num6)
           this.value = Item.sellPrice(0, 0, 40, 0);
-        if (num == 1)
+        int num7 = 1;
+        if (num1 == num7)
           this.value = Item.sellPrice(0, 0, 75, 0);
-        if (num == 5)
+        int num8 = 5;
+        if (num1 == num8)
           this.value = Item.sellPrice(0, 1, 0, 0);
       }
       if (this.type == 483 || this.type == 1192 || (this.type == 482 || this.type == 1185) || (this.type == 484 || this.type == 1199 || this.type == 368))
@@ -39059,7 +39207,7 @@ namespace Terraria
       this.legSlot = -1;
       this.headSlot = -1;
       this.potion = false;
-      this.color = new Color();
+      this.color = (Color) null;
       this.glowMask = (short) -1;
       this.consumable = false;
       this.createTile = -1;
@@ -39103,129 +39251,241 @@ namespace Terraria
 
     public Color GetAlpha(Color newColor)
     {
-      switch (this.type)
+      int type = this.type;
+      if (type <= 1332)
       {
-        case 3822:
-          return Color.Lerp(Color.White, newColor, 0.5f) * (float) (((double) byte.MaxValue - (double) this.alpha) / (double) byte.MaxValue);
-        case 3858:
-        case 3065:
-        case 75:
-          return new Color((int) byte.MaxValue, (int) byte.MaxValue, (int) byte.MaxValue, (int) newColor.A - this.alpha);
-        case 3522:
-        case 2782:
-        case 2783:
-        case 2784:
-        case 2785:
-        case 2786:
-        case 2763:
-        case 2764:
-        case 2765:
-          return new Color(250, 250, 250, (int) byte.MaxValue - this.alpha);
-        case 3580:
-        case 3453:
-        case 3454:
-        case 3455:
-        case 1332:
-        case 575:
-        case 520:
-        case 521:
-        case 522:
-        case 547:
-        case 548:
-        case 549:
-          return new Color((int) byte.MaxValue, (int) byte.MaxValue, (int) byte.MaxValue, 50);
-        case 3191:
-          return new Color(250, 250, 250, 200);
-        case 3456:
-        case 3457:
-        case 3458:
-        case 3459:
-        case 1306:
-        case 757:
-          return new Color((int) byte.MaxValue, (int) byte.MaxValue, (int) byte.MaxValue, 200);
-        case 1867:
-        case 1868:
-        case 1734:
-        case 1735:
-        case 184:
-        case 58:
-          return new Color(200, 200, 200, 200);
-        case 1826:
-          return new Color((int) byte.MaxValue, (int) byte.MaxValue, (int) byte.MaxValue, 200);
-        case 1543:
-        case 1544:
-        case 1545:
-        case 1446:
-        case 1506:
-        case 1507:
-          return new Color((int) newColor.R, (int) newColor.G, (int) newColor.B, (int) Main.gFade);
-        case 1572:
-          return new Color(200, 200, (int) byte.MaxValue, 125);
-        case 1508:
-          return new Color(200, 200, 200, 0);
-        case 787:
-          return new Color((int) byte.MaxValue, (int) byte.MaxValue, (int) byte.MaxValue, 175);
-        case 1260:
-          return new Color((int) byte.MaxValue, (int) byte.MaxValue, (int) byte.MaxValue, 175);
-        case 217:
-        case 218:
-        case 219:
-        case 220:
-        case 119:
-        case 120:
-        case 121:
-        case 122:
+        if (type <= 501)
+        {
+          if (type <= 122)
+          {
+            if (type <= 58)
+            {
+              if (type == 51)
+                return new Color((int) byte.MaxValue, (int) byte.MaxValue, (int) byte.MaxValue, 0);
+              if (type == 58)
+                goto label_53;
+              else
+                goto label_66;
+            }
+            else if (type != 75)
+            {
+              if ((uint) (type - 119) > 3U)
+                goto label_66;
+            }
+            else
+              goto label_48;
+          }
+          else if (type <= 203)
+          {
+            if (type != 184)
+            {
+              if ((uint) (type - 198) <= 5U)
+                return Color.get_White();
+              goto label_66;
+            }
+            else
+              goto label_53;
+          }
+          else if ((uint) (type - 217) > 3U)
+          {
+            if (type == 501)
+              return new Color(200, 200, 200, 50);
+            goto label_66;
+          }
           return new Color((int) byte.MaxValue, (int) byte.MaxValue, (int) byte.MaxValue, (int) byte.MaxValue);
-        case 501:
-          return new Color(200, 200, 200, 50);
-        case 502:
-          return new Color((int) byte.MaxValue, (int) byte.MaxValue, (int) byte.MaxValue, 150);
-        case 198:
-        case 199:
-        case 200:
-        case 201:
-        case 202:
-        case 203:
-          return Color.White;
-        case 51:
-          return new Color((int) byte.MaxValue, (int) byte.MaxValue, (int) byte.MaxValue, 0);
-        default:
-          float num = (float) ((int) byte.MaxValue - this.alpha) / (float) byte.MaxValue;
-          int r = (int) ((double) newColor.R * (double) num);
-          int g = (int) ((double) newColor.G * (double) num);
-          int b = (int) ((double) newColor.B * (double) num);
-          int a = (int) newColor.A - this.alpha;
-          if (a < 0)
-            a = 0;
-          if (a > (int) byte.MaxValue)
-            a = (int) byte.MaxValue;
-          return new Color(r, g, b, a);
+        }
+        if (type <= 575)
+        {
+          if (type <= 522)
+          {
+            if (type == 502)
+              return new Color((int) byte.MaxValue, (int) byte.MaxValue, (int) byte.MaxValue, 150);
+            if ((uint) (type - 520) <= 2U)
+              goto label_52;
+            else
+              goto label_66;
+          }
+          else if ((uint) (type - 547) <= 2U || type == 575)
+            goto label_52;
+          else
+            goto label_66;
+        }
+        else if (type <= 787)
+        {
+          if (type != 757)
+          {
+            if (type == 787)
+              return new Color((int) byte.MaxValue, (int) byte.MaxValue, (int) byte.MaxValue, 175);
+            goto label_66;
+          }
+          else
+            goto label_51;
+        }
+        else
+        {
+          if (type == 1260)
+            return new Color((int) byte.MaxValue, (int) byte.MaxValue, (int) byte.MaxValue, 175);
+          if (type != 1306)
+          {
+            if (type == 1332)
+              goto label_52;
+            else
+              goto label_66;
+          }
+          else
+            goto label_51;
+        }
       }
+      else
+      {
+        if (type <= 2765)
+        {
+          if (type <= 1545)
+          {
+            if (type <= 1507)
+            {
+              if (type != 1446 && (uint) (type - 1506) > 1U)
+                goto label_66;
+            }
+            else
+            {
+              if (type == 1508)
+                return new Color(200, 200, 200, 0);
+              if ((uint) (type - 1543) > 2U)
+                goto label_66;
+            }
+            // ISSUE: explicit reference operation
+            // ISSUE: explicit reference operation
+            // ISSUE: explicit reference operation
+            return new Color((int) ((Color) @newColor).get_R(), (int) ((Color) @newColor).get_G(), (int) ((Color) @newColor).get_B(), (int) Main.gFade);
+          }
+          if (type <= 1735)
+          {
+            if (type == 1572)
+              return new Color(200, 200, (int) byte.MaxValue, 125);
+            if ((uint) (type - 1734) <= 1U)
+              goto label_53;
+            else
+              goto label_66;
+          }
+          else
+          {
+            if (type == 1826)
+              return new Color((int) byte.MaxValue, (int) byte.MaxValue, (int) byte.MaxValue, 200);
+            if ((uint) (type - 1867) > 1U)
+            {
+              if ((uint) (type - 2763) > 2U)
+                goto label_66;
+            }
+            else
+              goto label_53;
+          }
+        }
+        else if (type <= 3455)
+        {
+          if (type <= 3065)
+          {
+            if ((uint) (type - 2782) > 4U)
+            {
+              if (type == 3065)
+                goto label_48;
+              else
+                goto label_66;
+            }
+          }
+          else
+          {
+            if (type == 3191)
+              return new Color(250, 250, 250, 200);
+            if ((uint) (type - 3453) <= 2U)
+              goto label_52;
+            else
+              goto label_66;
+          }
+        }
+        else if (type <= 3522)
+        {
+          if ((uint) (type - 3456) > 3U)
+          {
+            if (type != 3522)
+              goto label_66;
+          }
+          else
+            goto label_51;
+        }
+        else if (type != 3580)
+        {
+          if (type == 3822)
+            return Color.op_Multiply(Color.Lerp(Color.get_White(), newColor, 0.5f), (float) (((double) byte.MaxValue - (double) this.alpha) / (double) byte.MaxValue));
+          if (type != 3858)
+            goto label_66;
+          else
+            goto label_48;
+        }
+        else
+          goto label_52;
+        return new Color(250, 250, 250, (int) byte.MaxValue - this.alpha);
+      }
+label_48:
+      // ISSUE: explicit reference operation
+      return new Color((int) byte.MaxValue, (int) byte.MaxValue, (int) byte.MaxValue, (int) ((Color) @newColor).get_A() - this.alpha);
+label_51:
+      return new Color((int) byte.MaxValue, (int) byte.MaxValue, (int) byte.MaxValue, 200);
+label_52:
+      return new Color((int) byte.MaxValue, (int) byte.MaxValue, (int) byte.MaxValue, 50);
+label_53:
+      return new Color(200, 200, 200, 200);
+label_66:
+      float num1 = (float) ((int) byte.MaxValue - this.alpha) / (float) byte.MaxValue;
+      // ISSUE: explicit reference operation
+      int num2 = (int) ((double) ((Color) @newColor).get_R() * (double) num1);
+      // ISSUE: explicit reference operation
+      int num3 = (int) ((double) ((Color) @newColor).get_G() * (double) num1);
+      // ISSUE: explicit reference operation
+      int num4 = (int) ((double) ((Color) @newColor).get_B() * (double) num1);
+      // ISSUE: explicit reference operation
+      int num5 = (int) ((Color) @newColor).get_A() - this.alpha;
+      if (num5 < 0)
+        num5 = 0;
+      if (num5 > (int) byte.MaxValue)
+        num5 = (int) byte.MaxValue;
+      int num6 = num3;
+      int num7 = num4;
+      int num8 = num5;
+      return new Color(num2, num6, num7, num8);
     }
 
     public Color GetColor(Color newColor)
     {
-      int r = (int) this.color.R - ((int) byte.MaxValue - (int) newColor.R);
-      int g = (int) this.color.G - ((int) byte.MaxValue - (int) newColor.G);
-      int b = (int) this.color.B - ((int) byte.MaxValue - (int) newColor.B);
-      int a = (int) this.color.A - ((int) byte.MaxValue - (int) newColor.A);
-      if (r < 0)
-        r = 0;
-      if (r > (int) byte.MaxValue)
-        r = (int) byte.MaxValue;
-      if (g < 0)
-        g = 0;
-      if (g > (int) byte.MaxValue)
-        g = (int) byte.MaxValue;
-      if (b < 0)
-        b = 0;
-      if (b > (int) byte.MaxValue)
-        b = (int) byte.MaxValue;
-      if (a < 0)
-        a = 0;
-      if (a > (int) byte.MaxValue)
-        a = (int) byte.MaxValue;
-      return new Color(r, g, b, a);
+      // ISSUE: explicit reference operation
+      // ISSUE: explicit reference operation
+      int num1 = (int) ((Color) @this.color).get_R() - ((int) byte.MaxValue - (int) ((Color) @newColor).get_R());
+      // ISSUE: explicit reference operation
+      // ISSUE: explicit reference operation
+      int num2 = (int) ((Color) @this.color).get_G() - ((int) byte.MaxValue - (int) ((Color) @newColor).get_G());
+      // ISSUE: explicit reference operation
+      // ISSUE: explicit reference operation
+      int num3 = (int) ((Color) @this.color).get_B() - ((int) byte.MaxValue - (int) ((Color) @newColor).get_B());
+      // ISSUE: explicit reference operation
+      // ISSUE: explicit reference operation
+      int num4 = (int) ((Color) @this.color).get_A() - ((int) byte.MaxValue - (int) ((Color) @newColor).get_A());
+      if (num1 < 0)
+        num1 = 0;
+      if (num1 > (int) byte.MaxValue)
+        num1 = (int) byte.MaxValue;
+      if (num2 < 0)
+        num2 = 0;
+      if (num2 > (int) byte.MaxValue)
+        num2 = (int) byte.MaxValue;
+      if (num3 < 0)
+        num3 = 0;
+      if (num3 > (int) byte.MaxValue)
+        num3 = (int) byte.MaxValue;
+      if (num4 < 0)
+        num4 = 0;
+      if (num4 > (int) byte.MaxValue)
+        num4 = (int) byte.MaxValue;
+      return new Color(num1, num2, num3, num4);
     }
 
     public static bool MechSpawn(float x, float y, int type)
@@ -39238,13 +39498,18 @@ namespace Terraria
         if (Main.item[index].active && Main.item[index].type == type)
         {
           ++num1;
-          Vector2 vector2 = new Vector2(x, y);
-          float num4 = Main.item[index].position.X - vector2.X;
-          float num5 = Main.item[index].position.Y - vector2.Y;
-          float num6 = (float) Math.Sqrt((double) num4 * (double) num4 + (double) num5 * (double) num5);
-          if ((double) num6 < 300.0)
+          Vector2 vector2;
+          // ISSUE: explicit reference operation
+          ((Vector2) @vector2).\u002Ector(x, y);
+          // ISSUE: variable of the null type
+          __Null local = Main.item[index].position.X - vector2.X;
+          float num4 = (float) (Main.item[index].position.Y - vector2.Y);
+          double num5 = Math.Sqrt(local * local + (double) num4 * (double) num4);
+          double num6 = 300.0;
+          if (num5 < num6)
             ++num2;
-          if ((double) num6 < 800.0)
+          double num7 = 800.0;
+          if (num5 < num7)
             ++num3;
         }
       }
@@ -39286,13 +39551,13 @@ namespace Terraria
         float num1 = 7f;
         if (Main.netMode == 1)
         {
-          int index1 = (int) ((double) this.position.X + (double) (this.width / 2)) / 16;
-          int index2 = (int) ((double) this.position.Y + (double) (this.height / 2)) / 16;
+          int index1 = (int) (this.position.X + (double) (this.width / 2)) / 16;
+          int index2 = (int) (this.position.Y + (double) (this.height / 2)) / 16;
           if (index1 >= 0 && index2 >= 0 && (index1 < Main.maxTilesX && index2 < Main.maxTilesY) && Main.tile[index1, index2] == null)
           {
             gravity = 0.0f;
-            this.velocity.X = 0.0f;
-            this.velocity.Y = 0.0f;
+            this.velocity.X = (__Null) 0.0;
+            this.velocity.Y = (__Null) 0.0;
           }
         }
         if (this.honeyWet)
@@ -39306,40 +39571,33 @@ namespace Terraria
           gravity = 0.08f;
         }
         if (this.ownTime > 0)
-          --this.ownTime;
+          this.ownTime = this.ownTime - 1;
         else
           this.ownIgnore = -1;
         if (this.keepTime > 0)
-          --this.keepTime;
+          this.keepTime = this.keepTime - 1;
         this.isBeingGrabbed = this.beingGrabbed;
-        Vector2 vector2_1 = this.velocity * 0.5f;
+        Vector2 vector2_1 = Vector2.op_Multiply(this.velocity, 0.5f);
         if (!this.beingGrabbed)
         {
           bool flag1 = true;
-          switch (this.type)
-          {
-            case 71:
-            case 72:
-            case 73:
-            case 74:
-              flag1 = false;
-              break;
-          }
+          if ((uint) (this.type - 71) <= 3U)
+            flag1 = false;
           if (ItemID.Sets.NebulaPickup[this.type])
             flag1 = false;
-          if (this.owner == Main.myPlayer && flag1 && (this.createTile >= 0 || this.createWall > 0 || this.ammo > 0 && !this.notAmmo || (this.consumable || this.type >= 205 && this.type <= 207) || (this.type == 1128 || this.type == 530 || ((int) this.dye > 0 || (int) this.paint > 0) || this.material)) && this.stack < this.maxStack)
+          if (this.owner == Main.myPlayer & flag1 && (this.createTile >= 0 || this.createWall > 0 || this.ammo > 0 && !this.notAmmo || (this.consumable || this.type >= 205 && this.type <= 207) || (this.type == 1128 || this.type == 530 || ((int) this.dye > 0 || (int) this.paint > 0) || this.material)) && this.stack < this.maxStack)
           {
             for (int number = i + 1; number < 400; ++number)
             {
-              if (Main.item[number].active && Main.item[number].type == this.type && (Main.item[number].stack > 0 && Main.item[number].owner == this.owner) && (double) (Math.Abs((float) ((double) this.position.X + (double) (this.width / 2) - ((double) Main.item[number].position.X + (double) (Main.item[number].width / 2)))) + Math.Abs((float) ((double) this.position.Y + (double) (this.height / 2) - ((double) Main.item[number].position.Y + (double) (Main.item[number].height / 2))))) < 30.0)
+              if (Main.item[number].active && Main.item[number].type == this.type && (Main.item[number].stack > 0 && Main.item[number].owner == this.owner) && (double) Math.Abs((float) (this.position.X + (double) (this.width / 2) - (Main.item[number].position.X + (double) (Main.item[number].width / 2)))) + (double) Math.Abs((float) (this.position.Y + (double) (this.height / 2) - (Main.item[number].position.Y + (double) (Main.item[number].height / 2)))) < 30.0)
               {
-                this.position = (this.position + Main.item[number].position) / 2f;
-                this.velocity = (this.velocity + Main.item[number].velocity) / 2f;
+                this.position = Vector2.op_Division(Vector2.op_Addition(this.position, Main.item[number].position), 2f);
+                this.velocity = Vector2.op_Division(Vector2.op_Addition(this.velocity, Main.item[number].velocity), 2f);
                 int num2 = Main.item[number].stack;
                 if (num2 > this.maxStack - this.stack)
                   num2 = this.maxStack - this.stack;
                 Main.item[number].stack -= num2;
-                this.stack += num2;
+                this.stack = this.stack + num2;
                 if (Main.item[number].stack <= 0)
                 {
                   Main.item[number].SetDefaults(0, false);
@@ -39355,7 +39613,9 @@ namespace Terraria
           }
           if (Main.netMode != 2 && Main.expertMode && (this.owner == Main.myPlayer && this.type >= 71) && this.type <= 74)
           {
-            Rectangle rectangle1 = new Rectangle((int) this.position.X, (int) this.position.Y, this.width, this.height);
+            Rectangle rectangle1;
+            // ISSUE: explicit reference operation
+            ((Rectangle) @rectangle1).\u002Ector((int) this.position.X, (int) this.position.Y, this.width, this.height);
             for (int index1 = 0; index1 < 200; ++index1)
             {
               if (Main.npc[index1].active && Main.npc[index1].lifeMax > 5 && (!Main.npc[index1].friendly && !Main.npc[index1].immortal) && !Main.npc[index1].dontTakeDamage)
@@ -39377,8 +39637,11 @@ namespace Terraria
                   index2 = -1;
                 if ((double) extraValue < (double) num3)
                 {
-                  Rectangle rectangle2 = new Rectangle((int) Main.npc[index1].position.X, (int) Main.npc[index1].position.Y, Main.npc[index1].width, Main.npc[index1].height);
-                  if (rectangle1.Intersects(rectangle2))
+                  Rectangle rectangle2;
+                  // ISSUE: explicit reference operation
+                  ((Rectangle) @rectangle2).\u002Ector((int) Main.npc[index1].position.X, (int) Main.npc[index1].position.Y, Main.npc[index1].width, Main.npc[index1].height);
+                  // ISSUE: explicit reference operation
+                  if (((Rectangle) @rectangle1).Intersects(rectangle2))
                   {
                     float num4 = (float) Main.rand.Next(50, 76) * 0.01f;
                     if (this.type == 71)
@@ -39392,7 +39655,7 @@ namespace Terraria
                       num5 = 1;
                     if (num5 > this.stack)
                       num5 = this.stack;
-                    this.stack -= num5;
+                    this.stack = this.stack - num5;
                     float number2 = (float) num5 * num2;
                     int number = index1;
                     if (index2 >= 0)
@@ -39401,7 +39664,7 @@ namespace Terraria
                     if (Main.netMode == 0)
                       Main.npc[number].moneyPing(this.position);
                     else
-                      NetMessage.SendData(92, -1, -1, (NetworkText) null, number, number2, this.position.X, this.position.Y, 0, 0, 0);
+                      NetMessage.SendData(92, -1, -1, (NetworkText) null, number, number2, (float) this.position.X, (float) this.position.Y, 0, 0, 0);
                     if (this.stack <= 0)
                     {
                       this.SetDefaults(0, false);
@@ -39415,29 +39678,61 @@ namespace Terraria
           }
           if (ItemID.Sets.ItemNoGravity[this.type])
           {
-            this.velocity.X *= 0.95f;
+            // ISSUE: explicit reference operation
+            // ISSUE: variable of a reference type
+            __Null& local1 = @this.velocity.X;
+            // ISSUE: cast to a reference type
+            // ISSUE: explicit reference operation
+            double num2 = (double) ^(float&) local1 * 0.949999988079071;
+            // ISSUE: cast to a reference type
+            // ISSUE: explicit reference operation
+            ^(float&) local1 = (float) num2;
             if ((double) this.velocity.X < 0.1 && (double) this.velocity.X > -0.1)
-              this.velocity.X = 0.0f;
-            this.velocity.Y *= 0.95f;
+              this.velocity.X = (__Null) 0.0;
+            // ISSUE: explicit reference operation
+            // ISSUE: variable of a reference type
+            __Null& local2 = @this.velocity.Y;
+            // ISSUE: cast to a reference type
+            // ISSUE: explicit reference operation
+            double num3 = (double) ^(float&) local2 * 0.949999988079071;
+            // ISSUE: cast to a reference type
+            // ISSUE: explicit reference operation
+            ^(float&) local2 = (float) num3;
             if ((double) this.velocity.Y < 0.1 && (double) this.velocity.Y > -0.1)
-              this.velocity.Y = 0.0f;
+              this.velocity.Y = (__Null) 0.0;
           }
           else
           {
-            this.velocity.Y += gravity;
-            if ((double) this.velocity.Y > (double) num1)
-              this.velocity.Y = num1;
-            this.velocity.X *= 0.95f;
+            // ISSUE: explicit reference operation
+            // ISSUE: variable of a reference type
+            __Null& local1 = @this.velocity.Y;
+            // ISSUE: cast to a reference type
+            // ISSUE: explicit reference operation
+            double num2 = (double) ^(float&) local1 + (double) gravity;
+            // ISSUE: cast to a reference type
+            // ISSUE: explicit reference operation
+            ^(float&) local1 = (float) num2;
+            if (this.velocity.Y > (double) num1)
+              this.velocity.Y = (__Null) (double) num1;
+            // ISSUE: explicit reference operation
+            // ISSUE: variable of a reference type
+            __Null& local2 = @this.velocity.X;
+            // ISSUE: cast to a reference type
+            // ISSUE: explicit reference operation
+            double num3 = (double) ^(float&) local2 * 0.949999988079071;
+            // ISSUE: cast to a reference type
+            // ISSUE: explicit reference operation
+            ^(float&) local2 = (float) num3;
             if ((double) this.velocity.X < 0.1 && (double) this.velocity.X > -0.1)
-              this.velocity.X = 0.0f;
+              this.velocity.X = (__Null) 0.0;
           }
           bool flag2 = Collision.LavaCollision(this.position, this.width, this.height);
           if (flag2)
             this.lavaWet = true;
-          bool flag3 = Collision.WetCollision(this.position, this.width, this.height);
+          int num6 = Collision.WetCollision(this.position, this.width, this.height) ? 1 : 0;
           if (Collision.honey)
             this.honeyWet = true;
-          if (flag3)
+          if (num6 != 0)
           {
             if (!this.wet)
             {
@@ -39450,9 +39745,25 @@ namespace Terraria
                   {
                     for (int index1 = 0; index1 < 5; ++index1)
                     {
-                      int index2 = Dust.NewDust(new Vector2(this.position.X - 6f, (float) ((double) this.position.Y + (double) (this.height / 2) - 8.0)), this.width + 12, 24, 152, 0.0f, 0.0f, 0, new Color(), 1f);
-                      --Main.dust[index2].velocity.Y;
-                      Main.dust[index2].velocity.X *= 2.5f;
+                      int index2 = Dust.NewDust(new Vector2((float) (this.position.X - 6.0), (float) (this.position.Y + (double) (this.height / 2) - 8.0)), this.width + 12, 24, 152, 0.0f, 0.0f, 0, (Color) null, 1f);
+                      // ISSUE: explicit reference operation
+                      // ISSUE: variable of a reference type
+                      __Null& local1 = @Main.dust[index2].velocity.Y;
+                      // ISSUE: cast to a reference type
+                      // ISSUE: explicit reference operation
+                      double num2 = (double) ^(float&) local1 - 1.0;
+                      // ISSUE: cast to a reference type
+                      // ISSUE: explicit reference operation
+                      ^(float&) local1 = (float) num2;
+                      // ISSUE: explicit reference operation
+                      // ISSUE: variable of a reference type
+                      __Null& local2 = @Main.dust[index2].velocity.X;
+                      // ISSUE: cast to a reference type
+                      // ISSUE: explicit reference operation
+                      double num3 = (double) ^(float&) local2 * 2.5;
+                      // ISSUE: cast to a reference type
+                      // ISSUE: explicit reference operation
+                      ^(float&) local2 = (float) num3;
                       Main.dust[index2].scale = 1.3f;
                       Main.dust[index2].alpha = 100;
                       Main.dust[index2].noGravity = true;
@@ -39463,9 +39774,25 @@ namespace Terraria
                   {
                     for (int index1 = 0; index1 < 10; ++index1)
                     {
-                      int index2 = Dust.NewDust(new Vector2(this.position.X - 6f, (float) ((double) this.position.Y + (double) (this.height / 2) - 8.0)), this.width + 12, 24, Dust.dustWater(), 0.0f, 0.0f, 0, new Color(), 1f);
-                      Main.dust[index2].velocity.Y -= 4f;
-                      Main.dust[index2].velocity.X *= 2.5f;
+                      int index2 = Dust.NewDust(new Vector2((float) (this.position.X - 6.0), (float) (this.position.Y + (double) (this.height / 2) - 8.0)), this.width + 12, 24, Dust.dustWater(), 0.0f, 0.0f, 0, (Color) null, 1f);
+                      // ISSUE: explicit reference operation
+                      // ISSUE: variable of a reference type
+                      __Null& local1 = @Main.dust[index2].velocity.Y;
+                      // ISSUE: cast to a reference type
+                      // ISSUE: explicit reference operation
+                      double num2 = (double) ^(float&) local1 - 4.0;
+                      // ISSUE: cast to a reference type
+                      // ISSUE: explicit reference operation
+                      ^(float&) local1 = (float) num2;
+                      // ISSUE: explicit reference operation
+                      // ISSUE: variable of a reference type
+                      __Null& local2 = @Main.dust[index2].velocity.X;
+                      // ISSUE: cast to a reference type
+                      // ISSUE: explicit reference operation
+                      double num3 = (double) ^(float&) local2 * 2.5;
+                      // ISSUE: cast to a reference type
+                      // ISSUE: explicit reference operation
+                      ^(float&) local2 = (float) num3;
                       Main.dust[index2].scale *= 0.8f;
                       Main.dust[index2].alpha = 100;
                       Main.dust[index2].noGravity = true;
@@ -39477,9 +39804,25 @@ namespace Terraria
                 {
                   for (int index1 = 0; index1 < 5; ++index1)
                   {
-                    int index2 = Dust.NewDust(new Vector2(this.position.X - 6f, (float) ((double) this.position.Y + (double) (this.height / 2) - 8.0)), this.width + 12, 24, 35, 0.0f, 0.0f, 0, new Color(), 1f);
-                    Main.dust[index2].velocity.Y -= 1.5f;
-                    Main.dust[index2].velocity.X *= 2.5f;
+                    int index2 = Dust.NewDust(new Vector2((float) (this.position.X - 6.0), (float) (this.position.Y + (double) (this.height / 2) - 8.0)), this.width + 12, 24, 35, 0.0f, 0.0f, 0, (Color) null, 1f);
+                    // ISSUE: explicit reference operation
+                    // ISSUE: variable of a reference type
+                    __Null& local1 = @Main.dust[index2].velocity.Y;
+                    // ISSUE: cast to a reference type
+                    // ISSUE: explicit reference operation
+                    double num2 = (double) ^(float&) local1 - 1.5;
+                    // ISSUE: cast to a reference type
+                    // ISSUE: explicit reference operation
+                    ^(float&) local1 = (float) num2;
+                    // ISSUE: explicit reference operation
+                    // ISSUE: variable of a reference type
+                    __Null& local2 = @Main.dust[index2].velocity.X;
+                    // ISSUE: cast to a reference type
+                    // ISSUE: explicit reference operation
+                    double num3 = (double) ^(float&) local2 * 2.5;
+                    // ISSUE: cast to a reference type
+                    // ISSUE: explicit reference operation
+                    ^(float&) local2 = (float) num3;
                     Main.dust[index2].scale = 1.3f;
                     Main.dust[index2].alpha = 100;
                     Main.dust[index2].noGravity = true;
@@ -39501,16 +39844,16 @@ namespace Terraria
             this.honeyWet = false;
           }
           if ((int) this.wetCount > 0)
-            --this.wetCount;
+            this.wetCount = (byte) ((uint) this.wetCount - 1U);
           if (this.wet)
           {
             if (this.wet)
             {
               Vector2 velocity = this.velocity;
               this.velocity = Collision.TileCollision(this.position, this.velocity, this.width, this.height, false, false, 1);
-              if ((double) this.velocity.X != (double) velocity.X)
+              if (this.velocity.X != velocity.X)
                 vector2_1.X = this.velocity.X;
-              if ((double) this.velocity.Y != (double) velocity.Y)
+              if (this.velocity.Y != velocity.Y)
                 vector2_1.Y = this.velocity.Y;
             }
           }
@@ -39556,72 +39899,72 @@ namespace Terraria
           if (this.type == 3191)
           {
             float num2 = (float) Main.rand.Next(90, 111) * 0.01f * (float) (((double) Main.essScale + 0.5) / 2.0);
-            Lighting.AddLight((int) (((double) this.position.X + (double) (this.width / 2)) / 16.0), (int) (((double) this.position.Y + (double) (this.height / 2)) / 16.0), 0.3f * num2, 0.1f * num2, 0.25f * num2);
+            Lighting.AddLight((int) ((this.position.X + (double) (this.width / 2)) / 16.0), (int) ((this.position.Y + (double) (this.height / 2)) / 16.0), 0.3f * num2, 0.1f * num2, 0.25f * num2);
           }
           else if (this.type == 520 || this.type == 3454)
           {
             float num2 = (float) Main.rand.Next(90, 111) * 0.01f * Main.essScale;
-            Lighting.AddLight((int) (((double) this.position.X + (double) (this.width / 2)) / 16.0), (int) (((double) this.position.Y + (double) (this.height / 2)) / 16.0), 0.5f * num2, 0.1f * num2, 0.25f * num2);
+            Lighting.AddLight((int) ((this.position.X + (double) (this.width / 2)) / 16.0), (int) ((this.position.Y + (double) (this.height / 2)) / 16.0), 0.5f * num2, 0.1f * num2, 0.25f * num2);
           }
           else if (this.type == 521 || this.type == 3455)
           {
             float num2 = (float) Main.rand.Next(90, 111) * 0.01f * Main.essScale;
-            Lighting.AddLight((int) (((double) this.position.X + (double) (this.width / 2)) / 16.0), (int) (((double) this.position.Y + (double) (this.height / 2)) / 16.0), 0.25f * num2, 0.1f * num2, 0.5f * num2);
+            Lighting.AddLight((int) ((this.position.X + (double) (this.width / 2)) / 16.0), (int) ((this.position.Y + (double) (this.height / 2)) / 16.0), 0.25f * num2, 0.1f * num2, 0.5f * num2);
           }
           else if (this.type == 547 || this.type == 3453)
           {
             float num2 = (float) Main.rand.Next(90, 111) * 0.01f * Main.essScale;
-            Lighting.AddLight((int) (((double) this.position.X + (double) (this.width / 2)) / 16.0), (int) (((double) this.position.Y + (double) (this.height / 2)) / 16.0), 0.5f * num2, 0.3f * num2, 0.05f * num2);
+            Lighting.AddLight((int) ((this.position.X + (double) (this.width / 2)) / 16.0), (int) ((this.position.Y + (double) (this.height / 2)) / 16.0), 0.5f * num2, 0.3f * num2, 0.05f * num2);
           }
           else if (this.type == 548)
           {
             float num2 = (float) Main.rand.Next(90, 111) * 0.01f * Main.essScale;
-            Lighting.AddLight((int) (((double) this.position.X + (double) (this.width / 2)) / 16.0), (int) (((double) this.position.Y + (double) (this.height / 2)) / 16.0), 0.1f * num2, 0.1f * num2, 0.6f * num2);
+            Lighting.AddLight((int) ((this.position.X + (double) (this.width / 2)) / 16.0), (int) ((this.position.Y + (double) (this.height / 2)) / 16.0), 0.1f * num2, 0.1f * num2, 0.6f * num2);
           }
           else if (this.type == 575)
           {
             float num2 = (float) Main.rand.Next(90, 111) * 0.01f * Main.essScale;
-            Lighting.AddLight((int) (((double) this.position.X + (double) (this.width / 2)) / 16.0), (int) (((double) this.position.Y + (double) (this.height / 2)) / 16.0), 0.1f * num2, 0.3f * num2, 0.5f * num2);
+            Lighting.AddLight((int) ((this.position.X + (double) (this.width / 2)) / 16.0), (int) ((this.position.Y + (double) (this.height / 2)) / 16.0), 0.1f * num2, 0.3f * num2, 0.5f * num2);
           }
           else if (this.type == 549)
           {
             float num2 = (float) Main.rand.Next(90, 111) * 0.01f * Main.essScale;
-            Lighting.AddLight((int) (((double) this.position.X + (double) (this.width / 2)) / 16.0), (int) (((double) this.position.Y + (double) (this.height / 2)) / 16.0), 0.1f * num2, 0.5f * num2, 0.2f * num2);
+            Lighting.AddLight((int) ((this.position.X + (double) (this.width / 2)) / 16.0), (int) ((this.position.Y + (double) (this.height / 2)) / 16.0), 0.1f * num2, 0.5f * num2, 0.2f * num2);
           }
           else if (this.type == 58 || this.type == 1734 || this.type == 1867)
           {
             float num2 = (float) Main.rand.Next(90, 111) * 0.01f * (Main.essScale * 0.5f);
-            Lighting.AddLight((int) (((double) this.position.X + (double) (this.width / 2)) / 16.0), (int) (((double) this.position.Y + (double) (this.height / 2)) / 16.0), 0.5f * num2, 0.1f * num2, 0.1f * num2);
+            Lighting.AddLight((int) ((this.position.X + (double) (this.width / 2)) / 16.0), (int) ((this.position.Y + (double) (this.height / 2)) / 16.0), 0.5f * num2, 0.1f * num2, 0.1f * num2);
           }
           else if (this.type == 184 || this.type == 1735 || this.type == 1868)
           {
             float num2 = (float) Main.rand.Next(90, 111) * 0.01f * (Main.essScale * 0.5f);
-            Lighting.AddLight((int) (((double) this.position.X + (double) (this.width / 2)) / 16.0), (int) (((double) this.position.Y + (double) (this.height / 2)) / 16.0), 0.1f * num2, 0.1f * num2, 0.5f * num2);
+            Lighting.AddLight((int) ((this.position.X + (double) (this.width / 2)) / 16.0), (int) ((this.position.Y + (double) (this.height / 2)) / 16.0), 0.1f * num2, 0.1f * num2, 0.5f * num2);
           }
           else if (this.type == 522)
           {
             float num2 = (float) Main.rand.Next(90, 111) * 0.01f * (Main.essScale * 0.2f);
-            Lighting.AddLight((int) (((double) this.position.X + (double) (this.width / 2)) / 16.0), (int) (((double) this.position.Y + (double) (this.height / 2)) / 16.0), 0.5f * num2, 1f * num2, 0.1f * num2);
+            Lighting.AddLight((int) ((this.position.X + (double) (this.width / 2)) / 16.0), (int) ((this.position.Y + (double) (this.height / 2)) / 16.0), 0.5f * num2, 1f * num2, 0.1f * num2);
           }
           else if (this.type == 1332)
           {
             float num2 = (float) Main.rand.Next(90, 111) * 0.01f * (Main.essScale * 0.2f);
-            Lighting.AddLight((int) (((double) this.position.X + (double) (this.width / 2)) / 16.0), (int) (((double) this.position.Y + (double) (this.height / 2)) / 16.0), 1f * num2, 1f * num2, 0.1f * num2);
+            Lighting.AddLight((int) ((this.position.X + (double) (this.width / 2)) / 16.0), (int) ((this.position.Y + (double) (this.height / 2)) / 16.0), 1f * num2, 1f * num2, 0.1f * num2);
           }
           else if (this.type == 3456)
-            Lighting.AddLight(this.Center, new Vector3(0.2f, 0.4f, 0.5f) * Main.essScale);
+            Lighting.AddLight(this.Center, Vector3.op_Multiply(new Vector3(0.2f, 0.4f, 0.5f), Main.essScale));
           else if (this.type == 3457)
-            Lighting.AddLight(this.Center, new Vector3(0.4f, 0.2f, 0.5f) * Main.essScale);
+            Lighting.AddLight(this.Center, Vector3.op_Multiply(new Vector3(0.4f, 0.2f, 0.5f), Main.essScale));
           else if (this.type == 3458)
-            Lighting.AddLight(this.Center, new Vector3(0.5f, 0.4f, 0.2f) * Main.essScale);
+            Lighting.AddLight(this.Center, Vector3.op_Multiply(new Vector3(0.5f, 0.4f, 0.2f), Main.essScale));
           else if (this.type == 3459)
-            Lighting.AddLight(this.Center, new Vector3(0.2f, 0.2f, 0.5f) * Main.essScale);
+            Lighting.AddLight(this.Center, Vector3.op_Multiply(new Vector3(0.2f, 0.2f, 0.5f), Main.essScale));
           if (this.type == 75 && Main.dayTime)
           {
             for (int index = 0; index < 10; ++index)
-              Dust.NewDust(this.position, this.width, this.height, 15, this.velocity.X, this.velocity.Y, 150, new Color(), 1.2f);
+              Dust.NewDust(this.position, this.width, this.height, 15, (float) this.velocity.X, (float) this.velocity.Y, 150, (Color) null, 1.2f);
             for (int index = 0; index < 3; ++index)
-              Gore.NewGore(this.position, new Vector2(this.velocity.X, this.velocity.Y), Main.rand.Next(16, 18), 1f);
+              Gore.NewGore(this.position, new Vector2((float) this.velocity.X, (float) this.velocity.Y), Main.rand.Next(16, 18), 1f);
             this.active = false;
             this.type = 0;
             this.stack = 0;
@@ -39633,9 +39976,19 @@ namespace Terraria
             int num2 = Main.rand.Next(18, 24);
             for (int index1 = 0; index1 < num2; ++index1)
             {
-              int index2 = Dust.NewDust(this.Center, 0, 0, 61, 0.0f, 0.0f, 0, new Color(), 1.7f);
-              Main.dust[index2].velocity *= 8f;
-              --Main.dust[index2].velocity.Y;
+              int index2 = Dust.NewDust(this.Center, 0, 0, 61, 0.0f, 0.0f, 0, (Color) null, 1.7f);
+              Dust dust = Main.dust[index2];
+              Vector2 vector2_2 = Vector2.op_Multiply(dust.velocity, 8f);
+              dust.velocity = vector2_2;
+              // ISSUE: explicit reference operation
+              // ISSUE: variable of a reference type
+              __Null& local = @Main.dust[index2].velocity.Y;
+              // ISSUE: cast to a reference type
+              // ISSUE: explicit reference operation
+              double num3 = (double) ^(float&) local - 1.0;
+              // ISSUE: cast to a reference type
+              // ISSUE: explicit reference operation
+              ^(float&) local = (float) num3;
               Main.dust[index2].position = Vector2.Lerp(Main.dust[index2].position, this.Center, 0.5f);
               Main.dust[index2].noGravity = true;
               Main.dust[index2].noLight = true;
@@ -39654,67 +40007,69 @@ namespace Terraria
           if (Main.rand.Next(6) == 0)
           {
             int index = Dust.NewDust(this.position, this.width, this.height, 55, 0.0f, 0.0f, 200, this.color, 1f);
-            Main.dust[index].velocity *= 0.3f;
+            Dust dust = Main.dust[index];
+            Vector2 vector2_2 = Vector2.op_Multiply(dust.velocity, 0.3f);
+            dust.velocity = vector2_2;
             Main.dust[index].scale *= 0.5f;
           }
         }
         else if (this.type == 3822)
           Lighting.AddLight(this.Center, 0.1f, 0.3f, 0.1f);
         else if (this.type == 1970)
-          Lighting.AddLight((int) (((double) this.position.X + (double) (this.width / 2)) / 16.0), (int) (((double) this.position.Y + (double) (this.height / 2)) / 16.0), 0.75f, 0.0f, 0.75f);
+          Lighting.AddLight((int) ((this.position.X + (double) (this.width / 2)) / 16.0), (int) ((this.position.Y + (double) (this.height / 2)) / 16.0), 0.75f, 0.0f, 0.75f);
         else if (this.type == 1972)
-          Lighting.AddLight((int) (((double) this.position.X + (double) (this.width / 2)) / 16.0), (int) (((double) this.position.Y + (double) (this.height / 2)) / 16.0), 0.0f, 0.0f, 0.75f);
+          Lighting.AddLight((int) ((this.position.X + (double) (this.width / 2)) / 16.0), (int) ((this.position.Y + (double) (this.height / 2)) / 16.0), 0.0f, 0.0f, 0.75f);
         else if (this.type == 1971)
-          Lighting.AddLight((int) (((double) this.position.X + (double) (this.width / 2)) / 16.0), (int) (((double) this.position.Y + (double) (this.height / 2)) / 16.0), 0.75f, 0.75f, 0.0f);
+          Lighting.AddLight((int) ((this.position.X + (double) (this.width / 2)) / 16.0), (int) ((this.position.Y + (double) (this.height / 2)) / 16.0), 0.75f, 0.75f, 0.0f);
         else if (this.type == 1973)
-          Lighting.AddLight((int) (((double) this.position.X + (double) (this.width / 2)) / 16.0), (int) (((double) this.position.Y + (double) (this.height / 2)) / 16.0), 0.0f, 0.75f, 0.0f);
+          Lighting.AddLight((int) ((this.position.X + (double) (this.width / 2)) / 16.0), (int) ((this.position.Y + (double) (this.height / 2)) / 16.0), 0.0f, 0.75f, 0.0f);
         else if (this.type == 1974)
-          Lighting.AddLight((int) (((double) this.position.X + (double) (this.width / 2)) / 16.0), (int) (((double) this.position.Y + (double) (this.height / 2)) / 16.0), 0.75f, 0.0f, 0.0f);
+          Lighting.AddLight((int) ((this.position.X + (double) (this.width / 2)) / 16.0), (int) ((this.position.Y + (double) (this.height / 2)) / 16.0), 0.75f, 0.0f, 0.0f);
         else if (this.type == 1975)
-          Lighting.AddLight((int) (((double) this.position.X + (double) (this.width / 2)) / 16.0), (int) (((double) this.position.Y + (double) (this.height / 2)) / 16.0), 0.75f, 0.75f, 0.75f);
+          Lighting.AddLight((int) ((this.position.X + (double) (this.width / 2)) / 16.0), (int) ((this.position.Y + (double) (this.height / 2)) / 16.0), 0.75f, 0.75f, 0.75f);
         else if (this.type == 1976)
-          Lighting.AddLight((int) (((double) this.position.X + (double) (this.width / 2)) / 16.0), (int) (((double) this.position.Y + (double) (this.height / 2)) / 16.0), 0.75f, 0.375f, 0.0f);
+          Lighting.AddLight((int) ((this.position.X + (double) (this.width / 2)) / 16.0), (int) ((this.position.Y + (double) (this.height / 2)) / 16.0), 0.75f, 0.375f, 0.0f);
         else if (this.type == 2679)
-          Lighting.AddLight((int) (((double) this.position.X + (double) (this.width / 2)) / 16.0), (int) (((double) this.position.Y + (double) (this.height / 2)) / 16.0), 0.6f, 0.0f, 0.6f);
+          Lighting.AddLight((int) ((this.position.X + (double) (this.width / 2)) / 16.0), (int) ((this.position.Y + (double) (this.height / 2)) / 16.0), 0.6f, 0.0f, 0.6f);
         else if (this.type == 2687)
-          Lighting.AddLight((int) (((double) this.position.X + (double) (this.width / 2)) / 16.0), (int) (((double) this.position.Y + (double) (this.height / 2)) / 16.0), 0.0f, 0.0f, 0.6f);
+          Lighting.AddLight((int) ((this.position.X + (double) (this.width / 2)) / 16.0), (int) ((this.position.Y + (double) (this.height / 2)) / 16.0), 0.0f, 0.0f, 0.6f);
         else if (this.type == 2689)
-          Lighting.AddLight((int) (((double) this.position.X + (double) (this.width / 2)) / 16.0), (int) (((double) this.position.Y + (double) (this.height / 2)) / 16.0), 0.6f, 0.6f, 0.0f);
+          Lighting.AddLight((int) ((this.position.X + (double) (this.width / 2)) / 16.0), (int) ((this.position.Y + (double) (this.height / 2)) / 16.0), 0.6f, 0.6f, 0.0f);
         else if (this.type == 2683)
-          Lighting.AddLight((int) (((double) this.position.X + (double) (this.width / 2)) / 16.0), (int) (((double) this.position.Y + (double) (this.height / 2)) / 16.0), 0.0f, 0.6f, 0.0f);
+          Lighting.AddLight((int) ((this.position.X + (double) (this.width / 2)) / 16.0), (int) ((this.position.Y + (double) (this.height / 2)) / 16.0), 0.0f, 0.6f, 0.0f);
         else if (this.type == 2685)
-          Lighting.AddLight((int) (((double) this.position.X + (double) (this.width / 2)) / 16.0), (int) (((double) this.position.Y + (double) (this.height / 2)) / 16.0), 0.6f, 0.0f, 0.0f);
+          Lighting.AddLight((int) ((this.position.X + (double) (this.width / 2)) / 16.0), (int) ((this.position.Y + (double) (this.height / 2)) / 16.0), 0.6f, 0.0f, 0.0f);
         else if (this.type == 2681)
-          Lighting.AddLight((int) (((double) this.position.X + (double) (this.width / 2)) / 16.0), (int) (((double) this.position.Y + (double) (this.height / 2)) / 16.0), 0.6f, 0.6f, 0.6f);
+          Lighting.AddLight((int) ((this.position.X + (double) (this.width / 2)) / 16.0), (int) ((this.position.Y + (double) (this.height / 2)) / 16.0), 0.6f, 0.6f, 0.6f);
         else if (this.type == 2677)
-          Lighting.AddLight((int) (((double) this.position.X + (double) (this.width / 2)) / 16.0), (int) (((double) this.position.Y + (double) (this.height / 2)) / 16.0), 0.6f, 0.375f, 0.0f);
+          Lighting.AddLight((int) ((this.position.X + (double) (this.width / 2)) / 16.0), (int) ((this.position.Y + (double) (this.height / 2)) / 16.0), 0.6f, 0.375f, 0.0f);
         else if (this.type == 8 || this.type == 105)
         {
           if (!this.wet)
-            Lighting.AddLight((int) (((double) this.position.X + (double) (this.width / 2)) / 16.0), (int) (((double) this.position.Y + (double) (this.height / 2)) / 16.0), 1f, 0.95f, 0.8f);
+            Lighting.AddLight((int) ((this.position.X + (double) (this.width / 2)) / 16.0), (int) ((this.position.Y + (double) (this.height / 2)) / 16.0), 1f, 0.95f, 0.8f);
         }
         else if (this.type == 2701)
-          Lighting.AddLight((int) (((double) this.position.X + (double) (this.width / 2)) / 16.0), (int) (((double) this.position.Y + (double) (this.height / 2)) / 16.0), 0.7f, 0.65f, 0.55f);
+          Lighting.AddLight((int) ((this.position.X + (double) (this.width / 2)) / 16.0), (int) ((this.position.Y + (double) (this.height / 2)) / 16.0), 0.7f, 0.65f, 0.55f);
         else if (this.type == 523)
-          Lighting.AddLight((int) (((double) this.position.X + (double) (this.width / 2)) / 16.0), (int) (((double) this.position.Y + (double) (this.height / 2)) / 16.0), 0.85f, 1f, 0.7f);
+          Lighting.AddLight((int) ((this.position.X + (double) (this.width / 2)) / 16.0), (int) ((this.position.Y + (double) (this.height / 2)) / 16.0), 0.85f, 1f, 0.7f);
         else if (this.type == 974)
         {
           if (!this.wet)
-            Lighting.AddLight((int) (((double) this.position.X + (double) (this.width / 2)) / 16.0), (int) (((double) this.position.Y + (double) (this.height / 2)) / 16.0), 0.7f, 0.85f, 1f);
+            Lighting.AddLight((int) ((this.position.X + (double) (this.width / 2)) / 16.0), (int) ((this.position.Y + (double) (this.height / 2)) / 16.0), 0.7f, 0.85f, 1f);
         }
         else if (this.type == 1333)
-          Lighting.AddLight((int) (((double) this.position.X + (double) (this.width / 2)) / 16.0), (int) (((double) this.position.Y + (double) (this.height / 2)) / 16.0), 1.25f, 1.25f, 0.8f);
+          Lighting.AddLight((int) ((this.position.X + (double) (this.width / 2)) / 16.0), (int) ((this.position.Y + (double) (this.height / 2)) / 16.0), 1.25f, 1.25f, 0.8f);
         else if (this.type == 3045)
-          Lighting.AddLight((int) (((double) this.position.X + (double) (this.width / 2)) / 16.0), (int) (((double) this.position.Y + (double) (this.height / 2)) / 16.0), (float) Main.DiscoR / (float) byte.MaxValue, (float) Main.DiscoG / (float) byte.MaxValue, (float) Main.DiscoB / (float) byte.MaxValue);
+          Lighting.AddLight((int) ((this.position.X + (double) (this.width / 2)) / 16.0), (int) ((this.position.Y + (double) (this.height / 2)) / 16.0), (float) Main.DiscoR / (float) byte.MaxValue, (float) Main.DiscoG / (float) byte.MaxValue, (float) Main.DiscoB / (float) byte.MaxValue);
         else if (this.type == 3004)
-          Lighting.AddLight((int) (((double) this.position.X + (double) (this.width / 2)) / 16.0), (int) (((double) this.position.Y + (double) (this.height / 2)) / 16.0), 0.95f, 0.65f, 1.3f);
+          Lighting.AddLight((int) ((this.position.X + (double) (this.width / 2)) / 16.0), (int) ((this.position.Y + (double) (this.height / 2)) / 16.0), 0.95f, 0.65f, 1.3f);
         else if (this.type == 2274)
         {
           float R = 0.75f;
           float G = 1.35f;
           float B = 1.5f;
           if (!this.wet)
-            Lighting.AddLight((int) (((double) this.position.X + (double) (this.width / 2)) / 16.0), (int) (((double) this.position.Y + (double) (this.height / 2)) / 16.0), R, G, B);
+            Lighting.AddLight((int) ((this.position.X + (double) (this.width / 2)) / 16.0), (int) ((this.position.Y + (double) (this.height / 2)) / 16.0), R, G, B);
         }
         else if (this.type >= 427 && this.type <= 432)
         {
@@ -39724,93 +40079,99 @@ namespace Terraria
             float G = 0.0f;
             float B = 0.0f;
             int num2 = this.type - 426;
-            if (num2 == 1)
+            int num3 = 1;
+            if (num2 == num3)
             {
               R = 0.1f;
               G = 0.2f;
               B = 1.1f;
             }
-            if (num2 == 2)
+            int num4 = 2;
+            if (num2 == num4)
             {
               R = 1f;
               G = 0.1f;
               B = 0.1f;
             }
-            if (num2 == 3)
+            int num5 = 3;
+            if (num2 == num5)
             {
               R = 0.0f;
               G = 1f;
               B = 0.1f;
             }
-            if (num2 == 4)
+            int num6 = 4;
+            if (num2 == num6)
             {
               R = 0.9f;
               G = 0.0f;
               B = 0.9f;
             }
-            if (num2 == 5)
+            int num7 = 5;
+            if (num2 == num7)
             {
               R = 1.3f;
               G = 1.3f;
               B = 1.3f;
             }
-            if (num2 == 6)
+            int num8 = 6;
+            if (num2 == num8)
             {
               R = 0.9f;
               G = 0.9f;
               B = 0.0f;
             }
-            Lighting.AddLight((int) (((double) this.position.X + (double) (this.width / 2)) / 16.0), (int) (((double) this.position.Y + (double) (this.height / 2)) / 16.0), R, G, B);
+            Lighting.AddLight((int) ((this.position.X + (double) (this.width / 2)) / 16.0), (int) ((this.position.Y + (double) (this.height / 2)) / 16.0), R, G, B);
           }
         }
         else if (this.type == 2777 || this.type == 2778 || (this.type == 2779 || this.type == 2780) || (this.type == 2781 || this.type == 2760 || (this.type == 2761 || this.type == 2762)) || this.type == 3524)
-          Lighting.AddLight((int) (((double) this.position.X + (double) (this.width / 2)) / 16.0), (int) (((double) this.position.Y + (double) (this.height / 2)) / 16.0), 0.4f, 0.16f, 0.36f);
+          Lighting.AddLight((int) ((this.position.X + (double) (this.width / 2)) / 16.0), (int) ((this.position.Y + (double) (this.height / 2)) / 16.0), 0.4f, 0.16f, 0.36f);
         else if (this.type == 2772 || this.type == 2773 || (this.type == 2774 || this.type == 2775) || (this.type == 2776 || this.type == 2757 || (this.type == 2758 || this.type == 2759)) || this.type == 3523)
-          Lighting.AddLight((int) (((double) this.position.X + (double) (this.width / 2)) / 16.0), (int) (((double) this.position.Y + (double) (this.height / 2)) / 16.0), 0.0f, 0.36f, 0.4f);
+          Lighting.AddLight((int) ((this.position.X + (double) (this.width / 2)) / 16.0), (int) ((this.position.Y + (double) (this.height / 2)) / 16.0), 0.0f, 0.36f, 0.4f);
         else if (this.type == 2782 || this.type == 2783 || (this.type == 2784 || this.type == 2785) || (this.type == 2786 || this.type == 2763 || (this.type == 2764 || this.type == 2765)) || this.type == 3522)
-          Lighting.AddLight((int) (((double) this.position.X + (double) (this.width / 2)) / 16.0), (int) (((double) this.position.Y + (double) (this.height / 2)) / 16.0), 0.5f, 0.25f, 0.05f);
+          Lighting.AddLight((int) ((this.position.X + (double) (this.width / 2)) / 16.0), (int) ((this.position.Y + (double) (this.height / 2)) / 16.0), 0.5f, 0.25f, 0.05f);
         else if (this.type == 3462 || this.type == 3463 || (this.type == 3464 || this.type == 3465) || (this.type == 3466 || this.type == 3381 || (this.type == 3382 || this.type == 3383)) || this.type == 3525)
           Lighting.AddLight(this.Center, 0.3f, 0.3f, 0.2f);
         else if (this.type == 41)
         {
           if (!this.wet)
-            Lighting.AddLight((int) (((double) this.position.X + (double) this.width) / 16.0), (int) (((double) this.position.Y + (double) (this.height / 2)) / 16.0), 1f, 0.75f, 0.55f);
+            Lighting.AddLight((int) ((this.position.X + (double) this.width) / 16.0), (int) ((this.position.Y + (double) (this.height / 2)) / 16.0), 1f, 0.75f, 0.55f);
         }
         else if (this.type == 988)
         {
           if (!this.wet)
-            Lighting.AddLight((int) (((double) this.position.X + (double) this.width) / 16.0), (int) (((double) this.position.Y + (double) (this.height / 2)) / 16.0), 0.35f, 0.65f, 1f);
+            Lighting.AddLight((int) ((this.position.X + (double) this.width) / 16.0), (int) ((this.position.Y + (double) (this.height / 2)) / 16.0), 0.35f, 0.65f, 1f);
         }
         else if (this.type == 282)
-          Lighting.AddLight((int) (((double) this.position.X + (double) this.width) / 16.0), (int) (((double) this.position.Y + (double) (this.height / 2)) / 16.0), 0.7f, 1f, 0.8f);
+          Lighting.AddLight((int) ((this.position.X + (double) this.width) / 16.0), (int) ((this.position.Y + (double) (this.height / 2)) / 16.0), 0.7f, 1f, 0.8f);
         else if (this.type == 286)
-          Lighting.AddLight((int) (((double) this.position.X + (double) this.width) / 16.0), (int) (((double) this.position.Y + (double) (this.height / 2)) / 16.0), 0.7f, 0.8f, 1f);
+          Lighting.AddLight((int) ((this.position.X + (double) this.width) / 16.0), (int) ((this.position.Y + (double) (this.height / 2)) / 16.0), 0.7f, 0.8f, 1f);
         else if (this.type == 3112)
-          Lighting.AddLight((int) (((double) this.position.X + (double) this.width) / 16.0), (int) (((double) this.position.Y + (double) (this.height / 2)) / 16.0), 1f, 0.6f, 0.85f);
+          Lighting.AddLight((int) ((this.position.X + (double) this.width) / 16.0), (int) ((this.position.Y + (double) (this.height / 2)) / 16.0), 1f, 0.6f, 0.85f);
         else if (this.type == 3002)
-          Lighting.AddLight((int) (((double) this.position.X + (double) this.width) / 16.0), (int) (((double) this.position.Y + (double) (this.height / 2)) / 16.0), 1.05f, 0.95f, 0.55f);
+          Lighting.AddLight((int) ((this.position.X + (double) this.width) / 16.0), (int) ((this.position.Y + (double) (this.height / 2)) / 16.0), 1.05f, 0.95f, 0.55f);
         else if (this.type == 331)
-          Lighting.AddLight((int) (((double) this.position.X + (double) this.width) / 16.0), (int) (((double) this.position.Y + (double) (this.height / 2)) / 16.0), 0.55f, 0.75f, 0.6f);
+          Lighting.AddLight((int) ((this.position.X + (double) this.width) / 16.0), (int) ((this.position.Y + (double) (this.height / 2)) / 16.0), 0.55f, 0.75f, 0.6f);
         else if (this.type == 183)
-          Lighting.AddLight((int) (((double) this.position.X + (double) this.width) / 16.0), (int) (((double) this.position.Y + (double) (this.height / 2)) / 16.0), 0.15f, 0.45f, 0.9f);
+          Lighting.AddLight((int) ((this.position.X + (double) this.width) / 16.0), (int) ((this.position.Y + (double) (this.height / 2)) / 16.0), 0.15f, 0.45f, 0.9f);
         else if (this.type == 75)
-          Lighting.AddLight((int) (((double) this.position.X + (double) this.width) / 16.0), (int) (((double) this.position.Y + (double) (this.height / 2)) / 16.0), 0.8f, 0.7f, 0.1f);
+          Lighting.AddLight((int) ((this.position.X + (double) this.width) / 16.0), (int) ((this.position.Y + (double) (this.height / 2)) / 16.0), 0.8f, 0.7f, 0.1f);
         if (this.type == 75)
         {
           if (Main.rand.Next(25) == 0)
-            Dust.NewDust(this.position, this.width, this.height, 58, this.velocity.X * 0.5f, this.velocity.Y * 0.5f, 150, new Color(), 1.2f);
+            Dust.NewDust(this.position, this.width, this.height, 58, (float) (this.velocity.X * 0.5), (float) (this.velocity.Y * 0.5), 150, (Color) null, 1.2f);
           if (Main.rand.Next(50) == 0)
-            Gore.NewGore(this.position, new Vector2(this.velocity.X * 0.2f, this.velocity.Y * 0.2f), Main.rand.Next(16, 18), 1f);
+            Gore.NewGore(this.position, new Vector2((float) (this.velocity.X * 0.200000002980232), (float) (this.velocity.Y * 0.200000002980232)), Main.rand.Next(16, 18), 1f);
         }
         if (this.spawnTime < 2147483646)
         {
           if (this.type == 58 || this.type == 184 || (this.type == 1867 || this.type == 1868) || (this.type == 1734 || this.type == 1735))
-            this.spawnTime += 4;
-          ++this.spawnTime;
+            this.spawnTime = this.spawnTime + 4;
+          this.spawnTime = this.spawnTime + 1;
         }
         if (Main.netMode == 2 && this.owner != Main.myPlayer)
         {
-          ++this.release;
+          this.release = this.release + 1;
           if (this.release >= 300)
           {
             this.release = 0;
@@ -39818,20 +40179,12 @@ namespace Terraria
           }
         }
         if (this.wet)
-        {
-          Item obj = this;
-          Vector2 vector2_2 = obj.position + vector2_1;
-          obj.position = vector2_2;
-        }
+          this.position = Vector2.op_Addition(this.position, vector2_1);
         else
-        {
-          Item obj = this;
-          Vector2 vector2_2 = obj.position + this.velocity;
-          obj.position = vector2_2;
-        }
+          this.position = Vector2.op_Addition(this.position, this.velocity);
         if (this.noGrabDelay <= 0)
           return;
-        --this.noGrabDelay;
+        this.noGrabDelay = this.noGrabDelay - 1;
       }
     }
 
@@ -39913,21 +40266,21 @@ namespace Terraria
       Main.item[index1] = new Item();
       Main.item[index1].SetDefaults(Type, false);
       Main.item[index1].Prefix(pfix);
-      Main.item[index1].position.X = (float) (X + Width / 2 - Main.item[index1].width / 2);
-      Main.item[index1].position.Y = (float) (Y + Height / 2 - Main.item[index1].height / 2);
+      Main.item[index1].position.X = (__Null) (double) (X + Width / 2 - Main.item[index1].width / 2);
+      Main.item[index1].position.Y = (__Null) (double) (Y + Height / 2 - Main.item[index1].height / 2);
       Main.item[index1].wet = Collision.WetCollision(Main.item[index1].position, Main.item[index1].width, Main.item[index1].height);
-      Main.item[index1].velocity.X = (float) Main.rand.Next(-30, 31) * 0.1f;
-      Main.item[index1].velocity.Y = (float) Main.rand.Next(-40, -15) * 0.1f;
+      Main.item[index1].velocity.X = (__Null) ((double) Main.rand.Next(-30, 31) * 0.100000001490116);
+      Main.item[index1].velocity.Y = (__Null) ((double) Main.rand.Next(-40, -15) * 0.100000001490116);
       if (Type == 859)
       {
         Item obj = Main.item[index1];
-        Vector2 vector2 = obj.velocity * 0.0f;
+        Vector2 vector2 = Vector2.op_Multiply(obj.velocity, 0.0f);
         obj.velocity = vector2;
       }
       if (Type == 520 || Type == 521 || Main.item[index1].type >= 0 && ItemID.Sets.NebulaPickup[Main.item[index1].type])
       {
-        Main.item[index1].velocity.X = (float) Main.rand.Next(-30, 31) * 0.1f;
-        Main.item[index1].velocity.Y = (float) Main.rand.Next(-30, 31) * 0.1f;
+        Main.item[index1].velocity.X = (__Null) ((double) Main.rand.Next(-30, 31) * 0.100000001490116);
+        Main.item[index1].velocity.Y = (__Null) ((double) Main.rand.Next(-30, 31) * 0.100000001490116);
       }
       Main.item[index1].active = true;
       Main.item[index1].spawnTime = 0;
@@ -39958,7 +40311,7 @@ namespace Terraria
       {
         if (this.ownIgnore != index && Main.player[index].active && Main.player[index].ItemSpace(Main.item[whoAmI]))
         {
-          float num2 = Math.Abs(Main.player[index].position.X + (float) (Main.player[index].width / 2) - this.position.X - (float) (this.width / 2)) + Math.Abs(Main.player[index].position.Y + (float) (Main.player[index].height / 2) - this.position.Y - (float) this.height);
+          float num2 = Math.Abs((float) (Main.player[index].position.X + (double) (Main.player[index].width / 2) - this.position.X) - (float) (this.width / 2)) + Math.Abs((float) (Main.player[index].position.Y + (double) (Main.player[index].height / 2) - this.position.Y) - (float) this.height);
           if (Main.player[index].manaMagnet && (this.type == 184 || this.type == 1735 || this.type == 1868))
             num2 -= (float) Item.manaGrabRange;
           if (Main.player[index].lifeMagnet && (this.type == 58 || this.type == 1734 || this.type == 1867))

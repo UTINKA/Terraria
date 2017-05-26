@@ -1,8 +1,8 @@
 ﻿// Decompiled with JetBrains decompiler
 // Type: Terraria.GameContent.UI.Chat.AchievementTagHandler
-// Assembly: Terraria, Version=1.3.5.1, Culture=neutral, PublicKeyToken=null
-// MVID: E90A5A2F-CD10-4A2C-9D2A-6B036D4E8877
-// Assembly location: F:\Steam\steamapps\common\Terraria\Terraria.exe
+// Assembly: Terraria, Version=1.3.5.3, Culture=neutral, PublicKeyToken=null
+// MVID: 68659D26-2BE6-448F-8663-74FA559E6F08
+// Assembly location: H:\Steam\steamapps\common\Terraria\Terraria.exe
 
 using Microsoft.Xna.Framework;
 using Terraria.Achievements;
@@ -31,7 +31,7 @@ namespace Terraria.GameContent.UI.Chat
       private Achievement _achievement;
 
       public AchievementSnippet(Achievement achievement)
-        : base(achievement.FriendlyName.Value, Color.LightBlue, 1f)
+        : base(achievement.FriendlyName.Value, Color.get_LightBlue(), 1f)
       {
         this.CheckForHover = true;
         this._achievement = achievement;

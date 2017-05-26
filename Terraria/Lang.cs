@@ -1,8 +1,8 @@
 ﻿// Decompiled with JetBrains decompiler
 // Type: Terraria.Lang
-// Assembly: Terraria, Version=1.3.5.1, Culture=neutral, PublicKeyToken=null
-// MVID: E90A5A2F-CD10-4A2C-9D2A-6B036D4E8877
-// Assembly location: F:\Steam\steamapps\common\Terraria\Terraria.exe
+// Assembly: Terraria, Version=1.3.5.3, Culture=neutral, PublicKeyToken=null
+// MVID: 68659D26-2BE6-448F-8663-74FA559E6F08
+// Assembly location: H:\Steam\steamapps\common\Terraria\Terraria.exe
 
 using System;
 using System.Collections.Generic;
@@ -644,7 +644,7 @@ namespace Terraria
       NetworkText empty = NetworkText.Empty;
       NetworkText networkText6 = NetworkText.FromKey(Language.RandomFromCategory("DeathTextGeneric", (UnifiedRandom) null).Key, (object) deadPlayerName, (object) Main.worldName);
       if (flag2)
-        networkText5 = NetworkText.FromKey("DeathSource.Player", (object) networkText6, (object) networkText3, flag1 ? (object) networkText1 : (object) networkText4);
+        networkText5 = NetworkText.FromKey("DeathSource.Player", (object) networkText6, (object) networkText3, (object) (flag1 ? networkText1 : networkText4));
       else if (flag3)
         networkText5 = NetworkText.FromKey("DeathSource.NPC", (object) networkText6, (object) networkText2);
       else if (flag1)

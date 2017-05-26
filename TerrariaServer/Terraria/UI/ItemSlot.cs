@@ -1,11 +1,12 @@
 ﻿// Decompiled with JetBrains decompiler
 // Type: Terraria.UI.ItemSlot
-// Assembly: TerrariaServer, Version=1.3.5.1, Culture=neutral, PublicKeyToken=null
-// MVID: C2103E81-0935-4BEA-9E98-4159FC80C2BB
-// Assembly location: F:\Steam\steamapps\common\Terraria\TerrariaServer.exe
+// Assembly: TerrariaServer, Version=1.3.5.3, Culture=neutral, PublicKeyToken=null
+// MVID: 8A63A7A2-328D-424C-BC9D-BF23F93646F7
+// Assembly location: H:\Steam\steamapps\common\Terraria\TerrariaServer.exe
 
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Input;
 using Terraria.GameContent.Achievements;
 using Terraria.GameContent.UI;
 using Terraria.GameContent.UI.Chat;
@@ -161,7 +162,8 @@ namespace Terraria.UI
             break;
         }
       }
-      if (!Main.keyState.IsKeyDown(Main.FavoriteKey) || !ItemSlot.canFavoriteAt[context])
+      // ISSUE: explicit reference operation
+      if (!((KeyboardState) @Main.keyState).IsKeyDown(Main.FavoriteKey) || !ItemSlot.canFavoriteAt[context])
         return;
       if (obj.type > 0 && obj.stack > 0 && Main.drawingPlayerChat)
       {
@@ -180,7 +182,7 @@ namespace Terraria.UI
       Item I = inv[slot];
       if (Main.cursorOverride == 2)
       {
-        if (ChatManager.AddChatText(Main.fontMouseText, ItemTagHandler.GenerateTag(I), Vector2.One))
+        if (ChatManager.AddChatText(Main.fontMouseText, ItemTagHandler.GenerateTag(I), Vector2.get_One()))
           Main.PlaySound(12, -1, -1, 1, 1f, 0.0f);
         return true;
       }
@@ -225,17 +227,9 @@ namespace Terraria.UI
       inv[slot].newAndShiny = false;
       Player player = Main.player[Main.myPlayer];
       bool flag = false;
-      switch (context)
-      {
-        case 0:
-        case 1:
-        case 2:
-        case 3:
-        case 4:
-          flag = player.chest == -1;
-          break;
-      }
-      if (ItemSlot.ShiftInUse && flag)
+      if ((uint) context <= 4U)
+        flag = player.chest == -1;
+      if (ItemSlot.ShiftInUse & flag)
       {
         ItemSlot.SellOrTrash(inv, context, slot);
       }
@@ -251,21 +245,13 @@ namespace Terraria.UI
             Utils.Swap<Item>(ref inv[slot], ref Main.mouseItem);
             if (inv[slot].stack > 0)
             {
-              switch (context)
+              if (context != 0)
               {
-                case 0:
-                  AchievementsHelper.NotifyItemPickup(player, inv[slot]);
-                  break;
-                case 8:
-                case 9:
-                case 10:
-                case 11:
-                case 12:
-                case 16:
-                case 17:
+                if ((uint) (context - 8) <= 4U || (uint) (context - 16) <= 1U)
                   AchievementsHelper.HandleOnEquip(player, inv[slot], context);
-                  break;
               }
+              else
+                AchievementsHelper.NotifyItemPickup(player, inv[slot]);
             }
             if (inv[slot].type == 0 || inv[slot].stack < 1)
               inv[slot] = new Item();
@@ -307,28 +293,38 @@ namespace Terraria.UI
               Main.PlaySound(7, -1, -1, 1, 1f, 0.0f);
               if (inv[slot].stack > 0)
               {
-                switch (context)
+                if (context != 0)
                 {
-                  case 0:
-                    AchievementsHelper.NotifyItemPickup(player, inv[slot]);
-                    break;
-                  case 8:
-                  case 9:
-                  case 10:
-                  case 11:
-                  case 12:
-                  case 16:
-                  case 17:
+                  if ((uint) (context - 8) <= 4U || (uint) (context - 16) <= 1U)
+                  {
                     AchievementsHelper.HandleOnEquip(player, inv[slot], context);
                     break;
+                  }
+                  break;
                 }
-              }
-              else
+                AchievementsHelper.NotifyItemPickup(player, inv[slot]);
                 break;
+              }
+              break;
             }
-            else
+            if (Main.mouseItem.type == 0 && inv[slot].type > 0)
             {
-              if (Main.mouseItem.type == 0 && inv[slot].type > 0)
+              Utils.Swap<Item>(ref inv[slot], ref Main.mouseItem);
+              if (inv[slot].type == 0 || inv[slot].stack < 1)
+                inv[slot] = new Item();
+              if (Main.mouseItem.type == 0 || Main.mouseItem.stack < 1)
+                Main.mouseItem = new Item();
+              if (Main.mouseItem.type > 0 || inv[slot].type > 0)
+              {
+                Recipe.FindRecipes();
+                Main.PlaySound(7, -1, -1, 1, 1f, 0.0f);
+                break;
+              }
+              break;
+            }
+            if (Main.mouseItem.type > 0 && inv[slot].type == 0)
+            {
+              if (Main.mouseItem.stack == 1)
               {
                 Utils.Swap<Item>(ref inv[slot], ref Main.mouseItem);
                 if (inv[slot].type == 0 || inv[slot].stack < 1)
@@ -339,56 +335,32 @@ namespace Terraria.UI
                 {
                   Recipe.FindRecipes();
                   Main.PlaySound(7, -1, -1, 1, 1f, 0.0f);
-                  break;
                 }
-                break;
-              }
-              if (Main.mouseItem.type > 0 && inv[slot].type == 0)
-              {
-                if (Main.mouseItem.stack == 1)
-                {
-                  Utils.Swap<Item>(ref inv[slot], ref Main.mouseItem);
-                  if (inv[slot].type == 0 || inv[slot].stack < 1)
-                    inv[slot] = new Item();
-                  if (Main.mouseItem.type == 0 || Main.mouseItem.stack < 1)
-                    Main.mouseItem = new Item();
-                  if (Main.mouseItem.type > 0 || inv[slot].type > 0)
-                  {
-                    Recipe.FindRecipes();
-                    Main.PlaySound(7, -1, -1, 1, 1f, 0.0f);
-                  }
-                }
-                else
-                {
-                  --Main.mouseItem.stack;
-                  inv[slot].SetDefaults(Main.mouseItem.type, false);
-                  Recipe.FindRecipes();
-                  Main.PlaySound(7, -1, -1, 1, 1f, 0.0f);
-                }
-                if (inv[slot].stack > 0)
-                {
-                  switch (context)
-                  {
-                    case 0:
-                      AchievementsHelper.NotifyItemPickup(player, inv[slot]);
-                      break;
-                    case 8:
-                    case 9:
-                    case 10:
-                    case 11:
-                    case 12:
-                    case 16:
-                    case 17:
-                      AchievementsHelper.HandleOnEquip(player, inv[slot], context);
-                      break;
-                  }
-                }
-                else
-                  break;
               }
               else
+              {
+                --Main.mouseItem.stack;
+                inv[slot].SetDefaults(Main.mouseItem.type, false);
+                Recipe.FindRecipes();
+                Main.PlaySound(7, -1, -1, 1, 1f, 0.0f);
+              }
+              if (inv[slot].stack > 0)
+              {
+                if (context != 0)
+                {
+                  if ((uint) (context - 8) <= 4U || (uint) (context - 16) <= 1U)
+                  {
+                    AchievementsHelper.HandleOnEquip(player, inv[slot], context);
+                    break;
+                  }
+                  break;
+                }
+                AchievementsHelper.NotifyItemPickup(player, inv[slot]);
                 break;
+              }
+              break;
             }
+            break;
           case 2:
             if (Main.mouseItem.stack == 1 && (int) Main.mouseItem.dye > 0 && (inv[slot].type > 0 && inv[slot].type != Main.mouseItem.type))
             {
@@ -396,28 +368,38 @@ namespace Terraria.UI
               Main.PlaySound(7, -1, -1, 1, 1f, 0.0f);
               if (inv[slot].stack > 0)
               {
-                switch (context)
+                if (context != 0)
                 {
-                  case 0:
-                    AchievementsHelper.NotifyItemPickup(player, inv[slot]);
-                    break;
-                  case 8:
-                  case 9:
-                  case 10:
-                  case 11:
-                  case 12:
-                  case 16:
-                  case 17:
+                  if ((uint) (context - 8) <= 4U || (uint) (context - 16) <= 1U)
+                  {
                     AchievementsHelper.HandleOnEquip(player, inv[slot], context);
                     break;
+                  }
+                  break;
                 }
-              }
-              else
+                AchievementsHelper.NotifyItemPickup(player, inv[slot]);
                 break;
+              }
+              break;
             }
-            else
+            if (Main.mouseItem.type == 0 && inv[slot].type > 0)
             {
-              if (Main.mouseItem.type == 0 && inv[slot].type > 0)
+              Utils.Swap<Item>(ref inv[slot], ref Main.mouseItem);
+              if (inv[slot].type == 0 || inv[slot].stack < 1)
+                inv[slot] = new Item();
+              if (Main.mouseItem.type == 0 || Main.mouseItem.stack < 1)
+                Main.mouseItem = new Item();
+              if (Main.mouseItem.type > 0 || inv[slot].type > 0)
+              {
+                Recipe.FindRecipes();
+                Main.PlaySound(7, -1, -1, 1, 1f, 0.0f);
+                break;
+              }
+              break;
+            }
+            if ((int) Main.mouseItem.dye > 0 && inv[slot].type == 0)
+            {
+              if (Main.mouseItem.stack == 1)
               {
                 Utils.Swap<Item>(ref inv[slot], ref Main.mouseItem);
                 if (inv[slot].type == 0 || inv[slot].stack < 1)
@@ -428,66 +410,49 @@ namespace Terraria.UI
                 {
                   Recipe.FindRecipes();
                   Main.PlaySound(7, -1, -1, 1, 1f, 0.0f);
-                  break;
                 }
-                break;
-              }
-              if ((int) Main.mouseItem.dye > 0 && inv[slot].type == 0)
-              {
-                if (Main.mouseItem.stack == 1)
-                {
-                  Utils.Swap<Item>(ref inv[slot], ref Main.mouseItem);
-                  if (inv[slot].type == 0 || inv[slot].stack < 1)
-                    inv[slot] = new Item();
-                  if (Main.mouseItem.type == 0 || Main.mouseItem.stack < 1)
-                    Main.mouseItem = new Item();
-                  if (Main.mouseItem.type > 0 || inv[slot].type > 0)
-                  {
-                    Recipe.FindRecipes();
-                    Main.PlaySound(7, -1, -1, 1, 1f, 0.0f);
-                  }
-                }
-                else
-                {
-                  --Main.mouseItem.stack;
-                  inv[slot].SetDefaults(Main.mouseItem.type, false);
-                  Recipe.FindRecipes();
-                  Main.PlaySound(7, -1, -1, 1, 1f, 0.0f);
-                }
-                if (inv[slot].stack > 0)
-                {
-                  switch (context)
-                  {
-                    case 0:
-                      AchievementsHelper.NotifyItemPickup(player, inv[slot]);
-                      break;
-                    case 8:
-                    case 9:
-                    case 10:
-                    case 11:
-                    case 12:
-                    case 16:
-                    case 17:
-                      AchievementsHelper.HandleOnEquip(player, inv[slot], context);
-                      break;
-                  }
-                }
-                else
-                  break;
               }
               else
+              {
+                --Main.mouseItem.stack;
+                inv[slot].SetDefaults(Main.mouseItem.type, false);
+                Recipe.FindRecipes();
+                Main.PlaySound(7, -1, -1, 1, 1f, 0.0f);
+              }
+              if (inv[slot].stack > 0)
+              {
+                if (context != 0)
+                {
+                  if ((uint) (context - 8) <= 4U || (uint) (context - 16) <= 1U)
+                  {
+                    AchievementsHelper.HandleOnEquip(player, inv[slot], context);
+                    break;
+                  }
+                  break;
+                }
+                AchievementsHelper.NotifyItemPickup(player, inv[slot]);
                 break;
+              }
+              break;
             }
+            break;
           case 3:
             Main.mouseItem.netDefaults(inv[slot].netID);
             if (inv[slot].buyOnce)
               Main.mouseItem.Prefix((int) inv[slot].prefix);
             else
               Main.mouseItem.Prefix(-1);
-            Main.mouseItem.position = player.Center - new Vector2((float) Main.mouseItem.width, (float) Main.mouseItem.headSlot) / 2f;
+            Main.mouseItem.position = Vector2.op_Subtraction(player.Center, Vector2.op_Division(new Vector2((float) Main.mouseItem.width, (float) Main.mouseItem.headSlot), 2f));
             ItemText.NewText(Main.mouseItem, Main.mouseItem.stack, false, false);
-            if (inv[slot].buyOnce && --inv[slot].stack <= 0)
-              inv[slot].SetDefaults(0, false);
+            if (inv[slot].buyOnce)
+            {
+              Item obj = inv[slot];
+              int num1 = obj.stack - 1;
+              int num2 = num1;
+              obj.stack = num2;
+              if (num1 <= 0)
+                inv[slot].SetDefaults(0, false);
+            }
             if (inv[slot].value > 0)
             {
               Main.PlaySound(18, -1, -1, 1, 1f, 0.0f);
@@ -512,20 +477,9 @@ namespace Terraria.UI
             Recipe.FindRecipes();
             break;
         }
-        switch (context)
-        {
-          case 0:
-            break;
-          case 1:
-            break;
-          case 2:
-            break;
-          case 5:
-            break;
-          default:
-            inv[slot].favorited = false;
-            break;
-        }
+        if ((uint) context <= 2U || context == 5)
+          return;
+        inv[slot].favorited = false;
       }
     }
 
@@ -610,16 +564,8 @@ namespace Terraria.UI
           }
         }
         bool flag = false;
-        switch (context)
-        {
-          case 0:
-          case 1:
-          case 2:
-          case 3:
-          case 4:
-            flag = player.chest == -1;
-            break;
-        }
+        if ((uint) context <= 4U)
+          flag = player.chest == -1;
         if (flag)
         {
           if (Main.npcShop > 0 && !inv[slot].favorited)
@@ -870,21 +816,13 @@ namespace Terraria.UI
             Recipe.FindRecipes();
             if (inv[slot].stack > 0)
             {
-              switch (context)
+              if (context != 0)
               {
-                case 0:
-                  AchievementsHelper.NotifyItemPickup(player, inv[slot]);
-                  break;
-                case 8:
-                case 9:
-                case 10:
-                case 11:
-                case 12:
-                case 16:
-                case 17:
+                if ((uint) (context - 8) <= 4U || (uint) (context - 16) <= 1U)
                   AchievementsHelper.HandleOnEquip(player, inv[slot], context);
-                  break;
               }
+              else
+                AchievementsHelper.NotifyItemPickup(player, inv[slot]);
             }
           }
         }
@@ -905,8 +843,8 @@ namespace Terraria.UI
         Chest chest = Main.instance.shop[Main.npcShop];
         if (Main.stackSplit <= 1 && Main.mouseRight && inv[slot].type > 0 && (Main.mouseItem.IsTheSameAs(inv[slot]) || Main.mouseItem.type == 0))
         {
-          int num = Main.superFastStack + 1;
-          for (int index = 0; index < num; ++index)
+          int num1 = Main.superFastStack + 1;
+          for (int index = 0; index < num1; ++index)
           {
             if ((Main.mouseItem.stack < Main.mouseItem.maxStack || Main.mouseItem.type == 0) && (player.BuyItem(inv[slot].GetStoreValue(), inv[slot].shopSpecialCurrency) && inv[slot].stack > 0))
             {
@@ -921,8 +859,15 @@ namespace Terraria.UI
               }
               ++Main.mouseItem.stack;
               Main.stackSplit = Main.stackSplit != 0 ? Main.stackDelay : 15;
-              if (inv[slot].buyOnce && --inv[slot].stack <= 0)
-                inv[slot].SetDefaults(0, false);
+              if (inv[slot].buyOnce)
+              {
+                Item obj = inv[slot];
+                int num2 = obj.stack - 1;
+                int num3 = num2;
+                obj.stack = num3;
+                if (num2 <= 0)
+                  inv[slot].SetDefaults(0, false);
+              }
             }
           }
         }
@@ -970,9 +915,9 @@ namespace Terraria.UI
     public static bool Equippable(ref Item inv, int context = 0)
     {
       ItemSlot.singleSlotArray[0] = inv;
-      bool flag = ItemSlot.Equippable(ItemSlot.singleSlotArray, context, 0);
+      int num = ItemSlot.Equippable(ItemSlot.singleSlotArray, context, 0) ? 1 : 0;
       inv = ItemSlot.singleSlotArray[0];
-      return flag;
+      return num != 0;
     }
 
     public static bool Equippable(Item[] inv, int context, int slot)
@@ -1059,20 +1004,20 @@ namespace Terraria.UI
       NetMessage.SendData(32, -1, -1, (NetworkText) null, player.chest, (float) slot, 0.0f, 0.0f, 0, 0, 0);
     }
 
-    public static void Draw(SpriteBatch spriteBatch, ref Item inv, int context, Vector2 position, Color lightColor = default (Color))
+    public static void Draw(SpriteBatch spriteBatch, ref Item inv, int context, Vector2 position, Color lightColor = null)
     {
       ItemSlot.singleSlotArray[0] = inv;
       ItemSlot.Draw(spriteBatch, ItemSlot.singleSlotArray, context, 0, position, lightColor);
       inv = ItemSlot.singleSlotArray[0];
     }
 
-    public static void Draw(SpriteBatch spriteBatch, Item[] inv, int context, int slot, Vector2 position, Color lightColor = default (Color))
+    public static void Draw(SpriteBatch spriteBatch, Item[] inv, int context, int slot, Vector2 position, Color lightColor = null)
     {
       Player player = Main.player[Main.myPlayer];
       Item obj = inv[slot];
       float inventoryScale = Main.inventoryScale;
-      Color color1 = Color.White;
-      if (lightColor != Color.Transparent)
+      Color color1 = Color.get_White();
+      if (Color.op_Inequality(lightColor, Color.get_Transparent()))
         color1 = lightColor;
       int ID = -1;
       bool flag1 = false;
@@ -1150,164 +1095,183 @@ namespace Terraria.UI
             num1 = 0;
         }
       }
-      Texture2D texture2D1 = Main.inventoryBackTexture;
-      Color color2 = Main.inventoryBack;
+      Texture2D tex1 = Main.inventoryBackTexture;
+      Color firstColor = Main.inventoryBack;
       bool flag2 = false;
       if (obj.type > 0 && obj.stack > 0 && (obj.favorited && context != 13) && (context != 21 && context != 22 && context != 14))
-        texture2D1 = Main.inventoryBack10Texture;
+        tex1 = Main.inventoryBack10Texture;
       else if (obj.type > 0 && obj.stack > 0 && (ItemSlot.Options.HighlightNewItems && obj.newAndShiny) && (context != 13 && context != 21 && (context != 14 && context != 22)))
       {
-        texture2D1 = Main.inventoryBack15Texture;
+        tex1 = Main.inventoryBack15Texture;
         float num2 = (float) ((double) ((float) Main.mouseTextColor / (float) byte.MaxValue) * 0.200000002980232 + 0.800000011920929);
-        color2 = color2.MultiplyRGBA(new Color(num2, num2, num2));
+        firstColor = firstColor.MultiplyRGBA(new Color(num2, num2, num2));
       }
       else if (PlayerInput.UsingGamepadUI && obj.type > 0 && (obj.stack > 0 && num1 != 0) && (context != 13 && context != 21 && context != 22))
       {
-        texture2D1 = Main.inventoryBack15Texture;
+        tex1 = Main.inventoryBack15Texture;
         float num2 = (float) ((double) ((float) Main.mouseTextColor / (float) byte.MaxValue) * 0.200000002980232 + 0.800000011920929);
-        color2 = num1 != 1 ? color2.MultiplyRGBA(new Color(num2 / 2f, num2, num2 / 2f)) : color2.MultiplyRGBA(new Color(num2, num2 / 2f, num2 / 2f));
+        firstColor = num1 != 1 ? firstColor.MultiplyRGBA(new Color(num2 / 2f, num2, num2 / 2f)) : firstColor.MultiplyRGBA(new Color(num2, num2 / 2f, num2 / 2f));
       }
       else if (context == 0 && slot < 10)
-        texture2D1 = Main.inventoryBack9Texture;
+        tex1 = Main.inventoryBack9Texture;
       else if (context == 10 || context == 8 || (context == 16 || context == 17) || (context == 19 || context == 18 || context == 20))
-        texture2D1 = Main.inventoryBack3Texture;
+        tex1 = Main.inventoryBack3Texture;
       else if (context == 11 || context == 9)
-        texture2D1 = Main.inventoryBack8Texture;
+        tex1 = Main.inventoryBack8Texture;
       else if (context == 12)
-        texture2D1 = Main.inventoryBack12Texture;
+        tex1 = Main.inventoryBack12Texture;
       else if (context == 3)
-        texture2D1 = Main.inventoryBack5Texture;
+        tex1 = Main.inventoryBack5Texture;
       else if (context == 4)
-        texture2D1 = Main.inventoryBack2Texture;
+        tex1 = Main.inventoryBack2Texture;
       else if (context == 7 || context == 5)
-        texture2D1 = Main.inventoryBack4Texture;
+        tex1 = Main.inventoryBack4Texture;
       else if (context == 6)
-        texture2D1 = Main.inventoryBack7Texture;
+        tex1 = Main.inventoryBack7Texture;
       else if (context == 13)
       {
         byte num2 = 200;
         if (slot == Main.player[Main.myPlayer].selectedItem)
         {
-          texture2D1 = Main.inventoryBack14Texture;
+          tex1 = Main.inventoryBack14Texture;
           num2 = byte.MaxValue;
         }
-        color2 = new Color((int) num2, (int) num2, (int) num2, (int) num2);
+        // ISSUE: explicit reference operation
+        ((Color) @firstColor).\u002Ector((int) num2, (int) num2, (int) num2, (int) num2);
       }
       else if (context == 14 || context == 21)
         flag2 = true;
       else if (context == 15)
-        texture2D1 = Main.inventoryBack6Texture;
+        tex1 = Main.inventoryBack6Texture;
       else if (context == 22)
-        texture2D1 = Main.inventoryBack4Texture;
+        tex1 = Main.inventoryBack4Texture;
       if (context == 0 && ItemSlot.inventoryGlowTime[slot] > 0 && !inv[slot].favorited)
       {
         float num2 = Main.invAlpha / (float) byte.MaxValue;
-        Color color3 = new Color(63, 65, 151, (int) byte.MaxValue) * num2;
-        Color color4 = Main.hslToRgb(ItemSlot.inventoryGlowHue[slot], 1f, 0.5f) * num2;
+        Color color2 = Color.op_Multiply(new Color(63, 65, 151, (int) byte.MaxValue), num2);
+        Color color3 = Color.op_Multiply(Main.hslToRgb(ItemSlot.inventoryGlowHue[slot], 1f, 0.5f), num2);
         float num3 = (float) ItemSlot.inventoryGlowTime[slot] / 300f;
         float num4 = num3 * num3;
-        color2 = Color.Lerp(color3, color4, num4 / 2f);
-        texture2D1 = Main.inventoryBack13Texture;
+        Color color4 = color3;
+        double num5 = (double) num4 / 2.0;
+        firstColor = Color.Lerp(color2, color4, (float) num5);
+        tex1 = Main.inventoryBack13Texture;
       }
       if ((context == 4 || context == 3) && (ItemSlot.inventoryGlowTimeChest[slot] > 0 && !inv[slot].favorited))
       {
         float num2 = Main.invAlpha / (float) byte.MaxValue;
-        Color color3 = new Color(130, 62, 102, (int) byte.MaxValue) * num2;
+        Color color2 = Color.op_Multiply(new Color(130, 62, 102, (int) byte.MaxValue), num2);
         if (context == 3)
-          color3 = new Color(104, 52, 52, (int) byte.MaxValue) * num2;
-        Color color4 = Main.hslToRgb(ItemSlot.inventoryGlowHueChest[slot], 1f, 0.5f) * num2;
+          color2 = Color.op_Multiply(new Color(104, 52, 52, (int) byte.MaxValue), num2);
+        Color color3 = Color.op_Multiply(Main.hslToRgb(ItemSlot.inventoryGlowHueChest[slot], 1f, 0.5f), num2);
         float num3 = (float) ItemSlot.inventoryGlowTimeChest[slot] / 300f;
         float num4 = num3 * num3;
-        color2 = Color.Lerp(color3, color4, num4 / 2f);
-        texture2D1 = Main.inventoryBack13Texture;
+        firstColor = Color.Lerp(color2, color3, num4 / 2f);
+        tex1 = Main.inventoryBack13Texture;
       }
       if (flag1)
       {
-        texture2D1 = Main.inventoryBack14Texture;
-        color2 = Color.White;
+        tex1 = Main.inventoryBack14Texture;
+        firstColor = Color.get_White();
       }
       if (!flag2)
-        spriteBatch.Draw(texture2D1, position, new Rectangle?(), color2, 0.0f, new Vector2(), inventoryScale, SpriteEffects.None, 0.0f);
-      int num5 = -1;
+        spriteBatch.Draw(tex1, position, new Rectangle?(), firstColor, 0.0f, (Vector2) null, inventoryScale, (SpriteEffects) 0, 0.0f);
+      int num6 = -1;
       switch (context)
       {
         case 8:
           if (slot == 0)
-            num5 = 0;
+            num6 = 0;
           if (slot == 1)
-            num5 = 6;
+            num6 = 6;
           if (slot == 2)
           {
-            num5 = 12;
+            num6 = 12;
             break;
           }
           break;
         case 9:
           if (slot == 10)
-            num5 = 3;
+            num6 = 3;
           if (slot == 11)
-            num5 = 9;
+            num6 = 9;
           if (slot == 12)
           {
-            num5 = 15;
+            num6 = 15;
             break;
           }
           break;
         case 10:
-          num5 = 11;
+          num6 = 11;
           break;
         case 11:
-          num5 = 2;
+          num6 = 2;
           break;
         case 12:
-          num5 = 1;
+          num6 = 1;
           break;
         case 16:
-          num5 = 4;
+          num6 = 4;
           break;
         case 17:
-          num5 = 13;
+          num6 = 13;
           break;
         case 18:
-          num5 = 7;
+          num6 = 7;
           break;
         case 19:
-          num5 = 10;
+          num6 = 10;
           break;
         case 20:
-          num5 = 17;
+          num6 = 17;
           break;
       }
-      if ((obj.type <= 0 || obj.stack <= 0) && num5 != -1)
+      if ((obj.type <= 0 || obj.stack <= 0) && num6 != -1)
       {
-        Texture2D texture2D2 = Main.extraTexture[54];
-        Rectangle r = texture2D2.Frame(3, 6, num5 % 3, num5 / 3);
-        r.Width -= 2;
-        r.Height -= 2;
-        spriteBatch.Draw(texture2D2, position + texture2D1.Size() / 2f * inventoryScale, new Rectangle?(r), Color.White * 0.35f, 0.0f, r.Size() / 2f, inventoryScale, SpriteEffects.None, 0.0f);
+        Texture2D tex2 = Main.extraTexture[54];
+        Rectangle r = tex2.Frame(3, 6, num6 % 3, num6 / 3);
+        // ISSUE: explicit reference operation
+        // ISSUE: variable of a reference type
+        __Null& local1 = @r.Width;
+        // ISSUE: cast to a reference type
+        // ISSUE: explicit reference operation
+        int num2 = ^(int&) local1 - 2;
+        // ISSUE: cast to a reference type
+        // ISSUE: explicit reference operation
+        ^(int&) local1 = num2;
+        // ISSUE: explicit reference operation
+        // ISSUE: variable of a reference type
+        __Null& local2 = @r.Height;
+        // ISSUE: cast to a reference type
+        // ISSUE: explicit reference operation
+        int num3 = ^(int&) local2 - 2;
+        // ISSUE: cast to a reference type
+        // ISSUE: explicit reference operation
+        ^(int&) local2 = num3;
+        spriteBatch.Draw(tex2, Vector2.op_Addition(position, Vector2.op_Multiply(Vector2.op_Division(tex1.Size(), 2f), inventoryScale)), new Rectangle?(r), Color.op_Multiply(Color.get_White(), 0.35f), 0.0f, Vector2.op_Division(r.Size(), 2f), inventoryScale, (SpriteEffects) 0, 0.0f);
       }
-      Vector2 vector2 = texture2D1.Size() * inventoryScale;
+      Vector2 vector2_1 = Vector2.op_Multiply(tex1.Size(), inventoryScale);
       if (obj.type > 0 && obj.stack > 0)
       {
-        Texture2D texture2D2 = Main.itemTexture[obj.type];
-        Rectangle r = Main.itemAnimations[obj.type] == null ? texture2D2.Frame(1, 1, 0, 0) : Main.itemAnimations[obj.type].GetFrame(texture2D2);
+        Texture2D texture2D = Main.itemTexture[obj.type];
+        Rectangle r = Main.itemAnimations[obj.type] == null ? texture2D.Frame(1, 1, 0, 0) : Main.itemAnimations[obj.type].GetFrame(texture2D);
         Color currentColor = color1;
-        float scale1 = 1f;
-        ItemSlot.GetItemLight(ref currentColor, ref scale1, obj, false);
+        float scale = 1f;
+        ItemSlot.GetItemLight(ref currentColor, ref scale, obj, false);
         float num2 = 1f;
         if (r.Width > 32 || r.Height > 32)
           num2 = r.Width <= r.Height ? 32f / (float) r.Height : 32f / (float) r.Width;
-        float scale2 = num2 * inventoryScale;
-        Vector2 position1 = position + vector2 / 2f - r.Size() * scale2 / 2f;
-        Vector2 origin = r.Size() * (float) ((double) scale1 / 2.0 - 0.5);
-        spriteBatch.Draw(texture2D2, position1, new Rectangle?(r), obj.GetAlpha(currentColor), 0.0f, origin, scale2 * scale1, SpriteEffects.None, 0.0f);
-        if (obj.color != Color.Transparent)
-          spriteBatch.Draw(texture2D2, position1, new Rectangle?(r), obj.GetColor(color1), 0.0f, origin, scale2 * scale1, SpriteEffects.None, 0.0f);
+        float num3 = num2 * inventoryScale;
+        Vector2 vector2_2 = Vector2.op_Subtraction(Vector2.op_Addition(position, Vector2.op_Division(vector2_1, 2f)), Vector2.op_Division(Vector2.op_Multiply(r.Size(), num3), 2f));
+        Vector2 vector2_3 = Vector2.op_Multiply(r.Size(), (float) ((double) scale / 2.0 - 0.5));
+        spriteBatch.Draw(texture2D, vector2_2, new Rectangle?(r), obj.GetAlpha(currentColor), 0.0f, vector2_3, num3 * scale, (SpriteEffects) 0, 0.0f);
+        if (Color.op_Inequality(obj.color, Color.get_Transparent()))
+          spriteBatch.Draw(texture2D, vector2_2, new Rectangle?(r), obj.GetColor(color1), 0.0f, vector2_3, num3 * scale, (SpriteEffects) 0, 0.0f);
         if (ItemID.Sets.TrapSigned[obj.type])
-          spriteBatch.Draw(Main.wireTexture, position + new Vector2(40f, 40f) * inventoryScale, new Rectangle?(new Rectangle(4, 58, 8, 8)), color1, 0.0f, new Vector2(4f), 1f, SpriteEffects.None, 0.0f);
+          spriteBatch.Draw(Main.wireTexture, Vector2.op_Addition(position, Vector2.op_Multiply(new Vector2(40f, 40f), inventoryScale)), new Rectangle?(new Rectangle(4, 58, 8, 8)), color1, 0.0f, new Vector2(4f), 1f, (SpriteEffects) 0, 0.0f);
         if (obj.stack > 1)
-          ChatManager.DrawColorCodedStringWithShadow(spriteBatch, Main.fontItemStack, obj.stack.ToString(), position + new Vector2(10f, 26f) * inventoryScale, color1, 0.0f, Vector2.Zero, new Vector2(inventoryScale), -1f, inventoryScale);
-        int num3 = -1;
+          ChatManager.DrawColorCodedStringWithShadow(spriteBatch, Main.fontItemStack, obj.stack.ToString(), Vector2.op_Addition(position, Vector2.op_Multiply(new Vector2(10f, 26f), inventoryScale)), color1, 0.0f, Vector2.get_Zero(), new Vector2(inventoryScale), -1f, inventoryScale);
+        int num4 = -1;
         if (context == 13)
         {
           if (obj.DD2Summon)
@@ -1315,77 +1279,77 @@ namespace Terraria.UI
             for (int index = 0; index < 58; ++index)
             {
               if (inv[index].type == 3822)
-                num3 += inv[index].stack;
+                num4 += inv[index].stack;
             }
-            if (num3 >= 0)
-              ++num3;
+            if (num4 >= 0)
+              ++num4;
           }
           if (obj.useAmmo > 0)
           {
             int useAmmo = obj.useAmmo;
-            num3 = 0;
+            num4 = 0;
             for (int index = 0; index < 58; ++index)
             {
               if (inv[index].ammo == useAmmo)
-                num3 += inv[index].stack;
+                num4 += inv[index].stack;
             }
           }
           if (obj.fishingPole > 0)
           {
-            num3 = 0;
+            num4 = 0;
             for (int index = 0; index < 58; ++index)
             {
               if (inv[index].bait > 0)
-                num3 += inv[index].stack;
+                num4 += inv[index].stack;
             }
           }
           if (obj.tileWand > 0)
           {
             int tileWand = obj.tileWand;
-            num3 = 0;
+            num4 = 0;
             for (int index = 0; index < 58; ++index)
             {
               if (inv[index].type == tileWand)
-                num3 += inv[index].stack;
+                num4 += inv[index].stack;
             }
           }
           if (obj.type == 509 || obj.type == 851 || (obj.type == 850 || obj.type == 3612) || (obj.type == 3625 || obj.type == 3611))
           {
-            num3 = 0;
+            num4 = 0;
             for (int index = 0; index < 58; ++index)
             {
               if (inv[index].type == 530)
-                num3 += inv[index].stack;
+                num4 += inv[index].stack;
             }
           }
         }
-        if (num3 != -1)
-          ChatManager.DrawColorCodedStringWithShadow(spriteBatch, Main.fontItemStack, num3.ToString(), position + new Vector2(8f, 30f) * inventoryScale, color1, 0.0f, Vector2.Zero, new Vector2(inventoryScale * 0.8f), -1f, inventoryScale);
+        if (num4 != -1)
+          ChatManager.DrawColorCodedStringWithShadow(spriteBatch, Main.fontItemStack, num4.ToString(), Vector2.op_Addition(position, Vector2.op_Multiply(new Vector2(8f, 30f), inventoryScale)), color1, 0.0f, Vector2.get_Zero(), new Vector2(inventoryScale * 0.8f), -1f, inventoryScale);
         if (context == 13)
         {
           string text = string.Concat((object) (slot + 1));
           if (text == "10")
             text = "0";
-          ChatManager.DrawColorCodedStringWithShadow(spriteBatch, Main.fontItemStack, text, position + new Vector2(8f, 4f) * inventoryScale, color1, 0.0f, Vector2.Zero, new Vector2(inventoryScale), -1f, inventoryScale);
+          ChatManager.DrawColorCodedStringWithShadow(spriteBatch, Main.fontItemStack, text, Vector2.op_Addition(position, Vector2.op_Multiply(new Vector2(8f, 4f), inventoryScale)), color1, 0.0f, Vector2.get_Zero(), new Vector2(inventoryScale), -1f, inventoryScale);
         }
         if (context == 13 && obj.potion)
         {
-          Vector2 position2 = position + texture2D1.Size() * inventoryScale / 2f - Main.cdTexture.Size() * inventoryScale / 2f;
-          Color color3 = obj.GetAlpha(color1) * ((float) player.potionDelay / (float) player.potionDelayTime);
-          spriteBatch.Draw(Main.cdTexture, position2, new Rectangle?(), color3, 0.0f, new Vector2(), scale2, SpriteEffects.None, 0.0f);
+          Vector2 vector2_4 = Vector2.op_Subtraction(Vector2.op_Addition(position, Vector2.op_Division(Vector2.op_Multiply(tex1.Size(), inventoryScale), 2f)), Vector2.op_Division(Vector2.op_Multiply(Main.cdTexture.Size(), inventoryScale), 2f));
+          Color color2 = Color.op_Multiply(obj.GetAlpha(color1), (float) player.potionDelay / (float) player.potionDelayTime);
+          spriteBatch.Draw(Main.cdTexture, vector2_4, new Rectangle?(), color2, 0.0f, (Vector2) null, num3, (SpriteEffects) 0, 0.0f);
         }
         if ((context == 10 || context == 18) && (obj.expertOnly && !Main.expertMode))
         {
-          Vector2 position2 = position + texture2D1.Size() * inventoryScale / 2f - Main.cdTexture.Size() * inventoryScale / 2f;
-          Color white = Color.White;
-          spriteBatch.Draw(Main.cdTexture, position2, new Rectangle?(), white, 0.0f, new Vector2(), scale2, SpriteEffects.None, 0.0f);
+          Vector2 vector2_4 = Vector2.op_Subtraction(Vector2.op_Addition(position, Vector2.op_Division(Vector2.op_Multiply(tex1.Size(), inventoryScale), 2f)), Vector2.op_Division(Vector2.op_Multiply(Main.cdTexture.Size(), inventoryScale), 2f));
+          Color white = Color.get_White();
+          spriteBatch.Draw(Main.cdTexture, vector2_4, new Rectangle?(), white, 0.0f, (Vector2) null, num3, (SpriteEffects) 0, 0.0f);
         }
       }
       else if (context == 6)
       {
         Texture2D trashTexture = Main.trashTexture;
-        Vector2 position1 = position + texture2D1.Size() * inventoryScale / 2f - trashTexture.Size() * inventoryScale / 2f;
-        spriteBatch.Draw(trashTexture, position1, new Rectangle?(), new Color(100, 100, 100, 100), 0.0f, new Vector2(), inventoryScale, SpriteEffects.None, 0.0f);
+        Vector2 vector2_2 = Vector2.op_Subtraction(Vector2.op_Addition(position, Vector2.op_Division(Vector2.op_Multiply(tex1.Size(), inventoryScale), 2f)), Vector2.op_Division(Vector2.op_Multiply(trashTexture.Size(), inventoryScale), 2f));
+        spriteBatch.Draw(trashTexture, vector2_2, new Rectangle?(), new Color(100, 100, 100, 100), 0.0f, (Vector2) null, inventoryScale, (SpriteEffects) 0, 0.0f);
       }
       if (context == 0 && slot < 10)
       {
@@ -1398,17 +1362,21 @@ namespace Terraria.UI
         if (Main.player[Main.myPlayer].selectedItem == slot)
         {
           num3 -= 3;
-          inventoryBack.R = byte.MaxValue;
-          inventoryBack.B = (byte) 0;
-          inventoryBack.G = (byte) 210;
-          inventoryBack.A = (byte) 100;
+          // ISSUE: explicit reference operation
+          ((Color) @inventoryBack).set_R(byte.MaxValue);
+          // ISSUE: explicit reference operation
+          ((Color) @inventoryBack).set_B((byte) 0);
+          // ISSUE: explicit reference operation
+          ((Color) @inventoryBack).set_G((byte) 210);
+          // ISSUE: explicit reference operation
+          ((Color) @inventoryBack).set_A((byte) 100);
           float num4 = num2 * 1.4f;
         }
-        ChatManager.DrawColorCodedStringWithShadow(spriteBatch, Main.fontItemStack, text, position + new Vector2(6f, (float) (4 + num3)) * inventoryScale, inventoryBack, 0.0f, Vector2.Zero, new Vector2(inventoryScale), -1f, inventoryScale);
+        ChatManager.DrawColorCodedStringWithShadow(spriteBatch, Main.fontItemStack, text, Vector2.op_Addition(position, Vector2.op_Multiply(new Vector2(6f, (float) (4 + num3)), inventoryScale)), inventoryBack, 0.0f, Vector2.get_Zero(), new Vector2(inventoryScale), -1f, inventoryScale);
       }
       if (ID == -1)
         return;
-      UILinkPointNavigator.SetPosition(ID, position + vector2 * 0.75f);
+      UILinkPointNavigator.SetPosition(ID, Vector2.op_Addition(position, Vector2.op_Multiply(vector2_1, 0.75f)));
     }
 
     public static void MouseHover(ref Item inv, int context = 0)
@@ -1614,7 +1582,7 @@ namespace Terraria.UI
 
     public static void DrawMoney(SpriteBatch sb, string text, float shopx, float shopy, int[] coinsArray, bool horizontal = false)
     {
-      Utils.DrawBorderStringFourWay(sb, Main.fontMouseText, text, shopx, shopy + 40f, Color.White * ((float) Main.mouseTextColor / (float) byte.MaxValue), Color.Black, Vector2.Zero, 1f);
+      Utils.DrawBorderStringFourWay(sb, Main.fontMouseText, text, shopx, shopy + 40f, Color.op_Multiply(Color.get_White(), (float) Main.mouseTextColor / (float) byte.MaxValue), Color.get_Black(), Vector2.get_Zero(), 1f);
       if (horizontal)
       {
         for (int index = 0; index < 4; ++index)
@@ -1623,9 +1591,11 @@ namespace Terraria.UI
           {
             int coins = coinsArray[3 - index];
           }
-          Vector2 position = new Vector2((float) ((double) shopx + (double) ChatManager.GetStringSize(Main.fontMouseText, text, Vector2.One, -1f).X + (double) (24 * index) + 45.0), shopy + 50f);
-          sb.Draw(Main.itemTexture[74 - index], position, new Rectangle?(), Color.White, 0.0f, Main.itemTexture[74 - index].Size() / 2f, 1f, SpriteEffects.None, 0.0f);
-          Utils.DrawBorderStringFourWay(sb, Main.fontItemStack, coinsArray[3 - index].ToString(), position.X - 11f, position.Y, Color.White, Color.Black, new Vector2(0.3f), 0.75f);
+          Vector2 vector2;
+          // ISSUE: explicit reference operation
+          ((Vector2) @vector2).\u002Ector((float) ((double) shopx + ChatManager.GetStringSize(Main.fontMouseText, text, Vector2.get_One(), -1f).X + (double) (24 * index) + 45.0), shopy + 50f);
+          sb.Draw(Main.itemTexture[74 - index], vector2, new Rectangle?(), Color.get_White(), 0.0f, Vector2.op_Division(Main.itemTexture[74 - index].Size(), 2f), 1f, (SpriteEffects) 0, 0.0f);
+          Utils.DrawBorderStringFourWay(sb, Main.fontItemStack, coinsArray[3 - index].ToString(), (float) (vector2.X - 11.0), (float) vector2.Y, Color.get_White(), Color.get_Black(), new Vector2(0.3f), 0.75f);
         }
       }
       else
@@ -1633,8 +1603,8 @@ namespace Terraria.UI
         for (int index = 0; index < 4; ++index)
         {
           int num = index != 0 || coinsArray[3 - index] <= 99 ? 0 : -6;
-          sb.Draw(Main.itemTexture[74 - index], new Vector2(shopx + 11f + (float) (24 * index), shopy + 75f), new Rectangle?(), Color.White, 0.0f, Main.itemTexture[74 - index].Size() / 2f, 1f, SpriteEffects.None, 0.0f);
-          Utils.DrawBorderStringFourWay(sb, Main.fontItemStack, coinsArray[3 - index].ToString(), shopx + (float) (24 * index) + (float) num, shopy + 75f, Color.White, Color.Black, new Vector2(0.3f), 0.75f);
+          sb.Draw(Main.itemTexture[74 - index], new Vector2(shopx + 11f + (float) (24 * index), shopy + 75f), new Rectangle?(), Color.get_White(), 0.0f, Vector2.op_Division(Main.itemTexture[74 - index].Size(), 2f), 1f, (SpriteEffects) 0, 0.0f);
+          Utils.DrawBorderStringFourWay(sb, Main.fontItemStack, coinsArray[3 - index].ToString(), shopx + (float) (24 * index) + (float) num, shopy + 75f, Color.get_White(), Color.get_Black(), new Vector2(0.3f), 0.75f);
         }
       }
     }
@@ -1656,11 +1626,11 @@ namespace Terraria.UI
         if (count <= 0L)
           return;
         if (num3 > 0L)
-          sb.Draw(Main.itemTexture[3813], Utils.CenteredRectangle(new Vector2(shopx + 92f, shopy + 45f), Main.itemTexture[3813].Size() * 0.65f), new Rectangle?(), Color.White);
+          sb.Draw(Main.itemTexture[3813], Utils.CenteredRectangle(new Vector2(shopx + 92f, shopy + 45f), Vector2.op_Multiply(Main.itemTexture[3813].Size(), 0.65f)), new Rectangle?(), Color.get_White());
         if (num2 > 0L)
-          sb.Draw(Main.itemTexture[346], Utils.CenteredRectangle(new Vector2(shopx + 80f, shopy + 50f), Main.itemTexture[346].Size() * 0.65f), new Rectangle?(), Color.White);
+          sb.Draw(Main.itemTexture[346], Utils.CenteredRectangle(new Vector2(shopx + 80f, shopy + 50f), Vector2.op_Multiply(Main.itemTexture[346].Size(), 0.65f)), new Rectangle?(), Color.get_White());
         if (num1 > 0L)
-          sb.Draw(Main.itemTexture[87], Utils.CenteredRectangle(new Vector2(shopx + 70f, shopy + 60f), Main.itemTexture[87].Size() * 0.65f), new Rectangle?(), Color.White);
+          sb.Draw(Main.itemTexture[87], Utils.CenteredRectangle(new Vector2(shopx + 70f, shopy + 60f), Vector2.op_Multiply(Main.itemTexture[87].Size(), 0.65f)), new Rectangle?(), Color.get_White());
         ItemSlot.DrawMoney(sb, Lang.inter[66].Value, shopx, shopy, Utils.CoinsSplit(count), horizontal);
       }
     }
@@ -1672,15 +1642,15 @@ namespace Terraria.UI
       Player player = Main.player[Main.myPlayer];
       if (player.chest != -1)
         return;
-      Texture2D texture2D = Main.hotbarRadialTexture[0];
+      Texture2D tex = Main.hotbarRadialTexture[0];
       float num = (float) Main.mouseTextColor / (float) byte.MaxValue;
-      Color color = Color.White * ((float) (1.0 - (1.0 - (double) num) * (1.0 - (double) num)) * 0.785f);
-      sb.Draw(texture2D, position, new Rectangle?(), color, 0.0f, texture2D.Size() / 2f, Main.inventoryScale, SpriteEffects.None, 0.0f);
+      Color color = Color.op_Multiply(Color.get_White(), (float) (1.0 - (1.0 - (double) num) * (1.0 - (double) num)) * 0.785f);
+      sb.Draw(tex, position, new Rectangle?(), color, 0.0f, Vector2.op_Division(tex.Size(), 2f), Main.inventoryScale, (SpriteEffects) 0, 0.0f);
       for (int index = 0; index < 4; ++index)
       {
         int binding = player.DpadRadial.Bindings[index];
         if (binding != -1)
-          ItemSlot.Draw(sb, player.inventory, 14, binding, position + new Vector2((float) (texture2D.Width / 3), 0.0f).RotatedBy(1.57079637050629 * (double) index - 1.57079637050629, new Vector2()) + new Vector2(-26f * Main.inventoryScale), Color.White);
+          ItemSlot.Draw(sb, player.inventory, 14, binding, Vector2.op_Addition(Vector2.op_Addition(position, new Vector2((float) (tex.get_Width() / 3), 0.0f).RotatedBy(1.57079637050629 * (double) index - 1.57079637050629, (Vector2) null)), new Vector2(-26f * Main.inventoryScale)), Color.get_White());
       }
     }
 
@@ -1690,28 +1660,28 @@ namespace Terraria.UI
       if ((double) ItemSlot.CircularRadialOpacity == 0.0)
         return;
       Player player = Main.player[Main.myPlayer];
-      Texture2D texture2D1 = Main.hotbarRadialTexture[2];
+      Texture2D texture2D = Main.hotbarRadialTexture[2];
       float num1 = ItemSlot.CircularRadialOpacity * 0.9f;
       float num2 = ItemSlot.CircularRadialOpacity * 1f;
       float num3 = (float) Main.mouseTextColor / (float) byte.MaxValue;
-      Color color = Color.White * ((float) (1.0 - (1.0 - (double) num3) * (1.0 - (double) num3)) * 0.785f) * num1;
-      Texture2D texture2D2 = Main.hotbarRadialTexture[1];
+      Color color = Color.op_Multiply(Color.op_Multiply(Color.get_White(), (float) (1.0 - (1.0 - (double) num3) * (1.0 - (double) num3)) * 0.785f), num1);
+      Texture2D tex = Main.hotbarRadialTexture[1];
       float num4 = 6.283185f / (float) player.CircularRadial.RadialCount;
       float num5 = -1.570796f;
       for (int index = 0; index < player.CircularRadial.RadialCount; ++index)
       {
         int binding = player.CircularRadial.Bindings[index];
-        Vector2 vector2 = new Vector2(150f, 0.0f).RotatedBy((double) num5 + (double) num4 * (double) index, new Vector2()) * num2;
+        Vector2 vector2 = Vector2.op_Multiply(new Vector2(150f, 0.0f).RotatedBy((double) num5 + (double) num4 * (double) index, (Vector2) null), num2);
         float num6 = 0.85f;
         if (player.CircularRadial.SelectedBinding == index)
           num6 = 1.7f;
-        sb.Draw(texture2D2, position + vector2, new Rectangle?(), color * num6, 0.0f, texture2D2.Size() / 2f, num2 * num6, SpriteEffects.None, 0.0f);
+        sb.Draw(tex, Vector2.op_Addition(position, vector2), new Rectangle?(), Color.op_Multiply(color, num6), 0.0f, Vector2.op_Division(tex.Size(), 2f), num2 * num6, (SpriteEffects) 0, 0.0f);
         if (binding != -1)
         {
-          float inventoryScale = Main.inventoryScale;
+          double inventoryScale = (double) Main.inventoryScale;
           Main.inventoryScale = num2 * num6;
-          ItemSlot.Draw(sb, player.inventory, 14, binding, position + vector2 + new Vector2(-26f * num2 * num6), Color.White);
-          Main.inventoryScale = inventoryScale;
+          ItemSlot.Draw(sb, player.inventory, 14, binding, Vector2.op_Addition(Vector2.op_Addition(position, vector2), new Vector2(-26f * num2 * num6)), Color.get_White());
+          Main.inventoryScale = (float) inventoryScale;
         }
       }
     }
@@ -1722,12 +1692,12 @@ namespace Terraria.UI
       if ((double) ItemSlot.QuicksRadialOpacity == 0.0)
         return;
       Player player = Main.player[Main.myPlayer];
-      Texture2D texture2D = Main.hotbarRadialTexture[2];
+      Texture2D tex = Main.hotbarRadialTexture[2];
       Texture2D quicksIconTexture = Main.quicksIconTexture;
       float num1 = ItemSlot.QuicksRadialOpacity * 0.9f;
       float num2 = ItemSlot.QuicksRadialOpacity * 1f;
       float num3 = (float) Main.mouseTextColor / (float) byte.MaxValue;
-      Color color = Color.White * ((float) (1.0 - (1.0 - (double) num3) * (1.0 - (double) num3)) * 0.785f) * num1;
+      Color color = Color.op_Multiply(Color.op_Multiply(Color.get_White(), (float) (1.0 - (1.0 - (double) num3) * (1.0 - (double) num3)) * 0.785f), num1);
       float num4 = 6.283185f / (float) player.QuicksRadial.RadialCount;
       float num5 = -1.570796f;
       Item obj1 = player.QuickHeal_GetItemToUse();
@@ -1756,16 +1726,16 @@ namespace Terraria.UI
         if (index == 2)
           inv = obj2;
         int binding = player.QuicksRadial.Bindings[index];
-        Vector2 vector2 = new Vector2(120f, 0.0f).RotatedBy((double) num5 + (double) num4 * (double) index, new Vector2()) * num2;
+        Vector2 vector2 = Vector2.op_Multiply(new Vector2(120f, 0.0f).RotatedBy((double) num5 + (double) num4 * (double) index, (Vector2) null), num2);
         float num6 = 0.85f;
         if (player.QuicksRadial.SelectedBinding == index)
           num6 = 1.7f;
-        sb.Draw(texture2D, position + vector2, new Rectangle?(), color * num6, 0.0f, texture2D.Size() / 2f, (float) ((double) num2 * (double) num6 * 1.29999995231628), SpriteEffects.None, 0.0f);
-        float inventoryScale = Main.inventoryScale;
+        sb.Draw(tex, Vector2.op_Addition(position, vector2), new Rectangle?(), Color.op_Multiply(color, num6), 0.0f, Vector2.op_Division(tex.Size(), 2f), (float) ((double) num2 * (double) num6 * 1.29999995231628), (SpriteEffects) 0, 0.0f);
+        double inventoryScale = (double) Main.inventoryScale;
         Main.inventoryScale = num2 * num6;
-        ItemSlot.Draw(sb, ref inv, 14, position + vector2 + new Vector2(-26f * num2 * num6), Color.White);
-        Main.inventoryScale = inventoryScale;
-        sb.Draw(quicksIconTexture, position + vector2 + new Vector2(34f, 20f) * 0.85f * num2 * num6, new Rectangle?(), color * num6, 0.0f, texture2D.Size() / 2f, (float) ((double) num2 * (double) num6 * 1.29999995231628), SpriteEffects.None, 0.0f);
+        ItemSlot.Draw(sb, ref inv, 14, Vector2.op_Addition(Vector2.op_Addition(position, vector2), new Vector2(-26f * num2 * num6)), Color.get_White());
+        Main.inventoryScale = (float) inventoryScale;
+        sb.Draw(quicksIconTexture, Vector2.op_Addition(Vector2.op_Addition(position, vector2), Vector2.op_Multiply(Vector2.op_Multiply(Vector2.op_Multiply(new Vector2(34f, 20f), 0.85f), num2), num6)), new Rectangle?(), Color.op_Multiply(color, num6), 0.0f, Vector2.op_Division(tex.Size(), 2f), (float) ((double) num2 * (double) num6 * 1.29999995231628), (SpriteEffects) 0, 0.0f);
       }
     }
 
@@ -1792,26 +1762,46 @@ namespace Terraria.UI
         return currentColor;
       if (type == 662 || type == 663)
       {
-        currentColor.R = (byte) Main.DiscoR;
-        currentColor.G = (byte) Main.DiscoG;
-        currentColor.B = (byte) Main.DiscoB;
-        currentColor.A = byte.MaxValue;
+        // ISSUE: explicit reference operation
+        ((Color) @currentColor).set_R((byte) Main.DiscoR);
+        // ISSUE: explicit reference operation
+        ((Color) @currentColor).set_G((byte) Main.DiscoG);
+        // ISSUE: explicit reference operation
+        ((Color) @currentColor).set_B((byte) Main.DiscoB);
+        // ISSUE: explicit reference operation
+        ((Color) @currentColor).set_A(byte.MaxValue);
       }
       else if (ItemID.Sets.ItemIconPulse[type])
       {
         scale = Main.essScale;
-        currentColor.R = (byte) ((double) currentColor.R * (double) scale);
-        currentColor.G = (byte) ((double) currentColor.G * (double) scale);
-        currentColor.B = (byte) ((double) currentColor.B * (double) scale);
-        currentColor.A = (byte) ((double) currentColor.A * (double) scale);
+        // ISSUE: explicit reference operation
+        // ISSUE: explicit reference operation
+        ((Color) @currentColor).set_R((byte) ((double) ((Color) @currentColor).get_R() * (double) scale));
+        // ISSUE: explicit reference operation
+        // ISSUE: explicit reference operation
+        ((Color) @currentColor).set_G((byte) ((double) ((Color) @currentColor).get_G() * (double) scale));
+        // ISSUE: explicit reference operation
+        // ISSUE: explicit reference operation
+        ((Color) @currentColor).set_B((byte) ((double) ((Color) @currentColor).get_B() * (double) scale));
+        // ISSUE: explicit reference operation
+        // ISSUE: explicit reference operation
+        ((Color) @currentColor).set_A((byte) ((double) ((Color) @currentColor).get_A() * (double) scale));
       }
       else if (type == 58 || type == 184)
       {
         scale = (float) ((double) Main.essScale * 0.25 + 0.75);
-        currentColor.R = (byte) ((double) currentColor.R * (double) scale);
-        currentColor.G = (byte) ((double) currentColor.G * (double) scale);
-        currentColor.B = (byte) ((double) currentColor.B * (double) scale);
-        currentColor.A = (byte) ((double) currentColor.A * (double) scale);
+        // ISSUE: explicit reference operation
+        // ISSUE: explicit reference operation
+        ((Color) @currentColor).set_R((byte) ((double) ((Color) @currentColor).get_R() * (double) scale));
+        // ISSUE: explicit reference operation
+        // ISSUE: explicit reference operation
+        ((Color) @currentColor).set_G((byte) ((double) ((Color) @currentColor).get_G() * (double) scale));
+        // ISSUE: explicit reference operation
+        // ISSUE: explicit reference operation
+        ((Color) @currentColor).set_B((byte) ((double) ((Color) @currentColor).get_B() * (double) scale));
+        // ISSUE: explicit reference operation
+        // ISSUE: explicit reference operation
+        ((Color) @currentColor).set_A((byte) ((double) ((Color) @currentColor).get_A() * (double) scale));
       }
       return currentColor;
     }
@@ -2054,12 +2044,12 @@ namespace Terraria.UI
           else
             str1 += PlayerInput.BuildCommand(Lang.misc[54].Value, false, PlayerInput.ProfileGamepadUI.KeyStatus["MouseLeft"]);
         }
-        else if (Main.mouseItem.type > 0 && flag)
+        else if (Main.mouseItem.type > 0 & flag)
           str1 += PlayerInput.BuildCommand(Lang.misc[65].Value, false, PlayerInput.ProfileGamepadUI.KeyStatus["MouseLeft"]);
         return str1;
       }
       string overrideInstructions = ItemSlot.GetOverrideInstructions(inv, context, slot);
-      if (Main.mouseItem.type > 0 && (context == 0 || context == 1 || (context == 2 || context == 6) || context == 15 || context == 7) && string.IsNullOrEmpty(overrideInstructions))
+      if ((Main.mouseItem.type <= 0 ? 0 : (context == 0 || context == 1 || (context == 2 || context == 6) || context == 15 ? 1 : (context == 7 ? 1 : 0))) != 0 && string.IsNullOrEmpty(overrideInstructions))
       {
         str1 += PlayerInput.BuildCommand(Lang.inter[121].Value, false, PlayerInput.ProfileGamepadUI.KeyStatus["SmartSelect"]);
         if (PlayerInput.Triggers.JustPressed.SmartSelect)

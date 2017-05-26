@@ -712,6 +712,7 @@
 		"MonkStaffT2Ghast": "Ghast",
 		"MonkStaffT3": "Wut des Himmelsdrachen",
 		"MonkStaffT3_Alt": "Wut des Himmelsdrachen",
-		"MonkStaffT3_AltShot": "Wut des Himmelsdrachen"
+		"MonkStaffT3_AltShot": "Wut des Himmelsdrachen",
+		"DD2JavelinHostileT3": "{$ProjectileName.DD2JavelinHostile}"
 	}
 }

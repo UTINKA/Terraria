@@ -1,7 +1,7 @@
 
 Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual Studio 2010
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Terraria", "Terraria.csproj", "{9CEF8C4F-1BEF-491B-B9F7-DB4D861B7D02}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Terraria", "Terraria.csproj", "{F19D45FF-8CC4-44E5-AB33-1C6B5D5011EE}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -9,10 +9,10 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{9CEF8C4F-1BEF-491B-B9F7-DB4D861B7D02}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{9CEF8C4F-1BEF-491B-B9F7-DB4D861B7D02}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{9CEF8C4F-1BEF-491B-B9F7-DB4D861B7D02}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{9CEF8C4F-1BEF-491B-B9F7-DB4D861B7D02}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F19D45FF-8CC4-44E5-AB33-1C6B5D5011EE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F19D45FF-8CC4-44E5-AB33-1C6B5D5011EE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F19D45FF-8CC4-44E5-AB33-1C6B5D5011EE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F19D45FF-8CC4-44E5-AB33-1C6B5D5011EE}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

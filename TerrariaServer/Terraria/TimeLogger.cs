@@ -1,8 +1,8 @@
 ﻿// Decompiled with JetBrains decompiler
 // Type: Terraria.TimeLogger
-// Assembly: TerrariaServer, Version=1.3.5.1, Culture=neutral, PublicKeyToken=null
-// MVID: C2103E81-0935-4BEA-9E98-4159FC80C2BB
-// Assembly location: F:\Steam\steamapps\common\Terraria\TerrariaServer.exe
+// Assembly: TerrariaServer, Version=1.3.5.3, Culture=neutral, PublicKeyToken=null
+// MVID: 8A63A7A2-328D-424C-BC9D-BF23F93646F7
+// Assembly location: H:\Steam\steamapps\common\Terraria\TerrariaServer.exe
 
 using System;
 using System.Diagnostics;
@@ -14,7 +14,6 @@ namespace Terraria
 {
   public static class TimeLogger
   {
-    private const int maxTimeDelay = 100;
     private static StreamWriter logWriter;
     private static StringBuilder logBuilder;
     private static int framesToLog;
@@ -28,6 +27,7 @@ namespace Terraria
     private static TimeLogger.TimeLogData[] drawTimes;
     private static TimeLogger.TimeLogData[] lightingTimes;
     private static TimeLogger.TimeLogData[] detailedDrawTimes;
+    private const int maxTimeDelay = 100;
 
     public static void Initialize()
     {
@@ -121,7 +121,7 @@ namespace Terraria
       {
         TimeLogger.startLoggingNextFrame = false;
         DateTime now = DateTime.Now;
-        string path = Main.SavePath + (object) Path.DirectorySeparatorChar + "TerrariaDrawLog.7z";
+        string path = Main.SavePath + Path.DirectorySeparatorChar.ToString() + "TerrariaDrawLog.7z";
         try
         {
           TimeLogger.logWriter = new StreamWriter((Stream) new GZipStream((Stream) new FileStream(path, FileMode.Create), CompressionMode.Compress));
@@ -263,7 +263,8 @@ namespace Terraria
       if (detailedDrawType < 0 || detailedDrawType >= TimeLogger.detailedDrawTimes.Length)
         return;
       double totalMilliseconds = TimeLogger.detailedDrawTimer.Elapsed.TotalMilliseconds;
-      double time = totalMilliseconds - TimeLogger.lastDetailedDrawTime;
+      double detailedDrawTime = TimeLogger.lastDetailedDrawTime;
+      double time = totalMilliseconds - detailedDrawTime;
       TimeLogger.lastDetailedDrawTime = totalMilliseconds;
       TimeLogger.UpdateTime(TimeLogger.detailedDrawTimes, detailedDrawType, time);
     }

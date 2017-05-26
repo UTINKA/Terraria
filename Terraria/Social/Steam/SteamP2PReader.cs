@@ -1,8 +1,8 @@
 ﻿// Decompiled with JetBrains decompiler
 // Type: Terraria.Social.Steam.SteamP2PReader
-// Assembly: Terraria, Version=1.3.5.1, Culture=neutral, PublicKeyToken=null
-// MVID: E90A5A2F-CD10-4A2C-9D2A-6B036D4E8877
-// Assembly location: F:\Steam\steamapps\common\Terraria\Terraria.exe
+// Assembly: Terraria, Version=1.3.5.3, Culture=neutral, PublicKeyToken=null
+// MVID: 68659D26-2BE6-448F-8663-74FA559E6F08
+// Assembly location: H:\Steam\steamapps\common\Terraria\Terraria.exe
 
 using Steamworks;
 using System;
@@ -62,7 +62,7 @@ namespace Terraria.Social.Steam
         uint size1;
         while (this.IsPacketAvailable(out size1))
         {
-          byte[] data = this._bufferPool.Count != 0 ? this._bufferPool.Dequeue() : new byte[(IntPtr) Math.Max(size1, 4096U)];
+          byte[] data = this._bufferPool.Count != 0 ? this._bufferPool.Dequeue() : new byte[(int) Math.Max(size1, 4096U)];
           uint size2;
           CSteamID index;
           bool flag;

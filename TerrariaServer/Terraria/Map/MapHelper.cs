@@ -1,8 +1,8 @@
 ﻿// Decompiled with JetBrains decompiler
 // Type: Terraria.Map.MapHelper
-// Assembly: TerrariaServer, Version=1.3.5.1, Culture=neutral, PublicKeyToken=null
-// MVID: C2103E81-0935-4BEA-9E98-4159FC80C2BB
-// Assembly location: F:\Steam\steamapps\common\Terraria\TerrariaServer.exe
+// Assembly: TerrariaServer, Version=1.3.5.3, Culture=neutral, PublicKeyToken=null
+// MVID: 8A63A7A2-328D-424C-BC9D-BF23F93646F7
+// Assembly location: H:\Steam\steamapps\common\Terraria\TerrariaServer.exe
 
 using Ionic.Zlib;
 using Microsoft.Xna.Framework;
@@ -59,13 +59,16 @@ namespace Terraria.Map
       Color[][] colorArray1 = new Color[470][];
       for (int index = 0; index < 470; ++index)
         colorArray1[index] = new Color[12];
-      Color color1 = new Color(151, 107, 75);
+      Color color1;
+      // ISSUE: explicit reference operation
+      ((Color) @color1).\u002Ector(151, 107, 75);
       colorArray1[0][0] = color1;
       colorArray1[5][0] = color1;
       colorArray1[30][0] = color1;
       colorArray1[191][0] = color1;
       colorArray1[272][0] = new Color(121, 119, 101);
-      color1 = new Color(128, 128, 128);
+      // ISSUE: explicit reference operation
+      ((Color) @color1).\u002Ector(128, 128, 128);
       colorArray1[1][0] = color1;
       colorArray1[38][0] = color1;
       colorArray1[48][0] = color1;
@@ -74,7 +77,8 @@ namespace Terraria.Map
       colorArray1[273][0] = color1;
       colorArray1[283][0] = color1;
       colorArray1[2][0] = new Color(28, 216, 94);
-      color1 = new Color(26, 196, 84);
+      // ISSUE: explicit reference operation
+      ((Color) @color1).\u002Ector(26, 196, 84);
       colorArray1[3][0] = color1;
       colorArray1[192][0] = color1;
       colorArray1[73][0] = new Color(27, 197, 109);
@@ -82,17 +86,21 @@ namespace Terraria.Map
       colorArray1[353][0] = new Color(28, 216, 94);
       colorArray1[20][0] = new Color(163, 116, 81);
       colorArray1[6][0] = new Color(140, 101, 80);
-      color1 = new Color(150, 67, 22);
+      // ISSUE: explicit reference operation
+      ((Color) @color1).\u002Ector(150, 67, 22);
       colorArray1[7][0] = color1;
       colorArray1[47][0] = color1;
       colorArray1[284][0] = color1;
-      color1 = new Color(185, 164, 23);
+      // ISSUE: explicit reference operation
+      ((Color) @color1).\u002Ector(185, 164, 23);
       colorArray1[8][0] = color1;
       colorArray1[45][0] = color1;
-      color1 = new Color(185, 194, 195);
+      // ISSUE: explicit reference operation
+      ((Color) @color1).\u002Ector(185, 194, 195);
       colorArray1[9][0] = color1;
       colorArray1[46][0] = color1;
-      color1 = new Color(98, 95, 167);
+      // ISSUE: explicit reference operation
+      ((Color) @color1).\u002Ector(98, 95, 167);
       colorArray1[22][0] = color1;
       colorArray1[140][0] = color1;
       colorArray1[23][0] = new Color(141, 137, 223);
@@ -105,7 +113,8 @@ namespace Terraria.Map
       colorArray1[43][0] = new Color(84, 100, 63);
       colorArray1[44][0] = new Color(107, 68, 99);
       colorArray1[53][0] = new Color(186, 168, 84);
-      color1 = new Color(190, 171, 94);
+      // ISSUE: explicit reference operation
+      ((Color) @color1).\u002Ector(190, 171, 94);
       colorArray1[151][0] = color1;
       colorArray1[154][0] = color1;
       colorArray1[274][0] = color1;
@@ -115,10 +124,12 @@ namespace Terraria.Map
       colorArray1[56][0] = new Color(43, 40, 84);
       colorArray1[75][0] = new Color(26, 26, 26);
       colorArray1[57][0] = new Color(68, 68, 76);
-      color1 = new Color(142, 66, 66);
+      // ISSUE: explicit reference operation
+      ((Color) @color1).\u002Ector(142, 66, 66);
       colorArray1[58][0] = color1;
       colorArray1[76][0] = color1;
-      color1 = new Color(92, 68, 73);
+      // ISSUE: explicit reference operation
+      ((Color) @color1).\u002Ector(92, 68, 73);
       colorArray1[59][0] = color1;
       colorArray1[120][0] = color1;
       colorArray1[60][0] = new Color(143, 215, 29);
@@ -133,20 +144,25 @@ namespace Terraria.Map
       colorArray1[67][0] = new Color(140, 58, 166);
       colorArray1[68][0] = new Color(125, 191, 197);
       colorArray1[70][0] = new Color(93, (int) sbyte.MaxValue, (int) byte.MaxValue);
-      color1 = new Color(182, 175, 130);
+      // ISSUE: explicit reference operation
+      ((Color) @color1).\u002Ector(182, 175, 130);
       colorArray1[71][0] = color1;
       colorArray1[72][0] = color1;
       colorArray1[190][0] = color1;
-      color1 = new Color(73, 120, 17);
+      // ISSUE: explicit reference operation
+      ((Color) @color1).\u002Ector(73, 120, 17);
       colorArray1[80][0] = color1;
       colorArray1[188][0] = color1;
-      color1 = new Color(11, 80, 143);
+      // ISSUE: explicit reference operation
+      ((Color) @color1).\u002Ector(11, 80, 143);
       colorArray1[107][0] = color1;
       colorArray1[121][0] = color1;
-      color1 = new Color(91, 169, 169);
+      // ISSUE: explicit reference operation
+      ((Color) @color1).\u002Ector(91, 169, 169);
       colorArray1[108][0] = color1;
       colorArray1[122][0] = color1;
-      color1 = new Color(128, 26, 52);
+      // ISSUE: explicit reference operation
+      ((Color) @color1).\u002Ector(128, 26, 52);
       colorArray1[111][0] = color1;
       colorArray1[150][0] = color1;
       colorArray1[109][0] = new Color(78, 193, 227);
@@ -154,7 +170,8 @@ namespace Terraria.Map
       colorArray1[113][0] = new Color(48, 208, 234);
       colorArray1[115][0] = new Color(33, 171, 207);
       colorArray1[112][0] = new Color(103, 98, 122);
-      color1 = new Color(238, 225, 218);
+      // ISSUE: explicit reference operation
+      ((Color) @color1).\u002Ector(238, 225, 218);
       colorArray1[116][0] = color1;
       colorArray1[118][0] = color1;
       colorArray1[117][0] = new Color(181, 172, 190);
@@ -164,7 +181,8 @@ namespace Terraria.Map
       colorArray1[131][0] = new Color(52, 52, 52);
       colorArray1[145][0] = new Color(192, 30, 30);
       colorArray1[146][0] = new Color(43, 192, 30);
-      color1 = new Color(211, 236, 241);
+      // ISSUE: explicit reference operation
+      ((Color) @color1).\u002Ector(211, 236, 241);
       colorArray1[147][0] = color1;
       colorArray1[148][0] = color1;
       colorArray1[152][0] = new Color(128, 133, 184);
@@ -172,7 +190,8 @@ namespace Terraria.Map
       colorArray1[155][0] = new Color(131, 162, 161);
       colorArray1[156][0] = new Color(170, 171, 157);
       colorArray1[157][0] = new Color(104, 100, 126);
-      color1 = new Color(145, 81, 85);
+      // ISSUE: explicit reference operation
+      ((Color) @color1).\u002Ector(145, 81, 85);
       colorArray1[158][0] = color1;
       colorArray1[232][0] = color1;
       colorArray1[159][0] = new Color(148, 133, 98);
@@ -185,14 +204,17 @@ namespace Terraria.Map
       colorArray1[164][0] = new Color(218, 182, 204);
       colorArray1[170][0] = new Color(27, 109, 69);
       colorArray1[171][0] = new Color(33, 135, 85);
-      color1 = new Color(129, 125, 93);
+      // ISSUE: explicit reference operation
+      ((Color) @color1).\u002Ector(129, 125, 93);
       colorArray1[166][0] = color1;
       colorArray1[175][0] = color1;
       colorArray1[167][0] = new Color(62, 82, 114);
-      color1 = new Color(132, 157, (int) sbyte.MaxValue);
+      // ISSUE: explicit reference operation
+      ((Color) @color1).\u002Ector(132, 157, (int) sbyte.MaxValue);
       colorArray1[168][0] = color1;
       colorArray1[176][0] = color1;
-      color1 = new Color(152, 171, 198);
+      // ISSUE: explicit reference operation
+      ((Color) @color1).\u002Ector(152, 171, 198);
       colorArray1[169][0] = color1;
       colorArray1[177][0] = color1;
       colorArray1[179][0] = new Color(49, 134, 114);
@@ -256,7 +278,8 @@ namespace Terraria.Map
       colorArray1[267][0] = new Color(240, 240, 247);
       colorArray1[268][0] = new Color((int) byte.MaxValue, 145, 79);
       colorArray1[287][0] = new Color(79, 128, 17);
-      color1 = new Color(122, 217, 232);
+      // ISSUE: explicit reference operation
+      ((Color) @color1).\u002Ector(122, 217, 232);
       colorArray1[275][0] = color1;
       colorArray1[276][0] = color1;
       colorArray1[277][0] = color1;
@@ -306,17 +329,20 @@ namespace Terraria.Map
       colorArray1[313][0] = new Color(87, 150, 154);
       colorArray1[4][0] = new Color(253, 221, 3);
       colorArray1[4][1] = new Color(253, 221, 3);
-      color1 = new Color(253, 221, 3);
+      // ISSUE: explicit reference operation
+      ((Color) @color1).\u002Ector(253, 221, 3);
       colorArray1[93][0] = color1;
       colorArray1[33][0] = color1;
       colorArray1[174][0] = color1;
       colorArray1[100][0] = color1;
       colorArray1[98][0] = color1;
       colorArray1[173][0] = color1;
-      color1 = new Color(119, 105, 79);
+      // ISSUE: explicit reference operation
+      ((Color) @color1).\u002Ector(119, 105, 79);
       colorArray1[11][0] = color1;
       colorArray1[10][0] = color1;
-      color1 = new Color(191, 142, 111);
+      // ISSUE: explicit reference operation
+      ((Color) @color1).\u002Ector(191, 142, 111);
       colorArray1[14][0] = color1;
       colorArray1[469][0] = color1;
       colorArray1[15][0] = color1;
@@ -344,7 +370,8 @@ namespace Terraria.Map
       colorArray1[395][0] = color1;
       colorArray1[12][0] = new Color(174, 24, 69);
       colorArray1[13][0] = new Color(133, 213, 247);
-      color1 = new Color(144, 148, 144);
+      // ISSUE: explicit reference operation
+      ((Color) @color1).\u002Ector(144, 148, 144);
       colorArray1[17][0] = color1;
       colorArray1[90][0] = color1;
       colorArray1[96][0] = color1;
@@ -439,7 +466,8 @@ namespace Terraria.Map
       colorArray1[240][4] = new Color(234, 231, 226);
       colorArray1[241][0] = new Color(77, 74, 72);
       colorArray1[244][0] = new Color(200, 245, 253);
-      color1 = new Color(99, 50, 30);
+      // ISSUE: explicit reference operation
+      ((Color) @color1).\u002Ector(99, 50, 30);
       colorArray1[242][0] = color1;
       colorArray1[245][0] = color1;
       colorArray1[246][0] = color1;
@@ -465,31 +493,38 @@ namespace Terraria.Map
       colorArray1[441][4] = colorArray1[21][4];
       colorArray1[27][0] = new Color(54, 154, 54);
       colorArray1[27][1] = new Color(226, 196, 49);
-      color1 = new Color(246, 197, 26);
+      // ISSUE: explicit reference operation
+      ((Color) @color1).\u002Ector(246, 197, 26);
       colorArray1[82][0] = color1;
       colorArray1[83][0] = color1;
       colorArray1[84][0] = color1;
-      color1 = new Color(76, 150, 216);
+      // ISSUE: explicit reference operation
+      ((Color) @color1).\u002Ector(76, 150, 216);
       colorArray1[82][1] = color1;
       colorArray1[83][1] = color1;
       colorArray1[84][1] = color1;
-      color1 = new Color(185, 214, 42);
+      // ISSUE: explicit reference operation
+      ((Color) @color1).\u002Ector(185, 214, 42);
       colorArray1[82][2] = color1;
       colorArray1[83][2] = color1;
       colorArray1[84][2] = color1;
-      color1 = new Color(167, 203, 37);
+      // ISSUE: explicit reference operation
+      ((Color) @color1).\u002Ector(167, 203, 37);
       colorArray1[82][3] = color1;
       colorArray1[83][3] = color1;
       colorArray1[84][3] = color1;
-      color1 = new Color(72, 145, 125);
+      // ISSUE: explicit reference operation
+      ((Color) @color1).\u002Ector(72, 145, 125);
       colorArray1[82][4] = color1;
       colorArray1[83][4] = color1;
       colorArray1[84][4] = color1;
-      color1 = new Color(177, 69, 49);
+      // ISSUE: explicit reference operation
+      ((Color) @color1).\u002Ector(177, 69, 49);
       colorArray1[82][5] = color1;
       colorArray1[83][5] = color1;
       colorArray1[84][5] = color1;
-      color1 = new Color(40, 152, 240);
+      // ISSUE: explicit reference operation
+      ((Color) @color1).\u002Ector(40, 152, 240);
       colorArray1[82][6] = color1;
       colorArray1[83][6] = color1;
       colorArray1[84][6] = color1;
@@ -510,43 +545,53 @@ namespace Terraria.Map
       colorArray1[184][3] = new Color(34, 63, 102);
       colorArray1[184][4] = new Color(79, 35, 95);
       colorArray1[184][5] = new Color(253, 62, 3);
-      color1 = new Color(99, 99, 99);
+      // ISSUE: explicit reference operation
+      ((Color) @color1).\u002Ector(99, 99, 99);
       colorArray1[185][0] = color1;
       colorArray1[186][0] = color1;
       colorArray1[187][0] = color1;
-      color1 = new Color(114, 81, 56);
+      // ISSUE: explicit reference operation
+      ((Color) @color1).\u002Ector(114, 81, 56);
       colorArray1[185][1] = color1;
       colorArray1[186][1] = color1;
       colorArray1[187][1] = color1;
-      color1 = new Color(133, 133, 101);
+      // ISSUE: explicit reference operation
+      ((Color) @color1).\u002Ector(133, 133, 101);
       colorArray1[185][2] = color1;
       colorArray1[186][2] = color1;
       colorArray1[187][2] = color1;
-      color1 = new Color(151, 200, 211);
+      // ISSUE: explicit reference operation
+      ((Color) @color1).\u002Ector(151, 200, 211);
       colorArray1[185][3] = color1;
       colorArray1[186][3] = color1;
       colorArray1[187][3] = color1;
-      color1 = new Color(177, 183, 161);
+      // ISSUE: explicit reference operation
+      ((Color) @color1).\u002Ector(177, 183, 161);
       colorArray1[185][4] = color1;
       colorArray1[186][4] = color1;
       colorArray1[187][4] = color1;
-      color1 = new Color(134, 114, 38);
+      // ISSUE: explicit reference operation
+      ((Color) @color1).\u002Ector(134, 114, 38);
       colorArray1[185][5] = color1;
       colorArray1[186][5] = color1;
       colorArray1[187][5] = color1;
-      color1 = new Color(82, 62, 66);
+      // ISSUE: explicit reference operation
+      ((Color) @color1).\u002Ector(82, 62, 66);
       colorArray1[185][6] = color1;
       colorArray1[186][6] = color1;
       colorArray1[187][6] = color1;
-      color1 = new Color(143, 117, 121);
+      // ISSUE: explicit reference operation
+      ((Color) @color1).\u002Ector(143, 117, 121);
       colorArray1[185][7] = color1;
       colorArray1[186][7] = color1;
       colorArray1[187][7] = color1;
-      color1 = new Color(177, 92, 31);
+      // ISSUE: explicit reference operation
+      ((Color) @color1).\u002Ector(177, 92, 31);
       colorArray1[185][8] = color1;
       colorArray1[186][8] = color1;
       colorArray1[187][8] = color1;
-      color1 = new Color(85, 73, 87);
+      // ISSUE: explicit reference operation
+      ((Color) @color1).\u002Ector(85, 73, 87);
       colorArray1[185][9] = color1;
       colorArray1[186][9] = color1;
       colorArray1[187][9] = color1;
@@ -730,7 +775,8 @@ namespace Terraria.Map
       colorArray3[227][0] = new Color(95, 137, 191);
       colorArray3[170][0] = new Color(59, 39, 22);
       colorArray3[171][0] = new Color(59, 39, 22);
-      color1 = new Color(52, 52, 52);
+      // ISSUE: explicit reference operation
+      ((Color) @color1).\u002Ector(52, 52, 52);
       colorArray3[1][0] = color1;
       colorArray3[53][0] = color1;
       colorArray3[52][0] = color1;
@@ -740,45 +786,56 @@ namespace Terraria.Map
       colorArray3[48][0] = color1;
       colorArray3[44][0] = color1;
       colorArray3[5][0] = color1;
-      color1 = new Color(88, 61, 46);
+      // ISSUE: explicit reference operation
+      ((Color) @color1).\u002Ector(88, 61, 46);
       colorArray3[2][0] = color1;
       colorArray3[16][0] = color1;
       colorArray3[59][0] = color1;
       colorArray3[3][0] = new Color(61, 58, 78);
       colorArray3[4][0] = new Color(73, 51, 36);
       colorArray3[6][0] = new Color(91, 30, 30);
-      color1 = new Color(27, 31, 42);
+      // ISSUE: explicit reference operation
+      ((Color) @color1).\u002Ector(27, 31, 42);
       colorArray3[7][0] = color1;
       colorArray3[17][0] = color1;
-      color1 = new Color(32, 40, 45);
+      // ISSUE: explicit reference operation
+      ((Color) @color1).\u002Ector(32, 40, 45);
       colorArray3[94][0] = color1;
       colorArray3[100][0] = color1;
-      color1 = new Color(44, 41, 50);
+      // ISSUE: explicit reference operation
+      ((Color) @color1).\u002Ector(44, 41, 50);
       colorArray3[95][0] = color1;
       colorArray3[101][0] = color1;
-      color1 = new Color(31, 39, 26);
+      // ISSUE: explicit reference operation
+      ((Color) @color1).\u002Ector(31, 39, 26);
       colorArray3[8][0] = color1;
       colorArray3[18][0] = color1;
-      color1 = new Color(36, 45, 44);
+      // ISSUE: explicit reference operation
+      ((Color) @color1).\u002Ector(36, 45, 44);
       colorArray3[98][0] = color1;
       colorArray3[104][0] = color1;
-      color1 = new Color(38, 49, 50);
+      // ISSUE: explicit reference operation
+      ((Color) @color1).\u002Ector(38, 49, 50);
       colorArray3[99][0] = color1;
       colorArray3[105][0] = color1;
-      color1 = new Color(41, 28, 36);
+      // ISSUE: explicit reference operation
+      ((Color) @color1).\u002Ector(41, 28, 36);
       colorArray3[9][0] = color1;
       colorArray3[19][0] = color1;
-      color1 = new Color(72, 50, 77);
+      // ISSUE: explicit reference operation
+      ((Color) @color1).\u002Ector(72, 50, 77);
       colorArray3[96][0] = color1;
       colorArray3[102][0] = color1;
-      color1 = new Color(78, 50, 69);
+      // ISSUE: explicit reference operation
+      ((Color) @color1).\u002Ector(78, 50, 69);
       colorArray3[97][0] = color1;
       colorArray3[103][0] = color1;
       colorArray3[10][0] = new Color(74, 62, 12);
       colorArray3[11][0] = new Color(46, 56, 59);
       colorArray3[12][0] = new Color(75, 32, 11);
       colorArray3[13][0] = new Color(67, 37, 37);
-      color1 = new Color(15, 15, 15);
+      // ISSUE: explicit reference operation
+      ((Color) @color1).\u002Ector(15, 15, 15);
       colorArray3[14][0] = color1;
       colorArray3[20][0] = color1;
       colorArray3[15][0] = new Color(52, 43, 45);
@@ -793,7 +850,8 @@ namespace Terraria.Map
       colorArray3[29][0] = new Color(88, 23, 23);
       colorArray3[30][0] = new Color(28, 88, 23);
       colorArray3[31][0] = new Color(78, 87, 99);
-      color1 = new Color(69, 67, 41);
+      // ISSUE: explicit reference operation
+      ((Color) @color1).\u002Ector(69, 67, 41);
       colorArray3[34][0] = color1;
       colorArray3[37][0] = color1;
       colorArray3[32][0] = new Color(86, 17, 40);
@@ -819,19 +877,22 @@ namespace Terraria.Map
       colorArray3[62][0] = new Color(39, 33, 26);
       colorArray3[69][0] = new Color(43, 42, 68);
       colorArray3[70][0] = new Color(30, 70, 80);
-      color1 = new Color(30, 80, 48);
+      // ISSUE: explicit reference operation
+      ((Color) @color1).\u002Ector(30, 80, 48);
       colorArray3[63][0] = color1;
       colorArray3[65][0] = color1;
       colorArray3[66][0] = color1;
       colorArray3[68][0] = color1;
-      color1 = new Color(53, 80, 30);
+      // ISSUE: explicit reference operation
+      ((Color) @color1).\u002Ector(53, 80, 30);
       colorArray3[64][0] = color1;
       colorArray3[67][0] = color1;
       colorArray3[78][0] = new Color(63, 39, 26);
       colorArray3[71][0] = new Color(78, 105, 135);
       colorArray3[72][0] = new Color(52, 84, 12);
       colorArray3[73][0] = new Color(190, 204, 223);
-      color1 = new Color(64, 62, 80);
+      // ISSUE: explicit reference operation
+      ((Color) @color1).\u002Ector(64, 62, 80);
       colorArray3[74][0] = color1;
       colorArray3[80][0] = color1;
       colorArray3[75][0] = new Color(65, 65, 35);
@@ -843,10 +904,12 @@ namespace Terraria.Map
       colorArray3[83][0] = new Color(62, 38, 41);
       colorArray3[84][0] = new Color(48, 78, 93);
       colorArray3[85][0] = new Color(54, 63, 69);
-      color1 = new Color(138, 73, 38);
+      // ISSUE: explicit reference operation
+      ((Color) @color1).\u002Ector(138, 73, 38);
       colorArray3[86][0] = color1;
       colorArray3[108][0] = color1;
-      color1 = new Color(50, 15, 8);
+      // ISSUE: explicit reference operation
+      ((Color) @color1).\u002Ector(50, 15, 8);
       colorArray3[87][0] = color1;
       colorArray3[112][0] = color1;
       colorArray3[109][0] = new Color(94, 25, 17);
@@ -946,40 +1009,71 @@ namespace Terraria.Map
       colorArray3[229][0] = new Color(100, 55, 164);
       colorArray3[230][0] = new Color(0, 117, 101);
       Color[] colorArray4 = new Color[256];
-      Color color2 = new Color(50, 40, (int) byte.MaxValue);
-      Color color3 = new Color(145, 185, (int) byte.MaxValue);
+      Color color2;
+      // ISSUE: explicit reference operation
+      ((Color) @color2).\u002Ector(50, 40, (int) byte.MaxValue);
+      Color color3;
+      // ISSUE: explicit reference operation
+      ((Color) @color3).\u002Ector(145, 185, (int) byte.MaxValue);
       for (int index = 0; index < colorArray4.Length; ++index)
       {
         float num1 = (float) index / (float) colorArray4.Length;
         float num2 = 1f - num1;
-        colorArray4[index] = new Color((int) (byte) ((double) color2.R * (double) num2 + (double) color3.R * (double) num1), (int) (byte) ((double) color2.G * (double) num2 + (double) color3.G * (double) num1), (int) (byte) ((double) color2.B * (double) num2 + (double) color3.B * (double) num1));
+        // ISSUE: explicit reference operation
+        // ISSUE: explicit reference operation
+        // ISSUE: explicit reference operation
+        // ISSUE: explicit reference operation
+        // ISSUE: explicit reference operation
+        // ISSUE: explicit reference operation
+        colorArray4[index] = new Color((int) (byte) ((double) ((Color) @color2).get_R() * (double) num2 + (double) ((Color) @color3).get_R() * (double) num1), (int) (byte) ((double) ((Color) @color2).get_G() * (double) num2 + (double) ((Color) @color3).get_G() * (double) num1), (int) (byte) ((double) ((Color) @color2).get_B() * (double) num2 + (double) ((Color) @color3).get_B() * (double) num1));
       }
       Color[] colorArray5 = new Color[256];
-      Color color4 = new Color(88, 61, 46);
-      Color color5 = new Color(37, 78, 123);
+      Color color4;
+      // ISSUE: explicit reference operation
+      ((Color) @color4).\u002Ector(88, 61, 46);
+      Color color5;
+      // ISSUE: explicit reference operation
+      ((Color) @color5).\u002Ector(37, 78, 123);
       for (int index = 0; index < colorArray5.Length; ++index)
       {
         float num1 = (float) index / (float) byte.MaxValue;
         float num2 = 1f - num1;
-        colorArray5[index] = new Color((int) (byte) ((double) color4.R * (double) num2 + (double) color5.R * (double) num1), (int) (byte) ((double) color4.G * (double) num2 + (double) color5.G * (double) num1), (int) (byte) ((double) color4.B * (double) num2 + (double) color5.B * (double) num1));
+        // ISSUE: explicit reference operation
+        // ISSUE: explicit reference operation
+        // ISSUE: explicit reference operation
+        // ISSUE: explicit reference operation
+        // ISSUE: explicit reference operation
+        // ISSUE: explicit reference operation
+        colorArray5[index] = new Color((int) (byte) ((double) ((Color) @color4).get_R() * (double) num2 + (double) ((Color) @color5).get_R() * (double) num1), (int) (byte) ((double) ((Color) @color4).get_G() * (double) num2 + (double) ((Color) @color5).get_G() * (double) num1), (int) (byte) ((double) ((Color) @color4).get_B() * (double) num2 + (double) ((Color) @color5).get_B() * (double) num1));
       }
       Color[] colorArray6 = new Color[256];
-      Color color6 = new Color(74, 67, 60);
-      color5 = new Color(53, 70, 97);
+      Color color6;
+      // ISSUE: explicit reference operation
+      ((Color) @color6).\u002Ector(74, 67, 60);
+      // ISSUE: explicit reference operation
+      ((Color) @color5).\u002Ector(53, 70, 97);
       for (int index = 0; index < colorArray6.Length; ++index)
       {
         float num1 = (float) index / (float) byte.MaxValue;
         float num2 = 1f - num1;
-        colorArray6[index] = new Color((int) (byte) ((double) color6.R * (double) num2 + (double) color5.R * (double) num1), (int) (byte) ((double) color6.G * (double) num2 + (double) color5.G * (double) num1), (int) (byte) ((double) color6.B * (double) num2 + (double) color5.B * (double) num1));
+        // ISSUE: explicit reference operation
+        // ISSUE: explicit reference operation
+        // ISSUE: explicit reference operation
+        // ISSUE: explicit reference operation
+        // ISSUE: explicit reference operation
+        // ISSUE: explicit reference operation
+        colorArray6[index] = new Color((int) (byte) ((double) ((Color) @color6).get_R() * (double) num2 + (double) ((Color) @color5).get_R() * (double) num1), (int) (byte) ((double) ((Color) @color6).get_G() * (double) num2 + (double) ((Color) @color5).get_G() * (double) num1), (int) (byte) ((double) ((Color) @color6).get_B() * (double) num2 + (double) ((Color) @color5).get_B() * (double) num1));
       }
-      Color color7 = new Color(50, 44, 38);
+      Color color7;
+      // ISSUE: explicit reference operation
+      ((Color) @color7).\u002Ector(50, 44, 38);
       int num3 = 0;
       MapHelper.tileOptionCounts = new int[470];
       for (int index1 = 0; index1 < 470; ++index1)
       {
         Color[] colorArray7 = colorArray1[index1];
         int index2 = 0;
-        while (index2 < 12 && !(colorArray7[index2] == Color.Transparent))
+        while (index2 < 12 && !Color.op_Equality(colorArray7[index2], Color.get_Transparent()))
           ++index2;
         MapHelper.tileOptionCounts[index1] = index2;
         num3 += index2;
@@ -989,13 +1083,13 @@ namespace Terraria.Map
       {
         Color[] colorArray7 = colorArray3[index1];
         int index2 = 0;
-        while (index2 < 2 && !(colorArray7[index2] == Color.Transparent))
+        while (index2 < 2 && !Color.op_Equality(colorArray7[index2], Color.get_Transparent()))
           ++index2;
         MapHelper.wallOptionCounts[index1] = index2;
         num3 += index2;
       }
       MapHelper.colorLookup = new Color[num3 + 773];
-      MapHelper.colorLookup[0] = Color.Transparent;
+      MapHelper.colorLookup[0] = Color.get_Transparent();
       ushort num4 = 1;
       MapHelper.tilePosition = num4;
       MapHelper.tileLookup = new ushort[470];
@@ -1082,45 +1176,72 @@ namespace Terraria.Map
     private static void MapColor(ushort type, ref Color oldColor, byte colorType)
     {
       Color color = WorldGen.paintColor((int) colorType);
-      float num1 = (float) oldColor.R / (float) byte.MaxValue;
-      float num2 = (float) oldColor.G / (float) byte.MaxValue;
-      float num3 = (float) oldColor.B / (float) byte.MaxValue;
+      // ISSUE: explicit reference operation
+      float num1 = (float) ((Color) @oldColor).get_R() / (float) byte.MaxValue;
+      // ISSUE: explicit reference operation
+      float num2 = (float) ((Color) @oldColor).get_G() / (float) byte.MaxValue;
+      // ISSUE: explicit reference operation
+      float num3 = (float) ((Color) @oldColor).get_B() / (float) byte.MaxValue;
       if ((double) num2 > (double) num1)
         num1 = num2;
       if ((double) num3 > (double) num1)
       {
-        float num4 = num1;
+        double num4 = (double) num1;
         num1 = num3;
-        num3 = num4;
+        num3 = (float) num4;
       }
       if ((int) colorType == 29)
       {
         float num4 = num3 * 0.3f;
-        oldColor.R = (byte) ((double) color.R * (double) num4);
-        oldColor.G = (byte) ((double) color.G * (double) num4);
-        oldColor.B = (byte) ((double) color.B * (double) num4);
+        // ISSUE: explicit reference operation
+        // ISSUE: explicit reference operation
+        ((Color) @oldColor).set_R((byte) ((double) ((Color) @color).get_R() * (double) num4));
+        // ISSUE: explicit reference operation
+        // ISSUE: explicit reference operation
+        ((Color) @oldColor).set_G((byte) ((double) ((Color) @color).get_G() * (double) num4));
+        // ISSUE: explicit reference operation
+        // ISSUE: explicit reference operation
+        ((Color) @oldColor).set_B((byte) ((double) ((Color) @color).get_B() * (double) num4));
       }
       else if ((int) colorType == 30)
       {
         if ((int) type >= (int) MapHelper.wallRangeStart && (int) type <= (int) MapHelper.wallRangeEnd)
         {
-          oldColor.R = (byte) ((double) ((int) byte.MaxValue - (int) oldColor.R) * 0.5);
-          oldColor.G = (byte) ((double) ((int) byte.MaxValue - (int) oldColor.G) * 0.5);
-          oldColor.B = (byte) ((double) ((int) byte.MaxValue - (int) oldColor.B) * 0.5);
+          // ISSUE: explicit reference operation
+          // ISSUE: explicit reference operation
+          ((Color) @oldColor).set_R((byte) ((double) ((int) byte.MaxValue - (int) ((Color) @oldColor).get_R()) * 0.5));
+          // ISSUE: explicit reference operation
+          // ISSUE: explicit reference operation
+          ((Color) @oldColor).set_G((byte) ((double) ((int) byte.MaxValue - (int) ((Color) @oldColor).get_G()) * 0.5));
+          // ISSUE: explicit reference operation
+          // ISSUE: explicit reference operation
+          ((Color) @oldColor).set_B((byte) ((double) ((int) byte.MaxValue - (int) ((Color) @oldColor).get_B()) * 0.5));
         }
         else
         {
-          oldColor.R = (byte) ((uint) byte.MaxValue - (uint) oldColor.R);
-          oldColor.G = (byte) ((uint) byte.MaxValue - (uint) oldColor.G);
-          oldColor.B = (byte) ((uint) byte.MaxValue - (uint) oldColor.B);
+          // ISSUE: explicit reference operation
+          // ISSUE: explicit reference operation
+          ((Color) @oldColor).set_R((byte) ((uint) byte.MaxValue - (uint) ((Color) @oldColor).get_R()));
+          // ISSUE: explicit reference operation
+          // ISSUE: explicit reference operation
+          ((Color) @oldColor).set_G((byte) ((uint) byte.MaxValue - (uint) ((Color) @oldColor).get_G()));
+          // ISSUE: explicit reference operation
+          // ISSUE: explicit reference operation
+          ((Color) @oldColor).set_B((byte) ((uint) byte.MaxValue - (uint) ((Color) @oldColor).get_B()));
         }
       }
       else
       {
         float num4 = num1;
-        oldColor.R = (byte) ((double) color.R * (double) num4);
-        oldColor.G = (byte) ((double) color.G * (double) num4);
-        oldColor.B = (byte) ((double) color.B * (double) num4);
+        // ISSUE: explicit reference operation
+        // ISSUE: explicit reference operation
+        ((Color) @oldColor).set_R((byte) ((double) ((Color) @color).get_R() * (double) num4));
+        // ISSUE: explicit reference operation
+        // ISSUE: explicit reference operation
+        ((Color) @oldColor).set_G((byte) ((double) ((Color) @color).get_G() * (double) num4));
+        // ISSUE: explicit reference operation
+        // ISSUE: explicit reference operation
+        ((Color) @oldColor).set_B((byte) ((double) ((Color) @color).get_B() * (double) num4));
       }
     }
 
@@ -1133,9 +1254,15 @@ namespace Terraria.Map
       if ((int) tile.Light == (int) byte.MaxValue)
         return oldColor;
       float num = (float) tile.Light / (float) byte.MaxValue;
-      oldColor.R = (byte) ((double) oldColor.R * (double) num);
-      oldColor.G = (byte) ((double) oldColor.G * (double) num);
-      oldColor.B = (byte) ((double) oldColor.B * (double) num);
+      // ISSUE: explicit reference operation
+      // ISSUE: explicit reference operation
+      ((Color) @oldColor).set_R((byte) ((double) ((Color) @oldColor).get_R() * (double) num));
+      // ISSUE: explicit reference operation
+      // ISSUE: explicit reference operation
+      ((Color) @oldColor).set_G((byte) ((double) ((Color) @oldColor).get_G() * (double) num));
+      // ISSUE: explicit reference operation
+      // ISSUE: explicit reference operation
+      ((Color) @oldColor).set_B((byte) ((double) ((Color) @oldColor).get_B() * (double) num));
       return oldColor;
     }
 
@@ -1156,314 +1283,435 @@ namespace Terraria.Map
         if (num3 != 0)
         {
           num1 = type2 != 160 ? (int) tile.color() : 0;
-          switch (type2)
+          if (type2 <= 178)
           {
-            case 453:
-              int num5 = (int) tile.frameX / 36;
-              if (num5 > 2)
-                num5 = 2;
-              num4 = num5;
-              break;
-            case 457:
-              int num6 = (int) tile.frameX / 36;
-              if (num6 > 4)
-                num6 = 4;
-              num4 = num6;
-              break;
-            case 467:
-            case 468:
-              switch ((int) tile.frameX / 36)
+            if (type2 <= 105)
+            {
+              if (type2 <= 21)
+              {
+                if (type2 != 4)
+                {
+                  if (type2 != 21)
+                    goto label_141;
+                }
+                else
+                {
+                  if ((int) tile.frameX < 66)
+                    ;
+                  num4 = 0;
+                  goto label_142;
+                }
+              }
+              else
+              {
+                switch (type2 - 26)
+                {
+                  case 0:
+                    num4 = (int) tile.frameX < 54 ? 0 : 1;
+                    goto label_142;
+                  case 1:
+                    num4 = (int) tile.frameY >= 34 ? 0 : 1;
+                    goto label_142;
+                  case 2:
+                    num4 = (int) tile.frameY >= 144 ? ((int) tile.frameY >= 252 ? ((int) tile.frameY < 360 || (int) tile.frameY > 900 && (int) tile.frameY < 1008 ? 2 : ((int) tile.frameY >= 468 ? ((int) tile.frameY >= 576 ? ((int) tile.frameY >= 684 ? ((int) tile.frameY >= 792 ? ((int) tile.frameY >= 898 ? ((int) tile.frameY >= 1006 ? ((int) tile.frameY >= 1114 ? ((int) tile.frameY >= 1222 ? 7 : 3) : 0) : 7) : 8) : 6) : 5) : 4) : 3)) : 1) : 0;
+                    goto label_142;
+                  case 3:
+                  case 4:
+                    goto label_141;
+                  case 5:
+                    num4 = (int) tile.frameX < 36 ? 0 : 1;
+                    goto label_142;
+                  default:
+                    if ((uint) (type2 - 82) > 2U)
+                    {
+                      if (type2 == 105)
+                      {
+                        num4 = (int) tile.frameX < 1548 || (int) tile.frameX > 1654 ? ((int) tile.frameX < 1656 || (int) tile.frameX > 1798 ? 0 : 2) : 1;
+                        goto label_142;
+                      }
+                      else
+                        goto label_141;
+                    }
+                    else
+                    {
+                      num4 = (int) tile.frameX >= 18 ? ((int) tile.frameX >= 36 ? ((int) tile.frameX >= 54 ? ((int) tile.frameX >= 72 ? ((int) tile.frameX >= 90 ? ((int) tile.frameX >= 108 ? 6 : 5) : 4) : 3) : 2) : 1) : 0;
+                      goto label_142;
+                    }
+                }
+              }
+            }
+            else if (type2 <= 149)
+            {
+              switch (type2 - 133)
               {
                 case 0:
-                  num4 = 0;
-                  break;
+                  num4 = (int) tile.frameX >= 52 ? 1 : 0;
+                  goto label_142;
                 case 1:
-                  num4 = 1;
-                  break;
-                default:
-                  num4 = 0;
-                  break;
-              }
-            case 428:
-              int num7 = (int) tile.frameY / 18;
-              if (num7 > 3)
-                num7 = 3;
-              num4 = num7;
-              break;
-            case 440:
-              int num8 = (int) tile.frameX / 54;
-              if (num8 > 6)
-                num8 = 6;
-              num4 = num8;
-              break;
-            case 441:
-            case 21:
-              switch ((int) tile.frameX / 36)
-              {
-                case 1:
+                  num4 = (int) tile.frameX >= 28 ? 1 : 0;
+                  goto label_142;
                 case 2:
-                case 10:
-                case 13:
-                case 15:
-                  num4 = 1;
-                  break;
                 case 3:
+                  goto label_141;
                 case 4:
-                  num4 = 2;
-                  break;
-                case 6:
-                  num4 = 3;
-                  break;
-                case 11:
-                case 17:
-                  num4 = 4;
-                  break;
+                  num4 = (int) tile.frameY != 0 ? 1 : 0;
+                  goto label_142;
                 default:
-                  num4 = 0;
-                  break;
+                  if (type2 == 149)
+                  {
+                    num4 = j % 3;
+                    goto label_142;
+                  }
+                  else
+                    goto label_141;
               }
-            case 227:
-              num4 = (int) tile.frameX / 34;
-              break;
-            case 240:
-              int num9 = (int) tile.frameX / 54 + (int) tile.frameY / 54 * 36;
-              if (num9 >= 0 && num9 <= 11 || num9 >= 47 && num9 <= 53)
+            }
+            else if (type2 != 160)
+            {
+              if (type2 != 165)
               {
-                num4 = 0;
-                break;
-              }
-              if (num9 >= 12 && num9 <= 15)
-              {
-                num4 = 1;
-                break;
-              }
-              if (num9 == 16 || num9 == 17)
-              {
-                num4 = 2;
-                break;
-              }
-              if (num9 >= 18 && num9 <= 35)
-              {
-                num4 = 1;
-                break;
-              }
-              if (num9 >= 41 && num9 <= 45)
-              {
-                num4 = 3;
-                break;
-              }
-              if (num9 == 46)
-              {
-                num4 = 4;
-                break;
-              }
-              break;
-            case 242:
-              int num10 = (int) tile.frameY / 72;
-              num4 = num10 < 22 || num10 > 24 ? 0 : 1;
-              break;
-            case 419:
-              int num11 = (int) tile.frameX / 18;
-              if (num11 > 2)
-                num11 = 2;
-              num4 = num11;
-              break;
-            case 420:
-              int num12 = (int) tile.frameY / 18;
-              if (num12 > 5)
-                num12 = 5;
-              num4 = num12;
-              break;
-            case 423:
-              int num13 = (int) tile.frameY / 18;
-              if (num13 > 6)
-                num13 = 6;
-              num4 = num13;
-              break;
-            case 178:
-              num4 = (int) tile.frameX >= 18 ? ((int) tile.frameX >= 36 ? ((int) tile.frameX >= 54 ? ((int) tile.frameX >= 72 ? ((int) tile.frameX >= 90 ? ((int) tile.frameX >= 108 ? 6 : 5) : 4) : 3) : 2) : 1) : 0;
-              break;
-            case 184:
-              num4 = (int) tile.frameX >= 22 ? ((int) tile.frameX >= 44 ? ((int) tile.frameX >= 66 ? ((int) tile.frameX >= 88 ? ((int) tile.frameX >= 110 ? 5 : 4) : 3) : 2) : 1) : 0;
-              break;
-            case 185:
-              if ((int) tile.frameY < 18)
-              {
-                int num14 = (int) tile.frameX / 18;
-                if (num14 < 6 || num14 == 28 || (num14 == 29 || num14 == 30) || (num14 == 31 || num14 == 32))
+                if (type2 == 178)
                 {
-                  num4 = 0;
-                  break;
+                  num4 = (int) tile.frameX >= 18 ? ((int) tile.frameX >= 36 ? ((int) tile.frameX >= 54 ? ((int) tile.frameX >= 72 ? ((int) tile.frameX >= 90 ? ((int) tile.frameX >= 108 ? 6 : 5) : 4) : 3) : 2) : 1) : 0;
+                  goto label_142;
                 }
-                if (num14 < 12 || num14 == 33 || (num14 == 34 || num14 == 35))
-                {
-                  num4 = 1;
-                  break;
-                }
-                if (num14 < 28)
-                {
-                  num4 = 2;
-                  break;
-                }
-                if (num14 < 48)
-                {
-                  num4 = 3;
-                  break;
-                }
-                if (num14 < 54)
-                {
-                  num4 = 4;
-                  break;
-                }
-                break;
+                else
+                  goto label_141;
               }
-              int num15 = (int) tile.frameX / 36;
-              if (num15 < 6 || num15 == 19 || (num15 == 20 || num15 == 21) || (num15 == 22 || num15 == 23 || (num15 == 24 || num15 == 33)) || (num15 == 38 || num15 == 39 || num15 == 40))
+              else
               {
-                num4 = 0;
-                break;
+                num4 = (int) tile.frameX >= 54 ? ((int) tile.frameX >= 106 ? ((int) tile.frameX < 216 ? ((int) tile.frameX >= 162 ? 3 : 2) : 1) : 1) : 0;
+                goto label_142;
               }
-              if (num15 < 16)
-              {
-                num4 = 2;
-                break;
-              }
-              if (num15 < 19 || num15 == 31 || num15 == 32)
-              {
-                num4 = 1;
-                break;
-              }
-              if (num15 < 31)
-              {
-                num4 = 3;
-                break;
-              }
-              if (num15 < 38)
-              {
-                num4 = 4;
-                break;
-              }
-              break;
-            case 186:
-              int num16 = (int) tile.frameX / 54;
-              if (num16 < 7)
-              {
-                num4 = 2;
-                break;
-              }
-              if (num16 < 22 || num16 == 33 || (num16 == 34 || num16 == 35))
-              {
-                num4 = 0;
-                break;
-              }
-              if (num16 < 25)
-              {
-                num4 = 1;
-                break;
-              }
-              if (num16 == 25)
-              {
-                num4 = 5;
-                break;
-              }
-              if (num16 < 32)
-              {
-                num4 = 3;
-                break;
-              }
-              break;
-            case 187:
-              int num17 = (int) tile.frameX / 54;
-              if (num17 < 3 || num17 == 14 || (num17 == 15 || num17 == 16))
-              {
-                num4 = 0;
-                break;
-              }
-              if (num17 < 6)
-              {
-                num4 = 6;
-                break;
-              }
-              if (num17 < 9)
-              {
-                num4 = 7;
-                break;
-              }
-              if (num17 < 14)
-              {
-                num4 = 4;
-                break;
-              }
-              if (num17 < 18)
-              {
-                num4 = 4;
-                break;
-              }
-              if (num17 < 23)
-              {
-                num4 = 8;
-                break;
-              }
-              if (num17 < 25)
-              {
-                num4 = 0;
-                break;
-              }
-              if (num17 < 29)
-              {
-                num4 = 1;
-                break;
-              }
-              break;
-            case 149:
+            }
+            else
+            {
               num4 = j % 3;
-              break;
-            case 160:
-              num4 = j % 3;
-              break;
-            case 165:
-              num4 = (int) tile.frameX >= 54 ? ((int) tile.frameX >= 106 ? ((int) tile.frameX < 216 ? ((int) tile.frameX >= 162 ? 3 : 2) : 1) : 1) : 0;
-              break;
-            case 105:
-              num4 = (int) tile.frameX < 1548 || (int) tile.frameX > 1654 ? ((int) tile.frameX < 1656 || (int) tile.frameX > 1798 ? 0 : 2) : 1;
-              break;
-            case 133:
-              num4 = (int) tile.frameX >= 52 ? 1 : 0;
-              break;
-            case 134:
-              num4 = (int) tile.frameX >= 28 ? 1 : 0;
-              break;
-            case 137:
-              num4 = (int) tile.frameY != 0 ? 1 : 0;
-              break;
-            case 26:
-              num4 = (int) tile.frameX < 54 ? 0 : 1;
-              break;
-            case 27:
-              num4 = (int) tile.frameY >= 34 ? 0 : 1;
-              break;
-            case 28:
-              num4 = (int) tile.frameY >= 144 ? ((int) tile.frameY >= 252 ? ((int) tile.frameY < 360 || (int) tile.frameY > 900 && (int) tile.frameY < 1008 ? 2 : ((int) tile.frameY >= 468 ? ((int) tile.frameY >= 576 ? ((int) tile.frameY >= 684 ? ((int) tile.frameY >= 792 ? ((int) tile.frameY >= 898 ? ((int) tile.frameY >= 1006 ? ((int) tile.frameY >= 1114 ? ((int) tile.frameY >= 1222 ? 7 : 3) : 0) : 7) : 8) : 6) : 5) : 4) : 3)) : 1) : 0;
-              break;
-            case 31:
-              num4 = (int) tile.frameX < 36 ? 0 : 1;
-              break;
-            case 82:
-            case 83:
-            case 84:
-              num4 = (int) tile.frameX >= 18 ? ((int) tile.frameX >= 36 ? ((int) tile.frameX >= 54 ? ((int) tile.frameX >= 72 ? ((int) tile.frameX >= 90 ? ((int) tile.frameX >= 108 ? 6 : 5) : 4) : 3) : 2) : 1) : 0;
-              break;
+              goto label_142;
+            }
+          }
+          else if (type2 <= 423)
+          {
+            if (type2 <= 227)
+            {
+              switch (type2 - 184)
+              {
+                case 0:
+                  num4 = (int) tile.frameX >= 22 ? ((int) tile.frameX >= 44 ? ((int) tile.frameX >= 66 ? ((int) tile.frameX >= 88 ? ((int) tile.frameX >= 110 ? 5 : 4) : 3) : 2) : 1) : 0;
+                  goto label_142;
+                case 1:
+                  if ((int) tile.frameY < 18)
+                  {
+                    int num5 = (int) tile.frameX / 18;
+                    if (num5 < 6 || num5 == 28 || (num5 == 29 || num5 == 30) || (num5 == 31 || num5 == 32))
+                    {
+                      num4 = 0;
+                      goto label_142;
+                    }
+                    else if (num5 < 12 || num5 == 33 || (num5 == 34 || num5 == 35))
+                    {
+                      num4 = 1;
+                      goto label_142;
+                    }
+                    else if (num5 < 28)
+                    {
+                      num4 = 2;
+                      goto label_142;
+                    }
+                    else if (num5 < 48)
+                    {
+                      num4 = 3;
+                      goto label_142;
+                    }
+                    else if (num5 < 54)
+                    {
+                      num4 = 4;
+                      goto label_142;
+                    }
+                    else
+                      goto label_142;
+                  }
+                  else
+                  {
+                    int num5 = (int) tile.frameX / 36;
+                    if (num5 < 6 || num5 == 19 || (num5 == 20 || num5 == 21) || (num5 == 22 || num5 == 23 || (num5 == 24 || num5 == 33)) || (num5 == 38 || num5 == 39 || num5 == 40))
+                    {
+                      num4 = 0;
+                      goto label_142;
+                    }
+                    else if (num5 < 16)
+                    {
+                      num4 = 2;
+                      goto label_142;
+                    }
+                    else if (num5 < 19 || num5 == 31 || num5 == 32)
+                    {
+                      num4 = 1;
+                      goto label_142;
+                    }
+                    else if (num5 < 31)
+                    {
+                      num4 = 3;
+                      goto label_142;
+                    }
+                    else if (num5 < 38)
+                    {
+                      num4 = 4;
+                      goto label_142;
+                    }
+                    else
+                      goto label_142;
+                  }
+                case 2:
+                  int num6 = (int) tile.frameX / 54;
+                  if (num6 < 7)
+                  {
+                    num4 = 2;
+                    goto label_142;
+                  }
+                  else if (num6 < 22 || num6 == 33 || (num6 == 34 || num6 == 35))
+                  {
+                    num4 = 0;
+                    goto label_142;
+                  }
+                  else if (num6 < 25)
+                  {
+                    num4 = 1;
+                    goto label_142;
+                  }
+                  else if (num6 == 25)
+                  {
+                    num4 = 5;
+                    goto label_142;
+                  }
+                  else if (num6 < 32)
+                  {
+                    num4 = 3;
+                    goto label_142;
+                  }
+                  else
+                    goto label_142;
+                case 3:
+                  int num7 = (int) tile.frameX / 54;
+                  if (num7 < 3 || num7 == 14 || (num7 == 15 || num7 == 16))
+                  {
+                    num4 = 0;
+                    goto label_142;
+                  }
+                  else if (num7 < 6)
+                  {
+                    num4 = 6;
+                    goto label_142;
+                  }
+                  else if (num7 < 9)
+                  {
+                    num4 = 7;
+                    goto label_142;
+                  }
+                  else if (num7 < 14)
+                  {
+                    num4 = 4;
+                    goto label_142;
+                  }
+                  else if (num7 < 18)
+                  {
+                    num4 = 4;
+                    goto label_142;
+                  }
+                  else if (num7 < 23)
+                  {
+                    num4 = 8;
+                    goto label_142;
+                  }
+                  else if (num7 < 25)
+                  {
+                    num4 = 0;
+                    goto label_142;
+                  }
+                  else if (num7 < 29)
+                  {
+                    num4 = 1;
+                    goto label_142;
+                  }
+                  else
+                    goto label_142;
+                default:
+                  if (type2 == 227)
+                  {
+                    num4 = (int) tile.frameX / 34;
+                    goto label_142;
+                  }
+                  else
+                    goto label_141;
+              }
+            }
+            else if (type2 != 240)
+            {
+              if (type2 != 242)
+              {
+                switch (type2 - 419)
+                {
+                  case 0:
+                    int num8 = (int) tile.frameX / 18;
+                    if (num8 > 2)
+                      num8 = 2;
+                    num4 = num8;
+                    goto label_142;
+                  case 1:
+                    int num9 = (int) tile.frameY / 18;
+                    if (num9 > 5)
+                      num9 = 5;
+                    num4 = num9;
+                    goto label_142;
+                  case 4:
+                    int num10 = (int) tile.frameY / 18;
+                    if (num10 > 6)
+                      num10 = 6;
+                    num4 = num10;
+                    goto label_142;
+                  default:
+                    goto label_141;
+                }
+              }
+              else
+              {
+                int num5 = (int) tile.frameY / 72;
+                num4 = num5 < 22 || num5 > 24 ? 0 : 1;
+                goto label_142;
+              }
+            }
+            else
+            {
+              int num5 = (int) tile.frameX / 54 + (int) tile.frameY / 54 * 36;
+              if (num5 >= 0 && num5 <= 11 || num5 >= 47 && num5 <= 53)
+              {
+                num4 = 0;
+                goto label_142;
+              }
+              else if (num5 >= 12 && num5 <= 15)
+              {
+                num4 = 1;
+                goto label_142;
+              }
+              else if (num5 == 16 || num5 == 17)
+              {
+                num4 = 2;
+                goto label_142;
+              }
+              else if (num5 >= 18 && num5 <= 35)
+              {
+                num4 = 1;
+                goto label_142;
+              }
+              else if (num5 >= 41 && num5 <= 45)
+              {
+                num4 = 3;
+                goto label_142;
+              }
+              else if (num5 == 46)
+              {
+                num4 = 4;
+                goto label_142;
+              }
+              else
+                goto label_142;
+            }
+          }
+          else if (type2 <= 441)
+          {
+            if (type2 != 428)
+            {
+              if (type2 != 440)
+              {
+                if (type2 != 441)
+                  goto label_141;
+              }
+              else
+              {
+                int num5 = (int) tile.frameX / 54;
+                if (num5 > 6)
+                  num5 = 6;
+                num4 = num5;
+                goto label_142;
+              }
+            }
+            else
+            {
+              int num5 = (int) tile.frameY / 18;
+              if (num5 > 3)
+                num5 = 3;
+              num4 = num5;
+              goto label_142;
+            }
+          }
+          else if (type2 != 453)
+          {
+            if (type2 != 457)
+            {
+              if ((uint) (type2 - 467) <= 1U)
+              {
+                switch ((int) tile.frameX / 36)
+                {
+                  case 0:
+                    num4 = 0;
+                    goto label_142;
+                  case 1:
+                    num4 = 1;
+                    goto label_142;
+                  default:
+                    num4 = 0;
+                    goto label_142;
+                }
+              }
+              else
+                goto label_141;
+            }
+            else
+            {
+              int num5 = (int) tile.frameX / 36;
+              if (num5 > 4)
+                num5 = 4;
+              num4 = num5;
+              goto label_142;
+            }
+          }
+          else
+          {
+            int num5 = (int) tile.frameX / 36;
+            if (num5 > 2)
+              num5 = 2;
+            num4 = num5;
+            goto label_142;
+          }
+          switch ((int) tile.frameX / 36)
+          {
+            case 1:
+            case 2:
+            case 10:
+            case 13:
+            case 15:
+              num4 = 1;
+              goto label_142;
+            case 3:
             case 4:
-              if ((int) tile.frameX < 66)
-                ;
-              num4 = 0;
-              break;
+              num4 = 2;
+              goto label_142;
+            case 6:
+              num4 = 3;
+              goto label_142;
+            case 11:
+            case 17:
+              num4 = 4;
+              goto label_142;
             default:
               num4 = 0;
-              break;
+              goto label_142;
           }
+label_141:
+          num4 = 0;
         }
       }
+label_142:
       if (num3 == 0)
       {
         if ((int) tile.liquid > 32)
@@ -1476,27 +1724,28 @@ namespace Terraria.Map
           int wall = (int) tile.wall;
           num3 = (int) MapHelper.wallLookup[wall];
           num1 = (int) tile.wallColor();
-          switch (wall)
+          if (wall <= 27)
           {
-            case 88:
-            case 89:
-            case 90:
-            case 91:
-            case 92:
-            case 93:
-            case 168:
-            case 21:
-              num1 = 0;
-              break;
-            case 27:
-              num4 = i % 2;
-              break;
-            default:
-              num4 = 0;
-              break;
+            if (wall != 21)
+            {
+              if (wall == 27)
+              {
+                num4 = i % 2;
+                goto label_153;
+              }
+              else
+                goto label_152;
+            }
           }
+          else if ((uint) (wall - 88) > 5U && wall != 168)
+            goto label_152;
+          num1 = 0;
+          goto label_153;
+label_152:
+          num4 = 0;
         }
       }
+label_153:
       if (num3 == 0)
       {
         if ((double) j < Main.worldSurface)
@@ -1511,11 +1760,11 @@ namespace Terraria.Map
           num1 = 0;
           bool flag = (int) type1 < (int) MapHelper.dirtPosition || (int) type1 >= (int) MapHelper.hellPosition;
           byte num5 = 0;
-          float num6 = (float) ((double) Main.screenPosition.X / 16.0 - 5.0);
-          float num7 = (float) (((double) Main.screenPosition.X + (double) Main.screenWidth) / 16.0 + 5.0);
-          float num8 = (float) ((double) Main.screenPosition.Y / 16.0 - 5.0);
-          float num9 = (float) (((double) Main.screenPosition.Y + (double) Main.screenHeight) / 16.0 + 5.0);
-          if (((double) i < (double) num6 || (double) i > (double) num7 || ((double) j < (double) num8 || (double) j > (double) num9)) && (i > 40 && i < Main.maxTilesX - 40 && (j > 40 && j < Main.maxTilesY - 40)) && flag)
+          float num6 = (float) (Main.screenPosition.X / 16.0 - 5.0);
+          float num7 = (float) ((Main.screenPosition.X + (double) Main.screenWidth) / 16.0 + 5.0);
+          float num8 = (float) (Main.screenPosition.Y / 16.0 - 5.0);
+          float num9 = (float) ((Main.screenPosition.Y + (double) Main.screenHeight) / 16.0 + 5.0);
+          if ((((double) i >= (double) num6 && (double) i <= (double) num7 && ((double) j >= (double) num8 && (double) j <= (double) num9) || (i <= 40 || i >= Main.maxTilesX - 40 || j <= 40) ? 0 : (j < Main.maxTilesY - 40 ? 1 : 0)) & (flag ? 1 : 0)) != 0)
           {
             int num10 = i - 36;
             while (num10 <= i + 30)
@@ -1572,7 +1821,7 @@ namespace Terraria.Map
           catch
           {
           }
-          string str = path1 + (object) Path.DirectorySeparatorChar;
+          string str = path1 + Path.DirectorySeparatorChar.ToString();
           string path2 = !Main.ActiveWorldFileData.UseGuidAsMapName ? str + (object) Main.worldID + ".map" : str + Main.ActiveWorldFileData.UniqueId.ToString() + ".map";
           new Stopwatch().Start();
           bool flag1 = false;
@@ -1586,7 +1835,7 @@ namespace Terraria.Map
               {
                 int count = 0;
                 byte[] buffer = new byte[16384];
-                writer.Write(193);
+                writer.Write(194);
                 Main.MapFileMetadata.IncrementAndWrite(writer);
                 writer.Write(Main.worldName);
                 writer.Write(Main.worldID);
@@ -1848,7 +2097,8 @@ namespace Terraria.Map
       int num1 = fileIO.ReadInt32();
       int num2 = fileIO.ReadInt32();
       int num3 = fileIO.ReadInt32();
-      if (str != Main.worldName || num1 != Main.worldID || (num3 != Main.maxTilesX || num2 != Main.maxTilesY))
+      string worldName = Main.worldName;
+      if (str != worldName || num1 != Main.worldID || (num3 != Main.maxTilesX || num2 != Main.maxTilesY))
         throw new Exception("Map meta-data is invalid.");
       for (int x = 0; x < Main.maxTilesX; ++x)
       {
@@ -1993,7 +2243,8 @@ namespace Terraria.Map
       int num1 = fileIO.ReadInt32();
       int num2 = fileIO.ReadInt32();
       int num3 = fileIO.ReadInt32();
-      if (str != Main.worldName || num1 != Main.worldID || (num3 != Main.maxTilesX || num2 != Main.maxTilesY))
+      string worldName = Main.worldName;
+      if (str != worldName || num1 != Main.worldID || (num3 != Main.maxTilesX || num2 != Main.maxTilesY))
         throw new Exception("Map meta-data is invalid.");
       short num4 = fileIO.ReadInt16();
       short num5 = fileIO.ReadInt16();
@@ -2131,7 +2382,7 @@ namespace Terraria.Map
       }
       ushort num25 = num17;
       numArray3[(int) num17] = num16;
-      BinaryReader binaryReader = release < 93 ? new BinaryReader(fileIO.BaseStream) : new BinaryReader((Stream) new DeflateStream((Stream) fileIO.BaseStream, (CompressionMode) 1));
+      BinaryReader binaryReader = release < 93 ? new BinaryReader(fileIO.BaseStream) : new BinaryReader((Stream) new DeflateStream(fileIO.BaseStream, (CompressionMode) 1));
       for (int y = 0; y < Main.maxTilesY; ++y)
       {
         float num19 = (float) y / (float) Main.maxTilesY;

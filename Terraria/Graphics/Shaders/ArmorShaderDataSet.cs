@@ -1,8 +1,8 @@
 ﻿// Decompiled with JetBrains decompiler
 // Type: Terraria.Graphics.Shaders.ArmorShaderDataSet
-// Assembly: Terraria, Version=1.3.5.1, Culture=neutral, PublicKeyToken=null
-// MVID: E90A5A2F-CD10-4A2C-9D2A-6B036D4E8877
-// Assembly location: F:\Steam\steamapps\common\Terraria\Terraria.exe
+// Assembly: Terraria, Version=1.3.5.3, Culture=neutral, PublicKeyToken=null
+// MVID: 68659D26-2BE6-448F-8663-74FA559E6F08
+// Assembly location: H:\Steam\steamapps\common\Terraria\Terraria.exe
 
 using System.Collections.Generic;
 using Terraria.DataStructures;
@@ -17,7 +17,12 @@ namespace Terraria.Graphics.Shaders
 
     public T BindShader<T>(int itemId, T shaderData) where T : ArmorShaderData
     {
-      this._shaderLookupDictionary[itemId] = ++this._shaderDataCount;
+      Dictionary<int, int> lookupDictionary = this._shaderLookupDictionary;
+      int index = itemId;
+      int num1 = this._shaderDataCount + 1;
+      this._shaderDataCount = num1;
+      int num2 = num1;
+      lookupDictionary[index] = num2;
       this._shaderData.Add((ArmorShaderData) shaderData);
       return shaderData;
     }
@@ -27,7 +32,7 @@ namespace Terraria.Graphics.Shaders
       if (shaderId != 0 && shaderId <= this._shaderDataCount)
         this._shaderData[shaderId - 1].Apply(entity, drawData);
       else
-        Main.pixelShader.CurrentTechnique.Passes[0].Apply();
+        Main.pixelShader.get_CurrentTechnique().get_Passes().get_Item(0).Apply();
     }
 
     public void ApplySecondary(int shaderId, Entity entity, DrawData? drawData = null)
@@ -35,7 +40,7 @@ namespace Terraria.Graphics.Shaders
       if (shaderId != 0 && shaderId <= this._shaderDataCount)
         this._shaderData[shaderId - 1].GetSecondaryShader(entity).Apply(entity, drawData);
       else
-        Main.pixelShader.CurrentTechnique.Passes[0].Apply();
+        Main.pixelShader.get_CurrentTechnique().get_Passes().get_Item(0).Apply();
     }
 
     public ArmorShaderData GetShaderFromItemId(int type)

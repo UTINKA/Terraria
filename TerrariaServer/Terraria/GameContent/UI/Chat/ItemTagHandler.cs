@@ -1,8 +1,8 @@
 ﻿// Decompiled with JetBrains decompiler
 // Type: Terraria.GameContent.UI.Chat.ItemTagHandler
-// Assembly: TerrariaServer, Version=1.3.5.1, Culture=neutral, PublicKeyToken=null
-// MVID: C2103E81-0935-4BEA-9E98-4159FC80C2BB
-// Assembly location: F:\Steam\steamapps\common\Terraria\TerrariaServer.exe
+// Assembly: TerrariaServer, Version=1.3.5.3, Culture=neutral, PublicKeyToken=null
+// MVID: 8A63A7A2-328D-424C-BC9D-BF23F93646F7
+// Assembly location: H:\Steam\steamapps\common\Terraria\TerrariaServer.exe
 
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -55,13 +55,16 @@ namespace Terraria.GameContent.UI.Chat
           }
         }
       }
-      string str = "";
+      string str1 = "";
       if (obj.stack > 1)
-        str = " (" + (object) obj.stack + ")";
+        str1 = " (" + (object) obj.stack + ")";
       ItemTagHandler.ItemSnippet itemSnippet = new ItemTagHandler.ItemSnippet(obj);
-      itemSnippet.Text = "[" + obj.AffixName() + str + "]";
-      itemSnippet.CheckForHover = true;
-      itemSnippet.DeleteWhole = true;
+      string str2 = "[" + obj.AffixName() + str1 + "]";
+      itemSnippet.Text = str2;
+      int num1 = 1;
+      itemSnippet.CheckForHover = num1 != 0;
+      int num2 = 1;
+      itemSnippet.DeleteWhole = num2 != 0;
       return (TextSnippet) itemSnippet;
     }
 
@@ -92,7 +95,7 @@ namespace Terraria.GameContent.UI.Chat
         Main.instance.MouseText(this._item.Name, this._item.rare, (byte) 0, -1, -1, -1, -1);
       }
 
-      public override bool UniqueDraw(bool justCheckingString, out Vector2 size, SpriteBatch spriteBatch, Vector2 position = default (Vector2), Color color = default (Color), float scale = 1f)
+      public override bool UniqueDraw(bool justCheckingString, out Vector2 size, SpriteBatch spriteBatch, Vector2 position = null, Color color = null, float scale = 1f)
       {
         float num1 = 1f;
         float num2 = 1f;
@@ -107,14 +110,14 @@ namespace Terraria.GameContent.UI.Chat
         float num4 = num1 * num3;
         if ((double) num4 > 0.75)
           num4 = 0.75f;
-        if (!justCheckingString && color != Color.Black)
+        if (!justCheckingString && Color.op_Inequality(color, Color.get_Black()))
         {
-          float inventoryScale = Main.inventoryScale;
+          double inventoryScale = (double) Main.inventoryScale;
           Main.inventoryScale = scale * num4;
-          ItemSlot.Draw(spriteBatch, ref this._item, 14, position - new Vector2(10f) * scale * num4, Color.White);
-          Main.inventoryScale = inventoryScale;
+          ItemSlot.Draw(spriteBatch, ref this._item, 14, Vector2.op_Subtraction(position, Vector2.op_Multiply(Vector2.op_Multiply(new Vector2(10f), scale), num4)), Color.get_White());
+          Main.inventoryScale = (float) inventoryScale;
         }
-        size = new Vector2(32f) * scale * num4;
+        size = Vector2.op_Multiply(Vector2.op_Multiply(new Vector2(32f), scale), num4);
         return true;
       }
 

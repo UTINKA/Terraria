@@ -1,8 +1,8 @@
 ﻿// Decompiled with JetBrains decompiler
 // Type: Terraria.DataStructures.PlayerDeathReason
-// Assembly: Terraria, Version=1.3.5.1, Culture=neutral, PublicKeyToken=null
-// MVID: E90A5A2F-CD10-4A2C-9D2A-6B036D4E8877
-// Assembly location: F:\Steam\steamapps\common\Terraria\Terraria.exe
+// Assembly: Terraria, Version=1.3.5.3, Culture=neutral, PublicKeyToken=null
+// MVID: 68659D26-2BE6-448F-8663-74FA559E6F08
+// Assembly location: H:\Steam\steamapps\common\Terraria\Terraria.exe
 
 using System.IO;
 using Terraria.Localization;
@@ -54,12 +54,13 @@ namespace Terraria.DataStructures
 
     public static PlayerDeathReason ByPlayer(int index)
     {
-      return new PlayerDeathReason()
-      {
-        SourcePlayerIndex = index,
-        SourceItemType = Main.player[index].inventory[Main.player[index].selectedItem].type,
-        SourceItemPrefix = (int) Main.player[index].inventory[Main.player[index].selectedItem].prefix
-      };
+      PlayerDeathReason playerDeathReason = new PlayerDeathReason();
+      playerDeathReason.SourcePlayerIndex = index;
+      int type = Main.player[index].inventory[Main.player[index].selectedItem].type;
+      playerDeathReason.SourceItemType = type;
+      int prefix = (int) Main.player[index].inventory[Main.player[index].selectedItem].prefix;
+      playerDeathReason.SourceItemPrefix = prefix;
+      return playerDeathReason;
     }
 
     public static PlayerDeathReason ByOther(int type)
@@ -72,18 +73,18 @@ namespace Terraria.DataStructures
 
     public static PlayerDeathReason ByProjectile(int playerIndex, int projectileIndex)
     {
-      PlayerDeathReason playerDeathReason = new PlayerDeathReason()
-      {
-        SourcePlayerIndex = playerIndex,
-        SourceProjectileIndex = projectileIndex,
-        SourceProjectileType = Main.projectile[projectileIndex].type
-      };
+      PlayerDeathReason playerDeathReason1 = new PlayerDeathReason();
+      playerDeathReason1.SourcePlayerIndex = playerIndex;
+      playerDeathReason1.SourceProjectileIndex = projectileIndex;
+      int type = Main.projectile[projectileIndex].type;
+      playerDeathReason1.SourceProjectileType = type;
+      PlayerDeathReason playerDeathReason2 = playerDeathReason1;
       if (playerIndex >= 0 && playerIndex <= (int) byte.MaxValue)
       {
-        playerDeathReason.SourceItemType = Main.player[playerIndex].inventory[Main.player[playerIndex].selectedItem].type;
-        playerDeathReason.SourceItemPrefix = (int) Main.player[playerIndex].inventory[Main.player[playerIndex].selectedItem].prefix;
+        playerDeathReason2.SourceItemType = Main.player[playerIndex].inventory[Main.player[playerIndex].selectedItem].type;
+        playerDeathReason2.SourceItemPrefix = (int) Main.player[playerIndex].inventory[Main.player[playerIndex].selectedItem].prefix;
       }
-      return playerDeathReason;
+      return playerDeathReason2;
     }
 
     public NetworkText GetDeathText(string deadPlayerName)
@@ -100,9 +101,9 @@ namespace Terraria.DataStructures
       bitsByte[1] = this.SourceNPCIndex != -1;
       bitsByte[2] = this.SourceProjectileIndex != -1;
       bitsByte[3] = this.SourceOtherIndex != -1;
-      bitsByte[4] = this.SourceProjectileType != 0;
-      bitsByte[5] = this.SourceItemType != 0;
-      bitsByte[6] = this.SourceItemPrefix != 0;
+      bitsByte[4] = (uint) this.SourceProjectileType > 0U;
+      bitsByte[5] = (uint) this.SourceItemType > 0U;
+      bitsByte[6] = (uint) this.SourceItemPrefix > 0U;
       bitsByte[7] = this.SourceCustomReason != null;
       writer.Write((byte) bitsByte);
       if (bitsByte[0])

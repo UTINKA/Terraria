@@ -1,8 +1,8 @@
 ﻿// Decompiled with JetBrains decompiler
 // Type: Terraria.GameContent.Skies.VortexSky
-// Assembly: Terraria, Version=1.3.5.1, Culture=neutral, PublicKeyToken=null
-// MVID: E90A5A2F-CD10-4A2C-9D2A-6B036D4E8877
-// Assembly location: F:\Steam\steamapps\common\Terraria\Terraria.exe
+// Assembly: Terraria, Version=1.3.5.3, Culture=neutral, PublicKeyToken=null
+// MVID: 68659D26-2BE6-448F-8663-74FA559E6F08
+// Assembly location: H:\Steam\steamapps\common\Terraria\Terraria.exe
 
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -43,12 +43,12 @@ namespace Terraria.GameContent.Skies
         while (this._bolts[index].IsAlive && index != this._bolts.Length - 1)
           ++index;
         this._bolts[index].IsAlive = true;
-        this._bolts[index].Position.X = (float) ((double) this._random.NextFloat() * ((double) Main.maxTilesX * 16.0 + 4000.0) - 2000.0);
-        this._bolts[index].Position.Y = this._random.NextFloat() * 500f;
+        this._bolts[index].Position.X = (__Null) ((double) this._random.NextFloat() * ((double) Main.maxTilesX * 16.0 + 4000.0) - 2000.0);
+        this._bolts[index].Position.Y = (__Null) ((double) this._random.NextFloat() * 500.0);
         this._bolts[index].Depth = (float) ((double) this._random.NextFloat() * 8.0 + 2.0);
         this._bolts[index].Life = 30;
       }
-      --this._ticksUntilNextBolt;
+      this._ticksUntilNextBolt = this._ticksUntilNextBolt - 1;
       for (int index = 0; index < this._bolts.Length; ++index)
       {
         if (this._bolts[index].IsAlive)
@@ -62,36 +62,44 @@ namespace Terraria.GameContent.Skies
 
     public override Color OnTileColor(Color inColor)
     {
-      return new Color(Vector4.Lerp(inColor.ToVector4(), Vector4.One, this._fadeOpacity * 0.5f));
+      // ISSUE: explicit reference operation
+      return new Color(Vector4.Lerp(((Color) @inColor).ToVector4(), Vector4.get_One(), this._fadeOpacity * 0.5f));
     }
 
     public override void Draw(SpriteBatch spriteBatch, float minDepth, float maxDepth)
     {
       if ((double) maxDepth >= 3.40282346638529E+38 && (double) minDepth < 3.40282346638529E+38)
       {
-        spriteBatch.Draw(Main.blackTileTexture, new Rectangle(0, 0, Main.screenWidth, Main.screenHeight), Color.Black * this._fadeOpacity);
-        spriteBatch.Draw(this._bgTexture, new Rectangle(0, Math.Max(0, (int) ((Main.worldSurface * 16.0 - (double) Main.screenPosition.Y - 2400.0) * 0.100000001490116)), Main.screenWidth, Main.screenHeight), Color.White * Math.Min(1f, (float) (((double) Main.screenPosition.Y - 800.0) / 1000.0)) * this._fadeOpacity);
-        Vector2 vector2_1 = new Vector2((float) (Main.screenWidth >> 1), (float) (Main.screenHeight >> 1));
-        Vector2 vector2_2 = 0.01f * (new Vector2((float) Main.maxTilesX * 8f, (float) Main.worldSurface / 2f) - Main.screenPosition);
-        spriteBatch.Draw(this._planetTexture, vector2_1 + new Vector2(-200f, -200f) + vector2_2, new Rectangle?(), Color.White * 0.9f * this._fadeOpacity, 0.0f, new Vector2((float) (this._planetTexture.Width >> 1), (float) (this._planetTexture.Height >> 1)), 1f, SpriteEffects.None, 1f);
+        spriteBatch.Draw(Main.blackTileTexture, new Rectangle(0, 0, Main.screenWidth, Main.screenHeight), Color.op_Multiply(Color.get_Black(), this._fadeOpacity));
+        spriteBatch.Draw(this._bgTexture, new Rectangle(0, Math.Max(0, (int) ((Main.worldSurface * 16.0 - (double) Main.screenPosition.Y - 2400.0) * 0.100000001490116)), Main.screenWidth, Main.screenHeight), Color.op_Multiply(Color.op_Multiply(Color.get_White(), Math.Min(1f, (float) ((Main.screenPosition.Y - 800.0) / 1000.0))), this._fadeOpacity));
+        Vector2 vector2_1;
+        // ISSUE: explicit reference operation
+        ((Vector2) @vector2_1).\u002Ector((float) (Main.screenWidth >> 1), (float) (Main.screenHeight >> 1));
+        Vector2 vector2_2 = Vector2.op_Multiply(0.01f, Vector2.op_Subtraction(new Vector2((float) Main.maxTilesX * 8f, (float) Main.worldSurface / 2f), Main.screenPosition));
+        spriteBatch.Draw(this._planetTexture, Vector2.op_Addition(Vector2.op_Addition(vector2_1, new Vector2(-200f, -200f)), vector2_2), new Rectangle?(), Color.op_Multiply(Color.op_Multiply(Color.get_White(), 0.9f), this._fadeOpacity), 0.0f, new Vector2((float) (this._planetTexture.get_Width() >> 1), (float) (this._planetTexture.get_Height() >> 1)), 1f, (SpriteEffects) 0, 1f);
       }
-      float num1 = Math.Min(1f, (float) (((double) Main.screenPosition.Y - 1000.0) / 1000.0));
-      Vector2 vector2_3 = Main.screenPosition + new Vector2((float) (Main.screenWidth >> 1), (float) (Main.screenHeight >> 1));
-      Rectangle rectangle = new Rectangle(-1000, -1000, 4000, 4000);
+      float num1 = Math.Min(1f, (float) ((Main.screenPosition.Y - 1000.0) / 1000.0));
+      Vector2 vector2_3 = Vector2.op_Addition(Main.screenPosition, new Vector2((float) (Main.screenWidth >> 1), (float) (Main.screenHeight >> 1)));
+      Rectangle rectangle;
+      // ISSUE: explicit reference operation
+      ((Rectangle) @rectangle).\u002Ector(-1000, -1000, 4000, 4000);
       for (int index = 0; index < this._bolts.Length; ++index)
       {
         if (this._bolts[index].IsAlive && (double) this._bolts[index].Depth > (double) minDepth && (double) this._bolts[index].Depth < (double) maxDepth)
         {
-          Vector2 vector2_1 = new Vector2(1f / this._bolts[index].Depth, 0.9f / this._bolts[index].Depth);
-          Vector2 position = (this._bolts[index].Position - vector2_3) * vector2_1 + vector2_3 - Main.screenPosition;
-          if (rectangle.Contains((int) position.X, (int) position.Y))
+          Vector2 vector2_1;
+          // ISSUE: explicit reference operation
+          ((Vector2) @vector2_1).\u002Ector(1f / this._bolts[index].Depth, 0.9f / this._bolts[index].Depth);
+          Vector2 vector2_2 = Vector2.op_Subtraction(Vector2.op_Addition(Vector2.op_Multiply(Vector2.op_Subtraction(this._bolts[index].Position, vector2_3), vector2_1), vector2_3), Main.screenPosition);
+          // ISSUE: explicit reference operation
+          if (((Rectangle) @rectangle).Contains((int) vector2_2.X, (int) vector2_2.Y))
           {
-            Texture2D texture = this._boltTexture;
+            Texture2D texture2D = this._boltTexture;
             int life = this._bolts[index].Life;
             if (life > 26 && life % 2 == 0)
-              texture = this._flashTexture;
+              texture2D = this._flashTexture;
             float num2 = (float) life / 30f;
-            spriteBatch.Draw(texture, position, new Rectangle?(), Color.White * num1 * num2 * this._fadeOpacity, 0.0f, Vector2.Zero, vector2_1.X * 5f, SpriteEffects.None, 0.0f);
+            spriteBatch.Draw(texture2D, vector2_2, new Rectangle?(), Color.op_Multiply(Color.op_Multiply(Color.op_Multiply(Color.get_White(), num1), num2), this._fadeOpacity), 0.0f, Vector2.get_Zero(), (float) (vector2_1.X * 5.0), (SpriteEffects) 0, 0.0f);
           }
         }
       }

@@ -1,8 +1,8 @@
 ﻿// Decompiled with JetBrains decompiler
 // Type: Terraria.UI.IngameFancyUI
-// Assembly: Terraria, Version=1.3.5.1, Culture=neutral, PublicKeyToken=null
-// MVID: E90A5A2F-CD10-4A2C-9D2A-6B036D4E8877
-// Assembly location: F:\Steam\steamapps\common\Terraria\Terraria.exe
+// Assembly: Terraria, Version=1.3.5.3, Culture=neutral, PublicKeyToken=null
+// MVID: 68659D26-2BE6-448F-8663-74FA559E6F08
+// Assembly location: H:\Steam\steamapps\common\Terraria\Terraria.exe
 
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -67,15 +67,12 @@ namespace Terraria.UI
     {
       IngameFancyUI.CoverNextFrame();
       Main.PlaySound(12, -1, -1, 1, 1f, 0.0f);
-      string labelText = "";
-      switch (keyboardContext)
+      string str = "";
+      if (keyboardContext != 1)
       {
-        case 1:
-          Main.editSign = true;
-          labelText = Language.GetTextValue("UI.EnterMessage");
-          break;
-        case 2:
-          labelText = Language.GetTextValue("UI.EnterNewName");
+        if (keyboardContext == 2)
+        {
+          str = Language.GetTextValue("UI.EnterNewName");
           Player player = Main.player[Main.myPlayer];
           Main.npcChatText = Main.chest[player.chest].name;
           if ((int) Main.tile[player.chestX, player.chestY].type == 21)
@@ -87,36 +84,59 @@ namespace Terraria.UI
           if (Main.npcChatText == "")
             Main.npcChatText = Main.defaultChestName;
           Main.editChest = true;
-          break;
+        }
+      }
+      else
+      {
+        Main.editSign = true;
+        str = Language.GetTextValue("UI.EnterMessage");
       }
       Main.clrInput();
       if (!IngameFancyUI.CanShowVirtualKeyboard(keyboardContext))
         return;
       Main.inFancyUI = true;
-      switch (keyboardContext)
+      if (keyboardContext != 1)
       {
-        case 1:
-          Main.InGameUI.SetState((UIState) new UIVirtualKeyboard(labelText, Main.npcChatText, (UIVirtualKeyboard.KeyboardSubmitEvent) (s =>
-          {
-            Main.SubmitSignText();
-            IngameFancyUI.Close();
-          }), (Action) (() =>
-          {
-            Main.InputTextSignCancel();
-            IngameFancyUI.Close();
-          }), keyboardContext, false));
-          break;
-        case 2:
-          Main.InGameUI.SetState((UIState) new UIVirtualKeyboard(labelText, Main.npcChatText, (UIVirtualKeyboard.KeyboardSubmitEvent) (s =>
+        if (keyboardContext == 2)
+        {
+          UserInterface inGameUi = Main.InGameUI;
+          string labelText = str;
+          string npcChatText = Main.npcChatText;
+          UIVirtualKeyboard.KeyboardSubmitEvent keyboardSubmitEvent = (UIVirtualKeyboard.KeyboardSubmitEvent) (s =>
           {
             ChestUI.RenameChestSubmit(Main.player[Main.myPlayer]);
             IngameFancyUI.Close();
-          }), (Action) (() =>
+          });
+          int inputMode = keyboardContext;
+          int num = 0;
+          UIVirtualKeyboard.KeyboardSubmitEvent submitAction;
+          UIVirtualKeyboard uiVirtualKeyboard = new UIVirtualKeyboard(labelText, npcChatText, submitAction, (Action) (() =>
           {
             ChestUI.RenameChestCancel();
             IngameFancyUI.Close();
-          }), keyboardContext, false));
-          break;
+          }), inputMode, num != 0);
+          inGameUi.SetState((UIState) uiVirtualKeyboard);
+        }
+      }
+      else
+      {
+        UserInterface inGameUi = Main.InGameUI;
+        string labelText = str;
+        string npcChatText = Main.npcChatText;
+        UIVirtualKeyboard.KeyboardSubmitEvent keyboardSubmitEvent = (UIVirtualKeyboard.KeyboardSubmitEvent) (s =>
+        {
+          Main.SubmitSignText();
+          IngameFancyUI.Close();
+        });
+        int inputMode = keyboardContext;
+        int num = 0;
+        UIVirtualKeyboard.KeyboardSubmitEvent submitAction;
+        UIVirtualKeyboard uiVirtualKeyboard = new UIVirtualKeyboard(labelText, npcChatText, submitAction, (Action) (() =>
+        {
+          Main.InputTextSignCancel();
+          IngameFancyUI.Close();
+        }), inputMode, num != 0);
+        inGameUi.SetState((UIState) uiVirtualKeyboard);
       }
       UILinkPointNavigator.GoToDefaultPage(1);
     }

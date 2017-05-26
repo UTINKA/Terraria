@@ -1,8 +1,8 @@
 ﻿// Decompiled with JetBrains decompiler
 // Type: Terraria.GameContent.UI.Elements.UITextPanel`1
-// Assembly: Terraria, Version=1.3.5.1, Culture=neutral, PublicKeyToken=null
-// MVID: E90A5A2F-CD10-4A2C-9D2A-6B036D4E8877
-// Assembly location: F:\Steam\steamapps\common\Terraria\Terraria.exe
+// Assembly: Terraria, Version=1.3.5.3, Culture=neutral, PublicKeyToken=null
+// MVID: 68659D26-2BE6-448F-8663-74FA559E6F08
+// Assembly location: H:\Steam\steamapps\common\Terraria\Terraria.exe
 
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -12,11 +12,11 @@ namespace Terraria.GameContent.UI.Elements
 {
   public class UITextPanel<T> : UIPanel
   {
-    private T _text = default (T);
     private float _textScale = 1f;
-    private Vector2 _textSize = Vector2.Zero;
-    private Color _color = Color.White;
+    private Vector2 _textSize = Vector2.get_Zero();
+    private Color _color = Color.get_White();
     private bool _drawPanel = true;
+    private T _text;
     private bool _isLarge;
 
     public bool IsLarge
@@ -99,13 +99,13 @@ namespace Terraria.GameContent.UI.Elements
 
     public virtual void SetText(T text, float textScale, bool large)
     {
-      Vector2 vector2 = new Vector2((large ? Main.fontDeathText : Main.fontMouseText).MeasureString(text.ToString()).X, large ? 32f : 16f) * textScale;
+      Vector2 vector2 = Vector2.op_Multiply(new Vector2((float) (large ? Main.fontDeathText : Main.fontMouseText).MeasureString(text.ToString()).X, large ? 32f : 16f), textScale);
       this._text = text;
       this._textScale = textScale;
       this._textSize = vector2;
       this._isLarge = large;
-      this.MinWidth.Set(vector2.X + this.PaddingLeft + this.PaddingRight, 0.0f);
-      this.MinHeight.Set(vector2.Y + this.PaddingTop + this.PaddingBottom, 0.0f);
+      this.MinWidth.Set((float) vector2.X + this.PaddingLeft + this.PaddingRight, 0.0f);
+      this.MinHeight.Set((float) vector2.Y + this.PaddingTop + this.PaddingBottom, 0.0f);
     }
 
     protected override void DrawSelf(SpriteBatch spriteBatch)
@@ -115,10 +115,38 @@ namespace Terraria.GameContent.UI.Elements
       CalculatedStyle innerDimensions = this.GetInnerDimensions();
       Vector2 pos = innerDimensions.Position();
       if (this._isLarge)
-        pos.Y -= 10f * this._textScale * this._textScale;
+      {
+        // ISSUE: explicit reference operation
+        // ISSUE: variable of a reference type
+        __Null& local = @pos.Y;
+        // ISSUE: cast to a reference type
+        // ISSUE: explicit reference operation
+        double num = (double) ^(float&) local - 10.0 * (double) this._textScale * (double) this._textScale;
+        // ISSUE: cast to a reference type
+        // ISSUE: explicit reference operation
+        ^(float&) local = (float) num;
+      }
       else
-        pos.Y -= 2f * this._textScale;
-      pos.X += (float) (((double) innerDimensions.Width - (double) this._textSize.X) * 0.5);
+      {
+        // ISSUE: explicit reference operation
+        // ISSUE: variable of a reference type
+        __Null& local = @pos.Y;
+        // ISSUE: cast to a reference type
+        // ISSUE: explicit reference operation
+        double num = (double) ^(float&) local - 2.0 * (double) this._textScale;
+        // ISSUE: cast to a reference type
+        // ISSUE: explicit reference operation
+        ^(float&) local = (float) num;
+      }
+      // ISSUE: explicit reference operation
+      // ISSUE: variable of a reference type
+      __Null& local1 = @pos.X;
+      // ISSUE: cast to a reference type
+      // ISSUE: explicit reference operation
+      double num1 = (double) ^(float&) local1 + ((double) innerDimensions.Width - this._textSize.X) * 0.5;
+      // ISSUE: cast to a reference type
+      // ISSUE: explicit reference operation
+      ^(float&) local1 = (float) num1;
       if (this._isLarge)
         Utils.DrawBorderStringBig(spriteBatch, this.Text, pos, this._color, this._textScale, 0.0f, 0.0f, -1);
       else

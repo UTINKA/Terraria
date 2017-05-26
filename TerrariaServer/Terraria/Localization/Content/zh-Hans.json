@@ -89,7 +89,7 @@
 		"DECEIVER_OF_FOOLS_Name": "傻瓜骗子",
 		"DO_YOU_WANT_TO_SLAY_A_SNOWMAN_Description": "征服雪人军团，疯狂雪人暴徒的欢乐家族。",
 		"DO_YOU_WANT_TO_SLAY_A_SNOWMAN_Name": "想要杀死雪人吗？",
-		"DRAX_ATTAX_Description": "用神圣锭和三个机械老怪的灵魂制作斧钻或镐斧。",
+		"DRAX_ATTAX_Description": "用神圣锭和三个机械boss的灵魂制作斧钻或镐斧。",
 		"DRAX_ATTAX_Name": "斧钻战队",
 		"DUNGEON_HEIST_Description": "从地牢的活尸处偷取钥匙，打开其中一个珍贵的金箱。",
 		"DUNGEON_HEIST_Name": "地牢大劫案",
@@ -128,7 +128,7 @@
 		"HEAVY_METAL_Name": "重金属",
 		"HEX_EDUCATION_Description": "打败哥布林召唤师，掌控黑暗烈焰的巫师。",
 		"HEX_EDUCATION_Name": "魔法教训",
-		"HOLD_ON_TIGHT_Description": "装备第一个爪钩。",
+		"HOLD_ON_TIGHT_Description": "装备第一个抓钩。",
 		"HOLD_ON_TIGHT_Name": "钩紧！",
 		"ICE_SCREAM_Description": "到达霜月的第15波攻击，节日季将迅速沦为疯狂暴动。",
 		"ICE_SCREAM_Name": "寒冰尖啸",
@@ -150,7 +150,7 @@
 		"KILL_THE_SUN_Name": "食日",
 		"LIHZAHRDIAN_IDOL_Description": "打败石巨人，丛林蜥蜴部落的石脸祭祀神像。",
 		"LIHZAHRDIAN_IDOL_Name": "丛林蜥蜴之神",
-		"LIKE_A_BOSS_Description": "获得召唤老怪的物品。",
+		"LIKE_A_BOSS_Description": "获得召唤boss的物品。",
 		"LIKE_A_BOSS_Name": "怪气外露",
 		"LUCKY_BREAK_Description": "活着从高处跌落并且只剩下一丁点生命值。",
 		"LUCKY_BREAK_Name": "时来运转",
@@ -196,7 +196,7 @@
 		"SICK_THROW_Description": "获得泰拉悠悠球。",
 		"SICK_THROW_Name": "非凡投掷",
 		"SlayerCategory": "杀手",
-		"SLAYER_OF_WORLDS_Description": "打败泰拉瑞亚中的每个老怪。",
+		"SLAYER_OF_WORLDS_Description": "打败泰拉瑞亚中的每个boss。",
 		"SLAYER_OF_WORLDS_Name": "世界杀手",
 		"SLIPPERY_SHINOBI_Description": "打败史莱姆王，所有黏滑生物的首领。",
 		"SLIPPERY_SHINOBI_Name": "黏滑忍者",
@@ -520,7 +520,7 @@
 		"QualityMedium": "中",
 		"QualityOff": "关",
 		"UIScale": "UI比例：{0}% ({1}%)",
-		"WaveQuality": "进攻波质量：{0}",
+		"WaveQuality": "水波质量：{0}",
 		"ZoomCategory": "缩放"
 	},
 	"Misc": {
@@ -611,9 +611,9 @@
 		"Ellipsis": "..."
 	},
 	"DeathSource": {
-		"NPC": "{0}，凶器是{1}。",
-		"Player": "{0}，凶器是{1}的{2}。",
-		"Projectile": "{0}，凶器是{1}。"
+		"NPC": "{0}，凶手是{1}。",
+		"Player": "{0}，凶手是{1}的{2}。",
+		"Projectile": "{0}，凶手是{1}。"
 	},
 	"DeathText": {
 		"Burned": "{0}无法把火扑灭。",

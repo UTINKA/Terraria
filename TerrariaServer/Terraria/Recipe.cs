@@ -1,8 +1,8 @@
 ﻿// Decompiled with JetBrains decompiler
 // Type: Terraria.Recipe
-// Assembly: TerrariaServer, Version=1.3.5.1, Culture=neutral, PublicKeyToken=null
-// MVID: C2103E81-0935-4BEA-9E98-4159FC80C2BB
-// Assembly location: F:\Steam\steamapps\common\Terraria\TerrariaServer.exe
+// Assembly: TerrariaServer, Version=1.3.5.3, Culture=neutral, PublicKeyToken=null
+// MVID: 8A63A7A2-328D-424C-BC9D-BF23F93646F7
+// Assembly location: H:\Steam\steamapps\common\Terraria\TerrariaServer.exe
 
 using System;
 using System.Collections.Generic;
@@ -173,54 +173,30 @@ namespace Terraria
     {
       if (!this.anyWood)
         return false;
-      switch (reqType)
+      if (reqType <= 621)
       {
-        case 911:
-        case 1729:
-        case 2503:
-        case 2504:
-        case 9:
-        case 619:
-        case 620:
-        case 621:
-          switch (invType)
-          {
-            case 911:
-            case 1729:
-            case 2503:
-            case 2504:
-            case 9:
-            case 619:
-            case 620:
-            case 621:
-              return true;
-            default:
-              return false;
-          }
-        default:
-          return false;
+        if (reqType == 9 || (uint) (reqType - 619) <= 2U)
+          goto label_6;
       }
+      else if (reqType == 911 || reqType == 1729 || (uint) (reqType - 2503) <= 1U)
+        goto label_6;
+      return false;
+label_6:
+      if (invType <= 621)
+      {
+        if (invType == 9 || (uint) (invType - 619) <= 2U)
+          goto label_10;
+      }
+      else if (invType == 911 || invType == 1729 || (uint) (invType - 2503) <= 1U)
+        goto label_10;
+      return false;
+label_10:
+      return true;
     }
 
     public bool useIronBar(int invType, int reqType)
     {
-      if (!this.anyIronBar)
-        return false;
-      switch (reqType)
-      {
-        case 22:
-        case 704:
-          switch (invType)
-          {
-            case 22:
-            case 704:
-              return true;
-            default:
-              return false;
-          }
-        default:
-          return false;
-      }
+      return this.anyIronBar && (reqType == 22 || reqType == 704) && (invType == 22 || invType == 704);
     }
 
     public bool useSand(int invType, int reqType)
@@ -237,31 +213,25 @@ namespace Terraria
     {
       if (!this.anyPressurePlate)
         return false;
-      switch (reqType)
+      if (reqType <= 543)
       {
-        case 852:
-        case 853:
-        case 1151:
-        case 529:
-        case 541:
-        case 542:
-        case 543:
-          switch (invType)
-          {
-            case 852:
-            case 853:
-            case 1151:
-            case 529:
-            case 541:
-            case 542:
-            case 543:
-              return true;
-            default:
-              return false;
-          }
-        default:
-          return false;
+        if (reqType == 529 || (uint) (reqType - 541) <= 2U)
+          goto label_6;
       }
+      else if ((uint) (reqType - 852) <= 1U || reqType == 1151)
+        goto label_6;
+      return false;
+label_6:
+      if (invType <= 543)
+      {
+        if (invType == 529 || (uint) (invType - 541) <= 2U)
+          goto label_10;
+      }
+      else if ((uint) (invType - 852) <= 1U || invType == 1151)
+        goto label_10;
+      return false;
+label_10:
+      return true;
     }
 
     public static void FindRecipes()
@@ -271,7 +241,7 @@ namespace Terraria
       for (int index = 0; index < Recipe.maxRecipes; ++index)
         Main.availableRecipe[index] = 0;
       Main.numAvailableRecipes = 0;
-      if (Main.guideItem.type > 0 && Main.guideItem.stack > 0 && Main.guideItem.Name != "")
+      if ((Main.guideItem.type <= 0 || Main.guideItem.stack <= 0 ? 0 : (Main.guideItem.Name != "" ? 1 : 0)) != 0)
       {
         for (int index1 = 0; index1 < Recipe.maxRecipes && Main.recipe[index1].createItem.type != 0; ++index1)
         {
@@ -297,9 +267,9 @@ namespace Terraria
           {
             if (dictionary1.ContainsKey(obj.netID))
             {
-              Dictionary<int, int> dictionary2;
-              int netId;
-              (dictionary2 = dictionary1)[netId = obj.netID] = dictionary2[netId] + obj.stack;
+              Dictionary<int, int> dictionary2 = dictionary1;
+              int netId = obj.netID;
+              dictionary2[netId] = dictionary2[netId] + obj.stack;
             }
             else
               dictionary1[obj.netID] = obj.stack;
@@ -322,9 +292,9 @@ namespace Terraria
             {
               if (dictionary1.ContainsKey(obj.netID))
               {
-                Dictionary<int, int> dictionary2;
-                int netId;
-                (dictionary2 = dictionary1)[netId = obj.netID] = dictionary2[netId] + obj.stack;
+                Dictionary<int, int> dictionary2 = dictionary1;
+                int netId = obj.netID;
+                dictionary2[netId] = dictionary2[netId] + obj.stack;
               }
               else
                 dictionary1[obj.netID] = obj.stack;
@@ -374,8 +344,16 @@ namespace Terraria
                 break;
             }
           }
-          if (flag1 && (Main.recipe[index1].needWater && (!Main.player[Main.myPlayer].adjWater && !Main.player[Main.myPlayer].adjTile[172]) || Main.recipe[index1].needHoney && Main.recipe[index1].needHoney != Main.player[Main.myPlayer].adjHoney || (Main.recipe[index1].needLava && Main.recipe[index1].needLava != Main.player[Main.myPlayer].adjLava || Main.recipe[index1].needSnowBiome && !Main.player[Main.myPlayer].ZoneSnow)))
-            flag1 = false;
+          if (flag1)
+          {
+            int num3 = !Main.recipe[index1].needWater ? 1 : (Main.player[Main.myPlayer].adjWater ? 1 : (Main.player[Main.myPlayer].adjTile[172] ? 1 : 0));
+            bool flag2 = !Main.recipe[index1].needHoney || Main.recipe[index1].needHoney == Main.player[Main.myPlayer].adjHoney;
+            bool flag3 = !Main.recipe[index1].needLava || Main.recipe[index1].needLava == Main.player[Main.myPlayer].adjLava;
+            bool flag4 = !Main.recipe[index1].needSnowBiome || Main.player[Main.myPlayer].ZoneSnow;
+            int num4 = flag2 ? 1 : 0;
+            if ((num3 & num4 & (flag3 ? 1 : 0) & (flag4 ? 1 : 0)) == 0)
+              flag1 = false;
+          }
           if (flag1)
           {
             Main.availableRecipe[Main.numAvailableRecipes] = index1;
@@ -395,41 +373,24 @@ namespace Terraria
         Main.focusRecipe = Main.numAvailableRecipes - 1;
       if (Main.focusRecipe < 0)
         Main.focusRecipe = 0;
-      float num3 = Main.availableRecipeY[Main.focusRecipe] - num2;
+      float num5 = Main.availableRecipeY[Main.focusRecipe] - num2;
       for (int index = 0; index < Recipe.maxRecipes; ++index)
-        Main.availableRecipeY[index] -= num3;
+        Main.availableRecipeY[index] -= num5;
     }
 
     public static void SetupRecipeGroups()
     {
-      RecipeGroupID.Birds = RecipeGroup.RegisterGroup("Birds", new RecipeGroup((Func<string>) (() => Lang.misc[37].Value + " " + Lang.GetNPCNameValue(74)), new int[3]
-      {
-        2015,
-        2016,
-        2017
-      }));
-      RecipeGroupID.Scorpions = RecipeGroup.RegisterGroup("Scorpions", new RecipeGroup((Func<string>) (() => Lang.misc[37].Value + " " + Lang.GetNPCNameValue(367)), new int[2]
-      {
-        2157,
-        2156
-      }));
-      RecipeGroupID.Squirrels = RecipeGroup.RegisterGroup("Squirrels", new RecipeGroup((Func<string>) (() => Lang.misc[37].Value + " " + Lang.GetNPCNameValue(299)), new int[2]
-      {
-        2018,
-        3563
-      }));
-      RecipeGroupID.Bugs = RecipeGroup.RegisterGroup("Bugs", new RecipeGroup((Func<string>) (() => Lang.misc[37].Value + " " + Lang.misc[85].Value), new int[3]
-      {
-        3194,
-        3192,
-        3193
-      }));
-      RecipeGroupID.Ducks = RecipeGroup.RegisterGroup("Ducks", new RecipeGroup((Func<string>) (() => Lang.misc[37].Value + " " + Lang.misc[86].Value), new int[2]
-      {
-        2123,
-        2122
-      }));
-      RecipeGroupID.Butterflies = RecipeGroup.RegisterGroup("Butterflies", new RecipeGroup((Func<string>) (() => Lang.misc[37].Value + " " + Lang.misc[87].Value), new int[8]
+      int[] numArray1 = new int[3]{ 2015, 2016, 2017 };
+      RecipeGroupID.Birds = RecipeGroup.RegisterGroup("Birds", new RecipeGroup((Func<string>) (() => Lang.misc[37].Value + " " + Lang.GetNPCNameValue(74)), numArray1));
+      int[] numArray2 = new int[2]{ 2157, 2156 };
+      RecipeGroupID.Scorpions = RecipeGroup.RegisterGroup("Scorpions", new RecipeGroup((Func<string>) (() => Lang.misc[37].Value + " " + Lang.GetNPCNameValue(367)), numArray2));
+      int[] numArray3 = new int[2]{ 2018, 3563 };
+      RecipeGroupID.Squirrels = RecipeGroup.RegisterGroup("Squirrels", new RecipeGroup((Func<string>) (() => Lang.misc[37].Value + " " + Lang.GetNPCNameValue(299)), numArray3));
+      int[] numArray4 = new int[3]{ 3194, 3192, 3193 };
+      RecipeGroupID.Bugs = RecipeGroup.RegisterGroup("Bugs", new RecipeGroup((Func<string>) (() => Lang.misc[37].Value + " " + Lang.misc[85].Value), numArray4));
+      int[] numArray5 = new int[2]{ 2123, 2122 };
+      RecipeGroupID.Ducks = RecipeGroup.RegisterGroup("Ducks", new RecipeGroup((Func<string>) (() => Lang.misc[37].Value + " " + Lang.misc[86].Value), numArray5));
+      int[] numArray6 = new int[8]
       {
         1998,
         2001,
@@ -439,17 +400,12 @@ namespace Terraria
         1999,
         1997,
         2000
-      }));
-      RecipeGroupID.Fireflies = RecipeGroup.RegisterGroup("Fireflies", new RecipeGroup((Func<string>) (() => Lang.misc[37].Value + " " + Lang.misc[88].Value), new int[2]
-      {
-        1992,
-        2004
-      }));
-      RecipeGroupID.Snails = RecipeGroup.RegisterGroup("Snails", new RecipeGroup((Func<string>) (() => Lang.misc[37].Value + " " + Lang.misc[95].Value), new int[2]
-      {
-        2006,
-        2007
-      }));
+      };
+      RecipeGroupID.Butterflies = RecipeGroup.RegisterGroup("Butterflies", new RecipeGroup((Func<string>) (() => Lang.misc[37].Value + " " + Lang.misc[87].Value), numArray6));
+      int[] numArray7 = new int[2]{ 1992, 2004 };
+      RecipeGroupID.Fireflies = RecipeGroup.RegisterGroup("Fireflies", new RecipeGroup((Func<string>) (() => Lang.misc[37].Value + " " + Lang.misc[88].Value), numArray7));
+      int[] numArray8 = new int[2]{ 2006, 2007 };
+      RecipeGroupID.Snails = RecipeGroup.RegisterGroup("Snails", new RecipeGroup((Func<string>) (() => Lang.misc[37].Value + " " + Lang.misc[95].Value), numArray8));
     }
 
     public static void SetupRecipes()

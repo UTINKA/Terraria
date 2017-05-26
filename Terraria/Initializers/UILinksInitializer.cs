@@ -1,8 +1,8 @@
 ﻿// Decompiled with JetBrains decompiler
 // Type: Terraria.Initializers.UILinksInitializer
-// Assembly: Terraria, Version=1.3.5.1, Culture=neutral, PublicKeyToken=null
-// MVID: E90A5A2F-CD10-4A2C-9D2A-6B036D4E8877
-// Assembly location: F:\Steam\steamapps\common\Terraria\Terraria.exe
+// Assembly: Terraria, Version=1.3.5.3, Culture=neutral, PublicKeyToken=null
+// MVID: 68659D26-2BE6-448F-8663-74FA559E6F08
+// Assembly location: H:\Steam\steamapps\common\Terraria\Terraria.exe
 
 using Microsoft.Xna.Framework;
 using System;
@@ -24,7 +24,7 @@ namespace Terraria.Initializers
 
     public static float HandleSlider(float currentValue, float min, float max, float deadZone = 0.2f, float sensitivity = 0.5f)
     {
-      float x = PlayerInput.GamepadThumbstickLeft.X;
+      float x = (float) PlayerInput.GamepadThumbstickLeft.X;
       float num = (double) x < -(double) deadZone || (double) x > (double) deadZone ? MathHelper.Lerp(0.0f, sensitivity / 60f, (float) (((double) Math.Abs(x) - (double) deadZone) / (1.0 - (double) deadZone))) * (float) Math.Sign(x) : 0.0f;
       return MathHelper.Clamp((float) (((double) currentValue - (double) min) / ((double) max - (double) min)) + num, 0.0f, 1f) * (max - min) + min;
     }
@@ -94,14 +94,18 @@ namespace Terraria.Initializers
       {
         UILinkPoint uiLinkPoint = new UILinkPoint(index, true, index - 1, index + 1, index - 10, index + 10);
         uiLinkPoint.OnSpecialInteracts += func2;
-        int num = index;
-        if (num < 10)
+        int num1 = index;
+        int num2 = 10;
+        if (num1 < num2)
           uiLinkPoint.Up = -1;
-        if (num >= 40)
+        int num3 = 40;
+        if (num1 >= num3)
           uiLinkPoint.Down = -2;
-        if (num % 10 == 9)
+        int num4 = 10;
+        if (num1 % num4 == 9)
           uiLinkPoint.Right = -4;
-        if (num % 10 == 0)
+        int num5 = 10;
+        if (num1 % num5 == 0)
           uiLinkPoint.Left = -3;
         cp2.LinkMap.Add(index, uiLinkPoint);
       }
@@ -125,7 +129,7 @@ namespace Terraria.Initializers
       {
         bool inReforgeMenu = Main.InReforgeMenu;
         bool flag1 = Main.player[Main.myPlayer].chest != -1;
-        bool flag2 = Main.npcShop != 0;
+        bool flag2 = (uint) Main.npcShop > 0U;
         for (int index = 40; index <= 49; ++index)
           cp2.LinkMap[index].Down = !inReforgeMenu ? (!flag1 ? (!flag2 ? -2 : 2700 + index - 40) : 400 + index - 40) : (index < 45 ? 303 : 304);
         if (flag1)
@@ -289,10 +293,11 @@ namespace Terraria.Initializers
       {
         UILinkPoint uiLinkPoint = new UILinkPoint(index, true, -3, index - 10, index - 1, index + 1);
         uiLinkPoint.OnSpecialInteracts += func7;
-        int num = index - 120;
-        if (num == 0)
+        int num1 = index - 120;
+        if (num1 == 0)
           uiLinkPoint.Up = 307;
-        if (num == 9)
+        int num2 = 9;
+        if (num1 == num2)
         {
           uiLinkPoint.Down = 308;
           uiLinkPoint.Left = 1557;
@@ -325,17 +330,23 @@ namespace Terraria.Initializers
           int num2 = index - 120;
           if (num2 == 0)
             link.Left = shouldPvpDraw ? 1550 : -3;
-          if (num2 == 1)
+          int num3 = 1;
+          if (num2 == num3)
             link.Left = shouldPvpDraw ? 1552 : -3;
-          if (num2 == 2)
+          int num4 = 2;
+          if (num2 == num4)
             link.Left = shouldPvpDraw ? 1556 : -3;
-          if (num2 == 3)
+          int num5 = 3;
+          if (num2 == num5)
             link.Left = UILinkPointNavigator.Shortcuts.INFOACCCOUNT >= 1 ? 1558 : -3;
-          if (num2 == 4)
+          int num6 = 4;
+          if (num2 == num6)
             link.Left = UILinkPointNavigator.Shortcuts.INFOACCCOUNT >= 5 ? 1562 : -3;
-          if (num2 == 5)
+          int num7 = 5;
+          if (num2 == num7)
             link.Left = UILinkPointNavigator.Shortcuts.INFOACCCOUNT >= 9 ? 1566 : -3;
-          if (num2 == 7)
+          int num8 = 7;
+          if (num2 == num8)
             link.Left = shouldPvpDraw ? 1557 : -3;
         }
       });
@@ -438,7 +449,7 @@ namespace Terraria.Initializers
       page3.IsValidEvent += (Func<bool>) (() =>
       {
         if (Main.playerInventory)
-          return Main.npcShop != 0;
+          return (uint) Main.npcShop > 0U;
         return false;
       });
       UILinkPage cp6 = new UILinkPage();
@@ -479,13 +490,13 @@ namespace Terraria.Initializers
           Point tileCoordinates = Main.player[Main.myPlayer].Center.ToTileCoordinates();
           if (UILinkPointNavigator.CurrentPoint == 600)
           {
-            if (WorldGen.MoveTownNPC(tileCoordinates.X, tileCoordinates.Y, -1))
+            if (WorldGen.MoveTownNPC((int) tileCoordinates.X, (int) tileCoordinates.Y, -1))
               Main.NewText(Lang.inter[39].Value, byte.MaxValue, (byte) 240, (byte) 20, false);
             Main.PlaySound(12, -1, -1, 1, 1f, 0.0f);
           }
-          else if (WorldGen.MoveTownNPC(tileCoordinates.X, tileCoordinates.Y, UILinkPointNavigator.Shortcuts.NPCS_LastHovered))
+          else if (WorldGen.MoveTownNPC((int) tileCoordinates.X, (int) tileCoordinates.Y, UILinkPointNavigator.Shortcuts.NPCS_LastHovered))
           {
-            WorldGen.moveRoom(tileCoordinates.X, tileCoordinates.Y, UILinkPointNavigator.Shortcuts.NPCS_LastHovered);
+            WorldGen.moveRoom((int) tileCoordinates.X, (int) tileCoordinates.Y, UILinkPointNavigator.Shortcuts.NPCS_LastHovered);
             Main.PlaySound(12, -1, -1, 1, 1f, 0.0f);
           }
         }
@@ -557,10 +568,11 @@ namespace Terraria.Initializers
       for (int index = 180; index <= 184; ++index)
       {
         UILinkPoint uiLinkPoint = new UILinkPoint(index, true, 185 + index - 180, -4, index - 1, index + 1);
-        int num = index - 180;
-        if (num == 0)
+        int num1 = index - 180;
+        if (num1 == 0)
           uiLinkPoint.Up = 305;
-        if (num == 4)
+        int num2 = 4;
+        if (num1 == num2)
           uiLinkPoint.Down = 308;
         cp8.LinkMap.Add(index, uiLinkPoint);
         switch (index)
@@ -586,10 +598,11 @@ namespace Terraria.Initializers
       {
         UILinkPoint uiLinkPoint = new UILinkPoint(index, true, -3, index - 5, index - 1, index + 1);
         uiLinkPoint.OnSpecialInteracts += func16;
-        int num = index - 185;
-        if (num == 0)
+        int num1 = index - 185;
+        if (num1 == 0)
           uiLinkPoint.Up = 306;
-        if (num == 4)
+        int num2 = 4;
+        if (num1 == num2)
           uiLinkPoint.Down = 308;
         cp8.LinkMap.Add(index, uiLinkPoint);
       }
@@ -938,17 +951,22 @@ namespace Terraria.Initializers
       {
         Vector3 hsl = Main.rgbToHsl(Main.selColor);
         float interfaceDeadzoneX = PlayerInput.CurrentProfile.InterfaceDeadzoneX;
-        float x = PlayerInput.GamepadThumbstickLeft.X;
-        float num = (double) x < -(double) interfaceDeadzoneX || (double) x > (double) interfaceDeadzoneX ? MathHelper.Lerp(0.0f, 0.008333334f, (float) (((double) Math.Abs(x) - (double) interfaceDeadzoneX) / (1.0 - (double) interfaceDeadzoneX))) * (float) Math.Sign(x) : 0.0f;
+        float x = (float) PlayerInput.GamepadThumbstickLeft.X;
+        float num1 = (double) x < -(double) interfaceDeadzoneX || (double) x > (double) interfaceDeadzoneX ? MathHelper.Lerp(0.0f, 0.008333334f, (float) (((double) Math.Abs(x) - (double) interfaceDeadzoneX) / (1.0 - (double) interfaceDeadzoneX))) * (float) Math.Sign(x) : 0.0f;
         int currentPoint = UILinkPointNavigator.CurrentPoint;
-        if (currentPoint == 2600)
-          Main.hBar = MathHelper.Clamp(Main.hBar + num, 0.0f, 1f);
-        if (currentPoint == 2601)
-          Main.sBar = MathHelper.Clamp(Main.sBar + num, 0.0f, 1f);
-        if (currentPoint == 2602)
-          Main.lBar = MathHelper.Clamp(Main.lBar + num, 0.15f, 1f);
-        Vector3.Clamp(hsl, Vector3.Zero, Vector3.One);
-        if ((double) num == 0.0)
+        int num2 = 2600;
+        if (currentPoint == num2)
+          Main.hBar = MathHelper.Clamp(Main.hBar + num1, 0.0f, 1f);
+        int num3 = 2601;
+        if (currentPoint == num3)
+          Main.sBar = MathHelper.Clamp(Main.sBar + num1, 0.0f, 1f);
+        int num4 = 2602;
+        if (currentPoint == num4)
+          Main.lBar = MathHelper.Clamp(Main.lBar + num1, 0.15f, 1f);
+        Vector3 zero = Vector3.get_Zero();
+        Vector3 one = Vector3.get_One();
+        Vector3.Clamp(hsl, zero, one);
+        if ((double) num1 == 0.0)
           return;
         if (Main.hairWindow)
           Main.player[Main.myPlayer].hairColor = Main.selColor = Main.hslToRgb(Main.hBar, Main.sBar, Main.lBar);
@@ -956,9 +974,13 @@ namespace Terraria.Initializers
       });
       page4.CanEnterEvent += (Func<bool>) (() => Main.hairWindow);
       page4.IsValidEvent += (Func<bool>) (() => Main.hairWindow);
-      page4.PageOnLeft = 11;
-      page4.PageOnRight = 11;
-      UILinkPointNavigator.RegisterPage(page4, 12, true);
+      int num9 = 11;
+      page4.PageOnLeft = num9;
+      int num10 = 11;
+      page4.PageOnRight = num10;
+      int ID1 = 12;
+      int num11 = 1;
+      UILinkPointNavigator.RegisterPage(page4, ID1, num11 != 0);
       UILinkPage cp13 = new UILinkPage();
       for (int index = 0; index < 30; ++index)
       {
@@ -970,10 +992,10 @@ namespace Terraria.Initializers
       {
         if (UILinkPointNavigator.CurrentPage != cp13.ID)
           return;
-        int num = cp13.CurrentPoint - 2900;
-        if (num >= 4)
+        int num1 = cp13.CurrentPoint - 2900;
+        if (num1 >= 4)
           return;
-        IngameOptions.category = num;
+        IngameOptions.category = num1;
       });
       cp13.UpdateEvent += (Action) (() =>
       {
@@ -1203,7 +1225,7 @@ namespace Terraria.Initializers
           UILinkPointNavigator.ChangePoint(4000 + builderacccount - 1);
         for (int index1 = 0; index1 < builderacccount; ++index1)
         {
-          int num = index1 % 2;
+          int num1 = index1 % 2;
           int index2 = index1 + 4000;
           cp17.LinkMap[index2].Down = index1 < builderacccount - 1 ? index2 + 1 : -2;
           cp17.LinkMap[index2].Up = index1 > 0 ? index2 - 1 : -1;
@@ -1234,9 +1256,13 @@ namespace Terraria.Initializers
       page5.IsValidEvent += (Func<bool>) (() => Main.clothesWindow);
       page5.EnterEvent += (Action) (() => Main.player[Main.myPlayer].releaseInventory = false);
       page5.LeaveEvent += (Action) (() => Main.player[Main.myPlayer].releaseUseTile = false);
-      page5.PageOnLeft = 15;
-      page5.PageOnRight = 15;
-      UILinkPointNavigator.RegisterPage(page5, 14, true);
+      int num12 = 15;
+      page5.PageOnLeft = num12;
+      int num13 = 15;
+      page5.PageOnRight = num13;
+      int ID2 = 14;
+      int num14 = 1;
+      UILinkPointNavigator.RegisterPage(page5, ID2, num14 != 0);
       UILinkPage page6 = new UILinkPage();
       page6.OnSpecialInteracts += (Func<string>) (() => PlayerInput.BuildCommand(Lang.misc[56].Value, false, PlayerInput.ProfileGamepadUI.KeyStatus["Inventory"]) + PlayerInput.BuildCommand(Lang.misc[64].Value, true, PlayerInput.ProfileGamepadUI.KeyStatus["HotbarMinus"], PlayerInput.ProfileGamepadUI.KeyStatus["HotbarPlus"]));
       page6.LinkMap.Add(2800, new UILinkPoint(2800, true, -3, -4, -1, 2801));
@@ -1253,17 +1279,22 @@ namespace Terraria.Initializers
       {
         Vector3 hsl = Main.rgbToHsl(Main.selColor);
         float interfaceDeadzoneX = PlayerInput.CurrentProfile.InterfaceDeadzoneX;
-        float x = PlayerInput.GamepadThumbstickLeft.X;
-        float num = (double) x < -(double) interfaceDeadzoneX || (double) x > (double) interfaceDeadzoneX ? MathHelper.Lerp(0.0f, 0.008333334f, (float) (((double) Math.Abs(x) - (double) interfaceDeadzoneX) / (1.0 - (double) interfaceDeadzoneX))) * (float) Math.Sign(x) : 0.0f;
+        float x = (float) PlayerInput.GamepadThumbstickLeft.X;
+        float num1 = (double) x < -(double) interfaceDeadzoneX || (double) x > (double) interfaceDeadzoneX ? MathHelper.Lerp(0.0f, 0.008333334f, (float) (((double) Math.Abs(x) - (double) interfaceDeadzoneX) / (1.0 - (double) interfaceDeadzoneX))) * (float) Math.Sign(x) : 0.0f;
         int currentPoint = UILinkPointNavigator.CurrentPoint;
-        if (currentPoint == 2800)
-          Main.hBar = MathHelper.Clamp(Main.hBar + num, 0.0f, 1f);
-        if (currentPoint == 2801)
-          Main.sBar = MathHelper.Clamp(Main.sBar + num, 0.0f, 1f);
-        if (currentPoint == 2802)
-          Main.lBar = MathHelper.Clamp(Main.lBar + num, 0.15f, 1f);
-        Vector3.Clamp(hsl, Vector3.Zero, Vector3.One);
-        if ((double) num == 0.0)
+        int num2 = 2800;
+        if (currentPoint == num2)
+          Main.hBar = MathHelper.Clamp(Main.hBar + num1, 0.0f, 1f);
+        int num3 = 2801;
+        if (currentPoint == num3)
+          Main.sBar = MathHelper.Clamp(Main.sBar + num1, 0.0f, 1f);
+        int num4 = 2802;
+        if (currentPoint == num4)
+          Main.lBar = MathHelper.Clamp(Main.lBar + num1, 0.15f, 1f);
+        Vector3 zero = Vector3.get_Zero();
+        Vector3 one = Vector3.get_One();
+        Vector3.Clamp(hsl, zero, one);
+        if ((double) num1 == 0.0)
           return;
         if (Main.clothesWindow)
         {
@@ -1290,9 +1321,13 @@ namespace Terraria.Initializers
       page6.IsValidEvent += (Func<bool>) (() => Main.clothesWindow);
       page6.EnterEvent += (Action) (() => Main.player[Main.myPlayer].releaseInventory = false);
       page6.LeaveEvent += (Action) (() => Main.player[Main.myPlayer].releaseUseTile = false);
-      page6.PageOnLeft = 14;
-      page6.PageOnRight = 14;
-      UILinkPointNavigator.RegisterPage(page6, 15, true);
+      int num15 = 14;
+      page6.PageOnLeft = num15;
+      int num16 = 14;
+      page6.PageOnRight = num16;
+      int ID3 = 15;
+      int num17 = 1;
+      UILinkPointNavigator.RegisterPage(page6, ID3, num17 != 0);
       UILinkPage cp18 = new UILinkPage();
       cp18.UpdateEvent += (Action) (() => PlayerInput.GamepadAllowScrolling = true);
       for (int index = 0; index < 200; ++index)
@@ -1329,17 +1364,17 @@ namespace Terraria.Initializers
       }
       cp19.UpdateEvent += (Action) (() =>
       {
-        int num = UILinkPointNavigator.Shortcuts.BUFFS_PER_COLUMN;
-        if (num == 0)
-          num = 100;
+        int num1 = UILinkPointNavigator.Shortcuts.BUFFS_PER_COLUMN;
+        if (num1 == 0)
+          num1 = 100;
         for (int index = 0; index < 50; ++index)
         {
-          cp19.LinkMap[9000 + index].Up = index % num == 0 ? -1 : 9000 + index - 1;
+          cp19.LinkMap[9000 + index].Up = index % num1 == 0 ? -1 : 9000 + index - 1;
           if (cp19.LinkMap[9000 + index].Up == -1)
-            cp19.LinkMap[9000 + index].Up = index < num ? 189 : 184;
-          cp19.LinkMap[9000 + index].Down = (index + 1) % num == 0 || index == UILinkPointNavigator.Shortcuts.BUFFS_DRAWN - 1 ? 308 : 9000 + index + 1;
-          cp19.LinkMap[9000 + index].Left = index < UILinkPointNavigator.Shortcuts.BUFFS_DRAWN - num ? 9000 + index + num : -3;
-          cp19.LinkMap[9000 + index].Right = index < num ? -4 : 9000 + index - num;
+            cp19.LinkMap[9000 + index].Up = index < num1 ? 189 : 184;
+          cp19.LinkMap[9000 + index].Down = (index + 1) % num1 == 0 || index == UILinkPointNavigator.Shortcuts.BUFFS_DRAWN - 1 ? 308 : 9000 + index + 1;
+          cp19.LinkMap[9000 + index].Left = index < UILinkPointNavigator.Shortcuts.BUFFS_DRAWN - num1 ? 9000 + index + num1 : -3;
+          cp19.LinkMap[9000 + index].Right = index < num1 ? -4 : 9000 + index - num1;
         }
       });
       cp19.IsValidEvent += (Func<bool>) (() =>
@@ -1352,7 +1387,8 @@ namespace Terraria.Initializers
       cp19.PageOnRight = 8;
       UILinkPointNavigator.RegisterPage(cp19, 19, true);
       UILinkPage page7 = UILinkPointNavigator.Pages[UILinkPointNavigator.CurrentPage];
-      page7.CurrentPoint = page7.DefaultPoint;
+      int defaultPoint = page7.DefaultPoint;
+      page7.CurrentPoint = defaultPoint;
       page7.Enter();
     }
 
@@ -1428,9 +1464,14 @@ namespace Terraria.Initializers
           Main.ambientVolume = UILinksInitializer.HandleSlider(Main.ambientVolume, 0.0f, 1f, PlayerInput.CurrentProfile.InterfaceDeadzoneX, 0.35f);
           break;
         case 5:
-          float hBar = Main.hBar;
-          float num1 = Main.hBar = UILinksInitializer.HandleSlider(hBar, 0.0f, 1f, 0.2f, 0.5f);
-          if ((double) hBar == (double) num1)
+          double hBar = (double) Main.hBar;
+          double num1 = 0.0;
+          double num2 = 1.0;
+          double num3 = 0.200000002980232;
+          double num4 = 0.5;
+          float num5 = Main.hBar = UILinksInitializer.HandleSlider((float) hBar, (float) num1, (float) num2, (float) num3, (float) num4);
+          double num6 = (double) num5;
+          if (hBar == num6)
             break;
           switch (Main.menuMode)
           {
@@ -1456,18 +1497,23 @@ namespace Terraria.Initializers
               Main.player[Main.myPlayer].shoeColor = Main.selColor = Main.hslToRgb(Main.hBar, Main.sBar, Main.lBar);
               break;
             case 25:
-              Main.mouseColorSlider.Hue = num1;
+              Main.mouseColorSlider.Hue = num5;
               break;
             case 252:
-              Main.mouseBorderColorSlider.Hue = num1;
+              Main.mouseBorderColorSlider.Hue = num5;
               break;
           }
           Main.PlaySound(12, -1, -1, 1, 1f, 0.0f);
           break;
         case 6:
-          float sBar = Main.sBar;
-          float num2 = Main.sBar = UILinksInitializer.HandleSlider(sBar, 0.0f, 1f, PlayerInput.CurrentProfile.InterfaceDeadzoneX, 0.5f);
-          if ((double) sBar == (double) num2)
+          double sBar = (double) Main.sBar;
+          double num7 = 0.0;
+          double num8 = 1.0;
+          double interfaceDeadzoneX1 = (double) PlayerInput.CurrentProfile.InterfaceDeadzoneX;
+          double num9 = 0.5;
+          float num10 = Main.sBar = UILinksInitializer.HandleSlider((float) sBar, (float) num7, (float) num8, (float) interfaceDeadzoneX1, (float) num9);
+          double num11 = (double) num10;
+          if (sBar == num11)
             break;
           switch (Main.menuMode)
           {
@@ -1493,21 +1539,26 @@ namespace Terraria.Initializers
               Main.player[Main.myPlayer].shoeColor = Main.selColor = Main.hslToRgb(Main.hBar, Main.sBar, Main.lBar);
               break;
             case 25:
-              Main.mouseColorSlider.Saturation = num2;
+              Main.mouseColorSlider.Saturation = num10;
               break;
             case 252:
-              Main.mouseBorderColorSlider.Saturation = num2;
+              Main.mouseBorderColorSlider.Saturation = num10;
               break;
           }
           Main.PlaySound(12, -1, -1, 1, 1f, 0.0f);
           break;
         case 7:
-          float lBar = Main.lBar;
-          float min = 0.15f;
+          double lBar = (double) Main.lBar;
+          float num12 = 0.15f;
           if (Main.menuMode == 252)
-            min = 0.0f;
-          float num3 = Main.lBar = UILinksInitializer.HandleSlider(lBar, min, 1f, PlayerInput.CurrentProfile.InterfaceDeadzoneX, 0.5f);
-          if ((double) lBar == (double) num3)
+            num12 = 0.0f;
+          double num13 = (double) num12;
+          double num14 = 1.0;
+          double interfaceDeadzoneX2 = (double) PlayerInput.CurrentProfile.InterfaceDeadzoneX;
+          double num15 = 0.5;
+          float num16 = Main.lBar = UILinksInitializer.HandleSlider((float) lBar, (float) num13, (float) num14, (float) interfaceDeadzoneX2, (float) num15);
+          double num17 = (double) num16;
+          if (lBar == num17)
             break;
           switch (Main.menuMode)
           {
@@ -1533,21 +1584,26 @@ namespace Terraria.Initializers
               Main.player[Main.myPlayer].shoeColor = Main.selColor = Main.hslToRgb(Main.hBar, Main.sBar, Main.lBar);
               break;
             case 25:
-              Main.mouseColorSlider.Luminance = num3;
+              Main.mouseColorSlider.Luminance = num16;
               break;
             case 252:
-              Main.mouseBorderColorSlider.Luminance = num3;
+              Main.mouseBorderColorSlider.Luminance = num16;
               break;
           }
           Main.PlaySound(12, -1, -1, 1, 1f, 0.0f);
           break;
         case 8:
-          float aBar = Main.aBar;
-          float num4 = Main.aBar = UILinksInitializer.HandleSlider(aBar, 0.0f, 1f, PlayerInput.CurrentProfile.InterfaceDeadzoneX, 0.5f);
-          if ((double) aBar == (double) num4)
+          double aBar = (double) Main.aBar;
+          double num18 = 0.0;
+          double num19 = 1.0;
+          double interfaceDeadzoneX3 = (double) PlayerInput.CurrentProfile.InterfaceDeadzoneX;
+          double num20 = 0.5;
+          float num21 = Main.aBar = UILinksInitializer.HandleSlider((float) aBar, (float) num18, (float) num19, (float) interfaceDeadzoneX3, (float) num20);
+          double num22 = (double) num21;
+          if (aBar == num22)
             break;
           if (Main.menuMode == 252)
-            Main.mouseBorderColorSlider.Alpha = num4;
+            Main.mouseBorderColorSlider.Alpha = num21;
           Main.PlaySound(12, -1, -1, 1, 1f, 0.0f);
           break;
         case 9:
@@ -1557,7 +1613,7 @@ namespace Terraria.Initializers
             UILinksInitializer.SomeVarsForUILinkers.HairMoveCD = 0;
           else if (UILinksInitializer.SomeVarsForUILinkers.HairMoveCD > 0)
             --UILinksInitializer.SomeVarsForUILinkers.HairMoveCD;
-          if (UILinksInitializer.SomeVarsForUILinkers.HairMoveCD == 0 && (left || right))
+          if (UILinksInitializer.SomeVarsForUILinkers.HairMoveCD == 0 && left | right)
           {
             if (left)
               --Main.PendingPlayer.hair;
@@ -1565,12 +1621,12 @@ namespace Terraria.Initializers
               ++Main.PendingPlayer.hair;
             UILinksInitializer.SomeVarsForUILinkers.HairMoveCD = 12;
           }
-          int num5 = 51;
-          if (Main.PendingPlayer.hair >= num5)
+          int num23 = 51;
+          if (Main.PendingPlayer.hair >= num23)
             Main.PendingPlayer.hair = 0;
           if (Main.PendingPlayer.hair >= 0)
             break;
-          Main.PendingPlayer.hair = num5 - 1;
+          Main.PendingPlayer.hair = num23 - 1;
           break;
         case 10:
           Main.GameZoomTarget = UILinksInitializer.HandleSlider(Main.GameZoomTarget, 1f, 2f, PlayerInput.CurrentProfile.InterfaceDeadzoneX, 0.35f);

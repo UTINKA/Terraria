@@ -1,8 +1,8 @@
 ﻿// Decompiled with JetBrains decompiler
 // Type: Terraria.IO.PlayerFileData
-// Assembly: Terraria, Version=1.3.5.1, Culture=neutral, PublicKeyToken=null
-// MVID: E90A5A2F-CD10-4A2C-9D2A-6B036D4E8877
-// Assembly location: F:\Steam\steamapps\common\Terraria\Terraria.exe
+// Assembly: Terraria, Version=1.3.5.3, Culture=neutral, PublicKeyToken=null
+// MVID: 68659D26-2BE6-448F-8663-74FA559E6F08
+// Assembly location: H:\Steam\steamapps\common\Terraria\Terraria.exe
 
 using System;
 using System.Diagnostics;
@@ -71,7 +71,7 @@ namespace Terraria.IO
       if (!FileUtilities.MoveToCloud(this.Path, playerPathFromName))
         return;
       string fileName = this.GetFileName(false);
-      string path = Main.PlayerPath + (object) Path.DirectorySeparatorChar + fileName + (object) Path.DirectorySeparatorChar;
+      string path = Main.PlayerPath + Path.DirectorySeparatorChar.ToString() + fileName + Path.DirectorySeparatorChar.ToString();
       if (Directory.Exists(path))
       {
         string[] files = Directory.GetFiles(path);
@@ -114,7 +114,7 @@ namespace Terraria.IO
 
     public void UpdatePlayTimer()
     {
-      if (Main.instance.IsActive && !Main.gamePaused && (Main.hasFocus && this._isTimerActive))
+      if (Main.instance.get_IsActive() && !Main.gamePaused && (Main.hasFocus && this._isTimerActive))
         this.StartPlayTimer();
       else
         this.PausePlayTimer();
@@ -147,7 +147,7 @@ namespace Terraria.IO
       this._isTimerActive = false;
       if (!this._timer.IsRunning)
         return;
-      this._playTime += this._timer.Elapsed;
+      this._playTime = this._playTime + this._timer.Elapsed;
       this._timer.Reset();
     }
 

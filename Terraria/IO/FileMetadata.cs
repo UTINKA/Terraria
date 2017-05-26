@@ -1,8 +1,8 @@
 ﻿// Decompiled with JetBrains decompiler
 // Type: Terraria.IO.FileMetadata
-// Assembly: Terraria, Version=1.3.5.1, Culture=neutral, PublicKeyToken=null
-// MVID: E90A5A2F-CD10-4A2C-9D2A-6B036D4E8877
-// Assembly location: F:\Steam\steamapps\common\Terraria\Terraria.exe
+// Assembly: Terraria, Version=1.3.5.3, Culture=neutral, PublicKeyToken=null
+// MVID: 68659D26-2BE6-448F-8663-74FA559E6F08
+// Assembly location: H:\Steam\steamapps\common\Terraria\Terraria.exe
 
 using System;
 using System.IO;
@@ -25,12 +25,12 @@ namespace Terraria.IO
     {
       writer.Write((ulong) (27981915666277746L | (long) this.Type << 56));
       writer.Write(this.Revision);
-      writer.Write((ulong) (this.IsFavorite.ToInt() & 1));
+      writer.Write((ulong) (this.IsFavorite.ToInt() & 1 | 0));
     }
 
     public void IncrementAndWrite(BinaryWriter writer)
     {
-      ++this.Revision;
+      this.Revision = this.Revision + 1U;
       this.Write(writer);
     }
 
@@ -55,15 +55,17 @@ namespace Terraria.IO
 
     private void Read(BinaryReader reader)
     {
-      ulong num1 = reader.ReadUInt64();
-      if (((long) num1 & 72057594037927935L) != 27981915666277746L)
+      long num1 = (long) reader.ReadUInt64();
+      long num2 = 72057594037927935;
+      if ((num1 & num2) != 27981915666277746L)
         throw new FileFormatException("Expected Re-Logic file format.");
-      byte num2 = (byte) (num1 >> 56 & (ulong) byte.MaxValue);
+      int num3 = 56;
+      byte num4 = (byte) ((ulong) num1 >> num3 & (ulong) byte.MaxValue);
       FileType fileType = FileType.None;
       FileType[] values = (FileType[]) Enum.GetValues(typeof (FileType));
       for (int index = 0; index < values.Length; ++index)
       {
-        if (values[index] == (FileType) num2)
+        if (values[index] == (FileType) num4)
         {
           fileType = values[index];
           break;

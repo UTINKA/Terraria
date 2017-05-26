@@ -1,8 +1,8 @@
 ﻿// Decompiled with JetBrains decompiler
 // Type: Terraria.Graphics.Shaders.ShaderData
-// Assembly: Terraria, Version=1.3.5.1, Culture=neutral, PublicKeyToken=null
-// MVID: E90A5A2F-CD10-4A2C-9D2A-6B036D4E8877
-// Assembly location: F:\Steam\steamapps\common\Terraria\Terraria.exe
+// Assembly: Terraria, Version=1.3.5.3, Culture=neutral, PublicKeyToken=null
+// MVID: 68659D26-2BE6-448F-8663-74FA559E6F08
+// Assembly location: H:\Steam\steamapps\common\Terraria\Terraria.exe
 
 using Microsoft.Xna.Framework.Graphics;
 
@@ -36,13 +36,13 @@ namespace Terraria.Graphics.Shaders
       this._passName = passName;
       if (passName == null)
         return;
-      this._effectPass = this.Shader.CurrentTechnique.Passes[passName];
+      this._effectPass = this.Shader.get_CurrentTechnique().get_Passes().get_Item(passName);
     }
 
     protected virtual void Apply()
     {
       if (this._shader != null && this._lastEffect != this._shader.Value && (this.Shader != null && this._passName != null))
-        this._effectPass = this.Shader.CurrentTechnique.Passes[this._passName];
+        this._effectPass = this.Shader.get_CurrentTechnique().get_Passes().get_Item(this._passName);
       this._effectPass.Apply();
     }
   }

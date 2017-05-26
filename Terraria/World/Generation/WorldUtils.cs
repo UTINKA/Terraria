@@ -1,8 +1,8 @@
 ﻿// Decompiled with JetBrains decompiler
 // Type: Terraria.World.Generation.WorldUtils
-// Assembly: Terraria, Version=1.3.5.1, Culture=neutral, PublicKeyToken=null
-// MVID: E90A5A2F-CD10-4A2C-9D2A-6B036D4E8877
-// Assembly location: F:\Steam\steamapps\common\Terraria\Terraria.exe
+// Assembly: Terraria, Version=1.3.5.3, Culture=neutral, PublicKeyToken=null
+// MVID: 68659D26-2BE6-448F-8663-74FA559E6F08
+// Assembly location: H:\Steam\steamapps\common\Terraria\Terraria.exe
 
 using Microsoft.Xna.Framework;
 
@@ -18,7 +18,7 @@ namespace Terraria.World.Generation
     public static bool Find(Point origin, GenSearch search, out Point result)
     {
       result = search.Find(origin);
-      return !(result == GenSearch.NOT_FOUND);
+      return !Point.op_Equality(result, GenSearch.NOT_FOUND);
     }
 
     public static void ClearTile(int x, int y, bool frameNeighbors = false)
@@ -67,13 +67,25 @@ namespace Terraria.World.Generation
       Point point1 = start;
       Point point2 = end;
       if (end.X < start.X)
-        Utils.Swap<int>(ref end.X, ref start.X);
+      {
+        // ISSUE: explicit reference operation
+        // ISSUE: cast to a reference type
+        // ISSUE: explicit reference operation
+        // ISSUE: cast to a reference type
+        Utils.Swap<int>((int&) @end.X, (int&) @start.X);
+      }
       if (end.Y < start.Y)
-        Utils.Swap<int>(ref end.Y, ref start.Y);
-      for (int x = start.X; x <= end.X; ++x)
-        WorldGen.PlaceWire(x, point1.Y);
-      for (int y = start.Y; y <= end.Y; ++y)
-        WorldGen.PlaceWire(point2.X, y);
+      {
+        // ISSUE: explicit reference operation
+        // ISSUE: cast to a reference type
+        // ISSUE: explicit reference operation
+        // ISSUE: cast to a reference type
+        Utils.Swap<int>((int&) @end.Y, (int&) @start.Y);
+      }
+      for (int x = (int) start.X; x <= end.X; ++x)
+        WorldGen.PlaceWire(x, (int) point1.Y);
+      for (int y = (int) start.Y; y <= end.Y; ++y)
+        WorldGen.PlaceWire((int) point2.X, y);
     }
 
     public static void DebugRegen()

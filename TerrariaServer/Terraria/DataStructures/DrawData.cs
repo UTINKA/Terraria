@@ -1,8 +1,8 @@
 ﻿// Decompiled with JetBrains decompiler
 // Type: Terraria.DataStructures.DrawData
-// Assembly: TerrariaServer, Version=1.3.5.1, Culture=neutral, PublicKeyToken=null
-// MVID: C2103E81-0935-4BEA-9E98-4159FC80C2BB
-// Assembly location: F:\Steam\steamapps\common\Terraria\TerrariaServer.exe
+// Assembly: TerrariaServer, Version=1.3.5.3, Culture=neutral, PublicKeyToken=null
+// MVID: 8A63A7A2-328D-424C-BC9D-BF23F93646F7
+// Assembly location: H:\Steam\steamapps\common\Terraria\TerrariaServer.exe
 
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -11,7 +11,6 @@ namespace Terraria.DataStructures
 {
   public struct DrawData
   {
-    public static Rectangle? nullRectangle = new Rectangle?();
     public Texture2D texture;
     public Vector2 position;
     public Rectangle destinationRectangle;
@@ -24,18 +23,19 @@ namespace Terraria.DataStructures
     public int shader;
     public bool ignorePlayerRotation;
     public readonly bool useDestinationRectangle;
+    public static Rectangle? nullRectangle;
 
     public DrawData(Texture2D texture, Vector2 position, Color color)
     {
       this.texture = texture;
       this.position = position;
       this.color = color;
-      this.destinationRectangle = new Rectangle();
+      this.destinationRectangle = (Rectangle) null;
       this.sourceRect = DrawData.nullRectangle;
       this.rotation = 0.0f;
-      this.origin = Vector2.Zero;
-      this.scale = Vector2.One;
-      this.effect = SpriteEffects.None;
+      this.origin = Vector2.get_Zero();
+      this.scale = Vector2.get_One();
+      this.effect = (SpriteEffects) 0;
       this.shader = 0;
       this.ignorePlayerRotation = false;
       this.useDestinationRectangle = false;
@@ -46,12 +46,12 @@ namespace Terraria.DataStructures
       this.texture = texture;
       this.position = position;
       this.color = color;
-      this.destinationRectangle = new Rectangle();
+      this.destinationRectangle = (Rectangle) null;
       this.sourceRect = sourceRect;
       this.rotation = 0.0f;
-      this.origin = Vector2.Zero;
-      this.scale = Vector2.One;
-      this.effect = SpriteEffects.None;
+      this.origin = Vector2.get_Zero();
+      this.scale = Vector2.get_One();
+      this.effect = (SpriteEffects) 0;
       this.shader = 0;
       this.ignorePlayerRotation = false;
       this.useDestinationRectangle = false;
@@ -67,7 +67,7 @@ namespace Terraria.DataStructures
       this.origin = origin;
       this.scale = new Vector2(scale, scale);
       this.effect = effect;
-      this.destinationRectangle = new Rectangle();
+      this.destinationRectangle = (Rectangle) null;
       this.shader = 0;
       this.ignorePlayerRotation = false;
       this.useDestinationRectangle = false;
@@ -83,7 +83,7 @@ namespace Terraria.DataStructures
       this.origin = origin;
       this.scale = scale;
       this.effect = effect;
-      this.destinationRectangle = new Rectangle();
+      this.destinationRectangle = (Rectangle) null;
       this.shader = 0;
       this.ignorePlayerRotation = false;
       this.useDestinationRectangle = false;
@@ -94,12 +94,12 @@ namespace Terraria.DataStructures
       this.texture = texture;
       this.destinationRectangle = destinationRectangle;
       this.color = color;
-      this.position = Vector2.Zero;
+      this.position = Vector2.get_Zero();
       this.sourceRect = DrawData.nullRectangle;
       this.rotation = 0.0f;
-      this.origin = Vector2.Zero;
-      this.scale = Vector2.One;
-      this.effect = SpriteEffects.None;
+      this.origin = Vector2.get_Zero();
+      this.scale = Vector2.get_One();
+      this.effect = (SpriteEffects) 0;
       this.shader = 0;
       this.ignorePlayerRotation = false;
       this.useDestinationRectangle = false;
@@ -110,12 +110,12 @@ namespace Terraria.DataStructures
       this.texture = texture;
       this.destinationRectangle = destinationRectangle;
       this.color = color;
-      this.position = Vector2.Zero;
+      this.position = Vector2.get_Zero();
       this.sourceRect = sourceRect;
       this.rotation = 0.0f;
-      this.origin = Vector2.Zero;
-      this.scale = Vector2.One;
-      this.effect = SpriteEffects.None;
+      this.origin = Vector2.get_Zero();
+      this.scale = Vector2.get_One();
+      this.effect = (SpriteEffects) 0;
       this.shader = 0;
       this.ignorePlayerRotation = false;
       this.useDestinationRectangle = false;
@@ -130,8 +130,8 @@ namespace Terraria.DataStructures
       this.rotation = rotation;
       this.origin = origin;
       this.effect = effect;
-      this.position = Vector2.Zero;
-      this.scale = Vector2.One;
+      this.position = Vector2.get_Zero();
+      this.scale = Vector2.get_One();
       this.shader = 0;
       this.ignorePlayerRotation = false;
       this.useDestinationRectangle = false;

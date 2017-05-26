@@ -1,8 +1,8 @@
 ﻿// Decompiled with JetBrains decompiler
 // Type: Terraria.Localization.LanguageManager
-// Assembly: Terraria, Version=1.3.5.1, Culture=neutral, PublicKeyToken=null
-// MVID: E90A5A2F-CD10-4A2C-9D2A-6B036D4E8877
-// Assembly location: F:\Steam\steamapps\common\Terraria\Terraria.exe
+// Assembly: Terraria, Version=1.3.5.3, Culture=neutral, PublicKeyToken=null
+// MVID: 68659D26-2BE6-448F-8663-74FA559E6F08
+// Assembly location: H:\Steam\steamapps\common\Terraria\Terraria.exe
 
 using Newtonsoft.Json;
 using ReLogic.Graphics;
@@ -83,16 +83,22 @@ namespace Terraria.Localization
       this.ActiveCulture = culture;
       Thread.CurrentThread.CurrentCulture = culture.CultureInfo;
       Thread.CurrentThread.CurrentUICulture = culture.CultureInfo;
+      // ISSUE: reference to a compiler-generated field
       if (this.OnLanguageChanged == null)
         return;
+      // ISSUE: reference to a compiler-generated field
       this.OnLanguageChanged(this);
     }
 
     private void LoadLanguage(GameCulture culture)
     {
       this.LoadFilesForCulture(culture);
+      // ISSUE: reference to a compiler-generated field
       if (this.OnLanguageChanging != null)
+      {
+        // ISSUE: reference to a compiler-generated field
         this.OnLanguageChanging(this);
+      }
       this.ProcessCopyCommandsInTexts();
     }
 

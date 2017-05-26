@@ -1,8 +1,8 @@
 ﻿// Decompiled with JetBrains decompiler
 // Type: Terraria.Cinematics.Film
-// Assembly: Terraria, Version=1.3.5.1, Culture=neutral, PublicKeyToken=null
-// MVID: E90A5A2F-CD10-4A2C-9D2A-6B036D4E8877
-// Assembly location: F:\Steam\steamapps\common\Terraria\Terraria.exe
+// Assembly: Terraria, Version=1.3.5.3, Culture=neutral, PublicKeyToken=null
+// MVID: 68659D26-2BE6-448F-8663-74FA559E6F08
+// Assembly location: H:\Steam\steamapps\common\Terraria\Terraria.exe
 
 using Microsoft.Xna.Framework;
 using System;
@@ -119,7 +119,9 @@ namespace Terraria.Cinematics
         if (num >= 0 && num < sequence.Duration)
           sequence.Event(new FrameEventData(this._frame, sequence.Start, sequence.Duration));
       }
-      return ++this._frame != this._frameCount;
+      int num1 = this._frame + 1;
+      this._frame = num1;
+      return num1 != this._frameCount;
     }
 
     public virtual void OnBegin()

@@ -1,8 +1,8 @@
 ﻿// Decompiled with JetBrains decompiler
 // Type: Terraria.GameContent.UI.Chat.GlyphTagHandler
-// Assembly: TerrariaServer, Version=1.3.5.1, Culture=neutral, PublicKeyToken=null
-// MVID: C2103E81-0935-4BEA-9E98-4159FC80C2BB
-// Assembly location: F:\Steam\steamapps\common\Terraria\TerrariaServer.exe
+// Assembly: TerrariaServer, Version=1.3.5.3, Culture=neutral, PublicKeyToken=null
+// MVID: 8A63A7A2-328D-424C-BC9D-BF23F93646F7
+// Assembly location: H:\Steam\steamapps\common\Terraria\TerrariaServer.exe
 
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -19,99 +19,99 @@ namespace Terraria.GameContent.UI.Chat
     private static Dictionary<string, int> GlyphIndexes = new Dictionary<string, int>()
     {
       {
-        Buttons.A.ToString(),
+        ((Buttons) 4096).ToString(),
         0
       },
       {
-        Buttons.B.ToString(),
+        ((Buttons) 8192).ToString(),
         1
       },
       {
-        Buttons.Back.ToString(),
+        ((Buttons) 32).ToString(),
         4
       },
       {
-        Buttons.DPadDown.ToString(),
+        ((Buttons) 2).ToString(),
         15
       },
       {
-        Buttons.DPadLeft.ToString(),
+        ((Buttons) 4).ToString(),
         14
       },
       {
-        Buttons.DPadRight.ToString(),
+        ((Buttons) 8).ToString(),
         13
       },
       {
-        Buttons.DPadUp.ToString(),
+        ((Buttons) 1).ToString(),
         16
       },
       {
-        Buttons.LeftShoulder.ToString(),
+        ((Buttons) 256).ToString(),
         6
       },
       {
-        Buttons.LeftStick.ToString(),
+        ((Buttons) 64).ToString(),
         10
       },
       {
-        Buttons.LeftThumbstickDown.ToString(),
+        ((Buttons) 536870912).ToString(),
         20
       },
       {
-        Buttons.LeftThumbstickLeft.ToString(),
+        ((Buttons) 2097152).ToString(),
         17
       },
       {
-        Buttons.LeftThumbstickRight.ToString(),
+        ((Buttons) 1073741824).ToString(),
         18
       },
       {
-        Buttons.LeftThumbstickUp.ToString(),
+        ((Buttons) 268435456).ToString(),
         19
       },
       {
-        Buttons.LeftTrigger.ToString(),
+        ((Buttons) 8388608).ToString(),
         8
       },
       {
-        Buttons.RightShoulder.ToString(),
+        ((Buttons) 512).ToString(),
         7
       },
       {
-        Buttons.RightStick.ToString(),
+        ((Buttons) 128).ToString(),
         11
       },
       {
-        Buttons.RightThumbstickDown.ToString(),
+        ((Buttons) 33554432).ToString(),
         24
       },
       {
-        Buttons.RightThumbstickLeft.ToString(),
+        ((Buttons) 134217728).ToString(),
         21
       },
       {
-        Buttons.RightThumbstickRight.ToString(),
+        ((Buttons) 67108864).ToString(),
         22
       },
       {
-        Buttons.RightThumbstickUp.ToString(),
+        ((Buttons) 16777216).ToString(),
         23
       },
       {
-        Buttons.RightTrigger.ToString(),
+        ((Buttons) 4194304).ToString(),
         9
       },
       {
-        Buttons.Start.ToString(),
+        ((Buttons) 16).ToString(),
         5
       },
       {
-        Buttons.X.ToString(),
+        ((Buttons) 16384).ToString(),
         2
       },
       {
-        Buttons.Y.ToString(),
+        ((Buttons) 32768).ToString(),
         3
       },
       {
@@ -128,8 +128,10 @@ namespace Terraria.GameContent.UI.Chat
       if (!int.TryParse(text, out result) || result >= 26)
         return new TextSnippet(text);
       GlyphTagHandler.GlyphSnippet glyphSnippet = new GlyphTagHandler.GlyphSnippet(result);
-      glyphSnippet.DeleteWhole = true;
-      glyphSnippet.Text = "[g:" + (object) result + "]";
+      int num = 1;
+      glyphSnippet.DeleteWhole = num != 0;
+      string str = "[g:" + (object) result + "]";
+      glyphSnippet.Text = str;
       return (TextSnippet) glyphSnippet;
     }
 
@@ -154,20 +156,20 @@ namespace Terraria.GameContent.UI.Chat
         : base("")
       {
         this._glyphIndex = index;
-        this.Color = Color.White;
+        this.Color = Color.get_White();
       }
 
-      public override bool UniqueDraw(bool justCheckingString, out Vector2 size, SpriteBatch spriteBatch, Vector2 position = default (Vector2), Color color = default (Color), float scale = 1f)
+      public override bool UniqueDraw(bool justCheckingString, out Vector2 size, SpriteBatch spriteBatch, Vector2 position = null, Color color = null, float scale = 1f)
       {
-        if (!justCheckingString && color != Color.Black)
+        if (!justCheckingString && Color.op_Inequality(color, Color.get_Black()))
         {
           int frameX = this._glyphIndex;
           if (this._glyphIndex == 25)
             frameX = (double) Main.GlobalTime % 0.600000023841858 < 0.300000011920929 ? 17 : 18;
-          Texture2D texture2D = Main.textGlyphTexture[0];
-          spriteBatch.Draw(texture2D, position, new Rectangle?(texture2D.Frame(25, 1, frameX, frameX / 25)), color, 0.0f, Vector2.Zero, GlyphTagHandler.GlyphsScale, SpriteEffects.None, 0.0f);
+          Texture2D tex = Main.textGlyphTexture[0];
+          spriteBatch.Draw(tex, position, new Rectangle?(tex.Frame(25, 1, frameX, frameX / 25)), color, 0.0f, Vector2.get_Zero(), GlyphTagHandler.GlyphsScale, (SpriteEffects) 0, 0.0f);
         }
-        size = new Vector2(26f) * GlyphTagHandler.GlyphsScale;
+        size = Vector2.op_Multiply(new Vector2(26f), GlyphTagHandler.GlyphsScale);
         return true;
       }
 

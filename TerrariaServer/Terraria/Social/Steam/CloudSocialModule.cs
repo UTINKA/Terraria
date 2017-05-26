@@ -1,8 +1,8 @@
 ﻿// Decompiled with JetBrains decompiler
 // Type: Terraria.Social.Steam.CloudSocialModule
-// Assembly: TerrariaServer, Version=1.3.5.1, Culture=neutral, PublicKeyToken=null
-// MVID: C2103E81-0935-4BEA-9E98-4159FC80C2BB
-// Assembly location: F:\Steam\steamapps\common\Terraria\TerrariaServer.exe
+// Assembly: TerrariaServer, Version=1.3.5.3, Culture=neutral, PublicKeyToken=null
+// MVID: 8A63A7A2-328D-424C-BC9D-BF23F93646F7
+// Assembly location: H:\Steam\steamapps\common\Terraria\TerrariaServer.exe
 
 using Steamworks;
 using System;
@@ -13,7 +13,7 @@ namespace Terraria.Social.Steam
   public class CloudSocialModule : Terraria.Social.Base.CloudSocialModule
   {
     private object ioLock = new object();
-    private byte[] writeBuffer = new byte[new IntPtr(1024)];
+    private byte[] writeBuffer = new byte[1024];
     private const uint WRITE_CHUNK_SIZE = 1024;
 
     public override void Initialize()

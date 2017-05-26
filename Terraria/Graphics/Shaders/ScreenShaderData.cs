@@ -1,8 +1,8 @@
 ﻿// Decompiled with JetBrains decompiler
 // Type: Terraria.Graphics.Shaders.ScreenShaderData
-// Assembly: Terraria, Version=1.3.5.1, Culture=neutral, PublicKeyToken=null
-// MVID: E90A5A2F-CD10-4A2C-9D2A-6B036D4E8877
-// Assembly location: F:\Steam\steamapps\common\Terraria\Terraria.exe
+// Assembly: Terraria, Version=1.3.5.3, Culture=neutral, PublicKeyToken=null
+// MVID: 68659D26-2BE6-448F-8663-74FA559E6F08
+// Assembly location: H:\Steam\steamapps\common\Terraria\Terraria.exe
 
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -11,21 +11,21 @@ namespace Terraria.Graphics.Shaders
 {
   public class ScreenShaderData : ShaderData
   {
-    private Vector3 _uColor = Vector3.One;
-    private Vector3 _uSecondaryColor = Vector3.One;
+    private Vector3 _uColor = Vector3.get_One();
+    private Vector3 _uSecondaryColor = Vector3.get_One();
     private float _uOpacity = 1f;
     private float _globalOpacity = 1f;
     private float _uIntensity = 1f;
-    private Vector2 _uTargetPosition = Vector2.One;
+    private Vector2 _uTargetPosition = Vector2.get_One();
     private Vector2 _uDirection = new Vector2(0.0f, 1f);
-    private Vector2 _uImageOffset = Vector2.Zero;
+    private Vector2 _uImageOffset = Vector2.get_Zero();
     private Ref<Texture2D>[] _uImages = new Ref<Texture2D>[3];
     private SamplerState[] _samplerStates = new SamplerState[3];
     private Vector2[] _imageScales = new Vector2[3]
     {
-      Vector2.One,
-      Vector2.One,
-      Vector2.One
+      Vector2.get_One(),
+      Vector2.get_One(),
+      Vector2.get_One()
     };
     private float _uProgress;
 
@@ -61,31 +61,38 @@ namespace Terraria.Graphics.Shaders
 
     public new virtual void Apply()
     {
-      Vector2 vector2_1 = new Vector2((float) Main.offScreenRange, (float) Main.offScreenRange);
-      Vector2 vector2_2 = new Vector2((float) Main.screenWidth, (float) Main.screenHeight) / Main.GameViewMatrix.Zoom;
-      Vector2 vector2_3 = new Vector2((float) Main.screenWidth, (float) Main.screenHeight) * 0.5f;
-      Vector2 vector2_4 = Main.screenPosition + vector2_3 * (Vector2.One - Vector2.One / Main.GameViewMatrix.Zoom);
-      this.Shader.Parameters["uColor"].SetValue(this._uColor);
-      this.Shader.Parameters["uOpacity"].SetValue(this.CombinedOpacity);
-      this.Shader.Parameters["uSecondaryColor"].SetValue(this._uSecondaryColor);
-      this.Shader.Parameters["uTime"].SetValue(Main.GlobalTime);
-      this.Shader.Parameters["uScreenResolution"].SetValue(vector2_2);
-      this.Shader.Parameters["uScreenPosition"].SetValue(vector2_4 - vector2_1);
-      this.Shader.Parameters["uTargetPosition"].SetValue(this._uTargetPosition - vector2_1);
-      this.Shader.Parameters["uImageOffset"].SetValue(this._uImageOffset);
-      this.Shader.Parameters["uIntensity"].SetValue(this._uIntensity);
-      this.Shader.Parameters["uProgress"].SetValue(this._uProgress);
-      this.Shader.Parameters["uDirection"].SetValue(this._uDirection);
-      this.Shader.Parameters["uZoom"].SetValue(Main.GameViewMatrix.Zoom);
+      Vector2 vector2_1;
+      // ISSUE: explicit reference operation
+      ((Vector2) @vector2_1).\u002Ector((float) Main.offScreenRange, (float) Main.offScreenRange);
+      Vector2 vector2_2 = Vector2.op_Division(new Vector2((float) Main.screenWidth, (float) Main.screenHeight), Main.GameViewMatrix.Zoom);
+      Vector2 vector2_3 = Vector2.op_Multiply(new Vector2((float) Main.screenWidth, (float) Main.screenHeight), 0.5f);
+      Vector2 vector2_4 = Vector2.op_Addition(Main.screenPosition, Vector2.op_Multiply(vector2_3, Vector2.op_Subtraction(Vector2.get_One(), Vector2.op_Division(Vector2.get_One(), Main.GameViewMatrix.Zoom))));
+      this.Shader.get_Parameters().get_Item("uColor").SetValue(this._uColor);
+      this.Shader.get_Parameters().get_Item("uOpacity").SetValue(this.CombinedOpacity);
+      this.Shader.get_Parameters().get_Item("uSecondaryColor").SetValue(this._uSecondaryColor);
+      this.Shader.get_Parameters().get_Item("uTime").SetValue(Main.GlobalTime);
+      this.Shader.get_Parameters().get_Item("uScreenResolution").SetValue(vector2_2);
+      this.Shader.get_Parameters().get_Item("uScreenPosition").SetValue(Vector2.op_Subtraction(vector2_4, vector2_1));
+      this.Shader.get_Parameters().get_Item("uTargetPosition").SetValue(Vector2.op_Subtraction(this._uTargetPosition, vector2_1));
+      this.Shader.get_Parameters().get_Item("uImageOffset").SetValue(this._uImageOffset);
+      this.Shader.get_Parameters().get_Item("uIntensity").SetValue(this._uIntensity);
+      this.Shader.get_Parameters().get_Item("uProgress").SetValue(this._uProgress);
+      this.Shader.get_Parameters().get_Item("uDirection").SetValue(this._uDirection);
+      this.Shader.get_Parameters().get_Item("uZoom").SetValue(Main.GameViewMatrix.Zoom);
       for (int index = 0; index < this._uImages.Length; ++index)
       {
         if (this._uImages[index] != null && this._uImages[index].Value != null)
         {
-          Main.graphics.GraphicsDevice.Textures[index + 1] = (Texture) this._uImages[index].Value;
-          int width = this._uImages[index].Value.Width;
-          int height = this._uImages[index].Value.Height;
-          Main.graphics.GraphicsDevice.SamplerStates[index + 1] = this._samplerStates[index] == null ? (!Utils.IsPowerOfTwo(width) || !Utils.IsPowerOfTwo(height) ? SamplerState.AnisotropicClamp : SamplerState.LinearWrap) : this._samplerStates[index];
-          this.Shader.Parameters["uImageSize" + (object) (index + 1)].SetValue(new Vector2((float) width, (float) height) * this._imageScales[index]);
+          Main.graphics.get_GraphicsDevice().get_Textures().set_Item(index + 1, (Texture) this._uImages[index].Value);
+          int width = this._uImages[index].Value.get_Width();
+          int height = this._uImages[index].Value.get_Height();
+          if (this._samplerStates[index] != null)
+            Main.graphics.get_GraphicsDevice().get_SamplerStates().set_Item(index + 1, this._samplerStates[index]);
+          else if (Utils.IsPowerOfTwo(width) && Utils.IsPowerOfTwo(height))
+            Main.graphics.get_GraphicsDevice().get_SamplerStates().set_Item(index + 1, (SamplerState) SamplerState.LinearWrap);
+          else
+            Main.graphics.get_GraphicsDevice().get_SamplerStates().set_Item(index + 1, (SamplerState) SamplerState.AnisotropicClamp);
+          this.Shader.get_Parameters().get_Item("uImageSize" + (object) (index + 1)).SetValue(Vector2.op_Multiply(new Vector2((float) width, (float) height), this._imageScales[index]));
         }
       }
       base.Apply();
@@ -133,7 +140,8 @@ namespace Terraria.Graphics.Shaders
 
     public ScreenShaderData UseColor(Color color)
     {
-      return this.UseColor(color.ToVector3());
+      // ISSUE: explicit reference operation
+      return this.UseColor(((Color) @color).ToVector3());
     }
 
     public ScreenShaderData UseColor(Vector3 color)
@@ -167,7 +175,8 @@ namespace Terraria.Graphics.Shaders
 
     public ScreenShaderData UseSecondaryColor(Color color)
     {
-      return this.UseSecondaryColor(color.ToVector3());
+      // ISSUE: explicit reference operation
+      return this.UseSecondaryColor(((Color) @color).ToVector3());
     }
 
     public ScreenShaderData UseSecondaryColor(Vector3 color)

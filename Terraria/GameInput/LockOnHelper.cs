@@ -1,8 +1,8 @@
 ﻿// Decompiled with JetBrains decompiler
 // Type: Terraria.GameInput.LockOnHelper
-// Assembly: Terraria, Version=1.3.5.1, Culture=neutral, PublicKeyToken=null
-// MVID: E90A5A2F-CD10-4A2C-9D2A-6B036D4E8877
-// Assembly location: F:\Steam\steamapps\common\Terraria\Terraria.exe
+// Assembly: Terraria, Version=1.3.5.3, Culture=neutral, PublicKeyToken=null
+// MVID: 68659D26-2BE6-448F-8663-74FA559E6F08
+// Assembly location: H:\Steam\steamapps\common\Terraria\Terraria.exe
 
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -42,32 +42,46 @@ namespace Terraria.GameInput
       {
         NPC aimedTarget = LockOnHelper.AimedTarget;
         if (aimedTarget == null)
-          return Vector2.Zero;
+          return Vector2.get_Zero();
         Vector2 vec = aimedTarget.Center;
         int index1;
         Vector2 pos;
         if (NPC.GetNPCLocation(LockOnHelper._targets[LockOnHelper._pickedTarget], true, false, out index1, out pos))
-          vec = pos + Main.npc[index1].Distance(Main.player[Main.myPlayer].Center) / 2000f * Main.npc[index1].velocity * 45f;
+          vec = Vector2.op_Addition(pos, Vector2.op_Multiply(Vector2.op_Multiply(Main.npc[index1].Distance(Main.player[Main.myPlayer].Center) / 2000f, Main.npc[index1].velocity), 45f));
         Player player = Main.player[Main.myPlayer];
-        for (int index2 = ItemID.Sets.LockOnAimAbove[player.inventory[player.selectedItem].type]; index2 > 0 && (double) vec.Y > 100.0; --index2)
+        for (int index2 = ItemID.Sets.LockOnAimAbove[player.inventory[player.selectedItem].type]; index2 > 0 && vec.Y > 100.0; --index2)
         {
           Point tileCoordinates = vec.ToTileCoordinates();
-          tileCoordinates.Y -= 4;
-          if (WorldGen.InWorld(tileCoordinates.X, tileCoordinates.Y, 10) && !WorldGen.SolidTile(tileCoordinates.X, tileCoordinates.Y))
-            vec.Y -= 16f;
+          __Null& local1 = @tileCoordinates.Y;
+          int num1 = ^(int&) local1 - 4;
+          ^(int&) local1 = num1;
+          if (WorldGen.InWorld((int) tileCoordinates.X, (int) tileCoordinates.Y, 10) && !WorldGen.SolidTile((int) tileCoordinates.X, (int) tileCoordinates.Y))
+          {
+            __Null& local2 = @vec.Y;
+            double num2 = (double) ^(float&) local2 - 16.0;
+            ^(float&) local2 = (float) num2;
+          }
           else
             break;
         }
         float? nullable = ItemID.Sets.LockOnAimCompensation[player.inventory[player.selectedItem].type];
         if (nullable.HasValue)
         {
-          vec.Y -= (float) (aimedTarget.height / 2);
-          Vector2 v = vec - player.Center;
-          Vector2 vector2 = v.SafeNormalize(Vector2.Zero);
-          --vector2.Y;
-          float num = (float) Math.Pow((double) v.Length() / 700.0, 2.0) * 700f;
-          vec.Y += (float) ((double) vector2.Y * (double) num * (double) nullable.Value * 1.0);
-          vec.X += (float) (-(double) vector2.X * (double) num * (double) nullable.Value * 1.0);
+          __Null& local1 = @vec.Y;
+          double num1 = (double) ^(float&) local1 - (double) (aimedTarget.height / 2);
+          ^(float&) local1 = (float) num1;
+          Vector2 v = Vector2.op_Subtraction(vec, player.Center);
+          Vector2 vector2 = v.SafeNormalize(Vector2.get_Zero());
+          __Null& local2 = @vector2.Y;
+          double num2 = (double) ^(float&) local2 - 1.0;
+          ^(float&) local2 = (float) num2;
+          float num3 = (float) Math.Pow((double) ((Vector2) @v).Length() / 700.0, 2.0) * 700f;
+          __Null& local3 = @vec.Y;
+          double num4 = (double) ^(float&) local3 + vector2.Y * (double) num3 * (double) nullable.Value * 1.0;
+          ^(float&) local3 = (float) num4;
+          __Null& local4 = @vec.X;
+          double num5 = (double) ^(float&) local4 + -vector2.X * (double) num3 * (double) nullable.Value * 1.0;
+          ^(float&) local4 = (float) num5;
         }
         return vec;
       }
@@ -152,7 +166,7 @@ namespace Terraria.GameInput
       if (!LockOnHelper._canLockOn)
         return;
       NPC aimedTarget = LockOnHelper.AimedTarget;
-      LockOnHelper.SetLockPosition(Main.ReverseGravitySupport(LockOnHelper.PredictedPosition - Main.screenPosition, 0.0f));
+      LockOnHelper.SetLockPosition(Main.ReverseGravitySupport(Vector2.op_Subtraction(LockOnHelper.PredictedPosition, Main.screenPosition), 0.0f));
     }
 
     public static void SetDOWN()
@@ -278,8 +292,14 @@ namespace Terraria.GameInput
       for (int index = 0; index < Main.npc.Length; ++index)
       {
         NPC n = Main.npc[index];
-        if (LockOnHelper.ValidTarget(n) && (double) n.Distance(position) <= (double) radius && rectangle.Intersects(n.Hitbox) && ((double) Lighting.GetSubLight(n.Center).Length() / 3.0 >= 0.00999999977648258 && (LockOnHelper.UseMode != LockOnHelper.LockOnMode.ThreeDS || (double) Vector2.Dot(n.DirectionFrom(center), vector2) >= 0.649999976158142)))
-          LockOnHelper._targets.Add(index);
+        // ISSUE: explicit reference operation
+        if (LockOnHelper.ValidTarget(n) && (double) n.Distance(position) <= (double) radius && ((Rectangle) @rectangle).Intersects(n.Hitbox))
+        {
+          Vector3 subLight = Lighting.GetSubLight(n.Center);
+          // ISSUE: explicit reference operation
+          if ((double) ((Vector3) @subLight).Length() / 3.0 >= 0.00999999977648258 && (LockOnHelper.UseMode != LockOnHelper.LockOnMode.ThreeDS || (double) Vector2.Dot(n.DirectionFrom(center), vector2) >= 0.649999976158142))
+            LockOnHelper._targets.Add(index);
+        }
       }
     }
 
@@ -295,7 +315,8 @@ namespace Terraria.GameInput
         {
           int target = LockOnHelper._targets[index];
           NPC n = Main.npc[target];
-          float num2 = Vector2.Dot(n.DirectionFrom(center), vector2);
+          Vector2 Source = center;
+          float num2 = Vector2.Dot(n.DirectionFrom(Source), vector2);
           if (LockOnHelper.ValidTarget(n) && (LockOnHelper._pickedTarget == -1 || (double) num2 > (double) num1))
           {
             LockOnHelper._pickedTarget = index;
@@ -342,16 +363,22 @@ namespace Terraria.GameInput
       if (Main.gameMenu)
         return;
       Texture2D lockOnCursorTexture = Main.LockOnCursorTexture;
-      Rectangle r1 = new Rectangle(0, 0, lockOnCursorTexture.Width, 12);
-      Rectangle r2 = new Rectangle(0, 16, lockOnCursorTexture.Width, 12);
+      Rectangle r1;
+      // ISSUE: explicit reference operation
+      ((Rectangle) @r1).\u002Ector(0, 0, lockOnCursorTexture.get_Width(), 12);
+      Rectangle r2;
+      // ISSUE: explicit reference operation
+      ((Rectangle) @r2).\u002Ector(0, 16, lockOnCursorTexture.get_Width(), 12);
       Color color1 = Main.OurFavoriteColor.MultiplyRGBA(new Color(0.75f, 0.75f, 0.75f, 1f));
-      color1.A = (byte) 220;
-      Color favoriteColor = Main.OurFavoriteColor;
-      favoriteColor.A = (byte) 220;
+      // ISSUE: explicit reference operation
+      ((Color) @color1).set_A((byte) 220);
+      Color t2 = Main.OurFavoriteColor;
+      // ISSUE: explicit reference operation
+      ((Color) @t2).set_A((byte) 220);
       float num1 = (float) (0.939999997615814 + Math.Sin((double) Main.GlobalTime * 6.28318548202515) * 0.0599999986588955);
-      favoriteColor *= num1;
-      Color t1 = color1 * num1;
-      Utils.Swap<Color>(ref t1, ref favoriteColor);
+      t2 = Color.op_Multiply(t2, num1);
+      Color t1 = Color.op_Multiply(color1, num1);
+      Utils.Swap<Color>(ref t1, ref t2);
       Color color2 = t1.MultiplyRGBA(new Color(0.8f, 0.8f, 0.8f, 0.8f));
       Color color3 = t1.MultiplyRGBA(new Color(0.8f, 0.8f, 0.8f, 0.8f));
       float gravDir = Main.player[Main.myPlayer].gravDir;
@@ -375,9 +402,9 @@ namespace Terraria.GameInput
         if ((double) num9 > 0.0)
         {
           float num10 = (float) (1.0 - (double) num9 * (double) num9);
-          Vector2 position = Main.ReverseGravitySupport(Main.npc[i].Top + new Vector2(0.0f, (float) (-(double) num7 - (double) num10 * (double) num6)) - Main.screenPosition, (float) Main.npc[i].height);
-          spriteBatch.Draw(lockOnCursorTexture, position, new Rectangle?(r1), color2 * num9, 0.0f, r1.Size() / 2f, new Vector2(0.58f, 1f) * num2 * num4 * (1f + num9) / 2f, SpriteEffects.None, 0.0f);
-          spriteBatch.Draw(lockOnCursorTexture, position, new Rectangle?(r2), color3 * num9 * num9, 0.0f, r2.Size() / 2f, new Vector2(0.58f, 1f) * num2 * num4 * (1f + num9) / 2f, SpriteEffects.None, 0.0f);
+          Vector2 vector2 = Main.ReverseGravitySupport(Vector2.op_Subtraction(Vector2.op_Addition(Main.npc[i].Top, new Vector2(0.0f, (float) (-(double) num7 - (double) num10 * (double) num6))), Main.screenPosition), (float) Main.npc[i].height);
+          spriteBatch.Draw(lockOnCursorTexture, vector2, new Rectangle?(r1), Color.op_Multiply(color2, num9), 0.0f, Vector2.op_Division(r1.Size(), 2f), Vector2.op_Division(Vector2.op_Multiply(Vector2.op_Multiply(Vector2.op_Multiply(new Vector2(0.58f, 1f), num2), num4), 1f + num9), 2f), (SpriteEffects) 0, 0.0f);
+          spriteBatch.Draw(lockOnCursorTexture, vector2, new Rectangle?(r2), Color.op_Multiply(Color.op_Multiply(color3, num9), num9), 0.0f, Vector2.op_Division(r2.Size(), 2f), Vector2.op_Division(Vector2.op_Multiply(Vector2.op_Multiply(Vector2.op_Multiply(new Vector2(0.58f, 1f), num2), num4), 1f + num9), 2f), (SpriteEffects) 0, 0.0f);
         }
         float num11 = LockOnHelper._drawProgress[i, 1];
         if ((double) num11 > 0.0)
@@ -397,11 +424,11 @@ namespace Terraria.GameInput
           for (int index2 = 0; (double) index2 < (double) num13; ++index2)
           {
             float num14 = (float) (6.28318548202515 / (double) num13 * (double) index2 + (double) Main.GlobalTime * 6.28318548202515 * 0.25);
-            Vector2 vector2_2 = new Vector2(0.0f, (float) (num12 / 2)).RotatedBy((double) num14, new Vector2());
-            Vector2 position = Main.ReverseGravitySupport(vector2_1 + vector2_2 - Main.screenPosition, 0.0f);
-            float rotation = (float) ((double) num14 * ((double) gravDir == 1.0 ? 1.0 : -1.0) + 3.14159274101257 * ((double) gravDir == 1.0 ? 1.0 : 0.0));
-            spriteBatch.Draw(lockOnCursorTexture, position, new Rectangle?(r1), t1 * num11, rotation, r1.Size() / 2f, new Vector2(0.58f, 1f) * num2 * num5 * (1f + num11) / 2f, SpriteEffects.None, 0.0f);
-            spriteBatch.Draw(lockOnCursorTexture, position, new Rectangle?(r2), favoriteColor * num11 * num11, rotation, r2.Size() / 2f, new Vector2(0.58f, 1f) * num2 * num5 * (1f + num11) / 2f, SpriteEffects.None, 0.0f);
+            Vector2 vector2_2 = new Vector2(0.0f, (float) (num12 / 2)).RotatedBy((double) num14, (Vector2) null);
+            Vector2 vector2_3 = Main.ReverseGravitySupport(Vector2.op_Subtraction(Vector2.op_Addition(vector2_1, vector2_2), Main.screenPosition), 0.0f);
+            float num15 = (float) ((double) num14 * ((double) gravDir == 1.0 ? 1.0 : -1.0) + 3.14159274101257 * ((double) gravDir == 1.0 ? 1.0 : 0.0));
+            spriteBatch.Draw(lockOnCursorTexture, vector2_3, new Rectangle?(r1), Color.op_Multiply(t1, num11), num15, Vector2.op_Division(r1.Size(), 2f), Vector2.op_Division(Vector2.op_Multiply(Vector2.op_Multiply(Vector2.op_Multiply(new Vector2(0.58f, 1f), num2), num5), 1f + num11), 2f), (SpriteEffects) 0, 0.0f);
+            spriteBatch.Draw(lockOnCursorTexture, vector2_3, new Rectangle?(r2), Color.op_Multiply(Color.op_Multiply(t2, num11), num11), num15, Vector2.op_Division(r2.Size(), 2f), Vector2.op_Division(Vector2.op_Multiply(Vector2.op_Multiply(Vector2.op_Multiply(new Vector2(0.58f, 1f), num2), num5), 1f + num11), 2f), (SpriteEffects) 0, 0.0f);
           }
         }
       }

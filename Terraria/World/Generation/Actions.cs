@@ -1,8 +1,8 @@
 ﻿// Decompiled with JetBrains decompiler
 // Type: Terraria.World.Generation.Actions
-// Assembly: Terraria, Version=1.3.5.1, Culture=neutral, PublicKeyToken=null
-// MVID: E90A5A2F-CD10-4A2C-9D2A-6B036D4E8877
-// Assembly location: F:\Steam\steamapps\common\Terraria\Terraria.exe
+// Assembly: Terraria, Version=1.3.5.3, Culture=neutral, PublicKeyToken=null
+// MVID: 68659D26-2BE6-448F-8663-74FA559E6F08
+// Assembly location: H:\Steam\steamapps\common\Terraria\Terraria.exe
 
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -90,9 +90,13 @@ namespace Terraria.World.Generation
         Tile tile = GenBase._tiles[x, y];
         if (tile.active() && this._tileCounts.ContainsKey(tile.type))
         {
-          Dictionary<ushort, int> tileCounts;
-          ushort type;
-          (tileCounts = this._tileCounts)[type = tile.type] = tileCounts[type] + 1;
+          Dictionary<ushort, int> tileCounts = this._tileCounts;
+          ushort type = tile.type;
+          int num1 = (int) type;
+          int num2 = tileCounts[(ushort) num1];
+          int num3 = (int) type;
+          int num4 = num2 + 1;
+          tileCounts[(ushort) num3] = num4;
         }
         return this.UnitApply(origin, x, y, args);
       }
@@ -237,7 +241,7 @@ namespace Terraria.World.Generation
       private Color _color;
       private SpriteBatch _spriteBatch;
 
-      public DebugDraw(SpriteBatch spriteBatch, Color color = default (Color))
+      public DebugDraw(SpriteBatch spriteBatch, Color color = null)
       {
         this._spriteBatch = spriteBatch;
         this._color = color;
@@ -245,7 +249,7 @@ namespace Terraria.World.Generation
 
       public override bool Apply(Point origin, int x, int y, params object[] args)
       {
-        this._spriteBatch.Draw(Main.magicPixel, new Microsoft.Xna.Framework.Rectangle((x << 4) - (int) Main.screenPosition.X, (y << 4) - (int) Main.screenPosition.Y, 16, 16), this._color);
+        this._spriteBatch.Draw(Main.magicPixel, new Rectangle((x << 4) - (int) Main.screenPosition.X, (y << 4) - (int) Main.screenPosition.Y, 16, 16), this._color);
         return this.UnitApply(origin, x, y, args);
       }
     }

@@ -1,8 +1,8 @@
 ﻿// Decompiled with JetBrains decompiler
 // Type: Terraria.DataStructures.AnchorData
-// Assembly: TerrariaServer, Version=1.3.5.1, Culture=neutral, PublicKeyToken=null
-// MVID: C2103E81-0935-4BEA-9E98-4159FC80C2BB
-// Assembly location: F:\Steam\steamapps\common\Terraria\TerrariaServer.exe
+// Assembly: TerrariaServer, Version=1.3.5.3, Culture=neutral, PublicKeyToken=null
+// MVID: 8A63A7A2-328D-424C-BC9D-BF23F93646F7
+// Assembly location: H:\Steam\steamapps\common\Terraria\TerrariaServer.exe
 
 using Terraria.Enums;
 
@@ -10,10 +10,10 @@ namespace Terraria.DataStructures
 {
   public struct AnchorData
   {
-    public static AnchorData Empty = new AnchorData();
     public AnchorType type;
     public int tileCount;
     public int checkStart;
+    public static AnchorData Empty;
 
     public AnchorData(AnchorType type, int count, int start)
     {

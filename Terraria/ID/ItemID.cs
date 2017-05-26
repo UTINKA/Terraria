@@ -1,8 +1,8 @@
 ﻿// Decompiled with JetBrains decompiler
 // Type: Terraria.ID.ItemID
-// Assembly: Terraria, Version=1.3.5.1, Culture=neutral, PublicKeyToken=null
-// MVID: E90A5A2F-CD10-4A2C-9D2A-6B036D4E8877
-// Assembly location: F:\Steam\steamapps\common\Terraria\Terraria.exe
+// Assembly: Terraria, Version=1.3.5.3, Culture=neutral, PublicKeyToken=null
+// MVID: 68659D26-2BE6-448F-8663-74FA559E6F08
+// Assembly location: H:\Steam\steamapps\common\Terraria\Terraria.exe
 
 using ReLogic.Reflection;
 using System.Collections.Generic;
@@ -12,6 +12,7 @@ namespace Terraria.ID
   public class ItemID
   {
     public static readonly IdDictionary Search = IdDictionary.Create<ItemID, short>();
+    private static Dictionary<string, short> _legacyItemLookup;
     public const short YellowPhasesaberOld = -24;
     public const short WhitePhasesaberOld = -23;
     public const short PurplePhasesaberOld = -22;
@@ -3991,7 +3992,6 @@ namespace Terraria.ID
     public const short LeinforsWings = 3928;
     public const short LeinforsAccessory = 3929;
     public const short Count = 3930;
-    private static Dictionary<string, short> _legacyItemLookup;
 
     private static Dictionary<string, short> GenerateLegacyItemDictionary()
     {

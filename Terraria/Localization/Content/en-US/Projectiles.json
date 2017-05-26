@@ -712,6 +712,7 @@
 		"DD2BetsyArrow": "Aerial Bane",
 		"ApprenticeStaffT3Shot": "Betsy's Wrath",
 		"BookStaffShot": "Tome of Infinite Wisdom",
-		"DD2Win": "Victory!"
+		"DD2Win": "Victory!",
+		"DD2JavelinHostileT3": "{$ProjectileName.DD2JavelinHostile}"
 	}
 }

@@ -1,8 +1,8 @@
 ﻿// Decompiled with JetBrains decompiler
 // Type: Terraria.Tile
-// Assembly: Terraria, Version=1.3.5.1, Culture=neutral, PublicKeyToken=null
-// MVID: E90A5A2F-CD10-4A2C-9D2A-6B036D4E8877
-// Assembly location: F:\Steam\steamapps\common\Terraria\Terraria.exe
+// Assembly: Terraria, Version=1.3.5.3, Culture=neutral, PublicKeyToken=null
+// MVID: 68659D26-2BE6-448F-8663-74FA559E6F08
+// Assembly location: H:\Steam\steamapps\common\Terraria\Terraria.exe
 
 using Microsoft.Xna.Framework;
 
@@ -10,15 +10,6 @@ namespace Terraria
 {
   public class Tile
   {
-    public const int Type_Solid = 0;
-    public const int Type_Halfbrick = 1;
-    public const int Type_SlopeDownRight = 2;
-    public const int Type_SlopeDownLeft = 3;
-    public const int Type_SlopeUpRight = 4;
-    public const int Type_SlopeUpLeft = 5;
-    public const int Liquid_Water = 0;
-    public const int Liquid_Lava = 1;
-    public const int Liquid_Honey = 2;
     public ushort type;
     public byte wall;
     public byte liquid;
@@ -28,6 +19,15 @@ namespace Terraria
     public byte bTileHeader3;
     public short frameX;
     public short frameY;
+    public const int Type_Solid = 0;
+    public const int Type_Halfbrick = 1;
+    public const int Type_SlopeDownRight = 2;
+    public const int Type_SlopeDownLeft = 3;
+    public const int Type_SlopeUpRight = 4;
+    public const int Type_SlopeUpLeft = 5;
+    public const int Liquid_Water = 0;
+    public const int Liquid_Lava = 1;
+    public const int Liquid_Honey = 2;
 
     public int collisionType
     {
@@ -200,7 +200,11 @@ namespace Terraria
       if (!this.inActive())
         return oldColor;
       double num = 0.4;
-      return new Color((int) (byte) (num * (double) oldColor.R), (int) (byte) (num * (double) oldColor.G), (int) (byte) (num * (double) oldColor.B), (int) oldColor.A);
+      // ISSUE: explicit reference operation
+      // ISSUE: explicit reference operation
+      // ISSUE: explicit reference operation
+      // ISSUE: explicit reference operation
+      return new Color((int) (byte) (num * (double) ((Color) @oldColor).get_R()), (int) (byte) (num * (double) ((Color) @oldColor).get_G()), (int) (byte) (num * (double) ((Color) @oldColor).get_B()), (int) ((Color) @oldColor).get_A());
     }
 
     public bool topSlope()
@@ -286,7 +290,7 @@ namespace Terraria
     public void wire4(bool wire4)
     {
       if (wire4)
-        this.bTileHeader |= (byte) 128;
+        this.bTileHeader = (byte) ((uint) this.bTileHeader | 128U);
       else
         this.bTileHeader = (byte) ((uint) this.bTileHeader & (uint) sbyte.MaxValue);
     }
@@ -339,7 +343,7 @@ namespace Terraria
     public void checkingLiquid(bool checkingLiquid)
     {
       if (checkingLiquid)
-        this.bTileHeader3 |= (byte) 8;
+        this.bTileHeader3 = (byte) ((uint) this.bTileHeader3 | 8U);
       else
         this.bTileHeader3 = (byte) ((uint) this.bTileHeader3 & 247U);
     }
@@ -352,7 +356,7 @@ namespace Terraria
     public void skipLiquid(bool skipLiquid)
     {
       if (skipLiquid)
-        this.bTileHeader3 |= (byte) 16;
+        this.bTileHeader3 = (byte) ((uint) this.bTileHeader3 | 16U);
       else
         this.bTileHeader3 = (byte) ((uint) this.bTileHeader3 & 239U);
     }
@@ -377,7 +381,7 @@ namespace Terraria
     public void active(bool active)
     {
       if (active)
-        this.sTileHeader |= (short) 32;
+        this.sTileHeader = (short) ((int) this.sTileHeader | 32);
       else
         this.sTileHeader = (short) ((int) this.sTileHeader & 65503);
     }
@@ -390,7 +394,7 @@ namespace Terraria
     public void inActive(bool inActive)
     {
       if (inActive)
-        this.sTileHeader |= (short) 64;
+        this.sTileHeader = (short) ((int) this.sTileHeader | 64);
       else
         this.sTileHeader = (short) ((int) this.sTileHeader & 65471);
     }
@@ -403,7 +407,7 @@ namespace Terraria
     public void wire(bool wire)
     {
       if (wire)
-        this.sTileHeader |= (short) 128;
+        this.sTileHeader = (short) ((int) this.sTileHeader | 128);
       else
         this.sTileHeader = (short) ((int) this.sTileHeader & 65407);
     }
@@ -416,7 +420,7 @@ namespace Terraria
     public void wire2(bool wire2)
     {
       if (wire2)
-        this.sTileHeader |= (short) 256;
+        this.sTileHeader = (short) ((int) this.sTileHeader | 256);
       else
         this.sTileHeader = (short) ((int) this.sTileHeader & 65279);
     }
@@ -429,7 +433,7 @@ namespace Terraria
     public void wire3(bool wire3)
     {
       if (wire3)
-        this.sTileHeader |= (short) 512;
+        this.sTileHeader = (short) ((int) this.sTileHeader | 512);
       else
         this.sTileHeader = (short) ((int) this.sTileHeader & 65023);
     }
@@ -442,7 +446,7 @@ namespace Terraria
     public void halfBrick(bool halfBrick)
     {
       if (halfBrick)
-        this.sTileHeader |= (short) 1024;
+        this.sTileHeader = (short) ((int) this.sTileHeader | 1024);
       else
         this.sTileHeader = (short) ((int) this.sTileHeader & 64511);
     }
@@ -455,7 +459,7 @@ namespace Terraria
     public void actuator(bool actuator)
     {
       if (actuator)
-        this.sTileHeader |= (short) 2048;
+        this.sTileHeader = (short) ((int) this.sTileHeader | 2048);
       else
         this.sTileHeader = (short) ((int) this.sTileHeader & 63487);
     }
@@ -483,7 +487,7 @@ namespace Terraria
       if (!WorldGen.SolidOrSlopedTile(x, y))
         return;
       bool flag1 = !WorldGen.TileEmpty(x, y - 1);
-      bool flag2 = !WorldGen.SolidOrSlopedTile(x, y - 1) && flag1;
+      bool flag2 = !WorldGen.SolidOrSlopedTile(x, y - 1) & flag1;
       bool flag3 = WorldGen.SolidOrSlopedTile(x, y + 1);
       bool flag4 = WorldGen.SolidOrSlopedTile(x - 1, y);
       bool flag5 = WorldGen.SolidOrSlopedTile(x + 1, y);
@@ -522,7 +526,7 @@ namespace Terraria
 
     public override string ToString()
     {
-      return "Tile Type:" + (object) this.type + " Active:" + (object) this.active() + " Wall:" + (object) this.wall + " Slope:" + (object) this.slope() + " fX:" + (object) this.frameX + " fY:" + (object) this.frameY;
+      return "Tile Type:" + (object) this.type + " Active:" + this.active().ToString() + " Wall:" + (object) this.wall + " Slope:" + (object) this.slope() + " fX:" + (object) this.frameX + " fY:" + (object) this.frameY;
     }
   }
 }

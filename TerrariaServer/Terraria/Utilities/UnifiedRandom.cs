@@ -1,8 +1,8 @@
 ﻿// Decompiled with JetBrains decompiler
 // Type: Terraria.Utilities.UnifiedRandom
-// Assembly: TerrariaServer, Version=1.3.5.1, Culture=neutral, PublicKeyToken=null
-// MVID: C2103E81-0935-4BEA-9E98-4159FC80C2BB
-// Assembly location: F:\Steam\steamapps\common\Terraria\TerrariaServer.exe
+// Assembly: TerrariaServer, Version=1.3.5.3, Culture=neutral, PublicKeyToken=null
+// MVID: 8A63A7A2-328D-424C-BC9D-BF23F93646F7
+// Assembly location: H:\Steam\steamapps\common\Terraria\TerrariaServer.exe
 
 using System;
 
@@ -85,7 +85,7 @@ namespace Terraria.Utilities
     private double GetSampleForLargeRange()
     {
       int num = this.InternalSample();
-      if (this.InternalSample() % 2 == 0)
+      if ((this.InternalSample() % 2 == 0 ? 1 : 0) != 0)
         num = -num;
       return ((double) num + 2147483646.0) / 4294967293.0;
     }

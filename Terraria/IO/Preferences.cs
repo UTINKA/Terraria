@@ -1,8 +1,8 @@
 ﻿// Decompiled with JetBrains decompiler
 // Type: Terraria.IO.Preferences
-// Assembly: Terraria, Version=1.3.5.1, Culture=neutral, PublicKeyToken=null
-// MVID: E90A5A2F-CD10-4A2C-9D2A-6B036D4E8877
-// Assembly location: F:\Steam\steamapps\common\Terraria\Terraria.exe
+// Assembly: Terraria, Version=1.3.5.3, Culture=neutral, PublicKeyToken=null
+// MVID: 68659D26-2BE6-448F-8663-74FA559E6F08
+// Assembly location: H:\Steam\steamapps\common\Terraria\Terraria.exe
 
 using Newtonsoft.Json;
 using Newtonsoft.Json.Bson;
@@ -38,15 +38,19 @@ namespace Terraria.IO
       if (parseAllTypes)
       {
         JsonSerializerSettings serializerSettings = new JsonSerializerSettings();
-        serializerSettings.set_TypeNameHandling((TypeNameHandling) 4);
-        serializerSettings.set_MetadataPropertyHandling((MetadataPropertyHandling) 1);
-        serializerSettings.set_Formatting((Formatting) 1);
+        int num1 = 4;
+        serializerSettings.set_TypeNameHandling((TypeNameHandling) num1);
+        int num2 = 1;
+        serializerSettings.set_MetadataPropertyHandling((MetadataPropertyHandling) num2);
+        int num3 = 1;
+        serializerSettings.set_Formatting((Formatting) num3);
         this._serializerSettings = serializerSettings;
       }
       else
       {
         JsonSerializerSettings serializerSettings = new JsonSerializerSettings();
-        serializerSettings.set_Formatting((Formatting) 1);
+        int num = 1;
+        serializerSettings.set_Formatting((Formatting) num);
         this._serializerSettings = serializerSettings;
       }
     }
@@ -73,8 +77,12 @@ namespace Terraria.IO
           }
           if (this._data == null)
             this._data = new Dictionary<string, object>();
+          // ISSUE: reference to a compiler-generated field
           if (this.OnLoad != null)
+          {
+            // ISSUE: reference to a compiler-generated field
             this.OnLoad(this);
+          }
           return true;
         }
         catch (Exception ex)
@@ -90,8 +98,12 @@ namespace Terraria.IO
       {
         try
         {
+          // ISSUE: reference to a compiler-generated field
           if (this.OnSave != null)
+          {
+            // ISSUE: reference to a compiler-generated field
             this.OnSave(this);
+          }
           if (!createFile && !File.Exists(this._path))
             return false;
           Directory.GetParent(this._path).Create();
@@ -100,8 +112,12 @@ namespace Terraria.IO
           if (!this.UseBson)
           {
             string text = JsonConvert.SerializeObject((object) this._data, this._serializerSettings);
+            // ISSUE: reference to a compiler-generated field
             if (this.OnProcessText != null)
+            {
+              // ISSUE: reference to a compiler-generated field
               this.OnProcessText(ref text);
+            }
             File.WriteAllText(this._path, text);
             File.SetAttributes(this._path, FileAttributes.Normal);
           }

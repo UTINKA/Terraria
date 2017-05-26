@@ -1,8 +1,8 @@
 ﻿// Decompiled with JetBrains decompiler
 // Type: Terraria.DataStructures.TileObjectPreviewData
-// Assembly: TerrariaServer, Version=1.3.5.1, Culture=neutral, PublicKeyToken=null
-// MVID: C2103E81-0935-4BEA-9E98-4159FC80C2BB
-// Assembly location: F:\Steam\steamapps\common\Terraria\TerrariaServer.exe
+// Assembly: TerrariaServer, Version=1.3.5.3, Culture=neutral, PublicKeyToken=null
+// MVID: 8A63A7A2-328D-424C-BC9D-BF23F93646F7
+// Assembly location: H:\Steam\steamapps\common\Terraria\TerrariaServer.exe
 
 using System;
 
@@ -10,9 +10,6 @@ namespace Terraria.DataStructures
 {
   public class TileObjectPreviewData
   {
-    public const int None = 0;
-    public const int ValidSpot = 1;
-    public const int InvalidSpot = 2;
     private ushort _type;
     private short _style;
     private int _alternate;
@@ -26,6 +23,9 @@ namespace Terraria.DataStructures
     private float _percentValid;
     public static TileObjectPreviewData placementCache;
     public static TileObjectPreviewData randomCache;
+    public const int None = 0;
+    public const int ValidSpot = 1;
+    public const int InvalidSpot = 2;
 
     public bool Active
     {

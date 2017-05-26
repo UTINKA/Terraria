@@ -1,8 +1,8 @@
 ﻿// Decompiled with JetBrains decompiler
 // Type: Terraria.GameContent.UI.Elements.UIGenProgressBar
-// Assembly: TerrariaServer, Version=1.3.5.1, Culture=neutral, PublicKeyToken=null
-// MVID: C2103E81-0935-4BEA-9E98-4159FC80C2BB
-// Assembly location: F:\Steam\steamapps\common\Terraria\TerrariaServer.exe
+// Assembly: TerrariaServer, Version=1.3.5.3, Culture=neutral, PublicKeyToken=null
+// MVID: 8A63A7A2-328D-424C-BC9D-BF23F93646F7
+// Assembly location: H:\Steam\steamapps\common\Terraria\TerrariaServer.exe
 
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -56,40 +56,68 @@ namespace Terraria.GameContent.UI.Elements
       CalculatedStyle dimensions = this.GetDimensions();
       int completedWidth1 = (int) ((double) this._visualOverallProgress * 504.0);
       int completedWidth2 = (int) ((double) this._visualCurrentProgress * 504.0);
-      Vector2 vector2 = new Vector2(dimensions.X, dimensions.Y);
-      Color filled = new Color();
-      filled.PackedValue = WorldGen.crimson ? 4286836223U : 4283888223U;
-      this.DrawFilling2(spriteBatch, vector2 + new Vector2(20f, 40f), 16, completedWidth1, 564, filled, Color.Lerp(filled, Color.Black, 0.5f), new Color(48, 48, 48));
-      filled.PackedValue = 4290947159U;
-      this.DrawFilling2(spriteBatch, vector2 + new Vector2(50f, 60f), 8, completedWidth2, 504, filled, Color.Lerp(filled, Color.Black, 0.5f), new Color(33, 33, 33));
+      Vector2 vector2;
+      // ISSUE: explicit reference operation
+      ((Vector2) @vector2).\u002Ector(dimensions.X, dimensions.Y);
+      Color filled = (Color) null;
+      // ISSUE: explicit reference operation
+      ((Color) @filled).set_PackedValue(WorldGen.crimson ? 4286836223U : 4283888223U);
+      this.DrawFilling2(spriteBatch, Vector2.op_Addition(vector2, new Vector2(20f, 40f)), 16, completedWidth1, 564, filled, Color.Lerp(filled, Color.get_Black(), 0.5f), new Color(48, 48, 48));
+      // ISSUE: explicit reference operation
+      ((Color) @filled).set_PackedValue(4290947159U);
+      this.DrawFilling2(spriteBatch, Vector2.op_Addition(vector2, new Vector2(50f, 60f)), 8, completedWidth2, 504, filled, Color.Lerp(filled, Color.get_Black(), 0.5f), new Color(33, 33, 33));
       Rectangle rectangle = this.GetDimensions().ToRectangle();
-      rectangle.X -= 8;
-      spriteBatch.Draw(WorldGen.crimson ? this._texOuterCrimson : this._texOuterCorrupt, rectangle.TopLeft(), Color.White);
-      spriteBatch.Draw(this._texOuterLower, rectangle.TopLeft() + new Vector2(44f, 60f), Color.White);
+      // ISSUE: explicit reference operation
+      // ISSUE: variable of a reference type
+      __Null& local = @rectangle.X;
+      // ISSUE: cast to a reference type
+      // ISSUE: explicit reference operation
+      int num = ^(int&) local - 8;
+      // ISSUE: cast to a reference type
+      // ISSUE: explicit reference operation
+      ^(int&) local = num;
+      spriteBatch.Draw(WorldGen.crimson ? this._texOuterCrimson : this._texOuterCorrupt, rectangle.TopLeft(), Color.get_White());
+      spriteBatch.Draw(this._texOuterLower, Vector2.op_Addition(rectangle.TopLeft(), new Vector2(44f, 60f)), Color.get_White());
     }
 
     private void DrawFilling(SpriteBatch spritebatch, Texture2D tex, Texture2D texShadow, Vector2 topLeft, int completedWidth, int totalWidth, Color separator, Color empty)
     {
       if (completedWidth % 2 != 0)
         --completedWidth;
-      Vector2 position = topLeft + (float) completedWidth * Vector2.UnitX;
-      int num = completedWidth;
+      Vector2 vector2 = Vector2.op_Addition(topLeft, Vector2.op_Multiply((float) completedWidth, Vector2.get_UnitX()));
+      int num1 = completedWidth;
       Rectangle rectangle = tex.Frame(1, 1, 0, 0);
-      while (num > 0)
+      while (num1 > 0)
       {
-        if (rectangle.Width > num)
+        if (rectangle.Width > num1)
         {
-          rectangle.X += rectangle.Width - num;
-          rectangle.Width = num;
+          // ISSUE: explicit reference operation
+          // ISSUE: variable of a reference type
+          __Null& local = @rectangle.X;
+          // ISSUE: cast to a reference type
+          // ISSUE: explicit reference operation
+          int num2 = ^(int&) local + (rectangle.Width - num1);
+          // ISSUE: cast to a reference type
+          // ISSUE: explicit reference operation
+          ^(int&) local = num2;
+          rectangle.Width = (__Null) num1;
         }
-        spritebatch.Draw(tex, position, new Rectangle?(rectangle), Color.White, 0.0f, new Vector2((float) rectangle.Width, 0.0f), 1f, SpriteEffects.None, 0.0f);
-        position.X -= (float) rectangle.Width;
-        num -= rectangle.Width;
+        spritebatch.Draw(tex, vector2, new Rectangle?(rectangle), Color.get_White(), 0.0f, new Vector2((float) rectangle.Width, 0.0f), 1f, (SpriteEffects) 0, 0.0f);
+        // ISSUE: explicit reference operation
+        // ISSUE: variable of a reference type
+        __Null& local1 = @vector2.X;
+        // ISSUE: cast to a reference type
+        // ISSUE: explicit reference operation
+        double num3 = (double) ^(float&) local1 - (double) (float) rectangle.Width;
+        // ISSUE: cast to a reference type
+        // ISSUE: explicit reference operation
+        ^(float&) local1 = (float) num3;
+        num1 -= (int) rectangle.Width;
       }
       if (texShadow != null)
-        spritebatch.Draw(texShadow, topLeft, new Rectangle?(new Rectangle(0, 0, completedWidth, texShadow.Height)), Color.White);
-      spritebatch.Draw(Main.magicPixel, new Rectangle((int) topLeft.X + completedWidth, (int) topLeft.Y, totalWidth - completedWidth, tex.Height), new Rectangle?(new Rectangle(0, 0, 1, 1)), empty);
-      spritebatch.Draw(Main.magicPixel, new Rectangle((int) topLeft.X + completedWidth - 2, (int) topLeft.Y, 2, tex.Height), new Rectangle?(new Rectangle(0, 0, 1, 1)), separator);
+        spritebatch.Draw(texShadow, topLeft, new Rectangle?(new Rectangle(0, 0, completedWidth, texShadow.get_Height())), Color.get_White());
+      spritebatch.Draw(Main.magicPixel, new Rectangle((int) topLeft.X + completedWidth, (int) topLeft.Y, totalWidth - completedWidth, tex.get_Height()), new Rectangle?(new Rectangle(0, 0, 1, 1)), empty);
+      spritebatch.Draw(Main.magicPixel, new Rectangle((int) topLeft.X + completedWidth - 2, (int) topLeft.Y, 2, tex.get_Height()), new Rectangle?(new Rectangle(0, 0, 1, 1)), separator);
     }
 
     private void DrawFilling2(SpriteBatch spritebatch, Vector2 topLeft, int height, int completedWidth, int totalWidth, Color filled, Color separator, Color empty)

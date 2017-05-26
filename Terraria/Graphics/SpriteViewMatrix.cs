@@ -1,8 +1,8 @@
 ﻿// Decompiled with JetBrains decompiler
 // Type: Terraria.Graphics.SpriteViewMatrix
-// Assembly: Terraria, Version=1.3.5.1, Culture=neutral, PublicKeyToken=null
-// MVID: E90A5A2F-CD10-4A2C-9D2A-6B036D4E8877
-// Assembly location: F:\Steam\steamapps\common\Terraria\Terraria.exe
+// Assembly: Terraria, Version=1.3.5.3, Culture=neutral, PublicKeyToken=null
+// MVID: 68659D26-2BE6-448F-8663-74FA559E6F08
+// Assembly location: H:\Steam\steamapps\common\Terraria\Terraria.exe
 
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -12,10 +12,10 @@ namespace Terraria.Graphics
 {
   public class SpriteViewMatrix
   {
-    private Vector2 _zoom = Vector2.One;
-    private Vector2 _translation = Vector2.Zero;
-    private Matrix _zoomMatrix = Matrix.Identity;
-    private Matrix _transformationMatrix = Matrix.Identity;
+    private Vector2 _zoom = Vector2.get_One();
+    private Vector2 _translation = Vector2.get_Zero();
+    private Matrix _zoomMatrix = Matrix.get_Identity();
+    private Matrix _transformationMatrix = Matrix.get_Identity();
     private bool _needsRebuild = true;
     private SpriteEffects _effects;
     private Matrix _effectMatrix;
@@ -31,7 +31,7 @@ namespace Terraria.Graphics
       }
       set
       {
-        if (!(this._zoom != value))
+        if (!Vector2.op_Inequality(this._zoom, value))
           return;
         this._zoom = value;
         this._needsRebuild = true;
@@ -101,19 +101,25 @@ namespace Terraria.Graphics
     private void Rebuild()
     {
       if (!this._overrideSystemViewport)
-        this._viewport = this._graphicsDevice.Viewport;
-      Vector2 vector2_1 = new Vector2((float) this._viewport.Width, (float) this._viewport.Height);
-      Matrix identity = Matrix.Identity;
-      if (this._effects.HasFlag((Enum) SpriteEffects.FlipHorizontally))
-        identity *= Matrix.CreateScale(-1f, 1f, 1f) * Matrix.CreateTranslation(vector2_1.X, 0.0f, 0.0f);
-      if (this._effects.HasFlag((Enum) SpriteEffects.FlipVertically))
-        identity *= Matrix.CreateScale(1f, -1f, 1f) * Matrix.CreateTranslation(0.0f, vector2_1.Y, 0.0f);
-      Vector2 vector2_2 = vector2_1 * 0.5f;
-      Vector2 vector2_3 = vector2_2 - vector2_2 / this._zoom;
-      this._translation = vector2_3;
-      this._zoomMatrix = Matrix.CreateTranslation(-vector2_3.X, -vector2_3.Y, 0.0f) * Matrix.CreateScale(this._zoom.X, this._zoom.Y, 1f);
-      this._effectMatrix = identity;
-      this._transformationMatrix = identity * this._zoomMatrix;
+        this._viewport = this._graphicsDevice.get_Viewport();
+      Vector2 vector2_1;
+      // ISSUE: explicit reference operation
+      // ISSUE: explicit reference operation
+      // ISSUE: explicit reference operation
+      ((Vector2) @vector2_1).\u002Ector((float) ((Viewport) @this._viewport).get_Width(), (float) ((Viewport) @this._viewport).get_Height());
+      Matrix matrix = Matrix.get_Identity();
+      if (((Enum) (object) this._effects).HasFlag((Enum) (object) (SpriteEffects) 1))
+        matrix = Matrix.op_Multiply(matrix, Matrix.op_Multiply(Matrix.CreateScale(-1f, 1f, 1f), Matrix.CreateTranslation((float) vector2_1.X, 0.0f, 0.0f)));
+      if (((Enum) (object) this._effects).HasFlag((Enum) (object) (SpriteEffects) 2))
+        matrix = Matrix.op_Multiply(matrix, Matrix.op_Multiply(Matrix.CreateScale(1f, -1f, 1f), Matrix.CreateTranslation(0.0f, (float) vector2_1.Y, 0.0f)));
+      Vector2 vector2_2 = Vector2.op_Multiply(vector2_1, 0.5f);
+      Vector2 zoom = this._zoom;
+      Vector2 vector2_3 = Vector2.op_Division(vector2_2, zoom);
+      Vector2 vector2_4 = Vector2.op_Subtraction(vector2_2, vector2_3);
+      this._translation = vector2_4;
+      this._zoomMatrix = Matrix.op_Multiply(Matrix.CreateTranslation((float) -vector2_4.X, (float) -vector2_4.Y, 0.0f), Matrix.CreateScale((float) this._zoom.X, (float) this._zoom.Y, 1f));
+      this._effectMatrix = matrix;
+      this._transformationMatrix = Matrix.op_Multiply(matrix, this._zoomMatrix);
       this._needsRebuild = false;
     }
 
@@ -134,9 +140,15 @@ namespace Terraria.Graphics
         return true;
       if (this._overrideSystemViewport)
         return false;
-      if (this._graphicsDevice.Viewport.Width == this._viewport.Width)
-        return this._graphicsDevice.Viewport.Height != this._viewport.Height;
-      return true;
+      Viewport viewport1 = this._graphicsDevice.get_Viewport();
+      // ISSUE: explicit reference operation
+      // ISSUE: explicit reference operation
+      if (((Viewport) @viewport1).get_Width() != ((Viewport) @this._viewport).get_Width())
+        return true;
+      Viewport viewport2 = this._graphicsDevice.get_Viewport();
+      // ISSUE: explicit reference operation
+      // ISSUE: explicit reference operation
+      return ((Viewport) @viewport2).get_Height() != ((Viewport) @this._viewport).get_Height();
     }
   }
 }

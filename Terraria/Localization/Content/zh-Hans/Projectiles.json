@@ -664,7 +664,7 @@
 		"WoodenBoomerang": "木制回旋镖",
 		"WoodHook": "木钩",
 		"WoodYoyo": "悠悠球",
-		"WormHook": "钩子",
+		"WormHook": "爪钩",
 		"Xenopopper": "外星霰弹枪",
 		"Yelets": "悠悠球",
 		"YellowCounterweight": "平衡锤",
@@ -712,6 +712,7 @@
 		"MonkStaffT2Ghast": "恶魂",
 		"MonkStaffT3": "天龙之怒",
 		"MonkStaffT3_Alt": "天龙之怒",
-		"MonkStaffT3_AltShot": "天龙之怒"
+		"MonkStaffT3_AltShot": "天龙之怒",
+		"DD2JavelinHostileT3": "{$ProjectileName.DD2JavelinHostile}"
 	}
 }

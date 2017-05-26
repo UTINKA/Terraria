@@ -1,8 +1,8 @@
 ﻿// Decompiled with JetBrains decompiler
 // Type: Terraria.Graphics.Capture.CaptureManager
-// Assembly: Terraria, Version=1.3.5.1, Culture=neutral, PublicKeyToken=null
-// MVID: E90A5A2F-CD10-4A2C-9D2A-6B036D4E8877
-// Assembly location: F:\Steam\steamapps\common\Terraria\Terraria.exe
+// Assembly: Terraria, Version=1.3.5.3, Culture=neutral, PublicKeyToken=null
+// MVID: 68659D26-2BE6-448F-8663-74FA559E6F08
+// Assembly location: H:\Steam\steamapps\common\Terraria\Terraria.exe
 
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -50,7 +50,7 @@ namespace Terraria.Graphics.Capture
     public CaptureManager()
     {
       this._interface = new CaptureInterface();
-      this._camera = new CaptureCamera(Main.instance.GraphicsDevice);
+      this._camera = new CaptureCamera(Main.instance.get_GraphicsDevice());
     }
 
     public void Scrolling()
@@ -75,11 +75,11 @@ namespace Terraria.Graphics.Capture
 
     public void Capture()
     {
-      this.Capture(new CaptureSettings()
-      {
-        Area = new Rectangle(2660, 100, 1000, 1000),
-        UseScaling = false
-      });
+      CaptureSettings settings = new CaptureSettings();
+      settings.Area = new Rectangle(2660, 100, 1000, 1000);
+      int num = 0;
+      settings.UseScaling = num != 0;
+      this.Capture(settings);
     }
 
     public void Capture(CaptureSettings settings)

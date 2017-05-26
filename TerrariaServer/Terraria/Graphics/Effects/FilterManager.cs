@@ -1,8 +1,8 @@
 ﻿// Decompiled with JetBrains decompiler
 // Type: Terraria.Graphics.Effects.FilterManager
-// Assembly: TerrariaServer, Version=1.3.5.1, Culture=neutral, PublicKeyToken=null
-// MVID: C2103E81-0935-4BEA-9E98-4159FC80C2BB
-// Assembly location: F:\Steam\steamapps\common\Terraria\TerrariaServer.exe
+// Assembly: TerrariaServer, Version=1.3.5.3, Culture=neutral, PublicKeyToken=null
+// MVID: 8A63A7A2-328D-424C-BC9D-BF23F93646F7
+// Assembly location: H:\Steam\steamapps\common\Terraria\TerrariaServer.exe
 
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -47,13 +47,13 @@ namespace Terraria.Graphics.Effects
         if (effect.Active)
           return;
         if (effect.Priority >= this._priorityThreshold)
-          --this._activeFilterCount;
+          this._activeFilterCount = this._activeFilterCount - 1;
         this._activeFilters.Remove(effect);
       }
       else
         effect.Opacity = 0.0f;
       if (effect.Priority >= this._priorityThreshold)
-        ++this._activeFilterCount;
+        this._activeFilterCount = this._activeFilterCount + 1;
       if (this._activeFilters.Count == 0)
       {
         this._activeFilters.AddLast(effect);
@@ -75,6 +75,7 @@ namespace Terraria.Graphics.Effects
 
     public void BeginCapture()
     {
+      // ISSUE: reference to a compiler-generated field
       if (this._activeFilterCount == 0 && this.OnPostDraw == null)
       {
         this._captureThisFrame = false;
@@ -83,7 +84,7 @@ namespace Terraria.Graphics.Effects
       {
         this._captureThisFrame = true;
         Main.instance.GraphicsDevice.SetRenderTarget(Main.screenTarget);
-        Main.instance.GraphicsDevice.Clear(Color.Black);
+        Main.instance.GraphicsDevice.Clear(Color.get_Black());
       }
     }
 
@@ -107,14 +108,14 @@ namespace Terraria.Graphics.Effects
             flag = true;
           }
         }
-        if (filter.Active && flag)
-          filter.Opacity = Math.Min(filter.Opacity + (float) (gameTime.ElapsedGameTime.TotalSeconds * 1.0), 1f);
+        if (filter.Active & flag)
+          filter.Opacity = Math.Min(filter.Opacity + (float) (gameTime.get_ElapsedGameTime().TotalSeconds * 1.0), 1f);
         else
-          filter.Opacity = Math.Max(filter.Opacity - (float) (gameTime.ElapsedGameTime.TotalSeconds * 1.0), 0.0f);
+          filter.Opacity = Math.Max(filter.Opacity - (float) (gameTime.get_ElapsedGameTime().TotalSeconds * 1.0), 0.0f);
         if (!filter.Active && (double) filter.Opacity == 0.0)
         {
           if (filter.Priority >= this._priorityThreshold)
-            --this._activeFilterCount;
+            this._activeFilterCount = this._activeFilterCount - 1;
           this._activeFilters.Remove(node);
         }
       }
@@ -127,18 +128,18 @@ namespace Terraria.Graphics.Effects
       LinkedListNode<Filter> linkedListNode = this._activeFilters.First;
       int count = this._activeFilters.Count;
       Filter filter1 = (Filter) null;
-      RenderTarget2D renderTarget2D = Main.screenTarget;
+      RenderTarget2D renderTarget2D1 = Main.screenTarget;
       GraphicsDevice graphicsDevice = Main.instance.GraphicsDevice;
       int num = 0;
       if ((double) Main.player[Main.myPlayer].gravDir == -1.0)
       {
         RenderTarget2D screenTargetSwap = Main.screenTargetSwap;
         graphicsDevice.SetRenderTarget(screenTargetSwap);
-        graphicsDevice.Clear(Color.Black);
-        Main.spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, SamplerState.LinearClamp, DepthStencilState.Default, RasterizerState.CullNone, (Effect) null, Matrix.Invert(Main.GameViewMatrix.EffectMatrix));
-        Main.spriteBatch.Draw((Texture2D) renderTarget2D, Vector2.Zero, Color.White);
+        graphicsDevice.Clear(Color.get_Black());
+        Main.spriteBatch.Begin((SpriteSortMode) 1, (BlendState) BlendState.AlphaBlend, (SamplerState) SamplerState.LinearClamp, (DepthStencilState) DepthStencilState.Default, (RasterizerState) RasterizerState.CullNone, (Effect) null, Matrix.Invert(Main.GameViewMatrix.EffectMatrix));
+        Main.spriteBatch.Draw((Texture2D) renderTarget2D1, Vector2.get_Zero(), Color.get_White());
         Main.spriteBatch.End();
-        renderTarget2D = Main.screenTargetSwap;
+        renderTarget2D1 = Main.screenTargetSwap;
       }
       LinkedListNode<Filter> next;
       for (; linkedListNode != null; linkedListNode = next)
@@ -152,49 +153,54 @@ namespace Terraria.Graphics.Effects
           {
             if (filter1 != null)
             {
-              RenderTarget2D renderTarget = renderTarget2D != Main.screenTarget ? Main.screenTarget : Main.screenTargetSwap;
-              graphicsDevice.SetRenderTarget(renderTarget);
-              graphicsDevice.Clear(Color.Black);
-              Main.spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend);
+              RenderTarget2D renderTarget2D2 = renderTarget2D1 != Main.screenTarget ? Main.screenTarget : Main.screenTargetSwap;
+              graphicsDevice.SetRenderTarget(renderTarget2D2);
+              graphicsDevice.Clear(Color.get_Black());
+              Main.spriteBatch.Begin((SpriteSortMode) 1, (BlendState) BlendState.AlphaBlend);
               filter1.Apply();
-              Main.spriteBatch.Draw((Texture2D) renderTarget2D, Vector2.Zero, Main.bgColor);
+              Main.spriteBatch.Draw((Texture2D) renderTarget2D1, Vector2.get_Zero(), Main.bgColor);
               Main.spriteBatch.End();
-              renderTarget2D = renderTarget2D != Main.screenTarget ? Main.screenTarget : Main.screenTargetSwap;
+              renderTarget2D1 = renderTarget2D1 != Main.screenTarget ? Main.screenTarget : Main.screenTargetSwap;
             }
             filter1 = filter2;
           }
         }
       }
       graphicsDevice.SetRenderTarget((RenderTarget2D) null);
-      graphicsDevice.Clear(Color.Black);
+      graphicsDevice.Clear(Color.get_Black());
       if ((double) Main.player[Main.myPlayer].gravDir == -1.0)
-        Main.spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, SamplerState.LinearClamp, DepthStencilState.Default, RasterizerState.CullNone, (Effect) null, Main.GameViewMatrix.EffectMatrix);
+        Main.spriteBatch.Begin((SpriteSortMode) 1, (BlendState) BlendState.AlphaBlend, (SamplerState) SamplerState.LinearClamp, (DepthStencilState) DepthStencilState.Default, (RasterizerState) RasterizerState.CullNone, (Effect) null, Main.GameViewMatrix.EffectMatrix);
       else
-        Main.spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend);
+        Main.spriteBatch.Begin((SpriteSortMode) 1, (BlendState) BlendState.AlphaBlend);
       if (filter1 != null)
       {
         filter1.Apply();
-        Main.spriteBatch.Draw((Texture2D) renderTarget2D, Vector2.Zero, Main.bgColor);
+        Main.spriteBatch.Draw((Texture2D) renderTarget2D1, Vector2.get_Zero(), Main.bgColor);
       }
       else
-        Main.spriteBatch.Draw((Texture2D) renderTarget2D, Vector2.Zero, Color.White);
+        Main.spriteBatch.Draw((Texture2D) renderTarget2D1, Vector2.get_Zero(), Color.get_White());
       Main.spriteBatch.End();
       for (int index = 0; index < 8; ++index)
-        graphicsDevice.Textures[index] = (Texture) null;
+        graphicsDevice.get_Textures().set_Item(index, (Texture) null);
+      // ISSUE: reference to a compiler-generated field
       if (this.OnPostDraw == null)
         return;
+      // ISSUE: reference to a compiler-generated field
       this.OnPostDraw();
     }
 
     public bool HasActiveFilter()
     {
-      return this._activeFilters.Count != 0;
+      return (uint) this._activeFilters.Count > 0U;
     }
 
     public bool CanCapture()
     {
       if (!this.HasActiveFilter())
+      {
+        // ISSUE: reference to a compiler-generated field
         return this.OnPostDraw != null;
+      }
       return true;
     }
   }

@@ -1,8 +1,8 @@
 ﻿// Decompiled with JetBrains decompiler
 // Type: Terraria.GameContent.Skies.SlimeSky
-// Assembly: Terraria, Version=1.3.5.1, Culture=neutral, PublicKeyToken=null
-// MVID: E90A5A2F-CD10-4A2C-9D2A-6B036D4E8877
-// Assembly location: F:\Steam\steamapps\common\Terraria\Terraria.exe
+// Assembly: Terraria, Version=1.3.5.3, Culture=neutral, PublicKeyToken=null
+// MVID: 68659D26-2BE6-448F-8663-74FA559E6F08
+// Assembly location: H:\Steam\steamapps\common\Terraria\Terraria.exe
 
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -65,7 +65,15 @@ namespace Terraria.GameContent.Skies
         if (this._slimes[index].Active)
         {
           ++this._slimes[index].Frame;
-          this._slimes[index].Position.Y += this._slimes[index].Speed;
+          // ISSUE: explicit reference operation
+          // ISSUE: variable of a reference type
+          __Null& local = @this._slimes[index].Position.Y;
+          // ISSUE: cast to a reference type
+          // ISSUE: explicit reference operation
+          double num = (double) ^(float&) local + (double) this._slimes[index].Speed;
+          // ISSUE: cast to a reference type
+          // ISSUE: explicit reference operation
+          ^(float&) local = (float) num;
           if ((double) this._slimes[index].Position.Y > Main.worldSurface * 16.0)
           {
             if (!this._isLeaving)
@@ -89,7 +97,7 @@ namespace Terraria.GameContent.Skies
             else
             {
               this._slimes[index].Active = false;
-              --this._slimesRemaining;
+              this._slimesRemaining = this._slimesRemaining - 1;
             }
           }
         }
@@ -101,7 +109,7 @@ namespace Terraria.GameContent.Skies
 
     public override void Draw(SpriteBatch spriteBatch, float minDepth, float maxDepth)
     {
-      if ((double) Main.screenPosition.Y > 10000.0 || Main.gameMenu)
+      if (Main.screenPosition.Y > 10000.0 || Main.gameMenu)
         return;
       int num1 = -1;
       int num2 = 0;
@@ -117,13 +125,16 @@ namespace Terraria.GameContent.Skies
       }
       if (num1 == -1)
         return;
-      Vector2 vector2_1 = Main.screenPosition + new Vector2((float) (Main.screenWidth >> 1), (float) (Main.screenHeight >> 1));
-      Rectangle rectangle = new Rectangle(-1000, -1000, 4000, 4000);
+      Vector2 vector2_1 = Vector2.op_Addition(Main.screenPosition, new Vector2((float) (Main.screenWidth >> 1), (float) (Main.screenHeight >> 1)));
+      Rectangle rectangle;
+      // ISSUE: explicit reference operation
+      ((Rectangle) @rectangle).\u002Ector(-1000, -1000, 4000, 4000);
       for (int index = num1; index < num2; ++index)
       {
         if (this._slimes[index].Active)
         {
-          Color color = new Color(Main.bgColor.ToVector4() * 0.9f + new Vector4(0.1f)) * 0.8f;
+          // ISSUE: explicit reference operation
+          Color color = Color.op_Multiply(new Color(Vector4.op_Addition(Vector4.op_Multiply(((Color) @Main.bgColor).ToVector4(), 0.9f), new Vector4(0.1f))), 0.8f);
           float num3 = 1f;
           if ((double) this._slimes[index].Depth > 3.0)
             num3 = 0.6f;
@@ -134,16 +145,41 @@ namespace Terraria.GameContent.Skies
           else if ((double) this._slimes[index].Depth > 1.5)
             num3 = 0.9f;
           float num4 = num3 * 0.8f;
-          color = new Color((int) ((double) color.R * (double) num4), (int) ((double) color.G * (double) num4), (int) ((double) color.B * (double) num4), (int) ((double) color.A * (double) num4));
-          Vector2 vector2_2 = new Vector2(1f / this._slimes[index].Depth, 0.9f / this._slimes[index].Depth);
-          Vector2 position = this._slimes[index].Position;
-          position = (position - vector2_1) * vector2_2 + vector2_1 - Main.screenPosition;
-          position.X = (float) (((double) position.X + 500.0) % 4000.0);
-          if ((double) position.X < 0.0)
-            position.X += 4000f;
-          position.X -= 500f;
-          if (rectangle.Contains((int) position.X, (int) position.Y))
-            spriteBatch.Draw(this._slimes[index].Texture, position, new Rectangle?(this._slimes[index].GetSourceRectangle()), color, 0.0f, Vector2.Zero, vector2_2.X * 2f, SpriteEffects.None, 0.0f);
+          // ISSUE: explicit reference operation
+          // ISSUE: explicit reference operation
+          // ISSUE: explicit reference operation
+          // ISSUE: explicit reference operation
+          // ISSUE: explicit reference operation
+          ((Color) @color).\u002Ector((int) ((double) ((Color) @color).get_R() * (double) num4), (int) ((double) ((Color) @color).get_G() * (double) num4), (int) ((double) ((Color) @color).get_B() * (double) num4), (int) ((double) ((Color) @color).get_A() * (double) num4));
+          Vector2 vector2_2;
+          // ISSUE: explicit reference operation
+          ((Vector2) @vector2_2).\u002Ector(1f / this._slimes[index].Depth, 0.9f / this._slimes[index].Depth);
+          Vector2 vector2_3 = Vector2.op_Subtraction(Vector2.op_Addition(Vector2.op_Multiply(Vector2.op_Subtraction(this._slimes[index].Position, vector2_1), vector2_2), vector2_1), Main.screenPosition);
+          vector2_3.X = (__Null) ((vector2_3.X + 500.0) % 4000.0);
+          if (vector2_3.X < 0.0)
+          {
+            // ISSUE: explicit reference operation
+            // ISSUE: variable of a reference type
+            __Null& local = @vector2_3.X;
+            // ISSUE: cast to a reference type
+            // ISSUE: explicit reference operation
+            double num5 = (double) ^(float&) local + 4000.0;
+            // ISSUE: cast to a reference type
+            // ISSUE: explicit reference operation
+            ^(float&) local = (float) num5;
+          }
+          // ISSUE: explicit reference operation
+          // ISSUE: variable of a reference type
+          __Null& local1 = @vector2_3.X;
+          // ISSUE: cast to a reference type
+          // ISSUE: explicit reference operation
+          double num6 = (double) ^(float&) local1 - 500.0;
+          // ISSUE: cast to a reference type
+          // ISSUE: explicit reference operation
+          ^(float&) local1 = (float) num6;
+          // ISSUE: explicit reference operation
+          if (((Rectangle) @rectangle).Contains((int) vector2_3.X, (int) vector2_3.Y))
+            spriteBatch.Draw(this._slimes[index].Texture, vector2_3, new Rectangle?(this._slimes[index].GetSourceRectangle()), color, 0.0f, Vector2.get_Zero(), (float) (vector2_2.X * 2.0), (SpriteEffects) 0, 0.0f);
         }
       }
     }
@@ -192,8 +228,8 @@ namespace Terraria.GameContent.Skies
         set
         {
           this._texture = value;
-          this.FrameWidth = value.Width;
-          this.FrameHeight = value.Height / 4;
+          this.FrameWidth = value.get_Width();
+          this.FrameHeight = value.get_Height() / 4;
         }
       }
 

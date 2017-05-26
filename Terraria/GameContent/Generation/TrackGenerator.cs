@@ -1,8 +1,8 @@
 ﻿// Decompiled with JetBrains decompiler
 // Type: Terraria.GameContent.Generation.TrackGenerator
-// Assembly: Terraria, Version=1.3.5.1, Culture=neutral, PublicKeyToken=null
-// MVID: E90A5A2F-CD10-4A2C-9D2A-6B036D4E8877
-// Assembly location: F:\Steam\steamapps\common\Terraria\Terraria.exe
+// Assembly: Terraria, Version=1.3.5.3, Culture=neutral, PublicKeyToken=null
+// MVID: 68659D26-2BE6-448F-8663-74FA559E6F08
+// Assembly location: H:\Steam\steamapps\common\Terraria\Terraria.exe
 
 using Microsoft.Xna.Framework;
 using System;
@@ -122,7 +122,7 @@ namespace Terraria.GameContent.Generation
       bool flag2 = false;
       int num3 = 150;
       int num4 = 0;
-      for (int index2 = 1000000; index2 > 0 && flag1 && index1 < historyCache.Length - 1; ++index1)
+      for (int index2 = 1000000; index2 > 0 & flag1 && index1 < historyCache.Length - 1; ++index1)
       {
         --index2;
         historyCache[index1] = new TrackGenerator.TrackHistory(x, y, yDirection);
@@ -209,7 +209,7 @@ namespace Terraria.GameContent.Generation
           }
         }
       }
-      if (length <= minimumLength && !debugMode)
+      if (!(length > minimumLength | debugMode))
         return false;
       this.SmoothTrack(historyCache, length);
       if (!debugMode)
@@ -258,7 +258,7 @@ namespace Terraria.GameContent.Generation
 
     public static void Run(Point start)
     {
-      new TrackGenerator().FindPath(start.X, start.Y, 250, true);
+      new TrackGenerator().FindPath((int) start.X, (int) start.Y, 250, true);
     }
 
     private struct TrackHistory

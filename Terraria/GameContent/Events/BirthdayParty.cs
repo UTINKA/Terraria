@@ -1,8 +1,8 @@
 ﻿// Decompiled with JetBrains decompiler
 // Type: Terraria.GameContent.Events.BirthdayParty
-// Assembly: Terraria, Version=1.3.5.1, Culture=neutral, PublicKeyToken=null
-// MVID: E90A5A2F-CD10-4A2C-9D2A-6B036D4E8877
-// Assembly location: F:\Steam\steamapps\common\Terraria\Terraria.exe
+// Assembly: Terraria, Version=1.3.5.3, Culture=neutral, PublicKeyToken=null
+// MVID: 68659D26-2BE6-448F-8663-74FA559E6F08
+// Assembly location: H:\Steam\steamapps\common\Terraria\Terraria.exe
 
 using Microsoft.Xna.Framework;
 using System;
@@ -52,7 +52,9 @@ namespace Terraria.GameContent.Events
       }
       if (!flag)
         return;
-      Color color = new Color((int) byte.MaxValue, 0, 160);
+      Color color;
+      // ISSUE: explicit reference operation
+      ((Color) @color).\u002Ector((int) byte.MaxValue, 0, 160);
       WorldGen.BroadcastText(NetworkText.FromKey(Lang.misc[99].Key), color);
     }
 
@@ -91,7 +93,9 @@ namespace Terraria.GameContent.Events
           intList.Add(index);
         for (int index = 0; index < intList.Count; ++index)
           BirthdayParty.CelebratingNPCs.Add(list[intList[index]].whoAmI);
-        Color color = new Color((int) byte.MaxValue, 0, 160);
+        Color color;
+        // ISSUE: explicit reference operation
+        ((Color) @color).\u002Ector((int) byte.MaxValue, 0, 160);
         if (BirthdayParty.CelebratingNPCs.Count == 3)
           WorldGen.BroadcastText(NetworkText.FromKey("Game.BirthdayParty_3", (object) Main.npc[BirthdayParty.CelebratingNPCs[0]].GetGivenOrTypeNetName(), (object) Main.npc[BirthdayParty.CelebratingNPCs[1]].GetGivenOrTypeNetName(), (object) Main.npc[BirthdayParty.CelebratingNPCs[2]].GetGivenOrTypeNetName()), color);
         else if (BirthdayParty.CelebratingNPCs.Count == 2)
@@ -103,12 +107,13 @@ namespace Terraria.GameContent.Events
 
     public static void ToggleManualParty()
     {
-      bool partyIsUp = BirthdayParty.PartyIsUp;
+      int num1 = BirthdayParty.PartyIsUp ? 1 : 0;
       if (Main.netMode != 1)
         BirthdayParty.ManualParty = !BirthdayParty.ManualParty;
       else
         NetMessage.SendData(111, -1, -1, (NetworkText) null, 0, 0.0f, 0.0f, 0.0f, 0, 0, 0);
-      if (partyIsUp == BirthdayParty.PartyIsUp || Main.netMode != 2)
+      int num2 = BirthdayParty.PartyIsUp ? 1 : 0;
+      if (num1 == num2 || Main.netMode != 2)
         return;
       NetMessage.SendData(7, -1, -1, (NetworkText) null, 0, 0.0f, 0.0f, 0.0f, 0, 0, 0);
     }
@@ -129,7 +134,7 @@ namespace Terraria.GameContent.Events
         if (Main.netMode != 2)
         {
           if (BirthdayParty.PartyIsUp)
-            SkyManager.Instance.Activate("Party", new Vector2());
+            SkyManager.Instance.Activate("Party", (Vector2) null);
           else
             SkyManager.Instance.Deactivate("Party");
         }
@@ -146,7 +151,9 @@ namespace Terraria.GameContent.Events
             BirthdayParty.GenuineParty = false;
             if (!BirthdayParty.ManualParty)
             {
-              Color color = new Color((int) byte.MaxValue, 0, 160);
+              Color color;
+              // ISSUE: explicit reference operation
+              ((Color) @color).\u002Ector((int) byte.MaxValue, 0, 160);
               WorldGen.BroadcastText(NetworkText.FromKey(Lang.misc[99].Key), color);
               NetMessage.SendData(7, -1, -1, (NetworkText) null, 0, 0.0f, 0.0f, 0.0f, 0, 0, 0);
             }

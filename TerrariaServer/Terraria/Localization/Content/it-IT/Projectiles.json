@@ -712,6 +712,7 @@
 		"MonkStaffT2Ghast": "Spaventoso",
 		"MonkStaffT3": "Furia del drago del cielo",
 		"MonkStaffT3_Alt": "Furia del drago del cielo",
-		"MonkStaffT3_AltShot": "Furia del drago del cielo"
+		"MonkStaffT3_AltShot": "Furia del drago del cielo",
+		"DD2JavelinHostileT3": "{$ProjectileName.DD2JavelinHostile}"
 	}
 }

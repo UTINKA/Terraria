@@ -353,7 +353,7 @@
 		"WaterIsAlreadySettling": "El agua ya está asentada.",
 		"Yes": "sí",
 		"DisplaySeed": "Semilla del mundo {0}",
-		"EnterSeed": "Introduce la semilla (déjalo en blanco para una aleatoria): ",
+		"EnterSeed": "Introduce la semilla (déjalo en blanco para una aleatoria):",
 		"NoValidSeed": "Este mundo ha sido generado en una versión antigua y no es compatible con las semillas.",
 		"Seed_Command": "semilla",
 		"Seed_Description": "Muestra la semilla del mundo."

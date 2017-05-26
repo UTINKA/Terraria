@@ -1,9 +1,10 @@
 ﻿// Decompiled with JetBrains decompiler
 // Type: Terraria.Social.SocialAPI
-// Assembly: Terraria, Version=1.3.5.1, Culture=neutral, PublicKeyToken=null
-// MVID: E90A5A2F-CD10-4A2C-9D2A-6B036D4E8877
-// Assembly location: F:\Steam\steamapps\common\Terraria\Terraria.exe
+// Assembly: Terraria, Version=1.3.5.3, Culture=neutral, PublicKeyToken=null
+// MVID: 68659D26-2BE6-448F-8663-74FA559E6F08
+// Assembly location: H:\Steam\steamapps\common\Terraria\Terraria.exe
 
+using System;
 using System.Collections.Generic;
 using Terraria.Social.Steam;
 
@@ -11,7 +12,7 @@ namespace Terraria.Social
 {
   public static class SocialAPI
   {
-    private static SocialMode _mode = SocialMode.None;
+    private static SocialMode _mode;
     public static Terraria.Social.Base.FriendsSocialModule Friends;
     public static Terraria.Social.Base.AchievementsSocialModule Achievements;
     public static Terraria.Social.Base.CloudSocialModule Cloud;
@@ -51,9 +52,9 @@ namespace Terraria.Social
 
     private static T LoadModule<T>() where T : ISocialModule, new()
     {
-      T obj = new T();
-      SocialAPI._modules.Add((ISocialModule) obj);
-      return obj;
+      T instance = Activator.CreateInstance<T>();
+      SocialAPI._modules.Add((ISocialModule) instance);
+      return instance;
     }
 
     private static T LoadModule<T>(T module) where T : ISocialModule

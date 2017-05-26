@@ -1,8 +1,8 @@
 ﻿// Decompiled with JetBrains decompiler
 // Type: Terraria.Liquid
-// Assembly: Terraria, Version=1.3.5.1, Culture=neutral, PublicKeyToken=null
-// MVID: E90A5A2F-CD10-4A2C-9D2A-6B036D4E8877
-// Assembly location: F:\Steam\steamapps\common\Terraria\Terraria.exe
+// Assembly: Terraria, Version=1.3.5.3, Culture=neutral, PublicKeyToken=null
+// MVID: 68659D26-2BE6-448F-8663-74FA559E6F08
+// Assembly location: H:\Steam\steamapps\common\Terraria\Terraria.exe
 
 using Microsoft.Xna.Framework;
 using System;
@@ -265,7 +265,7 @@ namespace Terraria
             {
               if (this.delay < 5)
               {
-                ++this.delay;
+                this.delay = this.delay + 1;
                 return;
               }
               this.delay = 0;
@@ -288,7 +288,7 @@ namespace Terraria
               {
                 if (this.delay < 10)
                 {
-                  ++this.delay;
+                  this.delay = this.delay + 1;
                   return;
                 }
                 this.delay = 0;
@@ -356,9 +356,9 @@ namespace Terraria
             int num1 = 0;
             if ((int) tile5.liquid < 3)
               num1 = -1;
-            if (flag1 && flag2)
+            if (flag1 & flag2)
             {
-              if (flag3 && flag4)
+              if (flag3 & flag4)
               {
                 bool flag5 = true;
                 bool flag6 = true;
@@ -374,7 +374,7 @@ namespace Terraria
                   flag6 = false;
                 else if ((int) Main.tile[this.x + 3, this.y].liquidType() != (int) tile5.liquidType())
                   flag6 = false;
-                if (flag5 && flag6)
+                if (flag5 & flag6)
                 {
                   float num2 = (float) Math.Round((double) ((int) tile1.liquid + (int) tile2.liquid + (int) Main.tile[this.x - 2, this.y].liquid + (int) Main.tile[this.x + 2, this.y].liquid + (int) Main.tile[this.x - 3, this.y].liquid + (int) Main.tile[this.x + 3, this.y].liquid + (int) tile5.liquid + num1) / 7.0);
                   int num3 = 0;
@@ -577,7 +577,7 @@ namespace Terraria
             if ((int) tile5.liquid == 254 && (int) liquid == (int) byte.MaxValue)
             {
               tile5.liquid = byte.MaxValue;
-              ++this.kill;
+              this.kill = this.kill + 1;
             }
             else
             {
@@ -586,7 +586,7 @@ namespace Terraria
             }
           }
           else
-            ++this.kill;
+            this.kill = this.kill + 1;
         }
       }
     }
@@ -655,19 +655,21 @@ namespace Terraria
       Liquid.quickFall = Liquid.quickSettle || Liquid.numLiquid > 2000;
       ++Liquid.wetCounter;
       int num1 = Liquid.maxLiquid / Liquid.cycles;
-      int num2 = num1 * (Liquid.wetCounter - 1);
-      int num3 = num1 * Liquid.wetCounter;
+      int num2 = Liquid.wetCounter - 1;
+      int num3 = num1 * num2;
+      int wetCounter = Liquid.wetCounter;
+      int num4 = num1 * wetCounter;
       if (Liquid.wetCounter == Liquid.cycles)
-        num3 = Liquid.numLiquid;
-      if (num3 > Liquid.numLiquid)
+        num4 = Liquid.numLiquid;
+      if (num4 > Liquid.numLiquid)
       {
-        num3 = Liquid.numLiquid;
+        num4 = Liquid.numLiquid;
         int netMode2 = Main.netMode;
         Liquid.wetCounter = Liquid.cycles;
       }
       if (Liquid.quickFall)
       {
-        for (int index = num2; index < num3; ++index)
+        for (int index = num3; index < num4; ++index)
         {
           Main.liquid[index].delay = 10;
           Main.liquid[index].Update();
@@ -676,7 +678,7 @@ namespace Terraria
       }
       else
       {
-        for (int index = num2; index < num3; ++index)
+        for (int index = num3; index < num4; ++index)
         {
           if (!Main.tile[Main.liquid[index].x, Main.liquid[index].y].skipLiquid())
             Main.liquid[index].Update();
@@ -692,10 +694,10 @@ namespace Terraria
           if (Main.liquid[l].kill > 4)
             Liquid.DelWater(l);
         }
-        int num4 = Liquid.maxLiquid - (Liquid.maxLiquid - Liquid.numLiquid);
-        if (num4 > LiquidBuffer.numLiquidBuffer)
-          num4 = LiquidBuffer.numLiquidBuffer;
-        for (int index = 0; index < num4; ++index)
+        int num5 = Liquid.maxLiquid - (Liquid.maxLiquid - Liquid.numLiquid);
+        if (num5 > LiquidBuffer.numLiquidBuffer)
+          num5 = LiquidBuffer.numLiquidBuffer;
+        for (int index = 0; index < num5; ++index)
         {
           Main.tile[Main.liquidBuffer[0].x, Main.liquidBuffer[0].y].checkingLiquid(false);
           Liquid.AddWater(Main.liquidBuffer[0].x, Main.liquidBuffer[0].y);
@@ -834,7 +836,7 @@ namespace Terraria
           if (Main.netMode == 2)
             NetMessage.SendData(17, -1, -1, (NetworkText) null, 0, (float) x, (float) (y + 1), 0.0f, 0, 0, 0);
         }
-        if (tile4.active() && !flag)
+        if (!(!tile4.active() | flag))
           return;
         if ((int) tile5.liquid < 24)
         {

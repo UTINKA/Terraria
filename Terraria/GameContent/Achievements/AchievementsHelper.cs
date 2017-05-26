@@ -1,8 +1,8 @@
 ﻿// Decompiled with JetBrains decompiler
 // Type: Terraria.GameContent.Achievements.AchievementsHelper
-// Assembly: Terraria, Version=1.3.5.1, Culture=neutral, PublicKeyToken=null
-// MVID: E90A5A2F-CD10-4A2C-9D2A-6B036D4E8877
-// Assembly location: F:\Steam\steamapps\common\Terraria\Terraria.exe
+// Assembly: Terraria, Version=1.3.5.3, Culture=neutral, PublicKeyToken=null
+// MVID: 68659D26-2BE6-448F-8663-74FA559E6F08
+// Assembly location: H:\Steam\steamapps\common\Terraria\Terraria.exe
 
 using System;
 using Terraria.Localization;
@@ -11,7 +11,7 @@ namespace Terraria.GameContent.Achievements
 {
   public class AchievementsHelper
   {
-    private static bool _isMining = false;
+    private static bool _isMining;
     private static bool mayhemOK;
     private static bool mayhem1down;
     private static bool mayhem2down;
@@ -41,29 +41,37 @@ namespace Terraria.GameContent.Achievements
 
     public static void NotifyTileDestroyed(Player player, ushort tile)
     {
+      // ISSUE: reference to a compiler-generated field
       if (Main.gameMenu || !AchievementsHelper._isMining || AchievementsHelper.OnTileDestroyed == null)
         return;
+      // ISSUE: reference to a compiler-generated field
       AchievementsHelper.OnTileDestroyed(player, tile);
     }
 
     public static void NotifyItemPickup(Player player, Item item)
     {
+      // ISSUE: reference to a compiler-generated field
       if (AchievementsHelper.OnItemPickup == null)
         return;
+      // ISSUE: reference to a compiler-generated field
       AchievementsHelper.OnItemPickup(player, (short) item.netID, item.stack);
     }
 
     public static void NotifyItemPickup(Player player, Item item, int customStack)
     {
+      // ISSUE: reference to a compiler-generated field
       if (AchievementsHelper.OnItemPickup == null)
         return;
+      // ISSUE: reference to a compiler-generated field
       AchievementsHelper.OnItemPickup(player, (short) item.netID, customStack);
     }
 
     public static void NotifyItemCraft(Recipe recipe)
     {
+      // ISSUE: reference to a compiler-generated field
       if (AchievementsHelper.OnItemCraft == null)
         return;
+      // ISSUE: reference to a compiler-generated field
       AchievementsHelper.OnItemCraft((short) recipe.createItem.netID, recipe.createItem.stack);
     }
 
@@ -74,24 +82,49 @@ namespace Terraria.GameContent.Achievements
 
     private static void OnPlayerEnteredWorld(Player player)
     {
+      // ISSUE: reference to a compiler-generated field
       if (AchievementsHelper.OnItemPickup != null)
       {
         for (int index = 0; index < 58; ++index)
+        {
+          // ISSUE: reference to a compiler-generated field
           AchievementsHelper.OnItemPickup(player, (short) player.inventory[index].type, player.inventory[index].stack);
+        }
         for (int index = 0; index < player.armor.Length; ++index)
+        {
+          // ISSUE: reference to a compiler-generated field
           AchievementsHelper.OnItemPickup(player, (short) player.armor[index].type, player.armor[index].stack);
+        }
         for (int index = 0; index < player.dye.Length; ++index)
+        {
+          // ISSUE: reference to a compiler-generated field
           AchievementsHelper.OnItemPickup(player, (short) player.dye[index].type, player.dye[index].stack);
+        }
         for (int index = 0; index < player.miscEquips.Length; ++index)
+        {
+          // ISSUE: reference to a compiler-generated field
           AchievementsHelper.OnItemPickup(player, (short) player.miscEquips[index].type, player.miscEquips[index].stack);
+        }
         for (int index = 0; index < player.miscDyes.Length; ++index)
+        {
+          // ISSUE: reference to a compiler-generated field
           AchievementsHelper.OnItemPickup(player, (short) player.miscDyes[index].type, player.miscDyes[index].stack);
+        }
         for (int index = 0; index < player.bank.item.Length; ++index)
+        {
+          // ISSUE: reference to a compiler-generated field
           AchievementsHelper.OnItemPickup(player, (short) player.bank.item[index].type, player.bank.item[index].stack);
+        }
         for (int index = 0; index < player.bank2.item.Length; ++index)
+        {
+          // ISSUE: reference to a compiler-generated field
           AchievementsHelper.OnItemPickup(player, (short) player.bank2.item[index].type, player.bank2.item[index].stack);
+        }
         for (int index = 0; index < player.bank3.item.Length; ++index)
+        {
+          // ISSUE: reference to a compiler-generated field
           AchievementsHelper.OnItemPickup(player, (short) player.bank3.item[index].type, player.bank3.item[index].stack);
+        }
       }
       if (player.statManaMax > 20)
         Main.Achievements.GetCondition("STAR_POWER", "Use").Complete();
@@ -144,8 +177,10 @@ namespace Terraria.GameContent.Achievements
 
     public static void NotifyNPCKilledDirect(Player player, int npcNetID)
     {
+      // ISSUE: reference to a compiler-generated field
       if (AchievementsHelper.OnNPCKilled == null)
         return;
+      // ISSUE: reference to a compiler-generated field
       AchievementsHelper.OnNPCKilled(player, (short) npcNetID);
     }
 
@@ -157,8 +192,10 @@ namespace Terraria.GameContent.Achievements
       }
       else
       {
+        // ISSUE: reference to a compiler-generated field
         if (AchievementsHelper.OnProgressionEvent == null)
           return;
+        // ISSUE: reference to a compiler-generated field
         AchievementsHelper.OnProgressionEvent(eventID);
       }
     }

@@ -1,8 +1,8 @@
 ﻿// Decompiled with JetBrains decompiler
 // Type: Terraria.Achievements.Achievement
-// Assembly: Terraria, Version=1.3.5.1, Culture=neutral, PublicKeyToken=null
-// MVID: E90A5A2F-CD10-4A2C-9D2A-6B036D4E8877
-// Assembly location: F:\Steam\steamapps\common\Terraria\Terraria.exe
+// Assembly: Terraria, Version=1.3.5.3, Culture=neutral, PublicKeyToken=null
+// MVID: 68659D26-2BE6-448F-8663-74FA559E6F08
+// Assembly location: H:\Steam\steamapps\common\Terraria\Terraria.exe
 
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
@@ -86,7 +86,7 @@ namespace Terraria.Achievements
           {
             achievementCondition.Load(current.Value);
             if (achievementCondition.IsCompleted)
-              ++this._completedCount;
+              this._completedCount = this._completedCount + 1;
           }
         }
       }
@@ -103,13 +103,15 @@ namespace Terraria.Achievements
 
     private void OnConditionComplete(AchievementCondition condition)
     {
-      ++this._completedCount;
+      this._completedCount = this._completedCount + 1;
       if (this._completedCount != this._conditions.Count)
         return;
       if (this._tracker == null && SocialAPI.Achievements != null)
         SocialAPI.Achievements.CompleteAchievement(this.Name);
+      // ISSUE: reference to a compiler-generated field
       if (this.OnCompleted == null)
         return;
+      // ISSUE: reference to a compiler-generated field
       this.OnCompleted(this);
     }
 

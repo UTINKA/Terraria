@@ -1,8 +1,8 @@
 ﻿// Decompiled with JetBrains decompiler
 // Type: Terraria.World.Generation.Shapes
-// Assembly: TerrariaServer, Version=1.3.5.1, Culture=neutral, PublicKeyToken=null
-// MVID: C2103E81-0935-4BEA-9E98-4159FC80C2BB
-// Assembly location: F:\Steam\steamapps\common\Terraria\TerrariaServer.exe
+// Assembly: TerrariaServer, Version=1.3.5.3, Culture=neutral, PublicKeyToken=null
+// MVID: 8A63A7A2-328D-424C-BC9D-BF23F93646F7
+// Assembly location: H:\Steam\steamapps\common\Terraria\TerrariaServer.exe
 
 using Microsoft.Xna.Framework;
 using System;
@@ -131,9 +131,9 @@ namespace Terraria.World.Generation
 
       public override bool Perform(Point origin, GenAction action)
       {
-        for (int x = origin.X; x < origin.X + this._width; ++x)
+        for (int x = (int) origin.X; x < origin.X + this._width; ++x)
         {
-          for (int y = origin.Y; y < origin.Y + this._height; ++y)
+          for (int y = (int) origin.Y; y < origin.Y + this._height; ++y)
           {
             if (!this.UnitApply(action, origin, x, y) && this._quitOnFail)
               return false;
@@ -151,18 +151,22 @@ namespace Terraria.World.Generation
       public Tail(float width, Vector2 endOffset)
       {
         this._width = width * 16f;
-        this._endOffset = endOffset * 16f;
+        this._endOffset = Vector2.op_Multiply(endOffset, 16f);
       }
 
       public override bool Perform(Point origin, GenAction action)
       {
         Vector2 start = new Vector2((float) (origin.X << 4), (float) (origin.Y << 4));
-        return Utils.PlotTileTale(start, start + this._endOffset, this._width, (Utils.PerLinePoint) ((x, y) =>
+        Vector2 endOffset = this._endOffset;
+        Vector2 end = Vector2.op_Addition(start, endOffset);
+        double width = (double) this._width;
+        Utils.PerLinePoint plot = (Utils.PerLinePoint) ((x, y) =>
         {
           if (!this.UnitApply(action, origin, x, y))
             return !this._quitOnFail;
           return true;
-        }));
+        });
+        return Utils.PlotTileTale(start, end, (float) width, plot);
       }
     }
 
@@ -179,6 +183,7 @@ namespace Terraria.World.Generation
 
       public override bool Perform(Point origin, GenAction action)
       {
+        int height = this._height;
         float halfWidth = (float) this._halfWidth;
         for (int index1 = -this._halfWidth; index1 <= this._halfWidth; ++index1)
         {

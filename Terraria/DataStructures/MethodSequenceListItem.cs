@@ -1,8 +1,8 @@
 ﻿// Decompiled with JetBrains decompiler
 // Type: Terraria.DataStructures.MethodSequenceListItem
-// Assembly: Terraria, Version=1.3.5.1, Culture=neutral, PublicKeyToken=null
-// MVID: E90A5A2F-CD10-4A2C-9D2A-6B036D4E8877
-// Assembly location: F:\Steam\steamapps\common\Terraria\Terraria.exe
+// Assembly: Terraria, Version=1.3.5.3, Culture=neutral, PublicKeyToken=null
+// MVID: 68659D26-2BE6-448F-8663-74FA559E6F08
+// Assembly location: H:\Steam\steamapps\common\Terraria\Terraria.exe
 
 using System;
 using System.Collections.Generic;
@@ -48,7 +48,7 @@ namespace Terraria.DataStructures
 
     public override string ToString()
     {
-      return "name: " + this.Name + " skip: " + (object) this.Skip + " parent: " + (object) this.Parent;
+      return "name: " + this.Name + " skip: " + this.Skip.ToString() + " parent: " + (object) this.Parent;
     }
   }
 }

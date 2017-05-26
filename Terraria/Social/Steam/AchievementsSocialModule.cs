@@ -1,8 +1,8 @@
 ﻿// Decompiled with JetBrains decompiler
 // Type: Terraria.Social.Steam.AchievementsSocialModule
-// Assembly: Terraria, Version=1.3.5.1, Culture=neutral, PublicKeyToken=null
-// MVID: E90A5A2F-CD10-4A2C-9D2A-6B036D4E8877
-// Assembly location: F:\Steam\steamapps\common\Terraria\Terraria.exe
+// Assembly: Terraria, Version=1.3.5.3, Culture=neutral, PublicKeyToken=null
+// MVID: 68659D26-2BE6-448F-8663-74FA559E6F08
+// Assembly location: H:\Steam\steamapps\common\Terraria\Terraria.exe
 
 using Steamworks;
 using System;
@@ -39,18 +39,22 @@ namespace Terraria.Social.Steam
     public override bool IsAchievementCompleted(string name)
     {
       bool flag;
-      if (SteamUserStats.GetAchievement(name, ref flag))
-        return flag;
-      return false;
+      return SteamUserStats.GetAchievement(name, ref flag) & flag;
     }
 
     public override byte[] GetEncryptionKey()
     {
-      byte[] numArray = new byte[16];
+      byte[] numArray1 = new byte[16];
       byte[] bytes = BitConverter.GetBytes((ulong) SteamUser.GetSteamID().m_SteamID);
-      Array.Copy((Array) bytes, (Array) numArray, 8);
-      Array.Copy((Array) bytes, 0, (Array) numArray, 8, 8);
-      return numArray;
+      byte[] numArray2 = numArray1;
+      int length1 = 8;
+      Array.Copy((Array) bytes, (Array) numArray2, length1);
+      int sourceIndex = 0;
+      byte[] numArray3 = numArray1;
+      int destinationIndex = 8;
+      int length2 = 8;
+      Array.Copy((Array) bytes, sourceIndex, (Array) numArray3, destinationIndex, length2);
+      return numArray1;
     }
 
     public override string GetSavePath()

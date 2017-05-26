@@ -1,8 +1,8 @@
 ﻿// Decompiled with JetBrains decompiler
 // Type: Terraria.GameInput.PlayerInput
-// Assembly: TerrariaServer, Version=1.3.5.1, Culture=neutral, PublicKeyToken=null
-// MVID: C2103E81-0935-4BEA-9E98-4159FC80C2BB
-// Assembly location: F:\Steam\steamapps\common\Terraria\TerrariaServer.exe
+// Assembly: TerrariaServer, Version=1.3.5.3, Culture=neutral, PublicKeyToken=null
+// MVID: 8A63A7A2-328D-424C-BC9D-BF23F93646F7
+// Assembly location: H:\Steam\steamapps\common\Terraria\TerrariaServer.exe
 
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
@@ -94,8 +94,8 @@ namespace Terraria.GameInput
     public static int PreUIY = 0;
     public static int PreLockOnX = 0;
     public static int PreLockOnY = 0;
-    public static Vector2 GamepadThumbstickLeft = Vector2.Zero;
-    public static Vector2 GamepadThumbstickRight = Vector2.Zero;
+    public static Vector2 GamepadThumbstickLeft = Vector2.get_Zero();
+    public static Vector2 GamepadThumbstickRight = Vector2.get_Zero();
     private static bool _InBuildingMode = false;
     private static int _UIPointForBuildingMode = -1;
     public static bool WritingText = false;
@@ -142,7 +142,11 @@ namespace Terraria.GameInput
     {
       get
       {
-        return (Main.gameMenu || Main.ingameOptionsWindow || (Main.playerInventory || Main.player[Main.myPlayer].talkNPC != -1) || Main.player[Main.myPlayer].sign != -1) && !PlayerInput._InBuildingMode && Main.InvisibleCursorForGamepad || PlayerInput.CursorIsBusy && !PlayerInput._InBuildingMode;
+        if (((Main.gameMenu || Main.ingameOptionsWindow || (Main.playerInventory || Main.player[Main.myPlayer].talkNPC != -1) ? 1 : (Main.player[Main.myPlayer].sign != -1 ? 1 : 0)) == 0 || PlayerInput._InBuildingMode ? 0 : (Main.InvisibleCursorForGamepad ? 1 : 0)) != 0)
+          return true;
+        if (PlayerInput.CursorIsBusy)
+          return !PlayerInput._InBuildingMode;
+        return false;
       }
     }
 
@@ -235,8 +239,12 @@ namespace Terraria.GameInput
       if (PlayerInput._invalidatorCheck.Length == 0)
         return false;
       string str = "";
-      foreach (Keys pressedKey in Main.keyState.GetPressedKeys())
-        str = str + pressedKey.ToString() + ", ";
+      // ISSUE: explicit reference operation
+      foreach (int pressedKey in ((KeyboardState) @Main.keyState).GetPressedKeys())
+      {
+        Keys keys = (Keys) pressedKey;
+        str = str + keys.ToString() + ", ";
+      }
       if (str == PlayerInput._invalidatorCheck)
         return true;
       PlayerInput._invalidatorCheck = "";
@@ -248,8 +256,8 @@ namespace Terraria.GameInput
       bool isActive = Main.instance.IsActive;
       if (PlayerInput._lastActivityState != isActive)
       {
-        PlayerInput.MouseInfo = new MouseState();
-        PlayerInput.MouseInfoOld = new MouseState();
+        PlayerInput.MouseInfo = (MouseState) null;
+        PlayerInput.MouseInfoOld = (MouseState) null;
         Main.keyState = Keyboard.GetState();
         Main.inputText = Keyboard.GetState();
         Main.oldInputText = Keyboard.GetState();
@@ -257,8 +265,12 @@ namespace Terraria.GameInput
         PlayerInput.Triggers.Reset();
         PlayerInput.Triggers.Reset();
         string str = "";
-        foreach (Keys pressedKey in Main.keyState.GetPressedKeys())
-          str = str + pressedKey.ToString() + ", ";
+        // ISSUE: explicit reference operation
+        foreach (int pressedKey in ((KeyboardState) @Main.keyState).GetPressedKeys())
+        {
+          Keys keys = (Keys) pressedKey;
+          str = str + keys.ToString() + ", ";
+        }
         PlayerInput._invalidatorCheck = str;
       }
       PlayerInput._lastActivityState = isActive;
@@ -505,8 +517,8 @@ namespace Terraria.GameInput
       PlayerInput.Triggers.Reset();
       PlayerInput.ScrollWheelValueOld = PlayerInput.ScrollWheelValue;
       PlayerInput.ScrollWheelValue = 0;
-      PlayerInput.GamepadThumbstickLeft = Vector2.Zero;
-      PlayerInput.GamepadThumbstickRight = Vector2.Zero;
+      PlayerInput.GamepadThumbstickLeft = Vector2.get_Zero();
+      PlayerInput.GamepadThumbstickRight = Vector2.get_Zero();
       PlayerInput.GrappleAndInteractAreShared = PlayerInput.UsingGamepad && PlayerInput.CurrentProfile.InputModes[InputMode.XBoxGamepad].DoGrappleAndInteractShareTheSameKey;
       if (PlayerInput.InBuildingMode && !PlayerInput.UsingGamepad)
         PlayerInput.ExitBuildingMode();
@@ -575,12 +587,13 @@ namespace Terraria.GameInput
     {
       bool flag1 = false;
       PlayerInput.ScrollWheelValue += PlayerInput.GamepadScrollValue;
-      GamePadState gamePadState = new GamePadState();
+      GamePadState gamePadState = (GamePadState) null;
       bool flag2 = false;
       for (int index = 0; index < 4; ++index)
       {
         GamePadState state = GamePad.GetState((PlayerIndex) index);
-        if (state.IsConnected)
+        // ISSUE: explicit reference operation
+        if (((GamePadState) @state).get_IsConnected())
         {
           flag2 = true;
           gamePadState = state;
@@ -592,7 +605,7 @@ namespace Terraria.GameInput
       Player player = Main.player[Main.myPlayer];
       bool flag3 = UILinkPointNavigator.Available && !PlayerInput.InBuildingMode;
       InputMode index1 = InputMode.XBoxGamepad;
-      if (Main.gameMenu || flag3 || (player.talkNPC != -1 || player.sign != -1) || IngameFancyUI.CanCover())
+      if (Main.gameMenu | flag3 || player.talkNPC != -1 || (player.sign != -1 || IngameFancyUI.CanCover()))
         index1 = InputMode.XBoxGamepadUI;
       if (!Main.gameMenu && PlayerInput.InBuildingMode)
         index1 = InputMode.XBoxGamepad;
@@ -606,7 +619,8 @@ namespace Terraria.GameInput
       int num1 = 2145386496;
       for (int index2 = 0; index2 < PlayerInput.ButtonsGamepad.Length; ++index2)
       {
-        if (((Buttons) num1 & PlayerInput.ButtonsGamepad[index2]) <= (Buttons) 0 && gamePadState.IsButtonDown(PlayerInput.ButtonsGamepad[index2]))
+        // ISSUE: explicit reference operation
+        if ((num1 & (int) PlayerInput.ButtonsGamepad[index2]) <= 0 && ((GamePadState) @gamePadState).IsButtonDown((Buttons) (int) PlayerInput.ButtonsGamepad[index2]))
         {
           if (PlayerInput.CheckRebindingProcessGamepad(PlayerInput.ButtonsGamepad[index2].ToString()))
             return;
@@ -614,93 +628,161 @@ namespace Terraria.GameInput
           flag1 = true;
         }
       }
-      PlayerInput.GamepadThumbstickLeft = gamePadState.ThumbSticks.Left * new Vector2(1f, -1f) * new Vector2((float) (PlayerInput.CurrentProfile.LeftThumbstickInvertX.ToDirectionInt() * -1), (float) (PlayerInput.CurrentProfile.LeftThumbstickInvertY.ToDirectionInt() * -1));
-      PlayerInput.GamepadThumbstickRight = gamePadState.ThumbSticks.Right * new Vector2(1f, -1f) * new Vector2((float) (PlayerInput.CurrentProfile.RightThumbstickInvertX.ToDirectionInt() * -1), (float) (PlayerInput.CurrentProfile.RightThumbstickInvertY.ToDirectionInt() * -1));
+      // ISSUE: explicit reference operation
+      GamePadThumbSticks thumbSticks1 = ((GamePadState) @gamePadState).get_ThumbSticks();
+      // ISSUE: explicit reference operation
+      PlayerInput.GamepadThumbstickLeft = Vector2.op_Multiply(Vector2.op_Multiply(((GamePadThumbSticks) @thumbSticks1).get_Left(), new Vector2(1f, -1f)), new Vector2((float) (PlayerInput.CurrentProfile.LeftThumbstickInvertX.ToDirectionInt() * -1), (float) (PlayerInput.CurrentProfile.LeftThumbstickInvertY.ToDirectionInt() * -1)));
+      // ISSUE: explicit reference operation
+      GamePadThumbSticks thumbSticks2 = ((GamePadState) @gamePadState).get_ThumbSticks();
+      // ISSUE: explicit reference operation
+      PlayerInput.GamepadThumbstickRight = Vector2.op_Multiply(Vector2.op_Multiply(((GamePadThumbSticks) @thumbSticks2).get_Right(), new Vector2(1f, -1f)), new Vector2((float) (PlayerInput.CurrentProfile.RightThumbstickInvertX.ToDirectionInt() * -1), (float) (PlayerInput.CurrentProfile.RightThumbstickInvertY.ToDirectionInt() * -1)));
       Vector2 gamepadThumbstickRight = PlayerInput.GamepadThumbstickRight;
       Vector2 gamepadThumbstickLeft = PlayerInput.GamepadThumbstickLeft;
       Vector2 vector2_1 = gamepadThumbstickRight;
-      if (vector2_1 != Vector2.Zero)
-        vector2_1.Normalize();
+      if (Vector2.op_Inequality(vector2_1, Vector2.get_Zero()))
+      {
+        // ISSUE: explicit reference operation
+        ((Vector2) @vector2_1).Normalize();
+      }
       Vector2 vector2_2 = gamepadThumbstickLeft;
-      if (vector2_2 != Vector2.Zero)
-        vector2_2.Normalize();
+      if (Vector2.op_Inequality(vector2_2, Vector2.get_Zero()))
+      {
+        // ISSUE: explicit reference operation
+        ((Vector2) @vector2_2).Normalize();
+      }
       float num2 = 0.6f;
       float triggersDeadzone = PlayerInput.CurrentProfile.TriggersDeadzone;
       if (index1 == InputMode.XBoxGamepadUI)
       {
         num2 = 0.4f;
         if (PlayerInput.GamepadAllowScrolling)
-          PlayerInput.GamepadScrollValue -= (int) ((double) gamepadThumbstickRight.Y * 16.0);
+          PlayerInput.GamepadScrollValue -= (int) (gamepadThumbstickRight.Y * 16.0);
         PlayerInput.GamepadAllowScrolling = false;
       }
-      if ((double) Vector2.Dot(-Vector2.UnitX, vector2_2) >= (double) num2 && (double) gamepadThumbstickLeft.X < -(double) PlayerInput.CurrentProfile.LeftThumbstickDeadzoneX)
+      Buttons buttons;
+      if ((double) Vector2.Dot(Vector2.op_UnaryNegation(Vector2.get_UnitX()), vector2_2) >= (double) num2 && gamepadThumbstickLeft.X < -(double) PlayerInput.CurrentProfile.LeftThumbstickDeadzoneX)
       {
-        if (PlayerInput.CheckRebindingProcessGamepad(Buttons.LeftThumbstickLeft.ToString()))
+        if (PlayerInput.CheckRebindingProcessGamepad(((Buttons) 2097152).ToString()))
           return;
-        inputMode.Processkey(PlayerInput.Triggers.Current, Buttons.LeftThumbstickLeft.ToString());
+        KeyConfiguration keyConfiguration = inputMode;
+        TriggersSet current = PlayerInput.Triggers.Current;
+        buttons = (Buttons) 2097152;
+        string newKey = buttons.ToString();
+        keyConfiguration.Processkey(current, newKey);
         flag1 = true;
       }
-      if ((double) Vector2.Dot(Vector2.UnitX, vector2_2) >= (double) num2 && (double) gamepadThumbstickLeft.X > (double) PlayerInput.CurrentProfile.LeftThumbstickDeadzoneX)
+      if ((double) Vector2.Dot(Vector2.get_UnitX(), vector2_2) >= (double) num2 && gamepadThumbstickLeft.X > (double) PlayerInput.CurrentProfile.LeftThumbstickDeadzoneX)
       {
-        if (PlayerInput.CheckRebindingProcessGamepad(Buttons.LeftThumbstickRight.ToString()))
+        buttons = (Buttons) 1073741824;
+        if (PlayerInput.CheckRebindingProcessGamepad(buttons.ToString()))
           return;
-        inputMode.Processkey(PlayerInput.Triggers.Current, Buttons.LeftThumbstickRight.ToString());
+        KeyConfiguration keyConfiguration = inputMode;
+        TriggersSet current = PlayerInput.Triggers.Current;
+        buttons = (Buttons) 1073741824;
+        string newKey = buttons.ToString();
+        keyConfiguration.Processkey(current, newKey);
         flag1 = true;
       }
-      if ((double) Vector2.Dot(-Vector2.UnitY, vector2_2) >= (double) num2 && (double) gamepadThumbstickLeft.Y < -(double) PlayerInput.CurrentProfile.LeftThumbstickDeadzoneY)
+      if ((double) Vector2.Dot(Vector2.op_UnaryNegation(Vector2.get_UnitY()), vector2_2) >= (double) num2 && gamepadThumbstickLeft.Y < -(double) PlayerInput.CurrentProfile.LeftThumbstickDeadzoneY)
       {
-        if (PlayerInput.CheckRebindingProcessGamepad(Buttons.LeftThumbstickUp.ToString()))
+        buttons = (Buttons) 268435456;
+        if (PlayerInput.CheckRebindingProcessGamepad(buttons.ToString()))
           return;
-        inputMode.Processkey(PlayerInput.Triggers.Current, Buttons.LeftThumbstickUp.ToString());
+        KeyConfiguration keyConfiguration = inputMode;
+        TriggersSet current = PlayerInput.Triggers.Current;
+        buttons = (Buttons) 268435456;
+        string newKey = buttons.ToString();
+        keyConfiguration.Processkey(current, newKey);
         flag1 = true;
       }
-      if ((double) Vector2.Dot(Vector2.UnitY, vector2_2) >= (double) num2 && (double) gamepadThumbstickLeft.Y > (double) PlayerInput.CurrentProfile.LeftThumbstickDeadzoneY)
+      if ((double) Vector2.Dot(Vector2.get_UnitY(), vector2_2) >= (double) num2 && gamepadThumbstickLeft.Y > (double) PlayerInput.CurrentProfile.LeftThumbstickDeadzoneY)
       {
-        if (PlayerInput.CheckRebindingProcessGamepad(Buttons.LeftThumbstickDown.ToString()))
+        buttons = (Buttons) 536870912;
+        if (PlayerInput.CheckRebindingProcessGamepad(buttons.ToString()))
           return;
-        inputMode.Processkey(PlayerInput.Triggers.Current, Buttons.LeftThumbstickDown.ToString());
+        KeyConfiguration keyConfiguration = inputMode;
+        TriggersSet current = PlayerInput.Triggers.Current;
+        buttons = (Buttons) 536870912;
+        string newKey = buttons.ToString();
+        keyConfiguration.Processkey(current, newKey);
         flag1 = true;
       }
-      if ((double) Vector2.Dot(-Vector2.UnitX, vector2_1) >= (double) num2 && (double) gamepadThumbstickRight.X < -(double) PlayerInput.CurrentProfile.RightThumbstickDeadzoneX)
+      if ((double) Vector2.Dot(Vector2.op_UnaryNegation(Vector2.get_UnitX()), vector2_1) >= (double) num2 && gamepadThumbstickRight.X < -(double) PlayerInput.CurrentProfile.RightThumbstickDeadzoneX)
       {
-        if (PlayerInput.CheckRebindingProcessGamepad(Buttons.RightThumbstickLeft.ToString()))
+        buttons = (Buttons) 134217728;
+        if (PlayerInput.CheckRebindingProcessGamepad(buttons.ToString()))
           return;
-        inputMode.Processkey(PlayerInput.Triggers.Current, Buttons.RightThumbstickLeft.ToString());
+        KeyConfiguration keyConfiguration = inputMode;
+        TriggersSet current = PlayerInput.Triggers.Current;
+        buttons = (Buttons) 134217728;
+        string newKey = buttons.ToString();
+        keyConfiguration.Processkey(current, newKey);
         flag1 = true;
       }
-      if ((double) Vector2.Dot(Vector2.UnitX, vector2_1) >= (double) num2 && (double) gamepadThumbstickRight.X > (double) PlayerInput.CurrentProfile.RightThumbstickDeadzoneX)
+      if ((double) Vector2.Dot(Vector2.get_UnitX(), vector2_1) >= (double) num2 && gamepadThumbstickRight.X > (double) PlayerInput.CurrentProfile.RightThumbstickDeadzoneX)
       {
-        if (PlayerInput.CheckRebindingProcessGamepad(Buttons.RightThumbstickRight.ToString()))
+        buttons = (Buttons) 67108864;
+        if (PlayerInput.CheckRebindingProcessGamepad(buttons.ToString()))
           return;
-        inputMode.Processkey(PlayerInput.Triggers.Current, Buttons.RightThumbstickRight.ToString());
+        KeyConfiguration keyConfiguration = inputMode;
+        TriggersSet current = PlayerInput.Triggers.Current;
+        buttons = (Buttons) 67108864;
+        string newKey = buttons.ToString();
+        keyConfiguration.Processkey(current, newKey);
         flag1 = true;
       }
-      if ((double) Vector2.Dot(-Vector2.UnitY, vector2_1) >= (double) num2 && (double) gamepadThumbstickRight.Y < -(double) PlayerInput.CurrentProfile.RightThumbstickDeadzoneY)
+      if ((double) Vector2.Dot(Vector2.op_UnaryNegation(Vector2.get_UnitY()), vector2_1) >= (double) num2 && gamepadThumbstickRight.Y < -(double) PlayerInput.CurrentProfile.RightThumbstickDeadzoneY)
       {
-        if (PlayerInput.CheckRebindingProcessGamepad(Buttons.RightThumbstickUp.ToString()))
+        buttons = (Buttons) 16777216;
+        if (PlayerInput.CheckRebindingProcessGamepad(buttons.ToString()))
           return;
-        inputMode.Processkey(PlayerInput.Triggers.Current, Buttons.RightThumbstickUp.ToString());
+        KeyConfiguration keyConfiguration = inputMode;
+        TriggersSet current = PlayerInput.Triggers.Current;
+        buttons = (Buttons) 16777216;
+        string newKey = buttons.ToString();
+        keyConfiguration.Processkey(current, newKey);
         flag1 = true;
       }
-      if ((double) Vector2.Dot(Vector2.UnitY, vector2_1) >= (double) num2 && (double) gamepadThumbstickRight.Y > (double) PlayerInput.CurrentProfile.RightThumbstickDeadzoneY)
+      if ((double) Vector2.Dot(Vector2.get_UnitY(), vector2_1) >= (double) num2 && gamepadThumbstickRight.Y > (double) PlayerInput.CurrentProfile.RightThumbstickDeadzoneY)
       {
-        if (PlayerInput.CheckRebindingProcessGamepad(Buttons.RightThumbstickDown.ToString()))
+        buttons = (Buttons) 33554432;
+        if (PlayerInput.CheckRebindingProcessGamepad(buttons.ToString()))
           return;
-        inputMode.Processkey(PlayerInput.Triggers.Current, Buttons.RightThumbstickDown.ToString());
+        KeyConfiguration keyConfiguration = inputMode;
+        TriggersSet current = PlayerInput.Triggers.Current;
+        buttons = (Buttons) 33554432;
+        string newKey = buttons.ToString();
+        keyConfiguration.Processkey(current, newKey);
         flag1 = true;
       }
-      if ((double) gamePadState.Triggers.Left > (double) triggersDeadzone)
+      // ISSUE: explicit reference operation
+      GamePadTriggers triggers1 = ((GamePadState) @gamePadState).get_Triggers();
+      // ISSUE: explicit reference operation
+      if ((double) ((GamePadTriggers) @triggers1).get_Left() > (double) triggersDeadzone)
       {
-        if (PlayerInput.CheckRebindingProcessGamepad(Buttons.LeftTrigger.ToString()))
+        buttons = (Buttons) 8388608;
+        if (PlayerInput.CheckRebindingProcessGamepad(buttons.ToString()))
           return;
-        inputMode.Processkey(PlayerInput.Triggers.Current, Buttons.LeftTrigger.ToString());
+        KeyConfiguration keyConfiguration = inputMode;
+        TriggersSet current = PlayerInput.Triggers.Current;
+        buttons = (Buttons) 8388608;
+        string newKey = buttons.ToString();
+        keyConfiguration.Processkey(current, newKey);
         flag1 = true;
       }
-      if ((double) gamePadState.Triggers.Right > (double) triggersDeadzone)
+      // ISSUE: explicit reference operation
+      GamePadTriggers triggers2 = ((GamePadState) @gamePadState).get_Triggers();
+      // ISSUE: explicit reference operation
+      if ((double) ((GamePadTriggers) @triggers2).get_Right() > (double) triggersDeadzone)
       {
-        if (PlayerInput.CheckRebindingProcessGamepad(Buttons.RightTrigger.ToString()))
+        buttons = (Buttons) 4194304;
+        if (PlayerInput.CheckRebindingProcessGamepad(buttons.ToString()))
           return;
-        inputMode.Processkey(PlayerInput.Triggers.Current, Buttons.RightTrigger.ToString());
+        KeyConfiguration keyConfiguration = inputMode;
+        TriggersSet current = PlayerInput.Triggers.Current;
+        buttons = (Buttons) 4194304;
+        string newKey = buttons.ToString();
+        keyConfiguration.Processkey(current, newKey);
         flag1 = true;
       }
       bool flag4 = ItemID.Sets.GamepadWholeScreenUseRange[player.inventory[player.selectedItem].type] || player.scope;
@@ -722,36 +804,40 @@ namespace Terraria.GameInput
         bool flag7 = Main.mapFullscreen || !Main.gameMenu && !flag3;
         int num4 = Main.screenWidth / 2;
         int num5 = Main.screenHeight / 2;
-        if (!Main.mapFullscreen && flag7 && !flag4)
+        if (!Main.mapFullscreen & flag7 && !flag4)
         {
-          Point point = Main.ReverseGravitySupport(player.Center - Main.screenPosition, 0.0f).ToPoint();
-          num4 = point.X;
-          num5 = point.Y;
+          Point point = Main.ReverseGravitySupport(Vector2.op_Subtraction(player.Center, Main.screenPosition), 0.0f).ToPoint();
+          num4 = (int) point.X;
+          num5 = (int) point.Y;
         }
-        if (player.velocity == Vector2.Zero && gamepadThumbstickLeft == Vector2.Zero && (gamepadThumbstickRight == Vector2.Zero && flag6))
+        if (((!Vector2.op_Equality(player.velocity, Vector2.get_Zero()) || !Vector2.op_Equality(gamepadThumbstickLeft, Vector2.get_Zero()) ? 0 : (Vector2.op_Equality(gamepadThumbstickRight, Vector2.get_Zero()) ? 1 : 0)) & (flag6 ? 1 : 0)) != 0)
           num4 += player.direction * 10;
-        if (gamepadThumbstickRight != Vector2.Zero && flag7)
+        if (Vector2.op_Inequality(gamepadThumbstickRight, Vector2.get_Zero()) & flag7)
         {
-          Vector2 vector2_3 = new Vector2(8f);
+          Vector2 vector2_3;
+          // ISSUE: explicit reference operation
+          ((Vector2) @vector2_3).\u002Ector(8f);
           if (!Main.gameMenu && Main.mapFullscreen)
-            vector2_3 = new Vector2(16f);
+          {
+            // ISSUE: explicit reference operation
+            ((Vector2) @vector2_3).\u002Ector(16f);
+          }
           if (flag6)
           {
-            vector2_3 = new Vector2((float) (Player.tileRangeX * 16), (float) (Player.tileRangeY * 16));
+            // ISSUE: explicit reference operation
+            ((Vector2) @vector2_3).\u002Ector((float) (Player.tileRangeX * 16), (float) (Player.tileRangeY * 16));
             if (num3 != 0)
-              vector2_3 += new Vector2((float) (num3 * 16), (float) (num3 * 16));
+              vector2_3 = Vector2.op_Addition(vector2_3, new Vector2((float) (num3 * 16), (float) (num3 * 16)));
             if (flag4)
-              vector2_3 = new Vector2((float) (Math.Max(Main.screenWidth, Main.screenHeight) / 2));
+            {
+              // ISSUE: explicit reference operation
+              ((Vector2) @vector2_3).\u002Ector((float) (Math.Max(Main.screenWidth, Main.screenHeight) / 2));
+            }
           }
           else if (!Main.mapFullscreen)
-          {
-            if (player.inventory[player.selectedItem].mech)
-              vector2_3 += Vector2.Zero;
-            else
-              vector2_3 += new Vector2((float) num3) / 4f;
-          }
-          float m11 = Main.GameViewMatrix.ZoomMatrix.M11;
-          Vector2 vector2_4 = gamepadThumbstickRight * vector2_3 * m11;
+            vector2_3 = !player.inventory[player.selectedItem].mech ? Vector2.op_Addition(vector2_3, Vector2.op_Division(new Vector2((float) num3), 4f)) : Vector2.op_Addition(vector2_3, Vector2.get_Zero());
+          float m11 = (float) Main.GameViewMatrix.ZoomMatrix.M11;
+          Vector2 vector2_4 = Vector2.op_Multiply(Vector2.op_Multiply(gamepadThumbstickRight, vector2_3), m11);
           int num6 = PlayerInput.MouseX - num4;
           int num7 = PlayerInput.MouseY - num5;
           if (flag6)
@@ -766,27 +852,28 @@ namespace Terraria.GameInput
           flag1 = true;
           flag5 = true;
         }
-        if (gamepadThumbstickLeft != Vector2.Zero && flag7)
+        if (Vector2.op_Inequality(gamepadThumbstickLeft, Vector2.get_Zero()) & flag7)
         {
           float num6 = 8f;
           if (!Main.gameMenu && Main.mapFullscreen)
             num6 = 3f;
           if (Main.mapFullscreen)
           {
-            Vector2 vector2_3 = gamepadThumbstickLeft * num6;
-            Main.mapFullscreenPos += vector2_3 * num6 * (1f / Main.mapFullscreenScale);
+            Vector2 vector2_3 = Vector2.op_Multiply(gamepadThumbstickLeft, num6);
+            Main.mapFullscreenPos = Vector2.op_Addition(Main.mapFullscreenPos, Vector2.op_Multiply(Vector2.op_Multiply(vector2_3, num6), 1f / Main.mapFullscreenScale));
           }
           else if (!flag5 && Main.SmartCursorEnabled)
           {
-            float m11 = Main.GameViewMatrix.ZoomMatrix.M11;
-            Vector2 vector2_3 = gamepadThumbstickLeft * new Vector2((float) (Player.tileRangeX * 16), (float) (Player.tileRangeY * 16)) * m11;
+            float m11 = (float) Main.GameViewMatrix.ZoomMatrix.M11;
+            Vector2 vector2_3 = Vector2.op_Multiply(Vector2.op_Multiply(gamepadThumbstickLeft, new Vector2((float) (Player.tileRangeX * 16), (float) (Player.tileRangeY * 16))), m11);
             if (num3 != 0)
-              vector2_3 = gamepadThumbstickLeft * new Vector2((float) ((Player.tileRangeX + num3) * 16), (float) ((Player.tileRangeY + num3) * 16)) * m11;
+              vector2_3 = Vector2.op_Multiply(Vector2.op_Multiply(gamepadThumbstickLeft, new Vector2((float) ((Player.tileRangeX + num3) * 16), (float) ((Player.tileRangeY + num3) * 16))), m11);
             if (flag4)
-              vector2_3 = new Vector2((float) (Math.Max(Main.screenWidth, Main.screenHeight) / 2)) * gamepadThumbstickLeft;
+              vector2_3 = Vector2.op_Multiply(new Vector2((float) (Math.Max(Main.screenWidth, Main.screenHeight) / 2)), gamepadThumbstickLeft);
             int x = (int) vector2_3.X;
             int y = (int) vector2_3.Y;
-            PlayerInput.MouseX = x + num4;
+            int num7 = num4;
+            PlayerInput.MouseX = x + num7;
             PlayerInput.MouseY = y + num5;
           }
           flag1 = true;
@@ -810,11 +897,11 @@ namespace Terraria.GameInput
             }
             else
             {
-              float m11 = Main.GameViewMatrix.ZoomMatrix.M11;
+              float m11 = (float) Main.GameViewMatrix.ZoomMatrix.M11;
               num8 = (int) Utils.Clamp<float>((float) num6, (float) (-(Player.tileRangeX + num3) * 16) * m11, (float) ((Player.tileRangeX + num3) * 16) * m11);
               num9 = (int) Utils.Clamp<float>((float) num7, (float) (-(Player.tileRangeY + num3) * 16) * m11, (float) ((Player.tileRangeY + num3) * 16) * m11);
             }
-            if (flag6 && (!flag1 || flag4))
+            if (flag6 && !flag1 | flag4)
             {
               float num10 = 0.81f;
               if (flag4)
@@ -844,37 +931,51 @@ namespace Terraria.GameInput
       bool flag = false;
       PlayerInput.MouseInfoOld = PlayerInput.MouseInfo;
       PlayerInput.MouseInfo = Mouse.GetState();
-      PlayerInput.ScrollWheelValue += PlayerInput.MouseInfo.ScrollWheelValue;
-      if (PlayerInput.MouseInfo.X - PlayerInput.MouseInfoOld.X != 0 || PlayerInput.MouseInfo.Y - PlayerInput.MouseInfoOld.Y != 0 || PlayerInput.MouseInfo.ScrollWheelValue != PlayerInput.MouseInfoOld.ScrollWheelValue)
+      // ISSUE: explicit reference operation
+      PlayerInput.ScrollWheelValue += ((MouseState) @PlayerInput.MouseInfo).get_ScrollWheelValue();
+      // ISSUE: explicit reference operation
+      // ISSUE: explicit reference operation
+      // ISSUE: explicit reference operation
+      // ISSUE: explicit reference operation
+      // ISSUE: explicit reference operation
+      // ISSUE: explicit reference operation
+      if (((MouseState) @PlayerInput.MouseInfo).get_X() - ((MouseState) @PlayerInput.MouseInfoOld).get_X() != 0 || ((MouseState) @PlayerInput.MouseInfo).get_Y() - ((MouseState) @PlayerInput.MouseInfoOld).get_Y() != 0 || ((MouseState) @PlayerInput.MouseInfo).get_ScrollWheelValue() != ((MouseState) @PlayerInput.MouseInfoOld).get_ScrollWheelValue())
       {
-        PlayerInput.MouseX = PlayerInput.MouseInfo.X;
-        PlayerInput.MouseY = PlayerInput.MouseInfo.Y;
+        // ISSUE: explicit reference operation
+        PlayerInput.MouseX = ((MouseState) @PlayerInput.MouseInfo).get_X();
+        // ISSUE: explicit reference operation
+        PlayerInput.MouseY = ((MouseState) @PlayerInput.MouseInfo).get_Y();
         flag = true;
       }
       PlayerInput.MouseKeys.Clear();
       if (Main.instance.IsActive)
       {
-        if (PlayerInput.MouseInfo.LeftButton == ButtonState.Pressed)
+        // ISSUE: explicit reference operation
+        if (((MouseState) @PlayerInput.MouseInfo).get_LeftButton() == 1)
         {
           PlayerInput.MouseKeys.Add("Mouse1");
           flag = true;
         }
-        if (PlayerInput.MouseInfo.RightButton == ButtonState.Pressed)
+        // ISSUE: explicit reference operation
+        if (((MouseState) @PlayerInput.MouseInfo).get_RightButton() == 1)
         {
           PlayerInput.MouseKeys.Add("Mouse2");
           flag = true;
         }
-        if (PlayerInput.MouseInfo.MiddleButton == ButtonState.Pressed)
+        // ISSUE: explicit reference operation
+        if (((MouseState) @PlayerInput.MouseInfo).get_MiddleButton() == 1)
         {
           PlayerInput.MouseKeys.Add("Mouse3");
           flag = true;
         }
-        if (PlayerInput.MouseInfo.XButton1 == ButtonState.Pressed)
+        // ISSUE: explicit reference operation
+        if (((MouseState) @PlayerInput.MouseInfo).get_XButton1() == 1)
         {
           PlayerInput.MouseKeys.Add("Mouse4");
           flag = true;
         }
-        if (PlayerInput.MouseInfo.XButton2 == ButtonState.Pressed)
+        // ISSUE: explicit reference operation
+        if (((MouseState) @PlayerInput.MouseInfo).get_XButton2() == 1)
         {
           PlayerInput.MouseKeys.Add("Mouse5");
           flag = true;
@@ -890,29 +991,36 @@ namespace Terraria.GameInput
     {
       bool flag1 = false;
       bool flag2 = false;
-      Keys[] pressedKeys = Main.keyState.GetPressedKeys();
+      // ISSUE: explicit reference operation
+      Keys[] pressedKeys = ((KeyboardState) @Main.keyState).GetPressedKeys();
       if (PlayerInput.InvalidateKeyboardSwap() && PlayerInput.MouseKeys.Count == 0)
         return;
       for (int index = 0; index < pressedKeys.Length; ++index)
       {
-        if (pressedKeys[index] == Keys.LeftShift || pressedKeys[index] == Keys.RightShift)
+        if ((int) pressedKeys[index] == 160 || (int) pressedKeys[index] == 161)
           flag1 = true;
-        else if (pressedKeys[index] == Keys.LeftAlt || pressedKeys[index] == Keys.RightAlt)
+        else if ((int) pressedKeys[index] == 164 || (int) pressedKeys[index] == 165)
           flag2 = true;
       }
-      if (Main.blockKey != Keys.None.ToString())
+      string blockKey = Main.blockKey;
+      Keys keys = (Keys) 0;
+      string str1 = keys.ToString();
+      if (blockKey != str1)
       {
         bool flag3 = false;
         for (int index = 0; index < pressedKeys.Length; ++index)
         {
           if (pressedKeys[index].ToString() == Main.blockKey)
           {
-            pressedKeys[index] = Keys.None;
+            pressedKeys[index] = (Keys) 0;
             flag3 = true;
           }
         }
         if (!flag3)
-          Main.blockKey = Keys.None.ToString();
+        {
+          keys = (Keys) 0;
+          Main.blockKey = keys.ToString();
+        }
       }
       KeyConfiguration inputMode = PlayerInput.CurrentProfile.InputModes[InputMode.Keyboard];
       if (Main.gameMenu && !PlayerInput.WritingText)
@@ -928,16 +1036,20 @@ namespace Terraria.GameInput
       for (int index = 0; index < stringList.Count; ++index)
       {
         string newKey = stringList[index].ToString();
-        if (!(stringList[index] == Keys.Tab.ToString()) || (!flag1 || SocialAPI.Mode != SocialMode.Steam) && !flag2)
+        string str2 = stringList[index];
+        keys = (Keys) 9;
+        string str3 = keys.ToString();
+        if (!(str2 == str3) || ((!flag1 ? 0 : (SocialAPI.Mode == SocialMode.Steam ? 1 : 0)) | (flag2 ? 1 : 0)) == 0)
         {
           if (PlayerInput.CheckRebindingProcessKeyboard(newKey))
             return;
           KeyboardState oldKeyState = Main.oldKeyState;
-          if (index >= count || !Main.oldKeyState.IsKeyDown(pressedKeys[index]))
+          // ISSUE: explicit reference operation
+          if (index >= count || !((KeyboardState) @Main.oldKeyState).IsKeyDown((Keys) (int) pressedKeys[index]))
             inputMode.Processkey(PlayerInput.Triggers.Current, newKey);
           else
             inputMode.CopyKeyState(PlayerInput.Triggers.Old, PlayerInput.Triggers.Current, newKey);
-          if (index >= count || pressedKeys[index] != Keys.None)
+          if (index >= count || (int) pressedKeys[index] != 0)
             flag4 = true;
         }
       }
@@ -1048,7 +1160,7 @@ namespace Terraria.GameInput
 
     private static void PostInput()
     {
-      Main.GamepadCursorAlpha = MathHelper.Clamp(Main.GamepadCursorAlpha + (!Main.SmartCursorEnabled || UILinkPointNavigator.Available || (!(PlayerInput.GamepadThumbstickLeft == Vector2.Zero) || !(PlayerInput.GamepadThumbstickRight == Vector2.Zero)) ? 0.05f : -0.05f), 0.0f, 1f);
+      Main.GamepadCursorAlpha = MathHelper.Clamp(Main.GamepadCursorAlpha + (!Main.SmartCursorEnabled || UILinkPointNavigator.Available || (!Vector2.op_Equality(PlayerInput.GamepadThumbstickLeft, Vector2.get_Zero()) || !Vector2.op_Equality(PlayerInput.GamepadThumbstickRight, Vector2.get_Zero())) ? 0.05f : -0.05f), 0.0f, 1f);
       if (PlayerInput.CurrentProfile.HotbarAllowsRadial)
       {
         int num = PlayerInput.Triggers.Current.HotbarPlus.ToInt() - PlayerInput.Triggers.Current.HotbarMinus.ToInt();
@@ -1071,31 +1183,31 @@ namespace Terraria.GameInput
 
     private static void HandleDpadSnap()
     {
-      Vector2 zero = Vector2.Zero;
+      Vector2 vector2_1 = Vector2.get_Zero();
       Player player = Main.player[Main.myPlayer];
       for (int index = 0; index < 4; ++index)
       {
         bool flag = false;
-        Vector2 vector2 = Vector2.Zero;
+        Vector2 vector2_2 = Vector2.get_Zero();
         if (Main.gameMenu || UILinkPointNavigator.Available && !PlayerInput.InBuildingMode)
           return;
         switch (index)
         {
           case 0:
             flag = PlayerInput.Triggers.Current.DpadMouseSnap1;
-            vector2 = -Vector2.UnitY;
+            vector2_2 = Vector2.op_UnaryNegation(Vector2.get_UnitY());
             break;
           case 1:
             flag = PlayerInput.Triggers.Current.DpadMouseSnap2;
-            vector2 = Vector2.UnitX;
+            vector2_2 = Vector2.get_UnitX();
             break;
           case 2:
             flag = PlayerInput.Triggers.Current.DpadMouseSnap3;
-            vector2 = Vector2.UnitY;
+            vector2_2 = Vector2.get_UnitY();
             break;
           case 3:
             flag = PlayerInput.Triggers.Current.DpadMouseSnap4;
-            vector2 = -Vector2.UnitX;
+            vector2_2 = Vector2.op_UnaryNegation(Vector2.get_UnitX());
             break;
         }
         if (PlayerInput.DpadSnapCooldown[index] > 0)
@@ -1108,16 +1220,16 @@ namespace Terraria.GameInput
             if (ItemSlot.IsABuildingItem(player.inventory[player.selectedItem]))
               num = player.inventory[player.selectedItem].useTime;
             PlayerInput.DpadSnapCooldown[index] = num;
-            zero += vector2;
+            vector2_1 = Vector2.op_Addition(vector2_1, vector2_2);
           }
         }
         else
           PlayerInput.DpadSnapCooldown[index] = 0;
       }
-      if (!(zero != Vector2.Zero))
+      if (!Vector2.op_Inequality(vector2_1, Vector2.get_Zero()))
         return;
       Main.SmartCursorEnabled = false;
-      Point tileCoordinates = (Main.MouseScreen + Main.screenPosition + zero * new Vector2(16f)).ToTileCoordinates();
+      Point tileCoordinates = Vector2.op_Addition(Vector2.op_Addition(Main.MouseScreen, Main.screenPosition), Vector2.op_Multiply(vector2_1, new Vector2(16f))).ToTileCoordinates();
       PlayerInput.MouseX = tileCoordinates.X * 16 + 8 - (int) Main.screenPosition.X;
       PlayerInput.MouseY = tileCoordinates.Y * 16 + 8 - (int) Main.screenPosition.Y;
     }
@@ -1325,61 +1437,61 @@ namespace Terraria.GameInput
               c.KeyStatus["Left"].Add("Left");
               c.KeyStatus["Right"].Add("D");
               c.KeyStatus["Right"].Add("Right");
-              c.KeyStatus["Inventory"].Add(Keys.Escape.ToString());
-              c.KeyStatus["MenuUp"].Add(string.Concat((object) Buttons.DPadUp));
-              c.KeyStatus["MenuDown"].Add(string.Concat((object) Buttons.DPadDown));
-              c.KeyStatus["MenuLeft"].Add(string.Concat((object) Buttons.DPadLeft));
-              c.KeyStatus["MenuRight"].Add(string.Concat((object) Buttons.DPadRight));
+              c.KeyStatus["Inventory"].Add(((Keys) 27).ToString());
+              c.KeyStatus["MenuUp"].Add(string.Concat((object) (Buttons) 1));
+              c.KeyStatus["MenuDown"].Add(string.Concat((object) (Buttons) 2));
+              c.KeyStatus["MenuLeft"].Add(string.Concat((object) (Buttons) 4));
+              c.KeyStatus["MenuRight"].Add(string.Concat((object) (Buttons) 8));
               return;
             case InputMode.Mouse:
               return;
             case InputMode.XBoxGamepad:
-              c.KeyStatus["MouseLeft"].Add(string.Concat((object) Buttons.RightTrigger));
-              c.KeyStatus["MouseRight"].Add(string.Concat((object) Buttons.B));
-              c.KeyStatus["Up"].Add(string.Concat((object) Buttons.LeftThumbstickUp));
-              c.KeyStatus["Down"].Add(string.Concat((object) Buttons.LeftThumbstickDown));
-              c.KeyStatus["Left"].Add(string.Concat((object) Buttons.LeftThumbstickLeft));
-              c.KeyStatus["Right"].Add(string.Concat((object) Buttons.LeftThumbstickRight));
-              c.KeyStatus["Jump"].Add(string.Concat((object) Buttons.LeftTrigger));
-              c.KeyStatus["Inventory"].Add(string.Concat((object) Buttons.Y));
-              c.KeyStatus["Grapple"].Add(string.Concat((object) Buttons.B));
-              c.KeyStatus["LockOn"].Add(string.Concat((object) Buttons.X));
-              c.KeyStatus["QuickMount"].Add(string.Concat((object) Buttons.A));
-              c.KeyStatus["SmartSelect"].Add(string.Concat((object) Buttons.LeftStick));
-              c.KeyStatus["SmartCursor"].Add(string.Concat((object) Buttons.RightStick));
-              c.KeyStatus["HotbarMinus"].Add(string.Concat((object) Buttons.LeftShoulder));
-              c.KeyStatus["HotbarPlus"].Add(string.Concat((object) Buttons.RightShoulder));
-              c.KeyStatus["MapFull"].Add(string.Concat((object) Buttons.Start));
-              c.KeyStatus["DpadSnap1"].Add(string.Concat((object) Buttons.DPadUp));
-              c.KeyStatus["DpadSnap3"].Add(string.Concat((object) Buttons.DPadDown));
-              c.KeyStatus["DpadSnap4"].Add(string.Concat((object) Buttons.DPadLeft));
-              c.KeyStatus["DpadSnap2"].Add(string.Concat((object) Buttons.DPadRight));
-              c.KeyStatus["MapStyle"].Add(string.Concat((object) Buttons.Back));
+              c.KeyStatus["MouseLeft"].Add(string.Concat((object) (Buttons) 4194304));
+              c.KeyStatus["MouseRight"].Add(string.Concat((object) (Buttons) 8192));
+              c.KeyStatus["Up"].Add(string.Concat((object) (Buttons) 268435456));
+              c.KeyStatus["Down"].Add(string.Concat((object) (Buttons) 536870912));
+              c.KeyStatus["Left"].Add(string.Concat((object) (Buttons) 2097152));
+              c.KeyStatus["Right"].Add(string.Concat((object) (Buttons) 1073741824));
+              c.KeyStatus["Jump"].Add(string.Concat((object) (Buttons) 8388608));
+              c.KeyStatus["Inventory"].Add(string.Concat((object) (Buttons) 32768));
+              c.KeyStatus["Grapple"].Add(string.Concat((object) (Buttons) 8192));
+              c.KeyStatus["LockOn"].Add(string.Concat((object) (Buttons) 16384));
+              c.KeyStatus["QuickMount"].Add(string.Concat((object) (Buttons) 4096));
+              c.KeyStatus["SmartSelect"].Add(string.Concat((object) (Buttons) 64));
+              c.KeyStatus["SmartCursor"].Add(string.Concat((object) (Buttons) 128));
+              c.KeyStatus["HotbarMinus"].Add(string.Concat((object) (Buttons) 256));
+              c.KeyStatus["HotbarPlus"].Add(string.Concat((object) (Buttons) 512));
+              c.KeyStatus["MapFull"].Add(string.Concat((object) (Buttons) 16));
+              c.KeyStatus["DpadSnap1"].Add(string.Concat((object) (Buttons) 1));
+              c.KeyStatus["DpadSnap3"].Add(string.Concat((object) (Buttons) 2));
+              c.KeyStatus["DpadSnap4"].Add(string.Concat((object) (Buttons) 4));
+              c.KeyStatus["DpadSnap2"].Add(string.Concat((object) (Buttons) 8));
+              c.KeyStatus["MapStyle"].Add(string.Concat((object) (Buttons) 32));
               return;
             case InputMode.XBoxGamepadUI:
-              c.KeyStatus["MouseLeft"].Add(string.Concat((object) Buttons.A));
-              c.KeyStatus["MouseRight"].Add(string.Concat((object) Buttons.LeftShoulder));
-              c.KeyStatus["SmartCursor"].Add(string.Concat((object) Buttons.RightShoulder));
-              c.KeyStatus["Up"].Add(string.Concat((object) Buttons.LeftThumbstickUp));
-              c.KeyStatus["Down"].Add(string.Concat((object) Buttons.LeftThumbstickDown));
-              c.KeyStatus["Left"].Add(string.Concat((object) Buttons.LeftThumbstickLeft));
-              c.KeyStatus["Right"].Add(string.Concat((object) Buttons.LeftThumbstickRight));
-              c.KeyStatus["Inventory"].Add(string.Concat((object) Buttons.B));
-              c.KeyStatus["Inventory"].Add(string.Concat((object) Buttons.Y));
-              c.KeyStatus["HotbarMinus"].Add(string.Concat((object) Buttons.LeftTrigger));
-              c.KeyStatus["HotbarPlus"].Add(string.Concat((object) Buttons.RightTrigger));
-              c.KeyStatus["Grapple"].Add(string.Concat((object) Buttons.X));
-              c.KeyStatus["MapFull"].Add(string.Concat((object) Buttons.Start));
-              c.KeyStatus["SmartSelect"].Add(string.Concat((object) Buttons.Back));
-              c.KeyStatus["QuickMount"].Add(string.Concat((object) Buttons.RightStick));
-              c.KeyStatus["DpadSnap1"].Add(string.Concat((object) Buttons.DPadUp));
-              c.KeyStatus["DpadSnap3"].Add(string.Concat((object) Buttons.DPadDown));
-              c.KeyStatus["DpadSnap4"].Add(string.Concat((object) Buttons.DPadLeft));
-              c.KeyStatus["DpadSnap2"].Add(string.Concat((object) Buttons.DPadRight));
-              c.KeyStatus["MenuUp"].Add(string.Concat((object) Buttons.DPadUp));
-              c.KeyStatus["MenuDown"].Add(string.Concat((object) Buttons.DPadDown));
-              c.KeyStatus["MenuLeft"].Add(string.Concat((object) Buttons.DPadLeft));
-              c.KeyStatus["MenuRight"].Add(string.Concat((object) Buttons.DPadRight));
+              c.KeyStatus["MouseLeft"].Add(string.Concat((object) (Buttons) 4096));
+              c.KeyStatus["MouseRight"].Add(string.Concat((object) (Buttons) 256));
+              c.KeyStatus["SmartCursor"].Add(string.Concat((object) (Buttons) 512));
+              c.KeyStatus["Up"].Add(string.Concat((object) (Buttons) 268435456));
+              c.KeyStatus["Down"].Add(string.Concat((object) (Buttons) 536870912));
+              c.KeyStatus["Left"].Add(string.Concat((object) (Buttons) 2097152));
+              c.KeyStatus["Right"].Add(string.Concat((object) (Buttons) 1073741824));
+              c.KeyStatus["Inventory"].Add(string.Concat((object) (Buttons) 8192));
+              c.KeyStatus["Inventory"].Add(string.Concat((object) (Buttons) 32768));
+              c.KeyStatus["HotbarMinus"].Add(string.Concat((object) (Buttons) 8388608));
+              c.KeyStatus["HotbarPlus"].Add(string.Concat((object) (Buttons) 4194304));
+              c.KeyStatus["Grapple"].Add(string.Concat((object) (Buttons) 16384));
+              c.KeyStatus["MapFull"].Add(string.Concat((object) (Buttons) 16));
+              c.KeyStatus["SmartSelect"].Add(string.Concat((object) (Buttons) 32));
+              c.KeyStatus["QuickMount"].Add(string.Concat((object) (Buttons) 128));
+              c.KeyStatus["DpadSnap1"].Add(string.Concat((object) (Buttons) 1));
+              c.KeyStatus["DpadSnap3"].Add(string.Concat((object) (Buttons) 2));
+              c.KeyStatus["DpadSnap4"].Add(string.Concat((object) (Buttons) 4));
+              c.KeyStatus["DpadSnap2"].Add(string.Concat((object) (Buttons) 8));
+              c.KeyStatus["MenuUp"].Add(string.Concat((object) (Buttons) 1));
+              c.KeyStatus["MenuDown"].Add(string.Concat((object) (Buttons) 2));
+              c.KeyStatus["MenuLeft"].Add(string.Concat((object) (Buttons) 4));
+              c.KeyStatus["MenuRight"].Add(string.Concat((object) (Buttons) 8));
               return;
             default:
               return;
@@ -1434,60 +1546,60 @@ namespace Terraria.GameInput
               c.KeyStatus["Left"].Add("Left");
               c.KeyStatus["Right"].Add("D");
               c.KeyStatus["Right"].Add("Right");
-              c.KeyStatus["Inventory"].Add(Keys.Escape.ToString());
-              c.KeyStatus["MenuUp"].Add(string.Concat((object) Buttons.DPadUp));
-              c.KeyStatus["MenuDown"].Add(string.Concat((object) Buttons.DPadDown));
-              c.KeyStatus["MenuLeft"].Add(string.Concat((object) Buttons.DPadLeft));
-              c.KeyStatus["MenuRight"].Add(string.Concat((object) Buttons.DPadRight));
+              c.KeyStatus["Inventory"].Add(((Keys) 27).ToString());
+              c.KeyStatus["MenuUp"].Add(string.Concat((object) (Buttons) 1));
+              c.KeyStatus["MenuDown"].Add(string.Concat((object) (Buttons) 2));
+              c.KeyStatus["MenuLeft"].Add(string.Concat((object) (Buttons) 4));
+              c.KeyStatus["MenuRight"].Add(string.Concat((object) (Buttons) 8));
               return;
             case InputMode.Mouse:
               return;
             case InputMode.XBoxGamepad:
-              c.KeyStatus["MouseLeft"].Add(string.Concat((object) Buttons.RightTrigger));
-              c.KeyStatus["MouseRight"].Add(string.Concat((object) Buttons.B));
-              c.KeyStatus["Up"].Add(string.Concat((object) Buttons.LeftThumbstickUp));
-              c.KeyStatus["Down"].Add(string.Concat((object) Buttons.LeftThumbstickDown));
-              c.KeyStatus["Left"].Add(string.Concat((object) Buttons.LeftThumbstickLeft));
-              c.KeyStatus["Right"].Add(string.Concat((object) Buttons.LeftThumbstickRight));
-              c.KeyStatus["Jump"].Add(string.Concat((object) Buttons.LeftTrigger));
-              c.KeyStatus["Inventory"].Add(string.Concat((object) Buttons.Y));
-              c.KeyStatus["Grapple"].Add(string.Concat((object) Buttons.LeftShoulder));
-              c.KeyStatus["SmartSelect"].Add(string.Concat((object) Buttons.LeftStick));
-              c.KeyStatus["SmartCursor"].Add(string.Concat((object) Buttons.RightStick));
-              c.KeyStatus["QuickMount"].Add(string.Concat((object) Buttons.X));
-              c.KeyStatus["QuickHeal"].Add(string.Concat((object) Buttons.A));
-              c.KeyStatus["RadialHotbar"].Add(string.Concat((object) Buttons.RightShoulder));
-              c.KeyStatus["MapFull"].Add(string.Concat((object) Buttons.Start));
-              c.KeyStatus["DpadSnap1"].Add(string.Concat((object) Buttons.DPadUp));
-              c.KeyStatus["DpadSnap3"].Add(string.Concat((object) Buttons.DPadDown));
-              c.KeyStatus["DpadSnap4"].Add(string.Concat((object) Buttons.DPadLeft));
-              c.KeyStatus["DpadSnap2"].Add(string.Concat((object) Buttons.DPadRight));
-              c.KeyStatus["MapStyle"].Add(string.Concat((object) Buttons.Back));
+              c.KeyStatus["MouseLeft"].Add(string.Concat((object) (Buttons) 4194304));
+              c.KeyStatus["MouseRight"].Add(string.Concat((object) (Buttons) 8192));
+              c.KeyStatus["Up"].Add(string.Concat((object) (Buttons) 268435456));
+              c.KeyStatus["Down"].Add(string.Concat((object) (Buttons) 536870912));
+              c.KeyStatus["Left"].Add(string.Concat((object) (Buttons) 2097152));
+              c.KeyStatus["Right"].Add(string.Concat((object) (Buttons) 1073741824));
+              c.KeyStatus["Jump"].Add(string.Concat((object) (Buttons) 8388608));
+              c.KeyStatus["Inventory"].Add(string.Concat((object) (Buttons) 32768));
+              c.KeyStatus["Grapple"].Add(string.Concat((object) (Buttons) 256));
+              c.KeyStatus["SmartSelect"].Add(string.Concat((object) (Buttons) 64));
+              c.KeyStatus["SmartCursor"].Add(string.Concat((object) (Buttons) 128));
+              c.KeyStatus["QuickMount"].Add(string.Concat((object) (Buttons) 16384));
+              c.KeyStatus["QuickHeal"].Add(string.Concat((object) (Buttons) 4096));
+              c.KeyStatus["RadialHotbar"].Add(string.Concat((object) (Buttons) 512));
+              c.KeyStatus["MapFull"].Add(string.Concat((object) (Buttons) 16));
+              c.KeyStatus["DpadSnap1"].Add(string.Concat((object) (Buttons) 1));
+              c.KeyStatus["DpadSnap3"].Add(string.Concat((object) (Buttons) 2));
+              c.KeyStatus["DpadSnap4"].Add(string.Concat((object) (Buttons) 4));
+              c.KeyStatus["DpadSnap2"].Add(string.Concat((object) (Buttons) 8));
+              c.KeyStatus["MapStyle"].Add(string.Concat((object) (Buttons) 32));
               return;
             case InputMode.XBoxGamepadUI:
-              c.KeyStatus["MouseLeft"].Add(string.Concat((object) Buttons.A));
-              c.KeyStatus["MouseRight"].Add(string.Concat((object) Buttons.LeftShoulder));
-              c.KeyStatus["SmartCursor"].Add(string.Concat((object) Buttons.RightShoulder));
-              c.KeyStatus["Up"].Add(string.Concat((object) Buttons.LeftThumbstickUp));
-              c.KeyStatus["Down"].Add(string.Concat((object) Buttons.LeftThumbstickDown));
-              c.KeyStatus["Left"].Add(string.Concat((object) Buttons.LeftThumbstickLeft));
-              c.KeyStatus["Right"].Add(string.Concat((object) Buttons.LeftThumbstickRight));
-              c.KeyStatus["LockOn"].Add(string.Concat((object) Buttons.B));
-              c.KeyStatus["Inventory"].Add(string.Concat((object) Buttons.Y));
-              c.KeyStatus["HotbarMinus"].Add(string.Concat((object) Buttons.LeftTrigger));
-              c.KeyStatus["HotbarPlus"].Add(string.Concat((object) Buttons.RightTrigger));
-              c.KeyStatus["Grapple"].Add(string.Concat((object) Buttons.X));
-              c.KeyStatus["MapFull"].Add(string.Concat((object) Buttons.Start));
-              c.KeyStatus["SmartSelect"].Add(string.Concat((object) Buttons.Back));
-              c.KeyStatus["QuickMount"].Add(string.Concat((object) Buttons.RightStick));
-              c.KeyStatus["DpadSnap1"].Add(string.Concat((object) Buttons.DPadUp));
-              c.KeyStatus["DpadSnap3"].Add(string.Concat((object) Buttons.DPadDown));
-              c.KeyStatus["DpadSnap4"].Add(string.Concat((object) Buttons.DPadLeft));
-              c.KeyStatus["DpadSnap2"].Add(string.Concat((object) Buttons.DPadRight));
-              c.KeyStatus["MenuUp"].Add(string.Concat((object) Buttons.DPadUp));
-              c.KeyStatus["MenuDown"].Add(string.Concat((object) Buttons.DPadDown));
-              c.KeyStatus["MenuLeft"].Add(string.Concat((object) Buttons.DPadLeft));
-              c.KeyStatus["MenuRight"].Add(string.Concat((object) Buttons.DPadRight));
+              c.KeyStatus["MouseLeft"].Add(string.Concat((object) (Buttons) 4096));
+              c.KeyStatus["MouseRight"].Add(string.Concat((object) (Buttons) 256));
+              c.KeyStatus["SmartCursor"].Add(string.Concat((object) (Buttons) 512));
+              c.KeyStatus["Up"].Add(string.Concat((object) (Buttons) 268435456));
+              c.KeyStatus["Down"].Add(string.Concat((object) (Buttons) 536870912));
+              c.KeyStatus["Left"].Add(string.Concat((object) (Buttons) 2097152));
+              c.KeyStatus["Right"].Add(string.Concat((object) (Buttons) 1073741824));
+              c.KeyStatus["LockOn"].Add(string.Concat((object) (Buttons) 8192));
+              c.KeyStatus["Inventory"].Add(string.Concat((object) (Buttons) 32768));
+              c.KeyStatus["HotbarMinus"].Add(string.Concat((object) (Buttons) 8388608));
+              c.KeyStatus["HotbarPlus"].Add(string.Concat((object) (Buttons) 4194304));
+              c.KeyStatus["Grapple"].Add(string.Concat((object) (Buttons) 16384));
+              c.KeyStatus["MapFull"].Add(string.Concat((object) (Buttons) 16));
+              c.KeyStatus["SmartSelect"].Add(string.Concat((object) (Buttons) 32));
+              c.KeyStatus["QuickMount"].Add(string.Concat((object) (Buttons) 128));
+              c.KeyStatus["DpadSnap1"].Add(string.Concat((object) (Buttons) 1));
+              c.KeyStatus["DpadSnap3"].Add(string.Concat((object) (Buttons) 2));
+              c.KeyStatus["DpadSnap4"].Add(string.Concat((object) (Buttons) 4));
+              c.KeyStatus["DpadSnap2"].Add(string.Concat((object) (Buttons) 8));
+              c.KeyStatus["MenuUp"].Add(string.Concat((object) (Buttons) 1));
+              c.KeyStatus["MenuDown"].Add(string.Concat((object) (Buttons) 2));
+              c.KeyStatus["MenuLeft"].Add(string.Concat((object) (Buttons) 4));
+              c.KeyStatus["MenuRight"].Add(string.Concat((object) (Buttons) 8));
               return;
             default:
               return;
@@ -1542,60 +1654,60 @@ namespace Terraria.GameInput
               c.KeyStatus["Left"].Add("Left");
               c.KeyStatus["Right"].Add("D");
               c.KeyStatus["Right"].Add("Right");
-              c.KeyStatus["MenuUp"].Add(string.Concat((object) Buttons.DPadUp));
-              c.KeyStatus["MenuDown"].Add(string.Concat((object) Buttons.DPadDown));
-              c.KeyStatus["MenuLeft"].Add(string.Concat((object) Buttons.DPadLeft));
-              c.KeyStatus["MenuRight"].Add(string.Concat((object) Buttons.DPadRight));
-              c.KeyStatus["Inventory"].Add(Keys.Escape.ToString());
+              c.KeyStatus["MenuUp"].Add(string.Concat((object) (Buttons) 1));
+              c.KeyStatus["MenuDown"].Add(string.Concat((object) (Buttons) 2));
+              c.KeyStatus["MenuLeft"].Add(string.Concat((object) (Buttons) 4));
+              c.KeyStatus["MenuRight"].Add(string.Concat((object) (Buttons) 8));
+              c.KeyStatus["Inventory"].Add(((Keys) 27).ToString());
               return;
             case InputMode.Mouse:
               return;
             case InputMode.XBoxGamepad:
-              c.KeyStatus["MouseLeft"].Add(string.Concat((object) Buttons.RightShoulder));
-              c.KeyStatus["MouseRight"].Add(string.Concat((object) Buttons.B));
-              c.KeyStatus["Up"].Add(string.Concat((object) Buttons.LeftThumbstickUp));
-              c.KeyStatus["Down"].Add(string.Concat((object) Buttons.LeftThumbstickDown));
-              c.KeyStatus["Left"].Add(string.Concat((object) Buttons.LeftThumbstickLeft));
-              c.KeyStatus["Right"].Add(string.Concat((object) Buttons.LeftThumbstickRight));
-              c.KeyStatus["Jump"].Add(string.Concat((object) Buttons.A));
-              c.KeyStatus["LockOn"].Add(string.Concat((object) Buttons.X));
-              c.KeyStatus["Inventory"].Add(string.Concat((object) Buttons.Y));
-              c.KeyStatus["Grapple"].Add(string.Concat((object) Buttons.LeftShoulder));
-              c.KeyStatus["SmartSelect"].Add(string.Concat((object) Buttons.LeftStick));
-              c.KeyStatus["SmartCursor"].Add(string.Concat((object) Buttons.RightStick));
-              c.KeyStatus["HotbarMinus"].Add(string.Concat((object) Buttons.LeftTrigger));
-              c.KeyStatus["HotbarPlus"].Add(string.Concat((object) Buttons.RightTrigger));
-              c.KeyStatus["MapFull"].Add(string.Concat((object) Buttons.Start));
-              c.KeyStatus["DpadRadial1"].Add(string.Concat((object) Buttons.DPadUp));
-              c.KeyStatus["DpadRadial3"].Add(string.Concat((object) Buttons.DPadDown));
-              c.KeyStatus["DpadRadial4"].Add(string.Concat((object) Buttons.DPadLeft));
-              c.KeyStatus["DpadRadial2"].Add(string.Concat((object) Buttons.DPadRight));
-              c.KeyStatus["QuickMount"].Add(string.Concat((object) Buttons.Back));
+              c.KeyStatus["MouseLeft"].Add(string.Concat((object) (Buttons) 512));
+              c.KeyStatus["MouseRight"].Add(string.Concat((object) (Buttons) 8192));
+              c.KeyStatus["Up"].Add(string.Concat((object) (Buttons) 268435456));
+              c.KeyStatus["Down"].Add(string.Concat((object) (Buttons) 536870912));
+              c.KeyStatus["Left"].Add(string.Concat((object) (Buttons) 2097152));
+              c.KeyStatus["Right"].Add(string.Concat((object) (Buttons) 1073741824));
+              c.KeyStatus["Jump"].Add(string.Concat((object) (Buttons) 4096));
+              c.KeyStatus["LockOn"].Add(string.Concat((object) (Buttons) 16384));
+              c.KeyStatus["Inventory"].Add(string.Concat((object) (Buttons) 32768));
+              c.KeyStatus["Grapple"].Add(string.Concat((object) (Buttons) 256));
+              c.KeyStatus["SmartSelect"].Add(string.Concat((object) (Buttons) 64));
+              c.KeyStatus["SmartCursor"].Add(string.Concat((object) (Buttons) 128));
+              c.KeyStatus["HotbarMinus"].Add(string.Concat((object) (Buttons) 8388608));
+              c.KeyStatus["HotbarPlus"].Add(string.Concat((object) (Buttons) 4194304));
+              c.KeyStatus["MapFull"].Add(string.Concat((object) (Buttons) 16));
+              c.KeyStatus["DpadRadial1"].Add(string.Concat((object) (Buttons) 1));
+              c.KeyStatus["DpadRadial3"].Add(string.Concat((object) (Buttons) 2));
+              c.KeyStatus["DpadRadial4"].Add(string.Concat((object) (Buttons) 4));
+              c.KeyStatus["DpadRadial2"].Add(string.Concat((object) (Buttons) 8));
+              c.KeyStatus["QuickMount"].Add(string.Concat((object) (Buttons) 32));
               return;
             case InputMode.XBoxGamepadUI:
-              c.KeyStatus["MouseLeft"].Add(string.Concat((object) Buttons.A));
-              c.KeyStatus["MouseRight"].Add(string.Concat((object) Buttons.LeftShoulder));
-              c.KeyStatus["SmartCursor"].Add(string.Concat((object) Buttons.RightShoulder));
-              c.KeyStatus["Up"].Add(string.Concat((object) Buttons.LeftThumbstickUp));
-              c.KeyStatus["Down"].Add(string.Concat((object) Buttons.LeftThumbstickDown));
-              c.KeyStatus["Left"].Add(string.Concat((object) Buttons.LeftThumbstickLeft));
-              c.KeyStatus["Right"].Add(string.Concat((object) Buttons.LeftThumbstickRight));
-              c.KeyStatus["Inventory"].Add(string.Concat((object) Buttons.B));
-              c.KeyStatus["Inventory"].Add(string.Concat((object) Buttons.Y));
-              c.KeyStatus["HotbarMinus"].Add(string.Concat((object) Buttons.LeftTrigger));
-              c.KeyStatus["HotbarPlus"].Add(string.Concat((object) Buttons.RightTrigger));
-              c.KeyStatus["Grapple"].Add(string.Concat((object) Buttons.X));
-              c.KeyStatus["MapFull"].Add(string.Concat((object) Buttons.Start));
-              c.KeyStatus["SmartSelect"].Add(string.Concat((object) Buttons.Back));
-              c.KeyStatus["QuickMount"].Add(string.Concat((object) Buttons.RightStick));
-              c.KeyStatus["DpadRadial1"].Add(string.Concat((object) Buttons.DPadUp));
-              c.KeyStatus["DpadRadial3"].Add(string.Concat((object) Buttons.DPadDown));
-              c.KeyStatus["DpadRadial4"].Add(string.Concat((object) Buttons.DPadLeft));
-              c.KeyStatus["DpadRadial2"].Add(string.Concat((object) Buttons.DPadRight));
-              c.KeyStatus["MenuUp"].Add(string.Concat((object) Buttons.DPadUp));
-              c.KeyStatus["MenuDown"].Add(string.Concat((object) Buttons.DPadDown));
-              c.KeyStatus["MenuLeft"].Add(string.Concat((object) Buttons.DPadLeft));
-              c.KeyStatus["MenuRight"].Add(string.Concat((object) Buttons.DPadRight));
+              c.KeyStatus["MouseLeft"].Add(string.Concat((object) (Buttons) 4096));
+              c.KeyStatus["MouseRight"].Add(string.Concat((object) (Buttons) 256));
+              c.KeyStatus["SmartCursor"].Add(string.Concat((object) (Buttons) 512));
+              c.KeyStatus["Up"].Add(string.Concat((object) (Buttons) 268435456));
+              c.KeyStatus["Down"].Add(string.Concat((object) (Buttons) 536870912));
+              c.KeyStatus["Left"].Add(string.Concat((object) (Buttons) 2097152));
+              c.KeyStatus["Right"].Add(string.Concat((object) (Buttons) 1073741824));
+              c.KeyStatus["Inventory"].Add(string.Concat((object) (Buttons) 8192));
+              c.KeyStatus["Inventory"].Add(string.Concat((object) (Buttons) 32768));
+              c.KeyStatus["HotbarMinus"].Add(string.Concat((object) (Buttons) 8388608));
+              c.KeyStatus["HotbarPlus"].Add(string.Concat((object) (Buttons) 4194304));
+              c.KeyStatus["Grapple"].Add(string.Concat((object) (Buttons) 16384));
+              c.KeyStatus["MapFull"].Add(string.Concat((object) (Buttons) 16));
+              c.KeyStatus["SmartSelect"].Add(string.Concat((object) (Buttons) 32));
+              c.KeyStatus["QuickMount"].Add(string.Concat((object) (Buttons) 128));
+              c.KeyStatus["DpadRadial1"].Add(string.Concat((object) (Buttons) 1));
+              c.KeyStatus["DpadRadial3"].Add(string.Concat((object) (Buttons) 2));
+              c.KeyStatus["DpadRadial4"].Add(string.Concat((object) (Buttons) 4));
+              c.KeyStatus["DpadRadial2"].Add(string.Concat((object) (Buttons) 8));
+              c.KeyStatus["MenuUp"].Add(string.Concat((object) (Buttons) 1));
+              c.KeyStatus["MenuDown"].Add(string.Concat((object) (Buttons) 2));
+              c.KeyStatus["MenuLeft"].Add(string.Concat((object) (Buttons) 4));
+              c.KeyStatus["MenuRight"].Add(string.Concat((object) (Buttons) 8));
               return;
             default:
               return;
@@ -1650,60 +1762,60 @@ namespace Terraria.GameInput
               c.KeyStatus["Left"].Add("Left");
               c.KeyStatus["Right"].Add("D");
               c.KeyStatus["Right"].Add("Right");
-              c.KeyStatus["MenuUp"].Add(string.Concat((object) Buttons.DPadUp));
-              c.KeyStatus["MenuDown"].Add(string.Concat((object) Buttons.DPadDown));
-              c.KeyStatus["MenuLeft"].Add(string.Concat((object) Buttons.DPadLeft));
-              c.KeyStatus["MenuRight"].Add(string.Concat((object) Buttons.DPadRight));
-              c.KeyStatus["Inventory"].Add(Keys.Escape.ToString());
+              c.KeyStatus["MenuUp"].Add(string.Concat((object) (Buttons) 1));
+              c.KeyStatus["MenuDown"].Add(string.Concat((object) (Buttons) 2));
+              c.KeyStatus["MenuLeft"].Add(string.Concat((object) (Buttons) 4));
+              c.KeyStatus["MenuRight"].Add(string.Concat((object) (Buttons) 8));
+              c.KeyStatus["Inventory"].Add(((Keys) 27).ToString());
               return;
             case InputMode.Mouse:
               return;
             case InputMode.XBoxGamepad:
-              c.KeyStatus["MouseLeft"].Add(string.Concat((object) Buttons.RightTrigger));
-              c.KeyStatus["MouseRight"].Add(string.Concat((object) Buttons.B));
-              c.KeyStatus["Up"].Add(string.Concat((object) Buttons.LeftThumbstickUp));
-              c.KeyStatus["Down"].Add(string.Concat((object) Buttons.LeftThumbstickDown));
-              c.KeyStatus["Left"].Add(string.Concat((object) Buttons.LeftThumbstickLeft));
-              c.KeyStatus["Right"].Add(string.Concat((object) Buttons.LeftThumbstickRight));
-              c.KeyStatus["Jump"].Add(string.Concat((object) Buttons.A));
-              c.KeyStatus["LockOn"].Add(string.Concat((object) Buttons.X));
-              c.KeyStatus["Inventory"].Add(string.Concat((object) Buttons.Y));
-              c.KeyStatus["Grapple"].Add(string.Concat((object) Buttons.LeftTrigger));
-              c.KeyStatus["SmartSelect"].Add(string.Concat((object) Buttons.LeftStick));
-              c.KeyStatus["SmartCursor"].Add(string.Concat((object) Buttons.RightStick));
-              c.KeyStatus["HotbarMinus"].Add(string.Concat((object) Buttons.LeftShoulder));
-              c.KeyStatus["HotbarPlus"].Add(string.Concat((object) Buttons.RightShoulder));
-              c.KeyStatus["MapFull"].Add(string.Concat((object) Buttons.Start));
-              c.KeyStatus["DpadRadial1"].Add(string.Concat((object) Buttons.DPadUp));
-              c.KeyStatus["DpadRadial3"].Add(string.Concat((object) Buttons.DPadDown));
-              c.KeyStatus["DpadRadial4"].Add(string.Concat((object) Buttons.DPadLeft));
-              c.KeyStatus["DpadRadial2"].Add(string.Concat((object) Buttons.DPadRight));
-              c.KeyStatus["QuickMount"].Add(string.Concat((object) Buttons.Back));
+              c.KeyStatus["MouseLeft"].Add(string.Concat((object) (Buttons) 4194304));
+              c.KeyStatus["MouseRight"].Add(string.Concat((object) (Buttons) 8192));
+              c.KeyStatus["Up"].Add(string.Concat((object) (Buttons) 268435456));
+              c.KeyStatus["Down"].Add(string.Concat((object) (Buttons) 536870912));
+              c.KeyStatus["Left"].Add(string.Concat((object) (Buttons) 2097152));
+              c.KeyStatus["Right"].Add(string.Concat((object) (Buttons) 1073741824));
+              c.KeyStatus["Jump"].Add(string.Concat((object) (Buttons) 4096));
+              c.KeyStatus["LockOn"].Add(string.Concat((object) (Buttons) 16384));
+              c.KeyStatus["Inventory"].Add(string.Concat((object) (Buttons) 32768));
+              c.KeyStatus["Grapple"].Add(string.Concat((object) (Buttons) 8388608));
+              c.KeyStatus["SmartSelect"].Add(string.Concat((object) (Buttons) 64));
+              c.KeyStatus["SmartCursor"].Add(string.Concat((object) (Buttons) 128));
+              c.KeyStatus["HotbarMinus"].Add(string.Concat((object) (Buttons) 256));
+              c.KeyStatus["HotbarPlus"].Add(string.Concat((object) (Buttons) 512));
+              c.KeyStatus["MapFull"].Add(string.Concat((object) (Buttons) 16));
+              c.KeyStatus["DpadRadial1"].Add(string.Concat((object) (Buttons) 1));
+              c.KeyStatus["DpadRadial3"].Add(string.Concat((object) (Buttons) 2));
+              c.KeyStatus["DpadRadial4"].Add(string.Concat((object) (Buttons) 4));
+              c.KeyStatus["DpadRadial2"].Add(string.Concat((object) (Buttons) 8));
+              c.KeyStatus["QuickMount"].Add(string.Concat((object) (Buttons) 32));
               return;
             case InputMode.XBoxGamepadUI:
-              c.KeyStatus["MouseLeft"].Add(string.Concat((object) Buttons.A));
-              c.KeyStatus["MouseRight"].Add(string.Concat((object) Buttons.LeftShoulder));
-              c.KeyStatus["SmartCursor"].Add(string.Concat((object) Buttons.RightShoulder));
-              c.KeyStatus["Up"].Add(string.Concat((object) Buttons.LeftThumbstickUp));
-              c.KeyStatus["Down"].Add(string.Concat((object) Buttons.LeftThumbstickDown));
-              c.KeyStatus["Left"].Add(string.Concat((object) Buttons.LeftThumbstickLeft));
-              c.KeyStatus["Right"].Add(string.Concat((object) Buttons.LeftThumbstickRight));
-              c.KeyStatus["Inventory"].Add(string.Concat((object) Buttons.B));
-              c.KeyStatus["Inventory"].Add(string.Concat((object) Buttons.Y));
-              c.KeyStatus["HotbarMinus"].Add(string.Concat((object) Buttons.LeftTrigger));
-              c.KeyStatus["HotbarPlus"].Add(string.Concat((object) Buttons.RightTrigger));
-              c.KeyStatus["Grapple"].Add(string.Concat((object) Buttons.X));
-              c.KeyStatus["MapFull"].Add(string.Concat((object) Buttons.Start));
-              c.KeyStatus["SmartSelect"].Add(string.Concat((object) Buttons.Back));
-              c.KeyStatus["QuickMount"].Add(string.Concat((object) Buttons.RightStick));
-              c.KeyStatus["DpadRadial1"].Add(string.Concat((object) Buttons.DPadUp));
-              c.KeyStatus["DpadRadial3"].Add(string.Concat((object) Buttons.DPadDown));
-              c.KeyStatus["DpadRadial4"].Add(string.Concat((object) Buttons.DPadLeft));
-              c.KeyStatus["DpadRadial2"].Add(string.Concat((object) Buttons.DPadRight));
-              c.KeyStatus["MenuUp"].Add(string.Concat((object) Buttons.DPadUp));
-              c.KeyStatus["MenuDown"].Add(string.Concat((object) Buttons.DPadDown));
-              c.KeyStatus["MenuLeft"].Add(string.Concat((object) Buttons.DPadLeft));
-              c.KeyStatus["MenuRight"].Add(string.Concat((object) Buttons.DPadRight));
+              c.KeyStatus["MouseLeft"].Add(string.Concat((object) (Buttons) 4096));
+              c.KeyStatus["MouseRight"].Add(string.Concat((object) (Buttons) 256));
+              c.KeyStatus["SmartCursor"].Add(string.Concat((object) (Buttons) 512));
+              c.KeyStatus["Up"].Add(string.Concat((object) (Buttons) 268435456));
+              c.KeyStatus["Down"].Add(string.Concat((object) (Buttons) 536870912));
+              c.KeyStatus["Left"].Add(string.Concat((object) (Buttons) 2097152));
+              c.KeyStatus["Right"].Add(string.Concat((object) (Buttons) 1073741824));
+              c.KeyStatus["Inventory"].Add(string.Concat((object) (Buttons) 8192));
+              c.KeyStatus["Inventory"].Add(string.Concat((object) (Buttons) 32768));
+              c.KeyStatus["HotbarMinus"].Add(string.Concat((object) (Buttons) 8388608));
+              c.KeyStatus["HotbarPlus"].Add(string.Concat((object) (Buttons) 4194304));
+              c.KeyStatus["Grapple"].Add(string.Concat((object) (Buttons) 16384));
+              c.KeyStatus["MapFull"].Add(string.Concat((object) (Buttons) 16));
+              c.KeyStatus["SmartSelect"].Add(string.Concat((object) (Buttons) 32));
+              c.KeyStatus["QuickMount"].Add(string.Concat((object) (Buttons) 128));
+              c.KeyStatus["DpadRadial1"].Add(string.Concat((object) (Buttons) 1));
+              c.KeyStatus["DpadRadial3"].Add(string.Concat((object) (Buttons) 2));
+              c.KeyStatus["DpadRadial4"].Add(string.Concat((object) (Buttons) 4));
+              c.KeyStatus["DpadRadial2"].Add(string.Concat((object) (Buttons) 8));
+              c.KeyStatus["MenuUp"].Add(string.Concat((object) (Buttons) 1));
+              c.KeyStatus["MenuDown"].Add(string.Concat((object) (Buttons) 2));
+              c.KeyStatus["MenuLeft"].Add(string.Concat((object) (Buttons) 4));
+              c.KeyStatus["MenuRight"].Add(string.Concat((object) (Buttons) 8));
               return;
             default:
               return;
@@ -1734,20 +1846,21 @@ namespace Terraria.GameInput
 
     public static void SetZoom_Test()
     {
-      Vector2 vector2_1 = Main.screenPosition + new Vector2((float) Main.screenWidth, (float) Main.screenHeight) / 2f;
-      Vector2 vector2_2 = Main.screenPosition + new Vector2((float) PlayerInput._originalMouseX, (float) PlayerInput._originalMouseY);
-      Vector2 vector2_3 = Main.screenPosition + new Vector2((float) PlayerInput._originalLastMouseX, (float) PlayerInput._originalLastMouseY);
-      Vector2 vector2_4 = Main.screenPosition + new Vector2(0.0f, 0.0f);
-      Vector2 vector2_5 = Main.screenPosition + new Vector2((float) Main.screenWidth, (float) Main.screenHeight);
-      Vector2 vector2_6 = vector2_2 - vector2_1;
-      Vector2 vector2_7 = vector2_3 - vector2_1;
-      Vector2 vector2_8 = vector2_4 - vector2_1;
-      Vector2 vector2_9 = vector2_5 - vector2_1;
-      float num1 = 1f / Main.GameViewMatrix.Zoom.X;
+      Vector2 vector2_1 = Vector2.op_Addition(Main.screenPosition, Vector2.op_Division(new Vector2((float) Main.screenWidth, (float) Main.screenHeight), 2f));
+      Vector2 vector2_2 = Vector2.op_Addition(Main.screenPosition, new Vector2((float) PlayerInput._originalMouseX, (float) PlayerInput._originalMouseY));
+      Vector2 vector2_3 = Vector2.op_Addition(Main.screenPosition, new Vector2((float) PlayerInput._originalLastMouseX, (float) PlayerInput._originalLastMouseY));
+      Vector2 vector2_4 = Vector2.op_Addition(Main.screenPosition, new Vector2(0.0f, 0.0f));
+      Vector2 vector2_5 = Vector2.op_Addition(Main.screenPosition, new Vector2((float) Main.screenWidth, (float) Main.screenHeight));
+      Vector2 vector2_6 = Vector2.op_Subtraction(vector2_2, vector2_1);
+      Vector2 vector2_7 = Vector2.op_Subtraction(vector2_3, vector2_1);
+      Vector2 vector2_8 = Vector2.op_Subtraction(vector2_4, vector2_1);
+      Vector2 vector2_9 = vector2_1;
+      Vector2.op_Subtraction(vector2_5, vector2_9);
+      float num1 = (float) (1.0 / Main.GameViewMatrix.Zoom.X);
       float num2 = 1f;
-      Vector2 vector2_10 = vector2_1 - Main.screenPosition + vector2_6 * num1;
-      Vector2 vector2_11 = vector2_1 - Main.screenPosition + vector2_7 * num1;
-      Vector2 vector2_12 = vector2_1 + vector2_8 * num2;
+      Vector2 vector2_10 = Vector2.op_Addition(Vector2.op_Subtraction(vector2_1, Main.screenPosition), Vector2.op_Multiply(vector2_6, num1));
+      Vector2 vector2_11 = Vector2.op_Addition(Vector2.op_Subtraction(vector2_1, Main.screenPosition), Vector2.op_Multiply(vector2_7, num1));
+      Vector2 vector2_12 = Vector2.op_Addition(vector2_1, Vector2.op_Multiply(vector2_8, num2));
       Main.mouseX = (int) vector2_10.X;
       Main.mouseY = (int) vector2_10.Y;
       Main.lastMouseX = (int) vector2_11.X;
@@ -1759,18 +1872,19 @@ namespace Terraria.GameInput
 
     public static void SetZoom_MouseInWorld()
     {
-      Vector2 vector2_1 = Main.screenPosition + new Vector2((float) Main.screenWidth, (float) Main.screenHeight) / 2f;
-      Vector2 vector2_2 = Main.screenPosition + new Vector2((float) PlayerInput._originalMouseX, (float) PlayerInput._originalMouseY);
-      Vector2 vector2_3 = Main.screenPosition + new Vector2((float) PlayerInput._originalLastMouseX, (float) PlayerInput._originalLastMouseY);
-      Vector2 vector2_4 = vector2_2 - vector2_1;
-      Vector2 vector2_5 = vector2_3 - vector2_1;
-      float num = 1f / Main.GameViewMatrix.Zoom.X;
-      Vector2 vector2_6 = vector2_1 - Main.screenPosition + vector2_4 * num;
-      Main.mouseX = (int) vector2_6.X;
-      Main.mouseY = (int) vector2_6.Y;
-      Vector2 vector2_7 = vector2_1 - Main.screenPosition + vector2_5 * num;
-      Main.lastMouseX = (int) vector2_7.X;
-      Main.lastMouseY = (int) vector2_7.Y;
+      Vector2 vector2_1 = Vector2.op_Addition(Main.screenPosition, Vector2.op_Division(new Vector2((float) Main.screenWidth, (float) Main.screenHeight), 2f));
+      Vector2 vector2_2 = Vector2.op_Addition(Main.screenPosition, new Vector2((float) PlayerInput._originalMouseX, (float) PlayerInput._originalMouseY));
+      Vector2 vector2_3 = Vector2.op_Addition(Main.screenPosition, new Vector2((float) PlayerInput._originalLastMouseX, (float) PlayerInput._originalLastMouseY));
+      Vector2 vector2_4 = Vector2.op_Subtraction(vector2_2, vector2_1);
+      Vector2 vector2_5 = vector2_1;
+      Vector2 vector2_6 = Vector2.op_Subtraction(vector2_3, vector2_5);
+      float num = (float) (1.0 / Main.GameViewMatrix.Zoom.X);
+      Vector2 vector2_7 = Vector2.op_Addition(Vector2.op_Subtraction(vector2_1, Main.screenPosition), Vector2.op_Multiply(vector2_4, num));
+      Main.mouseX = (int) vector2_7.X;
+      Main.mouseY = (int) vector2_7.Y;
+      Vector2 vector2_8 = Vector2.op_Addition(Vector2.op_Subtraction(vector2_1, Main.screenPosition), Vector2.op_Multiply(vector2_6, num));
+      Main.lastMouseX = (int) vector2_8.X;
+      Main.lastMouseY = (int) vector2_8.Y;
     }
 
     public static void SetDesiredZoomContext(ZoomContext context)
@@ -1784,7 +1898,7 @@ namespace Terraria.GameInput
       {
         case ZoomContext.Unscaled:
           PlayerInput.SetZoom_Unscaled();
-          Main.SetRecommendedZoomContext(Matrix.Identity);
+          Main.SetRecommendedZoomContext(Matrix.get_Identity());
           break;
         case ZoomContext.World:
           PlayerInput.SetZoom_World();

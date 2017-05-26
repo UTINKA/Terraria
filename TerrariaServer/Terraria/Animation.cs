@@ -1,8 +1,8 @@
 ﻿// Decompiled with JetBrains decompiler
 // Type: Terraria.Animation
-// Assembly: TerrariaServer, Version=1.3.5.1, Culture=neutral, PublicKeyToken=null
-// MVID: C2103E81-0935-4BEA-9E98-4159FC80C2BB
-// Assembly location: F:\Steam\steamapps\common\Terraria\TerrariaServer.exe
+// Assembly: TerrariaServer, Version=1.3.5.3, Culture=neutral, PublicKeyToken=null
+// MVID: 8A63A7A2-328D-424C-BC9D-BF23F93646F7
+// Assembly location: H:\Steam\steamapps\common\Terraria\TerrariaServer.exe
 
 using System.Collections.Generic;
 using Terraria.DataStructures;
@@ -121,11 +121,11 @@ namespace Terraria
           return;
         }
       }
-      ++this._frameCounter;
+      this._frameCounter = this._frameCounter + 1;
       if (this._frameCounter < this._frameCounterMax)
         return;
       this._frameCounter = 0;
-      ++this._frame;
+      this._frame = this._frame + 1;
       if (this._frame < this._frameMax)
         return;
       this._frame = 0;

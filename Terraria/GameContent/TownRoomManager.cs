@@ -1,8 +1,8 @@
 ﻿// Decompiled with JetBrains decompiler
 // Type: Terraria.GameContent.TownRoomManager
-// Assembly: Terraria, Version=1.3.5.1, Culture=neutral, PublicKeyToken=null
-// MVID: E90A5A2F-CD10-4A2C-9D2A-6B036D4E8877
-// Assembly location: F:\Steam\steamapps\common\Terraria\Terraria.exe
+// Assembly: Terraria, Version=1.3.5.3, Culture=neutral, PublicKeyToken=null
+// MVID: 68659D26-2BE6-448F-8663-74FA559E6F08
+// Assembly location: H:\Steam\steamapps\common\Terraria\Terraria.exe
 
 using Microsoft.Xna.Framework;
 using System;
@@ -23,10 +23,14 @@ namespace Terraria.GameContent
 
     public int FindOccupation(Point tilePosition)
     {
-      foreach (Tuple<int, Point> roomLocationPair in this._roomLocationPairs)
+      using (List<Tuple<int, Point>>.Enumerator enumerator = this._roomLocationPairs.GetEnumerator())
       {
-        if (roomLocationPair.Item2 == tilePosition)
-          return roomLocationPair.Item1;
+        while (enumerator.MoveNext())
+        {
+          Tuple<int, Point> current = enumerator.Current;
+          if (Point.op_Equality(current.Item2, tilePosition))
+            return current.Item1;
+        }
       }
       return -1;
     }
@@ -43,12 +47,16 @@ namespace Terraria.GameContent
         roomPosition = new Point(0, 0);
         return false;
       }
-      foreach (Tuple<int, Point> roomLocationPair in this._roomLocationPairs)
+      using (List<Tuple<int, Point>>.Enumerator enumerator = this._roomLocationPairs.GetEnumerator())
       {
-        if (roomLocationPair.Item1 == npcID)
+        while (enumerator.MoveNext())
         {
-          roomPosition = roomLocationPair.Item2;
-          return true;
+          Tuple<int, Point> current = enumerator.Current;
+          if (current.Item1 == npcID)
+          {
+            roomPosition = current.Item2;
+            return true;
+          }
         }
       }
       roomPosition = new Point(0, 0);
@@ -80,18 +88,28 @@ namespace Terraria.GameContent
 
     public void DisplayRooms()
     {
-      foreach (Tuple<int, Point> roomLocationPair in this._roomLocationPairs)
-        Dust.QuickDust(roomLocationPair.Item2, Main.hslToRgb((float) ((double) roomLocationPair.Item1 * 0.0500000007450581 % 1.0), 1f, 0.5f));
+      using (List<Tuple<int, Point>>.Enumerator enumerator = this._roomLocationPairs.GetEnumerator())
+      {
+        while (enumerator.MoveNext())
+        {
+          Tuple<int, Point> current = enumerator.Current;
+          Dust.QuickDust(current.Item2, Main.hslToRgb((float) ((double) current.Item1 * 0.0500000007450581 % 1.0), 1f, 0.5f));
+        }
+      }
     }
 
     public void Save(BinaryWriter writer)
     {
       writer.Write(this._roomLocationPairs.Count);
-      foreach (Tuple<int, Point> roomLocationPair in this._roomLocationPairs)
+      using (List<Tuple<int, Point>>.Enumerator enumerator = this._roomLocationPairs.GetEnumerator())
       {
-        writer.Write(roomLocationPair.Item1);
-        writer.Write(roomLocationPair.Item2.X);
-        writer.Write(roomLocationPair.Item2.Y);
+        while (enumerator.MoveNext())
+        {
+          Tuple<int, Point> current = enumerator.Current;
+          writer.Write(current.Item1);
+          writer.Write((int) current.Item2.X);
+          writer.Write((int) current.Item2.Y);
+        }
       }
     }
 
@@ -102,7 +120,9 @@ namespace Terraria.GameContent
       for (int index1 = 0; index1 < num; ++index1)
       {
         int index2 = reader.ReadInt32();
-        Point point = new Point(reader.ReadInt32(), reader.ReadInt32());
+        Point point;
+        // ISSUE: explicit reference operation
+        ((Point) @point).\u002Ector(reader.ReadInt32(), reader.ReadInt32());
         this._roomLocationPairs.Add(Tuple.Create<int, Point>(index2, point));
         this._hasRoom[index2] = true;
       }

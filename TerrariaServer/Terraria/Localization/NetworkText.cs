@@ -1,8 +1,8 @@
 ﻿// Decompiled with JetBrains decompiler
 // Type: Terraria.Localization.NetworkText
-// Assembly: TerrariaServer, Version=1.3.5.1, Culture=neutral, PublicKeyToken=null
-// MVID: C2103E81-0935-4BEA-9E98-4159FC80C2BB
-// Assembly location: F:\Steam\steamapps\common\Terraria\TerrariaServer.exe
+// Assembly: TerrariaServer, Version=1.3.5.3, Culture=neutral, PublicKeyToken=null
+// MVID: 8A63A7A2-328D-424C-BC9D-BF23F93646F7
+// Assembly location: H:\Steam\steamapps\common\Terraria\TerrariaServer.exe
 
 using System;
 using System.IO;
@@ -87,7 +87,8 @@ namespace Terraria.Localization
     {
       NetworkText.Mode mode = (NetworkText.Mode) reader.ReadByte();
       NetworkText networkText = new NetworkText(reader.ReadString(), mode);
-      networkText.DeserializeSubstitutionList(reader);
+      BinaryReader reader1 = reader;
+      networkText.DeserializeSubstitutionList(reader1);
       return networkText;
     }
 
@@ -149,7 +150,7 @@ namespace Terraria.Localization
       if (this._mode != NetworkText.Mode.Literal)
       {
         for (int index = 0; index < this._substitutions.Length; ++index)
-          str = str + string.Format("{0}Substitution {1}:\n", (object) linePrefix, (object) index) + this._substitutions[index].ToDebugInfoString(linePrefix + (object) '\t');
+          str = str + string.Format("{0}Substitution {1}:\n", (object) linePrefix, (object) index) + this._substitutions[index].ToDebugInfoString(linePrefix + "\t");
       }
       return str;
     }
